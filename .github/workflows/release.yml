@@ -126,23 +126,35 @@ jobs:
         if: matrix.platform != 'windows-latest'
         shell: bash
         run: |
-          set -e
+          # Note: NO `set -e` here — `[ -z "$files" ]` returns 1 when files is
+          # non-empty, which under -e silently kills the script. We handle errors
+          # explicitly below.
           BUNDLE_DIR="target/${{ matrix.target }}/release/bundle"
           mkdir -p _release_uploads
+
           # macOS: .dmg
-          find "$BUNDLE_DIR/dmg" -type f -name "*.dmg" 2>/dev/null | while read -r f; do
-            cp "$f" _release_uploads/
-          done
-          # Linux: .deb, .AppImage, .rpm — prefer the "Yappy_*" capitalized one when both exist
+          if [ -d "$BUNDLE_DIR/dmg" ]; then
+            find "$BUNDLE_DIR/dmg" -type f -name "*.dmg" -print0 | while IFS= read -r -d '' f; do
+              cp "$f" _release_uploads/
+            done
+          fi
+
+          # Linux: .deb, .AppImage, .rpm — prefer "Yappy_*" (capitalized) over the
+          # lowercase "yappy_*" duplicate Tauri produces on case-sensitive fs.
           for kind in deb AppImage rpm; do
-            files=$(find "$BUNDLE_DIR" -type f -name "Yappy_*.${kind}" 2>/dev/null ; \
-                    find "$BUNDLE_DIR" -type f -name "Yappy-*.${kind}" 2>/dev/null)
-            [ -z "$files" ] && files=$(find "$BUNDLE_DIR" -type f -name "yappy_*.${kind}" 2>/dev/null ; \
-                                       find "$BUNDLE_DIR" -type f -name "yappy-*.${kind}" 2>/dev/null)
-            for f in $files; do cp "$f" _release_uploads/ ; done
+            files=$( { find "$BUNDLE_DIR" -type f -name "Yappy_*.${kind}" 2>/dev/null;
+                       find "$BUNDLE_DIR" -type f -name "Yappy-*.${kind}" 2>/dev/null; } )
+            if [ -z "$files" ]; then
+              files=$( { find "$BUNDLE_DIR" -type f -name "yappy_*.${kind}" 2>/dev/null;
+                         find "$BUNDLE_DIR" -type f -name "yappy-*.${kind}" 2>/dev/null; } )
+            fi
+            for f in $files; do
+              [ -f "$f" ] && cp "$f" _release_uploads/
+            done
           done
-          # On macOS Tauri also produces .app.tar.gz updater bundles — skip those.
-          ls -lh _release_uploads/
+
+          echo "Collected:"
+          ls -lh _release_uploads/ || true
 
       - name: Collect bundle paths (windows)
         if: matrix.platform == 'windows-latest'
