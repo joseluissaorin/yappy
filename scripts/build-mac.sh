@@ -82,9 +82,43 @@ npm run tauri build
 
 DMG_DIR="$ROOT/target/release/bundle/dmg"
 APP_DIR="$ROOT/target/release/bundle/macos"
+
+# ── Post-build: re-sign nested dylibs and re-package the DMG ──────────────
+# Tauri's bundler signs the main binary + .app envelope but does NOT recurse
+# into resource dylibs (e.g. libpdfium.dylib). Notarization rejects any
+# unsigned Mach-O child, so we sign each one with --timestamp + hardened
+# runtime, re-sign the .app, then rebuild the DMG via hdiutil. AppleScript-
+# based bundle_dmg.sh is skipped because it can't be re-run reliably.
+APP="$(ls -dt "$APP_DIR"/*.app 2>/dev/null | head -1 || true)"
+if [[ -n "$APP" && "$CHOSEN" == "Developer ID Application"* ]]; then
+  echo
+  echo "→ Re-signing nested binaries inside $(basename "$APP") for notarization"
+  while IFS= read -r f; do
+    # libpdfium.so is a Linux ELF, pdfium.dll is a Windows PE — codesign just
+    # ignores them silently. We only really care about .dylib + .framework.
+    case "$f" in
+      *.dylib|*.framework|*.bundle)
+        codesign --force --options runtime --timestamp --sign "$CHOSEN" "$f" >/dev/null 2>&1 || true
+        ;;
+    esac
+  done < <(find "$APP" -type f \( -name "*.dylib" -o -name "*.framework" -o -name "*.bundle" \))
+  echo "→ Re-signing the .app envelope"
+  codesign --force --deep --options runtime --timestamp --sign "$CHOSEN" "$APP" >/dev/null 2>&1
+
+  echo "→ Rebuilding DMG with hdiutil (drag-install layout) from the freshly-signed app"
+  DMG_OUT="$DMG_DIR/Yappy_0.1.0_aarch64.dmg"
+  mkdir -p "$DMG_DIR"
+  rm -f "$DMG_OUT"
+  TMP_STAGE="$(mktemp -d)"
+  cp -R "$APP" "$TMP_STAGE/Yappy.app"
+  ln -s /Applications "$TMP_STAGE/Applications"
+  hdiutil create -volname "Yappy" -srcfolder "$TMP_STAGE" -ov -format UDZO -fs HFS+ "$DMG_OUT" >/dev/null
+  rm -rf "$TMP_STAGE"
+  codesign --force --timestamp --sign "$CHOSEN" "$DMG_OUT" >/dev/null 2>&1
+fi
+
 if [[ -d "$DMG_DIR" ]]; then
   DMG="$(ls -t "$DMG_DIR"/*.dmg 2>/dev/null | head -1 || true)"
-  APP="$(ls -dt "$APP_DIR"/*.app 2>/dev/null | head -1 || true)"
   echo
   echo "✓ built:"
   [[ -n "$DMG" ]] && echo "   $DMG"
