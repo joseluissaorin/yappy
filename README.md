@@ -18,13 +18,19 @@ A local-first desktop app that turns *anything you read* into clean, expressive 
 
 ## What is Yappy?
 
-Yappy started from a simple frustration: every existing text-to-speech tool either sounds robotic, requires an internet connection, charges per character, or all three. Modern open-weight TTS models have closed that gap — they now sound genuinely warm — but most of them live in research repos or cloud APIs. Yappy is the desktop wrapper that gets them into your hands as a daily-use tool.
+Yappy started from a frustration with **two** things at once. The first is the obvious one: every decent text-to-speech tool either sounds robotic, requires an internet connection, charges per character, or all three. The second is more practical — even when you've paid for a good one, **the UX is wrong**. I want to listen to an article while I'm cooking. While I'm at the gym. While I'm walking somewhere. I don't want to copy-paste text into a web form, click a button, wait for a download, open a separate audio player, and then realize I missed a sentence and have to start over. I want one keystroke, the audio starts, and I can put the phone in my pocket and go.
 
-You press `⌥⌘R` from anywhere on your Mac. Yappy figures out what you're trying to read — text you've selected, a PDF you have open, a Wikipedia page in the browser tab you're looking at, even just whatever's on screen as a screenshot — captures it, normalizes it (numbers and Roman numerals get spelled out, abbreviations expanded), routes it through [Supertonic 3](https://github.com/Supertone-inc/supertonic) running locally on your machine, and the audio starts playing within a second. Nothing leaves your computer.
+Yappy is what that should feel like. You press `⌥⌘R` from anywhere on your Mac. It figures out what you're trying to read — text you've selected, a PDF you have open, a Wikipedia page in the browser tab you're looking at, even just whatever's on screen as a screenshot — captures it, normalizes it (numbers and Roman numerals get spelled out, abbreviations expanded), routes it through [Supertonic 3](https://github.com/Supertone-inc/supertonic) running locally on your machine, and the audio starts playing within a second. Nothing leaves your computer.
 
 For longer-form reading there's a **full audiobook editor**: open a `.pdf` or `.docx` or `.md` or `.epub`, and Yappy parses the structure, extracts the text (PDF text or OCR for scanned pages), splits it into paragraphs with chapter-aware navigation, and lets you edit each paragraph inline before reading. You can override the voice, speed, or pre-pause for individual paragraphs; render the whole thing or just selected chapters to a single `.wav` file. Headings get auto-applied pauses and slightly slower speech for that natural narrator cadence.
 
-Yappy is **free, [MIT-licensed](LICENSE), and open source**. Accessibility tooling — being able to *hear* what you read — should not be locked behind a subscription.
+### Why now: the Spanish-quality wall finally cracked
+
+I'm a Spanish speaker. Until very recently, decent-quality TTS in Spanish was something only the big paid APIs could deliver. Open models existed, but they were either huge (5B+ parameters — unrunnable on consumer hardware), English-only, or sounded like a navigation system from 2007. **Supertonic 3 is the first open model under 100M parameters that produces genuinely decent Spanish** — and the same is true for the 30 other languages it ships with. "Under 100M" matters: it means the model runs comfortably on any laptop made in the last five years, fits in 380 MB on disk, and starts streaming audio in under a second on Apple Silicon. That's the threshold where local-first TTS stops being a research curiosity and becomes a usable everyday tool.
+
+### Accessibility tool, not gadget
+
+Being able to *hear* what you read is foundational for a lot of people — dyslexia, low vision, fatigue after a long day of screen reading, language learners practicing pronunciation, anyone with attention issues that make eyes-on-text harder than ears-on-audio. Tools that solve this should be **free**, work **without an internet connection**, and not require **a credit card**. Yappy is [MIT-licensed](LICENSE) and ships every piece bundled — the voice model, the OCR engine, the PDF parser, the browser extension — so you can clone it once, build it, and never need this repo again.
 
 ## Inspired by Handy
 
