@@ -46,7 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Linux deps (webkit2gtk, libsoup, etc.)
+      - name: Linux deps (webkit2gtk, libsoup, alsa, …)
         if: contains(matrix.platform, 'ubuntu')
         run: |
           sudo apt-get update
@@ -57,7 +57,8 @@ jobs:
             librsvg2-dev \
             patchelf \
             libxdo-dev \
-            libssl-dev
+            libssl-dev \
+            libasound2-dev    # cpal/alsa-sys needs this for the audio output backend
 
       - name: Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -82,17 +83,16 @@ jobs:
 
       # Tauri 2 action handles build + bundle. Pushes to a draft release when
       # the trigger was a tag; on workflow_dispatch it just uploads artifacts.
+      #
+      # We intentionally do NOT set the APPLE_* env vars here. An empty
+      # APPLE_CERTIFICATE secret makes tauri-action call `security import` with
+      # nothing, which fails the whole job. CI macOS DMGs come out ad-hoc-signed
+      # and unnotarized; the maintainer's local signed+notarized DMG is what
+      # gets attached to releases as the "official" macOS build.
       - name: Build with tauri-action
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # macOS signing (optional — only set on a tagged release if the secrets exist).
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         with:
           projectPath: yappy-app
           args: --target ${{ matrix.target }}
