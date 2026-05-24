@@ -1,95 +1,195 @@
+<div align="center">
+
 # Yappy
 
-**Local text-to-speech for everything you read.**
+**The accessibility tool you always wanted, that respects your privacy.**
 
-Yappy is a desktop app that turns whatever's on your screen — selected text, a PDF, a Word doc, a web page in your browser — into clean, expressive audio. Everything runs **on-device**: no API keys, no telemetry, no internet round-trip for inference. Powered by [Supertonic&nbsp;3](https://github.com/Supertone-inc/supertonic) (99M-param ONNX, MIT-friendly), [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR), [Defuddle](https://github.com/kepano/defuddle) for clean-page extraction, and [PDFium](https://pdfium.googlesource.com/pdfium/) for PDF text + rasterization fallback.
+A local-first desktop app that turns *anything you read* into clean, expressive speech — selections, documents, web pages, screenshots — without ever leaving your computer. No API keys, no cloud, no telemetry.
 
-10 named voices · 31 languages · macOS / Windows / Linux · MIT licensed.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Release builds](https://github.com/joseluissaorin/yappy/actions/workflows/release.yml/badge.svg)](https://github.com/joseluissaorin/yappy/actions/workflows/release.yml)
+[![Platforms](https://img.shields.io/badge/platforms-macOS%20·%20Windows%20·%20Linux-cream)](https://github.com/joseluissaorin/yappy/releases)
 
-> Status: early. Works well on macOS today, Windows/Linux are wired up in CI but receive less testing. PRs welcome.
+[Download](https://github.com/joseluissaorin/yappy/releases) · [Build from source](#build-from-source) · [Architecture](#architecture)
+
+</div>
+
+---
+
+## What is Yappy?
+
+Yappy started from a simple frustration: every existing text-to-speech tool either sounds robotic, requires an internet connection, charges per character, or all three. Modern open-weight TTS models have closed that gap — they now sound genuinely warm — but most of them live in research repos or cloud APIs. Yappy is the desktop wrapper that gets them into your hands as a daily-use tool.
+
+You press `⌥⌘R` from anywhere on your Mac. Yappy figures out what you're trying to read — text you've selected, a PDF you have open, a Wikipedia page in the browser tab you're looking at, even just whatever's on screen as a screenshot — captures it, normalizes it (numbers and Roman numerals get spelled out, abbreviations expanded), routes it through [Supertonic 3](https://github.com/Supertone-inc/supertonic) running locally on your machine, and the audio starts playing within a second. Nothing leaves your computer.
+
+For longer-form reading there's a **full audiobook editor**: open a `.pdf` or `.docx` or `.md` or `.epub`, and Yappy parses the structure, extracts the text (PDF text or OCR for scanned pages), splits it into paragraphs with chapter-aware navigation, and lets you edit each paragraph inline before reading. You can override the voice, speed, or pre-pause for individual paragraphs; render the whole thing or just selected chapters to a single `.wav` file. Headings get auto-applied pauses and slightly slower speech for that natural narrator cadence.
+
+Yappy is **free, [MIT-licensed](LICENSE), and open source**. Accessibility tooling — being able to *hear* what you read — should not be locked behind a subscription.
+
+## Inspired by Handy
+
+The aesthetic, the hotkey-first interaction model, and the "one focused job, done well, fully local" philosophy all draw directly from [Handy](https://github.com/cjpais/Handy) — the Whisper-based dictation tool by [Christopher James Pais](https://github.com/cjpais). Where Handy makes your microphone instantly become text, Yappy makes any text instantly become voice. Same axis, opposite direction. If you like one you'll probably like the other.
+
+The Handy-style cream + hot-pink + hand-drawn-mascot look isn't a copy — it's an explicit homage. The Patrick Hand display font, the Quicksand body font, the soft-shadowed buttons, the speech-bubble-dog mascot — it's the same design language pointed at a different problem.
 
 ## Features
 
-- **Read anywhere with one hotkey.** `⌥⌘R` reads the current selection, the active document, a screenshot of what's on screen, or the page in your browser (via the bundled extension).
-- **Document reader / audiobook editor.** Open a `.pdf` / `.docx` / `.md` / `.epub` / `.html` / `.rtf` / `.txt`. Edit text inline, override voice / speed / pause per paragraph, scrub paragraphs with chapter-aware navigation, render the whole thing (or a selection of chapters) to a single `.wav`.
-- **Markdown-aware rhythm.** Headings, lists, blockquotes, and horizontal rules get sensible pauses and speed adjustments automatically; override with the doc-window rhythm slider.
-- **Karaoke sync.** Real chunk-level highlighting — the word/sentence being heard is marked inside the active paragraph, the rest is dimmed as it advances.
-- **Multi-window.** Open multiple documents side-by-side, each with its own editor state.
-- **Chromium extension.** Click the Yappy icon in your toolbar to read the cleaned (defuddled) content of any page. The extension ships bundled inside the app — install via Preferences → Browser Extension.
-- **Mini-player.** Stays out of the way while audio plays. Pin / pause / restart / scrub ±15s / save as `.wav`.
-- **Spanish normalization.** Numbers, Roman numerals (siglo XX → veinte), abbreviations (pág. → página, a.C. → antes de Cristo), and dates are spelled out before synthesis.
-- **Project autosave.** Edits, voice/speed/pause overrides, rhythm slider are saved per file — reopen the document and your work comes back.
+### Read anywhere
 
-## Install (pre-built)
+- **One hotkey, four sources.** `⌥⌘R` reads — in order of priority — the current text selection, the cleaned-up content of the page in your focused browser (via the bundled Chromium extension), the active document of whatever app you're in (Word, Pages, Preview, Notes, …), or a screen-OCR fallback. Whichever is available.
+- **Clipboard reader.** `⌥⌘V` reads whatever's on your clipboard, no app context needed.
+- **Drop-to-read.** Drag any document file onto the main window and it opens in the document editor.
 
-Once the GitHub Actions release workflow has built a tagged version, grab the artifact for your platform:
-- macOS: `.dmg` (Apple Silicon + Intel)
-- Windows: `.msi` (installer) or portable `.exe`
-- Linux: `.AppImage` or `.deb`
+### The document editor
 
-## Build from source
+This is the part that has surprised people the most. Open a file and you get a full audiobook-grade editor:
 
-You'll need [Rust](https://rustup.rs/) (stable), [Node](https://nodejs.org/) 20+, and `npm`.
+- **Inline paragraph editing** — fix a typo or a weird OCR character, then play the updated text.
+- **Per-paragraph overrides**: voice, speed, pre-pause silence. Each paragraph gets its own settings drawer.
+- **Markdown-aware rhythm**: `#` headings (h1-h6), bullet lists, blockquotes, and horizontal rules get appropriate pauses and slight speed adjustments automatically. You feel the structure when listening.
+- **Chapter sidebar** with click-to-jump navigation. Indents by heading level. Highlights the chapter currently playing.
+- **Render selected chapters** to `.wav`. Tick the chapters you want; the rest is skipped.
+- **Real karaoke sync** — both the *playing paragraph* AND the *playing chunk inside that paragraph* are highlighted live, derived from audio sample position rather than synth completion (which races way ahead of playback). The pink-marked phrase is what you're hearing *right now*.
+- **Find & replace · undo/redo · project autosave** — edits survive quitting the app.
+- **Rhythm slider** — multiplies the whole markdown rhythm so you can speed-read or slow-read the same doc without disturbing your global voice settings.
+
+### Voices
+
+Ten named voices distilled from Supertonic 3's style embeddings — Alex, James, Robert, Sam, Daniel (men); Sarah, Lily, Jessica, Olivia, Emily (women). Each one is fluent in **31 languages**, with automatic per-paragraph language detection so you can read mixed-language documents without ceremony.
+
+### Format support
+
+| Format | Engine | Notes |
+|--------|--------|-------|
+| Plain text · markdown · CSV | direct read | Markdown structure → reading rhythm |
+| `.pdf` | [pdf_oxide](https://crates.io/crates/pdf_oxide) | 5× faster than pdf-extract, 100% pass rate on 3,830-PDF corpus |
+| Scanned PDF | [PDFium](https://pdfium.googlesource.com/pdfium/) rasterize → [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) | All bundled — no `brew install` step needed |
+| `.docx` · `.odt` · `.rtf` · `.html` · `.pptx` · `.xlsx` | [anytomd](https://crates.io/crates/anytomd) | Pure Rust |
+| `.epub` | [epub crate](https://crates.io/crates/epub) | Chapters joined |
+| Browser pages | [Defuddle](https://github.com/kepano/defuddle) (in the bundled Chromium extension) | Strips ads, sidebars, footers; removes Wikipedia's link duplication |
+| Screen OCR | [Apple Vision](https://developer.apple.com/documentation/vision) (macOS) or PaddleOCR (cross-platform) | |
+
+### Multi-window
+
+Each opened file is its own document window with its own editor state. Keep one paper open while editing another.
+
+### Spanish-aware normalization
+
+Because the author's daily-driver test cases are Spanish lit papers: numbers ("1492" → "mil cuatrocientos noventa y dos"), Roman numerals in century context ("siglo XX" → "siglo veinte"), abbreviations (`pág.`, `art.`, `cap.`, `a.C.`, `d.C.`, `op. cit.`, `Av.`, `Avda.`, `S.A.`, `vol.`, ordinals like `1º 2ª 3er`), and dates are all expanded before synthesis.
+
+## Install
+
+### Pre-built (recommended)
+
+Grab the latest [release](https://github.com/joseluissaorin/yappy/releases) for your platform:
+
+- **macOS Apple Silicon** — `Yappy_X.Y.Z_macos_arm64_notarized.dmg` — fully notarized, opens cleanly.
+- **macOS Intel** — `Yappy_X.Y.Z_x64.dmg`
+- **Windows x64** — `Yappy_X.Y.Z_x64-setup.exe` or `.msi`
+- **Linux x64** — `yappy_X.Y.Z_amd64.AppImage` or `.deb`
+
+First launch downloads the Supertonic 3 voice model (~380 MB) into your platform's standard app-data directory. After that Yappy runs offline forever.
+
+### Build from source
+
+You'll need [Rust](https://rustup.rs/) (stable), [Node](https://nodejs.org/) 20+, and `npm`. On Linux you also need `webkit2gtk-4.1-dev`, `libssl-dev`, `libayatana-appindicator3-dev` (the [Tauri prereqs](https://v2.tauri.app/start/prerequisites/#linux)).
 
 ```bash
 git clone https://github.com/joseluissaorin/yappy.git
 cd yappy/yappy-app
 npm install
-npm run tauri dev
+npm run tauri dev      # dev mode with hot-reload
 ```
 
-The first launch downloads the Supertonic 3 model (~380 MB) into the platform's standard data directory:
-- macOS: `~/Library/Application Support/com.yappy.app/models/`
-- Windows: `%APPDATA%\com.yappy.app\models\`
-- Linux: `~/.local/share/com.yappy.app/models/`
-
-### Production build
+For a production build:
 
 ```bash
-# macOS — uses the strongest signing identity in your keychain.
-./scripts/build-mac.sh
-
-# After a successful build with a Developer ID Application cert:
-./scripts/notarize.sh
+./scripts/build-mac.sh                # macOS — auto-picks the strongest signing identity
+./scripts/notarize.sh                 # Apple notarization (requires Developer ID)
+# Or, for any platform:
+cd yappy-app && npm run tauri build
 ```
 
-For Windows/Linux see `.github/workflows/release.yml` — push a `v*.*.*` tag or trigger the workflow manually.
+CI cuts releases for all four platforms via [`.github/workflows/release.yml`](.github/workflows/release.yml) — push a `v*.*.*` tag and Tauri's official action handles the rest.
 
 ## Architecture
 
 ```
 yappy/
 ├── crates/
-│   └── yappy-core/        Pure-Rust synthesis pipeline (text normalize → chunk →
-│                          Supertonic 3 ONNX inference). No Tauri / UI bindings.
+│   └── yappy-core/        Pure-Rust synthesis pipeline. No Tauri / UI deps.
+│                          Text normalize → language-detect → paragraph chunk
+│                          → Supertonic 3 ONNX inference → AudioChunk stream.
+│                          Could become a standalone library.
 ├── yappy-app/
-│   ├── src/               SvelteKit frontend (home, /document, /player routes).
-│   ├── src-tauri/         Tauri 2 backend — commands, settings, playback, bridge,
-│   │                      capture (selection / OCR / browser), document loader.
-│   └── resources/         Bundled artifacts:
-│       ├── paddleocr/     PP-OCRv4 ONNX (det, cls, rec) ~15 MB
-│       ├── pdfium/        PDFium shared libs for macOS / Windows / Linux ~22 MB
-│       ├── extension/     Chromium extension (MV3) shipped inside the .app
-│       └── licenses/      Third-party license texts
-├── extension/             Source of the Chromium extension (mirrored into
-│                          yappy-app/resources/ during build).
-├── scripts/               Build + notarize helpers.
-└── .github/workflows/     CI: release builds for macOS / Windows / Linux.
+│   ├── src/               SvelteKit frontend, Svelte 5 runes mode.
+│   │   ├── routes/
+│   │   │   ├── +page          Home dashboard
+│   │   │   ├── player/+page   Floating mini-player
+│   │   │   └── document/+page Audiobook editor
+│   │   └── lib/               Shared components + IPC bindings
+│   ├── src-tauri/
+│   │   ├── src/
+│   │   │   ├── commands.rs    Tauri command handlers (~80 of them)
+│   │   │   ├── playback.rs    Audio thread, chunk-queue, karaoke tracking
+│   │   │   ├── capture/       Selection, OCR, browser, doc loader
+│   │   │   ├── bridge.rs      WebSocket bridge to chromium extension
+│   │   │   ├── settings.rs    Persisted user prefs (atomic writes)
+│   │   │   ├── state.rs       Shared AppState (HashMap<window, doc>)
+│   │   │   └── windows.rs     Multi-window lifecycle
+│   │   └── icons/             App + tray icons
+│   ├── resources/
+│   │   ├── paddleocr/         PP-OCRv4 ONNX (det · cls · rec) ~15 MB
+│   │   ├── pdfium/            libpdfium for macOS · Windows · Linux ~22 MB
+│   │   ├── extension/         Chromium MV3 extension shipped bundled
+│   │   ├── defuddle.js        Clean-page extractor
+│   │   └── licenses/          Third-party license texts
+│   └── macos/yappy-ocr.swift  Apple Vision OCR helper (macOS only)
+├── extension/                 Source of the bundled Chromium extension
+├── scripts/                   Build + notarize helpers
+└── .github/workflows/         CI: native build matrix for all 4 platforms
 ```
 
-## License
+## Performance
 
-Yappy is [MIT](./LICENSE) licensed. The bundled components keep their own licenses:
-- **Supertonic 3** model weights — OpenRAIL-M (see `yappy-app/resources/licenses/`)
-- **PaddleOCR** ONNX — Apache 2.0
-- **PDFium** — BSD-3-Clause
-- **Defuddle** — MIT
-- Fonts (Quicksand, Patrick Hand) — SIL OFL 1.1
+- **PDF parse**: 0.8 ms mean per page via `pdf_oxide`. An 8-page digital PDF reads in ~30 ms.
+- **Synthesis**: Supertonic 3 produces audio chunks ~5–10× faster than playback on Apple Silicon, so the audio buffer stays well ahead of the listener. Streaming starts within ~400 ms of pressing the hotkey.
+- **Memory**: ~80 MB resident idle, ~250 MB while actively reading a long document.
 
-## Contributing
+## Privacy
 
-Bug reports, PRs, voice samples, normalization improvements (especially for non-English/Spanish), and translations all welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
+- **No telemetry. No analytics. No phone-home.** Yappy never makes outbound HTTP calls for analytics purposes.
+- **Models download once** from Hugging Face on first launch, then never again.
+- **The Chromium extension** talks only to `127.0.0.1:47898` (your local Yappy app). It never sends page content to a remote server.
+- **Apple's notarization service** sees a hash of the binary (one-time, at build time, by the author) — that's the only Apple involvement.
 
 ## Credits
 
-Built with [Tauri 2](https://tauri.app/), [SvelteKit](https://kit.svelte.dev/), and [ONNX Runtime](https://onnxruntime.ai/). Named voices use Supertonic 3's style embeddings.
+- **[Supertonic 3](https://github.com/Supertone-inc/supertonic)** — the 99M-parameter ONNX TTS that does the heavy lifting. OpenRAIL-M licensed.
+- **[Handy](https://github.com/cjpais/Handy)** — for proving the "local · keyboard-driven · friendly mascot" desktop-utility template works, and for the design language Yappy openly borrows.
+- **[Defuddle](https://github.com/kepano/defuddle)** — Kepano's clean-page extractor.
+- **[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)** — the PP-OCRv4 mobile ONNX models.
+- **[PDFium](https://pdfium.googlesource.com/pdfium/)** — Google's PDF engine via the [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries) distribution and the [pdfium-render](https://crates.io/crates/pdfium-render) crate.
+- **[pdf_oxide](https://crates.io/crates/pdf_oxide)** — the fast pure-Rust PDF text extractor.
+- **[Tauri](https://tauri.app/)** + **[SvelteKit](https://kit.svelte.dev/)** — the desktop shell.
+- **[ONNX Runtime](https://onnxruntime.ai/)** via the [ort](https://crates.io/crates/ort) crate.
+- Fonts: [Quicksand](https://fonts.google.com/specimen/Quicksand) and [Patrick Hand](https://fonts.google.com/specimen/Patrick+Hand), both SIL OFL.
+
+## Contributing
+
+Bug reports, PRs, voice quality improvements, normalization rules for other languages, and translations are all welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for the quick-start. Areas where help is especially needed:
+
+- **Non-English/Spanish normalization** — German, French, Italian, Japanese, Korean, …
+- **Windows / Linux capture features** — the macOS-only `cfg`-gated capture code (selection, active-document AppleScript, Apple Vision OCR) needs platform-specific implementations.
+- **`.m4b` audiobook export** — `.wav` render works; AAC + chapter markers is the natural next step.
+- **Pronunciation dictionary** UI + apply-at-synth pipeline.
+
+## License
+
+[MIT](./LICENSE). The bundled components keep their own licenses; the full texts live in `yappy-app/resources/licenses/`.
+
+---
+
+<div align="center">
+<sub>Built because reading aloud should be a feature of the world, not a subscription.</sub>
+</div>
