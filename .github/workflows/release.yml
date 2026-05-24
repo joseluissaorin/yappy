@@ -1,0 +1,120 @@
+name: Release builds
+
+# Multi-platform release builds for Yappy.
+#
+# Triggers:
+#   - manual: workflow_dispatch (one-click run from the Actions tab)
+#   - tag:    pushing `v*.*.*` triggers a draft GitHub Release with the artifacts
+#
+# What it produces:
+#   - macOS (universal arm64 + x86_64): .dmg + .app
+#   - Windows (x86_64): .msi + .exe (NSIS)
+#   - Linux (x86_64):   .AppImage + .deb
+#
+# Each runner is the native target — no cross-compilation toolchains involved,
+# so we don't have to wrangle mingw / Wine / Linux GTK on macOS.
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-14         # Apple Silicon runner
+            target: aarch64-apple-darwin
+            label: macos-arm64
+          - platform: macos-13         # Intel runner
+            target: x86_64-apple-darwin
+            label: macos-x64
+          - platform: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            label: linux-x64
+          - platform: windows-latest
+            target: x86_64-pc-windows-msvc
+            label: windows-x64
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Linux deps (webkit2gtk, libsoup, etc.)
+        if: contains(matrix.platform, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            libxdo-dev \
+            libssl-dev
+
+      - name: Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: yappy-app/src-tauri -> target
+
+      - name: Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: yappy-app/package-lock.json
+
+      - name: Install npm deps
+        working-directory: yappy-app
+        run: npm ci
+
+      # Tauri 2 action handles build + bundle. Pushes to a draft release when
+      # the trigger was a tag; on workflow_dispatch it just uploads artifacts.
+      - name: Build with tauri-action
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # macOS signing (optional — only set on a tagged release if the secrets exist).
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        with:
+          projectPath: yappy-app
+          args: --target ${{ matrix.target }}
+          tagName: ${{ github.ref_name }}
+          releaseName: "Yappy ${{ github.ref_name }}"
+          releaseBody: "Yappy ${{ github.ref_name }} — see CHANGELOG for details."
+          releaseDraft: true
+          prerelease: false
+
+      # When triggered manually (no tag), publish artifacts to the run page so we
+      # can grab them without cutting a release.
+      - name: Upload artifacts (manual run)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: yappy-${{ matrix.label }}
+          path: |
+            target/${{ matrix.target }}/release/bundle/**/*.dmg
+            target/${{ matrix.target }}/release/bundle/**/*.app
+            target/${{ matrix.target }}/release/bundle/**/*.msi
+            target/${{ matrix.target }}/release/bundle/**/*.exe
+            target/${{ matrix.target }}/release/bundle/**/*.AppImage
+            target/${{ matrix.target }}/release/bundle/**/*.deb
+            target/${{ matrix.target }}/release/bundle/**/*.rpm
+          retention-days: 14

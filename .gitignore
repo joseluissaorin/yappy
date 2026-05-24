@@ -1,0 +1,42 @@
+# ── Build artifacts ───────────────────────────────────────────────────────
+target/
+**/dist/
+yappy-app/build/
+yappy-app/.svelte-kit/
+yappy-app/src-tauri/gen/schemas/
+
+# ── Dependencies ──────────────────────────────────────────────────────────
+node_modules/
+
+# ── Editor & OS ───────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# Per-developer Claude Code state (project memory, agents, etc.)
+.claude/
+
+# ── User data / private ───────────────────────────────────────────────────
+# Local Tauri state, settings dumps, project autosave files generated at runtime
+yappy.log
+*.log
+/tmp/yappy-*
+
+# Apple signing private key — accidentally committing this would be very bad.
+*.p12
+*.cer
+*.certSigningRequest
+yappy-devid.key*
+
+# ── Build logs / scratch ──────────────────────────────────────────────────
+/tmp/yappy-build*.log
+
+# ── Bundled third-party we intentionally ship ────────────────────────────
+# (pdfium binaries, paddleocr ONNX models, defuddle.js)
+# These ARE committed — yappy-app/resources/{pdfium,paddleocr,extension}/* —
+# so users can clone+build without separately fetching them.

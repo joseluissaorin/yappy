@@ -1,0 +1,30 @@
+<!-- macOS menu-bar template icon for Yappy.
+     Template icons MUST be: black-only on transparent, no background.
+     macOS keeps the alpha channel and renders it as monochrome — auto-adapting
+     to dark/light menu bar via NSImage isTemplate.
+     Designed at 64×64 (2x for retina menu bar of ~22pt). -->
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Speech-bubble dog head silhouette. The tail anchors it as a speech bubble. -->
+  <path fill="black" fill-rule="evenodd" d="
+    M14 27
+    C14 16 22 8 32 8
+    C42 8 50 16 50 27
+    C50 33 46 38 41 41
+    L44 53
+    L31 41
+    L29.5 41
+    C20 41 14 35 14 27
+    Z
+    M24 24
+    A2 3 0 1 1 24 30
+    A2 3 0 1 1 24 24
+    Z
+    M40 24
+    A2 3 0 1 1 40 30
+    A2 3 0 1 1 40 24
+    Z
+  "/>
+  <!-- Ears as small triangular flops on each side -->
+  <path fill="black" d="M18 13 C14 11 9 14 9 19 C9 23 13 25 17 24 Z"/>
+  <path fill="black" d="M46 13 C50 11 55 14 55 19 C55 23 51 25 47 24 Z"/>
+</svg>

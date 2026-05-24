@@ -1,0 +1,86 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cream rounded-square background — macOS will round the corners further -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff8d7"/>
+      <stop offset="1" stop-color="#ffe78a"/>
+    </linearGradient>
+    <radialGradient id="blush" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff80ab" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#ff80ab" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1024" height="1024" rx="225" ry="225" fill="url(#bg)"/>
+
+  <!-- Soft pink halo behind mascot -->
+  <ellipse cx="512" cy="608" rx="380" ry="320" fill="#ffd3e0" opacity="0.7"/>
+  <ellipse cx="512" cy="608" rx="280" ry="240" fill="url(#blush)"/>
+
+  <!-- Yappy mascot — speech-bubble dog -->
+  <!-- Speech bubble / head body -->
+  <path d="
+    M232 488
+    C232 296 380 184 512 184
+    C652 184 800 308 800 488
+    C800 600 740 692 612 740
+    L692 880
+    L484 740
+    L444 740
+    C312 740 232 624 232 504
+    Z"
+    fill="#ffffff"
+    stroke="#1a1a1a"
+    stroke-width="28"
+    stroke-linejoin="round"/>
+
+  <!-- Left ear (floppy, pink) -->
+  <path d="
+    M312 280
+    C264 232 168 248 152 360
+    C136 472 240 552 312 528"
+    fill="#ffb3c8"
+    stroke="#1a1a1a"
+    stroke-width="28"
+    stroke-linejoin="round"
+    stroke-linecap="round"/>
+
+  <!-- Right ear -->
+  <path d="
+    M720 280
+    C768 224 864 240 880 360
+    C896 472 800 552 720 528"
+    fill="#ffb3c8"
+    stroke="#1a1a1a"
+    stroke-width="28"
+    stroke-linejoin="round"
+    stroke-linecap="round"/>
+
+  <!-- Eyes -->
+  <ellipse cx="392" cy="488" rx="36" ry="56" fill="#1a1a1a"/>
+  <ellipse cx="632" cy="488" rx="36" ry="56" fill="#1a1a1a"/>
+  <!-- Sparkles -->
+  <circle cx="380" cy="464" r="14" fill="#ffffff"/>
+  <circle cx="620" cy="464" r="14" fill="#ffffff"/>
+
+  <!-- Blush -->
+  <ellipse cx="320" cy="592" rx="52" ry="28" fill="#ffb3c8" opacity="0.85"/>
+  <ellipse cx="704" cy="592" rx="52" ry="28" fill="#ffb3c8" opacity="0.85"/>
+
+  <!-- Nose -->
+  <ellipse cx="512" cy="580" rx="32" ry="24" fill="#1a1a1a"/>
+
+  <!-- Mouth (gentle smile) -->
+  <path d="M412 656 C448 712 576 712 612 656"
+        stroke="#1a1a1a"
+        stroke-width="22"
+        stroke-linecap="round"
+        fill="none"/>
+
+  <!-- Yap waves (ear-right direction) -->
+  <g stroke="#1a1a1a" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.9">
+    <path d="M860 472 Q920 472 940 504"/>
+    <path d="M860 528 Q944 528 976 568"/>
+    <path d="M860 584 Q920 600 940 632"/>
+  </g>
+</svg>

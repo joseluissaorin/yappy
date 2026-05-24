@@ -1,0 +1,87 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Yappy",
+  "version": "0.1.0",
+  "identifier": "com.yappy.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../build"
+  },
+  "app": {
+    "macOSPrivateApi": true,
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Yappy",
+        "url": "/",
+        "width": 920,
+        "height": 640,
+        "minWidth": 760,
+        "minHeight": 540,
+        "resizable": true,
+        "fullscreen": false,
+        "visible": false,
+        "center": true,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "backgroundColor": "#0B0B12",
+        "shadow": true
+      },
+      {
+        "label": "player",
+        "title": "Yappy Player",
+        "url": "/player",
+        "width": 380,
+        "height": 94,
+        "minWidth": 300,
+        "minHeight": 80,
+        "maxWidth": 640,
+        "maxHeight": 240,
+        "resizable": true,
+        "alwaysOnTop": true,
+        "decorations": false,
+        "transparent": true,
+        "skipTaskbar": true,
+        "visible": false,
+        "shadow": false,
+        "focus": false,
+        "backgroundColor": "#00000000",
+        "acceptFirstMouse": true,
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "category": "Productivity",
+    "shortDescription": "Local TTS that reads anything on your screen.",
+    "longDescription": "Yappy reads selected text, the active document, or whatever's on your screen, out loud — locally, with Supertonic 3.",
+    "targets": ["dmg", "app"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "12.0",
+      "entitlements": "Entitlements.plist",
+      "signingIdentity": "-"
+    },
+    "resources": [
+      "../resources/paddleocr/*",
+      "../resources/defuddle.js",
+      "../resources/licenses/*",
+      "../resources/extension/*",
+      "../resources/pdfium/*",
+      "../macos/yappy-ocr.swift"
+    ]
+  }
+}

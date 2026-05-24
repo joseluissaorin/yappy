@@ -1,0 +1,32 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Default capabilities — apply to main, player, and all document-* windows.",
+  "windows": ["main", "player", "document", "document-*"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-show",
+    "core:window:allow-hide",
+    "core:window:allow-set-focus",
+    "core:window:allow-close",
+    "core:window:allow-set-position",
+    "core:window:allow-set-size",
+    "core:window:allow-start-dragging",
+    "core:window:allow-minimize",
+    "core:window:allow-set-always-on-top",
+    "core:webview:allow-print",
+    "core:event:default",
+    "opener:default",
+    "dialog:default",
+    "fs:default",
+    "store:default",
+    "clipboard-manager:default",
+    "os:default",
+    "shell:default",
+    "process:default",
+    "notification:default",
+    "global-shortcut:default",
+    "http:default",
+    "autostart:default"
+  ]
+}
