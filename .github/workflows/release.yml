@@ -173,3 +173,25 @@ jobs:
           name: yappy-${{ matrix.label }}
           path: _release_uploads/*
           retention-days: 14
+
+  # ────────────────────────────────────────────────────────────────────────
+  # Once every matrix job has succeeded, flip the draft release public.
+  # Marked as pre-release so we don't claim general availability on the
+  # earliest tags; toggle to non-prerelease manually for v1.0.0+.
+  # ────────────────────────────────────────────────────────────────────────
+  publish-release:
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Publish draft as pre-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release edit "${{ github.ref_name }}" \
+            --repo "${{ github.repository }}" \
+            --draft=false \
+            --prerelease=true
+          echo "✓ Release ${{ github.ref_name }} is now public."
