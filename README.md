@@ -2,7 +2,7 @@
 
 # Yappy
 
-**The accessibility tool you always wanted, that respects your privacy.**
+**Read anything aloud.**
 
 A local-first desktop app that turns *anything you read* into clean, expressive speech — selections, documents, web pages, screenshots — without ever leaving your computer. No API keys, no cloud, no telemetry.
 
