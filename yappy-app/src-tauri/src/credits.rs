@@ -91,7 +91,7 @@ pub fn credits() -> &'static [Credit] {
 pub fn license_docs() -> &'static [LicenseDoc] {
     const DOCS: &[LicenseDoc] = &[
         LicenseDoc { name: "Yappy (MIT)", url: "https://opensource.org/licenses/MIT",
-            text: include_str!("../../../LICENSE-MIT.txt") },
+            text: include_str!("../../../LICENSE") },
         LicenseDoc { name: "Supertonic 3 (OpenRAIL-M)", url: "https://huggingface.co/Supertone/supertonic-3/blob/main/LICENSE",
             text: include_str!("../../resources/licenses/LICENSE-OpenRAIL-M.txt") },
         LicenseDoc { name: "PaddleOCR (Apache-2.0)", url: "https://github.com/PaddlePaddle/PaddleOCR/blob/main/LICENSE",
