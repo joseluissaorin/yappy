@@ -3,16 +3,15 @@ name: Release builds
 # Multi-platform release builds for Yappy.
 #
 # Triggers:
-#   - manual: workflow_dispatch (one-click run from the Actions tab)
-#   - tag:    pushing `v*.*.*` triggers a draft GitHub Release with the artifacts
+#   - push of a `v*.*.*` tag → cuts a draft GitHub Release + uploads all four
+#     platform bundles to it
+#   - workflow_dispatch → uploads bundles as workflow-run artifacts only
 #
-# What it produces:
-#   - macOS (universal arm64 + x86_64): .dmg + .app
-#   - Windows (x86_64): .msi + .exe (NSIS)
-#   - Linux (x86_64):   .AppImage + .deb
-#
-# Each runner is the native target — no cross-compilation toolchains involved,
-# so we don't have to wrangle mingw / Wine / Linux GTK on macOS.
+# We deliberately split "create release" from "build" so the matrix jobs can
+# upload via gh CLI (which handles per-file naming) instead of tauri-action's
+# release-upload step. On Linux, Tauri 2 emits BOTH `Yappy_*.deb` and
+# `yappy_*.deb` (case-sensitive fs + productName Yappy + identifier-derived
+# name), which broke tauri-action's filter.
 
 on:
   push:
@@ -21,7 +20,34 @@ on:
   workflow_dispatch:
 
 jobs:
+  # ────────────────────────────────────────────────────────────────────────
+  # On a tag push, ensure the draft release exists before the matrix runs.
+  # If it already exists, this is a no-op.
+  # ────────────────────────────────────────────────────────────────────────
+  create-release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create or reuse draft release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "${{ github.ref_name }}" >/dev/null 2>&1; then
+            echo "Release ${{ github.ref_name }} already exists; build jobs will upload to it."
+          else
+            gh release create "${{ github.ref_name }}" \
+              --title "Yappy ${{ github.ref_name }}" \
+              --draft \
+              --notes "Auto-generated draft. Maintainer adds release notes before publishing."
+          fi
+
   build:
+    needs: create-release
+    # Allow workflow_dispatch to run too (without needing create-release).
+    if: always() && (needs.create-release.result == 'success' || needs.create-release.result == 'skipped')
     permissions:
       contents: write
     strategy:
@@ -58,7 +84,7 @@ jobs:
             patchelf \
             libxdo-dev \
             libssl-dev \
-            libasound2-dev    # cpal/alsa-sys needs this for the audio output backend
+            libasound2-dev    # cpal/alsa-sys needs this for audio output
 
       - name: Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -81,14 +107,7 @@ jobs:
         working-directory: yappy-app
         run: npm ci
 
-      # Tauri 2 action handles build + bundle. Pushes to a draft release when
-      # the trigger was a tag; on workflow_dispatch it just uploads artifacts.
-      #
-      # We intentionally do NOT set the APPLE_* env vars here. An empty
-      # APPLE_CERTIFICATE secret makes tauri-action call `security import` with
-      # nothing, which fails the whole job. CI macOS DMGs come out ad-hoc-signed
-      # and unnotarized; the maintainer's local signed+notarized DMG is what
-      # gets attached to releases as the "official" macOS build.
+      # tauri-action JUST BUILDS — we handle uploads ourselves below.
       - name: Build with tauri-action
         uses: tauri-apps/tauri-action@v0
         env:
@@ -96,25 +115,61 @@ jobs:
         with:
           projectPath: yappy-app
           args: --target ${{ matrix.target }}
-          tagName: ${{ github.ref_name }}
-          releaseName: "Yappy ${{ github.ref_name }}"
-          releaseBody: "Yappy ${{ github.ref_name }} — see CHANGELOG for details."
-          releaseDraft: true
-          prerelease: false
 
-      # When triggered manually (no tag), publish artifacts to the run page so we
-      # can grab them without cutting a release.
-      - name: Upload artifacts (manual run)
+      # ──────────────────────────────────────────────────────────────────
+      # Upload bundles to the draft release (tag push) OR to workflow
+      # artifacts (manual dispatch). We pick one canonical file per format
+      # so we skip the Yappy/yappy duplicates Tauri emits on Linux.
+      # ──────────────────────────────────────────────────────────────────
+
+      - name: Collect bundle paths (unix)
+        if: matrix.platform != 'windows-latest'
+        shell: bash
+        run: |
+          set -e
+          BUNDLE_DIR="target/${{ matrix.target }}/release/bundle"
+          mkdir -p _release_uploads
+          # macOS: .dmg
+          find "$BUNDLE_DIR/dmg" -type f -name "*.dmg" 2>/dev/null | while read -r f; do
+            cp "$f" _release_uploads/
+          done
+          # Linux: .deb, .AppImage, .rpm — prefer the "Yappy_*" capitalized one when both exist
+          for kind in deb AppImage rpm; do
+            files=$(find "$BUNDLE_DIR" -type f -name "Yappy_*.${kind}" 2>/dev/null ; \
+                    find "$BUNDLE_DIR" -type f -name "Yappy-*.${kind}" 2>/dev/null)
+            [ -z "$files" ] && files=$(find "$BUNDLE_DIR" -type f -name "yappy_*.${kind}" 2>/dev/null ; \
+                                       find "$BUNDLE_DIR" -type f -name "yappy-*.${kind}" 2>/dev/null)
+            for f in $files; do cp "$f" _release_uploads/ ; done
+          done
+          # On macOS Tauri also produces .app.tar.gz updater bundles — skip those.
+          ls -lh _release_uploads/
+
+      - name: Collect bundle paths (windows)
+        if: matrix.platform == 'windows-latest'
+        shell: pwsh
+        run: |
+          $BundleDir = "target/${{ matrix.target }}/release/bundle"
+          New-Item -ItemType Directory -Force -Path _release_uploads | Out-Null
+          Get-ChildItem -Path $BundleDir -Recurse -Include *.msi, *.exe -File `
+            | Where-Object { $_.Name -notlike "*.zip*" -and $_.Name -notlike "*.sig" } `
+            | ForEach-Object { Copy-Item $_.FullName _release_uploads/ }
+          Get-ChildItem _release_uploads/
+
+      - name: Upload to release (tag push)
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for f in _release_uploads/* ; do
+            echo "→ uploading $f"
+            gh release upload "${{ github.ref_name }}" "$f" --clobber
+          done
+
+      - name: Upload as workflow artifacts (manual dispatch)
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
           name: yappy-${{ matrix.label }}
-          path: |
-            target/${{ matrix.target }}/release/bundle/**/*.dmg
-            target/${{ matrix.target }}/release/bundle/**/*.app
-            target/${{ matrix.target }}/release/bundle/**/*.msi
-            target/${{ matrix.target }}/release/bundle/**/*.exe
-            target/${{ matrix.target }}/release/bundle/**/*.AppImage
-            target/${{ matrix.target }}/release/bundle/**/*.deb
-            target/${{ matrix.target }}/release/bundle/**/*.rpm
+          path: _release_uploads/*
           retention-days: 14
