@@ -504,6 +504,18 @@
             </div>
           {/if}
         </div>
+
+        {#if $isIOS}
+          <!-- iOS-specific tip card: teaches the user about the Share Sheet
+               integration since there's no "global hotkey" equivalent on iOS. -->
+          <div class="card tip-card">
+            <div class="tip-icon">📤</div>
+            <div class="tip-body">
+              <div class="tip-title">how to read anything aloud</div>
+              <div class="tip-sub">in any iOS app — Safari, Notes, Mail, Messages — tap the share button, then choose <strong>Yappy</strong>. the article or selection gets read aloud here.</div>
+            </div>
+          </div>
+        {/if}
       </section>
     {:else}
       <!-- ── PRIMARY PANEL: morphs to the current state ───────────────────── -->
@@ -1260,6 +1272,14 @@ main {
 .model-card-head { display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; }
 .model-title { font-size: 19px; font-weight: 700; }
 .model-sub { color: var(--ink-500); font-size: 14px; margin-top: 4px; font-weight: 500; }
+
+/* iOS-specific "share to Yappy" tip card. Slightly muted vs the model card
+   so it reads as supplementary instruction rather than primary action. */
+.tip-card { padding: 18px 22px; margin-top: 14px; display: flex; gap: 14px; align-items: flex-start; background: var(--ink-50, #fff8d7); border-radius: 14px; }
+.tip-icon { font-size: 28px; line-height: 1; }
+.tip-body { flex: 1; min-width: 0; }
+.tip-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.tip-sub { font-size: 14px; color: var(--ink-500); line-height: 1.4; }
 
 .progress-row { margin-top: 18px; }
 .progress-track {
