@@ -153,6 +153,31 @@ pub fn haptic(kind: &str) {
     }
 }
 
+// ─── LOCAL NOTIFICATIONS + SHARE SHEET ──────────────────────────────────
+extern "C" {
+    fn yappy_notify(
+        identifier: *const std::os::raw::c_char,
+        title: *const std::os::raw::c_char,
+        body: *const std::os::raw::c_char,
+    );
+    fn yappy_share_file(path: *const std::os::raw::c_char);
+}
+
+pub fn notify(identifier: &str, title: &str, body: &str) {
+    use std::ffi::CString;
+    let id = CString::new(identifier).unwrap_or_default();
+    let t = CString::new(title).unwrap_or_default();
+    let b = CString::new(body).unwrap_or_default();
+    unsafe { yappy_notify(id.as_ptr(), t.as_ptr(), b.as_ptr()) };
+}
+
+pub fn share_file(path: &str) {
+    use std::ffi::CString;
+    if let Ok(c) = CString::new(path) {
+        unsafe { yappy_share_file(c.as_ptr()) };
+    }
+}
+
 /// Install lock-screen / Now Playing remote handlers. Call once at startup
 /// after `AppState` is constructed.
 pub fn install_now_playing_handlers(playback: std::sync::Arc<crate::playback::PlaybackController>) {

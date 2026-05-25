@@ -36,6 +36,8 @@
     stopPlayback,
     togglePause,
   } from "$lib/ipc";
+  import { isIOS as isIOSStore } from "$lib/platform";
+  import { haptic } from "$lib/haptic";
 
   // Per-paragraph editor state. Voice/speed/pause are nullable: null = inherit global.
   // `kind` is a hint from markdown parsing ("heading1", "list", "hr", …) — used
@@ -76,6 +78,16 @@
   // Audiobook export state.
   let rendering = $state(false);
   let renderProgress: { index: number; total: number; stage: string } | null = $state(null);
+  let lastRenderedPath: string | null = $state(null);
+  async function shareLastRendered() {
+    if (!lastRenderedPath) return;
+    try {
+      const { invoke } = await import("@tauri-apps/api/core");
+      await invoke("share_file_cmd", { path: lastRenderedPath });
+    } catch (e) {
+      console.warn("[share_file_cmd]", e);
+    }
+  }
 
   // Sleep timer state. `sleepUntil` is a wall-clock timestamp (ms); once
   // Date.now() crosses it we call stopPlayback(). A reactive setInterval
@@ -360,6 +372,9 @@
         rendering = false;
         renderProgress = null;
         flashToast(`audiobook saved → ${p.path.split("/").pop() ?? p.path}`);
+        // Remember the last rendered file so we can offer Share Sheet
+        // (AirDrop / Apple Books / Files) on iOS without re-rendering.
+        lastRenderedPath = p.path;
       }));
     } catch (e) {
       warn("playback/audiobook subscribe failed: " + String(e));
@@ -1057,6 +1072,14 @@
             🎧 render audiobook
           {/if}
         </button>
+        {#if lastRenderedPath && $isIOSStore}
+          <!-- iOS only: pop the system share sheet for the last rendered .m4b.
+               Lets the user AirDrop it, hand it off to Apple Books, save to
+               Files, send via Messages/Mail, etc. — without re-rendering. -->
+          <button class="btn" onclick={shareLastRendered} title="share last rendered audiobook" aria-label="share last rendered audiobook">
+            📤 share
+          </button>
+        {/if}
       {/if}
       <button class="btn" onclick={pickFile} title="open another file">
         {doc ? "swap" : "open…"}

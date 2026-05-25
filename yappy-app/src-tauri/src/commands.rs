@@ -985,7 +985,17 @@ pub async fn render_audiobook_cmd(
             serde_json::json!({ "path": output_path, "samples": combined.len(), "sample_rate": final_sr }),
         );
         #[cfg(target_os = "ios")]
-        crate::mobile::activity_end(&activity_title);
+        {
+            crate::mobile::activity_end(&activity_title);
+            // Local notification — the user probably switched apps or
+            // locked the phone during a multi-hour render. Bring them back.
+            let mins = (combined.len() as f64 / final_sr as f64 / 60.0).round() as i64;
+            crate::mobile::notify(
+                "yappy.render.done",
+                "Audiobook ready",
+                &format!("{} — {} min of audio", activity_title, mins.max(1)),
+            );
+        }
         Ok(())
     })
     .await
@@ -1086,6 +1096,18 @@ pub fn haptic_cmd(kind: String) {
     crate::mobile::haptic(&kind);
     #[cfg(not(target_os = "ios"))]
     let _ = kind;
+}
+
+/// Present iOS's system share sheet for a file at `path`. The sheet shows
+/// AirDrop, Apple Books, Messages, Mail, Files, etc. as destinations.
+/// No-op on desktop (desktop already has its own "Save as" + Reveal in Finder).
+#[tauri::command]
+pub fn share_file_cmd(path: String) -> Result<(), String> {
+    #[cfg(target_os = "ios")]
+    crate::mobile::share_file(&path);
+    #[cfg(not(target_os = "ios"))]
+    let _ = path;
+    Ok(())
 }
 
 #[tauri::command]
