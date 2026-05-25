@@ -1,0 +1,23 @@
+# Maestro flow: kick off the on-device voice-model download.
+#
+# The model is ~380 MB and is downloaded on first run. This flow taps the
+# "download voices" button, waits for the download to complete or to error
+# out — whichever happens first. The actual download requires network egress
+# from the simulator, which works on a developer machine without extra setup.
+appId: com.yappy.app
+---
+- launchApp:
+    clearState: false
+# Dismiss onboarding if it pops up — when clearState is false the test can
+# run on top of a previously launched session.
+- tapOn:
+    text: "get started →"
+    optional: true
+- assertVisible: "install voices"
+- tapOn: "download voices"
+# Wait for the install-voices card to disappear OR error label to surface.
+# Models can take several minutes to download on slow connections, so the
+# timeout is generous.
+- extendedWaitUntil:
+    notVisible: "install voices"
+    timeout: 300000

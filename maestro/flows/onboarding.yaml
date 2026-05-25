@@ -1,0 +1,18 @@
+# Maestro flow: cold-launch onboarding dismissal.
+# Run with: maestro --device <UUID> test maestro/flows/onboarding.yaml
+appId: com.yappy.app
+---
+- launchApp:
+    clearState: true
+- assertVisible: "welcome to yappy"
+# iOS-specific copy from platform.ts — wrap in slashes for substring/regex
+# matching against the long paragraph text.
+- assertVisible:
+    text: ".*for your phone.*"
+- tapOn:
+    text: "get started →"
+- waitForAnimationToEnd
+# After dismissal we should land on the model-install card or the main UI.
+- extendedWaitUntil:
+    visible: "install voices"
+    timeout: 5000
