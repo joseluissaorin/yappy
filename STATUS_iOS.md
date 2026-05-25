@@ -26,7 +26,7 @@ It replaces the conflicting handoff docs I generated mid-session.
 
 | Capability | Why not verified | What to do once you finish manual steps below |
 |---|---|---|
-| Share Sheet → App Group → main app handoff | Xcode strips the App Group entitlement at sign time because `group.com.yappy.app` isn't registered in Apple Developer portal yet | Install the new build, share a URL from Safari, watch Yappy launch with the article queued |
+| Share Sheet → App Group → main app handoff | Xcode strips the App Group entitlement at sign time because `group.com.joseluissaorin.yappy` isn't registered in Apple Developer portal yet | Install the new build, share a URL from Safari, watch Yappy launch with the article queued |
 | URL fetch → defuddle → TTS chain on iOS | Same App Group block masks the JS event listener path | Open Safari Web Inspector against the running sim, run `await window.__yappyHandleOne("url:https://en.wikipedia.org/wiki/Audiobook")` — bypasses the App Group container, exercises everything else |
 | Long m4b render in background | Background-audio keepalive code is wired but I haven't run a multi-hour render | Render a real audiobook, lock the phone, confirm progress continues |
 | Live Activity rendering | Code is correct; needs an actual long render to actually pop the widget | Same as above |
@@ -47,15 +47,15 @@ need the same.
 **Your three minutes of unblockable work:**
 
 1. https://developer.apple.com/account/resources/identifiers/list
-   - Click `com.yappy.app` → Capabilities → enable **App Groups** + **Increased Memory Limit** → Save
-   - Then on `com.yappy.app.YappyWidgets` and `com.yappy.app.ShareExtension` (auto-created by Xcode during my earlier builds) → enable **App Groups**
+   - Click `com.joseluissaorin.yappy` → Capabilities → enable **App Groups** + **Increased Memory Limit** → Save
+   - Then on `com.joseluissaorin.yappy.YappyWidgets` and `com.joseluissaorin.yappy.ShareExtension` (auto-created by Xcode during my earlier builds) → enable **App Groups**
 
 2. https://developer.apple.com/account/resources/identifiers/list/applicationGroup
-   - Click `+` → Register App Group with identifier `group.com.yappy.app`, description "Yappy shared container"
+   - Click `+` → Register App Group with identifier `group.com.joseluissaorin.yappy`, description "Yappy shared container"
    - Then go back to each of the three App IDs and add this group under the App Groups capability
 
 3. https://appstoreconnect.apple.com/apps
-   - Click `+` → **New App**: Platforms iOS, Name "Yappy", Primary Language English (U.S.), Bundle ID `com.yappy.app`, SKU `yappy-ios`, User Access Full Access
+   - Click `+` → **New App**: Platforms iOS, Name "Yappy", Primary Language English (U.S.), Bundle ID `com.joseluissaorin.yappy`, SKU `yappy-app`, User Access Full Access
 
 When all three are done, the background auto-ship watcher (PID `73121`) will detect the App appearing in ASC and fire `scripts/ios-build-and-upload.sh` — that rebuilds the signed Release IPA with the now-honored entitlements, exports it for App Store upload, polls ASC for build processing, creates the public Beta group, attaches the build, and submits for Beta App Review.
 

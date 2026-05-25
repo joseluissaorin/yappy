@@ -11,7 +11,7 @@ settingGroups:
   app:
     base:
       PRODUCT_NAME: Yappy
-      PRODUCT_BUNDLE_IDENTIFIER: com.yappy.app
+      PRODUCT_BUNDLE_IDENTIFIER: com.joseluissaorin.yappy
       # Apple Developer Team ID (Membership → "Team ID"). Required for code
       # signing — Xcode picks the matching Developer ID / Apple Distribution
       # certificate automatically when this is set + Automatically manage
@@ -105,10 +105,10 @@ targets:
       properties:
         # App Group container shared with the Share Sheet extension. Must be
         # enabled in the Apple Developer portal under Identifiers → App IDs →
-        # com.yappy.app → Capabilities → App Groups, with the group ID
-        # `group.com.yappy.app` registered under Identifiers → App Groups.
+        # com.joseluissaorin.yappy → Capabilities → App Groups, with the group ID
+        # `group.com.joseluissaorin.yappy` registered under Identifiers → App Groups.
         com.apple.security.application-groups:
-          - group.com.yappy.app
+          - group.com.joseluissaorin.yappy
     scheme:
       environmentVariables:
         RUST_BACKTRACE: full
@@ -198,10 +198,10 @@ targets:
       path: YappyWidgets/YappyWidgets.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.yappy.app
+          - group.com.joseluissaorin.yappy
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.yappy.app.YappyWidgets
+        PRODUCT_BUNDLE_IDENTIFIER: com.joseluissaorin.yappy.YappyWidgets
         PRODUCT_NAME: YappyWidgets
         DEVELOPMENT_TEAM: 9LYNY2477X
         CODE_SIGN_STYLE: Automatic
@@ -245,10 +245,10 @@ targets:
       path: YappyShareExtension/YappyShareExtension.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.yappy.app
+          - group.com.joseluissaorin.yappy
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.yappy.app.ShareExtension
+        PRODUCT_BUNDLE_IDENTIFIER: com.joseluissaorin.yappy.ShareExtension
         PRODUCT_NAME: YappyShare
         DEVELOPMENT_TEAM: 9LYNY2477X
         CODE_SIGN_STYLE: Automatic

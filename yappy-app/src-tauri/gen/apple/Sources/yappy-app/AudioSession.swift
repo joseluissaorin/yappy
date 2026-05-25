@@ -104,7 +104,7 @@ public func yappy_background_audio_end() {
 // Rust calls this via `yappy_drain_shared_payload`; ownership of the
 // returned C string transfers to Rust (free with `yappy_free_string`).
 
-private let APP_GROUP = "group.com.yappy.app"
+private let APP_GROUP = "group.com.joseluissaorin.yappy"
 
 @_cdecl("yappy_drain_shared_payload")
 public func yappy_drain_shared_payload() -> UnsafeMutablePointer<CChar>? {

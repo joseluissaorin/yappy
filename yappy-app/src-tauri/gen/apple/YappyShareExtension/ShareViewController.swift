@@ -14,10 +14,10 @@ import UniformTypeIdentifiers
 class ShareViewController: SLComposeServiceViewController {
 
     // App Group container shared with the main app. Make sure
-    // `group.com.yappy.app` is registered in Apple Developer portal under
+    // `group.com.joseluissaorin.yappy` is registered in Apple Developer portal under
     // Identifiers → App Groups and enabled on both this extension's App ID
-    // (com.yappy.app.ShareExtension) and the main app's (com.yappy.app).
-    private static let APP_GROUP = "group.com.yappy.app"
+    // (com.joseluissaorin.yappy.ShareExtension) and the main app's (com.yappy.app).
+    private static let APP_GROUP = "group.com.joseluissaorin.yappy"
 
     override func isContentValid() -> Bool { true }
 

@@ -2,12 +2,12 @@
 # Build a signed Release IPA for iOS and upload it to App Store Connect.
 #
 # Prerequisites (manual, browser-driven):
-#   1. Apple Developer portal → Identifiers → com.yappy.app:
+#   1. Apple Developer portal → Identifiers → com.joseluissaorin.yappy:
 #      enable App Groups + Increased Memory Limit
-#   2. Identifiers → App Groups: register group.com.yappy.app
-#      and add it to com.yappy.app
+#   2. Identifiers → App Groups: register group.com.joseluissaorin.yappy
+#      and add it to com.joseluissaorin.yappy
 #   3. App Store Connect → My Apps → + → New App:
-#      name=Yappy, bundleId=com.yappy.app, sku=yappy-ios, lang=en-US
+#      name=Yappy, bundleId=com.joseluissaorin.yappy, sku=yappy-app, lang=en-US
 #
 # After all three are done, `node scripts/asc-helper.mjs status` should show
 # the app. Then this script:

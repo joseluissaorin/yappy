@@ -23,7 +23,7 @@ import { join } from "node:path";
 const KEY_ID    = process.env.ASC_KEY_ID    ?? "4HVB5YWGWD";
 const ISSUER_ID = process.env.ASC_ISSUER_ID ?? "1e05b19d-c430-4408-8af5-24d6623959c4";
 const TEAM_ID   = process.env.ASC_TEAM_ID   ?? "9LYNY2477X";
-const BUNDLE_ID = process.env.ASC_BUNDLE_ID ?? "com.yappy.app";
+const BUNDLE_ID = process.env.ASC_BUNDLE_ID ?? "com.joseluissaorin.yappy";
 
 const KEY_PATH = join(homedir(), ".appstoreconnect", "private_keys", `AuthKey_${KEY_ID}.p8`);
 

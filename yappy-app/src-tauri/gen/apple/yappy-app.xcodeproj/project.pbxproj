@@ -346,7 +346,7 @@
 			path = arm64;
 			sourceTree = "<group>";
 		};
-		"TEMP_3B3DA87A-086B-48CF-AD25-C1929636C63D" /* x86_64 */ = {
+		"TEMP_5CE4B64A-5B4B-4EB7-8296-5BE8CE48D399" /* x86_64 */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -625,7 +625,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joseluissaorin.yappy.ShareExtension;
 				PRODUCT_NAME = YappyShare;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -710,7 +710,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joseluissaorin.yappy.ShareExtension;
 				PRODUCT_NAME = YappyShare;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -739,7 +739,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app.YappyWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joseluissaorin.yappy.YappyWidgets;
 				PRODUCT_NAME = YappyWidgets;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -774,7 +774,7 @@
 				);
 				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joseluissaorin.yappy;
 				PRODUCT_NAME = Yappy;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -807,7 +807,7 @@
 				);
 				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joseluissaorin.yappy;
 				PRODUCT_NAME = Yappy;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -834,7 +834,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app.YappyWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joseluissaorin.yappy.YappyWidgets;
 				PRODUCT_NAME = YappyWidgets;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
