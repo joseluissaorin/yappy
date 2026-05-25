@@ -96,6 +96,27 @@ targets:
             CFBundleURLName: com.yappy.app
             CFBundleURLSchemes:
               - yappy
+        # Quick Actions: appear in the long-press menu on the app icon, plus
+        # show up as Shortcuts (Siri) targets. Each item launches the app via
+        # the yappy:// URL scheme, which the existing pickup_shared_payload
+        # path treats as an "app foregrounded" trigger — the clipboard
+        # launch banner / share-intake handler do the rest.
+        UIApplicationShortcutItems:
+          - UIApplicationShortcutItemType: com.yappy.app.read-clipboard
+            UIApplicationShortcutItemTitle: Read clipboard
+            UIApplicationShortcutItemIconType: UIApplicationShortcutIconTypeBookmark
+            UIApplicationShortcutItemUserInfo:
+              url: yappy://action/read-clipboard
+          - UIApplicationShortcutItemType: com.yappy.app.resume
+            UIApplicationShortcutItemTitle: Resume last
+            UIApplicationShortcutItemIconType: UIApplicationShortcutIconTypePlay
+            UIApplicationShortcutItemUserInfo:
+              url: yappy://action/resume
+          - UIApplicationShortcutItemType: com.yappy.app.open-file
+            UIApplicationShortcutItemTitle: Open document
+            UIApplicationShortcutItemIconType: UIApplicationShortcutIconTypeAdd
+            UIApplicationShortcutItemUserInfo:
+              url: yappy://action/open
         # User-facing display name (separate from CFBundleName).
         CFBundleDisplayName: Yappy
         # Required reason API declarations — Apple needs these for file
