@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    body { width: 420px; }
+    h1 { font-family: "Patrick Hand", system-ui; font-size: 32px; color: #ff5d97; margin: 0 0 6px; transform: rotate(-1deg); }
+    p { font-size: 13px; color: #76726a; font-weight: 500; margin: 0 0 16px; line-height: 1.5; }
+    label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    input[type="text"] {
+      width: 100%; padding: 10px 12px;
+      background: #fff8d7; border: 2.5px solid #1a1a1a; border-radius: 12px;
+      font-family: "SF Mono", ui-monospace, monospace; font-size: 12px;
+      box-shadow: 2px 2px 0 #1a1a1a;
+    }
+    .row { display: flex; gap: 10px; align-items: center; margin-top: 14px; }
+    .row .primary { flex: 1; }
+    .saved { color: #5dbb70; font-size: 12px; font-weight: 700; margin-left: 8px; opacity: 0; transition: opacity 0.2s ease; }
+    .saved.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>pair with yappy</h1>
+    <p>open yappy on your mac → <strong>preferences → browser extension</strong>. copy the pairing token from there and paste it here.</p>
+    <label for="token">pairing token</label>
+    <input id="token" type="text" placeholder="paste the UUID from yappy…" autocomplete="off" />
+    <div class="row">
+      <button id="save" class="primary">save &amp; connect</button>
+      <span id="saved" class="saved">saved ✓</span>
+    </div>
+    <p style="margin-top:18px;">
+      no internet, no api keys, no telemetry. everything goes through
+      <code>ws://127.0.0.1:47898</code>, which only your own mac can reach.
+    </p>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

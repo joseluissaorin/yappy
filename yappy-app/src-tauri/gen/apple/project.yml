@@ -1,0 +1,124 @@
+name: yappy-app
+options:
+  bundleIdPrefix: com.yappy.app
+  deploymentTarget:
+    iOS: 14.0
+fileGroups: [../../src]
+configs:
+  debug: debug
+  release: release
+settingGroups:
+  app:
+    base:
+      PRODUCT_NAME: Yappy
+      PRODUCT_BUNDLE_IDENTIFIER: com.yappy.app
+      # Apple Developer Team ID (Membership → "Team ID"). Required for code
+      # signing — Xcode picks the matching Developer ID / Apple Distribution
+      # certificate automatically when this is set + Automatically manage
+      # signing is on.
+      DEVELOPMENT_TEAM: 9LYNY2477X
+      # Auto-managed signing for both Debug and Release. For App Store /
+      # TestFlight submission this gets a Distribution profile; for local
+      # device runs it picks the Development profile.
+      CODE_SIGN_STYLE: Automatic
+targetTemplates:
+  app:
+    type: application
+    sources:
+      - path: Sources
+    scheme:
+      environmentVariables:
+        RUST_BACKTRACE: full
+        RUST_LOG: info
+    settings:
+      groups: [app]
+targets:
+  yappy-app_iOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+      - path: Assets.xcassets
+      - path: Externals
+      - path: yappy-app_iOS
+      - path: assets
+        buildPhase: resources
+        type: folder
+      - path: LaunchScreen.storyboard
+    info:
+      path: yappy-app_iOS/Info.plist
+      properties:
+        LSRequiresIPhoneOS: true
+        UILaunchStoryboardName: LaunchScreen
+        UIRequiredDeviceCapabilities: [arm64, metal]
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        CFBundleShortVersionString: 0.1.0
+        CFBundleVersion: "0.1.0"
+    entitlements:
+      path: yappy-app_iOS/yappy-app_iOS.entitlements
+    scheme:
+      environmentVariables:
+        RUST_BACKTRACE: full
+        RUST_LOG: info
+    settings:
+      base:
+        ENABLE_BITCODE: false
+        ARCHS: [arm64]
+        VALID_ARCHS: arm64 
+        LIBRARY_SEARCH_PATHS[arch=x86_64]: $(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)
+        LIBRARY_SEARCH_PATHS[arch=arm64]: $(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: true
+        EXCLUDED_ARCHS[sdk=iphoneos*]: x86_64
+      groups: [app]
+    dependencies:
+      - framework: libapp.a
+        embed: false
+      # ONNX Runtime as a vendored xcframework, fetched by
+      # scripts/fetch-ort-ios.sh. The Rust crate links against the static
+      # archive at compile time (via ORT_LIB_LOCATION); this entry is just
+      # so Xcode's dependency tree knows the framework exists and the static
+      # library shows up in Frameworks for the linker.
+      - framework: ../../../../vendor/ort-ios/onnxruntime.xcframework
+        embed: false
+      - sdk: CoreGraphics.framework
+      - sdk: Metal.framework
+      - sdk: MetalKit.framework
+      - sdk: QuartzCore.framework
+      - sdk: Security.framework
+      - sdk: UIKit.framework
+      - sdk: WebKit.framework
+      # CoreML needs to be available at runtime so the ORT CoreML EP can
+      # route ops to the Neural Engine; weakly linked so older iOS still
+      # boots if CoreML is missing.
+      - sdk: CoreML.framework
+    preBuildScripts:
+      # ONNX Runtime iOS static-archive selection. The vendored XCFramework
+      # ships separate slices for device (iphoneos → ios-arm64) and simulator
+      # (iphonesimulator → ios-arm64_x86_64-simulator); both contain a thin
+      # arm64 libonnxruntime.a after scripts/fetch-ort-ios.sh runs. Picking
+      # via $PLATFORM_NAME is bulletproof — Xcode sets it correctly for the
+      # SDK actually being built against.
+      - script: |
+          set -e
+          VENDOR="$SRCROOT/../../../../vendor/ort-ios"
+          if [ "$PLATFORM_NAME" = "iphoneos" ]; then
+            export ORT_LIB_LOCATION="$VENDOR/ios-arm64"
+          else
+            export ORT_LIB_LOCATION="$VENDOR/ios-arm64_x86_64-simulator"
+          fi
+          export ORT_SKIP_DOWNLOAD=1
+          echo "→ ORT_LIB_LOCATION=$ORT_LIB_LOCATION"
+          cargo tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths "${FRAMEWORK_SEARCH_PATHS:?}" --header-search-paths "${HEADER_SEARCH_PATHS:?}" --gcc-preprocessor-definitions "${GCC_PREPROCESSOR_DEFINITIONS:-}" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}
+        name: Build Rust Code
+        basedOnDependencyAnalysis: false
+        outputFiles:
+          - $(SRCROOT)/Externals/x86_64/${CONFIGURATION}/libapp.a
+          - $(SRCROOT)/Externals/arm64/${CONFIGURATION}/libapp.a
