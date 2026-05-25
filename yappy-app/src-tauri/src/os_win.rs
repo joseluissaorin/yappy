@@ -50,6 +50,10 @@ pub fn clipboard_write_text(_text: &str) -> bool { false }
 pub fn clipboard_sequence_number() -> i64 { 0 }
 #[cfg(not(target_os = "windows"))]
 pub fn send_ctrl_c() -> bool { false }
+#[cfg(not(target_os = "windows"))]
+pub fn capture_foreground_window_png(_out: &std::path::Path) -> anyhow::Result<()> {
+    anyhow::bail!("capture_foreground_window_png: not available on this OS")
+}
 
 // ─── Windows implementations ───────────────────────────────────────────
 
@@ -397,6 +401,124 @@ mod imp {
         }
     }
 
+    // ─── Native screen capture (GDI BitBlt → PNG) ───────────────────────
+    //
+    // Replaces the last remaining PowerShell call in the capture pipeline
+    // (was `powershell.exe -Command Add-Type System.Drawing; BitBlt...`).
+    // Faster (no .NET startup), no console window even with
+    // CREATE_NO_WINDOW, and we control the exact pixel format.
+    //
+    // Captures the FOREGROUND window's bounds, matching macOS's behavior
+    // (osascript / NSWorkspace get the front-app's frame). Falls back to
+    // the full virtual screen if GetWindowRect returns garbage (e.g. when
+    // the foreground window is the system shell with no rect).
+
+    use windows::Win32::Graphics::Gdi::{
+        BitBlt, CreateCompatibleBitmap, CreateCompatibleDC, DeleteDC, DeleteObject,
+        GetDC, GetDIBits, ReleaseDC, SelectObject, BITMAPINFO, BITMAPINFOHEADER,
+        BI_RGB, DIB_RGB_COLORS, SRCCOPY,
+    };
+    use windows::Win32::Foundation::RECT;
+    use windows::Win32::UI::WindowsAndMessaging::{
+        GetSystemMetrics, GetWindowRect, SM_CXVIRTUALSCREEN, SM_CYVIRTUALSCREEN,
+        SM_XVIRTUALSCREEN, SM_YVIRTUALSCREEN,
+    };
+
+    pub fn capture_foreground_window_png(out: &std::path::Path) -> anyhow::Result<()> {
+        unsafe {
+            // 1) Pick a capture rect. Prefer the foreground window's frame
+            //    (focused-window OCR, matches macOS). Fall back to the full
+            //    virtual screen if GetWindowRect doesn't return something
+            //    reasonable.
+            let fg = GetForegroundWindow();
+            let (x, y, w, h) = {
+                let mut r = RECT::default();
+                if !fg.0.is_null() && GetWindowRect(fg, &mut r).is_ok()
+                    && r.right > r.left && r.bottom > r.top
+                {
+                    (r.left, r.top, r.right - r.left, r.bottom - r.top)
+                } else {
+                    (
+                        GetSystemMetrics(SM_XVIRTUALSCREEN),
+                        GetSystemMetrics(SM_YVIRTUALSCREEN),
+                        GetSystemMetrics(SM_CXVIRTUALSCREEN),
+                        GetSystemMetrics(SM_CYVIRTUALSCREEN),
+                    )
+                }
+            };
+            if w <= 0 || h <= 0 {
+                anyhow::bail!("capture: nonsense capture dimensions {w}x{h}");
+            }
+
+            // 2) Allocate compatible DC + bitmap, BitBlt the screen into it.
+            let screen_dc = GetDC(None);
+            if screen_dc.is_invalid() {
+                anyhow::bail!("capture: GetDC(NULL) failed");
+            }
+            let mem_dc = CreateCompatibleDC(Some(screen_dc));
+            if mem_dc.is_invalid() {
+                ReleaseDC(None, screen_dc);
+                anyhow::bail!("capture: CreateCompatibleDC failed");
+            }
+            let hbm = CreateCompatibleBitmap(screen_dc, w, h);
+            if hbm.is_invalid() {
+                let _ = DeleteDC(mem_dc);
+                ReleaseDC(None, screen_dc);
+                anyhow::bail!("capture: CreateCompatibleBitmap failed");
+            }
+            let old = SelectObject(mem_dc, hbm.into());
+            let blt_ok = BitBlt(mem_dc, 0, 0, w, h, Some(screen_dc), x, y, SRCCOPY).is_ok();
+            if !blt_ok {
+                let _ = SelectObject(mem_dc, old);
+                let _ = DeleteObject(hbm.into());
+                let _ = DeleteDC(mem_dc);
+                ReleaseDC(None, screen_dc);
+                anyhow::bail!("capture: BitBlt failed");
+            }
+
+            // 3) GetDIBits into a 32-bit BGRA buffer. biHeight negative ⇒
+            //    top-down rows so we don't need to flip later.
+            let mut bmi: BITMAPINFO = std::mem::zeroed();
+            bmi.bmiHeader.biSize = std::mem::size_of::<BITMAPINFOHEADER>() as u32;
+            bmi.bmiHeader.biWidth = w;
+            bmi.bmiHeader.biHeight = -h;
+            bmi.bmiHeader.biPlanes = 1;
+            bmi.bmiHeader.biBitCount = 32;
+            bmi.bmiHeader.biCompression = BI_RGB.0;
+            let mut buf = vec![0u8; (w as usize) * (h as usize) * 4];
+            let read = GetDIBits(
+                mem_dc,
+                hbm,
+                0,
+                h as u32,
+                Some(buf.as_mut_ptr() as *mut _),
+                &mut bmi,
+                DIB_RGB_COLORS,
+            );
+
+            // 4) GDI cleanup before we get to the PNG encode (let go of all
+            //    the kernel handles ASAP).
+            let _ = SelectObject(mem_dc, old);
+            let _ = DeleteObject(hbm.into());
+            let _ = DeleteDC(mem_dc);
+            ReleaseDC(None, screen_dc);
+
+            if read == 0 {
+                anyhow::bail!("capture: GetDIBits read 0 rows");
+            }
+
+            // 5) BGRA → RGBA in place. Then encode PNG via the `image`
+            //    crate (already a workspace dep).
+            for chunk in buf.chunks_exact_mut(4) {
+                chunk.swap(0, 2);
+            }
+            let img = image::RgbaImage::from_raw(w as u32, h as u32, buf)
+                .ok_or_else(|| anyhow::anyhow!("capture: pixel buffer size mismatch"))?;
+            img.save(out)?;
+            Ok(())
+        }
+    }
+
     use windows::Win32::UI::Accessibility::{
         CUIAutomation, IUIAutomation, IUIAutomationElement,
         IUIAutomationTextPattern, UIA_TextPatternId, TreeScope_Subtree,
@@ -526,3 +648,7 @@ pub fn clipboard_write_text(text: &str) -> bool { imp::clipboard_write_text(text
 pub fn clipboard_sequence_number() -> i64 { imp::clipboard_sequence_number() }
 #[cfg(target_os = "windows")]
 pub fn send_ctrl_c() -> bool { imp::send_ctrl_c() }
+#[cfg(target_os = "windows")]
+pub fn capture_foreground_window_png(out: &std::path::Path) -> anyhow::Result<()> {
+    imp::capture_foreground_window_png(out)
+}
