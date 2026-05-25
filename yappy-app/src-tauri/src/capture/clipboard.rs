@@ -127,29 +127,21 @@ fn which(name: &str) -> Option<std::path::PathBuf> {
 
 // ---------- Windows ----------
 
+// ---------- Windows ----------
+//
+// Native Win32 clipboard API via the `windows` crate (see os_win.rs).
+// Replaces the earlier PowerShell-based implementation: zero console
+// flash, sub-millisecond instead of ~150ms per call, and uses the real
+// CF_UNICODETEXT format so emoji + non-Latin scripts survive untouched.
+
 #[cfg(target_os = "windows")]
 pub fn read_text() -> Result<Option<String>> {
-    let out = std::process::Command::new("powershell.exe")
-        .args(["-NoProfile", "-Command", "Get-Clipboard -Raw"])
-        .output()?;
-    if !out.status.success() {
-        return Ok(None);
-    }
-    let s = String::from_utf8_lossy(&out.stdout).to_string();
-    Ok(if s.is_empty() { None } else { Some(s) })
+    Ok(crate::os_win::clipboard_read_text())
 }
 
 #[cfg(target_os = "windows")]
 pub fn write_text(text: &str) -> Result<()> {
-    use std::io::Write;
-    let mut child = std::process::Command::new("powershell.exe")
-        .args(["-NoProfile", "-Command", "Set-Clipboard -Value $input"])
-        .stdin(std::process::Stdio::piped())
-        .spawn()?;
-    if let Some(stdin) = child.stdin.as_mut() {
-        stdin.write_all(text.as_bytes())?;
-    }
-    child.wait()?;
+    crate::os_win::clipboard_write_text(text);
     Ok(())
 }
 
@@ -158,10 +150,10 @@ pub fn snapshot() -> Result<Option<String>> { read_text() }
 
 #[cfg(target_os = "windows")]
 pub fn change_count() -> i64 {
-    use std::hash::{Hash, Hasher};
-    let mut h = std::collections::hash_map::DefaultHasher::new();
-    read_text().ok().flatten().unwrap_or_default().hash(&mut h);
-    h.finish() as i64
+    // GetClipboardSequenceNumber: a monotonically-increasing system-wide
+    // counter that ticks on every clipboard write. Way better than
+    // hashing the text — instant + accurate.
+    crate::os_win::clipboard_sequence_number()
 }
 
 // ---------- iOS ----------

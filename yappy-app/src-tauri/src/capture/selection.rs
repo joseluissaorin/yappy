@@ -92,18 +92,10 @@ fn send_copy_key() -> Result<()> {
 
 #[cfg(target_os = "windows")]
 fn send_copy_key() -> Result<()> {
-    let ps = r#"
-$wshell = New-Object -ComObject wscript.shell;
-$wshell.SendKeys("^c")
-"#;
-    let out = std::process::Command::new("powershell.exe")
-        .args(["-NoProfile", "-Command", ps])
-        .output()?;
-    if !out.status.success() {
-        return Err(anyhow::anyhow!(
-            "powershell SendKeys ^c failed: {}",
-            String::from_utf8_lossy(&out.stderr)
-        ));
+    // Native SendInput via the `windows` crate — no PowerShell flash,
+    // no process spawn, sub-millisecond. See os_win.rs::send_ctrl_c.
+    if !crate::os_win::send_ctrl_c() {
+        return Err(anyhow::anyhow!("SendInput Ctrl+C returned 0 events"));
     }
     Ok(())
 }

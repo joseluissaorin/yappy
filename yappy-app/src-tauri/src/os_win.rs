@@ -42,6 +42,14 @@ pub fn taskbar_progress_clear() {}
 pub fn front_app_name() -> Option<String> { None }
 #[cfg(not(target_os = "windows"))]
 pub fn active_window_text() -> Option<String> { None }
+#[cfg(not(target_os = "windows"))]
+pub fn clipboard_read_text() -> Option<String> { None }
+#[cfg(not(target_os = "windows"))]
+pub fn clipboard_write_text(_text: &str) -> bool { false }
+#[cfg(not(target_os = "windows"))]
+pub fn clipboard_sequence_number() -> i64 { 0 }
+#[cfg(not(target_os = "windows"))]
+pub fn send_ctrl_c() -> bool { false }
 
 // ─── Windows implementations ───────────────────────────────────────────
 
@@ -274,6 +282,121 @@ mod imp {
     // games / electron apps with no accessibility tree return nothing,
     // and we fall through to OCR in the capture chain.
 
+    // ─── Native clipboard + SendInput (no PowerShell flash) ─────────────
+    //
+    // Yappy's "smart capture" pipeline previously spawned powershell.exe
+    // four times per Ctrl+Alt+R press: clipboard snapshot, SendKeys ⌃C,
+    // clipboard read, clipboard restore. Each spawn briefly flashes a
+    // console window AND adds ~100-300ms latency. Native Win32 = zero
+    // flash, sub-ms call cost.
+
+    use windows::Win32::Foundation::{HANDLE, HWND};
+    use windows::Win32::System::DataExchange::{
+        CloseClipboard, EmptyClipboard, GetClipboardData, GetClipboardSequenceNumber,
+        OpenClipboard, SetClipboardData,
+    };
+    use windows::Win32::System::Memory::{GlobalAlloc, GlobalLock, GlobalUnlock, GMEM_MOVEABLE};
+    use windows::Win32::System::Ole::CF_UNICODETEXT;
+    use windows::Win32::UI::Input::KeyboardAndMouse::{
+        SendInput, INPUT, INPUT_0, INPUT_KEYBOARD, KEYBDINPUT, KEYBD_EVENT_FLAGS,
+        KEYEVENTF_KEYUP, VIRTUAL_KEY,
+    };
+
+    const VK_CONTROL: VIRTUAL_KEY = VIRTUAL_KEY(0x11);
+    const VK_C: VIRTUAL_KEY = VIRTUAL_KEY(0x43);
+
+    pub fn clipboard_sequence_number() -> i64 {
+        unsafe { GetClipboardSequenceNumber() as i64 }
+    }
+
+    pub fn clipboard_read_text() -> Option<String> {
+        unsafe {
+            OpenClipboard(None).ok()?;
+            // RAII-style: ensure we always close. Using a closure + immediate
+            // call means errors short-circuit but we still hit the close.
+            let out = (|| -> Option<String> {
+                let h = GetClipboardData(CF_UNICODETEXT.0 as u32).ok()?;
+                let hglobal = windows::Win32::Foundation::HGLOBAL(h.0);
+                let ptr = GlobalLock(hglobal);
+                if ptr.is_null() {
+                    return None;
+                }
+                // Find UTF-16 null terminator.
+                let p = ptr as *const u16;
+                let mut len = 0usize;
+                while *p.add(len) != 0 {
+                    len += 1;
+                    if len > 50_000_000 {
+                        break; // sanity cap
+                    }
+                }
+                let s = String::from_utf16_lossy(std::slice::from_raw_parts(p, len));
+                let _ = GlobalUnlock(hglobal);
+                if s.is_empty() { None } else { Some(s) }
+            })();
+            let _ = CloseClipboard();
+            out
+        }
+    }
+
+    pub fn clipboard_write_text(text: &str) -> bool {
+        unsafe {
+            // UTF-16 with explicit null terminator.
+            let wide: Vec<u16> = text.encode_utf16().chain(std::iter::once(0)).collect();
+            let size_bytes = wide.len() * std::mem::size_of::<u16>();
+            let Ok(hmem) = GlobalAlloc(GMEM_MOVEABLE, size_bytes) else {
+                return false;
+            };
+            let dst = GlobalLock(hmem);
+            if dst.is_null() {
+                return false;
+            }
+            std::ptr::copy_nonoverlapping(
+                wide.as_ptr() as *const u8,
+                dst as *mut u8,
+                size_bytes,
+            );
+            let _ = GlobalUnlock(hmem);
+            if OpenClipboard(None).is_err() {
+                return false;
+            }
+            let _ = EmptyClipboard();
+            // SetClipboardData takes ownership of hmem on success.
+            let ok = SetClipboardData(CF_UNICODETEXT.0 as u32, Some(HANDLE(hmem.0 as _))).is_ok();
+            let _ = CloseClipboard();
+            ok
+        }
+    }
+
+    /// Synthesise Ctrl+C via SendInput — the Windows equivalent of macOS's
+    /// CGEvent ⌘C in `capture/selection.rs`. No PowerShell flash, sub-ms.
+    pub fn send_ctrl_c() -> bool {
+        let make = |vk: VIRTUAL_KEY, up: bool| INPUT {
+            r#type: INPUT_KEYBOARD,
+            Anonymous: INPUT_0 {
+                ki: KEYBDINPUT {
+                    wVk: vk,
+                    wScan: 0,
+                    dwFlags: if up { KEYEVENTF_KEYUP } else { KEYBD_EVENT_FLAGS(0) },
+                    time: 0,
+                    dwExtraInfo: 0,
+                },
+            },
+        };
+        // Down: Ctrl, C. Up: C, Ctrl. Matches the Windows-OS-internal order
+        // that apps actually expect to see (some apps misbehave with the
+        // wrong release order).
+        let inputs = [
+            make(VK_CONTROL, false),
+            make(VK_C, false),
+            make(VK_C, true),
+            make(VK_CONTROL, true),
+        ];
+        unsafe {
+            SendInput(&inputs, std::mem::size_of::<INPUT>() as i32) == inputs.len() as u32
+        }
+    }
+
     use windows::Win32::UI::Accessibility::{
         CUIAutomation, IUIAutomation, IUIAutomationElement,
         IUIAutomationTextPattern, UIA_TextPatternId, TreeScope_Subtree,
@@ -395,3 +518,11 @@ pub fn front_app_name() -> Option<String> {
 pub fn active_window_text() -> Option<String> {
     imp::active_window_text()
 }
+#[cfg(target_os = "windows")]
+pub fn clipboard_read_text() -> Option<String> { imp::clipboard_read_text() }
+#[cfg(target_os = "windows")]
+pub fn clipboard_write_text(text: &str) -> bool { imp::clipboard_write_text(text) }
+#[cfg(target_os = "windows")]
+pub fn clipboard_sequence_number() -> i64 { imp::clipboard_sequence_number() }
+#[cfg(target_os = "windows")]
+pub fn send_ctrl_c() -> bool { imp::send_ctrl_c() }

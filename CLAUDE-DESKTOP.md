@@ -243,6 +243,17 @@ ORT_DISABLE_ALL_HW=1 ./yappy
 
 ### 4.10 Windows-specific (skip on Linux)
 
+  - [ ] **No PowerShell flash on Ctrl+Alt+R**: hit the hotkey 5x in a row
+        with selected text in Notepad. There should be **zero console
+        window flashes**. The clipboard + SendInput Ctrl+C path is now
+        100% native Win32 (see `os_win.rs::send_ctrl_c`,
+        `clipboard_read_text`, `clipboard_write_text`, `clipboard_sequence_number`).
+        Only PowerShell remaining is the OCR fallback's screen-capture
+        step, and that uses CREATE_NO_WINDOW + WindowStyle Hidden to
+        suppress the flash too.
+  - [ ] **Latency**: Ctrl+Alt+R → speech should start within ~250-400ms
+        on a warm machine (was 600-900ms with PowerShell). The clipboard
+        round-trip alone was 4 × ~150ms PowerShell startups; now sub-ms.
   - [ ] **UI Automation active-window text extraction**: open a Word doc,
         select a paragraph, hit Ctrl+Alt+R. Yappy should read that exact
         selection — verify in `yappy.log`: `uia: extracted N chars from

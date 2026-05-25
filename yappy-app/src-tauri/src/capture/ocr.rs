@@ -74,6 +74,16 @@ fn capture_focused_to(out: &Path) -> Result<()> {
 #[cfg(target_os = "windows")]
 fn capture_focused_to(out: &Path) -> Result<()> {
     // PowerShell-based screen capture using .NET's System.Drawing API.
+    // The clipboard + Ctrl+C paths got replaced with native Win32 calls
+    // (no console flash) but screen capture would need GDI BitBlt +
+    // GdiplusBitmap which is substantially more Rust unsafe than just
+    // hiding the PowerShell window. CREATE_NO_WINDOW does that.
+    use std::os::windows::process::CommandExt;
+    /// Equivalent to winapi's CREATE_NO_WINDOW. Suppresses console window
+    /// creation for the spawned PowerShell process so users don't see a
+    /// flash on Ctrl+Alt+R → OCR fallback.
+    const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+
     let ps = format!(
         r#"Add-Type -AssemblyName System.Drawing
 $b = [System.Windows.Forms.SystemInformation]::VirtualScreen
@@ -84,7 +94,8 @@ $bmp.Save("{}", [System.Drawing.Imaging.ImageFormat]::Png)"#,
         out.display()
     );
     let res = std::process::Command::new("powershell.exe")
-        .args(["-NoProfile", "-Command", &ps])
+        .creation_flags(CREATE_NO_WINDOW)
+        .args(["-NoProfile", "-WindowStyle", "Hidden", "-Command", &ps])
         .output()?;
     if res.status.success() && out.exists() {
         Ok(())
