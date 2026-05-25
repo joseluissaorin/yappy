@@ -222,15 +222,28 @@ export const saveProject = (docPath: string, projectJson: string): Promise<void>
 export const loadProject = (docPath: string): Promise<string | null> =>
   invoke("load_project_cmd", { docPath });
 
-// Audiobook export: render all paragraphs end-to-end as one .wav.
+// Audiobook export: render all paragraphs end-to-end as one audio file.
+// outputPath extension picks the format: `.m4b` → M4B audiobook with chapters,
+// anything else → 16-bit WAV. `chapter_title` on a paragraph marks the start
+// of a chapter in the m4b output (ignored for .wav).
 export interface ParagraphSpec {
   text: string;
   voice?: string | null;
   speed?: number | null;
   pause_before?: number | null;
+  chapter_title?: string | null;
 }
-export const renderAudiobook = (paragraphs: ParagraphSpec[], outputPath: string): Promise<void> =>
-  invoke("render_audiobook_cmd", { paragraphs, outputPath });
+export interface AudiobookMeta {
+  title?: string | null;
+  author?: string | null;
+  album?: string | null;
+}
+export const renderAudiobook = (
+  paragraphs: ParagraphSpec[],
+  outputPath: string,
+  metadata?: AudiobookMeta,
+): Promise<void> =>
+  invoke("render_audiobook_cmd", { paragraphs, outputPath, metadata: metadata ?? null });
 export function onAudiobookRenderProgress(
   cb: (p: { index: number; total: number; stage: string }) => void,
 ): Promise<UnlistenFn> {

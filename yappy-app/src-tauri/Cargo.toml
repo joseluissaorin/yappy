@@ -66,6 +66,14 @@ yappy-core = { workspace = true }
 cpal = "0.15"
 rubato = "0.16"
 
+# M4B audiobook encoding. fdk-aac vendors its C source and builds via cc+cmake
+# (already used by other deps), so no system install required on any platform.
+# mp4 crate is pure Rust and gives us the basic MPEG-4 muxer — we post-process
+# its output to inject Apple's `chpl` chapter atom.
+fdk-aac = "0.7"
+mp4 = "0.14"
+byteorder = "1"
+
 # Async / channels
 tokio = { version = "1", features = ["sync", "rt-multi-thread", "macros", "io-util", "fs"] }
 futures = "0.3"

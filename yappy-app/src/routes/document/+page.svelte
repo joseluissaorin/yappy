@@ -762,11 +762,18 @@
   async function renderToWav() {
     if (rendering) return;
     if (!doc || paragraphs.length === 0) return;
-    const filename = doc.filename.replace(/\.[^.]+$/, "") + " (audiobook).wav";
+    const base = doc.filename.replace(/\.[^.]+$/, "");
+    // Default to .m4b — produces a real audiobook with embedded chapter
+    // markers that Apple Books / Audiobookshelf / VLC navigate. The "WAV"
+    // filter is still offered for users who want raw uncompressed audio.
+    const defaultFilename = `${base} (audiobook).m4b`;
     try {
       const path = await dialogSave({
-        defaultPath: filename,
-        filters: [{ name: "WAV audio", extensions: ["wav"] }],
+        defaultPath: defaultFilename,
+        filters: [
+          { name: "M4B audiobook (AAC + chapters)", extensions: ["m4b"] },
+          { name: "WAV audio (uncompressed)", extensions: ["wav"] },
+        ],
       });
       if (!path) return;
       // Honor chapter selection: empty set = whole document; otherwise only the
@@ -777,19 +784,34 @@
       renderProgress = { index: 0, total: subset.length, stage: "synth" };
       const globalSpeed = settings?.speed ?? 1.05;
       const clampSpeed = (s: number) => Math.max(0.3, Math.min(3.0, s));
-      const specs: ParagraphSpec[] = subset.map((p) => {
+      // Track the LAST heading title we've already used to mark a chapter so
+      // we don't re-emit a chapter on every paragraph under that heading.
+      let lastChapterEmittedAt = -1;
+      const specs: ParagraphSpec[] = subset.map((p, localIdx) => {
         const baseSpeed = p.speed ?? globalSpeed;
         const baseHasPause = (p.pauseBefore ?? 0) > 0;
+        let chapterTitle: string | null = null;
+        // Headings start a new chapter. The first paragraph of the export ALWAYS
+        // gets a chapter (book opener), even if it's body text — players display
+        // a single "Chapter 1" entry instead of "no chapters" for short files.
+        if (/^heading[1-6]$/.test(p.kind)) {
+          chapterTitle = p.text.trim() || `Chapter ${lastChapterEmittedAt + 2}`;
+          lastChapterEmittedAt = localIdx;
+        } else if (localIdx === 0 && lastChapterEmittedAt === -1) {
+          chapterTitle = base;
+          lastChapterEmittedAt = 0;
+        }
         return {
           text: p.text,
           voice: p.voice,
           speed: clampSpeed(baseSpeed * rhythmMult),
           pause_before: baseHasPause ? (p.pauseBefore as number) / Math.max(0.1, rhythmMult) : null,
+          chapter_title: chapterTitle,
         };
       });
       logToBackend("info", "doc/render",
-        `renderToWav: rhythmMult=${rhythmMult.toFixed(2)} globalSpeed=${globalSpeed.toFixed(2)} paragraphs=${specs.length}`);
-      await renderAudiobook(specs, path);
+        `renderToWav: path=${path} rhythmMult=${rhythmMult.toFixed(2)} globalSpeed=${globalSpeed.toFixed(2)} paragraphs=${specs.length} chapters=${specs.filter(s=>s.chapter_title).length}`);
+      await renderAudiobook(specs, path, { title: base, album: base });
     } catch (e) {
       rendering = false;
       renderProgress = null;
@@ -970,7 +992,7 @@
         <button class="btn" onclick={downloadCurrent} title="save current playback as .wav">
           ↓ session.wav
         </button>
-        <button class="btn audiobook" onclick={renderToWav} disabled={rendering} title="render the whole document as a single .wav (audiobook)">
+        <button class="btn audiobook" onclick={renderToWav} disabled={rendering} title="render the whole document as an .m4b audiobook with embedded chapters (or .wav)">
           {#if rendering}
             rendering {renderProgress?.index ?? 0}/{renderProgress?.total ?? 0}…
           {:else}

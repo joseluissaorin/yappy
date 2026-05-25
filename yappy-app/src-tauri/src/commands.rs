@@ -789,6 +789,18 @@ pub struct ParagraphSpec {
     /// Silence (in seconds) inserted BEFORE this paragraph's audio. 0 = no gap.
     /// Useful for chapter breaks. The first paragraph's pause is ignored.
     pub pause_before: Option<f32>,
+    /// If set, this paragraph starts a new chapter in the rendered m4b. The
+    /// chapter's timestamp will be the sample-accurate position of this
+    /// paragraph in the combined audio. Ignored for .wav output.
+    pub chapter_title: Option<String>,
+}
+
+/// Optional top-level metadata for m4b output (ignored for .wav).
+#[derive(Debug, Clone, Default, Deserialize)]
+pub struct AudiobookMeta {
+    pub title: Option<String>,
+    pub author: Option<String>,
+    pub album: Option<String>,
 }
 
 /// Render the whole document end-to-end into a single .wav file, applying
@@ -801,6 +813,7 @@ pub async fn render_audiobook_cmd(
     state: State<'_, Arc<AppState>>,
     paragraphs: Vec<ParagraphSpec>,
     output_path: String,
+    metadata: Option<AudiobookMeta>,
 ) -> Result<(), String> {
     if paragraphs.is_empty() {
         return Err("nothing to render".into());
@@ -818,9 +831,17 @@ pub async fn render_audiobook_cmd(
 
     let app_for_thread = app.clone();
     let total = paragraphs.len();
+    let want_m4b = std::path::Path::new(&output_path)
+        .extension()
+        .and_then(|e| e.to_str())
+        .map(|e| e.eq_ignore_ascii_case("m4b") || e.eq_ignore_ascii_case("m4a"))
+        .unwrap_or(false);
+
     tokio::task::spawn_blocking(move || -> Result<(), String> {
         let mut combined: Vec<f32> = Vec::new();
         let mut sample_rate: u32 = 0;
+        // Sample-offset → chapter title, collected as we go. Used only for m4b.
+        let mut chapters: Vec<(usize, String)> = Vec::new();
 
         for (i, p) in paragraphs.iter().enumerate() {
             let _ = app_for_thread.emit(
@@ -834,6 +855,16 @@ pub async fn render_audiobook_cmd(
                 if sample_rate > 0 && pause_secs > 0.0 {
                     let n = (pause_secs * sample_rate as f32) as usize;
                     combined.extend(std::iter::repeat(0.0_f32).take(n));
+                }
+            }
+
+            // Record chapter mark BEFORE we append this paragraph's audio so the
+            // chapter timestamp points at the start of speech, not at any
+            // leading silence we just inserted.
+            if let Some(title) = p.chapter_title.as_ref() {
+                let trimmed = title.trim();
+                if !trimmed.is_empty() {
+                    chapters.push((combined.len(), trimmed.to_string()));
                 }
             }
 
@@ -878,12 +909,53 @@ pub async fn render_audiobook_cmd(
             serde_json::json!({ "index": total, "total": total, "stage": "writing" }),
         );
 
-        crate::playback::write_wav_file(&output_path, &combined, sample_rate.max(44100))
-            .map_err(|e| format!("write wav failed: {e:?}"))?;
+        let final_sr = sample_rate.max(44100);
+
+        if want_m4b {
+            // Convert sample offsets → seconds.
+            let chapter_objs: Vec<crate::audiobook::Chapter> = chapters
+                .into_iter()
+                .map(|(offset, title)| crate::audiobook::Chapter {
+                    title,
+                    start_secs: offset as f64 / final_sr as f64,
+                })
+                .collect();
+            // If no explicit chapters were marked, give the file one at 0.0 so
+            // players still show a navigable entry instead of "no chapters".
+            let chapter_objs = if chapter_objs.is_empty() {
+                vec![crate::audiobook::Chapter {
+                    title: metadata
+                        .as_ref()
+                        .and_then(|m| m.title.clone())
+                        .unwrap_or_else(|| "Chapter 1".to_string()),
+                    start_secs: 0.0,
+                }]
+            } else {
+                chapter_objs
+            };
+
+            let meta = crate::audiobook::M4bMetadata {
+                title: metadata.as_ref().and_then(|m| m.title.clone()).unwrap_or_default(),
+                author: metadata.as_ref().and_then(|m| m.author.clone()).unwrap_or_default(),
+                album: metadata.as_ref().and_then(|m| m.album.clone()).unwrap_or_default(),
+            };
+
+            crate::audiobook::encode_m4b(
+                &combined,
+                final_sr,
+                &chapter_objs,
+                &meta,
+                std::path::Path::new(&output_path),
+            )
+            .map_err(|e| format!("m4b encode failed: {e:?}"))?;
+        } else {
+            crate::playback::write_wav_file(&output_path, &combined, final_sr)
+                .map_err(|e| format!("write wav failed: {e:?}"))?;
+        }
 
         let _ = app_for_thread.emit(
             "audiobook_render_done",
-            serde_json::json!({ "path": output_path, "samples": combined.len(), "sample_rate": sample_rate }),
+            serde_json::json!({ "path": output_path, "samples": combined.len(), "sample_rate": final_sr }),
         );
         Ok(())
     })

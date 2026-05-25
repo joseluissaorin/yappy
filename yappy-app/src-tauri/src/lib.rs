@@ -1,5 +1,6 @@
 // Yappy — local TTS that reads anything on your screen.
 
+pub mod audiobook;
 mod bridge;
 mod capture;
 mod commands;
