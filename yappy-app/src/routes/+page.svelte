@@ -90,6 +90,21 @@
   let downloading: boolean = $state(false);
   let activeSection: "home" | "voices" | "preferences" | "history" | "diagnostics" = $state("home");
   let captureEmptyToast: boolean = $state(false);
+  // iOS-only clipboard launch banner — populated at boot when iOS pasteboard
+  // has fresh user-copied content that isn't the same as what we last dismissed.
+  let clipboardCandidate: string | null = $state(null);
+  async function acceptClipboardCandidate() {
+    if (!clipboardCandidate) return;
+    const text = clipboardCandidate;
+    clipboardCandidate = null;
+    await synthesizeText(text);
+  }
+  function dismissClipboardCandidate() {
+    if (clipboardCandidate) {
+      try { localStorage.setItem("yappy:clipboard:dismissed", clipboardCandidate); } catch {}
+    }
+    clipboardCandidate = null;
+  }
   let synthError: string | null = $state(null);
   let testText = $state(
     "yappy is a tiny, local text-to-speech app. press the hotkey anywhere on your mac and i'll read what you're looking at, out loud — without sending a single word to the cloud.",
@@ -186,8 +201,27 @@
 
     // iOS: install Share-Sheet payload handler. Any URL or text shared into
     // Yappy from another app gets fetched, defuddle-extracted, and read aloud.
-    platformReady.then((p) => {
-      if (p === "ios") startShareIntake().catch((e) => console.error("[share] start failed:", e));
+    platformReady.then(async (p) => {
+      if (p !== "ios") return;
+      startShareIntake().catch((e) => console.error("[share] start failed:", e));
+      // Probe the clipboard for fresh user-copied content. iOS shows the
+      // "X pasted from Y" banner each time we read so we ONLY read once at
+      // launch — not on every focus. Skip if empty or matches what we
+      // dismissed last time.
+      try {
+        const { readText } = await import("@tauri-apps/plugin-clipboard-manager");
+        const text = (await readText()) ?? "";
+        const trimmed = text.trim();
+        if (trimmed && trimmed.length > 12 && trimmed.length < 50_000) {
+          // Skip if the user previously dismissed this exact content.
+          const dismissed = localStorage.getItem("yappy:clipboard:dismissed");
+          if (dismissed !== trimmed) {
+            clipboardCandidate = trimmed;
+          }
+        }
+      } catch (e) {
+        console.warn("[clipboard] read failed:", e);
+      }
     });
 
     unlisteners.push(await onModelDownload((p) => (download = p)));
@@ -513,6 +547,24 @@
             <div class="tip-body">
               <div class="tip-title">how to read anything aloud</div>
               <div class="tip-sub">in any iOS app — Safari, Notes, Mail, Messages — tap the share button, then choose <strong>Yappy</strong>. the article or selection gets read aloud here.</div>
+            </div>
+          </div>
+        {/if}
+
+        {#if clipboardCandidate}
+          <!-- iOS clipboard launch banner — appears when the pasteboard has
+               fresh content the user hasn't dismissed. One-tap accept feeds
+               it into TTS; dismiss remembers the exact text so we don't keep
+               re-offering the same paragraph. -->
+          <div class="card clipboard-banner">
+            <div class="clip-icon">📋</div>
+            <div class="clip-body">
+              <div class="clip-title">read your clipboard?</div>
+              <div class="clip-preview">{clipboardCandidate.slice(0, 120)}{clipboardCandidate.length > 120 ? "…" : ""}</div>
+            </div>
+            <div class="clip-actions">
+              <button class="btn-pink" onclick={acceptClipboardCandidate} aria-label="read clipboard content aloud">read it</button>
+              <button class="btn-outline" onclick={dismissClipboardCandidate} aria-label="dismiss clipboard banner">no thanks</button>
             </div>
           </div>
         {/if}
@@ -1280,6 +1332,18 @@ main {
 .tip-body { flex: 1; min-width: 0; }
 .tip-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
 .tip-sub { font-size: 14px; color: var(--ink-500); line-height: 1.4; }
+
+/* iOS clipboard launch banner. Sits above the install-voices card with a
+   subtle highlight to draw attention without screaming. */
+.clipboard-banner { padding: 16px 20px; margin-top: 14px; display: flex; gap: 14px; align-items: center; background: linear-gradient(135deg, #fff0f6 0%, #fff8d7 100%); border-radius: 14px; flex-wrap: wrap; }
+.clip-icon { font-size: 24px; line-height: 1; }
+.clip-body { flex: 1; min-width: 200px; }
+.clip-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.clip-preview { font-size: 13px; color: var(--ink-500); line-height: 1.3; max-height: 2.6em; overflow: hidden; }
+.clip-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.clip-actions button { padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+.clip-actions .btn-pink { background: var(--pink-500); color: white; }
+.clip-actions .btn-outline { background: transparent; border: 1px solid var(--ink-200, #e5e5e5); color: var(--ink-700); }
 
 .progress-row { margin-top: 18px; }
 .progress-track {

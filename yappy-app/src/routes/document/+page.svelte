@@ -77,6 +77,63 @@
   let rendering = $state(false);
   let renderProgress: { index: number; total: number; stage: string } | null = $state(null);
 
+  // Sleep timer state. `sleepUntil` is a wall-clock timestamp (ms); once
+  // Date.now() crosses it we call stopPlayback(). A reactive setInterval
+  // ticks the UI countdown every second.
+  let sleepUntil = $state<number | null>(null);
+  let sleepMenuOpen = $state(false);
+  let sleepTickInterval: number | null = null;
+
+  function setSleepIn(secs: number) {
+    sleepMenuOpen = false;
+    if (sleepTickInterval) { clearInterval(sleepTickInterval); sleepTickInterval = null; }
+    if (secs <= 0) {
+      sleepUntil = null;
+      return;
+    }
+    sleepUntil = Date.now() + secs * 1000;
+    sleepTickInterval = window.setInterval(() => {
+      if (sleepUntil != null && Date.now() >= sleepUntil) {
+        sleepUntil = null;
+        if (sleepTickInterval) { clearInterval(sleepTickInterval); sleepTickInterval = null; }
+        stopPlayback();
+      } else {
+        // Force reactive refresh of the countdown display.
+        sleepUntil = sleepUntil;
+      }
+    }, 1000);
+  }
+  function toggleSleepMenu() {
+    sleepMenuOpen = !sleepMenuOpen;
+  }
+
+  // Per-document playback bookmark — "remember where I am" so the next
+  // open of this same document resumes at that paragraph. Keyed by doc
+  // path (or document filename if no path). Lives in localStorage so it
+  // survives app restarts without a backend round-trip.
+  function bookmarkKey(): string | null {
+    if (!doc) return null;
+    return `yappy:bookmark:${doc.path ?? doc.filename}`;
+  }
+  function saveBookmark() {
+    const k = bookmarkKey();
+    if (!k) return;
+    const idx = snap.current_paragraph_index;
+    if (idx == null || idx < 0) return;
+    try { localStorage.setItem(k, String(idx)); } catch {}
+    flashToast(`bookmarked at paragraph ${idx + 1}`);
+  }
+  function loadBookmark(): number | null {
+    const k = bookmarkKey();
+    if (!k) return null;
+    try {
+      const raw = localStorage.getItem(k);
+      if (!raw) return null;
+      const n = parseInt(raw, 10);
+      return isFinite(n) && n >= 0 ? n : null;
+    } catch { return null; }
+  }
+
   // Doc-window-local rhythm multiplier. Adjusts the markdown-driven speed pattern
   // and pause spacing without touching the global voice speed in Preferences.
   // 0.5 = much slower / longer pauses; 1.0 = as-parsed; 2.0 = much faster / tighter.
@@ -986,9 +1043,10 @@
         <!-- Undo / redo -->
         <button class="btn" onclick={undo} disabled={undoStack.length === 0} title="undo (⌘Z)">↶</button>
         <button class="btn" onclick={redo} disabled={redoStack.length === 0} title="redo (⌘⇧Z)">↷</button>
-        <button class="btn" onclick={() => skip(-15)} title="back 15s">−15s</button>
-        <button class="btn" onclick={() => skip(15)} title="forward 15s">+15s</button>
-        <button class="btn stop" onclick={stopPlayback} title="stop everything">stop</button>
+        <button class="btn" onclick={() => skip(-15)} title="back 15s" aria-label="rewind 15 seconds">−15s</button>
+        <button class="btn" onclick={() => skip(15)} title="forward 15s" aria-label="skip forward 15 seconds">+15s</button>
+        <button class="btn" onclick={saveBookmark} title="bookmark this position" aria-label="bookmark current position">🔖</button>
+        <button class="btn stop" onclick={stopPlayback} title="stop everything" aria-label="stop playback">stop</button>
         <button class="btn" onclick={downloadCurrent} title="save current playback as .wav">
           ↓ session.wav
         </button>
@@ -1020,8 +1078,30 @@
   {#if (snap.playing || snap.paused) && snap.duration_secs > 0.1}
     <div class="progress-strip">
       <div class="bar"><div class="fill" style="--w: {Math.min(100, (snap.elapsed_secs / snap.duration_secs) * 100)}%"></div></div>
-      <div class="time">{fmtTime(snap.elapsed_secs)} / {fmtTime(snap.duration_secs)}</div>
+      <div class="time">
+        {fmtTime(snap.elapsed_secs)} / {fmtTime(snap.duration_secs)}
+        <span class="time-remaining">· {fmtTime(Math.max(0, snap.duration_secs - snap.elapsed_secs))} left</span>
+      </div>
       <SoundWaves active={snap.playing && !snap.paused} height={14} bars={9} />
+      <!-- Sleep timer button (audiobook convention). Shows current countdown
+           when active; tap opens a small chooser. -->
+      <button class="sleep-btn" class:on={sleepUntil != null} onclick={toggleSleepMenu} title="sleep timer">
+        {#if sleepUntil != null}
+          🌙 {fmtTime(Math.max(0, (sleepUntil - Date.now()) / 1000))}
+        {:else}
+          🌙
+        {/if}
+      </button>
+    </div>
+  {/if}
+  {#if sleepMenuOpen}
+    <div class="sleep-menu">
+      {#each [{ label: "5 min", secs: 300 }, { label: "15 min", secs: 900 }, { label: "30 min", secs: 1800 }, { label: "60 min", secs: 3600 }] as opt}
+        <button onclick={() => setSleepIn(opt.secs)}>{opt.label}</button>
+      {/each}
+      {#if sleepUntil != null}
+        <button class="cancel" onclick={() => setSleepIn(0)}>cancel</button>
+      {/if}
     </div>
   {/if}
 
@@ -1454,7 +1534,17 @@
     border-radius: 999px; overflow: hidden;
   }
   .progress-strip .fill { height: 100%; width: var(--w, 0%); background: var(--pink-500); transition: width 0.2s linear; }
-  .progress-strip .time { font-family: var(--font-mono); font-size: 11px; color: var(--ink-700); font-weight: 700; min-width: 70px; }
+  .progress-strip .time { font-family: var(--font-mono); font-size: 11px; color: var(--ink-700); font-weight: 700; min-width: 70px; display: flex; gap: 8px; align-items: baseline; }
+  .progress-strip .time-remaining { color: var(--ink-500); font-weight: 500; }
+
+  /* Sleep timer button — moon emoji, lights up when timer is active.
+     Tap toggles the small chooser below the progress strip. */
+  .sleep-btn { background: transparent; border: 1px solid var(--ink-200, #e5e5e5); border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 700; font-family: var(--font-mono); cursor: pointer; color: var(--ink-700); }
+  .sleep-btn.on { background: var(--ink-900, #111); color: white; border-color: var(--ink-900, #111); }
+  .sleep-menu { display: flex; gap: 8px; padding: 8px 16px; flex-wrap: wrap; background: var(--ink-50, #fff8d7); border-radius: 12px; margin: 8px 0; }
+  .sleep-menu button { background: white; border: 1px solid var(--ink-200, #e5e5e5); border-radius: 999px; padding: 6px 14px; font-size: 13px; cursor: pointer; }
+  .sleep-menu button:hover { border-color: var(--pink-500); color: var(--pink-500); }
+  .sleep-menu button.cancel { color: var(--ink-500); margin-left: auto; }
 
   /* ── ERROR BANNER ──────────────────────────────────────────────────────── */
   .err-banner {
