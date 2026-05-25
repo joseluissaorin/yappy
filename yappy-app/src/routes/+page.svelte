@@ -90,6 +90,28 @@
   let downloading: boolean = $state(false);
   let activeSection: "home" | "voices" | "preferences" | "history" | "diagnostics" = $state("home");
   let captureEmptyToast: boolean = $state(false);
+  // iOS library: rendered audiobook files in the app's Documents/. Refreshed
+  // on launch + after any new render finishes. Each item gets a share button.
+  type LibraryItem = { name: string; path: string; size: number; mtime_ms: number };
+  let libraryItems: LibraryItem[] = $state([]);
+  async function refreshLibrary() {
+    if (!getStore(isIOS)) return;
+    try {
+      const { invoke } = await import("@tauri-apps/api/core");
+      libraryItems = (await invoke("list_rendered_audiobooks_cmd")) as LibraryItem[];
+    } catch (e) {
+      console.warn("[library] refresh failed:", e);
+    }
+  }
+  async function shareLibraryItem(path: string) {
+    try {
+      const { invoke } = await import("@tauri-apps/api/core");
+      await invoke("share_file_cmd", { path });
+    } catch (e) {
+      console.warn("[library] share failed:", e);
+    }
+  }
+
   // iOS-only clipboard launch banner — populated at boot when iOS pasteboard
   // has fresh user-copied content that isn't the same as what we last dismissed.
   let clipboardCandidate: string | null = $state(null);
@@ -204,6 +226,7 @@
     platformReady.then(async (p) => {
       if (p !== "ios") return;
       startShareIntake().catch((e) => console.error("[share] start failed:", e));
+      refreshLibrary();
       // Probe the clipboard for fresh user-copied content. iOS shows the
       // "X pasted from Y" banner each time we read so we ONLY read once at
       // launch — not on every focus. Skip if empty or matches what we
@@ -492,17 +515,17 @@
 
 <header class="topbar" data-tauri-drag-region>
   <div class="topbar-inner" data-tauri-drag-region>
-    <button class="logo" onclick={() => (activeSection = "home")}>yappy</button>
-    <nav class="nav">
-      <button class:active={activeSection === "home"} onclick={() => (activeSection = "home")}>home</button>
-      <button class:active={activeSection === "voices"} onclick={() => (activeSection = "voices")}>voices</button>
-      <button class:active={activeSection === "preferences"} onclick={() => (activeSection = "preferences")}>preferences</button>
-      <button class:active={activeSection === "history"} onclick={() => (activeSection = "history")}>history</button>
-      <button class:active={activeSection === "diagnostics"} onclick={() => (activeSection = "diagnostics")}>diagnostics</button>
+    <button class="logo" onclick={() => (activeSection = "home")} aria-label="Yappy, go to home">yappy</button>
+    <nav class="nav" aria-label="primary navigation">
+      <button class:active={activeSection === "home"} onclick={() => (activeSection = "home")} aria-current={activeSection === "home" ? "page" : undefined}>home</button>
+      <button class:active={activeSection === "voices"} onclick={() => (activeSection = "voices")} aria-current={activeSection === "voices" ? "page" : undefined}>voices</button>
+      <button class:active={activeSection === "preferences"} onclick={() => (activeSection = "preferences")} aria-current={activeSection === "preferences" ? "page" : undefined}>preferences</button>
+      <button class:active={activeSection === "history"} onclick={() => (activeSection = "history")} aria-current={activeSection === "history" ? "page" : undefined}>history</button>
+      <button class:active={activeSection === "diagnostics"} onclick={() => (activeSection = "diagnostics")} aria-current={activeSection === "diagnostics" ? "page" : undefined}>diagnostics</button>
     </nav>
     <div class="actions">
-      <button class="btn-ghost icon-only" title="help (⌘/)" onclick={() => (helpOpen = true)}>?</button>
-      <button class="btn-ghost icon-only" title="about yappy" onclick={() => (aboutOpen = true)}>ⓘ</button>
+      <button class="btn-ghost icon-only" title="help (⌘/)" onclick={() => (helpOpen = true)} aria-label="help">?</button>
+      <button class="btn-ghost icon-only" title="about yappy" onclick={() => (aboutOpen = true)} aria-label="about Yappy">ⓘ</button>
     </div>
   </div>
 </header>
@@ -617,8 +640,8 @@
         {/if}
 
         <div class="rp-cta">
-          <button class="rp-primary" onclick={() => readNow()}>
-            <span class="rp-primary-icon"><YappyMascot size={64} talking={isPlaying} /></span>
+          <button class="rp-primary" onclick={() => readNow()} aria-label={isPlaying && !playback?.paused ? "currently reading aloud, tap to pause" : playback?.paused ? "resume reading" : "read what I am looking at"}>
+            <span class="rp-primary-icon" aria-hidden="true"><YappyMascot size={64} talking={isPlaying} /></span>
             <span class="rp-primary-text">
               <span class="rp-primary-title">
                 {#if isPlaying && !playback?.paused}reading aloud…
@@ -633,8 +656,8 @@
             </span>
           </button>
           {#if isPlaying || playback?.paused}
-            <button class="rp-stop" onclick={() => stopPlayback()} title="stop reading (Esc)">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="2" width="10" height="10" rx="2"/></svg>
+            <button class="rp-stop" onclick={() => stopPlayback()} title="stop reading (Esc)" aria-label="stop reading">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><rect x="2" y="2" width="10" height="10" rx="2"/></svg>
               stop
             </button>
           {/if}
@@ -1174,6 +1197,27 @@
         <h2>history</h2>
         <p>your recent reads. replay anything, anytime.</p>
       </header>
+      {#if $isIOS}
+        <!-- iOS only: list of rendered audiobook files in the app's
+             Documents/ directory. Tap "share" to push via AirDrop, Apple
+             Books, Files, etc. -->
+        <div class="card pref-card">
+          <h3 style="margin: 0 0 12px 0;">saved audiobooks</h3>
+          {#if libraryItems.length === 0}
+            <p class="muted">no audiobooks yet. render one from the document view.</p>
+          {:else}
+            <ul class="lib-list" aria-label="saved audiobooks">
+              {#each libraryItems as item}
+                <li class="lib-row">
+                  <div class="lib-name">🎧 {item.name}</div>
+                  <div class="lib-meta">{(item.size / (1024 * 1024)).toFixed(1)} MB · {new Date(item.mtime_ms).toLocaleDateString()}</div>
+                  <button class="btn-outline" onclick={() => shareLibraryItem(item.path)} aria-label={`share ${item.name}`}>📤 share</button>
+                </li>
+              {/each}
+            </ul>
+          {/if}
+        </div>
+      {/if}
       <div class="card pref-card"><HistoryList /></div>
     </section>
   {:else if activeSection === "diagnostics"}
@@ -1332,6 +1376,16 @@ main {
 .tip-body { flex: 1; min-width: 0; }
 .tip-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
 .tip-sub { font-size: 14px; color: var(--ink-500); line-height: 1.4; }
+
+/* iOS saved-audiobooks library list. Shown only in the History section
+   on iOS — Documents/ is a private sandbox on iOS so it's the only way to
+   see what's been rendered. */
+.lib-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.lib-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 12px; border: 1px solid var(--ink-200, #e5e5e5); border-radius: 10px; }
+.lib-name { font-weight: 600; font-size: 14px; grid-column: 1; word-break: break-word; }
+.lib-meta { font-size: 12px; color: var(--ink-500); grid-column: 1; grid-row: 2; }
+.lib-row button { grid-column: 2; grid-row: 1 / 3; padding: 7px 12px; border-radius: 999px; font-size: 13px; cursor: pointer; background: transparent; border: 1px solid var(--ink-200, #e5e5e5); color: var(--ink-700); }
+.muted { color: var(--ink-500); font-size: 14px; }
 
 /* iOS clipboard launch banner. Sits above the install-voices card with a
    subtle highlight to draw attention without screaming. */

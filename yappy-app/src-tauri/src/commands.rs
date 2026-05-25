@@ -1110,6 +1110,61 @@ pub fn share_file_cmd(path: String) -> Result<(), String> {
     Ok(())
 }
 
+/// List rendered audiobook files (`.m4b`, `.wav`, `.mp3`) in the app's
+/// documents directory. iOS users can't browse the filesystem freely, so
+/// the in-app library is the only place to find previously-rendered audio.
+#[derive(serde::Serialize, Debug, Clone)]
+pub struct LibraryItem {
+    pub name: String,
+    pub path: String,
+    pub size: u64,
+    pub mtime_ms: i64,
+}
+
+#[tauri::command]
+pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryItem>, String> {
+    use tauri::Manager;
+    let dir = app
+        .path()
+        .document_dir()
+        .map_err(|e| e.to_string())?;
+    let mut items: Vec<LibraryItem> = Vec::new();
+    let entries = std::fs::read_dir(&dir).map_err(|e| e.to_string())?;
+    for entry in entries.flatten() {
+        let path = entry.path();
+        let ext = path
+            .extension()
+            .and_then(|s| s.to_str())
+            .map(|s| s.to_lowercase());
+        if !matches!(ext.as_deref(), Some("m4b") | Some("wav") | Some("mp3") | Some("m4a")) {
+            continue;
+        }
+        let meta = match entry.metadata() {
+            Ok(m) => m,
+            Err(_) => continue,
+        };
+        let name = path
+            .file_name()
+            .and_then(|s| s.to_str())
+            .map(|s| s.to_string())
+            .unwrap_or_default();
+        let mtime_ms = meta
+            .modified()
+            .ok()
+            .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+            .map(|d| d.as_millis() as i64)
+            .unwrap_or(0);
+        items.push(LibraryItem {
+            name,
+            path: path.to_string_lossy().to_string(),
+            size: meta.len(),
+            mtime_ms,
+        });
+    }
+    items.sort_by(|a, b| b.mtime_ms.cmp(&a.mtime_ms));
+    Ok(items)
+}
+
 #[tauri::command]
 pub async fn synthesize_text(
     app: AppHandle,

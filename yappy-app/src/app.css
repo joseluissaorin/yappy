@@ -61,11 +61,20 @@
 
 html, body { margin: 0; padding: 0; height: 100%; }
 
+/* Dynamic Type — root font-size scales with the iOS "Larger Text"
+   accessibility setting via WebKit's text-size-adjust hook. iOS users who
+   set a larger system font size see Yappy's UI scale up proportionally;
+   desktop users with no system size override stay at 15px baseline. */
+html {
+  font-size: 15px;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 1rem;
   line-height: 1.5;
   font-weight: 500;
   letter-spacing: -0.005em;
