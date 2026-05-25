@@ -253,9 +253,35 @@ impl TextToSpeech {
         let cfg = load_cfg(onnx_dir)?;
         let sample_rate = cfg.ae.sample_rate;
 
+        // On Apple platforms (macOS + iOS) register the CoreML execution
+        // provider so supported ops route to the Neural Engine / GPU. This is
+        // a meaningful latency win on M-series Macs and effectively MANDATORY
+        // for iOS, where the CPU-only fallback is too slow for real-time TTS.
+        // Unsupported ops transparently fall back to CPU — registering the EP
+        // is safe even if some Supertonic ops don't map to CoreML.
         let session = |name: &str| -> Result<Session> {
             let p = onnx_dir.join(name);
-            Session::builder()?
+            let mut builder = Session::builder()?;
+            #[cfg(any(target_os = "macos", target_os = "ios"))]
+            {
+                use ort::execution_providers::coreml::{
+                    CoreMLComputeUnits, CoreMLExecutionProvider, CoreMLModelFormat,
+                };
+                let ep = CoreMLExecutionProvider::default()
+                    // All = CPU + GPU + Neural Engine. The runtime picks the
+                    // fastest path per op.
+                    .with_compute_units(CoreMLComputeUnits::All)
+                    // MLProgram (the modern .mlpackage format) supports more
+                    // operators and is generally faster than the legacy
+                    // NeuralNetwork format.
+                    .with_model_format(CoreMLModelFormat::MLProgram)
+                    .build();
+                // append_execution_provider returns a Result we want to
+                // SOFTEN — if CoreML init fails (e.g. on an older OS) we
+                // still want the session to load on CPU rather than erroring.
+                builder = builder.with_execution_providers([ep])?;
+            }
+            builder
                 .commit_from_file(&p)
                 .with_context(|| format!("loading ONNX session {}", p.display()))
         };

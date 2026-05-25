@@ -48,6 +48,26 @@ pub fn run() {
         .init();
     tracing::info!("yappy starting — log at {}", log_path.display());
 
+    // Set CoreML as a default execution provider at the ONNX Runtime
+    // ENVIRONMENT level. Sessions created later (Supertonic + PaddleOCR) pick
+    // this up automatically unless they specify their own EPs. Crucially this
+    // accelerates paddle-ocr-rs too, which doesn't expose an EP config knob.
+    // Falls back to CPU silently if CoreML init fails (older OS, etc.).
+    #[cfg(any(target_os = "macos", target_os = "ios"))]
+    {
+        use ort::execution_providers::coreml::{
+            CoreMLComputeUnits, CoreMLExecutionProvider, CoreMLModelFormat,
+        };
+        let ep = CoreMLExecutionProvider::default()
+            .with_compute_units(CoreMLComputeUnits::All)
+            .with_model_format(CoreMLModelFormat::MLProgram)
+            .build();
+        match ort::init().with_execution_providers([ep]).commit() {
+            Ok(_) => tracing::info!("ort: registered CoreML EP (ANE/GPU/CPU) at environment level"),
+            Err(e) => tracing::warn!("ort: CoreML EP registration failed, falling back to CPU: {e}"),
+        }
+    }
+
     // smoke-play synthesis test
     if std::env::args().any(|a| a == "--smoke-play") {
         let model_root = dirs::data_dir()

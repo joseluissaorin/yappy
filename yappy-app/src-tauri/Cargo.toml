@@ -62,6 +62,11 @@ uuid = { version = "1", features = ["v4", "serde"] }
 
 yappy-core = { workspace = true }
 
+# Used here only to register the CoreML execution provider at the ONNX Runtime
+# environment level (see lib.rs). yappy-core already depends on ort with the
+# `coreml` feature; declaring it here just gives us API access in this crate.
+ort = { workspace = true }
+
 # Audio output
 cpal = "0.15"
 rubato = "0.16"

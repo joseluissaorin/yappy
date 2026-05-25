@@ -18,7 +18,11 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 regex = "1.10"
 once_cell = "1"
 ndarray = { version = "0.16", features = ["rayon"] }
-ort = "=2.0.0-rc.10"
+# `coreml` enables ONNX Runtime's CoreML execution provider on Apple platforms,
+# which routes supported ops to the Neural Engine / Apple GPU. Unsupported ops
+# transparently fall back to CPU. This benefits macOS today (M-series ANE) and
+# is mandatory for getting acceptable Supertonic + PaddleOCR latency on iOS.
+ort = { version = "=2.0.0-rc.10", features = ["coreml"] }
 rand = "0.8"
 rand_distr = "0.4"
 hound = "3.5"
