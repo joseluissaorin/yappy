@@ -12,6 +12,7 @@
 		2BB9987F977E32878AB9ADEA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ADAB30D4ABAAF920F7204EF /* AVFoundation.framework */; };
 		2E1157FAA77A5775AF366A62 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AC793DBBC9E8C9CFD64D2B /* MediaPlayer.framework */; };
 		2ECA68CB885E90C37B24D6F0 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 0475A5B4D70EB82E962947E4 /* assets */; };
+		3E69589CF40DCCDA1133A771 /* YappyHomeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A1FAB9378B7B7941C656CA /* YappyHomeWidget.swift */; };
 		43B7E8BEEB5DA997B66FFFD5 /* YappyWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 11D8807FE02A0A9A28B2AC44 /* YappyWidgets.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		450EF73371F034EB0BC204E5 /* libapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5A9A58DA5F7712C4E9EF3F /* libapp.a */; };
 		53336429DF0E473712A4EF0C /* YappyWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BACA884836A2C3FBE6980A8B /* YappyWidgetsBundle.swift */; };
@@ -117,6 +118,7 @@
 		96AEBF7E16B41A1D15A49708 /* main.rs */ = {isa = PBXFileReference; path = main.rs; sourceTree = "<group>"; };
 		A1030C208421566F6F5B172E /* yappy-app_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "yappy-app_iOS.entitlements"; sourceTree = "<group>"; };
 		A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		A6A1FAB9378B7B7941C656CA /* YappyHomeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YappyHomeWidget.swift; sourceTree = "<group>"; };
 		A839BA0F5D036967B81598A0 /* doc_loader.rs */ = {isa = PBXFileReference; path = doc_loader.rs; sourceTree = "<group>"; };
 		AACE0C20E80390C5DBAC4B9B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		ADAB49961CDBFB60DE0CD606 /* selection.rs */ = {isa = PBXFileReference; path = selection.rs; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				55CDEF6E4F70C998F01DA069 /* Info.plist */,
+				A6A1FAB9378B7B7941C656CA /* YappyHomeWidget.swift */,
 				1250D842062C23F3CC91E1F2 /* YappyRenderActivityWidget.swift */,
 				7E502C65C6D812B209E0A8D6 /* YappyWidgets.entitlements */,
 				BACA884836A2C3FBE6980A8B /* YappyWidgetsBundle.swift */,
@@ -492,6 +495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				70ADC16704D4D95F4AAA06B6 /* RenderActivityAttributes.swift in Sources */,
+				3E69589CF40DCCDA1133A771 /* YappyHomeWidget.swift in Sources */,
 				B95540DB6E39CCD706BD7194 /* YappyRenderActivityWidget.swift in Sources */,
 				53336429DF0E473712A4EF0C /* YappyWidgetsBundle.swift in Sources */,
 			);
