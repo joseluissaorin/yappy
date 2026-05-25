@@ -14,8 +14,9 @@
   import HotkeyPicker from "$lib/HotkeyPicker.svelte";
   import CreditsModal from "$lib/CreditsModal.svelte";
   import Onboarding from "$lib/Onboarding.svelte";
-  import { isIOS, ready as platformReady } from "$lib/platform";
+  import { isIOS, ready as platformReady, platformLocale, langCodeFromLocale } from "$lib/platform";
   import { startShareIntake } from "$lib/shareIntake";
+  import { get as getStore } from "svelte/store";
   import {
     LANGUAGES,
     type CaptureInfo,
@@ -168,6 +169,19 @@
     modelReady = await isModelReady();
     if (settings && !settings.first_launch_done) {
       onboardingOpen = true;
+      // First-launch locale-aware default for `default_lang`. When the device
+      // locale is e.g. es-ES the user almost certainly wants Spanish as the
+      // initial language rather than the English default. Yappy supports all
+      // ISO 639-1 codes the underlying model handles; mismatches fall back to
+      // "en" inside langCodeFromLocale.
+      await platformReady;
+      const locale = getStore(platformLocale);
+      const detectedLang = langCodeFromLocale(locale);
+      if (detectedLang && detectedLang !== settings.default_lang) {
+        console.log(`[platform] device locale ${locale} → defaulting Yappy to ${detectedLang}`);
+        settings = { ...settings, default_lang: detectedLang };
+        await setSettings(settings);
+      }
     }
 
     // iOS: install Share-Sheet payload handler. Any URL or text shared into
