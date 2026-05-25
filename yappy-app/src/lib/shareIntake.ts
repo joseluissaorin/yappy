@@ -118,4 +118,12 @@ export async function startShareIntake(): Promise<void> {
       }
     }
   });
+
+  // Dev helper: expose handleOne on window so we can drive the defuddle
+  // path from Safari Web Inspector / WKWebView console for iOS testing
+  // BEFORE the App Group entitlement is honored. Call from devtools:
+  //   await window.__yappyHandleOne("url:https://example.com/article")
+  if (typeof window !== "undefined") {
+    (window as any).__yappyHandleOne = handleOne;
+  }
 }
