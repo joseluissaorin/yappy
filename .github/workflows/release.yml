@@ -124,18 +124,22 @@ jobs:
 
       - name: Collect bundle paths (unix)
         if: matrix.platform != 'windows-latest'
-        shell: bash
+        # GH Actions' default `shell: bash` injects `-e -o pipefail` even when
+        # the script doesn't ask for it. Override completely so non-zero return
+        # codes from intentional `[ -z ]` short-circuits don't kill the script.
+        shell: 'bash {0}'
         run: |
-          # Note: NO `set -e` here — `[ -z "$files" ]` returns 1 when files is
-          # non-empty, which under -e silently kills the script. We handle errors
-          # explicitly below.
-          BUNDLE_DIR="target/${{ matrix.target }}/release/bundle"
-          mkdir -p _release_uploads
+          BUNDLE_DIR="${GITHUB_WORKSPACE}/target/${{ matrix.target }}/release/bundle"
+          OUT="${GITHUB_WORKSPACE}/_release_uploads"
+          mkdir -p "$OUT"
+          echo "Looking under: $BUNDLE_DIR"
+          ls -la "$BUNDLE_DIR" 2>&1 || true
 
           # macOS: .dmg
           if [ -d "$BUNDLE_DIR/dmg" ]; then
             find "$BUNDLE_DIR/dmg" -type f -name "*.dmg" -print0 | while IFS= read -r -d '' f; do
-              cp "$f" _release_uploads/
+              echo "  copy $(basename "$f")"
+              cp "$f" "$OUT/"
             done
           fi
 
@@ -149,33 +153,53 @@ jobs:
                          find "$BUNDLE_DIR" -type f -name "yappy-*.${kind}" 2>/dev/null; } )
             fi
             for f in $files; do
-              [ -f "$f" ] && cp "$f" _release_uploads/
+              if [ -f "$f" ]; then
+                echo "  copy $(basename "$f")"
+                cp "$f" "$OUT/"
+              fi
             done
           done
 
+          echo
           echo "Collected:"
-          ls -lh _release_uploads/ || true
+          ls -lh "$OUT" 2>&1 || true
+          # Always exit clean — even an empty dir is fine; upload step is a no-op.
+          true
 
       - name: Collect bundle paths (windows)
         if: matrix.platform == 'windows-latest'
         shell: pwsh
         run: |
-          $BundleDir = "target/${{ matrix.target }}/release/bundle"
-          New-Item -ItemType Directory -Force -Path _release_uploads | Out-Null
+          $BundleDir = Join-Path $env:GITHUB_WORKSPACE "target\${{ matrix.target }}\release\bundle"
+          $Out      = Join-Path $env:GITHUB_WORKSPACE "_release_uploads"
+          New-Item -ItemType Directory -Force -Path $Out | Out-Null
+          Write-Host "Looking under: $BundleDir"
+          if (-not (Test-Path $BundleDir)) {
+            Write-Error "Bundle dir not found: $BundleDir"
+            exit 1
+          }
           Get-ChildItem -Path $BundleDir -Recurse -Include *.msi, *.exe -File `
             | Where-Object { $_.Name -notlike "*.zip*" -and $_.Name -notlike "*.sig" } `
-            | ForEach-Object { Copy-Item $_.FullName _release_uploads/ }
-          Get-ChildItem _release_uploads/
+            | ForEach-Object {
+                Write-Host "  copy $($_.Name)"
+                Copy-Item $_.FullName $Out
+              }
+          Get-ChildItem $Out
 
       - name: Upload to release (tag push)
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-        shell: bash
+        shell: 'bash {0}'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          for f in _release_uploads/* ; do
-            echo "→ uploading $f"
-            gh release upload "${{ github.ref_name }}" "$f" --clobber
+          OUT="${GITHUB_WORKSPACE}/_release_uploads"
+          if [ ! -d "$OUT" ] || [ -z "$(ls -A "$OUT" 2>/dev/null)" ]; then
+            echo "Nothing to upload from $OUT — skipping."
+            exit 0
+          fi
+          for f in "$OUT"/*; do
+            echo "→ uploading $(basename "$f")"
+            gh release upload "${{ github.ref_name }}" "$f" --clobber || echo "  WARN: upload failed for $(basename "$f")"
           done
 
       - name: Upload as workflow artifacts (manual dispatch)
