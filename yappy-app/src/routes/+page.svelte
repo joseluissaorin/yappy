@@ -109,18 +109,45 @@
     duration_secs: number;
     playing: boolean;
   };
+  type ChapterEntry = { title: string; start_secs: number };
   let libraryItems: LibraryItem[] = $state([]);
   let libraryStatus: LibraryStatus = $state({ current_path: null, position_secs: 0, duration_secs: 0, playing: false });
   let libraryPollInterval: number | null = null;
+  // Chapters for the currently-open chapter picker. null = picker closed.
+  let openChaptersForPath: string | null = $state(null);
+  let openChapters: ChapterEntry[] = $state([]);
 
   async function refreshLibrary() {
     if (!getStore(isIOS)) return;
     try {
       const { invoke } = await import("@tauri-apps/api/core");
       libraryItems = (await invoke("list_rendered_audiobooks_cmd")) as LibraryItem[];
+      // Push updated library to iOS Spotlight whenever the list changes, so
+      // user can find these via system search. Best-effort — failure here
+      // just means the search index is stale, app still works.
+      invoke("library_reindex_spotlight_cmd").catch((e) => console.warn("[spotlight]", e));
     } catch (e) {
       console.warn("[library] refresh failed:", e);
     }
+  }
+  async function openChapterPicker(item: LibraryItem) {
+    try {
+      const { invoke } = await import("@tauri-apps/api/core");
+      openChapters = (await invoke("library_chapters_cmd", { path: item.path })) as ChapterEntry[];
+      openChaptersForPath = item.path;
+    } catch (e) {
+      console.warn("[chapters] failed:", e);
+    }
+  }
+  function closeChapterPicker() {
+    openChaptersForPath = null;
+    openChapters = [];
+  }
+  async function jumpToChapter(secs: number) {
+    const { invoke } = await import("@tauri-apps/api/core");
+    await invoke("library_seek_cmd", { secs });
+    closeChapterPicker();
+    await pollLibraryStatus();
   }
   async function libraryPlay(item: LibraryItem, fromStart = false) {
     try {
@@ -1340,6 +1367,9 @@
                   {#if item.resume_secs > 5}
                     <button class="btn-outline" onclick={() => libraryPlay(item, true)} aria-label={`play ${item.name} from start`} title="play from start">⤺</button>
                   {/if}
+                  {#if item.chapter_count > 0}
+                    <button class="btn-outline" onclick={() => openChapterPicker(item)} aria-label={`browse chapters of ${item.name}`} title="chapters">☰</button>
+                  {/if}
                   <button class="btn-outline" onclick={() => shareLibraryItem(item.path)} aria-label={`share ${item.name}`}>📤</button>
                   <button class="btn-outline danger" onclick={() => libraryDelete(item)} aria-label={`delete ${item.name}`}>🗑</button>
                 </div>
@@ -1348,6 +1378,50 @@
           </ul>
         {/if}
       </div>
+
+      {#if openChaptersForPath != null}
+        <!-- Chapter picker — full-screen overlay on iOS. Each row jumps the
+             current playback to that chapter's start time. Only useful when
+             the same file is currently playing; if not, tapping a chapter
+             also starts playback at that offset. -->
+        <div class="chapter-overlay" onclick={closeChapterPicker} role="dialog" tabindex="-1">
+          <div class="chapter-sheet" onclick={(e) => e.stopPropagation()}>
+            <header class="chapter-head">
+              <h3>chapters</h3>
+              <button class="chapter-close" onclick={closeChapterPicker} aria-label="close chapters">✕</button>
+            </header>
+            {#if openChapters.length === 0}
+              <p class="muted">no chapters in this file.</p>
+            {:else}
+              <ul class="chapter-list" aria-label="chapter list">
+                {#each openChapters as ch, i}
+                  <li>
+                    <button
+                      class="chapter-row"
+                      class:active={libraryStatus.current_path === openChaptersForPath &&
+                        libraryStatus.position_secs >= ch.start_secs &&
+                        (i + 1 >= openChapters.length || libraryStatus.position_secs < openChapters[i + 1].start_secs)}
+                      onclick={() => {
+                        if (libraryStatus.current_path === openChaptersForPath) {
+                          jumpToChapter(ch.start_secs);
+                        } else {
+                          const it = libraryItems.find((x) => x.path === openChaptersForPath);
+                          if (it) {
+                            libraryPlay(it).then(() => jumpToChapter(ch.start_secs));
+                          }
+                        }
+                      }}>
+                      <span class="chapter-num">{i + 1}.</span>
+                      <span class="chapter-title">{ch.title}</span>
+                      <span class="chapter-time">{libraryFmtTime(ch.start_secs)}</span>
+                    </button>
+                  </li>
+                {/each}
+              </ul>
+            {/if}
+          </div>
+        </div>
+      {/if}
     </section>
   {:else if activeSection === "history"}
     <section class="hist-wrap">
@@ -1543,6 +1617,21 @@ main {
 .lib-card-actions .btn-outline.danger { color: var(--ink-500); }
 .lib-card-actions .btn-outline.danger:hover { color: #dc2626; border-color: #fecaca; }
 .muted { color: var(--ink-500); font-size: 14px; }
+
+/* Chapter picker overlay — full-screen modal on iOS. */
+.chapter-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+.chapter-sheet { background: white; border-radius: 16px; padding: 20px; max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; }
+.chapter-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.chapter-head h3 { margin: 0; font-size: 18px; font-weight: 700; }
+.chapter-close { background: transparent; border: none; font-size: 20px; cursor: pointer; padding: 4px 8px; color: var(--ink-500); }
+.chapter-list { list-style: none; padding: 0; margin: 0; }
+.chapter-list li { margin-bottom: 4px; }
+.chapter-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; width: 100%; padding: 12px; background: transparent; border: 1px solid transparent; border-radius: 10px; cursor: pointer; text-align: left; font: inherit; color: inherit; }
+.chapter-row:hover { background: var(--ink-50, #fff8d7); }
+.chapter-row.active { background: linear-gradient(135deg, #fff0f6 0%, #fff8d7 100%); border-color: var(--pink-500); }
+.chapter-num { font-family: var(--font-mono); color: var(--ink-500); font-size: 13px; min-width: 30px; }
+.chapter-title { font-weight: 600; font-size: 14px; }
+.chapter-time { font-family: var(--font-mono); font-size: 12px; color: var(--ink-500); }
 
 /* iOS clipboard launch banner. Sits above the install-voices card with a
    subtle highlight to draw attention without screaming. */

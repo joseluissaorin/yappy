@@ -73,35 +73,50 @@ pub fn read_m4b_info(path: &Path) -> Option<M4bInfo> {
 }
 
 fn read_chpl_from_file(path: &Path) -> Option<(usize, Option<String>)> {
-    let bytes = std::fs::read(path).ok()?;
-    // Find chpl atom anywhere in the file (we wrote it inside moov.udta).
-    let chpl_off = bytes.windows(4).position(|w| w == b"chpl")?;
-    // The 4-byte size header precedes the type, so chpl payload starts at
-    // chpl_off + 4 (type) and has the FullBox header (1 byte version +
-    // 3 bytes flags + 4 bytes reserved + 1 byte count).
-    let payload_start = chpl_off + 4 + 4 + 4; // type + version+flags + reserved
-    if payload_start + 1 > bytes.len() {
-        return None;
-    }
-    let count = bytes[payload_start] as usize;
-    if count == 0 {
+    let chapters = read_chpl_chapters(path).unwrap_or_default();
+    if chapters.is_empty() {
         return Some((0, None));
     }
+    let first = chapters.first().map(|c| c.title.clone());
+    Some((chapters.len(), first))
+}
+
+/// Parse the full chapter list from an m4b's chpl atom. Each entry is
+/// (title, start_secs). Empty if the file isn't an m4b or has no chapters.
+pub fn read_chpl_chapters(path: &Path) -> Option<Vec<Chapter>> {
+    let bytes = std::fs::read(path).ok()?;
+    let chpl_off = bytes.windows(4).position(|w| w == b"chpl")?;
+    let payload_start = chpl_off + 4 + 4 + 4; // type + version+flags + reserved
+    if payload_start + 1 > bytes.len() {
+        return Some(Vec::new());
+    }
+    let count = bytes[payload_start] as usize;
     let mut cursor = payload_start + 1;
-    // First chapter: u64 start + u8 title_len + title_bytes
-    if cursor + 9 > bytes.len() {
-        return Some((count, None));
+    let mut chapters: Vec<Chapter> = Vec::with_capacity(count);
+    for _ in 0..count {
+        if cursor + 9 > bytes.len() {
+            break;
+        }
+        let start_100ns = u64::from_be_bytes([
+            bytes[cursor], bytes[cursor + 1], bytes[cursor + 2], bytes[cursor + 3],
+            bytes[cursor + 4], bytes[cursor + 5], bytes[cursor + 6], bytes[cursor + 7],
+        ]);
+        cursor += 8;
+        let title_len = bytes[cursor] as usize;
+        cursor += 1;
+        if cursor + title_len > bytes.len() {
+            break;
+        }
+        let title = std::str::from_utf8(&bytes[cursor..cursor + title_len])
+            .unwrap_or("(chapter)")
+            .to_string();
+        cursor += title_len;
+        chapters.push(Chapter {
+            title,
+            start_secs: start_100ns as f64 / 10_000_000.0,
+        });
     }
-    cursor += 8; // skip start_100ns
-    let title_len = bytes[cursor] as usize;
-    cursor += 1;
-    if cursor + title_len > bytes.len() {
-        return Some((count, None));
-    }
-    let title = std::str::from_utf8(&bytes[cursor..cursor + title_len])
-        .ok()
-        .map(|s| s.to_string());
-    Some((count, title))
+    Some(chapters)
 }
 
 /// Top-level metadata that goes into the m4b container.

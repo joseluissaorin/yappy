@@ -348,6 +348,8 @@ pub fn run() {
             commands::library_seek_cmd,
             commands::library_status_cmd,
             commands::library_delete_cmd,
+            commands::library_chapters_cmd,
+            commands::library_reindex_spotlight_cmd,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

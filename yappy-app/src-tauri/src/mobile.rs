@@ -213,6 +213,21 @@ pub fn audiofile_current_path() -> Option<String> {
     Some(s)
 }
 
+// ─── Spotlight indexing ────────────────────────────────────────────────
+extern "C" {
+    fn yappy_spotlight_replace_all(payload: *const std::os::raw::c_char);
+}
+
+/// Push the entire library to CoreSpotlight. Each line of `payload` is
+/// "<path>\t<name>\t<duration_secs>\t<chapter_count>". Replaces any
+/// previously-indexed items in the Yappy library domain.
+pub fn spotlight_replace_all(payload: &str) {
+    use std::ffi::CString;
+    if let Ok(c) = CString::new(payload) {
+        unsafe { yappy_spotlight_replace_all(c.as_ptr()) };
+    }
+}
+
 /// Install lock-screen / Now Playing remote handlers. Call once at startup
 /// after `AppState` is constructed.
 pub fn install_now_playing_handlers(playback: std::sync::Arc<crate::playback::PlaybackController>) {

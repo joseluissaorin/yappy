@@ -1321,6 +1321,54 @@ pub fn library_status_cmd() -> LibraryStatus {
     }
 }
 
+/// Read all chapters from an m4b file. Returns empty if the file isn't an
+/// m4b or has no chpl atom.
+#[derive(serde::Serialize, Debug, Clone)]
+pub struct ChapterEntry {
+    pub title: String,
+    pub start_secs: f64,
+}
+
+#[tauri::command]
+pub fn library_chapters_cmd(path: String) -> Vec<ChapterEntry> {
+    crate::audiobook::read_chpl_chapters(std::path::Path::new(&path))
+        .unwrap_or_default()
+        .into_iter()
+        .map(|c| ChapterEntry {
+            title: c.title,
+            start_secs: c.start_secs,
+        })
+        .collect()
+}
+
+/// Push the current library state to iOS Spotlight so users can find their
+/// rendered audiobooks via system search. No-op on desktop.
+#[tauri::command]
+pub async fn library_reindex_spotlight_cmd(app: AppHandle) -> Result<(), String> {
+    #[cfg(target_os = "ios")]
+    {
+        let items = list_rendered_audiobooks_cmd(app).await?;
+        // Encode as tab/newline-delimited string. Swift splits on \n and \t.
+        let payload: String = items
+            .iter()
+            .map(|i| {
+                format!(
+                    "{}\t{}\t{}\t{}",
+                    i.path,
+                    i.name,
+                    i.duration_secs.unwrap_or(0.0),
+                    i.chapter_count
+                )
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
+        crate::mobile::spotlight_replace_all(&payload);
+    }
+    #[cfg(not(target_os = "ios"))]
+    let _ = app;
+    Ok(())
+}
+
 #[tauri::command]
 pub fn library_delete_cmd(app: AppHandle, path: String) -> Result<(), String> {
     // Stop playback if the file we're about to delete is currently playing.

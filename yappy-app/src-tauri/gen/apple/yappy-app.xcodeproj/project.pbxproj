@@ -44,6 +44,7 @@
 		D82942FC61F418B9EC888279 /* LiveActivityBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D299F16AAF69ACF1D91AEB5 /* LiveActivityBridge.swift */; };
 		F976FF05F055C14256E7E8ED /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */; };
 		FCA153A76EC118E0E6697166 /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBA15D588B3157A3A10AC2E /* AudioSession.swift */; };
+		FD930011339239B45F581C0A /* Spotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A344FE8B33B01973CA2E20 /* Spotlight.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +135,7 @@
 		CEE01B2664954222E0E31092 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		D0D44C315F8CBC76E4D04319 /* lib.rs */ = {isa = PBXFileReference; path = lib.rs; sourceTree = "<group>"; };
 		D19B4AC8C2A772BBB82F4983 /* NowPlaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlaying.swift; sourceTree = "<group>"; };
+		D6A344FE8B33B01973CA2E20 /* Spotlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotlight.swift; sourceTree = "<group>"; };
 		DC18C2A657D1465FBD618DEB /* commands.rs */ = {isa = PBXFileReference; path = commands.rs; sourceTree = "<group>"; };
 		DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		DDF68D4C8B5EBC48614AC97F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -200,6 +202,7 @@
 				D19B4AC8C2A772BBB82F4983 /* NowPlaying.swift */,
 				1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */,
 				F0D2AF1742BF8372CC16E3CC /* ShareSheet.swift */,
+				D6A344FE8B33B01973CA2E20 /* Spotlight.swift */,
 				8AE152D5EDFF9859E207934E /* bindings */,
 			);
 			name = "yappy-app";
@@ -516,6 +519,7 @@
 				8DA2C5C86B83B5F105BD7C15 /* NowPlaying.swift in Sources */,
 				87529D2938FCFFC1C041BCD0 /* RenderActivityAttributes.swift in Sources */,
 				A10E671BC369D5547E724E48 /* ShareSheet.swift in Sources */,
+				FD930011339239B45F581C0A /* Spotlight.swift in Sources */,
 				C3C5412D4024DB71C4580100 /* main.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
