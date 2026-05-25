@@ -25,6 +25,13 @@
     "shell:default",
     "process:default",
     "notification:default",
-    "http:default"
+    "http:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "https://*" },
+        { "url": "http://*" }
+      ]
+    }
   ]
 }

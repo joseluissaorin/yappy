@@ -14,7 +14,8 @@
   import HotkeyPicker from "$lib/HotkeyPicker.svelte";
   import CreditsModal from "$lib/CreditsModal.svelte";
   import Onboarding from "$lib/Onboarding.svelte";
-  import { isIOS } from "$lib/platform";
+  import { isIOS, ready as platformReady } from "$lib/platform";
+  import { startShareIntake } from "$lib/shareIntake";
   import {
     LANGUAGES,
     type CaptureInfo,
@@ -168,6 +169,12 @@
     if (settings && !settings.first_launch_done) {
       onboardingOpen = true;
     }
+
+    // iOS: install Share-Sheet payload handler. Any URL or text shared into
+    // Yappy from another app gets fetched, defuddle-extracted, and read aloud.
+    platformReady.then((p) => {
+      if (p === "ios") startShareIntake().catch((e) => console.error("[share] start failed:", e));
+    });
 
     unlisteners.push(await onModelDownload((p) => (download = p)));
     unlisteners.push(await onCaptureEmpty(() => {
