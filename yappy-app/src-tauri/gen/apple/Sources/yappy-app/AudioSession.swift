@@ -94,3 +94,36 @@ public func yappy_background_audio_end() {
         await SilentAudioKeepalive.shared.end()
     }
 }
+
+// ─── SHARE EXTENSION PAYLOAD DRAINING ────────────────────────────────────
+//
+// The Share Extension persists incoming URLs/text under
+// `shared_payloads` in the App Group's UserDefaults. On launch (or when the
+// main app is reopened via the `yappy://` URL scheme) we drain that queue
+// and return the most recent payload as a single newline-separated string.
+// Rust calls this via `yappy_drain_shared_payload`; ownership of the
+// returned C string transfers to Rust (free with `yappy_free_string`).
+
+private let APP_GROUP = "group.com.yappy.app"
+
+@_cdecl("yappy_drain_shared_payload")
+public func yappy_drain_shared_payload() -> UnsafeMutablePointer<CChar>? {
+    guard let defaults = UserDefaults(suiteName: APP_GROUP) else {
+        return nil
+    }
+    guard let queue = defaults.array(forKey: "shared_payloads") as? [[String: Any]],
+          !queue.isEmpty else {
+        return nil
+    }
+    // Drain — clear the queue once read.
+    defaults.removeObject(forKey: "shared_payloads")
+    // Flatten the queue into a newline-separated string. Each entry is
+    // formatted as "url:<absolute>" or "text:<text>" by the Share Extension.
+    let joined = queue.compactMap { $0["payload"] as? String }.joined(separator: "\n")
+    return strdup(joined)
+}
+
+@_cdecl("yappy_free_string")
+public func yappy_free_string(_ ptr: UnsafeMutablePointer<CChar>?) {
+    free(ptr)
+}

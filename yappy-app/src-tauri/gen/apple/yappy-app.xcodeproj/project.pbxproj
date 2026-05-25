@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1AD315940EA48FBD8A5E7AD9 /* YappyShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B80CC66E3EA95DEABCEA0221 /* YappyShareExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BB9987F977E32878AB9ADEA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ADAB30D4ABAAF920F7204EF /* AVFoundation.framework */; };
 		2ECA68CB885E90C37B24D6F0 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 0475A5B4D70EB82E962947E4 /* assets */; };
 		43B7E8BEEB5DA997B66FFFD5 /* YappyWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 11D8807FE02A0A9A28B2AC44 /* YappyWidgets.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -14,11 +15,15 @@
 		53336429DF0E473712A4EF0C /* YappyWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BACA884836A2C3FBE6980A8B /* YappyWidgetsBundle.swift */; };
 		5401E6FD8EA5634E1BE7FF0D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88594DFE20DA9B69DC2A4E99 /* WidgetKit.framework */; };
 		54B42924FD2BD435948E4ACE /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF68D4C8B5EBC48614AC97F /* SwiftUI.framework */; };
+		5E31786E8489DD919EB4AA4F /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE01B2664954222E0E31092 /* UniformTypeIdentifiers.framework */; };
+		68F811C2E0BA287081AD8074 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */; };
 		70ADC16704D4D95F4AAA06B6 /* RenderActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */; };
 		732DF0CFD0AE3F3981A77004 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 363A26549E377A68164ED52E /* ActivityKit.framework */; };
 		758C79CFF95A21E5CE4FB398 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43793F4F8BD751B2AFA0ECEC /* UIKit.framework */; };
 		7FFB71259B4B64D8F8703746 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E72460E29FCCF765437E0F /* CoreGraphics.framework */; };
 		87529D2938FCFFC1C041BCD0 /* RenderActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */; };
+		8EE1096973FB2D0CF4C2AAD9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F16A281CFDE25986529BA4 /* MobileCoreServices.framework */; };
+		92ACF377CCE9E1F3A4E8A4AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43793F4F8BD751B2AFA0ECEC /* UIKit.framework */; };
 		A55617CCF7FD0120B0D25434 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 363A26549E377A68164ED52E /* ActivityKit.framework */; };
 		AD4D3A95030ABC96441702B1 /* CoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E89394FA1041CC34292F2D82 /* CoreML.framework */; };
 		B5B64E7C8157E7BCFD359AF1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59D7E849AA6DCC8B6821280 /* QuartzCore.framework */; };
@@ -43,6 +48,13 @@
 			remoteGlobalIDString = DD0F09E8B01BAED93DC3008F;
 			remoteInfo = YappyWidgets;
 		};
+		AB557955A48741BA99E4829F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A522621C285A5A566AC0324E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4DB6D14AE52A99A1FF53AD0;
+			remoteInfo = YappyShareExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +65,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				43B7E8BEEB5DA997B66FFFD5 /* YappyWidgets.appex in Embed Foundation Extensions */,
+				1AD315940EA48FBD8A5E7AD9 /* YappyShareExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,10 +94,13 @@
 		3A7DD34A3CA870707D62BD0F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43793F4F8BD751B2AFA0ECEC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4B810A445B1E97783FB5D77F /* state.rs */ = {isa = PBXFileReference; path = state.rs; sourceTree = "<group>"; };
+		50B543A4705E743A0E69F32F /* YappyShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YappyShareExtension.entitlements; sourceTree = "<group>"; };
 		55CDEF6E4F70C998F01DA069 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5ADAB30D4ABAAF920F7204EF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		61EC3F47616E76D432A8CEB0 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		70021004515EA8DD472525B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7124B570D459F8126326E519 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		72F16A281CFDE25986529BA4 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		7D299F16AAF69ACF1D91AEB5 /* LiveActivityBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityBridge.swift; sourceTree = "<group>"; };
 		7E4EE4663B4CAB417323B2BA /* audiobook.rs */ = {isa = PBXFileReference; path = audiobook.rs; sourceTree = "<group>"; };
 		7E502C65C6D812B209E0A8D6 /* YappyWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YappyWidgets.entitlements; sourceTree = "<group>"; };
@@ -94,15 +110,18 @@
 		96304E0D0F48029CD0290B43 /* bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bindings.h; sourceTree = "<group>"; };
 		96AEBF7E16B41A1D15A49708 /* main.rs */ = {isa = PBXFileReference; path = main.rs; sourceTree = "<group>"; };
 		A1030C208421566F6F5B172E /* yappy-app_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "yappy-app_iOS.entitlements"; sourceTree = "<group>"; };
+		A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		A839BA0F5D036967B81598A0 /* doc_loader.rs */ = {isa = PBXFileReference; path = doc_loader.rs; sourceTree = "<group>"; };
 		AACE0C20E80390C5DBAC4B9B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		ADAB49961CDBFB60DE0CD606 /* selection.rs */ = {isa = PBXFileReference; path = selection.rs; sourceTree = "<group>"; };
 		AFBA15D588B3157A3A10AC2E /* AudioSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSession.swift; sourceTree = "<group>"; };
+		B80CC66E3EA95DEABCEA0221 /* YappyShareExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = YappyShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8CE0A30A6D2701B251FEBBF /* settings.rs */ = {isa = PBXFileReference; path = settings.rs; sourceTree = "<group>"; };
 		BACA884836A2C3FBE6980A8B /* YappyWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YappyWidgetsBundle.swift; sourceTree = "<group>"; };
 		BD85DC09DEB935DC077C48F6 /* mod.rs */ = {isa = PBXFileReference; path = mod.rs; sourceTree = "<group>"; };
 		C4A0E693883D414F1113A2E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C940BC52027D84098E726FFA /* mobile.rs */ = {isa = PBXFileReference; path = mobile.rs; sourceTree = "<group>"; };
+		CEE01B2664954222E0E31092 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		D0D44C315F8CBC76E4D04319 /* lib.rs */ = {isa = PBXFileReference; path = lib.rs; sourceTree = "<group>"; };
 		DC18C2A657D1465FBD618DEB /* commands.rs */ = {isa = PBXFileReference; path = commands.rs; sourceTree = "<group>"; };
 		DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -115,6 +134,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6FBDEF6E4BB995F75B46DE3B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92ACF377CCE9E1F3A4E8A4AA /* UIKit.framework in Frameworks */,
+				8EE1096973FB2D0CF4C2AAD9 /* MobileCoreServices.framework in Frameworks */,
+				5E31786E8489DD919EB4AA4F /* UniformTypeIdentifiers.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9B820E811B11AE1E28D8F326 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -163,9 +192,20 @@
 			isa = PBXGroup;
 			children = (
 				391184EBB76F63148530350F /* yappy-app_iOS.app */,
+				B80CC66E3EA95DEABCEA0221 /* YappyShareExtension.appex */,
 				11D8807FE02A0A9A28B2AC44 /* YappyWidgets.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4FB34F34B33E3F5E69B77B7E /* YappyShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				70021004515EA8DD472525B2 /* Info.plist */,
+				A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */,
+				50B543A4705E743A0E69F32F /* YappyShareExtension.entitlements */,
+			);
+			path = YappyShareExtension;
 			sourceTree = "<group>";
 		};
 		84EC2296E653219BD3584DFE /* capture */ = {
@@ -236,10 +276,12 @@
 				FA5A9A58DA5F7712C4E9EF3F /* libapp.a */,
 				61EC3F47616E76D432A8CEB0 /* Metal.framework */,
 				DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */,
+				72F16A281CFDE25986529BA4 /* MobileCoreServices.framework */,
 				E59D7E849AA6DCC8B6821280 /* QuartzCore.framework */,
 				AACE0C20E80390C5DBAC4B9B /* Security.framework */,
 				DDF68D4C8B5EBC48614AC97F /* SwiftUI.framework */,
 				43793F4F8BD751B2AFA0ECEC /* UIKit.framework */,
+				CEE01B2664954222E0E31092 /* UniformTypeIdentifiers.framework */,
 				8E45153695F56A85774F88DB /* WebKit.framework */,
 				88594DFE20DA9B69DC2A4E99 /* WidgetKit.framework */,
 			);
@@ -289,6 +331,7 @@
 				C3E34AFD95FBCD973FB259B0 /* src */,
 				0A56D527530D92E2F4FC210D /* yappy-app */,
 				8BCC73DB5310D674897C3104 /* yappy-app_iOS */,
+				4FB34F34B33E3F5E69B77B7E /* YappyShareExtension */,
 				9B38FE7ABBA5FDD64BA19A90 /* YappyWidgets */,
 				BC7CBF933E63E7D108314BA9 /* Frameworks */,
 				2A82CA0658518588DF925913 /* Products */,
@@ -303,7 +346,7 @@
 			path = arm64;
 			sourceTree = "<group>";
 		};
-		"TEMP_4B2DEA68-950D-461D-B818-ED76E8ED7036" /* x86_64 */ = {
+		"TEMP_07F278C4-69EA-4AEE-8B9C-6E9BE509307C" /* x86_64 */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -327,6 +370,7 @@
 			);
 			dependencies = (
 				035F78A5CF3DAC22ED1C6836 /* PBXTargetDependency */,
+				C9A96C7EBE808C669AB49140 /* PBXTargetDependency */,
 			);
 			name = "yappy-app_iOS";
 			packageProductDependencies = (
@@ -353,6 +397,24 @@
 			productReference = 11D8807FE02A0A9A28B2AC44 /* YappyWidgets.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		E4DB6D14AE52A99A1FF53AD0 /* YappyShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B2E361128BB10F1EEA57B261 /* Build configuration list for PBXNativeTarget "YappyShareExtension" */;
+			buildPhases = (
+				1F6A31A73574288841057C0B /* Sources */,
+				6FBDEF6E4BB995F75B46DE3B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YappyShareExtension;
+			packageProductDependencies = (
+			);
+			productName = YappyShareExtension;
+			productReference = B80CC66E3EA95DEABCEA0221 /* YappyShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -367,6 +429,10 @@
 						ProvisioningStyle = Automatic;
 					};
 					DD0F09E8B01BAED93DC3008F = {
+						DevelopmentTeam = 9LYNY2477X;
+						ProvisioningStyle = Automatic;
+					};
+					E4DB6D14AE52A99A1FF53AD0 = {
 						DevelopmentTeam = 9LYNY2477X;
 						ProvisioningStyle = Automatic;
 					};
@@ -386,6 +452,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				E4DB6D14AE52A99A1FF53AD0 /* YappyShareExtension */,
 				DD0F09E8B01BAED93DC3008F /* YappyWidgets */,
 				C93B37E73829FC112C512213 /* yappy-app_iOS */,
 			);
@@ -431,6 +498,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1F6A31A73574288841057C0B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68F811C2E0BA287081AD8074 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		21F80A612C6C05E715FB4890 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -459,6 +534,11 @@
 			isa = PBXTargetDependency;
 			target = DD0F09E8B01BAED93DC3008F /* YappyWidgets */;
 			targetProxy = 7F96B918C2C8796D9507C8C5 /* PBXContainerItemProxy */;
+		};
+		C9A96C7EBE808C669AB49140 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4DB6D14AE52A99A1FF53AD0 /* YappyShareExtension */;
+			targetProxy = AB557955A48741BA99E4829F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -526,6 +606,35 @@
 			};
 			name = debug;
 		};
+		2404E920E4CB7D195F9F4F48 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = (
+					arm64,
+				);
+				CODE_SIGN_ENTITLEMENTS = YappyShareExtension/YappyShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9LYNY2477X;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				INFOPLIST_FILE = YappyShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app.ShareExtension;
+				PRODUCT_NAME = YappyShare;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = debug;
+		};
 		443F1ABEF615D444B16C620B /* release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -579,6 +688,35 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
+			};
+			name = release;
+		};
+		4C6D099FA55BE26CC34ADB95 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = (
+					arm64,
+				);
+				CODE_SIGN_ENTITLEMENTS = YappyShareExtension/YappyShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9LYNY2477X;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				INFOPLIST_FILE = YappyShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app.ShareExtension;
+				PRODUCT_NAME = YappyShare;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
 			};
 			name = release;
 		};
@@ -723,6 +861,15 @@
 			buildConfigurations = (
 				1FADFC0627F0D4BC9BBBB6A7 /* debug */,
 				443F1ABEF615D444B16C620B /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+		B2E361128BB10F1EEA57B261 /* Build configuration list for PBXNativeTarget "YappyShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2404E920E4CB7D195F9F4F48 /* debug */,
+				4C6D099FA55BE26CC34ADB95 /* release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = debug;

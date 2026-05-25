@@ -79,6 +79,14 @@ targets:
         # an in-progress audiobook render. Without this key, ActivityKit
         # silently refuses to start activities.
         NSSupportsLiveActivities: true
+        # Register `yappy://` URL scheme so the Share Extension can re-open
+        # the main app immediately after queuing a payload. Without this,
+        # the user has to manually relaunch Yappy to hear the shared item.
+        CFBundleURLTypes:
+          - CFBundleTypeRole: Editor
+            CFBundleURLName: com.yappy.app
+            CFBundleURLSchemes:
+              - yappy
         # User-facing display name (separate from CFBundleName).
         CFBundleDisplayName: Yappy
         # Required reason API declarations — Apple needs these for file
@@ -120,6 +128,10 @@ targets:
         embed: false
       # YappyWidgets Live Activity extension — embedded as an app extension.
       - target: YappyWidgets
+        embed: true
+        codeSign: true
+      # YappyShareExtension — receives URLs/text from other apps via Share Sheet.
+      - target: YappyShareExtension
         embed: true
         codeSign: true
       - sdk: CoreGraphics.framework
@@ -205,3 +217,50 @@ targets:
       - sdk: WidgetKit.framework
       - sdk: SwiftUI.framework
       - sdk: ActivityKit.framework
+
+  # ─── Share Sheet Extension ────────────────────────────────────────────
+  # Accepts URLs and text from "Share to → Yappy" in any iOS app, writes
+  # the payload into the App Group container, and the main app reads it
+  # on next launch via mobile::pickup_shared_payload.
+  YappyShareExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: YappyShareExtension
+    info:
+      path: YappyShareExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Yappy
+        CFBundleShortVersionString: 0.1.0
+        CFBundleVersion: "0.1.0"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
+          NSExtensionAttributes:
+            NSExtensionActivationRule:
+              NSExtensionActivationSupportsText: true
+              NSExtensionActivationSupportsWebURLWithMaxCount: 1
+              NSExtensionActivationSupportsWebPageWithMaxCount: 1
+    entitlements:
+      path: YappyShareExtension/YappyShareExtension.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.yappy.app
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yappy.app.ShareExtension
+        PRODUCT_NAME: YappyShare
+        DEVELOPMENT_TEAM: 9LYNY2477X
+        CODE_SIGN_STYLE: Automatic
+        IPHONEOS_DEPLOYMENT_TARGET: "14.0"
+        SWIFT_VERSION: "5.0"
+        SKIP_INSTALL: YES
+        ENABLE_BITCODE: false
+        ARCHS: [arm64]
+        VALID_ARCHS: arm64
+        EXCLUDED_ARCHS[sdk=iphoneos*]: x86_64
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: false
+    dependencies:
+      - sdk: UIKit.framework
+      - sdk: MobileCoreServices.framework
+      - sdk: UniformTypeIdentifiers.framework

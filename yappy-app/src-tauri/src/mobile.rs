@@ -7,17 +7,39 @@ use std::sync::Arc;
 
 use crate::state::AppState;
 
-/// Called once on app startup. Checks the App Group container shared with the
-/// Share Extension for any payload (text or URL) that was queued while the app
-/// was closed, then asks the engine to read it aloud.
+/// Called on app startup AND whenever the app is foregrounded. Drains the
+/// App Group queue that the Share Extension fills when the user picks
+/// "Share → Yappy" in any other iOS app, and emits an `ios_shared_payload`
+/// Tauri event to the frontend with the contents. The frontend listens for
+/// this and routes URLs through the defuddle path / text directly into TTS.
 ///
-/// On the first launch (or in the simulator without a paired Share Extension)
-/// the container will simply be empty — this is a fast no-op in that case.
-pub fn pickup_shared_payload<R: tauri::Runtime>(_handle: &tauri::AppHandle<R>, _state: &Arc<AppState>) {
-    // Phase 4 wires the actual Share Extension. For Phase 1 (compile pass) we
-    // only need the symbol to exist so `lib.rs::setup` can call it
-    // unconditionally on iOS without a `#[cfg]` block.
-    tracing::debug!("mobile: pickup_shared_payload (stub) — Share Extension not wired yet");
+/// The Swift side returns a newline-separated string of items, each prefixed
+/// "url:<...>" or "text:<...>". An empty queue produces a NULL pointer.
+pub fn pickup_shared_payload<R: tauri::Runtime>(
+    handle: &tauri::AppHandle<R>,
+    _state: &Arc<AppState>,
+) {
+    let raw = unsafe { yappy_drain_shared_payload() };
+    if raw.is_null() {
+        return;
+    }
+    let s = unsafe { std::ffi::CStr::from_ptr(raw) }
+        .to_string_lossy()
+        .into_owned();
+    unsafe { yappy_free_string(raw) };
+    if s.trim().is_empty() {
+        return;
+    }
+    tracing::info!(
+        "mobile: drained {} shared payload(s) from App Group",
+        s.lines().count()
+    );
+    let _ = tauri::Emitter::emit(handle, "ios_shared_payload", s);
+}
+
+extern "C" {
+    fn yappy_drain_shared_payload() -> *mut std::os::raw::c_char;
+    fn yappy_free_string(ptr: *mut std::os::raw::c_char);
 }
 
 // ─── BACKGROUND-AUDIO KEEPALIVE ──────────────────────────────────────────
