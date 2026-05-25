@@ -108,6 +108,19 @@ ORT_SKIP_DOWNLOAD = "1"
 [target.x86_64-apple-ios.env]
 ORT_LIB_LOCATION = "$VENDOR/ios-arm64_x86_64-simulator"
 ORT_SKIP_DOWNLOAD = "1"
+
+# Defer resolution of \`yappy_background_audio_*\` symbols to runtime — they
+# live in Swift (gen/apple/Sources/yappy-app/AudioSession.swift) and only get
+# linked when Xcode assembles the final app binary. Without this, the
+# intermediate cdylib link step fails with "symbol(s) not found".
+[target.aarch64-apple-ios]
+rustflags = ["-C", "link-args=-Wl,-undefined,dynamic_lookup"]
+
+[target.aarch64-apple-ios-sim]
+rustflags = ["-C", "link-args=-Wl,-undefined,dynamic_lookup"]
+
+[target.x86_64-apple-ios]
+rustflags = ["-C", "link-args=-Wl,-undefined,dynamic_lookup"]
 EOF
 echo "→ wrote $ROOT/.cargo/config.toml with absolute ORT_LIB_LOCATION paths"
 echo

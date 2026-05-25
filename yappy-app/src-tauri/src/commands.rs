@@ -844,6 +844,13 @@ pub async fn render_audiobook_cmd(
         .unwrap_or(false);
 
     tokio::task::spawn_blocking(move || -> Result<(), String> {
+        // iOS: engage silent-audio keepalive for the duration of the render.
+        // The OS otherwise suspends us within ~30s of going to background;
+        // audiobook renders can run for hours. The guard releases the audio
+        // session automatically when this closure returns (Drop).
+        #[cfg(target_os = "ios")]
+        let _audio_keepalive = crate::mobile::BackgroundAudioGuard::begin();
+
         let mut combined: Vec<f32> = Vec::new();
         let mut sample_rate: u32 = 0;
         // Sample-offset → chapter title, collected as we go. Used only for m4b.

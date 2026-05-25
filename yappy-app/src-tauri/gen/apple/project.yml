@@ -62,10 +62,23 @@ targets:
           - UIInterfaceOrientationLandscapeRight
         CFBundleShortVersionString: 0.1.0
         CFBundleVersion: "0.1.0"
-        # Audio background mode — keeps TTS playback alive when the screen
-        # locks or the user switches apps. Required for "audiobook" UX.
+        # Background modes:
+        #  - audio: keeps the process alive whenever we're producing audio.
+        #    This is the trick we use for "render audiobook" — we begin a
+        #    silent audio loop in mobile.rs::begin_background_audio at the
+        #    start of a long render, so the Rust synthesis loop keeps
+        #    running for the full duration even after the phone locks or
+        #    the user switches apps. Audiobook renders can take HOURS.
+        #  - processing: lets us schedule BGProcessingTask wake-ups for
+        #    interrupted renders so they resume next time the system
+        #    grants foreground time.
         UIBackgroundModes:
           - audio
+          - processing
+        # ActivityKit Live Activities — Lock Screen / Dynamic Island UI for
+        # an in-progress audiobook render. Without this key, ActivityKit
+        # silently refuses to start activities.
+        NSSupportsLiveActivities: true
         # User-facing display name (separate from CFBundleName).
         CFBundleDisplayName: Yappy
         # Required reason API declarations — Apple needs these for file
@@ -105,13 +118,6 @@ targets:
     dependencies:
       - framework: libapp.a
         embed: false
-      # ONNX Runtime as a vendored xcframework, fetched by
-      # scripts/fetch-ort-ios.sh. The Rust crate links against the static
-      # archive at compile time (via ORT_LIB_LOCATION); this entry is just
-      # so Xcode's dependency tree knows the framework exists and the static
-      # library shows up in Frameworks for the linker.
-      - framework: ../../../../vendor/ort-ios/onnxruntime.xcframework
-        embed: false
       - sdk: CoreGraphics.framework
       - sdk: Metal.framework
       - sdk: MetalKit.framework
@@ -119,10 +125,16 @@ targets:
       - sdk: Security.framework
       - sdk: UIKit.framework
       - sdk: WebKit.framework
-      # CoreML needs to be available at runtime so the ORT CoreML EP can
-      # route ops to the Neural Engine; weakly linked so older iOS still
-      # boots if CoreML is missing.
+      # CoreML for ORT Neural Engine routing.
       - sdk: CoreML.framework
+      # AVFoundation for AudioSession.swift's background keepalive — see
+      # comments inside that file. Without this the silent audio trick can't
+      # configure AVAudioSession.
+      - sdk: AVFoundation.framework
+      # ActivityKit for Live Activities (renders progress on Lock Screen /
+      # Dynamic Island). Used by future widget extension; main app just
+      # imports for the ActivityAttributes type definition.
+      - sdk: ActivityKit.framework
     preBuildScripts:
       # ONNX Runtime iOS static-archive selection. The vendored XCFramework
       # ships separate slices for device (iphoneos → ios-arm64) and simulator

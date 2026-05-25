@@ -14,6 +14,7 @@
   import HotkeyPicker from "$lib/HotkeyPicker.svelte";
   import CreditsModal from "$lib/CreditsModal.svelte";
   import Onboarding from "$lib/Onboarding.svelte";
+  import { isIOS } from "$lib/platform";
   import {
     LANGUAGES,
     type CaptureInfo,
@@ -790,6 +791,11 @@
           </div>
         </div>
 
+        <!-- Hotkeys + Accessibility permission: macOS/desktop only. UIKit
+             apps can't register system-wide hotkeys, and iOS has no
+             Accessibility permission concept (each app's interactions are
+             explicitly initiated by the user). -->
+        {#if !$isIOS}
         <div class="card pref-card">
           <div class="pref-row">
             <div>
@@ -813,6 +819,7 @@
             <button class="btn-outline" onclick={() => requestMacosPermissions()}>open system settings…</button>
           </div>
         </div>
+        {/if}
 
         <!-- Floating player customization -->
         <div class="card pref-card">
@@ -927,6 +934,7 @@
               <span class="slider"></span>
             </label>
           </div>
+          {#if !$isIOS}
           <div class="pref-row">
             <div>
               <div class="pref-label">launch at login</div>
@@ -938,9 +946,12 @@
               <span class="slider"></span>
             </label>
           </div>
+          {/if}
         </div>
 
-        <!-- Browser extension -->
+        <!-- Browser extension — desktop only. iOS has no equivalent
+             (sandboxed apps cannot pair with Safari/Chrome extensions). -->
+        {#if !$isIOS}
         <div class="card pref-card bridge-card">
           <div class="bridge-head">
             <div>
@@ -1041,6 +1052,7 @@
             <div class="bridge-toast">{bridgeToastText}</div>
           {/if}
         </div>
+        {/if}
 
         <!-- Maintenance -->
         <div class="card pref-card maintenance">
