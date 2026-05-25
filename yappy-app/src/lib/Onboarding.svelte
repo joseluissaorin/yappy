@@ -4,8 +4,17 @@
   import { listen, type UnlistenFn } from "@tauri-apps/api/event";
   import { openPath, revealItemInDir } from "@tauri-apps/plugin-opener";
   import { openBrowserExtensions } from "$lib/ipc";
+  import { isIOS, ready as platformReady } from "$lib/platform";
 
   let { open = false, onDone }: { open: boolean; onDone: () => void } = $props();
+
+  // Resolve platform once so the template can switch on it. On iOS the
+  // browser-extension flow doesn't apply (sandboxed UIKit apps can't pair
+  // with desktop browsers) — we show a single welcome step and dismiss.
+  let mobileOnboarding = $state(false);
+  platformReady.then(() => {
+    isIOS.subscribe((v) => (mobileOnboarding = v));
+  });
 
   let step: number = $state(1);
   let pairedBrowsers: string[] = $state([]);
@@ -58,11 +67,18 @@
       {#if step === 1}
         <div class="step welcome">
           <h2>welcome to yappy</h2>
-          <p>local, friendly text-to-speech for your mac. press <kbd>⌥⌘R</kbd> anywhere to hear what you're looking at, in 31 languages, on-device.</p>
-          <div class="buttons">
-            <button class="btn-pink" onclick={() => (step = 2)}>set up browsers →</button>
-            <button class="btn-outline" onclick={onDone}>i'll do this later</button>
-          </div>
+          {#if mobileOnboarding}
+            <p>local, friendly text-to-speech for your phone. open a document, paste any text, or share an article from any app — yappy reads it aloud in 31 languages, on-device.</p>
+            <div class="buttons">
+              <button class="btn-pink" onclick={onDone}>get started →</button>
+            </div>
+          {:else}
+            <p>local, friendly text-to-speech for your mac. press <kbd>⌥⌘R</kbd> anywhere to hear what you're looking at, in 31 languages, on-device.</p>
+            <div class="buttons">
+              <button class="btn-pink" onclick={() => (step = 2)}>set up browsers →</button>
+              <button class="btn-outline" onclick={onDone}>i'll do this later</button>
+            </div>
+          {/if}
         </div>
       {:else if step === 2}
         <div class="step extension">
