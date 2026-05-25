@@ -184,9 +184,45 @@ pub fn run() {
             }
 
             // iOS startup: pick up any Share-extension payload that landed in
-            // the App Group container while the app was closed.
+            // the App Group container while the app was closed, AND install
+            // MPRemoteCommandCenter handlers so lock-screen / AirPods / CarPlay
+            // can drive playback.
             #[cfg(mobile)]
-            mobile::pickup_shared_payload(app.handle(), &state);
+            {
+                mobile::pickup_shared_payload(app.handle(), &state);
+                mobile::install_now_playing_handlers(state.playback.clone());
+
+                // Subscribe to playback snapshots — whenever play state /
+                // position changes, refresh the Now Playing metadata so the
+                // lock screen progress bar stays in sync.
+                let app_handle = app.handle().clone();
+                state.playback.subscribe(move |snap| {
+                    // Skip refreshes when nothing's actually playing or queued.
+                    if snap.duration_secs < 0.1 {
+                        mobile::now_playing_set("", "", "", 0.0, 0.0, false);
+                        return;
+                    }
+                    // Pull the document name from the active document, fall
+                    // back to a generic title.
+                    let title = app_handle
+                        .try_state::<std::sync::Arc<crate::state::AppState>>()
+                        .and_then(|s| {
+                            s.documents
+                                .lock()
+                                .ok()
+                                .and_then(|d| d.values().next().map(|doc| doc.filename.clone()))
+                        })
+                        .unwrap_or_else(|| "Yappy".to_string());
+                    mobile::now_playing_set(
+                        &title,
+                        "Yappy",
+                        "",
+                        snap.duration_secs as f64,
+                        snap.elapsed_secs as f64,
+                        snap.playing,
+                    );
+                });
+            }
 
             // Position the player: custom point > preset > default bottom-right.
             // (Window positioning is desktop-only; iOS uses a single full-screen

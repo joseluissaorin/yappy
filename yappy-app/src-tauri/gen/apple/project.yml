@@ -151,6 +151,9 @@ targets:
       # Dynamic Island). Used by future widget extension; main app just
       # imports for the ActivityAttributes type definition.
       - sdk: ActivityKit.framework
+      # MediaPlayer for MPNowPlayingInfoCenter + MPRemoteCommandCenter —
+      # surfaces playback on the lock screen / Control Center / AirPods.
+      - sdk: MediaPlayer.framework
     preBuildScripts:
       # ONNX Runtime iOS static-archive selection. The vendored XCFramework
       # ships separate slices for device (iphoneos → ios-arm64) and simulator
