@@ -39,7 +39,6 @@
 		D680990AD3ADF4FAD143C5F3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACE0C20E80390C5DBAC4B9B /* Security.framework */; };
 		D82942FC61F418B9EC888279 /* LiveActivityBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D299F16AAF69ACF1D91AEB5 /* LiveActivityBridge.swift */; };
 		F976FF05F055C14256E7E8ED /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */; };
-		FC1F1CB78AEE25B9230605D9 /* libapp.a in Resources */ = {isa = PBXBuildFile; fileRef = 25F224C24905142459683DD9 /* libapp.a */; };
 		FCA153A76EC118E0E6697166 /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBA15D588B3157A3A10AC2E /* AudioSession.swift */; };
 /* End PBXBuildFile section */
 
@@ -88,7 +87,6 @@
 		18613248F19D1206BFBDD757 /* browser.rs */ = {isa = PBXFileReference; path = browser.rs; sourceTree = "<group>"; };
 		1A0537A578132C07C9FE7B01 /* model.rs */ = {isa = PBXFileReference; path = model.rs; sourceTree = "<group>"; };
 		1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderActivityAttributes.swift; sourceTree = "<group>"; };
-		25F224C24905142459683DD9 /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
 		2D765DEF987A4C99009FBF4F /* playback.rs */ = {isa = PBXFileReference; path = playback.rs; sourceTree = "<group>"; };
 		2E6980B3593B5B998F491689 /* clipboard.rs */ = {isa = PBXFileReference; path = clipboard.rs; sourceTree = "<group>"; };
 		308239F0EB0A270EAE2AABC6 /* active_doc.rs */ = {isa = PBXFileReference; path = active_doc.rs; sourceTree = "<group>"; };
@@ -248,14 +246,6 @@
 			path = "yappy-app_iOS";
 			sourceTree = "<group>";
 		};
-		904C921361F73D7844D85A71 /* debug */ = {
-			isa = PBXGroup;
-			children = (
-				25F224C24905142459683DD9 /* libapp.a */,
-			);
-			path = debug;
-			sourceTree = "<group>";
-		};
 		9B38FE7ABBA5FDD64BA19A90 /* YappyWidgets */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,21 +312,12 @@
 			path = ../../src;
 			sourceTree = "<group>";
 		};
-		C52FC935AA048A9876F42E76 /* Externals */ = {
-			isa = PBXGroup;
-			children = (
-				F17535F2B886E6E0E606A4D3 /* arm64 */,
-			);
-			path = Externals;
-			sourceTree = "<group>";
-		};
 		CE1A9DFF9DC63BC1A9C627EF = {
 			isa = PBXGroup;
 			children = (
 				0475A5B4D70EB82E962947E4 /* assets */,
 				7124B570D459F8126326E519 /* Assets.xcassets */,
 				3A7DD34A3CA870707D62BD0F /* LaunchScreen.storyboard */,
-				C52FC935AA048A9876F42E76 /* Externals */,
 				AB2FC2CB1DF9FB323FEB98A0 /* Sources */,
 				C3E34AFD95FBCD973FB259B0 /* src */,
 				0A56D527530D92E2F4FC210D /* yappy-app */,
@@ -346,21 +327,6 @@
 				BC7CBF933E63E7D108314BA9 /* Frameworks */,
 				2A82CA0658518588DF925913 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		F17535F2B886E6E0E606A4D3 /* arm64 */ = {
-			isa = PBXGroup;
-			children = (
-				904C921361F73D7844D85A71 /* debug */,
-			);
-			path = arm64;
-			sourceTree = "<group>";
-		};
-		"TEMP_081A6427-1369-498C-9882-04F69F8E90C8" /* x86_64 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = x86_64;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -477,7 +443,6 @@
 				D5314B9290FBD4FC22F3CFD1 /* Assets.xcassets in Resources */,
 				D331B7CBB178B171645BA590 /* LaunchScreen.storyboard in Resources */,
 				2ECA68CB885E90C37B24D6F0 /* assets in Resources */,
-				FC1F1CB78AEE25B9230605D9 /* libapp.a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,7 +468,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nVENDOR=\"$SRCROOT/../../../../vendor/ort-ios\"\nif [ \"$PLATFORM_NAME\" = \"iphoneos\" ]; then\n  export ORT_LIB_LOCATION=\"$VENDOR/ios-arm64\"\nelse\n  export ORT_LIB_LOCATION=\"$VENDOR/ios-arm64_x86_64-simulator\"\nfi\nexport ORT_SKIP_DOWNLOAD=1\necho \"→ ORT_LIB_LOCATION=$ORT_LIB_LOCATION\"\ncargo tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths \"${FRAMEWORK_SEARCH_PATHS:?}\" --header-search-paths \"${HEADER_SEARCH_PATHS:?}\" --gcc-preprocessor-definitions \"${GCC_PREPROCESSOR_DEFINITIONS:-}\" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}\n";
+			shellScript = "set -e\nVENDOR=\"$SRCROOT/../../../../vendor/ort-ios\"\nif [ \"$PLATFORM_NAME\" = \"iphoneos\" ]; then\n  export ORT_LIB_LOCATION=\"$VENDOR/ios-arm64\"\nelse\n  export ORT_LIB_LOCATION=\"$VENDOR/ios-arm64_x86_64-simulator\"\nfi\nexport ORT_SKIP_DOWNLOAD=1\necho \"→ ORT_LIB_LOCATION=$ORT_LIB_LOCATION\"\ncargo tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths \"${FRAMEWORK_SEARCH_PATHS:?}\" --header-search-paths \"${HEADER_SEARCH_PATHS:?}\" --gcc-preprocessor-definitions \"${GCC_PREPROCESSOR_DEFINITIONS:-}\" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}\n# Strip resources that App Store Connect rejects for iOS bundles\n# (code 90171: \"standalone executables or libraries not permitted\").\n# tauri.ios.conf.json's `bundle.resources` override isn't honored by\n# Tauri 2.x's iOS build pipeline for the assets/_up_/resources/\n# copy step, so we delete the offenders here after Tauri's copy.\necho \"→ Stripping iOS-incompatible resources from assets/_up_/resources/\"\nrm -rf \"$SRCROOT/assets/_up_/resources/pdfium\"        # .dylib/.dll/.so libraries\nrm -rf \"$SRCROOT/assets/_up_/resources/extension\"     # Chromium browser extension\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

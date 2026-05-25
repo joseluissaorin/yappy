@@ -39,7 +39,13 @@ targets:
     sources:
       - path: Sources
       - path: Assets.xcassets
-      - path: Externals
+      # NOTE: Externals/ is intentionally NOT a sources entry. Tauri's
+      # pre-build script writes libapp.a there; the framework dependency
+      # below links against it. Listing Externals as `sources` made xcodegen
+      # auto-include libapp.a in the Copy Resources build phase too, which
+      # placed the static archive inside Yappy.app — App Store Connect
+      # rejected the IPA with code 90171 ("standalone executables or
+      # libraries not permitted").
       - path: yappy-app_iOS
       - path: assets
         buildPhase: resources
@@ -72,9 +78,12 @@ targets:
         #  - processing: lets us schedule BGProcessingTask wake-ups for
         #    interrupted renders so they resume next time the system
         #    grants foreground time.
+        # Only `audio` for v0.1 — the silent-loop trick keeps Yappy alive during
+        # multi-hour audiobook renders without needing BGTaskScheduler. Adding
+        # `processing` would require declaring BGTaskSchedulerPermittedIdentifiers
+        # which we don't use yet.
         UIBackgroundModes:
           - audio
-          - processing
         # ActivityKit Live Activities — Lock Screen / Dynamic Island UI for
         # an in-progress audiobook render. Without this key, ActivityKit
         # silently refuses to start activities.
@@ -172,6 +181,14 @@ targets:
           export ORT_SKIP_DOWNLOAD=1
           echo "→ ORT_LIB_LOCATION=$ORT_LIB_LOCATION"
           cargo tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths "${FRAMEWORK_SEARCH_PATHS:?}" --header-search-paths "${HEADER_SEARCH_PATHS:?}" --gcc-preprocessor-definitions "${GCC_PREPROCESSOR_DEFINITIONS:-}" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}
+          # Strip resources that App Store Connect rejects for iOS bundles
+          # (code 90171: "standalone executables or libraries not permitted").
+          # tauri.ios.conf.json's `bundle.resources` override isn't honored by
+          # Tauri 2.x's iOS build pipeline for the assets/_up_/resources/
+          # copy step, so we delete the offenders here after Tauri's copy.
+          echo "→ Stripping iOS-incompatible resources from assets/_up_/resources/"
+          rm -rf "$SRCROOT/assets/_up_/resources/pdfium"        # .dylib/.dll/.so libraries
+          rm -rf "$SRCROOT/assets/_up_/resources/extension"     # Chromium browser extension
         name: Build Rust Code
         basedOnDependencyAnalysis: false
         outputFiles:

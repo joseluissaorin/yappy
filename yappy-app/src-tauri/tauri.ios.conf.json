@@ -1,4 +1,11 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "identifier": "com.joseluissaorin.yappy"
+  "identifier": "com.joseluissaorin.yappy",
+  "bundle": {
+    "resources": [
+      "../resources/paddleocr/*",
+      "../resources/defuddle.js",
+      "../resources/licenses/*"
+    ]
+  }
 }
