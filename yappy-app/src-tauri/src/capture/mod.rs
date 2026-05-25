@@ -159,7 +159,28 @@ fn smart_capture_core(app_name: Option<String>) -> Result<CaptureResult> {
         }
     }
 
-    // 4. OCR fallback
+    // 4. Windows-only: UI Automation can pull text directly from the
+    //    foreground app's accessibility tree — the Windows analogue of
+    //    macOS's AppleScript active-doc path. Works for Word, Edge, Chrome,
+    //    VS Code, Notion, Reader, Notepad, etc. Apps without an
+    //    accessibility tree (some games, broken Electron) fall through to
+    //    OCR. Fast (sub-100ms typically) vs OCR's seconds.
+    #[cfg(target_os = "windows")]
+    {
+        if let Some(text) = crate::os_win::active_window_text() {
+            if !text.trim().is_empty() {
+                return Ok(CaptureResult {
+                    text,
+                    source: CaptureSource::ActiveDocument {
+                        app_name: app_name.clone().unwrap_or_default(),
+                        doc_kind: "uia".to_string(),
+                    },
+                });
+            }
+        }
+    }
+
+    // 5. OCR fallback
     let ocr_text = ocr::screen_ocr_focused()?;
     Ok(CaptureResult {
         text: ocr_text,
@@ -185,7 +206,12 @@ pub fn front_app_name() -> Option<String> {
     }
 }
 
-#[cfg(not(target_os = "macos"))]
+#[cfg(target_os = "windows")]
+pub fn front_app_name() -> Option<String> {
+    crate::os_win::front_app_name()
+}
+
+#[cfg(all(not(target_os = "macos"), not(target_os = "windows")))]
 pub fn front_app_name() -> Option<String> {
     None
 }

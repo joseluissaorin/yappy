@@ -243,6 +243,21 @@ ORT_DISABLE_ALL_HW=1 ./yappy
 
 ### 4.10 Windows-specific (skip on Linux)
 
+  - [ ] **UI Automation active-window text extraction**: open a Word doc,
+        select a paragraph, hit Ctrl+Alt+R. Yappy should read that exact
+        selection — verify in `yappy.log`: `uia: extracted N chars from
+        selection`. **Not OCR** (which would take seconds and log a
+        screencapture step). Try in Edge, Chrome, Notepad, Notion, VS
+        Code, Adobe Reader — they all expose UIA trees. (Some games and
+        broken Electron apps don't, and fall through to OCR — that's OK.)
+  - [ ] **Front-app detection**: with Word foregrounded, `yappy.log`
+        capture-source line should mention `app_name: "WINWORD"` or
+        similar (process exe filename without extension). Without the
+        UIA work this used to be None on Windows.
+  - [ ] **Capture chain order**: selection → browser-extension paired tab
+        → UIA (Windows) / AppleScript (macOS) → OCR. Verify each step
+        kicks in only when prior fails, by closing the browser then
+        repeating the hotkey on Word.
   - [ ] **SMTC**: start a TTS read. The Windows volume flyout (taskbar
         speaker icon → upper area) now shows "Yappy" with play/pause.
         Press Play/Pause on a keyboard's media key → playback pauses.

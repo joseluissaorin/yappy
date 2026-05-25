@@ -38,6 +38,10 @@ pub fn install_smtc_handlers(_playback: Arc<crate::playback::PlaybackController>
 pub fn taskbar_progress_set(_value: u64, _total: u64) {}
 #[cfg(not(target_os = "windows"))]
 pub fn taskbar_progress_clear() {}
+#[cfg(not(target_os = "windows"))]
+pub fn front_app_name() -> Option<String> { None }
+#[cfg(not(target_os = "windows"))]
+pub fn active_window_text() -> Option<String> { None }
 
 // ─── Windows implementations ───────────────────────────────────────────
 
@@ -213,6 +217,150 @@ mod imp {
             let _ = tb.SetProgressState(hwnd, TBPF_NOPROGRESS);
         }
     }
+
+    // ─── Front-app detection (Win32, no UIA needed) ─────────────────────
+    //
+    // Mirrors macOS's `osascript`-based NSWorkspace front-app query. Fast
+    // path: GetForegroundWindow → process ID → exe path → file_name.
+
+    use windows::Win32::Foundation::{CloseHandle, MAX_PATH};
+    use windows::Win32::System::ProcessStatus::GetModuleFileNameExW;
+    use windows::Win32::System::Threading::{OpenProcess, PROCESS_QUERY_LIMITED_INFORMATION};
+    use windows::Win32::UI::WindowsAndMessaging::{GetForegroundWindow, GetWindowThreadProcessId};
+
+    pub fn front_app_name() -> Option<String> {
+        unsafe {
+            let hwnd = GetForegroundWindow();
+            if hwnd.0.is_null() {
+                return None;
+            }
+            let mut pid: u32 = 0;
+            GetWindowThreadProcessId(hwnd, Some(&mut pid));
+            if pid == 0 {
+                return None;
+            }
+            let handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid).ok()?;
+            let mut buf = [0u16; MAX_PATH as usize];
+            let len = GetModuleFileNameExW(Some(handle), None, &mut buf);
+            let _ = CloseHandle(handle);
+            if len == 0 {
+                return None;
+            }
+            let path = String::from_utf16_lossy(&buf[..len as usize]);
+            let name = std::path::Path::new(&path)
+                .file_stem()
+                .and_then(|s| s.to_str())
+                .map(|s| s.to_string())?;
+            Some(name)
+        }
+    }
+
+    // ─── UI Automation text extraction ───────────────────────────────────
+    //
+    // The macOS equivalent here is `active_doc::active_document_text` which
+    // uses app-specific AppleScript to ask Safari / Pages / Notes for the
+    // visible text. On Windows, the universal pattern is UI Automation
+    // (UIA) — a COM accessibility API that exposes a tree of UI elements
+    // with text patterns. We:
+    //   1. Get the foreground HWND.
+    //   2. Resolve it to an IUIAutomationElement via ElementFromHandle.
+    //   3. Try to pull a SELECTED text range first (matches macOS's "give
+    //      me what the user is looking at" preference).
+    //   4. Fall back to "visible ranges" — the on-screen viewport text.
+    //   5. Final fall-back: the window title (better than nothing).
+    //
+    // Works in: Word, Notion, Edge, Chrome, Firefox, Notepad, VS Code,
+    // Adobe Reader, anything that opts into UI Automation properly. Some
+    // games / electron apps with no accessibility tree return nothing,
+    // and we fall through to OCR in the capture chain.
+
+    use windows::Win32::UI::Accessibility::{
+        CUIAutomation, IUIAutomation, IUIAutomationElement,
+        IUIAutomationTextPattern, UIA_TextPatternId, TreeScope_Subtree,
+    };
+
+    pub fn active_window_text() -> Option<String> {
+        unsafe {
+            ensure_com_init();
+            let hwnd = GetForegroundWindow();
+            if hwnd.0.is_null() {
+                return None;
+            }
+            let uia: IUIAutomation =
+                CoCreateInstance(&CUIAutomation, None, CLSCTX_INPROC_SERVER).ok()?;
+            let elem: IUIAutomationElement = uia.ElementFromHandle(hwnd).ok()?;
+
+            // Walk the subtree looking for an element that supports the
+            // TextPattern. ElementFromHandle returns the top-level frame;
+            // the document/editor that actually has text is usually a few
+            // levels down.
+            let condition = uia.CreateTrueCondition().ok()?;
+            let descendants = elem.FindAll(TreeScope_Subtree, &condition).ok()?;
+            let count = descendants.Length().ok()?;
+
+            // Prefer SELECTED text from the first element that has any.
+            for i in 0..count {
+                let Ok(d) = descendants.GetElement(i) else { continue };
+                let Ok(pat_unknown) = d.GetCurrentPattern(UIA_TextPatternId) else { continue };
+                let Ok(text_pattern) = pat_unknown.cast::<IUIAutomationTextPattern>() else { continue };
+                if let Ok(selection) = text_pattern.GetSelection() {
+                    if let Ok(sel_len) = selection.Length() {
+                        if sel_len > 0 {
+                            let mut combined = String::new();
+                            for s in 0..sel_len {
+                                if let Ok(r) = selection.GetElement(s) {
+                                    if let Ok(t) = r.GetText(-1) {
+                                        let txt = t.to_string();
+                                        if !txt.trim().is_empty() {
+                                            if !combined.is_empty() { combined.push('\n'); }
+                                            combined.push_str(&txt);
+                                        }
+                                    }
+                                }
+                            }
+                            if !combined.trim().is_empty() {
+                                tracing::info!("uia: extracted {} chars from selection", combined.len());
+                                return Some(combined);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // No selection — try the FIRST element's "visible ranges" which
+            // gives us roughly the on-screen viewport. Stops at the first
+            // element with non-trivial text content.
+            for i in 0..count {
+                let Ok(d) = descendants.GetElement(i) else { continue };
+                let Ok(pat_unknown) = d.GetCurrentPattern(UIA_TextPatternId) else { continue };
+                let Ok(text_pattern) = pat_unknown.cast::<IUIAutomationTextPattern>() else { continue };
+                if let Ok(ranges) = text_pattern.GetVisibleRanges() {
+                    if let Ok(r_len) = ranges.Length() {
+                        let mut combined = String::new();
+                        for r in 0..r_len {
+                            if let Ok(range) = ranges.GetElement(r) {
+                                if let Ok(t) = range.GetText(-1) {
+                                    let txt = t.to_string();
+                                    if !txt.trim().is_empty() {
+                                        if !combined.is_empty() { combined.push('\n'); }
+                                        combined.push_str(&txt);
+                                    }
+                                }
+                            }
+                        }
+                        if combined.trim().chars().count() > 50 {
+                            // 50-char threshold avoids picking up tiny
+                            // toolbar labels and finding the actual content.
+                            tracing::info!("uia: extracted {} chars from visible viewport", combined.len());
+                            return Some(combined);
+                        }
+                    }
+                }
+            }
+
+            None
+        }
+    }
 }
 
 #[cfg(target_os = "windows")]
@@ -238,4 +386,12 @@ pub fn taskbar_progress_set(value: u64, total: u64) {
 #[cfg(target_os = "windows")]
 pub fn taskbar_progress_clear() {
     imp::taskbar_progress_clear();
+}
+#[cfg(target_os = "windows")]
+pub fn front_app_name() -> Option<String> {
+    imp::front_app_name()
+}
+#[cfg(target_os = "windows")]
+pub fn active_window_text() -> Option<String> {
+    imp::active_window_text()
 }

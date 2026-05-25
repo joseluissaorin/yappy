@@ -245,6 +245,15 @@ pub fn run() {
     let state = Arc::new(AppState::new());
 
     let mut builder = tauri::Builder::default();
+    // Windows: auto-update from GitHub Releases. The Tauri updater plugin
+    // polls the configured release feed, downloads signed installers, and
+    // (after user consent) installs in place. macOS users currently get
+    // updates via DMG re-download; Windows users get this richer flow.
+    #[cfg(target_os = "windows")]
+    {
+        builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+    }
+
     // Windows: single-instance plugin. When the user double-clicks a .epub
     // associated with Yappy (or runs the binary a second time for any
     // reason), the existing main window gets focused + the file path is
