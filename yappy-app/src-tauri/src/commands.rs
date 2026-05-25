@@ -388,14 +388,20 @@ pub async fn set_launch_at_login_cmd(
     state: State<'_, Arc<AppState>>,
     enabled: bool,
 ) -> Result<(), String> {
-    use tauri_plugin_autostart::ManagerExt;
     settings::update(&app, state.inner(), |s| s.launch_at_login = enabled)
         .map_err(|e| e.to_string())?;
-    let mgr = app.autolaunch();
-    if enabled {
-        mgr.enable().map_err(|e| e.to_string())?;
-    } else {
-        mgr.disable().map_err(|e| e.to_string())?;
+    // Autostart is desktop-only — iOS apps launch on user tap, not on boot.
+    // We still persist the setting on iOS so the UI can reflect it, but skip
+    // the plugin call (the plugin isn't even loaded on mobile).
+    #[cfg(desktop)]
+    {
+        use tauri_plugin_autostart::ManagerExt;
+        let mgr = app.autolaunch();
+        if enabled {
+            mgr.enable().map_err(|e| e.to_string())?;
+        } else {
+            mgr.disable().map_err(|e| e.to_string())?;
+        }
     }
     Ok(())
 }

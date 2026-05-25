@@ -163,3 +163,28 @@ pub fn change_count() -> i64 {
     read_text().ok().flatten().unwrap_or_default().hash(&mut h);
     h.finish() as i64
 }
+
+// ---------- iOS ----------
+//
+// UIPasteboard requires UIKit linkage and triggers a "X pasted from Y" banner
+// on every read on iOS 14+. Phase-1 stubs return empty; Phase 4 wires
+// `tauri-plugin-clipboard-manager` (which uses UIPasteboard under the hood)
+// for the explicit "Read clipboard" command only — we deliberately avoid
+// the change-count polling that the desktop code does.
+
+#[cfg(target_os = "ios")]
+pub fn read_text() -> Result<Option<String>> {
+    Ok(None)
+}
+#[cfg(target_os = "ios")]
+pub fn write_text(_text: &str) -> Result<()> {
+    Ok(())
+}
+#[cfg(target_os = "ios")]
+pub fn snapshot() -> Result<Option<String>> {
+    Ok(None)
+}
+#[cfg(target_os = "ios")]
+pub fn change_count() -> i64 {
+    0
+}

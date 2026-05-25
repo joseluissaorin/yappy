@@ -187,9 +187,16 @@ fn pdf_to_text(path: &Path) -> Result<String> {
 
     // Stage 2: scanned PDF → pdfium rasterizes each page, PaddleOCR transcribes.
     // Both libpdfium.dylib and the PaddleOCR ONNX models are bundled in the .app
-    // — no system deps required.
+    // — no system deps required. iOS doesn't bundle the pdfium XCFramework
+    // yet, so for now scanned-PDF OCR falls through to an error on iOS;
+    // born-digital PDFs still work via pdf_oxide above.
     tracing::info!("pdf_to_text: no text from pdf_oxide; rasterizing via pdfium for OCR");
-    pdf_to_text_via_pdfium_ocr(path)
+    #[cfg(not(target_os = "ios"))]
+    return pdf_to_text_via_pdfium_ocr(path);
+    #[cfg(target_os = "ios")]
+    return Err(anyhow!(
+        "scanned PDF OCR is not yet available on iOS — pdfium XCFramework bundling pending"
+    ));
 }
 
 fn pdf_oxide_extract(path: &Path) -> Result<String> {
@@ -244,6 +251,7 @@ fn pdf_oxide_extract(path: &Path) -> Result<String> {
     Ok(buf)
 }
 
+#[cfg(not(target_os = "ios"))]
 fn pdf_to_text_via_pdfium_ocr(path: &Path) -> Result<String> {
     use pdfium_render::prelude::*;
 
@@ -299,6 +307,7 @@ fn pdf_to_text_via_pdfium_ocr(path: &Path) -> Result<String> {
 ///   - macOS:   libpdfium.dylib inside the .app's Contents/Resources/_up_/resources/pdfium/
 ///   - Windows: pdfium.dll next to the exe (Tauri MSI/NSIS layout)
 ///   - Linux:   libpdfium.so in the AppImage's usr/lib or alongside the binary
+#[cfg(not(target_os = "ios"))]
 fn find_pdfium_dylib() -> Option<std::path::PathBuf> {
     #[cfg(target_os = "macos")]
     let lib_name = "libpdfium.dylib";

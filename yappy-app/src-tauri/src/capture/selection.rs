@@ -4,10 +4,22 @@
 //! copy keystroke, read the new clipboard, and restore the previous contents.
 
 use anyhow::Result;
-use std::time::Duration;
 
+// iOS apps run sandboxed and cannot synthesise a Cmd+C / Ctrl+C against
+// other applications. The "capture text the user has selected in another
+// app" feature simply doesn't exist on iOS — the same payload arrives via
+// the Share Sheet extension instead (see mobile::pickup_shared_payload).
+#[cfg(target_os = "ios")]
+pub fn capture_selection() -> Result<Option<String>> {
+    Ok(None)
+}
+
+#[cfg(not(target_os = "ios"))]
+use std::time::Duration;
+#[cfg(not(target_os = "ios"))]
 use super::clipboard;
 
+#[cfg(not(target_os = "ios"))]
 pub fn capture_selection() -> Result<Option<String>> {
     let prev = clipboard::snapshot().ok().flatten();
     let prev_change = clipboard::change_count();

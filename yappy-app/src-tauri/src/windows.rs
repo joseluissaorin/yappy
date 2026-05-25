@@ -80,6 +80,10 @@ pub fn show_document<R: Runtime>(handle: &tauri::AppHandle<R>, label: &str) -> R
         Some(w) => {
             tracing::info!("[doc:win] show_document({label}): window exists, calling show()+set_focus()");
             let _ = w.show();
+            // `unminimize` only exists on desktop builds of Tauri (UIKit windows
+            // can't be minimized — they're either visible or backgrounded by
+            // the OS, never iconified).
+            #[cfg(desktop)]
             let _ = w.unminimize();
             let _ = w.set_focus();
             Ok(())
@@ -107,11 +111,13 @@ pub fn create_document_window<R: Runtime>(
         .inner_size(900.0, 720.0)
         .min_inner_size(720.0, 540.0)
         .resizable(true)
-        .decorations(true)
-        .center()
         .visible(true)
-        .background_color(tauri::webview::Color(0xff, 0xf8, 0xd7, 0xff))
-        .shadow(true);
+        .background_color(tauri::webview::Color(0xff, 0xf8, 0xd7, 0xff));
+    // Window-chrome builders (decorations/center/hidden_title/title_bar_style
+    // /shadow) only exist on desktop platforms — iOS webview windows are
+    // full-screen and have no chrome to configure.
+    #[cfg(desktop)]
+    let builder = builder.decorations(true).center().shadow(true);
     #[cfg(target_os = "macos")]
     let builder = builder
         .hidden_title(true)

@@ -5,6 +5,11 @@ yappy-app/build/
 yappy-app/.svelte-kit/
 yappy-app/src-tauri/gen/schemas/
 
+# ── Vendored binary frameworks (re-fetched via scripts/fetch-ort-ios.sh) ──
+# Microsoft's ONNX Runtime iOS XCFramework — large binary, not source code.
+vendor/ort-ios/
+.cache/
+
 # ── Dependencies ──────────────────────────────────────────────────────────
 node_modules/
 

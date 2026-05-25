@@ -9,6 +9,16 @@ use std::sync::Arc;
 use anyhow::Result;
 use crate::state::AppState;
 
+// `Action` is also referenced by commands.rs on every platform. Re-defining
+// it identically on mobile keeps the cross-platform call sites compiling.
+#[cfg(mobile)]
+#[derive(Debug, Clone, Copy)]
+pub enum Action {
+    ReadNow,
+    PauseResume,
+    ReadClipboard,
+}
+
 #[cfg(mobile)]
 pub fn register_from_settings<R: tauri::Runtime>(
     _handle: &tauri::AppHandle<R>,
@@ -20,8 +30,8 @@ pub fn register_from_settings<R: tauri::Runtime>(
 pub fn set_hotkey<R: tauri::Runtime>(
     _handle: &tauri::AppHandle<R>,
     _state: &Arc<AppState>,
-    _action: &str,
-    _combo: &str,
+    _action: Action,
+    _combo: String,
 ) -> Result<()> {
     Err(anyhow::anyhow!("global hotkeys are not available on iOS"))
 }
