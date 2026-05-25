@@ -30,6 +30,27 @@ use crate::state::AppState;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // ─── Platform-specific startup environment ─────────────────────────────
+
+    // Linux: GTK4 + WebKit2GTK 2.42+ default to the DMABUF renderer, which
+    // is broken on many configurations (Intel UHD, Nvidia proprietary with
+    // GBM, Mesa < 23.x). Yappy's webview shows up as a black rectangle in
+    // that case. The official upstream workaround is to disable DMABUF and
+    // fall back to the GLES renderer, which is reliable across hardware.
+    // We set this BEFORE any GTK/Webkit init.
+    #[cfg(target_os = "linux")]
+    {
+        if std::env::var_os("WEBKIT_DISABLE_DMABUF_RENDERER").is_none() {
+            std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+        }
+        // Compositors on Wayland don't expose a synchronous keystroke-grab
+        // API — tauri-plugin-global-shortcut silently no-ops. Set a flag the
+        // settings UI can read to surface a helpful explanation.
+        if std::env::var_os("WAYLAND_DISPLAY").is_some() {
+            std::env::set_var("YAPPY_HOTKEYS_UNSUPPORTED", "wayland");
+        }
+    }
+
     // File logger.
     let log_path = dirs::data_dir()
         .map(|d| d.join("com.yappy.app").join("yappy.log"))
@@ -56,23 +77,97 @@ pub fn run() {
         .init();
     tracing::info!("yappy starting — log at {}", log_path.display());
 
-    // Set CoreML as a default execution provider at the ONNX Runtime
-    // ENVIRONMENT level. Sessions created later (Supertonic + PaddleOCR) pick
-    // this up automatically unless they specify their own EPs. Crucially this
-    // accelerates paddle-ocr-rs too, which doesn't expose an EP config knob.
-    // Falls back to CPU silently if CoreML init fails (older OS, etc.).
-    #[cfg(any(target_os = "macos", target_os = "ios"))]
+    // Register hardware-acceleration execution providers at the ONNX Runtime
+    // ENVIRONMENT level. Every session created later (Supertonic synthesis +
+    // paddle-ocr-rs's internal sessions) inherits the EP list unless they
+    // explicitly override it. Crucially this accelerates paddle-ocr-rs even
+    // though that crate doesn't expose an EP knob of its own.
+    //
+    // ORT tries each EP in order and falls back to the next (and ultimately
+    // CPU) if initialization fails — e.g. no GPU available, missing CUDA
+    // runtime, older OS. So we hand it a long preference list per platform
+    // and let runtime sort out what actually works on the user's machine.
     {
-        use ort::execution_providers::coreml::{
-            CoreMLComputeUnits, CoreMLExecutionProvider, CoreMLModelFormat,
-        };
-        let ep = CoreMLExecutionProvider::default()
-            .with_compute_units(CoreMLComputeUnits::All)
-            .with_model_format(CoreMLModelFormat::MLProgram)
-            .build();
-        match ort::init().with_execution_providers([ep]).commit() {
-            Ok(_) => tracing::info!("ort: registered CoreML EP (ANE/GPU/CPU) at environment level"),
-            Err(e) => tracing::warn!("ort: CoreML EP registration failed, falling back to CPU: {e}"),
+        #[allow(unused_mut)]
+        let mut eps: Vec<ort::execution_providers::ExecutionProviderDispatch> = Vec::new();
+        let mut requested: Vec<&'static str> = Vec::new();
+
+        // ─ Apple platforms: CoreML (Neural Engine + Apple GPU + CPU).
+        #[cfg(any(target_os = "macos", target_os = "ios"))]
+        {
+            use ort::execution_providers::coreml::{
+                CoreMLComputeUnits, CoreMLExecutionProvider, CoreMLModelFormat,
+            };
+            eps.push(
+                CoreMLExecutionProvider::default()
+                    .with_compute_units(CoreMLComputeUnits::All)
+                    .with_model_format(CoreMLModelFormat::MLProgram)
+                    .build(),
+            );
+            requested.push("CoreML");
+        }
+
+        // ─ Windows: DirectML routes to any DX12 GPU (NVIDIA / AMD / Intel /
+        //   Qualcomm). Free on Windows 10 1903+; no extra install needed.
+        #[cfg(target_os = "windows")]
+        {
+            use ort::execution_providers::directml::DirectMLExecutionProvider;
+            eps.push(DirectMLExecutionProvider::default().build());
+            requested.push("DirectML");
+        }
+
+        // ─ NVIDIA CUDA (Linux + Windows, opt-in via the `cuda` Cargo
+        //   feature). Requires CUDA Toolkit + cuDNN to be present at build
+        //   AND runtime — falls back to CPU silently otherwise.
+        #[cfg(all(feature = "cuda", any(target_os = "linux", target_os = "windows")))]
+        {
+            use ort::execution_providers::cuda::CUDAExecutionProvider;
+            eps.push(CUDAExecutionProvider::default().build());
+            requested.push("CUDA");
+        }
+
+        // ─ NVIDIA TensorRT — even faster than raw CUDA when supported.
+        //   Opt-in via the `tensorrt` Cargo feature.
+        #[cfg(all(feature = "tensorrt", any(target_os = "linux", target_os = "windows")))]
+        {
+            use ort::execution_providers::tensorrt::TensorRTExecutionProvider;
+            eps.push(TensorRTExecutionProvider::default().build());
+            requested.push("TensorRT");
+        }
+
+        // ─ AMD ROCm (Linux only, opt-in via `rocm` Cargo feature).
+        #[cfg(all(feature = "rocm", target_os = "linux"))]
+        {
+            use ort::execution_providers::rocm::ROCmExecutionProvider;
+            eps.push(ROCmExecutionProvider::default().build());
+            requested.push("ROCm");
+        }
+
+        // ─ Intel OpenVINO (CPU + iGPU + dGPU on Intel hardware). Opt-in.
+        #[cfg(all(feature = "openvino", any(target_os = "linux", target_os = "windows")))]
+        {
+            use ort::execution_providers::openvino::OpenVINOExecutionProvider;
+            eps.push(OpenVINOExecutionProvider::default().build());
+            requested.push("OpenVINO");
+        }
+
+        // ─ XNNPACK: optimized CPU kernels for ARM + x86. Cross-platform,
+        //   small. Sits at the end of the list as a CPU acceleration above
+        //   ORT's default CPU EP.
+        {
+            use ort::execution_providers::xnnpack::XNNPACKExecutionProvider;
+            eps.push(XNNPACKExecutionProvider::default().build());
+            requested.push("XNNPACK");
+        }
+
+        match ort::init().with_execution_providers(eps).commit() {
+            Ok(_) => tracing::info!(
+                "ort: registered execution providers (priority order): {}",
+                requested.join(" → ")
+            ),
+            Err(e) => tracing::warn!(
+                "ort: EP registration failed, falling back to CPU-only: {e}"
+            ),
         }
     }
 

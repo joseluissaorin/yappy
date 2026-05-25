@@ -335,6 +335,23 @@ fn find_pdfium_dylib() -> Option<std::path::PathBuf> {
             candidates.push(parent.join(format!("pdfium/{}", lib_name)));
             candidates.push(parent.join(lib_name));
         }
+        // AppImage layouts vary — Tauri Linux AppImage places resources under
+        // either $APPDIR/usr/lib/yappy/resources/ OR
+        // $APPDIR/usr/share/yappy/resources/. Check both.
+        #[cfg(target_os = "linux")]
+        if let Ok(appdir) = std::env::var("APPDIR") {
+            let appdir = std::path::PathBuf::from(appdir);
+            candidates.push(appdir.join(format!("usr/lib/yappy/resources/pdfium/{}", lib_name)));
+            candidates.push(appdir.join(format!("usr/share/yappy/resources/pdfium/{}", lib_name)));
+            candidates.push(appdir.join(format!("usr/lib/yappy/{}", lib_name)));
+        }
+        // Linux .deb / .rpm install paths.
+        #[cfg(target_os = "linux")]
+        {
+            candidates.push(std::path::PathBuf::from(format!("/usr/lib/yappy/resources/pdfium/{}", lib_name)));
+            candidates.push(std::path::PathBuf::from(format!("/usr/share/yappy/resources/pdfium/{}", lib_name)));
+            candidates.push(std::path::PathBuf::from(format!("/usr/lib/yappy/{}", lib_name)));
+        }
     }
 
     // Dev paths (cargo run / cargo test).

@@ -18,11 +18,11 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 regex = "1.10"
 once_cell = "1"
 ndarray = { version = "0.16", features = ["rayon"] }
-# `coreml` enables ONNX Runtime's CoreML execution provider on Apple platforms,
-# which routes supported ops to the Neural Engine / Apple GPU. Unsupported ops
-# transparently fall back to CPU. This benefits macOS today (M-series ANE) and
-# is mandatory for getting acceptable Supertonic + PaddleOCR latency on iOS.
-ort = { version = "=2.0.0-rc.10", features = ["coreml"] }
+# ONNX Runtime — baseline features that link cleanly on every platform.
+# Heavier EPs (DirectML on Windows, optional CUDA / ROCm / OpenVINO) are
+# layered on top via per-target deps + Cargo features in yappy-app's
+# Cargo.toml. See CLAUDE-DESKTOP.md for the full HW acceleration matrix.
+ort = { version = "=2.0.0-rc.10", features = ["coreml", "xnnpack"] }
 rand = "0.8"
 rand_distr = "0.4"
 hound = "3.5"

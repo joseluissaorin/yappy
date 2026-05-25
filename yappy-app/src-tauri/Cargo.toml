@@ -105,3 +105,22 @@ objc2-app-kit = { version = "0.3", features = ["NSPasteboard", "NSWorkspace", "N
 pdfium-render = { version = "0.8", features = ["thread_safe", "image"] }
 tauri-plugin-global-shortcut = "2"
 tauri-plugin-autostart = "2"
+
+# ─── Hardware-acceleration EPs per platform ───────────────────────────────
+# Windows: DirectML lets ANY DX12 GPU (NVIDIA, AMD, Intel, Qualcomm) run ORT
+# ops on the GPU. Ships as a system library on Windows 10 1903+, so no extra
+# install required for end users — the binary just gets a few KB bigger.
+[target.'cfg(target_os = "windows")'.dependencies]
+ort = { workspace = true, features = ["directml"] }
+
+# ─── Optional GPU EPs, opt-in via Cargo features ─────────────────────────
+# Power-user builds for NVIDIA / AMD / Intel-deep-tooling. These pull in
+# external system SDKs (CUDA Toolkit / cuDNN, ROCm, OpenVINO Toolkit) which
+# must be installed BEFORE building. See CLAUDE-DESKTOP.md for the env
+# variables each needs (e.g. CUDA_PATH on Windows, ROCM_HOME on Linux).
+[features]
+default = []
+cuda     = ["ort/cuda"]      # NVIDIA GPUs on Linux + Windows (huge speedup, needs CUDA Toolkit at build)
+tensorrt = ["ort/tensorrt"]  # NVIDIA + TensorRT (Linux mainly)
+rocm     = ["ort/rocm"]      # AMD GPUs on Linux (requires ROCm install)
+openvino = ["ort/openvino"]  # Intel CPUs/GPUs (Linux + Windows + macOS Intel)
