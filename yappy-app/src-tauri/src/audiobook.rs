@@ -42,6 +42,68 @@ pub struct Chapter {
     pub start_secs: f64,
 }
 
+/// Lightweight metadata extracted from an existing .m4b file. Used by the
+/// Library UI to show duration, chapter count, etc. without decoding the
+/// audio. Returns None if the file isn't readable or doesn't look like an
+/// MP4 (no `ftyp` box at the start).
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct M4bInfo {
+    pub duration_secs: f64,
+    pub chapter_count: usize,
+    pub first_chapter_title: Option<String>,
+}
+
+pub fn read_m4b_info(path: &Path) -> Option<M4bInfo> {
+    let file = std::fs::File::open(path).ok()?;
+    let meta = file.metadata().ok()?;
+    let size = meta.len();
+    let reader = std::io::BufReader::new(file);
+    let mp4 = mp4::Mp4Reader::read_header(reader, size).ok()?;
+    let duration_secs = mp4.duration().as_secs_f64();
+    // Read the chpl atom by re-scanning the raw bytes — the `mp4` crate
+    // doesn't expose user-data atoms, but we wrote the chpl ourselves so we
+    // know the layout. Failure here is fine: just report 0 chapters.
+    let (chapter_count, first_chapter_title) = read_chpl_from_file(path)
+        .unwrap_or((0, None));
+    Some(M4bInfo {
+        duration_secs,
+        chapter_count,
+        first_chapter_title,
+    })
+}
+
+fn read_chpl_from_file(path: &Path) -> Option<(usize, Option<String>)> {
+    let bytes = std::fs::read(path).ok()?;
+    // Find chpl atom anywhere in the file (we wrote it inside moov.udta).
+    let chpl_off = bytes.windows(4).position(|w| w == b"chpl")?;
+    // The 4-byte size header precedes the type, so chpl payload starts at
+    // chpl_off + 4 (type) and has the FullBox header (1 byte version +
+    // 3 bytes flags + 4 bytes reserved + 1 byte count).
+    let payload_start = chpl_off + 4 + 4 + 4; // type + version+flags + reserved
+    if payload_start + 1 > bytes.len() {
+        return None;
+    }
+    let count = bytes[payload_start] as usize;
+    if count == 0 {
+        return Some((0, None));
+    }
+    let mut cursor = payload_start + 1;
+    // First chapter: u64 start + u8 title_len + title_bytes
+    if cursor + 9 > bytes.len() {
+        return Some((count, None));
+    }
+    cursor += 8; // skip start_100ns
+    let title_len = bytes[cursor] as usize;
+    cursor += 1;
+    if cursor + title_len > bytes.len() {
+        return Some((count, None));
+    }
+    let title = std::str::from_utf8(&bytes[cursor..cursor + title_len])
+        .ok()
+        .map(|s| s.to_string());
+    Some((count, title))
+}
+
 /// Top-level metadata that goes into the m4b container.
 #[derive(Debug, Clone, Default)]
 pub struct M4bMetadata {

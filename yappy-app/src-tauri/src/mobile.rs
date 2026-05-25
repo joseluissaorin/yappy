@@ -178,6 +178,41 @@ pub fn share_file(path: &str) {
     }
 }
 
+// ─── AVAudioPlayer file playback ────────────────────────────────────────
+extern "C" {
+    fn yappy_audiofile_play(path: *const std::os::raw::c_char, start_at: f64) -> bool;
+    fn yappy_audiofile_pause();
+    fn yappy_audiofile_resume();
+    fn yappy_audiofile_stop();
+    fn yappy_audiofile_seek(secs: f64);
+    fn yappy_audiofile_position() -> f64;
+    fn yappy_audiofile_duration() -> f64;
+    fn yappy_audiofile_is_playing() -> bool;
+    fn yappy_audiofile_current_path() -> *mut std::os::raw::c_char;
+}
+
+pub fn audiofile_play(path: &str, start_at_secs: f64) -> bool {
+    use std::ffi::CString;
+    let Ok(c) = CString::new(path) else { return false };
+    unsafe { yappy_audiofile_play(c.as_ptr(), start_at_secs) }
+}
+pub fn audiofile_pause() { unsafe { yappy_audiofile_pause() } }
+pub fn audiofile_resume() { unsafe { yappy_audiofile_resume() } }
+pub fn audiofile_stop() { unsafe { yappy_audiofile_stop() } }
+pub fn audiofile_seek(secs: f64) { unsafe { yappy_audiofile_seek(secs) } }
+pub fn audiofile_position() -> f64 { unsafe { yappy_audiofile_position() } }
+pub fn audiofile_duration() -> f64 { unsafe { yappy_audiofile_duration() } }
+pub fn audiofile_is_playing() -> bool { unsafe { yappy_audiofile_is_playing() } }
+pub fn audiofile_current_path() -> Option<String> {
+    let raw = unsafe { yappy_audiofile_current_path() };
+    if raw.is_null() { return None; }
+    let s = unsafe { std::ffi::CStr::from_ptr(raw) }
+        .to_string_lossy()
+        .into_owned();
+    unsafe { yappy_free_string(raw) };
+    Some(s)
+}
+
 /// Install lock-screen / Now Playing remote handlers. Call once at startup
 /// after `AppState` is constructed.
 pub fn install_now_playing_handlers(playback: std::sync::Arc<crate::playback::PlaybackController>) {

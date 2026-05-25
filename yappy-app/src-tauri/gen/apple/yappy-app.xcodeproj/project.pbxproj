@@ -14,6 +14,7 @@
 		2ECA68CB885E90C37B24D6F0 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 0475A5B4D70EB82E962947E4 /* assets */; };
 		3E69589CF40DCCDA1133A771 /* YappyHomeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A1FAB9378B7B7941C656CA /* YappyHomeWidget.swift */; };
 		43B7E8BEEB5DA997B66FFFD5 /* YappyWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 11D8807FE02A0A9A28B2AC44 /* YappyWidgets.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		450331386243A28C0C5EF0C9 /* AudioFilePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07B5C0EC4CB481A9F8969C /* AudioFilePlayer.swift */; };
 		450EF73371F034EB0BC204E5 /* libapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5A9A58DA5F7712C4E9EF3F /* libapp.a */; };
 		53336429DF0E473712A4EF0C /* YappyWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BACA884836A2C3FBE6980A8B /* YappyWidgetsBundle.swift */; };
 		5401E6FD8EA5634E1BE7FF0D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88594DFE20DA9B69DC2A4E99 /* WidgetKit.framework */; };
@@ -116,6 +117,7 @@
 		8E45153695F56A85774F88DB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		96304E0D0F48029CD0290B43 /* bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bindings.h; sourceTree = "<group>"; };
 		96AEBF7E16B41A1D15A49708 /* main.rs */ = {isa = PBXFileReference; path = main.rs; sourceTree = "<group>"; };
+		9C07B5C0EC4CB481A9F8969C /* AudioFilePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFilePlayer.swift; sourceTree = "<group>"; };
 		A1030C208421566F6F5B172E /* yappy-app_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "yappy-app_iOS.entitlements"; sourceTree = "<group>"; };
 		A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		A6A1FAB9378B7B7941C656CA /* YappyHomeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YappyHomeWidget.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 		0A56D527530D92E2F4FC210D /* yappy-app */ = {
 			isa = PBXGroup;
 			children = (
+				9C07B5C0EC4CB481A9F8969C /* AudioFilePlayer.swift */,
 				AFBA15D588B3157A3A10AC2E /* AudioSession.swift */,
 				10DB48BB735B5750C43A43BA /* Haptics.swift */,
 				7D299F16AAF69ACF1D91AEB5 /* LiveActivityBridge.swift */,
@@ -505,6 +508,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				450331386243A28C0C5EF0C9 /* AudioFilePlayer.swift in Sources */,
 				FCA153A76EC118E0E6697166 /* AudioSession.swift in Sources */,
 				0B121BF56A14DA7510E9DC01 /* Haptics.swift in Sources */,
 				D82942FC61F418B9EC888279 /* LiveActivityBridge.swift in Sources */,

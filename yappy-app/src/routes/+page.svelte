@@ -88,12 +88,31 @@
   let modelReady: boolean = $state(false);
   let download: DownloadProgress | null = $state(null);
   let downloading: boolean = $state(false);
-  let activeSection: "home" | "voices" | "preferences" | "history" | "diagnostics" = $state("home");
+  let activeSection: "home" | "voices" | "library" | "preferences" | "history" | "diagnostics" = $state("home");
   let captureEmptyToast: boolean = $state(false);
-  // iOS library: rendered audiobook files in the app's Documents/. Refreshed
-  // on launch + after any new render finishes. Each item gets a share button.
-  type LibraryItem = { name: string; path: string; size: number; mtime_ms: number };
+  // iOS library: rendered audiobook files in the app's Documents/. Each row
+  // shows extracted metadata (duration, chapter count) + resume position +
+  // playback controls. Real audiobook-app behavior — not just a file picker.
+  type LibraryItem = {
+    name: string;
+    path: string;
+    size: number;
+    mtime_ms: number;
+    duration_secs: number | null;
+    chapter_count: number;
+    first_chapter_title: string | null;
+    resume_secs: number;
+  };
+  type LibraryStatus = {
+    current_path: string | null;
+    position_secs: number;
+    duration_secs: number;
+    playing: boolean;
+  };
   let libraryItems: LibraryItem[] = $state([]);
+  let libraryStatus: LibraryStatus = $state({ current_path: null, position_secs: 0, duration_secs: 0, playing: false });
+  let libraryPollInterval: number | null = null;
+
   async function refreshLibrary() {
     if (!getStore(isIOS)) return;
     try {
@@ -103,6 +122,62 @@
       console.warn("[library] refresh failed:", e);
     }
   }
+  async function libraryPlay(item: LibraryItem, fromStart = false) {
+    try {
+      const { invoke } = await import("@tauri-apps/api/core");
+      await invoke("library_play_cmd", { path: item.path, fromStart });
+      startLibraryPolling();
+    } catch (e) {
+      console.warn("[library] play failed:", e);
+    }
+  }
+  async function libraryPause() {
+    const { invoke } = await import("@tauri-apps/api/core");
+    await invoke("library_pause_cmd");
+    await pollLibraryStatus();
+  }
+  async function libraryResume() {
+    const { invoke } = await import("@tauri-apps/api/core");
+    await invoke("library_resume_cmd");
+    await pollLibraryStatus();
+  }
+  async function libraryStop() {
+    const { invoke } = await import("@tauri-apps/api/core");
+    await invoke("library_stop_cmd");
+    stopLibraryPolling();
+    libraryStatus = { current_path: null, position_secs: 0, duration_secs: 0, playing: false };
+    // Refresh so resume positions update.
+    await refreshLibrary();
+  }
+  async function librarySeek(delta: number) {
+    const { invoke } = await import("@tauri-apps/api/core");
+    const next = Math.max(0, libraryStatus.position_secs + delta);
+    await invoke("library_seek_cmd", { secs: next });
+    await pollLibraryStatus();
+  }
+  async function libraryDelete(item: LibraryItem) {
+    if (!confirm(`delete '${item.name}'? this cannot be undone.`)) return;
+    try {
+      const { invoke } = await import("@tauri-apps/api/core");
+      await invoke("library_delete_cmd", { path: item.path });
+      await refreshLibrary();
+    } catch (e) {
+      flashToast(`delete failed: ${e}`);
+    }
+  }
+  async function pollLibraryStatus() {
+    try {
+      const { invoke } = await import("@tauri-apps/api/core");
+      libraryStatus = (await invoke("library_status_cmd")) as LibraryStatus;
+    } catch {}
+  }
+  function startLibraryPolling() {
+    if (libraryPollInterval) return;
+    libraryPollInterval = window.setInterval(pollLibraryStatus, 1000);
+  }
+  function stopLibraryPolling() {
+    if (libraryPollInterval) { clearInterval(libraryPollInterval); libraryPollInterval = null; }
+  }
   async function shareLibraryItem(path: string) {
     try {
       const { invoke } = await import("@tauri-apps/api/core");
@@ -110,6 +185,14 @@
     } catch (e) {
       console.warn("[library] share failed:", e);
     }
+  }
+  function libraryFmtTime(s: number): string {
+    if (!isFinite(s) || s <= 0) return "0:00";
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = Math.floor(s % 60);
+    if (h > 0) return `${h}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+    return `${m}:${String(sec).padStart(2, "0")}`;
   }
 
   // iOS-only clipboard launch banner — populated at boot when iOS pasteboard
@@ -519,6 +602,9 @@
     <nav class="nav" aria-label="primary navigation">
       <button class:active={activeSection === "home"} onclick={() => (activeSection = "home")} aria-current={activeSection === "home" ? "page" : undefined}>home</button>
       <button class:active={activeSection === "voices"} onclick={() => (activeSection = "voices")} aria-current={activeSection === "voices" ? "page" : undefined}>voices</button>
+      {#if $isIOS}
+        <button class:active={activeSection === "library"} onclick={() => { activeSection = "library"; refreshLibrary(); }} aria-current={activeSection === "library" ? "page" : undefined}>library</button>
+      {/if}
       <button class:active={activeSection === "preferences"} onclick={() => (activeSection = "preferences")} aria-current={activeSection === "preferences" ? "page" : undefined}>preferences</button>
       <button class:active={activeSection === "history"} onclick={() => (activeSection = "history")} aria-current={activeSection === "history" ? "page" : undefined}>history</button>
       <button class:active={activeSection === "diagnostics"} onclick={() => (activeSection = "diagnostics")} aria-current={activeSection === "diagnostics" ? "page" : undefined}>diagnostics</button>
@@ -1191,33 +1277,84 @@
         </div>
       </section>
     {/if}
+  {:else if activeSection === "library" && $isIOS}
+    <section class="lib-wrap">
+      <header class="section-head">
+        <h2>library</h2>
+        <p>your rendered audiobooks — tap to play, share, or open in books.</p>
+      </header>
+      {#if libraryStatus.current_path && libraryStatus.duration_secs > 0}
+        <!-- Persistent player bar at the top of Library while something is
+             playing. Shows the file name + scrub progress + skip controls. -->
+        <div class="card lib-now-playing">
+          <div class="lnp-title">{libraryStatus.current_path.split("/").pop() ?? ""}</div>
+          <div class="lnp-bar"><div class="lnp-fill" style="--w: {Math.min(100, (libraryStatus.position_secs / libraryStatus.duration_secs) * 100)}%"></div></div>
+          <div class="lnp-meta">
+            <span>{libraryFmtTime(libraryStatus.position_secs)} / {libraryFmtTime(libraryStatus.duration_secs)}</span>
+            <span class="muted">{libraryFmtTime(Math.max(0, libraryStatus.duration_secs - libraryStatus.position_secs))} left</span>
+          </div>
+          <div class="lnp-controls">
+            <button class="btn" onclick={() => librarySeek(-15)} aria-label="back 15 seconds">−15s</button>
+            {#if libraryStatus.playing}
+              <button class="btn-pink" onclick={libraryPause} aria-label="pause">❚❚ pause</button>
+            {:else}
+              <button class="btn-pink" onclick={libraryResume} aria-label="resume">▶ resume</button>
+            {/if}
+            <button class="btn" onclick={() => librarySeek(15)} aria-label="forward 15 seconds">+15s</button>
+            <button class="btn" onclick={libraryStop} aria-label="stop">stop</button>
+          </div>
+        </div>
+      {/if}
+
+      <div class="card pref-card">
+        {#if libraryItems.length === 0}
+          <p class="muted">no audiobooks yet. render one from a document — it'll appear here.</p>
+        {:else}
+          <ul class="lib-list" aria-label="saved audiobooks">
+            {#each libraryItems as item (item.path)}
+              <li class="lib-card" class:current={libraryStatus.current_path === item.path}>
+                <div class="lib-card-head">
+                  <div class="lib-card-icon" aria-hidden="true">🎧</div>
+                  <div class="lib-card-body">
+                    <div class="lib-card-name">{item.name}</div>
+                    <div class="lib-card-sub">
+                      {#if item.duration_secs}{libraryFmtTime(item.duration_secs)}{:else}{(item.size / (1024 * 1024)).toFixed(1)} MB{/if}
+                      {#if item.chapter_count > 0} · {item.chapter_count} chapters{/if}
+                      · {new Date(item.mtime_ms).toLocaleDateString()}
+                    </div>
+                    {#if item.resume_secs > 5 && libraryStatus.current_path !== item.path}
+                      <div class="lib-resume-hint">resume from {libraryFmtTime(item.resume_secs)}</div>
+                    {/if}
+                  </div>
+                </div>
+                <div class="lib-card-actions">
+                  {#if libraryStatus.current_path === item.path}
+                    {#if libraryStatus.playing}
+                      <button class="btn-pink" onclick={libraryPause} aria-label="pause">❚❚</button>
+                    {:else}
+                      <button class="btn-pink" onclick={libraryResume} aria-label="resume">▶</button>
+                    {/if}
+                  {:else}
+                    <button class="btn-pink" onclick={() => libraryPlay(item)} aria-label={`play ${item.name}`}>▶ play</button>
+                  {/if}
+                  {#if item.resume_secs > 5}
+                    <button class="btn-outline" onclick={() => libraryPlay(item, true)} aria-label={`play ${item.name} from start`} title="play from start">⤺</button>
+                  {/if}
+                  <button class="btn-outline" onclick={() => shareLibraryItem(item.path)} aria-label={`share ${item.name}`}>📤</button>
+                  <button class="btn-outline danger" onclick={() => libraryDelete(item)} aria-label={`delete ${item.name}`}>🗑</button>
+                </div>
+              </li>
+            {/each}
+          </ul>
+        {/if}
+      </div>
+    </section>
   {:else if activeSection === "history"}
     <section class="hist-wrap">
       <header class="section-head">
         <h2>history</h2>
         <p>your recent reads. replay anything, anytime.</p>
       </header>
-      {#if $isIOS}
-        <!-- iOS only: list of rendered audiobook files in the app's
-             Documents/ directory. Tap "share" to push via AirDrop, Apple
-             Books, Files, etc. -->
-        <div class="card pref-card">
-          <h3 style="margin: 0 0 12px 0;">saved audiobooks</h3>
-          {#if libraryItems.length === 0}
-            <p class="muted">no audiobooks yet. render one from the document view.</p>
-          {:else}
-            <ul class="lib-list" aria-label="saved audiobooks">
-              {#each libraryItems as item}
-                <li class="lib-row">
-                  <div class="lib-name">🎧 {item.name}</div>
-                  <div class="lib-meta">{(item.size / (1024 * 1024)).toFixed(1)} MB · {new Date(item.mtime_ms).toLocaleDateString()}</div>
-                  <button class="btn-outline" onclick={() => shareLibraryItem(item.path)} aria-label={`share ${item.name}`}>📤 share</button>
-                </li>
-              {/each}
-            </ul>
-          {/if}
-        </div>
-      {/if}
       <div class="card pref-card"><HistoryList /></div>
     </section>
   {:else if activeSection === "diagnostics"}
@@ -1377,14 +1514,34 @@ main {
 .tip-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
 .tip-sub { font-size: 14px; color: var(--ink-500); line-height: 1.4; }
 
-/* iOS saved-audiobooks library list. Shown only in the History section
-   on iOS — Documents/ is a private sandbox on iOS so it's the only way to
-   see what's been rendered. */
-.lib-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-.lib-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 12px; border: 1px solid var(--ink-200, #e5e5e5); border-radius: 10px; }
-.lib-name { font-weight: 600; font-size: 14px; grid-column: 1; word-break: break-word; }
-.lib-meta { font-size: 12px; color: var(--ink-500); grid-column: 1; grid-row: 2; }
-.lib-row button { grid-column: 2; grid-row: 1 / 3; padding: 7px 12px; border-radius: 999px; font-size: 13px; cursor: pointer; background: transparent; border: 1px solid var(--ink-200, #e5e5e5); color: var(--ink-700); }
+/* iOS-only saved-audiobooks library section. Rich rows with metadata,
+   per-item play/pause/resume/share/delete + a persistent now-playing bar
+   when something is actively playing. */
+.lib-wrap { padding: 0; }
+.lib-now-playing { padding: 16px 20px; margin-bottom: 16px; background: linear-gradient(135deg, #fff0f6 0%, #fff8d7 100%); }
+.lnp-title { font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+.lnp-bar { height: 4px; background: rgba(0,0,0,0.08); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+.lnp-fill { height: 100%; width: var(--w, 0%); background: var(--pink-500); transition: width 0.5s linear; }
+.lnp-meta { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; color: var(--ink-700); margin-bottom: 12px; }
+.lnp-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.lnp-controls button { padding: 8px 16px; border-radius: 999px; font-weight: 600; cursor: pointer; border: 1px solid var(--ink-200, #e5e5e5); }
+.lnp-controls .btn-pink { background: var(--pink-500); color: white; border: none; }
+
+.lib-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.lib-card { padding: 14px; border: 1px solid var(--ink-200, #e5e5e5); border-radius: 14px; transition: background 0.15s; }
+.lib-card.current { background: linear-gradient(135deg, #fff8d7 0%, #fff0f6 100%); border-color: var(--pink-500); }
+.lib-card-head { display: flex; gap: 12px; margin-bottom: 10px; }
+.lib-card-icon { font-size: 28px; line-height: 1; flex-shrink: 0; }
+.lib-card-body { flex: 1; min-width: 0; }
+.lib-card-name { font-weight: 700; font-size: 15px; word-break: break-word; }
+.lib-card-sub { font-size: 12px; color: var(--ink-500); margin-top: 2px; }
+.lib-resume-hint { font-size: 12px; color: var(--pink-500); margin-top: 4px; font-weight: 600; }
+.lib-card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.lib-card-actions button { padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.lib-card-actions .btn-pink { background: var(--pink-500); color: white; border: none; }
+.lib-card-actions .btn-outline { background: transparent; border: 1px solid var(--ink-200, #e5e5e5); color: var(--ink-700); }
+.lib-card-actions .btn-outline.danger { color: var(--ink-500); }
+.lib-card-actions .btn-outline.danger:hover { color: #dc2626; border-color: #fecaca; }
 .muted { color: var(--ink-500); font-size: 14px; }
 
 /* iOS clipboard launch banner. Sits above the install-voices card with a

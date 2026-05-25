@@ -1110,15 +1110,48 @@ pub fn share_file_cmd(path: String) -> Result<(), String> {
     Ok(())
 }
 
-/// List rendered audiobook files (`.m4b`, `.wav`, `.mp3`) in the app's
-/// documents directory. iOS users can't browse the filesystem freely, so
-/// the in-app library is the only place to find previously-rendered audio.
+/// List rendered audiobook files (`.m4b`, `.wav`, `.mp3`, `.m4a`) in the
+/// app's documents directory along with extracted metadata (duration,
+/// chapter count) and resume position. iOS users can't browse the
+/// filesystem freely, so the in-app library is the only way to find
+/// previously-rendered audio.
 #[derive(serde::Serialize, Debug, Clone)]
 pub struct LibraryItem {
     pub name: String,
     pub path: String,
     pub size: u64,
     pub mtime_ms: i64,
+    /// Duration in seconds. None for non-m4b files we don't parse.
+    pub duration_secs: Option<f64>,
+    /// Chapter count for m4b. 0 if file has no chapters or isn't an m4b.
+    pub chapter_count: usize,
+    /// First chapter title — handy for the library row subtitle when the
+    /// filename is generic (e.g. "Chapter 1: Where it all began").
+    pub first_chapter_title: Option<String>,
+    /// Last-known playback position in seconds. 0 if never played or
+    /// finished playing.
+    pub resume_secs: f64,
+}
+
+fn library_resume_map_path(app: &AppHandle) -> Result<std::path::PathBuf, String> {
+    use tauri::Manager;
+    let dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
+    std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+    Ok(dir.join("library_resume.json"))
+}
+
+fn read_resume_map(app: &AppHandle) -> std::collections::HashMap<String, f64> {
+    library_resume_map_path(app)
+        .ok()
+        .and_then(|p| std::fs::read_to_string(p).ok())
+        .and_then(|s| serde_json::from_str(&s).ok())
+        .unwrap_or_default()
+}
+
+fn write_resume_map(app: &AppHandle, map: &std::collections::HashMap<String, f64>) -> Result<(), String> {
+    let p = library_resume_map_path(app)?;
+    let s = serde_json::to_string_pretty(map).map_err(|e| e.to_string())?;
+    std::fs::write(p, s).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -1128,6 +1161,7 @@ pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryI
         .path()
         .document_dir()
         .map_err(|e| e.to_string())?;
+    let resume_map = read_resume_map(&app);
     let mut items: Vec<LibraryItem> = Vec::new();
     let entries = std::fs::read_dir(&dir).map_err(|e| e.to_string())?;
     for entry in entries.flatten() {
@@ -1154,15 +1188,152 @@ pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryI
             .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
             .map(|d| d.as_millis() as i64)
             .unwrap_or(0);
+        // Extract m4b metadata for richer library rows.
+        let (duration_secs, chapter_count, first_chapter_title) =
+            if matches!(ext.as_deref(), Some("m4b") | Some("m4a")) {
+                if let Some(info) = crate::audiobook::read_m4b_info(&path) {
+                    (Some(info.duration_secs), info.chapter_count, info.first_chapter_title)
+                } else {
+                    (None, 0, None)
+                }
+            } else {
+                (None, 0, None)
+            };
+        let path_str = path.to_string_lossy().to_string();
+        let resume_secs = resume_map.get(&path_str).copied().unwrap_or(0.0);
         items.push(LibraryItem {
             name,
-            path: path.to_string_lossy().to_string(),
+            path: path_str,
             size: meta.len(),
             mtime_ms,
+            duration_secs,
+            chapter_count,
+            first_chapter_title,
+            resume_secs,
         });
     }
     items.sort_by(|a, b| b.mtime_ms.cmp(&a.mtime_ms));
     Ok(items)
+}
+
+/// Start playback of a saved audiobook via AVAudioPlayer (iOS only).
+/// Resumes from the last-known position unless `from_start` is true.
+#[tauri::command]
+pub fn library_play_cmd(_app: AppHandle, path: String, from_start: Option<bool>) -> Result<bool, String> {
+    let start_at = if from_start.unwrap_or(false) {
+        0.0
+    } else {
+        #[cfg(target_os = "ios")]
+        {
+            let map = read_resume_map(&_app);
+            map.get(&path).copied().unwrap_or(0.0)
+        }
+        #[cfg(not(target_os = "ios"))]
+        0.0
+    };
+    #[cfg(target_os = "ios")]
+    {
+        let ok = crate::mobile::audiofile_play(&path, start_at);
+        // Push Now Playing metadata so the lock screen / Control Center
+        // show what's playing. Pull title from filename.
+        let title = std::path::Path::new(&path)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or("Yappy")
+            .to_string();
+        let duration = crate::mobile::audiofile_duration();
+        crate::mobile::now_playing_set(&title, "Yappy", "", duration, start_at, true);
+        return Ok(ok);
+    }
+    #[cfg(not(target_os = "ios"))]
+    {
+        let _ = path;
+        let _ = start_at;
+        Ok(false)
+    }
+}
+
+#[tauri::command]
+pub fn library_pause_cmd() {
+    #[cfg(target_os = "ios")]
+    crate::mobile::audiofile_pause();
+}
+
+#[tauri::command]
+pub fn library_resume_cmd() {
+    #[cfg(target_os = "ios")]
+    crate::mobile::audiofile_resume();
+}
+
+#[tauri::command]
+pub fn library_stop_cmd(app: AppHandle) {
+    #[cfg(target_os = "ios")]
+    {
+        // Persist the resume position before stopping so the next play
+        // picks up where we left off.
+        if let Some(p) = crate::mobile::audiofile_current_path() {
+            let pos = crate::mobile::audiofile_position();
+            let mut map = read_resume_map(&app);
+            if pos > 5.0 { // Only save if more than 5s in (avoids "resume from beginning")
+                map.insert(p, pos);
+                let _ = write_resume_map(&app, &map);
+            }
+        }
+        crate::mobile::audiofile_stop();
+        // Clear the Now Playing — lock screen drops Yappy.
+        crate::mobile::now_playing_set("", "", "", 0.0, 0.0, false);
+    }
+    #[cfg(not(target_os = "ios"))]
+    let _ = app;
+}
+
+#[tauri::command]
+pub fn library_seek_cmd(secs: f64) {
+    #[cfg(target_os = "ios")]
+    crate::mobile::audiofile_seek(secs);
+}
+
+#[derive(serde::Serialize, Debug, Clone)]
+pub struct LibraryStatus {
+    pub current_path: Option<String>,
+    pub position_secs: f64,
+    pub duration_secs: f64,
+    pub playing: bool,
+}
+
+#[tauri::command]
+pub fn library_status_cmd() -> LibraryStatus {
+    #[cfg(target_os = "ios")]
+    {
+        LibraryStatus {
+            current_path: crate::mobile::audiofile_current_path(),
+            position_secs: crate::mobile::audiofile_position(),
+            duration_secs: crate::mobile::audiofile_duration(),
+            playing: crate::mobile::audiofile_is_playing(),
+        }
+    }
+    #[cfg(not(target_os = "ios"))]
+    LibraryStatus {
+        current_path: None,
+        position_secs: 0.0,
+        duration_secs: 0.0,
+        playing: false,
+    }
+}
+
+#[tauri::command]
+pub fn library_delete_cmd(app: AppHandle, path: String) -> Result<(), String> {
+    // Stop playback if the file we're about to delete is currently playing.
+    #[cfg(target_os = "ios")]
+    if crate::mobile::audiofile_current_path().as_deref() == Some(path.as_str()) {
+        crate::mobile::audiofile_stop();
+    }
+    std::fs::remove_file(&path).map_err(|e| e.to_string())?;
+    // Remove its resume position too.
+    let mut map = read_resume_map(&app);
+    map.remove(&path);
+    let _ = write_resume_map(&app, &map);
+    Ok(())
 }
 
 #[tauri::command]

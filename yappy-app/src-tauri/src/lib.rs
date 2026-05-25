@@ -341,6 +341,13 @@ pub fn run() {
             commands::haptic_cmd,
             commands::share_file_cmd,
             commands::list_rendered_audiobooks_cmd,
+            commands::library_play_cmd,
+            commands::library_pause_cmd,
+            commands::library_resume_cmd,
+            commands::library_stop_cmd,
+            commands::library_seek_cmd,
+            commands::library_status_cmd,
+            commands::library_delete_cmd,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
