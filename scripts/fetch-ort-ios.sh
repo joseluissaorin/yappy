@@ -62,25 +62,21 @@ for SLICE in ios-arm64 ios-arm64_x86_64-simulator; do
   DST="$VENDOR/$SLICE"
   rm -rf "$DST"
   mkdir -p "$DST"
-  # Apple ships fat (universal) archives. rustc's archive reader rejects fat
-  # ar files ("Unsupported archive identifier"), so split into thin slices.
+  # Apple wraps ALL its archives in fat-format containers — even single-arch
+  # ones look like "Mach-O universal binary with 1 architecture" to file(1).
+  # rustc's archive reader rejects any fat header ("Unsupported archive
+  # identifier"), so we always extract a thin per-arch slice regardless of
+  # whether the input has 1 or 2 architectures inside.
   ARCHS=$(lipo -archs "$SRC" 2>/dev/null || echo "")
-  if [[ "$ARCHS" == *" "* ]] || [[ "$ARCHS" == *","* ]]; then
-    # Universal — thin per architecture into named files for cargo to pick.
-    for ARCH in $ARCHS; do
-      lipo "$SRC" -thin "$ARCH" -output "$DST/libonnxruntime.a.$ARCH"
-    done
-    # Default `libonnxruntime.a` = arm64 thin (what aarch64-apple-ios-sim wants
-    # on Apple Silicon hosts). For x86_64 sim builds the cargo config can
-    # override the file copy if ever needed.
-    if [ -f "$DST/libonnxruntime.a.arm64" ]; then
-      cp "$DST/libonnxruntime.a.arm64" "$DST/libonnxruntime.a"
-    else
-      cp "$DST/libonnxruntime.a.x86_64" "$DST/libonnxruntime.a"
-    fi
+  for ARCH in $ARCHS; do
+    lipo "$SRC" -thin "$ARCH" -output "$DST/libonnxruntime.a.$ARCH"
+  done
+  # Default `libonnxruntime.a` = arm64 thin (Apple Silicon device + arm64 sim).
+  # Fallback to x86_64 if arm64 isn't in the fat archive.
+  if [ -f "$DST/libonnxruntime.a.arm64" ]; then
+    cp "$DST/libonnxruntime.a.arm64" "$DST/libonnxruntime.a"
   else
-    # Single-arch — copy as-is.
-    cp -f "$SRC" "$DST/libonnxruntime.a"
+    cp "$DST/libonnxruntime.a.x86_64" "$DST/libonnxruntime.a"
   fi
   echo "  staged $SLICE  ($(ls -lh "$DST/libonnxruntime.a" | awk '{print $5}'), archs: $ARCHS)"
 done

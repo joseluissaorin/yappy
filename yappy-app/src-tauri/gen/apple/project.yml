@@ -62,8 +62,32 @@ targets:
           - UIInterfaceOrientationLandscapeRight
         CFBundleShortVersionString: 0.1.0
         CFBundleVersion: "0.1.0"
+        # Audio background mode — keeps TTS playback alive when the screen
+        # locks or the user switches apps. Required for "audiobook" UX.
+        UIBackgroundModes:
+          - audio
+        # User-facing display name (separate from CFBundleName).
+        CFBundleDisplayName: Yappy
+        # Required reason API declarations — Apple needs these for file
+        # timestamp access, hashing, etc. that ORT / pdf parsing touch.
+        NSPrivacyAccessedAPITypes:
+          - NSPrivacyAccessedAPIType: NSPrivacyAccessedAPICategoryFileTimestamp
+            NSPrivacyAccessedAPITypeReasons: ["C617.1"] # Inside the app's container
+          - NSPrivacyAccessedAPIType: NSPrivacyAccessedAPICategorySystemBootTime
+            NSPrivacyAccessedAPITypeReasons: ["35F9.1"] # Measure elapsed time
+          - NSPrivacyAccessedAPIType: NSPrivacyAccessedAPICategoryDiskSpace
+            NSPrivacyAccessedAPITypeReasons: ["E174.1"] # Write to app's container
+          - NSPrivacyAccessedAPIType: NSPrivacyAccessedAPICategoryUserDefaults
+            NSPrivacyAccessedAPITypeReasons: ["CA92.1"] # In-process app settings
     entitlements:
       path: yappy-app_iOS/yappy-app_iOS.entitlements
+      properties:
+        # App Group container shared with the Share Sheet extension. Must be
+        # enabled in the Apple Developer portal under Identifiers → App IDs →
+        # com.yappy.app → Capabilities → App Groups, with the group ID
+        # `group.com.yappy.app` registered under Identifiers → App Groups.
+        com.apple.security.application-groups:
+          - group.com.yappy.app
     scheme:
       environmentVariables:
         RUST_BACKTRACE: full

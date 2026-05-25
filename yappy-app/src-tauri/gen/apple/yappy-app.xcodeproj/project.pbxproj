@@ -11,6 +11,7 @@
 		450EF73371F034EB0BC204E5 /* libapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5A9A58DA5F7712C4E9EF3F /* libapp.a */; };
 		758C79CFF95A21E5CE4FB398 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43793F4F8BD751B2AFA0ECEC /* UIKit.framework */; };
 		7FFB71259B4B64D8F8703746 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E72460E29FCCF765437E0F /* CoreGraphics.framework */; };
+		868FD253EE892625C9E3EAED /* libapp.a in Resources */ = {isa = PBXBuildFile; fileRef = 9792E79B97B90A7437D6BE0B /* libapp.a */; };
 		AD4D3A95030ABC96441702B1 /* CoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E89394FA1041CC34292F2D82 /* CoreML.framework */; };
 		B5B64E7C8157E7BCFD359AF1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59D7E849AA6DCC8B6821280 /* QuartzCore.framework */; };
 		BDAD17F788E24454432BBED6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E45153695F56A85774F88DB /* WebKit.framework */; };
@@ -21,6 +22,7 @@
 		D680990AD3ADF4FAD143C5F3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACE0C20E80390C5DBAC4B9B /* Security.framework */; };
 		F02C2D636E00B93DAEBD17D5 /* onnxruntime.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4770C9F43D1A3E8E7ADF9A4 /* onnxruntime.xcframework */; };
 		F976FF05F055C14256E7E8ED /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */; };
+		FC1F1CB78AEE25B9230605D9 /* libapp.a in Resources */ = {isa = PBXBuildFile; fileRef = 25F224C24905142459683DD9 /* libapp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,7 @@
 		0D80D67051A0BA4644EE31BD /* tray.rs */ = {isa = PBXFileReference; path = tray.rs; sourceTree = "<group>"; };
 		18613248F19D1206BFBDD757 /* browser.rs */ = {isa = PBXFileReference; path = browser.rs; sourceTree = "<group>"; };
 		1A0537A578132C07C9FE7B01 /* model.rs */ = {isa = PBXFileReference; path = model.rs; sourceTree = "<group>"; };
+		25F224C24905142459683DD9 /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
 		2D765DEF987A4C99009FBF4F /* playback.rs */ = {isa = PBXFileReference; path = playback.rs; sourceTree = "<group>"; };
 		2E6980B3593B5B998F491689 /* clipboard.rs */ = {isa = PBXFileReference; path = clipboard.rs; sourceTree = "<group>"; };
 		308239F0EB0A270EAE2AABC6 /* active_doc.rs */ = {isa = PBXFileReference; path = active_doc.rs; sourceTree = "<group>"; };
@@ -47,6 +50,7 @@
 		8E45153695F56A85774F88DB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		96304E0D0F48029CD0290B43 /* bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bindings.h; sourceTree = "<group>"; };
 		96AEBF7E16B41A1D15A49708 /* main.rs */ = {isa = PBXFileReference; path = main.rs; sourceTree = "<group>"; };
+		9792E79B97B90A7437D6BE0B /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
 		A1030C208421566F6F5B172E /* yappy-app_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "yappy-app_iOS.entitlements"; sourceTree = "<group>"; };
 		A839BA0F5D036967B81598A0 /* doc_loader.rs */ = {isa = PBXFileReference; path = doc_loader.rs; sourceTree = "<group>"; };
 		AACE0C20E80390C5DBAC4B9B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -135,6 +139,22 @@
 			path = "yappy-app_iOS";
 			sourceTree = "<group>";
 		};
+		904C921361F73D7844D85A71 /* debug */ = {
+			isa = PBXGroup;
+			children = (
+				25F224C24905142459683DD9 /* libapp.a */,
+			);
+			path = debug;
+			sourceTree = "<group>";
+		};
+		A367C11E3138DC69EC79EBE6 /* release */ = {
+			isa = PBXGroup;
+			children = (
+				9792E79B97B90A7437D6BE0B /* libapp.a */,
+			);
+			path = release;
+			sourceTree = "<group>";
+		};
 		AB2FC2CB1DF9FB323FEB98A0 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +207,7 @@
 		C52FC935AA048A9876F42E76 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				F17535F2B886E6E0E606A4D3 /* arm64 */,
 			);
 			path = Externals;
 			sourceTree = "<group>";
@@ -204,6 +225,22 @@
 				BC7CBF933E63E7D108314BA9 /* Frameworks */,
 				2A82CA0658518588DF925913 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		F17535F2B886E6E0E606A4D3 /* arm64 */ = {
+			isa = PBXGroup;
+			children = (
+				904C921361F73D7844D85A71 /* debug */,
+				A367C11E3138DC69EC79EBE6 /* release */,
+			);
+			path = arm64;
+			sourceTree = "<group>";
+		};
+		"TEMP_F830965F-DEA6-438E-BC84-2C16C69E6A0E" /* x86_64 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = x86_64;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,6 +308,8 @@
 				D5314B9290FBD4FC22F3CFD1 /* Assets.xcassets in Resources */,
 				D331B7CBB178B171645BA590 /* LaunchScreen.storyboard in Resources */,
 				2ECA68CB885E90C37B24D6F0 /* assets in Resources */,
+				868FD253EE892625C9E3EAED /* libapp.a in Resources */,
+				FC1F1CB78AEE25B9230605D9 /* libapp.a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,7 +497,7 @@
 				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app;
-				PRODUCT_NAME = "Yappy";
+				PRODUCT_NAME = Yappy;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
@@ -492,7 +531,7 @@
 				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app;
-				PRODUCT_NAME = "Yappy";
+				PRODUCT_NAME = Yappy;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
