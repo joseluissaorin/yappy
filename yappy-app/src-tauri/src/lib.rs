@@ -22,9 +22,14 @@ mod windows;
 #[cfg(mobile)]
 mod mobile;
 
+// Windows-native helpers — SMTC (system media transport controls) +
+// taskbar progress + Jump List. Stubbed to no-ops on non-Windows targets
+// so cross-platform call sites don't need cfg guards.
+mod os_win;
+
 use std::sync::Arc;
 
-use tauri::Manager;
+use tauri::{Emitter, Manager};
 
 use crate::state::AppState;
 
@@ -240,6 +245,30 @@ pub fn run() {
     let state = Arc::new(AppState::new());
 
     let mut builder = tauri::Builder::default();
+    // Windows: single-instance plugin. When the user double-clicks a .epub
+    // associated with Yappy (or runs the binary a second time for any
+    // reason), the existing main window gets focused + the file path is
+    // forwarded to it instead of spawning a duplicate process.
+    #[cfg(target_os = "windows")]
+    {
+        builder = builder.plugin(
+            tauri_plugin_single_instance::init(|app, argv, _cwd| {
+                tracing::info!("single-instance: re-launch argv = {:?}", argv);
+                if let Some(main) = app.get_webview_window("main") {
+                    let _ = main.show();
+                    let _ = main.set_focus();
+                    let _ = main.unminimize();
+                }
+                // Forward file argument (if any) to the frontend via event.
+                if let Some(path) = argv.iter().skip(1).find(|a| {
+                    let p = std::path::Path::new(a);
+                    p.exists() && p.is_file()
+                }) {
+                    let _ = app.emit("file_open_request", path);
+                }
+            }),
+        );
+    }
     // Desktop-only plugins. iOS has no autostart concept and no global
     // hotkeys; loading these plugins on mobile would compile-error in some
     // cases and be inert in others.
@@ -276,6 +305,26 @@ pub fn run() {
             }
             if let Err(e) = hotkey::register_from_settings(app.handle(), &state) {
                 tracing::error!("hotkey init: {e:?}");
+            }
+
+            // ─── Windows: SMTC (lock-screen-like media controls) ──────────
+            // Hook the main window's HWND into the System Media Transport
+            // Controls so media keys + Bluetooth headphone buttons + the
+            // volume-flyout playback widget drive Yappy's playback.
+            #[cfg(target_os = "windows")]
+            if let Some(main) = app.get_webview_window("main") {
+                if let Ok(hwnd) = main.hwnd() {
+                    os_win::install_smtc_handlers(state.playback.clone(), hwnd.0 as isize);
+                    // Mirror playback snapshots into SMTC so the volume
+                    // flyout / media keys reflect current state.
+                    state.playback.subscribe(move |snap| {
+                        if snap.duration_secs < 0.1 {
+                            os_win::smtc_clear();
+                        } else {
+                            os_win::smtc_set_playback_status(snap.playing);
+                        }
+                    });
+                }
             }
 
             // iOS startup: pick up any Share-extension payload that landed in

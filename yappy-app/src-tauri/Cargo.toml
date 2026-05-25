@@ -106,12 +106,38 @@ pdfium-render = { version = "0.8", features = ["thread_safe", "image"] }
 tauri-plugin-global-shortcut = "2"
 tauri-plugin-autostart = "2"
 
-# ─── Hardware-acceleration EPs per platform ───────────────────────────────
-# Windows: DirectML lets ANY DX12 GPU (NVIDIA, AMD, Intel, Qualcomm) run ORT
-# ops on the GPU. Ships as a system library on Windows 10 1903+, so no extra
-# install required for end users — the binary just gets a few KB bigger.
+# ─── Windows-native APIs ─────────────────────────────────────────────────
+# `windows` crate features kept tight — each enabled feature adds compile
+# time + binary size, so we only pull what we actually use.
+#
+#   Media_Playback / Media + Foundation_Collections — SMTC (System Media
+#     Transport Controls): lock-screen audio controls + media keys + BT
+#     headphone buttons. The Windows equivalent of macOS's
+#     MPNowPlayingInfoCenter (which we wired in NowPlaying.swift for iOS).
+#   Win32_UI_Shell — ITaskbarList3 for taskbar progress + ICustomDestinationList
+#     for Jump Lists.
+#   Win32_System_Com — COM init for the Shell interfaces above.
+#   Win32_Foundation / Win32_UI_WindowsAndMessaging — HWND + interop boilerplate.
+#   System_WinRT_Media — ISystemMediaTransportControlsInterop (gets SMTC
+#     by HWND instead of needing a MediaPlayer instance).
 [target.'cfg(target_os = "windows")'.dependencies]
 ort = { workspace = true, features = ["directml"] }
+windows = { version = "0.58", features = [
+    "Foundation",
+    "Foundation_Collections",
+    "Media",
+    "Media_Playback",
+    "Storage_Streams",
+    "Win32_Foundation",
+    "Win32_System_Com",
+    "Win32_System_WinRT",
+    "Win32_UI_Shell",
+    "Win32_UI_Shell_Common",
+    "Win32_UI_WindowsAndMessaging",
+] }
+# Single-instance: second launch from a file association or quick action
+# focuses the existing window instead of spawning a duplicate process.
+tauri-plugin-single-instance = "2"
 
 # ─── Optional GPU EPs, opt-in via Cargo features ─────────────────────────
 # Power-user builds for NVIDIA / AMD / Intel-deep-tooling. These pull in

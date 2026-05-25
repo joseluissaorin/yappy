@@ -861,6 +861,15 @@ pub async fn render_audiobook_cmd(
         #[cfg(target_os = "ios")]
         crate::mobile::activity_start(&activity_title, activity_total);
 
+        // Windows: paint taskbar progress indicator + announce the render in
+        // the SMTC volume flyout so the user can see what's happening even
+        // when the Yappy window is hidden.
+        #[cfg(target_os = "windows")]
+        {
+            crate::os_win::taskbar_progress_set(0, activity_total.max(1) as u64);
+            crate::os_win::smtc_set_metadata(&activity_title, "Yappy — rendering", false);
+        }
+
         let mut combined: Vec<f32> = Vec::new();
         let mut sample_rate: u32 = 0;
         // Sample-offset → chapter title, collected as we go. Used only for m4b.
@@ -869,6 +878,8 @@ pub async fn render_audiobook_cmd(
         for (i, p) in paragraphs.iter().enumerate() {
             #[cfg(target_os = "ios")]
             crate::mobile::activity_update(i as i32, activity_total, "synth", None);
+            #[cfg(target_os = "windows")]
+            crate::os_win::taskbar_progress_set(i as u64, activity_total.max(1) as u64);
             let _ = app_for_thread.emit(
                 "audiobook_render_progress",
                 serde_json::json!({ "index": i, "total": total, "stage": "synth" }),
@@ -995,6 +1006,11 @@ pub async fn render_audiobook_cmd(
                 "Audiobook ready",
                 &format!("{} — {} min of audio", activity_title, mins.max(1)),
             );
+        }
+        #[cfg(target_os = "windows")]
+        {
+            crate::os_win::taskbar_progress_clear();
+            crate::os_win::smtc_clear();
         }
         Ok(())
     })

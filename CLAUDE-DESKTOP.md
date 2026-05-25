@@ -24,6 +24,26 @@ Recent commits (all on `main`, see `git log --oneline`):
           - `--features rocm` — AMD GPUs on Linux. Needs ROCm install.
           - `--features openvino` — Intel CPU/iGPU/dGPU acceleration.
 
+  - **Windows-native depth** (`os_win.rs` module, gated to Windows):
+      - **System Media Transport Controls (SMTC)** — wires the Yappy main
+        window's HWND into Windows' media-transport system. Media keys on
+        keyboards (Play/Pause, Next/Prev), Bluetooth headphone buttons,
+        and the volume-flyout playback widget all drive Yappy playback.
+        Mirrors what `NowPlaying.swift` does on iOS / macOS.
+      - **Taskbar progress indicator** — during multi-hour audiobook
+        renders, the Yappy taskbar icon paints a progress bar. Uses
+        `ITaskbarList3::SetProgressValue`.
+      - **Mica window backdrop** (Win 11+) — set via
+        `tauri.windows.conf.json` window effects.
+      - **Single-instance** — second launch (e.g. double-clicking a .epub
+        with Yappy registered as default) focuses the existing window and
+        forwards the file path via a `file_open_request` event.
+      - **File associations** — Yappy registers as a handler for `.epub`,
+        `.pdf`, `.docx`, `.txt`, `.md` at install time (NSIS + WiX).
+      - **WebView2 bootstrapper embedded** — `embedBootstrapper` mode +
+        `silent: true` so users without WebView2 Runtime preinstalled get
+        it during Yappy installation, no manual step.
+
   - **Linux GTK / WebKit fixes** in `lib.rs::run()` startup:
       - Sets `WEBKIT_DISABLE_DMABUF_RENDERER=1` (silences the "black
         rectangle webview" bug on Intel UHD / Nvidia GBM / Mesa < 23).
@@ -221,7 +241,30 @@ ORT_DISABLE_ALL_HW=1 ./yappy
   - [ ] App can be quit cleanly via tray "Quit" (no zombie process)
   - [ ] Linux: tray icon survives DE restarts (test by killing gnome-shell)
 
-### 4.10 Edge cases
+### 4.10 Windows-specific (skip on Linux)
+
+  - [ ] **SMTC**: start a TTS read. The Windows volume flyout (taskbar
+        speaker icon → upper area) now shows "Yappy" with play/pause.
+        Press Play/Pause on a keyboard's media key → playback pauses.
+  - [ ] Pair Bluetooth headphones, tap the play button on them → toggles
+        playback. The button-press handler in `os_win.rs` is mapped to
+        `pb.pause() / pb.resume()`.
+  - [ ] **Taskbar progress**: start an audiobook render. The Yappy taskbar
+        icon should paint a green progress bar that ticks up. Clears when
+        render completes.
+  - [ ] **Mica backdrop** (Windows 11): the main window's background has
+        the translucent Mica effect with the desktop wallpaper subtly
+        showing through. Win 10 falls back to a solid background.
+  - [ ] **File association**: right-click a `.epub` file → "Open with" →
+        "Yappy" appears. Choose it. Yappy opens with that file loaded.
+        Second double-click of a .epub while Yappy's already running
+        should NOT spawn a duplicate process — it should focus the
+        existing window and load the new file.
+  - [ ] **WebView2 bootstrap**: install Yappy on a fresh Windows 10 LTSC
+        VM (no WebView2 runtime). The installer should pull WebView2 down
+        silently and Yappy should launch first time.
+
+### 4.11 Edge cases
 
   - [ ] Plug in headphones during playback — audio switches device cleanly
         (cpal handles this on Linux/Windows; if it doesn't, log the issue)

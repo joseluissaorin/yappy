@@ -1,5 +1,16 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "windowEffects": {
+          "effects": ["mica"],
+          "state": "active"
+        }
+      }
+    ]
+  },
   "bundle": {
     "windows": {
       "webviewInstallMode": {
@@ -8,15 +19,44 @@
       },
       "allowDowngrades": true,
       "wix": {
-        "language": ["en-US"],
-        "fragmentPaths": []
+        "language": ["en-US"]
       },
       "nsis": {
         "displayLanguageSelector": false,
         "languages": ["English"],
         "installMode": "perUser",
         "installerIcon": "icons/icon.ico"
-      }
+      },
+      "fileAssociations": [
+        {
+          "ext": ["epub"],
+          "name": "EPUB Document",
+          "description": "EPUB e-book",
+          "role": "Editor",
+          "mimeType": "application/epub+zip"
+        },
+        {
+          "ext": ["pdf"],
+          "name": "PDF Document",
+          "description": "PDF document",
+          "role": "Editor",
+          "mimeType": "application/pdf"
+        },
+        {
+          "ext": ["docx"],
+          "name": "Word Document",
+          "description": "Microsoft Word document",
+          "role": "Editor",
+          "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        },
+        {
+          "ext": ["txt", "md"],
+          "name": "Text Document",
+          "description": "Plain text or markdown",
+          "role": "Editor",
+          "mimeType": "text/plain"
+        }
+      ]
     }
   }
 }
