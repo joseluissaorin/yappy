@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Default capabilities — apply to main, player, and all document-* windows.",
+  "description": "Cross-platform default capabilities — apply to main, player, and document-* windows on every platform (macOS, Windows, Linux, iOS).",
   "windows": ["main", "player", "document", "document-*"],
   "permissions": [
     "core:default",
@@ -25,8 +25,6 @@
     "shell:default",
     "process:default",
     "notification:default",
-    "global-shortcut:default",
-    "http:default",
-    "autostart:default"
+    "http:default"
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "desktop-only",
+  "description": "Desktop-only capabilities: global hotkeys, autostart. iOS has no equivalent.",
+  "platforms": ["macOS", "linux", "windows"],
+  "windows": ["main", "player", "document", "document-*"],
+  "permissions": [
+    "global-shortcut:default",
+    "autostart:default"
+  ]
+}

@@ -1,15 +1,48 @@
 //! Dynamic hotkey registration with parsing of human-readable combos like `⌥⌘R`,
 //! `cmd+alt+space`, `ctrl+shift+f1`.
+//!
+//! iOS has no concept of system-wide global hotkeys — all functions in this
+//! module become Ok(()) no-ops on `cfg(mobile)` so the rest of the code can
+//! call them unconditionally.
 
 use std::sync::Arc;
+use anyhow::Result;
+use crate::state::AppState;
 
-use anyhow::{anyhow, Result};
+#[cfg(mobile)]
+pub fn register_from_settings<R: tauri::Runtime>(
+    _handle: &tauri::AppHandle<R>,
+    _state: &Arc<AppState>,
+) -> Result<()> {
+    Ok(())
+}
+#[cfg(mobile)]
+pub fn set_hotkey<R: tauri::Runtime>(
+    _handle: &tauri::AppHandle<R>,
+    _state: &Arc<AppState>,
+    _action: &str,
+    _combo: &str,
+) -> Result<()> {
+    Err(anyhow::anyhow!("global hotkeys are not available on iOS"))
+}
+
+#[cfg(desktop)]
+use anyhow::anyhow;
+#[cfg(desktop)]
 use tauri::Manager;
+#[cfg(desktop)]
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState};
 
+#[cfg(desktop)]
 use crate::commands;
+#[cfg(desktop)]
 use crate::settings::SettingsStore;
-use crate::state::AppState;
+
+// Wrap the desktop hotkey implementation in an inner module so we can gate
+// the entire block with a single attribute. Public items re-exported below.
+#[cfg(desktop)]
+mod desktop_impl {
+use super::*;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Action {
@@ -210,3 +243,8 @@ pub fn set_hotkey<R: tauri::Runtime>(
     register_from_settings(handle, state)?;
     Ok(())
 }
+
+} // end of `mod desktop_impl`
+
+#[cfg(desktop)]
+pub use desktop_impl::*;

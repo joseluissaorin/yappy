@@ -1,8 +1,24 @@
 use anyhow::Result;
+
+// iOS has no system tray / menu bar — UIKit apps live full-screen. Stub the
+// public surface so commands.rs and lib.rs can call it unconditionally.
+#[cfg(mobile)]
+pub fn setup_tray(_handle: &tauri::AppHandle) -> Result<()> {
+    Ok(())
+}
+
+#[cfg(desktop)]
 use tauri::image::Image;
+#[cfg(desktop)]
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem};
+#[cfg(desktop)]
 use tauri::tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent};
+#[cfg(desktop)]
 use tauri::{Emitter, Manager};
+
+#[cfg(desktop)]
+mod desktop_impl {
+use super::*;
 
 pub fn setup_tray(handle: &tauri::AppHandle) -> Result<()> {
     let open_yappy = MenuItem::with_id(handle, "open_main", "Open Yappy…", true, None::<&str>)?;
@@ -106,3 +122,8 @@ fn show_main(handle: &tauri::AppHandle) {
         let _ = w.set_focus();
     }
 }
+
+} // end of `mod desktop_impl`
+
+#[cfg(desktop)]
+pub use desktop_impl::*;

@@ -4,23 +4,27 @@
 //! themselves with a shared token (auto-paired on first connection), and
 //! forward the active tab's clean content. Yappy can also push
 //! `fetch_current_tab` requests so a hotkey press triggers the extension.
+//!
+//! iOS doesn't have desktop browser extensions and backgrounded UIKit apps
+//! cannot keep a listening TCP socket alive — the entire server-side
+//! implementation is gated to `cfg(desktop)`. The public surface (`Bridge`,
+//! `ConnectionInfo`, `start`, `request_fetch_current_tab`,
+//! `is_browser_paired`) is preserved on mobile as no-op / `false`-returning
+//! stubs so the cross-platform call sites compile uniformly.
 
 use std::collections::HashMap;
-use std::net::SocketAddr;
 use std::sync::Arc;
 
-use anyhow::Result;
-use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Emitter, Manager, Runtime};
-use tokio::net::TcpListener;
-use tokio::sync::{mpsc, Mutex};
-use tokio_tungstenite::tungstenite::Message;
+use serde::Serialize;
+use tauri::{AppHandle, Runtime};
 
 pub const BRIDGE_PORT: u16 = 47898;
 
+// `Bridge` is held in `AppState` on every platform. On mobile its connections
+// map is just permanently empty.
 #[derive(Default)]
 pub struct Bridge {
-    pub connections: Arc<Mutex<HashMap<String, ConnectionHandle>>>,
+    pub connections: Arc<tokio::sync::Mutex<HashMap<String, ConnectionHandle>>>,
 }
 
 impl Clone for Bridge {
@@ -38,7 +42,7 @@ impl std::fmt::Debug for Bridge {
 /// Live per-browser handle. `tx` writes a JSON string to that connection.
 pub struct ConnectionHandle {
     pub info: ConnectionInfo,
-    pub tx: mpsc::UnboundedSender<String>,
+    pub tx: tokio::sync::mpsc::UnboundedSender<String>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -47,6 +51,37 @@ pub struct ConnectionInfo {
     pub connected_at: i64,
     pub last_seen: i64,
 }
+
+// ─────────────────────── MOBILE STUBS ────────────────────────────────────
+
+#[cfg(mobile)]
+pub fn start<R: Runtime + 'static>(_app: AppHandle<R>, _state: Arc<crate::state::AppState>) {
+    // Browser-extension bridge is desktop-only; nothing to start on iOS.
+}
+#[cfg(mobile)]
+pub async fn request_fetch_current_tab(
+    _state: &Arc<crate::state::AppState>,
+    _browser: &str,
+) -> bool {
+    false
+}
+#[cfg(mobile)]
+pub async fn is_browser_paired(_state: &Arc<crate::state::AppState>, _browser: &str) -> bool {
+    false
+}
+
+// ─────────────────────── DESKTOP IMPLEMENTATION ──────────────────────────
+
+#[cfg(desktop)]
+mod desktop_impl {
+use super::*;
+use std::net::SocketAddr;
+use anyhow::Result;
+use serde::Deserialize;
+use tauri::{Emitter, Manager};
+use tokio::net::TcpListener;
+use tokio::sync::{mpsc, Mutex};
+use tokio_tungstenite::tungstenite::Message;
 
 #[derive(Debug, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
@@ -368,3 +403,8 @@ fn clean_markdown_for_speech(md: &str) -> String {
     }
     compact
 }
+
+} // end of `mod desktop_impl`
+
+#[cfg(desktop)]
+pub use desktop_impl::{is_browser_paired, request_fetch_current_tab, start};

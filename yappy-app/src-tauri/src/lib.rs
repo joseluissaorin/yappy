@@ -1,5 +1,9 @@
 // Yappy — local TTS that reads anything on your screen.
 
+// All modules compile on both desktop and mobile. Each module that wraps
+// desktop-only APIs (tray, hotkey, bridge, browser-extension) provides
+// no-op / Err-returning stubs on mobile so the public surface stays uniform
+// and `commands::*` keeps calling the same symbols on every platform.
 pub mod audiobook;
 mod bridge;
 mod capture;
@@ -13,6 +17,10 @@ mod settings;
 mod state;
 mod tray;
 mod windows;
+
+// Mobile-only helpers — Share-extension payload pickup, UIPasteboard wrapper.
+#[cfg(mobile)]
+mod mobile;
 
 use std::sync::Arc;
 
@@ -136,11 +144,20 @@ pub fn run() {
 
     let state = Arc::new(AppState::new());
 
-    tauri::Builder::default()
-        .plugin(tauri_plugin_autostart::init(
-            tauri_plugin_autostart::MacosLauncher::LaunchAgent,
-            Some(vec![]),
-        ))
+    let mut builder = tauri::Builder::default();
+    // Desktop-only plugins. iOS has no autostart concept and no global
+    // hotkeys; loading these plugins on mobile would compile-error in some
+    // cases and be inert in others.
+    #[cfg(desktop)]
+    {
+        builder = builder
+            .plugin(tauri_plugin_autostart::init(
+                tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+                Some(vec![]),
+            ))
+            .plugin(tauri_plugin_global_shortcut::Builder::new().build());
+    }
+    builder
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
@@ -151,26 +168,30 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_notification::init())
-        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .manage(state.clone())
         .setup(move |app| {
             if let Err(e) = settings::SettingsStore::ensure(app.handle(), &state) {
                 tracing::error!("settings init: {e:?}");
             }
 
+            // Tray, bridge, hotkey: stubbed to no-ops on mobile (see each module).
             tray::setup_tray(app.handle())?;
-
-            // Start the local WebSocket bridge for the browser extension.
             if state.settings.lock().unwrap().bridge_enabled {
                 bridge::start(app.handle().clone(), state.clone());
             }
-
-            // Initial hotkey registration from settings.
             if let Err(e) = hotkey::register_from_settings(app.handle(), &state) {
                 tracing::error!("hotkey init: {e:?}");
             }
 
+            // iOS startup: pick up any Share-extension payload that landed in
+            // the App Group container while the app was closed.
+            #[cfg(mobile)]
+            mobile::pickup_shared_payload(app.handle(), &state);
+
             // Position the player: custom point > preset > default bottom-right.
+            // (Window positioning is desktop-only; iOS uses a single full-screen
+            // webview without a separate player window.)
+            #[cfg(desktop)]
             if let Some(player) = app.get_webview_window("player") {
                 let s = state.settings.lock().unwrap().clone();
                 // Resize first so the preset math has the right outer size.

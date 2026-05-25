@@ -14,9 +14,11 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+# ── Tauri core + plugins available on every platform (macOS, Linux, Windows, iOS).
+# `tray-icon` and `macos-private-api` are gated to applicable platforms inside
+# Tauri itself, so listing them here is safe for iOS.
 tauri = { version = "2", features = ["tray-icon", "image-png", "macos-private-api", "devtools"] }
 tauri-plugin-opener = "2"
-tauri-plugin-global-shortcut = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"
 tauri-plugin-http = "2"
@@ -26,8 +28,8 @@ tauri-plugin-os = "2"
 tauri-plugin-shell = "2"
 tauri-plugin-process = "2"
 tauri-plugin-notification = "2"
-tauri-plugin-autostart = "2"
 
+# Pure-Rust util + core deps — work on every target.
 anyhow.workspace = true
 serde.workspace = true
 serde_json.workspace = true
@@ -38,25 +40,22 @@ once_cell.workspace = true
 regex = "1"
 hound.workspace = true
 
-# Cross-platform OCR via PaddleOCR ONNX
+# Cross-platform OCR via PaddleOCR ONNX. With ORT's CoreML EP registered at
+# environment level (see lib.rs), PaddleOCR runs on the Neural Engine on iOS.
 paddle-ocr-rs = "0.6"
 image = "0.25"
 
-# Cross-platform document parsing — pure Rust, no external deps.
+# Document parsing.
 anytomd = "1.2"
-# pdf_oxide: pure-Rust PDF reader, 5× faster than pdf-extract on real-world PDFs,
-# 100% pass rate, returns proper Markdown with headings. Replaces pdf-extract.
 pdf_oxide = "0.3"
-# pdfium-render is loaded LATE: only used for scanned-PDF rasterization → PaddleOCR
-# (the dylib lives at resources/pdfium/libpdfium.dylib in the .app bundle).
-pdfium-render = { version = "0.8", features = ["thread_safe", "image"] }
 epub = "2"
 zip = "2"
 quick-xml = "0.36"
 calamine = "0.26"
 encoding_rs = "0.8"
 
-# Local bridge to the browser extension
+# Local bridge to the browser extension. tokio-tungstenite compiles fine on
+# iOS even though the server is gated to desktop in code (bridge.rs).
 tokio-tungstenite = { version = "0.24", default-features = false, features = ["handshake"] }
 uuid = { version = "1", features = ["v4", "serde"] }
 
@@ -67,14 +66,12 @@ yappy-core = { workspace = true }
 # `coreml` feature; declaring it here just gives us API access in this crate.
 ort = { workspace = true }
 
-# Audio output
+# Audio output. cpal supports CoreAudio on macOS AND iOS.
 cpal = "0.15"
 rubato = "0.16"
 
-# M4B audiobook encoding. fdk-aac vendors its C source and builds via cc+cmake
-# (already used by other deps), so no system install required on any platform.
-# mp4 crate is pure Rust and gives us the basic MPEG-4 muxer — we post-process
-# its output to inject Apple's `chpl` chapter atom.
+# M4B audiobook encoding. fdk-aac vendors its C source and builds via cc+cmake;
+# mp4 crate is pure Rust. Both compile on iOS.
 fdk-aac = "0.7"
 mp4 = "0.14"
 byteorder = "1"
@@ -88,13 +85,23 @@ crossbeam-channel = "0.5"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "stream"] }
 futures-util = "0.3"
 
-# Useful utilities
+# Misc.
 dirs = "5"
 base64 = "0.22"
 
+# ─── macOS-only deps (AppKit / Core Foundation / Core Graphics).
 [target.'cfg(target_os = "macos")'.dependencies]
 core-foundation = "0.10"
 core-graphics = "0.24"
 objc2 = "0.6"
 objc2-foundation = { version = "0.3", features = ["NSString", "NSArray", "NSDictionary", "NSURL", "NSData", "NSError"] }
 objc2-app-kit = { version = "0.3", features = ["NSPasteboard", "NSWorkspace", "NSRunningApplication"] }
+
+# ─── pdfium-render: bundled for desktop (uses dylib/dll/so loaded at runtime).
+# Not yet bundled for iOS — we'd need to provide an iOS XCFramework. For Phase
+# 1 the dep is simply excluded from iOS; capture/doc_loader.rs falls back to
+# pdf_oxide (pure-Rust born-digital PDFs) + PaddleOCR (scanned).
+[target.'cfg(not(any(target_os = "ios", target_os = "android")))'.dependencies]
+pdfium-render = { version = "0.8", features = ["thread_safe", "image"] }
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-autostart = "2"
