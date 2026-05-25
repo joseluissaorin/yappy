@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B121BF56A14DA7510E9DC01 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DB48BB735B5750C43A43BA /* Haptics.swift */; };
 		1AD315940EA48FBD8A5E7AD9 /* YappyShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B80CC66E3EA95DEABCEA0221 /* YappyShareExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BB9987F977E32878AB9ADEA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ADAB30D4ABAAF920F7204EF /* AVFoundation.framework */; };
 		2E1157FAA77A5775AF366A62 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AC793DBBC9E8C9CFD64D2B /* MediaPlayer.framework */; };
@@ -22,7 +23,6 @@
 		732DF0CFD0AE3F3981A77004 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 363A26549E377A68164ED52E /* ActivityKit.framework */; };
 		758C79CFF95A21E5CE4FB398 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43793F4F8BD751B2AFA0ECEC /* UIKit.framework */; };
 		7FFB71259B4B64D8F8703746 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E72460E29FCCF765437E0F /* CoreGraphics.framework */; };
-		868FD253EE892625C9E3EAED /* libapp.a in Resources */ = {isa = PBXBuildFile; fileRef = 9792E79B97B90A7437D6BE0B /* libapp.a */; };
 		87529D2938FCFFC1C041BCD0 /* RenderActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */; };
 		8DA2C5C86B83B5F105BD7C15 /* NowPlaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19B4AC8C2A772BBB82F4983 /* NowPlaying.swift */; };
 		8EE1096973FB2D0CF4C2AAD9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F16A281CFDE25986529BA4 /* MobileCoreServices.framework */; };
@@ -39,6 +39,7 @@
 		D680990AD3ADF4FAD143C5F3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACE0C20E80390C5DBAC4B9B /* Security.framework */; };
 		D82942FC61F418B9EC888279 /* LiveActivityBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D299F16AAF69ACF1D91AEB5 /* LiveActivityBridge.swift */; };
 		F976FF05F055C14256E7E8ED /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */; };
+		FC1F1CB78AEE25B9230605D9 /* libapp.a in Resources */ = {isa = PBXBuildFile; fileRef = 25F224C24905142459683DD9 /* libapp.a */; };
 		FCA153A76EC118E0E6697166 /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBA15D588B3157A3A10AC2E /* AudioSession.swift */; };
 /* End PBXBuildFile section */
 
@@ -81,11 +82,13 @@
 		06C0DA5DFEFC89CA48285E6D /* credits.rs */ = {isa = PBXFileReference; path = credits.rs; sourceTree = "<group>"; };
 		0D542726C924ABFFAB9E4802 /* hotkey.rs */ = {isa = PBXFileReference; path = hotkey.rs; sourceTree = "<group>"; };
 		0D80D67051A0BA4644EE31BD /* tray.rs */ = {isa = PBXFileReference; path = tray.rs; sourceTree = "<group>"; };
+		10DB48BB735B5750C43A43BA /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		11D8807FE02A0A9A28B2AC44 /* YappyWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = YappyWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1250D842062C23F3CC91E1F2 /* YappyRenderActivityWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YappyRenderActivityWidget.swift; sourceTree = "<group>"; };
 		18613248F19D1206BFBDD757 /* browser.rs */ = {isa = PBXFileReference; path = browser.rs; sourceTree = "<group>"; };
 		1A0537A578132C07C9FE7B01 /* model.rs */ = {isa = PBXFileReference; path = model.rs; sourceTree = "<group>"; };
 		1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderActivityAttributes.swift; sourceTree = "<group>"; };
+		25F224C24905142459683DD9 /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
 		2D765DEF987A4C99009FBF4F /* playback.rs */ = {isa = PBXFileReference; path = playback.rs; sourceTree = "<group>"; };
 		2E6980B3593B5B998F491689 /* clipboard.rs */ = {isa = PBXFileReference; path = clipboard.rs; sourceTree = "<group>"; };
 		308239F0EB0A270EAE2AABC6 /* active_doc.rs */ = {isa = PBXFileReference; path = active_doc.rs; sourceTree = "<group>"; };
@@ -111,7 +114,6 @@
 		8E45153695F56A85774F88DB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		96304E0D0F48029CD0290B43 /* bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bindings.h; sourceTree = "<group>"; };
 		96AEBF7E16B41A1D15A49708 /* main.rs */ = {isa = PBXFileReference; path = main.rs; sourceTree = "<group>"; };
-		9792E79B97B90A7437D6BE0B /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
 		A1030C208421566F6F5B172E /* yappy-app_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "yappy-app_iOS.entitlements"; sourceTree = "<group>"; };
 		A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		A839BA0F5D036967B81598A0 /* doc_loader.rs */ = {isa = PBXFileReference; path = doc_loader.rs; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				AFBA15D588B3157A3A10AC2E /* AudioSession.swift */,
+				10DB48BB735B5750C43A43BA /* Haptics.swift */,
 				7D299F16AAF69ACF1D91AEB5 /* LiveActivityBridge.swift */,
 				00562FA81F04105893057E28 /* main.mm */,
 				D19B4AC8C2A772BBB82F4983 /* NowPlaying.swift */,
@@ -245,6 +248,14 @@
 			path = "yappy-app_iOS";
 			sourceTree = "<group>";
 		};
+		904C921361F73D7844D85A71 /* debug */ = {
+			isa = PBXGroup;
+			children = (
+				25F224C24905142459683DD9 /* libapp.a */,
+			);
+			path = debug;
+			sourceTree = "<group>";
+		};
 		9B38FE7ABBA5FDD64BA19A90 /* YappyWidgets */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,14 +265,6 @@
 				BACA884836A2C3FBE6980A8B /* YappyWidgetsBundle.swift */,
 			);
 			path = YappyWidgets;
-			sourceTree = "<group>";
-		};
-		A367C11E3138DC69EC79EBE6 /* release */ = {
-			isa = PBXGroup;
-			children = (
-				9792E79B97B90A7437D6BE0B /* libapp.a */,
-			);
-			path = release;
 			sourceTree = "<group>";
 		};
 		AB2FC2CB1DF9FB323FEB98A0 /* Sources */ = {
@@ -348,12 +351,12 @@
 		F17535F2B886E6E0E606A4D3 /* arm64 */ = {
 			isa = PBXGroup;
 			children = (
-				A367C11E3138DC69EC79EBE6 /* release */,
+				904C921361F73D7844D85A71 /* debug */,
 			);
 			path = arm64;
 			sourceTree = "<group>";
 		};
-		"TEMP_D898B588-8461-49B5-A032-7C7D5D3D3110" /* x86_64 */ = {
+		"TEMP_081A6427-1369-498C-9882-04F69F8E90C8" /* x86_64 */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -474,7 +477,7 @@
 				D5314B9290FBD4FC22F3CFD1 /* Assets.xcassets in Resources */,
 				D331B7CBB178B171645BA590 /* LaunchScreen.storyboard in Resources */,
 				2ECA68CB885E90C37B24D6F0 /* assets in Resources */,
-				868FD253EE892625C9E3EAED /* libapp.a in Resources */,
+				FC1F1CB78AEE25B9230605D9 /* libapp.a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,6 +531,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCA153A76EC118E0E6697166 /* AudioSession.swift in Sources */,
+				0B121BF56A14DA7510E9DC01 /* Haptics.swift in Sources */,
 				D82942FC61F418B9EC888279 /* LiveActivityBridge.swift in Sources */,
 				8DA2C5C86B83B5F105BD7C15 /* NowPlaying.swift in Sources */,
 				87529D2938FCFFC1C041BCD0 /* RenderActivityAttributes.swift in Sources */,
@@ -782,7 +786,7 @@
 				);
 				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joseluissaorin.yappy;
 				PRODUCT_NAME = "Yappy";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -815,7 +819,7 @@
 				);
 				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joseluissaorin.yappy;
 				PRODUCT_NAME = "Yappy";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
