@@ -21,6 +21,7 @@
 		732DF0CFD0AE3F3981A77004 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 363A26549E377A68164ED52E /* ActivityKit.framework */; };
 		758C79CFF95A21E5CE4FB398 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43793F4F8BD751B2AFA0ECEC /* UIKit.framework */; };
 		7FFB71259B4B64D8F8703746 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E72460E29FCCF765437E0F /* CoreGraphics.framework */; };
+		868FD253EE892625C9E3EAED /* libapp.a in Resources */ = {isa = PBXBuildFile; fileRef = 9792E79B97B90A7437D6BE0B /* libapp.a */; };
 		87529D2938FCFFC1C041BCD0 /* RenderActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */; };
 		8EE1096973FB2D0CF4C2AAD9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F16A281CFDE25986529BA4 /* MobileCoreServices.framework */; };
 		92ACF377CCE9E1F3A4E8A4AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43793F4F8BD751B2AFA0ECEC /* UIKit.framework */; };
@@ -36,7 +37,6 @@
 		D680990AD3ADF4FAD143C5F3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACE0C20E80390C5DBAC4B9B /* Security.framework */; };
 		D82942FC61F418B9EC888279 /* LiveActivityBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D299F16AAF69ACF1D91AEB5 /* LiveActivityBridge.swift */; };
 		F976FF05F055C14256E7E8ED /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */; };
-		FC1F1CB78AEE25B9230605D9 /* libapp.a in Resources */ = {isa = PBXBuildFile; fileRef = 25F224C24905142459683DD9 /* libapp.a */; };
 		FCA153A76EC118E0E6697166 /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBA15D588B3157A3A10AC2E /* AudioSession.swift */; };
 /* End PBXBuildFile section */
 
@@ -84,7 +84,6 @@
 		18613248F19D1206BFBDD757 /* browser.rs */ = {isa = PBXFileReference; path = browser.rs; sourceTree = "<group>"; };
 		1A0537A578132C07C9FE7B01 /* model.rs */ = {isa = PBXFileReference; path = model.rs; sourceTree = "<group>"; };
 		1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderActivityAttributes.swift; sourceTree = "<group>"; };
-		25F224C24905142459683DD9 /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
 		2D765DEF987A4C99009FBF4F /* playback.rs */ = {isa = PBXFileReference; path = playback.rs; sourceTree = "<group>"; };
 		2E6980B3593B5B998F491689 /* clipboard.rs */ = {isa = PBXFileReference; path = clipboard.rs; sourceTree = "<group>"; };
 		308239F0EB0A270EAE2AABC6 /* active_doc.rs */ = {isa = PBXFileReference; path = active_doc.rs; sourceTree = "<group>"; };
@@ -109,6 +108,7 @@
 		8E45153695F56A85774F88DB /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		96304E0D0F48029CD0290B43 /* bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bindings.h; sourceTree = "<group>"; };
 		96AEBF7E16B41A1D15A49708 /* main.rs */ = {isa = PBXFileReference; path = main.rs; sourceTree = "<group>"; };
+		9792E79B97B90A7437D6BE0B /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
 		A1030C208421566F6F5B172E /* yappy-app_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "yappy-app_iOS.entitlements"; sourceTree = "<group>"; };
 		A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		A839BA0F5D036967B81598A0 /* doc_loader.rs */ = {isa = PBXFileReference; path = doc_loader.rs; sourceTree = "<group>"; };
@@ -239,14 +239,6 @@
 			path = "yappy-app_iOS";
 			sourceTree = "<group>";
 		};
-		904C921361F73D7844D85A71 /* debug */ = {
-			isa = PBXGroup;
-			children = (
-				25F224C24905142459683DD9 /* libapp.a */,
-			);
-			path = debug;
-			sourceTree = "<group>";
-		};
 		9B38FE7ABBA5FDD64BA19A90 /* YappyWidgets */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +248,14 @@
 				BACA884836A2C3FBE6980A8B /* YappyWidgetsBundle.swift */,
 			);
 			path = YappyWidgets;
+			sourceTree = "<group>";
+		};
+		A367C11E3138DC69EC79EBE6 /* release */ = {
+			isa = PBXGroup;
+			children = (
+				9792E79B97B90A7437D6BE0B /* libapp.a */,
+			);
+			path = release;
 			sourceTree = "<group>";
 		};
 		AB2FC2CB1DF9FB323FEB98A0 /* Sources */ = {
@@ -341,12 +341,12 @@
 		F17535F2B886E6E0E606A4D3 /* arm64 */ = {
 			isa = PBXGroup;
 			children = (
-				904C921361F73D7844D85A71 /* debug */,
+				A367C11E3138DC69EC79EBE6 /* release */,
 			);
 			path = arm64;
 			sourceTree = "<group>";
 		};
-		"TEMP_07F278C4-69EA-4AEE-8B9C-6E9BE509307C" /* x86_64 */ = {
+		"TEMP_3B3DA87A-086B-48CF-AD25-C1929636C63D" /* x86_64 */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -467,7 +467,7 @@
 				D5314B9290FBD4FC22F3CFD1 /* Assets.xcassets in Resources */,
 				D331B7CBB178B171645BA590 /* LaunchScreen.storyboard in Resources */,
 				2ECA68CB885E90C37B24D6F0 /* assets in Resources */,
-				FC1F1CB78AEE25B9230605D9 /* libapp.a in Resources */,
+				868FD253EE892625C9E3EAED /* libapp.a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,7 +775,7 @@
 				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app;
-				PRODUCT_NAME = "Yappy";
+				PRODUCT_NAME = Yappy;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
@@ -808,7 +808,7 @@
 				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yappy.app;
-				PRODUCT_NAME = "Yappy";
+				PRODUCT_NAME = Yappy;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
