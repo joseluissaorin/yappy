@@ -118,6 +118,10 @@ targets:
     dependencies:
       - framework: libapp.a
         embed: false
+      # YappyWidgets Live Activity extension — embedded as an app extension.
+      - target: YappyWidgets
+        embed: true
+        codeSign: true
       - sdk: CoreGraphics.framework
       - sdk: Metal.framework
       - sdk: MetalKit.framework
@@ -158,3 +162,46 @@ targets:
         outputFiles:
           - $(SRCROOT)/Externals/x86_64/${CONFIGURATION}/libapp.a
           - $(SRCROOT)/Externals/arm64/${CONFIGURATION}/libapp.a
+
+  # ─── Live Activity Widget Extension ───────────────────────────────────
+  # Renders the audiobook render progress on the Lock Screen and Dynamic
+  # Island. Embedded into the main app bundle as PlugIns/YappyWidgets.appex.
+  # Sources are in `YappyWidgets/`; shares the RenderActivityAttributes
+  # struct with the main app via Sources/yappy-app/.
+  YappyWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: YappyWidgets
+      - path: Sources/yappy-app/RenderActivityAttributes.swift
+    info:
+      path: YappyWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: YappyWidgets
+        CFBundleShortVersionString: 0.1.0
+        CFBundleVersion: "0.1.0"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: YappyWidgets/YappyWidgets.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.yappy.app
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yappy.app.YappyWidgets
+        PRODUCT_NAME: YappyWidgets
+        DEVELOPMENT_TEAM: 9LYNY2477X
+        CODE_SIGN_STYLE: Automatic
+        IPHONEOS_DEPLOYMENT_TARGET: "16.1"
+        SWIFT_VERSION: "5.0"
+        SKIP_INSTALL: YES
+        ENABLE_BITCODE: false
+        ARCHS: [arm64]
+        VALID_ARCHS: arm64
+        EXCLUDED_ARCHS[sdk=iphoneos*]: x86_64
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: false
+    dependencies:
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
+      - sdk: ActivityKit.framework

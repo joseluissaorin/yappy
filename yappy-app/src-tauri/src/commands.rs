@@ -843,13 +843,23 @@ pub async fn render_audiobook_cmd(
         .map(|e| e.eq_ignore_ascii_case("m4b") || e.eq_ignore_ascii_case("m4a"))
         .unwrap_or(false);
 
+    let activity_title = std::path::Path::new(&output_path)
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .map(|s| s.to_string())
+        .unwrap_or_else(|| "Audiobook".to_string());
+    let activity_total = paragraphs.len() as i32;
+
     tokio::task::spawn_blocking(move || -> Result<(), String> {
-        // iOS: engage silent-audio keepalive for the duration of the render.
-        // The OS otherwise suspends us within ~30s of going to background;
-        // audiobook renders can run for hours. The guard releases the audio
-        // session automatically when this closure returns (Drop).
+        // iOS: engage silent-audio keepalive + Live Activity for the duration
+        // of the render. The OS otherwise suspends us within ~30s of going to
+        // background; audiobook renders can run for hours. The Live Activity
+        // gives the user visible progress on Lock Screen / Dynamic Island.
+        // Both are released automatically when this closure returns.
         #[cfg(target_os = "ios")]
         let _audio_keepalive = crate::mobile::BackgroundAudioGuard::begin();
+        #[cfg(target_os = "ios")]
+        crate::mobile::activity_start(&activity_title, activity_total);
 
         let mut combined: Vec<f32> = Vec::new();
         let mut sample_rate: u32 = 0;
@@ -857,6 +867,8 @@ pub async fn render_audiobook_cmd(
         let mut chapters: Vec<(usize, String)> = Vec::new();
 
         for (i, p) in paragraphs.iter().enumerate() {
+            #[cfg(target_os = "ios")]
+            crate::mobile::activity_update(i as i32, activity_total, "synth", None);
             let _ = app_for_thread.emit(
                 "audiobook_render_progress",
                 serde_json::json!({ "index": i, "total": total, "stage": "synth" }),
@@ -921,6 +933,8 @@ pub async fn render_audiobook_cmd(
             "audiobook_render_progress",
             serde_json::json!({ "index": total, "total": total, "stage": "writing" }),
         );
+        #[cfg(target_os = "ios")]
+        crate::mobile::activity_update(total as i32, activity_total, "writing", None);
 
         let final_sr = sample_rate.max(44100);
 
@@ -970,6 +984,8 @@ pub async fn render_audiobook_cmd(
             "audiobook_render_done",
             serde_json::json!({ "path": output_path, "samples": combined.len(), "sample_rate": final_sr }),
         );
+        #[cfg(target_os = "ios")]
+        crate::mobile::activity_end(&activity_title);
         Ok(())
     })
     .await
