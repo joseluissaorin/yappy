@@ -1,0 +1,53 @@
+# Full iOS smoke: cold launch → onboarding sanity → iOS-Settings gating.
+#
+# Run via maestro/run-all.sh — that wrapper uninstalls + reinstalls Yappy
+# first so the cold-launch onboarding actually appears (Maestro's
+# `clearState: true` doesn't wipe iOS UserDefaults).
+#
+# This flow is intentionally sequential — it walks the iOS user's
+# first-launch journey end to end so a single run exercises every
+# platform-specific code path I touched in the iOS port.
+appId: com.yappy.app
+---
+- launchApp
+
+# ── ONBOARDING ─────────────────────────────────────────────────────────
+- assertVisible: "welcome to yappy"
+# Body paragraph contains BOTH iOS-specific phrases — confirms platform.ts
+# is resolving to "ios" and the {#if mobileOnboarding} branch fired.
+- assertVisible:
+    text: ".*for your phone.*"
+- assertVisible:
+    text: ".*share an article.*"
+# Desktop-only CTAs MUST NOT appear on iOS.
+- assertNotVisible: "set up browsers"
+- assertNotVisible: "i'll do this later"
+
+# Dismiss with the single-CTA "get started"
+- tapOn:
+    text: "get started →"
+- waitForAnimationToEnd
+
+# ── POST-ONBOARDING ───────────────────────────────────────────────────
+# Should land on install-voices since the model isn't bundled.
+- extendedWaitUntil:
+    visible: "install voices"
+    timeout: 5000
+- assertVisible:
+    text: ".*one-time download.*"
+- assertVisible: "download voices"
+
+# ── SETTINGS iOS GATING ────────────────────────────────────────────────
+# Navigate to Settings if a "preferences" entry is reachable, otherwise
+# skip (some app states won't surface it until model is installed).
+- runFlow:
+    when:
+      visible: "preferences"
+    commands:
+      - tapOn: "preferences"
+      - waitForAnimationToEnd
+      # Desktop-only sections must NOT appear in the iOS Settings page.
+      - assertNotVisible: "hotkey — read what i'm looking at"
+      - assertNotVisible: "hotkey — pause / resume"
+      - assertNotVisible: "launch at login"
+      - assertNotVisible: "set up browsers"

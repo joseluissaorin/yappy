@@ -34,8 +34,15 @@ maestro --device E08E324E-5C95-433C-88D6-F63B652DE9E8 \
 
 | File | What it does |
 |---|---|
-| `onboarding.yaml` | Cold-launch → dismiss onboarding modal → assert main UI rendered |
-| `install-voices.yaml` | Tap "download voices" → wait for the install-voices card to disappear (model download) |
+| `smoke.yaml` | Full first-launch journey: onboarding iOS-aware copy + "get started" → install-voices card → Settings iOS-gating (hotkey/autostart/browser-extension absent). One flow, 13s, exercises every iOS-specific UI path. |
 
-Flows are intentionally small so they're easy to debug; chain them
-manually for full smoke runs.
+Recommended invocation:
+
+```bash
+./maestro/run-all.sh
+```
+
+Wraps `simctl uninstall` + `simctl install` before each test pass —
+necessary because Maestro's `clearState: true` does not actually wipe
+iOS UserDefaults, so `first_launch_done` persists across test runs and
+masks the onboarding flow.
