@@ -1078,6 +1078,16 @@ pub async fn trigger_read_now_cmd(
         .map_err(|e| e.to_string())
 }
 
+/// Trigger an iOS haptic. No-op on desktop. `kind` is one of:
+/// light, medium, heavy, selection, success, warning, error.
+#[tauri::command]
+pub fn haptic_cmd(kind: String) {
+    #[cfg(target_os = "ios")]
+    crate::mobile::haptic(&kind);
+    #[cfg(not(target_os = "ios"))]
+    let _ = kind;
+}
+
 #[tauri::command]
 pub async fn synthesize_text(
     app: AppHandle,

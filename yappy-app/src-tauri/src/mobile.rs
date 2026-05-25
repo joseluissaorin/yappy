@@ -137,6 +137,22 @@ extern "C" fn cb_seek(_absolute_secs: f64) {
     // (rarely used during audiobook listening; v0.2 polish).
 }
 
+// ─── HAPTICS ────────────────────────────────────────────────────────────
+// WKWebView doesn't expose UIImpactFeedbackGenerator via web APIs, so we
+// bounce through a Tauri command. Frontend calls `haptic("light")` etc.;
+// here we forward to the Swift bridge in Haptics.swift.
+
+extern "C" {
+    fn yappy_haptic(kind: *const std::os::raw::c_char);
+}
+
+pub fn haptic(kind: &str) {
+    use std::ffi::CString;
+    if let Ok(c) = CString::new(kind) {
+        unsafe { yappy_haptic(c.as_ptr()) };
+    }
+}
+
 /// Install lock-screen / Now Playing remote handlers. Call once at startup
 /// after `AppState` is constructed.
 pub fn install_now_playing_handlers(playback: std::sync::Arc<crate::playback::PlaybackController>) {

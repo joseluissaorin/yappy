@@ -5,6 +5,7 @@
   import { openPath, revealItemInDir } from "@tauri-apps/plugin-opener";
   import { openBrowserExtensions } from "$lib/ipc";
   import { isIOS, ready as platformReady } from "$lib/platform";
+  import { haptic } from "$lib/haptic";
 
   let { open = false, onDone }: { open: boolean; onDone: () => void } = $props();
 
@@ -70,7 +71,7 @@
           {#if mobileOnboarding}
             <p>local, friendly text-to-speech for your phone. open a document, paste any text, or share an article from any app — yappy reads it aloud in 31 languages, on-device.</p>
             <div class="buttons">
-              <button class="btn-pink" onclick={onDone}>get started →</button>
+              <button class="btn-pink" onclick={() => { haptic("medium"); onDone(); }}>get started →</button>
             </div>
           {:else}
             <p>local, friendly text-to-speech for your mac. press <kbd>⌥⌘R</kbd> anywhere to hear what you're looking at, in 31 languages, on-device.</p>

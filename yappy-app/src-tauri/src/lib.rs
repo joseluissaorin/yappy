@@ -338,6 +338,7 @@ pub fn run() {
             commands::save_project_cmd,
             commands::load_project_cmd,
             commands::render_audiobook_cmd,
+            commands::haptic_cmd,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
