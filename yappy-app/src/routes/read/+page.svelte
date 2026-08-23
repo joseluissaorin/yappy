@@ -3,6 +3,9 @@
   import { goto } from "$app/navigation";
   import { reader } from "$lib/readerStore.svelte";
   import { guardarProgreso } from "$lib/progreso";
+  import { t } from "$lib/i18n";
+  import { get } from "svelte/store";
+  import { isMobile } from "$lib/platform";
   import { haptic } from "$lib/haptic";
   import {
     type PlaybackSnapshot,
@@ -98,7 +101,7 @@
     }
   });
   const docVoiceName = $derived(
-    docVoice ? (voices.find((v) => v.id === docVoice || v.name === docVoice)?.name ?? docVoice) : "default voice",
+    docVoice ? (voices.find((v) => v.id === docVoice || v.name === docVoice)?.name ?? docVoice) : null,
   );
   // Has the reader been customised away from the plain defaults?
   const customised = $derived(
@@ -133,14 +136,14 @@
       } else if (p.etapa === "hecho") {
         puenteEtapa = null;
         puenteOcupado = false;
-        flashToast("audiobook back from your computer — in your Library");
+        flashToast(get(t)("lector.t_vuelto"));
       }
     }));
     cleanups.push(await onAudiobookRenderDone((p) => {
       rendering = false;
       renderProgress = null;
       exportDone = { path: p.path };
-      flashToast("audiobook saved to your Library");
+      flashToast(get(t)("lector.t_guardado"));
     }));
   });
   onDestroy(() => cleanups.forEach((c) => c()));
@@ -195,7 +198,7 @@
       }
       if (typeof parsed.rhythm_mult === "number") rhythmMult = parsed.rhythm_mult;
       if (typeof parsed.doc_voice === "string" || parsed.doc_voice === null) docVoice = parsed.doc_voice ?? null;
-      flashToast("restored your reading settings");
+      flashToast(get(t)("lector.t_restaurado"));
     } catch { /* ignore */ }
   }
 
@@ -214,7 +217,9 @@
     });
   }
   async function toggle() { haptic("medium"); await togglePause(); }
-  function back() { goto("/"); }
+  // En la mano, «volver» vuelve a la casa móvil; el «/» de escritorio no
+  // existe en el teléfono.
+  function back() { goto(get(isMobile) ? "/escuchar" : "/"); }
   function jumpToChapter(index: number) { chaptersOpen = false; readFrom(index); }
 
   // ── Per-paragraph adjusters ──────────────────────────────────────────────────
@@ -228,7 +233,7 @@
     rhythmMult = 1.0;
     docVoice = null;
     scheduleSave();
-    flashToast("reset to defaults");
+    flashToast(get(t)("lector.t_reiniciado"));
   }
 
   function progressPct(): number {
@@ -243,7 +248,7 @@
     haptic("medium");
     puenteOcupado = true;
     puenteEtapa = "0";
-    flashToast("sent to your computer — it will come back on its own");
+    flashToast(get(t)("lector.t_enviado"));
     try {
       await puenteConvertir(title, paras.join("\n\n"));
     } catch (e) {
@@ -289,7 +294,7 @@
     } catch (e) {
       rendering = false;
       renderProgress = null;
-      flashToast("export failed: " + String(e));
+      flashToast(get(t)("lector.t_fallo_export") + String(e));
     }
   }
   async function shareExport() {
@@ -300,11 +305,17 @@
 
 <div class="reader" data-tauri-drag-region>
   <header class="r-head">
-    <button class="r-icon" onclick={back} aria-label="back to Yappy">←</button>
+    <button class="r-icon" onclick={back} aria-label={$t("lector.volver")}>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+    </button>
     <div class="r-title">{title}</div>
-    <button class="r-icon" class:dot={customised} onclick={() => (settingsOpen = true)} aria-label="reading settings">⚙</button>
+    <button class="r-icon" class:dot={customised} onclick={() => (settingsOpen = true)} aria-label={$t("lector.ajustes")}>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
     {#if chapters.length > 0}
-      <button class="r-icon" onclick={() => (chaptersOpen = true)} aria-label="chapters">☰</button>
+      <button class="r-icon" onclick={() => (chaptersOpen = true)} aria-label={$t("lector.capitulos")}>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
     {/if}
   </header>
   <div class="r-progress"><div class="r-progress-fill" style="width: {progressPct()}%"></div></div>
@@ -326,7 +337,7 @@
           >
             {text}
           </button>
-          <button class="r-tweak" class:on={tweaked} onclick={() => { tweakIndex = i; haptic("light"); }} aria-label="adjust this paragraph">⋯</button>
+          <button class="r-tweak" class:on={tweaked} onclick={() => { tweakIndex = i; haptic("light"); }} aria-label={$t("lector.ajustar_parrafo")}>⋯</button>
         </div>
       {/if}
     {/each}
@@ -336,7 +347,7 @@
   <!-- Floating reading control -->
   <div class="r-dock">
     {#if isPlaying || isPaused}
-      <button class="r-play" onclick={toggle} aria-label={isPaused ? "resume" : "pause"}>
+      <button class="r-play" onclick={toggle} aria-label={isPaused ? $t("player.reanudar") : $t("player.pausar")}>
         {#if isPaused}
           <svg width="22" height="22" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5C3 0.7 3.85 0.25 4.5 0.7L12.5 6.2c0.6 0.4 0.6 1.3 0 1.7l-8 5.5c-0.7 0.4-1.5 0-1.5-0.8V1.5Z"/></svg>
         {:else}
@@ -344,16 +355,16 @@
         {/if}
       </button>
       <div class="r-dock-meta">
-        <div class="r-dock-title">{isPaused ? "paused" : "reading aloud"}</div>
-        <div class="r-dock-sub">paragraph {currentPara + 1} of {paras.length} · {effectiveSpeedForPlay().toFixed(2)}×</div>
+        <div class="r-dock-title">{isPaused ? $t("lector.en_pausa") : $t("lector.leyendo")}</div>
+        <div class="r-dock-sub">{$t("lector.parrafo")} {currentPara + 1} {$t("lector.de")} {paras.length} · {effectiveSpeedForPlay().toFixed(2)}×</div>
       </div>
-      <button class="r-dock-stop" onclick={() => stopPlayback()} aria-label="stop">
+      <button class="r-dock-stop" onclick={() => stopPlayback()} aria-label={$t("lector.detener")}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="2" width="10" height="10" rx="2"/></svg>
       </button>
     {:else}
       <button class="r-readall" onclick={() => readFrom(0)}>
         <svg width="16" height="16" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5C3 0.7 3.85 0.25 4.5 0.7L12.5 6.2c0.6 0.4 0.6 1.3 0 1.7l-8 5.5c-0.7 0.4-1.5 0-1.5-0.8V1.5Z"/></svg>
-        read aloud
+        {$t("lector.leer_todo")}
       </button>
     {/if}
   </div>
@@ -362,7 +373,7 @@
   {#if rendering && renderProgress}
     <div class="r-render">
       <div class="r-render-bar"><div style="width: {renderProgress.total ? (renderProgress.index / renderProgress.total) * 100 : 0}%"></div></div>
-      <div class="r-render-txt">building audiobook · {renderProgress.stage} {renderProgress.index}/{renderProgress.total}</div>
+      <div class="r-render-txt">{$t("lector.creando")} · {renderProgress.stage} {renderProgress.index}/{renderProgress.total}</div>
     </div>
   {/if}
 
@@ -373,7 +384,7 @@
     <div class="r-sheet-scrim" onclick={() => (chaptersOpen = false)} role="presentation"></div>
     <div class="r-sheet">
       <div class="r-sheet-grip"></div>
-      <div class="r-sheet-head">chapters</div>
+      <div class="r-sheet-head">{$t("lector.capitulos")}</div>
       <div class="r-sheet-list">
         {#each chapters as ch}
           <button class="r-chapter lvl-{ch.level}" class:active={ch.index === currentPara} onclick={() => jumpToChapter(ch.index)}>
@@ -390,21 +401,21 @@
     <div class="r-sheet-scrim" onclick={() => { settingsOpen = false; voicePickerFor = null; }} role="presentation"></div>
     <div class="r-sheet">
       <div class="r-sheet-grip"></div>
-      <div class="r-sheet-head">reading settings</div>
+      <div class="r-sheet-head">{$t("lector.ajustes")}</div>
 
       <div class="ctl">
-        <div class="ctl-row"><span class="ctl-label">pace</span><span class="ctl-val">{rhythmMult.toFixed(2)}×</span></div>
-        <input class="slider" type="range" min="0.5" max="2.0" step="0.05" bind:value={rhythmMult} oninput={scheduleSave} aria-label="reading pace" />
-        <div class="ctl-hint">scales every section's speed and pauses, like the desktop editor's rhythm dial.</div>
+        <div class="ctl-row"><span class="ctl-label">{$t("lector.ritmo")}</span><span class="ctl-val">{rhythmMult.toFixed(2)}×</span></div>
+        <input class="slider" type="range" min="0.5" max="2.0" step="0.05" bind:value={rhythmMult} oninput={scheduleSave} aria-label={$t("lector.ritmo")} />
+        <div class="ctl-hint">{$t("lector.ritmo_pista")}</div>
       </div>
 
       <button class="ctl-pick" onclick={() => (voicePickerFor = voicePickerFor === "doc" ? null : "doc")}>
-        <span class="ctl-label">voice</span>
-        <span class="ctl-pick-val">{docVoiceName} <span class="caret">▾</span></span>
+        <span class="ctl-label">{$t("lector.voz")}</span>
+        <span class="ctl-pick-val">{docVoiceName ?? $t("lector.voz_defecto")} <span class="caret">▾</span></span>
       </button>
       {#if voicePickerFor === "doc"}
         <div class="voice-list">
-          <button class="voice-opt" class:on={docVoice === null} onclick={() => setDocVoice(null)}>default voice</button>
+          <button class="voice-opt" class:on={docVoice === null} onclick={() => setDocVoice(null)}>{$t("lector.voz_defecto")}</button>
           {#each voices as v}
             <button class="voice-opt" class:on={docVoice === v.id || docVoice === v.name} onclick={() => setDocVoice(v.id)}>
               {v.name}<span class="voice-tag">{v.tags?.[0] ?? v.gender}</span>
@@ -414,25 +425,27 @@
       {/if}
 
       <button class="btn-export" onclick={exportAudiobook} disabled={rendering}>
-        {rendering ? "building…" : "💾 save as audiobook (.m4b)"}
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17H20v5H6.5a2.5 2.5 0 0 1 0-5z"/></svg>
+        {rendering ? $t("lector.creando_corto") : $t("lector.guardar_m4b")}
       </button>
       {#if puenteVinculado}
         <button class="sheet-row primary" onclick={convertirEnOrdenador} disabled={puenteOcupado}>
-          {puenteOcupado ? `converting on your computer… ${puenteEtapa ?? ""}` : "🖥 convert on your computer"}
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          {puenteOcupado ? `${$t("lector.convirtiendo")} ${puenteEtapa ?? ""}` : $t("lector.convertir")}
         </button>
       {/if}
       {#if exportDone}
         <div class="export-done">
-          <span>✓ saved to your Library</span>
+          <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px"><path d="M20 6 9 17l-5-5"/></svg> {$t("lector.guardado")}</span>
           <div class="export-actions">
-            <button onclick={() => { settingsOpen = false; goto("/library"); }}>open Library</button>
-            <button onclick={shareExport}>share</button>
+            <button onclick={() => { settingsOpen = false; goto("/library"); }}>{$t("lector.abrir_biblioteca")}</button>
+            <button onclick={shareExport}>{$t("lector.compartir")}</button>
           </div>
         </div>
       {/if}
 
       {#if customised}
-        <button class="btn-reset" onclick={resetAll}>reset all to defaults</button>
+        <button class="btn-reset" onclick={resetAll}>{$t("lector.reiniciar_todo")}</button>
       {/if}
     </div>
   {/if}
@@ -443,39 +456,39 @@
     <div class="r-sheet-scrim" onclick={() => { tweakIndex = -1; voicePickerFor = null; }} role="presentation"></div>
     <div class="r-sheet">
       <div class="r-sheet-grip"></div>
-      <div class="r-sheet-head">adjust paragraph {tweakIndex + 1}</div>
+      <div class="r-sheet-head">{$t("lector.ajustar")} {tweakIndex + 1}</div>
       <div class="tweak-preview">{paras[tweakIndex]}</div>
 
       <div class="ctl">
         <div class="ctl-row">
-          <span class="ctl-label">speed</span>
-          <span class="ctl-val">{(o.speed ?? globalSpeed).toFixed(2)}× {#if o.speed == null}<em>(inherit)</em>{/if}</span>
+          <span class="ctl-label">{$t("lector.velocidad")}</span>
+          <span class="ctl-val">{(o.speed ?? globalSpeed).toFixed(2)}× {#if o.speed == null}<em>{$t("lector.heredada")}</em>{/if}</span>
         </div>
         <input class="slider" type="range" min="0.5" max="2.0" step="0.05" value={o.speed ?? globalSpeed}
-          oninput={(e) => setParaSpeed(tweakIndex, parseFloat((e.target as HTMLInputElement).value))} aria-label="paragraph speed" />
-        {#if o.speed != null}<button class="link-reset" onclick={() => setParaSpeed(tweakIndex, null)}>reset to inherit</button>{/if}
+          oninput={(e) => setParaSpeed(tweakIndex, parseFloat((e.target as HTMLInputElement).value))} aria-label={$t("lector.velocidad")} />
+        {#if o.speed != null}<button class="link-reset" onclick={() => setParaSpeed(tweakIndex, null)}>{$t("lector.heredar")}</button>{/if}
       </div>
 
       <div class="ctl">
         <div class="ctl-row">
-          <span class="ctl-label">pause before</span>
+          <span class="ctl-label">{$t("lector.pausa_antes")}</span>
           <span class="ctl-val">{(o.pauseBefore ?? 0).toFixed(1)}s</span>
         </div>
         <input class="slider" type="range" min="0" max="5" step="0.1" value={o.pauseBefore ?? 0}
           disabled={tweakIndex === 0}
-          oninput={(e) => setParaPause(tweakIndex, parseFloat((e.target as HTMLInputElement).value) || null)} aria-label="pause before" />
-        {#if tweakIndex === 0}<div class="ctl-hint">the first paragraph can't have a leading pause.</div>{/if}
+          oninput={(e) => setParaPause(tweakIndex, parseFloat((e.target as HTMLInputElement).value) || null)} aria-label={$t("lector.pausa_antes")} />
+        {#if tweakIndex === 0}<div class="ctl-hint">{$t("lector.primera_pausa")}</div>{/if}
       </div>
 
       <button class="ctl-pick" onclick={() => (voicePickerFor = voicePickerFor === "para" ? null : "para")}>
-        <span class="ctl-label">voice</span>
+        <span class="ctl-label">{$t("lector.voz")}</span>
         <span class="ctl-pick-val">
-          {o.voice ? (voices.find((v) => v.id === o.voice || v.name === o.voice)?.name ?? o.voice) : "inherit"} <span class="caret">▾</span>
+          {o.voice ? (voices.find((v) => v.id === o.voice || v.name === o.voice)?.name ?? o.voice) : $t("lector.heredada_palabra")} <span class="caret">▾</span>
         </span>
       </button>
       {#if voicePickerFor === "para"}
         <div class="voice-list">
-          <button class="voice-opt" class:on={o.voice === null} onclick={() => setParaVoice(tweakIndex, null)}>inherit (document voice)</button>
+          <button class="voice-opt" class:on={o.voice === null} onclick={() => setParaVoice(tweakIndex, null)}>{$t("lector.heredar_doc")}</button>
           {#each voices as v}
             <button class="voice-opt" class:on={o.voice === v.id || o.voice === v.name} onclick={() => setParaVoice(tweakIndex, v.id)}>
               {v.name}<span class="voice-tag">{v.tags?.[0] ?? v.gender}</span>
@@ -485,8 +498,8 @@
       {/if}
 
       <div class="tweak-foot">
-        <button class="btn-play-para" onclick={() => { tweakIndex = -1; readFrom(o ? overrides.indexOf(o) : 0); }}>▶ read from here</button>
-        <button class="btn-done" onclick={() => { tweakIndex = -1; voicePickerFor = null; }}>done</button>
+        <button class="btn-play-para" onclick={() => { tweakIndex = -1; readFrom(o ? overrides.indexOf(o) : 0); }}>▶ {$t("lector.leer_desde_aqui")}</button>
+        <button class="btn-done" onclick={() => { tweakIndex = -1; voicePickerFor = null; }}>{$t("lector.hecho")}</button>
       </div>
     </div>
   {/if}
