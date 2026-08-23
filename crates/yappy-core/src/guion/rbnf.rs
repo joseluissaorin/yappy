@@ -580,12 +580,21 @@ impl MotorRbnf {
                         }
                         Tok::Resto(conj) => {
                             let destino = conj.as_deref().unwrap_or(conjunto);
-                            let mut partes = Vec::new();
-                            for d in dec.chars() {
-                                let v = d.to_digit(10)? as i128;
-                                partes.push(self.evaluar_entero(destino, v, 0)?);
+                            // Dos decimales sin cero inicial se leen como
+                            // un cardinal («1,75» → «uno coma setenta y
+                            // cinco»), que es como habla la gente; lo demás
+                            // va dígito a dígito («3,14159»).
+                            if dec.len() == 2 && !dec.starts_with('0') {
+                                let v: i128 = dec.parse().ok()?;
+                                salida.push_str(&self.evaluar_entero(destino, v, 0)?);
+                            } else {
+                                let mut partes = Vec::new();
+                                for d in dec.chars() {
+                                    let v = d.to_digit(10)? as i128;
+                                    partes.push(self.evaluar_entero(destino, v, 0)?);
+                                }
+                                salida.push_str(&partes.join(" "));
                             }
-                            salida.push_str(&partes.join(" "));
                         }
                         Tok::Digitos { .. } => {
                             salida.push_str(&format!("{}.{}", numero.entero, dec));
@@ -733,7 +742,12 @@ mod tests {
     #[test]
     fn espanol_decimales() {
         let n = Numero { negativo: false, entero: 3, decimales: Some("14".into()) };
-        assert_eq!(cardinal("es", &n, Genero::Masculino).unwrap(), "tres coma uno cuatro");
+        assert_eq!(cardinal("es", &n, Genero::Masculino).unwrap(), "tres coma catorce");
+        let pi = Numero { negativo: false, entero: 3, decimales: Some("1416".into()) };
+        assert_eq!(
+            cardinal("es", &pi, Genero::Masculino).unwrap(),
+            "tres coma uno cuatro uno seis"
+        );
     }
 
     #[test]

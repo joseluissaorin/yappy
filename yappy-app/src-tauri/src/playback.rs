@@ -16,6 +16,8 @@ pub struct AudioChunk {
     pub total: usize,
     pub total_paragraphs: usize,
     pub text: String,
+    pub origen_ini: usize,
+    pub origen_fin: usize,
     pub samples: Vec<f32>,
     pub source_sample_rate: u32,
 }
@@ -30,6 +32,11 @@ pub struct PlaybackSnapshot {
     /// highlight in the document window). Multiple chunks can share a paragraph
     /// when the engine sentence-splits a long paragraph.
     pub current_paragraph_index: usize,
+    /// Rango (en caracteres) del texto ORIGINAL del párrafo que corresponde
+    /// al trozo que suena ahora mismo. El karaoke subraya esto, no busca
+    /// substrings: funciona aunque la verbalización haya cambiado el texto.
+    pub current_origen_ini: usize,
+    pub current_origen_fin: usize,
     pub total: usize,
     pub total_paragraphs: usize,
     pub elapsed_secs: f32,
@@ -74,6 +81,8 @@ impl PlaybackController {
             current_text: String::new(),
             current_index: 0,
             current_paragraph_index: 0,
+            current_origen_ini: 0,
+            current_origen_fin: 0,
             total: 0,
             total_paragraphs: 0,
             elapsed_secs: 0.0,
@@ -274,6 +283,7 @@ fn run_audio_thread(
     let mut chunk_boundaries: Vec<u64> = Vec::new();
     let mut chunk_texts: Vec<String> = Vec::new();
     let mut chunk_paragraph_idx: Vec<usize> = Vec::new();
+    let mut chunk_origen: Vec<(usize, usize)> = Vec::new();
     let mut current_paragraph_index: usize = 0;
     let mut total_paragraphs: usize = 0;
 
@@ -310,6 +320,7 @@ fn run_audio_thread(
                     chunk_boundaries.clear();
                     chunk_texts.clear();
                     chunk_paragraph_idx.clear();
+                    chunk_origen.clear();
                     for chunk in chunks {
                         let resampled = if chunk.source_sample_rate != out_sr {
                             resample_mono(&chunk.samples, chunk.source_sample_rate, out_sr)?
@@ -321,6 +332,7 @@ fn run_audio_thread(
                         session_samples.lock().unwrap().extend(resampled);
                         chunk_boundaries.push(session_duration_samples);
                         chunk_paragraph_idx.push(chunk.paragraph_index);
+                        chunk_origen.push((chunk.origen_ini, chunk.origen_fin));
                         chunk_texts.push(chunk.text.clone());
                         current_text = chunk.text;
                     }
@@ -336,6 +348,9 @@ fn run_audio_thread(
                         s.current_text = chunk_texts.first().cloned().unwrap_or_default();
                         s.current_index = 0;
                         s.current_paragraph_index = current_paragraph_index;
+                        let (oi, of) = chunk_origen.first().copied().unwrap_or((0, 0));
+                        s.current_origen_ini = oi;
+                        s.current_origen_fin = of;
                         s.total = session_total;
                         s.total_paragraphs = total_paragraphs;
                         s.elapsed_secs = 0.0;
@@ -359,6 +374,7 @@ fn run_audio_thread(
                     session_samples.lock().unwrap().extend(resampled);
                     chunk_boundaries.push(session_duration_samples);
                     chunk_paragraph_idx.push(chunk.paragraph_index);
+                    chunk_origen.push((chunk.origen_ini, chunk.origen_fin));
                     chunk_texts.push(chunk.text.clone());
                     session_total = chunk.total.max(session_total);
                     total_paragraphs = chunk.total_paragraphs.max(total_paragraphs);
@@ -401,6 +417,7 @@ fn run_audio_thread(
                     chunk_boundaries.clear();
                     chunk_texts.clear();
                     chunk_paragraph_idx.clear();
+                    chunk_origen.clear();
                     *played_samples.lock().unwrap() = 0;
                     *session_samples.lock().unwrap() = Vec::new();
                     {
@@ -410,6 +427,8 @@ fn run_audio_thread(
                         s.current_text.clear();
                         s.current_index = 0;
                         s.current_paragraph_index = 0;
+                        s.current_origen_ini = 0;
+                        s.current_origen_fin = 0;
                         s.total = 0;
                         s.total_paragraphs = 0;
                         s.elapsed_secs = 0.0;
@@ -472,6 +491,9 @@ fn run_audio_thread(
                 s.current_index = current_index;
                 s.current_paragraph_index = current_paragraph_index;
                 s.current_text = current_text.clone();
+                let (oi, of) = chunk_origen.get(current_index).copied().unwrap_or((0, 0));
+                s.current_origen_ini = oi;
+                s.current_origen_fin = of;
             }
             let ended = s.playing && buf_empty && !paused_state;
             if ended { s.playing = false; }

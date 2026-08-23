@@ -236,6 +236,8 @@ pub fn run() {
                     total: chunk.total,
                     total_paragraphs: chunk.total_paragraphs,
                     text: chunk.text.clone(),
+                    origen_ini: chunk.origen_ini,
+                    origen_fin: chunk.origen_fin,
                     samples: chunk.samples.clone(),
                     source_sample_rate: chunk.sample_rate as u32,
                 };

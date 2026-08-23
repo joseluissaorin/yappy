@@ -1168,15 +1168,25 @@ pub async fn render_audiobook_cmd(
 /// `voice_override` is a one-shot voice that supersedes the persisted user voice
 /// for THIS playback only — used by the "re-read this section with another voice" UI.
 #[tauri::command]
+#[allow(clippy::too_many_arguments)]
 pub async fn read_document_paragraphs_cmd(
     app: AppHandle,
     state: State<'_, Arc<AppState>>,
     paragraphs: Vec<String>,
     from_index: usize,
     voice_override: Option<String>,
-    // One-shot overrides for THIS playback. Used by the document window's rhythm
-    // slider — multiplies the persisted global speed without mutating settings.
+    // One-shot overrides for THIS playback. Used by the document window's
+    // rhythm slider; multiplies the persisted global speed without mutating
+    // settings.
     speed_override: Option<f32>,
+    // El guion enriquecido del editor: clase de cada párrafo y anulaciones
+    // por párrafo (pausa previa efectiva en segundos, multiplicador de
+    // velocidad, voz). Arrays paralelos a `paragraphs`, opcionales para
+    // compatibilidad con llamadores viejos.
+    kinds: Option<Vec<String>>,
+    pausas: Option<Vec<f32>>,
+    velocidades: Option<Vec<f32>>,
+    voces: Option<Vec<Option<String>>>,
 ) -> Result<(), String> {
     let joined = paragraphs
         .iter()
@@ -1191,8 +1201,8 @@ pub async fn read_document_paragraphs_cmd(
         Some(v) if !v.is_empty() => v,
         _ => state.settings.lock().unwrap().voice.clone(),
     };
-    // Optional one-shot speed override. We temporarily mutate settings in-memory
-    // to feed the engine — the disk-persisted value isn't touched.
+    // Optional one-shot speed override. We temporarily mutate settings
+    // in-memory to feed the engine; the disk-persisted value isn't touched.
     let original_speed = if let Some(s) = speed_override {
         let mut settings = state.settings.lock().unwrap();
         let prev = settings.speed;
@@ -1202,10 +1212,44 @@ pub async fn read_document_paragraphs_cmd(
         None
     };
 
-    let result = read_with_voice_lang_internal_with_mode(
+    // Construye el Guion con lo que sabe el editor. Cada pieza pasa por el
+    // guionizador (idioma + verbalización con spans) y luego recibe sus
+    // anulaciones.
+    let idioma_base = state.settings.lock().unwrap().default_lang.clone();
+    let guion = {
+        use yappy_core::guion::{construir_pieza, ClasePieza, Guion};
+        let mut piezas = Vec::new();
+        for (i, texto) in paragraphs.iter().enumerate().skip(from_index) {
+            if texto.trim().is_empty() {
+                continue;
+            }
+            let clase = kinds
+                .as_ref()
+                .and_then(|k| k.get(i))
+                .map(|k| ClasePieza::desde_kind(k))
+                .unwrap_or(ClasePieza::Parrafo);
+            let mut pieza = construir_pieza(texto, clase, &idioma_base);
+            if let Some(p) = pausas.as_ref().and_then(|v| v.get(i)) {
+                pieza.pausa_antes_s = p.clamp(0.0, 10.0);
+            }
+            if let Some(m) = velocidades.as_ref().and_then(|v| v.get(i)) {
+                pieza.mult_velocidad = m.clamp(0.25, 2.0);
+            }
+            if let Some(Some(v)) = voces.as_ref().and_then(|v| v.get(i)) {
+                if !v.is_empty() {
+                    pieza.voz = Some(v.clone());
+                }
+            }
+            piezas.push(pieza);
+        }
+        Guion { idioma_base, piezas }
+    };
+
+    let result = read_internal(
         &app,
         state.inner().clone(),
         joined,
+        Some(guion),
         voice,
         None,
         "document".into(),
@@ -1966,6 +2010,24 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
     source: String,
     mode: ReadMode,
 ) -> Result<()> {
+    read_internal(app, state, text, None, voice, forced_lang, source, mode).await
+}
+
+/// El camino común de toda lectura. Si llega un Guion ya construido (el
+/// editor de documentos, con sus clases de pieza y sus anulaciones por
+/// párrafo), se sintetiza tal cual; si no, el texto plano pasa por el
+/// guionizador dentro del motor.
+#[allow(clippy::too_many_arguments)]
+async fn read_internal<R: Runtime>(
+    app: &AppHandle<R>,
+    state: Arc<AppState>,
+    text: String,
+    guion: Option<yappy_core::guion::Guion>,
+    voice: String,
+    forced_lang: Option<String>,
+    source: String,
+    mode: ReadMode,
+) -> Result<()> {
     tracing::info!(
         "read_with_voice: voice={} source={} chars={} forced_lang={:?}",
         voice,
@@ -2042,6 +2104,7 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
     let app_for_thread = app.clone();
     let state_for_thread = state.clone();
     let text_for_thread = text.clone();
+    let guion_for_thread = guion;
     let app_for_history = app.clone();
     let source_for_history = source.clone();
     let preview_for_history: String = text.chars().take(180).collect();
@@ -2051,7 +2114,7 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
         let mut detected_lang = String::new();
         let opts_local = opts.clone();
         let my_session = session_id;
-        let res = engine.synthesize_streaming(&text_for_thread, &opts_local, |chunk| {
+        let al_chunk = |chunk: yappy_core::engine::AudioChunk| {
             // Cooperative cancel: if Stop fired (or a new read started), the controller
             // has bumped its session id. Bail out *before* spending more time on this chunk's
             // downstream work — the engine respects an Err return by halting the loop.
@@ -2065,6 +2128,8 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
                 total: chunk.total,
                 total_paragraphs: chunk.total_paragraphs,
                 text: chunk.text.clone(),
+                origen_ini: chunk.origen_ini,
+                origen_fin: chunk.origen_fin,
                 samples: chunk.samples.clone(),
                 source_sample_rate: chunk.sample_rate as u32,
             };
@@ -2096,7 +2161,12 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
             );
             let _ = &voice_overrides;
             Ok(())
-        });
+        };
+
+        let res = match &guion_for_thread {
+            Some(g) => engine.synthesize_guion(g, &opts_local, al_chunk),
+            None => engine.synthesize_streaming(&text_for_thread, &opts_local, al_chunk),
+        };
 
         // A cancellation is an expected outcome, not an error worth surfacing.
         let cancelled = matches!(&res, Err(e) if e.to_string().contains("session cancelled"));
