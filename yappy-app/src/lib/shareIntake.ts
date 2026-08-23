@@ -131,6 +131,7 @@ async function vigilarAutoplay(): Promise<void> {
         if (item.estado === "listo" && item.ruta) {
           reproducirAlLlegar.delete(item.id);
           const doc = await readDocument(item.ruta);
+          doc.filename = item.titulo;
           reader.doc = doc;
           await goto("/read");
           await readDocumentParagraphs(doc.paragraphs, 0);

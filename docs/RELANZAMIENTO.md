@@ -40,8 +40,15 @@ está resumida al final.
       Opus ni reanudación en v1: el códec ya es AAC).
 - [x] **6 · Web** (VIVA en yappy.joseluissaorin.com: audio real + WASM verificados): `yappy.joseluissaorin.com` en Cloudflare Pages: demo
       sonora real, guionizador en WASM, descargas por plataforma, changelog.
-- [ ] **Final** (en curso: Android bring-up, build macOS completo, iOS build final, merge): README nuevo, build macOS verificado, build iOS simulador,
-      merge a main.
+- [x] **Final**: README nuevo; .app de macOS FIRMADO (Team 9LYNY2477X) con
+      smoke test headless EXIT:0 (y CoreML apagado también en macOS: el
+      E5RT de macOS 26 rechaza el modelo y ORT no caía de EP; XNNPACK va
+      ~7× tiempo real); iOS final EXIT:0 instalado y arrancado en el
+      iPhone 17 / iOS 26.4 con Maestro 13/13; ANDROID de propina: APK
+      compilado, instalado, compartiendo por intent y con el pipeline
+      entero verificado (URL → cola → extracción → autoarranque en el
+      lector). El DMG lo hace el CI (bundle_dmg necesita sesión gráfica).
+      Merge a main hecho; el push a GitHub queda para José Luis.
 
 ## Decisiones de diseño (cerradas)
 

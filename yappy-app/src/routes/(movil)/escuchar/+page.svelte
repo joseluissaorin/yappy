@@ -58,6 +58,9 @@
     haptic("light");
     try {
       const doc = await readDocument(item.ruta);
+      // El lector deriva su título del nombre de fichero; la ficha tiene
+      // el título de verdad (el del artículo), así que se lo prestamos.
+      doc.filename = item.titulo;
       reader.doc = doc;
       await goto("/read");
       const desde = progresoDe(item.ruta)?.parrafo ?? 0;

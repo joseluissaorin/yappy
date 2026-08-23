@@ -370,7 +370,9 @@ pub fn extraer_articulo(html: &str, url: &str) -> Result<(Option<String>, String
         let t = articulo.title.trim();
         (!t.is_empty()).then(|| t.to_string())
     };
-    let cuerpo = articulo.text_content.trim().to_string();
+    // dom_smoothie escapa puntuación al estilo markdown («N\.º», «\(2\)»);
+    // para LEER EN VOZ ALTA queremos el texto llano.
+    let cuerpo = desescapar_markdown(articulo.text_content.trim());
     if cuerpo.chars().count() < 80 {
         return Err(anyhow!("el artículo quedó vacío tras limpiarlo"));
     }
@@ -379,6 +381,25 @@ pub fn extraer_articulo(html: &str, url: &str) -> Result<(Option<String>, String
         _ => cuerpo,
     };
     Ok((titulo, markdown))
+}
+
+/// Quita los escapes de markdown que no aportan nada hablado.
+fn desescapar_markdown(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    let mut cs = s.chars().peekable();
+    while let Some(c) = cs.next() {
+        if c == '\\' {
+            if let Some(sig) = cs.peek() {
+                if "\\`*_{}[]()#+-.!|<>~".contains(*sig) {
+                    out.push(*sig);
+                    cs.next();
+                    continue;
+                }
+            }
+        }
+        out.push(c);
+    }
+    out
 }
 
 #[cfg(target_os = "android")]

@@ -123,21 +123,16 @@ pub fn run() {
         let mut eps: Vec<ort::execution_providers::ExecutionProviderDispatch> = Vec::new();
         let mut requested: Vec<&'static str> = Vec::new();
 
-        // ─ macOS: CoreML (Neural Engine + Apple GPU + CPU). Macs have generous
-        //   RAM and no per-process memory cap, so compiling/duplicating large
-        //   MLPrograms for the ANE is fine.
+        // ─ macOS: SIN CoreML desde macOS 26. El compilador E5RT (ANE y
+        //   también el camino GPU del MLProgram) rechaza el vector_estimator
+        //   de Supertonic («unbounded dimension», error -7) y ORT no cae al
+        //   siguiente EP cuando falla la COMPILACIÓN de la sesión: la carga
+        //   moría. Verificado el 23-08-2026 con el smoke del bundle. XNNPACK
+        //   (registrado abajo para todas las plataformas) sintetiza ~7× más
+        //   rápido que el tiempo real en Apple Silicon: sobra.
         #[cfg(target_os = "macos")]
         {
-            use ort::execution_providers::coreml::{
-                CoreMLComputeUnits, CoreMLExecutionProvider, CoreMLModelFormat,
-            };
-            eps.push(
-                CoreMLExecutionProvider::default()
-                    .with_compute_units(CoreMLComputeUnits::All)
-                    .with_model_format(CoreMLModelFormat::MLProgram)
-                    .build(),
-            );
-            requested.push("CoreML");
+            requested.push("CoreML-disabled(macOS 26: E5RT rechaza el modelo)");
         }
 
         // ─ iOS (device AND simulator): XNNPACK/CPU only — NO CoreML.
