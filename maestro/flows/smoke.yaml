@@ -39,15 +39,17 @@ appId: com.joseluissaorin.yappy
 # ── BIBLIOTECA ─────────────────────────────────────────────────────────
 - tapOn:
     text: "Library|Biblioteca"
-- waitForAnimationToEnd
-- assertVisible:
-    text: "Audiobooks|Audiolibros"
+- extendedWaitUntil:
+    visible:
+      text: "Audiobooks|Audiolibros"
+    timeout: 8000
 - assertVisible:
     text: "Documents|Documentos"
 
 # ── VUELTA A ESCUCHAR ──────────────────────────────────────────────────
 - tapOn:
     text: "Listen|Escuchar"
-- waitForAnimationToEnd
-- assertVisible:
-    text: ".*Add.*|.*Añadir.*"
+- extendedWaitUntil:
+    visible:
+      text: ".*Add.*|.*Añadir.*"
+    timeout: 8000

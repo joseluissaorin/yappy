@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/yappy-core", "yappy-app/src-tauri"]
+members = ["crates/yappy-core", "crates/yappy-wasm", "yappy-app/src-tauri"]
 resolver = "2"
 
 [workspace.package]

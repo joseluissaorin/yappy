@@ -9759,6 +9759,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "yappy-wasm"
+version = "0.1.0"
+dependencies = [
+ "once_cell",
+ "regex",
+ "serde",
+ "serde_json",
+ "wasm-bindgen",
+ "whatlang",
+]
+
+[[package]]
 name = "yoke"
 version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"

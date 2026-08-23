@@ -95,4 +95,8 @@
       boton.textContent = 'Guionizar';
     }
   });
+  // Autotest para verificación sin manos: /#autotest pulsa Guionizar solo.
+  if (location.hash === '#autotest') {
+    window.addEventListener('load', () => setTimeout(() => boton.click(), 400));
+  }
 })();
