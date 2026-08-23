@@ -343,6 +343,36 @@ export const bibliotecaDocumentos = (): Promise<DocumentoBiblioteca[]> =>
 export const bibliotecaOlvidar = (docPath: string): Promise<void> =>
   invoke("biblioteca_olvidar_cmd", { docPath });
 
+// ── El puente (el móvil usa el ordenador) ───────────────────────────────
+export interface EstadoPuente {
+  activo: boolean;
+  addr: string | null;
+  enlace: string | null;
+  tokens: string[];
+}
+export interface ConfigPuenteMovil {
+  addr: string | null;
+  token: string | null;
+  nombre: string | null;
+}
+export const puenteEstado = (): Promise<EstadoPuente> => invoke("puente_estado_cmd");
+export const puenteEmparejarNuevo = (): Promise<{ enlace: string; qr_svg: string }> =>
+  invoke("puente_emparejar_nuevo_cmd");
+export const puenteRevocar = (prefijo: string): Promise<void> =>
+  invoke("puente_revocar_cmd", { prefijo });
+export const puenteVincular = (dato: string): Promise<ConfigPuenteMovil> =>
+  invoke("puente_vincular_cmd", { dato });
+export const puenteMovilEstado = (): Promise<ConfigPuenteMovil> =>
+  invoke("puente_movil_estado_cmd");
+export const puenteDesvincular = (): Promise<void> => invoke("puente_desvincular_cmd");
+export const puenteConvertir = (titulo: string, texto: string): Promise<string> =>
+  invoke("puente_convertir_cmd", { titulo, texto });
+export function onPuenteProgreso(
+  cb: (p: { etapa: string; hecho?: number; total?: number; ruta?: string }) => void,
+): Promise<UnlistenFn> {
+  return listen("puente_progreso", (ev: any) => cb(ev.payload));
+}
+
 export const getCurrentDocument = (): Promise<DocumentLoaded | null> =>
   invoke("get_current_document_cmd");
 export const documentWindowReady = (): Promise<void> => invoke("document_window_ready_cmd");

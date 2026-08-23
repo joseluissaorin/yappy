@@ -58,6 +58,14 @@ const DICCIONARIOS: Record<IdiomaUI, Record<string, string>> = {
     "ajustes.descargado": "instalado",
     "ajustes.diagnostico": "Diagnóstico",
     "ajustes.tema": "Aspecto",
+    "ajustes.ordenador": "Tu ordenador",
+    "ajustes.ordenador_texto_no":
+      "Empareja Yappy del ordenador (Preferencias → phone bridge): escanea su QR con la cámara del iPhone, o pega aquí el enlace.",
+    "ajustes.ordenador_texto_si":
+      "Puedes mandarle libros enteros: se convierten allí y el audiolibro vuelve solo a tu Biblioteca.",
+    "ajustes.vincular": "Vincular",
+    "ajustes.desvincular": "Desvincular",
+    "ajustes.vinculado": "vinculado",
     "ajustes.tema.papel": "Papel",
     "ajustes.tema.noche": "Noche",
     "ajustes.tema.sistema": "Como el sistema",
@@ -116,6 +124,14 @@ const DICCIONARIOS: Record<IdiomaUI, Record<string, string>> = {
     "ajustes.descargado": "installed",
     "ajustes.diagnostico": "Diagnostics",
     "ajustes.tema": "Appearance",
+    "ajustes.ordenador": "Your computer",
+    "ajustes.ordenador_texto_no":
+      "Pair Yappy on your computer (Preferences → phone bridge): scan its QR with the iPhone camera, or paste the link here.",
+    "ajustes.ordenador_texto_si":
+      "You can send it whole books: they convert over there and the audiobook comes back to your Library on its own.",
+    "ajustes.vincular": "Link",
+    "ajustes.desvincular": "Unlink",
+    "ajustes.vinculado": "linked",
     "ajustes.tema.papel": "Paper",
     "ajustes.tema.noche": "Night",
     "ajustes.tema.sistema": "Match the system",

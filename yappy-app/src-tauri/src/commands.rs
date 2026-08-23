@@ -1749,8 +1749,8 @@ pub async fn read_clipboard_cmd(
 }
 
 /// El mismo gesto, invocable desde el atajo global (sin State extractor).
-pub async fn leer_portapapeles(
-    app: AppHandle,
+pub async fn leer_portapapeles<R: Runtime>(
+    app: AppHandle<R>,
     state: Arc<AppState>,
 ) -> anyhow::Result<()> {
     let text = capture::clipboard::read_text()

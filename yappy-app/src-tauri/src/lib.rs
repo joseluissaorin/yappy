@@ -20,6 +20,7 @@ mod asr_model;
 mod transcripts;
 mod asr_decode;
 mod playback;
+mod puente;
 mod settings;
 mod state;
 mod tray;
@@ -347,6 +348,11 @@ pub fn run() {
                 tracing::error!("settings init: {e:?}");
             }
 
+            // El puente escucha en el escritorio desde el arranque: barato
+            // (un socket QUIC dormido) y necesario para que el QR exista.
+            #[cfg(desktop)]
+            puente::iniciar_servidor(app.handle().clone());
+
             // Los deep links yappy:// se procesan de verdad (Quick Actions,
             // widget, Spotlight, emparejamiento). Sin esto solo abrían la app.
             {
@@ -494,6 +500,13 @@ pub fn run() {
             cola::cola_agregar_audio_cmd,
             cola::cola_eliminar_cmd,
             cola::cola_reintentar_cmd,
+            puente::puente_estado_cmd,
+            puente::puente_emparejar_nuevo_cmd,
+            puente::puente_revocar_cmd,
+            puente::puente_vincular_cmd,
+            puente::puente_movil_estado_cmd,
+            puente::puente_desvincular_cmd,
+            puente::puente_convertir_cmd,
             commands::biblioteca_documentos_cmd,
             commands::biblioteca_olvidar_cmd,
             commands::list_voices,

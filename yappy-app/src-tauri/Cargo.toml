@@ -95,6 +95,9 @@ base64 = "0.22"
 dom_smoothie = "0.18"
 yt-transcript-rs = "0.1"
 tauri-plugin-deep-link = "2.4.9"
+iroh = "1"
+qrcode = "0.14"
+rand = { workspace = true }
 
 # ─── macOS-only deps (AppKit / Core Foundation / Core Graphics).
 [target.'cfg(target_os = "macos")'.dependencies]

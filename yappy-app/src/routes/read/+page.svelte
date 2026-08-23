@@ -23,6 +23,9 @@
     shareFile,
     onAudiobookRenderProgress,
     onAudiobookRenderDone,
+    puenteMovilEstado,
+    puenteConvertir,
+    onPuenteProgreso,
   } from "$lib/ipc";
 
   // Immersive single-column mobile reader WITH editor parity: per-document rhythm
@@ -69,6 +72,9 @@
   let rendering = $state(false);
   let renderProgress = $state<{ index: number; total: number; stage: string } | null>(null);
   let exportDone = $state<{ path: string } | null>(null);
+  let puenteVinculado = $state(false);
+  let puenteOcupado = $state(false);
+  let puenteEtapa = $state<string | null>(null);
   let toast = $state<string | null>(null);
 
   const isPlaying = $derived(!!playback?.playing && !playback?.paused);
@@ -118,6 +124,18 @@
     }));
     cleanups.push(await onPlaybackState((s) => (playback = s)));
     cleanups.push(await onAudiobookRenderProgress((p) => (renderProgress = p)));
+    puenteVinculado = !!(await puenteMovilEstado().catch(() => null))?.token;
+    cleanups.push(await onPuenteProgreso((p) => {
+      if (p.etapa === "sintetizando" && p.total) {
+        puenteEtapa = `${p.hecho}/${p.total}`;
+      } else if (p.etapa === "codificando") {
+        puenteEtapa = "…";
+      } else if (p.etapa === "hecho") {
+        puenteEtapa = null;
+        puenteOcupado = false;
+        flashToast("audiobook back from your computer — in your Library");
+      }
+    }));
     cleanups.push(await onAudiobookRenderDone((p) => {
       rendering = false;
       renderProgress = null;
@@ -216,6 +234,23 @@
   function progressPct(): number {
     if (currentPara < 0 || paras.length === 0) return 0;
     return Math.min(100, ((currentPara + 1) / paras.length) * 100);
+  }
+
+  // ── Convertir en el ordenador (el puente) ───────────────────────────────────
+  async function convertirEnOrdenador() {
+    if (puenteOcupado || !doc) return;
+    settingsOpen = false;
+    haptic("medium");
+    puenteOcupado = true;
+    puenteEtapa = "0";
+    flashToast("sent to your computer — it will come back on its own");
+    try {
+      await puenteConvertir(title, paras.join("\n\n"));
+    } catch (e) {
+      puenteOcupado = false;
+      puenteEtapa = null;
+      flashToast(String(e));
+    }
   }
 
   // ── Export to .m4b ───────────────────────────────────────────────────────────
@@ -381,6 +416,11 @@
       <button class="btn-export" onclick={exportAudiobook} disabled={rendering}>
         {rendering ? "building…" : "💾 save as audiobook (.m4b)"}
       </button>
+      {#if puenteVinculado}
+        <button class="sheet-row primary" onclick={convertirEnOrdenador} disabled={puenteOcupado}>
+          {puenteOcupado ? `converting on your computer… ${puenteEtapa ?? ""}` : "🖥 convert on your computer"}
+        </button>
+      {/if}
       {#if exportDone}
         <div class="export-done">
           <span>✓ saved to your Library</span>

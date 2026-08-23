@@ -18,6 +18,10 @@
     downloadModel,
     isAsrModelReady,
     downloadAsrModel,
+    puenteMovilEstado,
+    puenteVincular,
+    puenteDesvincular,
+    type ConfigPuenteMovil,
     LANGUAGES,
     type Settings,
     type Voice,
@@ -30,12 +34,27 @@
   let asrListo = $state(false);
   let vozAbierta = $state(false);
   let probando = $state<string | null>(null);
+  let puente = $state<ConfigPuenteMovil | null>(null);
+  let codigoPegado = $state("");
+  let puenteError = $state<string | null>(null);
+
+  async function vincular() {
+    puenteError = null;
+    try {
+      puente = await puenteVincular(codigoPegado.trim());
+      codigoPegado = "";
+      haptic("success");
+    } catch (e) {
+      puenteError = String(e);
+    }
+  }
 
   onMount(async () => {
     settings = await getSettings().catch(() => null);
     voices = await listVoices().catch(() => []);
     ttsListo = await isModelReady().catch(() => false);
     asrListo = await isAsrModelReady().catch(() => false);
+    puente = await puenteMovilEstado().catch(() => null);
   });
 
   async function cambiarTema(tema: "cream" | "dark" | "system") {
@@ -164,6 +183,33 @@
   </section>
 
   <section class="yap-bloque grupo">
+    <h2 class="yap-susurro">{$t("ajustes.ordenador")}</h2>
+    {#if puente?.token}
+      <div class="fila">
+        <span>{puente.nombre ?? "ordenador"}</span>
+        <span class="yap-pildora es-ok">{$t("ajustes.vinculado")}</span>
+      </div>
+      <p class="pie-puente">{$t("ajustes.ordenador_texto_si")}</p>
+      <button class="yap-boton" onclick={async () => { await puenteDesvincular().catch(() => {}); puente = null; }}>
+        {$t("ajustes.desvincular")}
+      </button>
+    {:else}
+      <p class="pie-puente">{$t("ajustes.ordenador_texto_no")}</p>
+      <input
+        class="yap-campo"
+        type="text"
+        bind:value={codigoPegado}
+        placeholder="yappy://pair?d=…"
+        onkeydown={(e) => e.key === "Enter" && vincular()}
+      />
+      {#if puenteError}<p class="pie-puente" style="color: var(--yap-peligro)">{puenteError}</p>{/if}
+      <button class="yap-tecla chica" onclick={vincular} disabled={!codigoPegado.trim()}>
+        {$t("ajustes.vincular")}
+      </button>
+    {/if}
+  </section>
+
+  <section class="yap-bloque grupo">
     <h2 class="yap-susurro">{$t("ajustes.modelos")}</h2>
     <div class="fila">
       <span>{$t("ajustes.modelo_voces")}</span>
@@ -264,4 +310,6 @@
   select.yap-campo {
     max-width: 55%;
   }
+  .pie-puente { margin: 0; font-size: 0.85rem; color: var(--yap-tinta-suave); }
+  .chica { align-self: flex-start; padding: 8px 14px; font-size: 0.9rem; }
 </style>

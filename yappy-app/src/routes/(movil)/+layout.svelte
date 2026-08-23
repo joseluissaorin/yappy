@@ -20,7 +20,7 @@
   } from "$lib/ipc";
   import { startShareIntake, drainPending } from "$lib/shareIntake";
   import { listen } from "@tauri-apps/api/event";
-  import { readClipboard, colaAgregarArchivo } from "$lib/ipc";
+  import { readClipboard, colaAgregarArchivo, puenteVincular } from "$lib/ipc";
   import { invoke } from "@tauri-apps/api/core";
   import { open as abrirDialogo } from "@tauri-apps/plugin-dialog";
 
@@ -53,9 +53,20 @@
 
     // Acciones que llegan por deep link (widget, Spotlight, atajos).
     cleanups.push(
-      await listen<{ tipo: string; path: string | null }>("yappy_accion", async (ev) => {
+      await listen<{ tipo: string; path: string | null; datos?: string | null }>("yappy_accion", async (ev) => {
         const a = ev.payload;
         switch (a.tipo) {
+          case "pair":
+            if (a.datos) {
+              try {
+                await puenteVincular("yappy://pair?" + a.datos);
+                haptic("success");
+                goto("/ajustes");
+              } catch (e) {
+                console.error("pair:", e);
+              }
+            }
+            break;
           case "shared":
             await drainPending();
             break;
