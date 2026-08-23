@@ -5,6 +5,7 @@
   import { getCurrentWindow } from "@tauri-apps/api/window";
   import { get as getStore } from "svelte/store";
   import HelpOverlay from "$lib/HelpOverlay.svelte";
+  import CriaturaCameo from "$lib/CriaturaCameo.svelte";
   import AboutModal from "$lib/AboutModal.svelte";
   import Onboarding from "$lib/Onboarding.svelte";
   import Confetti from "$lib/Confetti.svelte";
@@ -171,6 +172,7 @@
   </div>
 {/if}
 
+<CriaturaCameo size={44} />
 <HelpOverlay open={helpOpen} onClose={() => (helpOpen = false)} />
 <AboutModal open={aboutOpen} onClose={() => (aboutOpen = false)} />
 <Onboarding open={onboardingOpen} onDone={async () => {

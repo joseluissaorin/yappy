@@ -5,6 +5,7 @@
   "identifier": "com.yappy.app",
   "plugins": {
     "deep-link": {
+      "mobile": [{ "scheme": ["yappy"], "appLink": false }],
       "desktop": {
         "schemes": ["yappy"]
       }
@@ -34,7 +35,7 @@
         "center": true,
         "titleBarStyle": "Overlay",
         "hiddenTitle": true,
-        "backgroundColor": "#FFF8D7",
+        "backgroundColor": "#F7F2E7",
         "shadow": true
       },
       {

@@ -929,6 +929,64 @@ pub fn load_project_cmd(app: AppHandle, doc_path: String) -> Result<Option<Strin
     Ok(Some(json))
 }
 
+/// Una entrada de la biblioteca de documentos del escritorio: cada proyecto
+/// autosalvado (que hasta ahora era invisible) con lo justo para pintar la
+/// ficha y reabrirlo.
+#[derive(Debug, Clone, Serialize)]
+pub struct DocumentoBiblioteca {
+    pub doc_path: String,
+    pub filename: String,
+    pub saved_at: Option<String>,
+    pub parrafos: usize,
+    /// false si el fichero original ya no está donde estaba.
+    pub existe: bool,
+}
+
+#[tauri::command]
+pub fn biblioteca_documentos_cmd(app: AppHandle) -> Result<Vec<DocumentoBiblioteca>, String> {
+    let mut dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
+    dir.push("projects");
+    let mut salida = Vec::new();
+    let Ok(entradas) = std::fs::read_dir(&dir) else {
+        return Ok(salida);
+    };
+    for entrada in entradas.flatten() {
+        let ruta = entrada.path();
+        if ruta.extension().and_then(|e| e.to_str()) != Some("json") {
+            continue;
+        }
+        let Ok(json) = std::fs::read_to_string(&ruta) else { continue };
+        let Ok(v) = serde_json::from_str::<serde_json::Value>(&json) else { continue };
+        let Some(doc_path) = v.get("doc_path").and_then(|p| p.as_str()) else { continue };
+        let filename = std::path::Path::new(doc_path)
+            .file_name()
+            .map(|n| n.to_string_lossy().to_string())
+            .unwrap_or_else(|| doc_path.to_string());
+        salida.push(DocumentoBiblioteca {
+            doc_path: doc_path.to_string(),
+            filename,
+            saved_at: v.get("saved_at").and_then(|s| s.as_str()).map(String::from),
+            parrafos: v
+                .get("paragraphs")
+                .and_then(|p| p.as_array())
+                .map(|a| a.len())
+                .unwrap_or(0),
+            existe: std::path::Path::new(doc_path).exists(),
+        });
+    }
+    salida.sort_by(|a, b| b.saved_at.cmp(&a.saved_at));
+    Ok(salida)
+}
+
+#[tauri::command]
+pub fn biblioteca_olvidar_cmd(app: AppHandle, doc_path: String) -> Result<(), String> {
+    let p = project_path(&app, &doc_path)?;
+    if p.exists() {
+        std::fs::remove_file(&p).map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
+
 /// One paragraph as the audiobook renderer sees it: text + optional voice/speed
 /// override + optional pause (silence in seconds) before it.
 #[derive(Debug, Clone, Deserialize)]
@@ -1685,6 +1743,16 @@ pub async fn read_clipboard_cmd(
     app: AppHandle,
     state: State<'_, Arc<AppState>>,
 ) -> Result<(), String> {
+    leer_portapapeles(app, state.inner().clone())
+        .await
+        .map_err(|e| e.to_string())
+}
+
+/// El mismo gesto, invocable desde el atajo global (sin State extractor).
+pub async fn leer_portapapeles(
+    app: AppHandle,
+    state: Arc<AppState>,
+) -> anyhow::Result<()> {
     let text = capture::clipboard::read_text()
         .ok()
         .flatten()
@@ -1693,9 +1761,8 @@ pub async fn read_clipboard_cmd(
         let _ = app.emit("capture_empty", true);
         return Ok(());
     }
-    read_text(&app, state.inner().clone(), text, "clipboard".into())
+    read_text(&app, state, text, "clipboard".into())
         .await
-        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]

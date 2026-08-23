@@ -176,9 +176,13 @@ pub fn register_from_settings<R: tauri::Runtime>(
 ) -> Result<()> {
     unregister_all(handle);
 
-    let (read_combo, pause_combo) = {
+    let (read_combo, pause_combo, clipboard_combo) = {
         let s = state.settings.lock().unwrap();
-        (s.hotkey_read_now.clone(), s.hotkey_pause_resume.clone())
+        (
+            s.hotkey_read_now.clone(),
+            s.hotkey_pause_resume.clone(),
+            s.hotkey_read_clipboard.clone(),
+        )
     };
 
     let read_shortcut = parse_combo(&read_combo).unwrap_or_else(|_| {
@@ -228,6 +232,28 @@ pub fn register_from_settings<R: tauri::Runtime>(
         },
     )?;
 
+    // El atajo de portapapeles: anunciado desde la 0.1 y sin implementar
+    // hasta hoy. Lee lo copiado, estés donde estés.
+    if let Ok(clip_shortcut) = parse_combo(&clipboard_combo) {
+        let app3 = handle.clone();
+        let state3 = state.clone();
+        let clip_sc = clip_shortcut.clone();
+        handle.global_shortcut().on_shortcut(
+            clip_shortcut,
+            move |_app, sc, ev| {
+                if ev.state == ShortcutState::Pressed && *sc == clip_sc {
+                    let h = app3.clone();
+                    let s = state3.clone();
+                    tauri::async_runtime::spawn(async move {
+                        if let Err(e) = commands::leer_portapapeles(h, s).await {
+                            tracing::error!("read_clipboard hotkey: {e:?}");
+                        }
+                    });
+                }
+            },
+        )?;
+    }
+
     Ok(())
 }
 
@@ -244,7 +270,7 @@ pub fn set_hotkey<R: tauri::Runtime>(
         match action {
             Action::ReadNow => s.hotkey_read_now = combo,
             Action::PauseResume => s.hotkey_pause_resume = combo,
-            Action::ReadClipboard => {} // future
+            Action::ReadClipboard => s.hotkey_read_clipboard = combo,
         }
         let snap = s.clone();
         drop(s);

@@ -26,6 +26,9 @@ import {
   colaAgregarTexto,
   colaAgregarArchivo,
   colaAgregarAudio,
+  colaListar,
+  onColaActualizada,
+  readDocument,
 } from "$lib/ipc";
 import { reader } from "$lib/readerStore.svelte";
 
@@ -105,25 +108,67 @@ async function fetchHtml(url: string): Promise<string> {
   return await resp.text();
 }
 
-// Cada línea del payload entra en LA COLA: la extracción (readability,
-// transcripción de YouTube, ASR) ocurre en Rust con estado visible, y la
-// app navega a «Escuchar» para que se vea llegar. Los textos cortos además
-// suenan al instante, que es el gesto de «léeme esto» de toda la vida.
+// El pitch entero cabe en un gesto: estás leyendo un artículo, te tienes
+// que poner a cocinar, compartes con Yappy y EMPIEZA A LEERSE SOLO. Por eso
+// cada línea del payload entra en LA COLA (la extracción ocurre en Rust,
+// con estado visible) y lo recién compartido queda apuntado para
+// reproducirse en cuanto esté listo, sin más toques.
+const reproducirAlLlegar = new Set<string>();
+let vigilanciaColá: UnlistenFn | null = null;
+
+async function vigilarAutoplay(): Promise<void> {
+  if (vigilanciaColá) return;
+  vigilanciaColá = await onColaActualizada(async () => {
+    if (reproducirAlLlegar.size === 0) return;
+    try {
+      const items = await colaListar();
+      for (const item of items) {
+        if (!reproducirAlLlegar.has(item.id)) continue;
+        if (item.estado === "error") {
+          reproducirAlLlegar.delete(item.id);
+          continue;
+        }
+        if (item.estado === "listo" && item.ruta) {
+          reproducirAlLlegar.delete(item.id);
+          const doc = await readDocument(item.ruta);
+          reader.doc = doc;
+          await goto("/read");
+          await readDocumentParagraphs(doc.paragraphs, 0);
+          break;
+        }
+      }
+    } catch (e) {
+      console.error("[shareIntake] autoplay:", e);
+    }
+  });
+}
+
 async function handleOne(line: string): Promise<void> {
   let encolado = false;
   if (line.startsWith("url:")) {
     const url = line.slice(4).trim();
     if (url) {
-      await colaAgregarUrl(url);
+      const item = await colaAgregarUrl(url);
+      reproducirAlLlegar.add(item.id);
+      await vigilarAutoplay();
       encolado = true;
     }
   } else if (line.startsWith("text:")) {
     const text = line.slice(5).trim();
     if (text) {
-      await colaAgregarTexto(text);
+      const item = await colaAgregarTexto(text);
       encolado = true;
       if (text.length <= 280) {
         synthesizeText(text).catch(() => {});
+      } else if (item.ruta) {
+        // Texto largo compartido: al lector, y sonando.
+        try {
+          const doc = await readDocument(item.ruta);
+          reader.doc = doc;
+          await goto("/read");
+          await readDocumentParagraphs(doc.paragraphs, 0);
+          return;
+        } catch {}
       }
     }
   } else if (line.startsWith("transcript:")) {
@@ -143,11 +188,23 @@ async function handleOne(line: string): Promise<void> {
       encolado = true;
     }
   } else if (line.startsWith("file:")) {
-    // PDF, EPUB, DOCX, imagen…: la extensión los copió al App Group.
+    // PDF, EPUB, DOCX…: la extensión los copió al App Group. Un archivo
+    // queda «listo» al instante, así que suena directamente.
     const path = line.slice("file:".length).trim();
     if (path) {
-      await colaAgregarArchivo(path);
+      const item = await colaAgregarArchivo(path);
       encolado = true;
+      if (item.ruta) {
+        try {
+          const doc = await readDocument(item.ruta);
+          reader.doc = doc;
+          await goto("/read");
+          await readDocumentParagraphs(doc.paragraphs, 0);
+          return;
+        } catch (e) {
+          console.error("[shareIntake] abrir archivo compartido:", e);
+        }
+      }
     }
   } else if (line.startsWith("accion:")) {
     // Los App Intents (Siri, Atajos, botón de acción) encolan acciones por

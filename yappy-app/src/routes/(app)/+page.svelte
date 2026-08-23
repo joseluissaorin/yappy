@@ -7,7 +7,9 @@
   import SoundWaves from "$lib/SoundWaves.svelte";
   import SourcePill from "$lib/SourcePill.svelte";
   import HistoryList from "$lib/HistoryList.svelte";
-  import { isIOS } from "$lib/platform";
+  import { isIOS, platformName } from "$lib/platform";
+  import { atajoLeer, formatearAtajo } from "$lib/atajos";
+  import IconoTipo from "$lib/IconoTipo.svelte";
   import { goPage } from "$lib/nav";
   import { notifyError } from "$lib/ui";
   import {
@@ -40,10 +42,18 @@
     onBridgePaired,
     onBridgeDisconnected,
     onBridgeTokenChanged,
+    bibliotecaDocumentos,
+    bibliotecaOlvidar,
+    colaListar,
+    colaAgregarUrl,
+    colaEliminar,
+    onColaActualizada,
+    type DocumentoBiblioteca,
+    type ItemCola,
   } from "$lib/ipc";
 
   let voices: Voice[] = $state([]);
-  let settings: Settings | null = $state(null);
+  let settings = $state<Settings | null>(null);
   let modelReady = $state(false);
   let download: DownloadProgress | null = $state(null);
   let downloading = $state(false);
@@ -58,6 +68,12 @@
   );
   let testing = $state(false);
   let testTextOpen = $state(false);
+  let documentos = $state<DocumentoBiblioteca[]>([]);
+  let cola = $state<ItemCola[]>([]);
+  let enlaceNuevo = $state("");
+  const atajoPortapapeles = $derived(
+    formatearAtajo(settings?.hotkey_read_clipboard ?? "alt+cmd+v", $platformName),
+  );
 
   const isPlaying = $derived(!!playback?.playing && !playback?.paused);
   const isThinking = $derived(captureStage === "thinking");
@@ -83,17 +99,10 @@
     cleanups.push(await onBridgeDisconnected(async () => { try { bridge = await bridgeStatus(); } catch {} }));
     cleanups.push(await onBridgeTokenChanged(async () => { try { bridge = await bridgeStatus(); } catch {} }));
 
-    // iOS: probe the clipboard for fresh content to offer at launch.
-    if ($isIOS) {
-      try {
-        const { readText } = await import("@tauri-apps/plugin-clipboard-manager");
-        const text = ((await readText()) ?? "").trim();
-        if (text && text.length > 12 && text.length < 50_000) {
-          const dismissed = localStorage.getItem("yappy:clipboard:dismissed");
-          if (dismissed !== text) clipboardCandidate = text;
-        }
-      } catch (e) { console.warn("[clipboard] read failed:", e); }
-    }
+    documentos = await bibliotecaDocumentos().catch(() => []);
+    cola = await colaListar().catch(() => []);
+    cleanups.push(await onColaActualizada(async () => (cola = await colaListar().catch(() => cola))));
+
   });
   onDestroy(() => cleanups.forEach((c) => c()));
 
@@ -125,12 +134,7 @@
   // Open a document: iOS renders it in the immersive in-page reader (/read);
   // desktop opens its full editor window.
   async function openDoc(path: string) {
-    if ($isIOS) {
-      reader.doc = await readDocument(path);
-      await goto("/read");
-    } else {
-      await readFile(path);
-    }
+    await readFile(path);
   }
   async function openFile() {
     try {
@@ -152,6 +156,30 @@
       try { localStorage.setItem("yappy:clipboard:dismissed", clipboardCandidate); } catch {}
     }
     clipboardCandidate = null;
+  }
+
+  async function abrirItemCola(item: ItemCola) {
+    if (item.estado === "listo" && item.ruta) await openDoc(item.ruta);
+  }
+  async function encolarEnlace() {
+    const url = enlaceNuevo.trim();
+    if (!url) return;
+    enlaceNuevo = "";
+    try {
+      await colaAgregarUrl(url.startsWith("http") ? url : `https://${url}`);
+    } catch (e) { notifyError(String(e)); }
+  }
+  async function olvidarDocumento(d: DocumentoBiblioteca) {
+    try {
+      await bibliotecaOlvidar(d.doc_path);
+      documentos = documentos.filter((x) => x.doc_path !== d.doc_path);
+    } catch (e) { notifyError(String(e)); }
+  }
+  function fechaCorta(iso: string | null): string {
+    if (!iso) return "";
+    try {
+      return new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short" });
+    } catch { return ""; }
   }
 
   function downloadPercent(): number {
@@ -191,15 +219,6 @@
       {/if}
     </div>
 
-    {#if $isIOS}
-      <div class="card tip-card">
-        <div class="tip-icon">📤</div>
-        <div class="tip-body">
-          <div class="tip-title">how to read anything aloud</div>
-          <div class="tip-sub">in any iOS app — Safari, Notes, Mail, Messages — tap the share button, then choose <strong>Yappy</strong>. the article or selection gets read aloud here.</div>
-        </div>
-      </div>
-    {/if}
 
     {#if clipboardCandidate}
       <div class="card clipboard-banner">
@@ -214,78 +233,6 @@
         </div>
       </div>
     {/if}
-  </section>
-{:else if $isIOS}
-  <!-- ── MOBILE HOME: designed around what iOS can actually do — type/paste
-       text, open a document, transcribe audio, read the clipboard, or share
-       content in. No desktop hotkey / screen-capture concepts. ─────────────── -->
-  <section class="m-hero">
-    <div class="m-brand"><YappyMascot size={56} happy /></div>
-    <h1 class="m-title">read anything aloud</h1>
-    <p class="m-sub">type or paste text — Yappy reads it on-device in 31 languages.</p>
-    <div class="card m-compose">
-      <textarea
-        bind:value={testText}
-        rows="5"
-        placeholder="paste or type anything here…"
-        aria-label="text to read aloud"
-      ></textarea>
-      <div class="m-compose-actions">
-        <button class="btn-pink" onclick={() => runTest()} disabled={testing || !testText.trim()}>
-          {testing ? "reading…" : "read it aloud"}
-        </button>
-        <button class="btn-outline" onclick={() => (testText = "")} disabled={!testText.trim()}>clear</button>
-      </div>
-    </div>
-  </section>
-
-  <div class="m-tiles">
-    <button class="m-tile" onclick={() => readClipboard()}>
-      <span class="m-tile-ico">📋</span><span class="m-tile-label">read clipboard</span>
-    </button>
-    <button class="m-tile" onclick={openFile}>
-      <span class="m-tile-ico">📄</span><span class="m-tile-label">open a document</span>
-    </button>
-    <button class="m-tile" onclick={() => goPage("transcribe")}>
-      <span class="m-tile-ico">🎙️</span><span class="m-tile-label">transcribe audio</span>
-    </button>
-  </div>
-
-  <div class="m-samplelink">
-    <button class="link" onclick={async () => { try { await openDoc(await sampleDocumentPath()); } catch (e) { notifyError(String(e)); } }}>
-      open a sample document →
-    </button>
-  </div>
-
-  <section class="quickvoices">
-    <div class="qv-head">
-      <h2>voice</h2>
-      <button class="link" onclick={() => goPage("voices")}>all 10 →</button>
-    </div>
-    <div class="qv-row">
-      {#each voices as v}
-        <button class="voice-pill" class:active={settings?.voice === v.name} onclick={() => pickVoice(v)} title={v.description}>
-          <span class="dot" data-id={v.id}></span>
-          {v.name}
-        </button>
-      {/each}
-    </div>
-  </section>
-
-  <div class="card tip-card">
-    <div class="tip-icon">📤</div>
-    <div class="tip-body">
-      <div class="tip-title">share into Yappy</div>
-      <div class="tip-sub">in any app — Safari, Notes, WhatsApp — tap the share button, then <strong>Yappy</strong>. articles get read aloud; voice notes get transcribed.</div>
-    </div>
-  </div>
-
-  <section class="recents-v3">
-    <div class="qv-head">
-      <h2>recent</h2>
-      <button class="link" onclick={() => goPage("history")}>all →</button>
-    </div>
-    <HistoryList compact={true} max={5} />
   </section>
 {:else}
   <section class="read-panel" class:playing={isPlaying} class:paused={playback?.paused} class:thinking={isThinking}>
@@ -344,7 +291,7 @@
             {/if}
           </span>
           <span class="rp-primary-sub">
-            <kbd>⌥</kbd><kbd>⌘</kbd><kbd>R</kbd>
+            <kbd>{$atajoLeer}</kbd>
             <span>selection · screenshot · active document · paired browser</span>
           </span>
         </span>
@@ -359,14 +306,14 @@
 
     <div class="rp-secondary">
       <button class="rp-sec" onclick={() => readClipboard()} title="read whatever's on your clipboard">
-        <span class="emoji">📋</span> clipboard
-        <kbd class="hint">⌥⌘V</kbd>
+        <IconoTipo tipo="portapapeles" size={16} /> clipboard
+        <kbd class="hint">{atajoPortapapeles}</kbd>
       </button>
       <button class="rp-sec" onclick={openFile} title="open a .pdf / .docx / .epub / .md / .txt …">
-        <span class="emoji">📄</span> open a document
+        <IconoTipo tipo="documento" size={16} /> open a document
       </button>
       <button class="rp-sec" onclick={() => testTextOpen = !testTextOpen} class:active={testTextOpen}>
-        <span class="emoji">✎</span> paste text
+        <IconoTipo tipo="recorte" size={16} /> paste text
       </button>
     </div>
 
@@ -384,6 +331,58 @@
           <button class="btn-outline small" onclick={() => { testText = ""; testTextOpen = false; }}>clear</button>
         </div>
       </div>
+    {/if}
+  </section>
+
+  <section class="biblio">
+    <div class="qv-head">
+      <h2>library</h2>
+    </div>
+    <div class="biblio-cola">
+      <input
+        class="yap-campo biblio-enlace"
+        type="url"
+        bind:value={enlaceNuevo}
+        placeholder="paste a link — article or YouTube — and it queues up"
+        onkeydown={(e) => e.key === "Enter" && encolarEnlace()}
+      />
+      <button class="btn-pink small" onclick={encolarEnlace} disabled={!enlaceNuevo.trim()}>queue</button>
+    </div>
+    {#if cola.length > 0}
+      <ul class="biblio-lista">
+        {#each cola.slice(0, 6) as item (item.id)}
+          <li class="yap-ficha biblio-item" class:es-pulsable={item.estado === "listo"}>
+            <button class="biblio-abrir" onclick={() => abrirItemCola(item)} disabled={item.estado !== "listo"}>
+              <span class="biblio-titulo">{item.titulo}</span>
+              <span class="biblio-meta" class:error={item.estado === "error"}>
+                {item.estado === "listo" ? "ready" : item.estado === "preparando" ? "preparing…" : item.estado === "error" ? (item.error ?? "failed") : "queued"}
+              </span>
+            </button>
+            <button class="btn-ghost biblio-x" onclick={() => colaEliminar(item.id)} aria-label="remove">✕</button>
+          </li>
+        {/each}
+      </ul>
+    {/if}
+    {#if documentos.length > 0}
+      <div class="qv-head" style="margin-top: 14px">
+        <h2 style="font-size: 0.95rem">documents you've opened</h2>
+      </div>
+      <ul class="biblio-lista">
+        {#each documentos.slice(0, 8) as d (d.doc_path)}
+          <li class="yap-ficha biblio-item" class:es-pulsable={d.existe}>
+            <button class="biblio-abrir" onclick={() => d.existe && openDoc(d.doc_path)} disabled={!d.existe} title={d.doc_path}>
+              <span class="biblio-titulo">{d.filename}</span>
+              <span class="biblio-meta">
+                {d.parrafos} ¶ · {fechaCorta(d.saved_at)}{d.existe ? "" : " · file moved"}
+              </span>
+            </button>
+            <button class="btn-ghost biblio-x" onclick={() => olvidarDocumento(d)} aria-label="forget">✕</button>
+          </li>
+        {/each}
+      </ul>
+    {/if}
+    {#if cola.length === 0 && documentos.length === 0}
+      <p class="biblio-vacia">everything you open or queue lands here, ready to re-open with your edits intact.</p>
     {/if}
   </section>
 
@@ -455,4 +454,16 @@
     padding: 6px 14px; border-radius: 999px; background: var(--ink-900);
     color: var(--cream-100); font-weight: 700; font-size: 13px;
   }
+  .biblio { margin-top: 18px; }
+  .biblio-cola { display: flex; gap: 8px; margin-bottom: 10px; }
+  .biblio-enlace { flex: 1; min-width: 0; }
+  .biblio-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+  .biblio-item { display: flex; align-items: center; gap: 6px; padding: 8px 10px; }
+  .biblio-abrir { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; text-align: left; }
+  .biblio-abrir:disabled { cursor: default; opacity: 0.6; }
+  .biblio-titulo { font-weight: 700; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .biblio-meta { font-size: 0.75rem; color: var(--yap-tinta-suave); }
+  .biblio-meta.error { color: var(--yap-peligro); }
+  .biblio-x { padding: 6px 9px; }
+  .biblio-vacia { color: var(--yap-tinta-suave); font-size: 0.9rem; background: var(--yap-superficie-2); border: 1px dashed var(--yap-borde); border-radius: 14px; box-shadow: var(--yap-hundido); padding: 14px; }
 </style>

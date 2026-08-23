@@ -331,6 +331,18 @@ export function onColaActualizada(cb: () => void): Promise<UnlistenFn> {
   return listen("cola_actualizada", () => cb());
 }
 
+export interface DocumentoBiblioteca {
+  doc_path: string;
+  filename: string;
+  saved_at: string | null;
+  parrafos: number;
+  existe: boolean;
+}
+export const bibliotecaDocumentos = (): Promise<DocumentoBiblioteca[]> =>
+  invoke("biblioteca_documentos_cmd");
+export const bibliotecaOlvidar = (docPath: string): Promise<void> =>
+  invoke("biblioteca_olvidar_cmd", { docPath });
+
 export const getCurrentDocument = (): Promise<DocumentLoaded | null> =>
   invoke("get_current_document_cmd");
 export const documentWindowReady = (): Promise<void> => invoke("document_window_ready_cmd");

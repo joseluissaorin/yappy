@@ -494,6 +494,8 @@ pub fn run() {
             cola::cola_agregar_audio_cmd,
             cola::cola_eliminar_cmd,
             cola::cola_reintentar_cmd,
+            commands::biblioteca_documentos_cmd,
+            commands::biblioteca_olvidar_cmd,
             commands::list_voices,
             commands::get_settings,
             commands::set_settings,

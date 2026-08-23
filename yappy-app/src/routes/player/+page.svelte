@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { atajoLeer } from "$lib/atajos";
   import { onMount, onDestroy } from "svelte";
   import { save as dialogSave } from "@tauri-apps/plugin-dialog";
   import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -249,7 +250,7 @@
         {:else if snap.playing}
           <span class="muted">preparing audio<span class="dots-text">{".".repeat(pulse + 1)}</span></span>
         {:else}
-          <span class="muted">ready — press ⌥⌘R</span>
+          <span class="muted">ready — press {$atajoLeer}</span>
         {/if}
       </div>
       <div class="progress-track">

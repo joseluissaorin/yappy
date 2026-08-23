@@ -144,7 +144,7 @@
   <section class="yap-cabecera instalar">
     <Criatura size={72} andando />
     <div>
-      <h2 class="yap-grito" style="font-size:1.3rem">Las voces aún no están</h2>
+      <h2 class="yap-grito" style="font-size:1.3rem">{$t("escuchar.sin_voces")}</h2>
       {#if descargando}
         <p class="pie">{descargando.overall_done}/{descargando.overall_total} · {Math.round((descargando.bytes_done / Math.max(1, descargando.bytes_total)) * 100)}%</p>
         <div class="barra"><span style="width:{(descargando.bytes_done / Math.max(1, descargando.bytes_total)) * 100}%"></span></div>

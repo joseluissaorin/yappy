@@ -18,6 +18,7 @@ const DICCIONARIOS: Record<IdiomaUI, Record<string, string>> = {
     "escuchar.vacia.texto":
       "Comparte un artículo, un PDF o un vídeo desde cualquier app con el botón de compartir, y aparecerá aquí listo para escucharse.",
     "escuchar.anadir": "Añadir",
+    "escuchar.sin_voces": "Las voces aún no están",
     "escuchar.pegar_enlace": "Pegar un enlace",
     "escuchar.leer_portapapeles": "Leer el portapapeles",
     "escuchar.abrir_archivo": "Abrir un archivo",
@@ -77,6 +78,7 @@ const DICCIONARIOS: Record<IdiomaUI, Record<string, string>> = {
     "escuchar.vacia.texto":
       "Share an article, a PDF or a video from any app with the share button, and it will land here ready to listen.",
     "escuchar.anadir": "Add",
+    "escuchar.sin_voces": "The voices aren't here yet",
     "escuchar.pegar_enlace": "Paste a link",
     "escuchar.leer_portapapeles": "Read the clipboard",
     "escuchar.abrir_archivo": "Open a file",
