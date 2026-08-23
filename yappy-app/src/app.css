@@ -1,99 +1,608 @@
-/* Yappy — cozy, hand-drawn aesthetic (inspired by Handy). */
+/* ═══════════════════════════════════════════════════════════════════════
+   Yappy: sistema de diseño.
 
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Patrick+Hand&display=swap");
+   Dos tintas sobre papel. La tinta del texto (ultramar) y la tinta de la
+   voz (coral), casi superpuestas pero no del todo: el desregistro entre
+   ambas es el producto, porque lo dicho nunca es exactamente lo escrito.
+   El subrayador dorado es la tercera presencia: la marca que va siguiendo
+   a la voz por el guion, como un fluorescente sobre el papel.
+
+   La gramática es la del relieve, aprendida en Andarama: lo que se pulsa
+   SUBE (degradado vertical suave, filo de luz arriba, sombra corta), lo
+   que recibe escritura o contenido SE HUNDE. El papel nunca es blanco
+   puro; la tinta nunca es negro puro.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@import url("/fonts/fonts.css");
+
+/* ── Tokens ──────────────────────────────────────────────────────────── */
 
 :root {
-  /* Type */
-  --font-sans: "Quicksand", -apple-system, "SF Pro Rounded", system-ui, sans-serif;
-  --font-display: "Patrick Hand", "Quicksand", system-ui, sans-serif;
-  --font-mono: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+  /* papel y superficies */
+  --yap-papel: #f7f2e7;
+  --yap-superficie: #fffdf7;
+  --yap-superficie-2: #f3ecdb;
+  --yap-borde: #e6dcc6;
 
-  /* Color — cream + pink + ink, Handy-style */
-  --cream-50: #fffdf2;
-  --cream-100: #fff8d7;     /* main background */
-  --cream-200: #fff0b8;
-  --cream-300: #ffe78a;
+  /* tintas */
+  --yap-tinta: #2b2418;
+  --yap-tinta-suave: #82755a;
+  --yap-voz: #e0502a;
+  --yap-voz-fuerte: #c43e1c;
+  --yap-voz-suave: #fbe3d8;
+  --yap-ultramar: #2f4bc4;
+  --yap-ultramar-suave: #e3e7f8;
+  --yap-dorado: #e8b41a;
+  --yap-subrayador: rgba(232, 180, 26, 0.42);
+  --yap-ok: #3d8b40;
+  --yap-peligro: #b3261e;
+  --yap-peligro-suave: #f7dcd7;
 
-  --pink-300: #ffd3e0;
-  --pink-400: #ffb3c8;
-  --pink-500: #ff80ab;        /* primary accent */
-  --pink-600: #ff5d97;
-  --pink-700: #e84785;
+  /* tipografías */
+  --yap-fuente: "Baloo 2", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --yap-lectura: "Literata", Georgia, "Times New Roman", serif;
+  --yap-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --mint-300: #c3eedb;
-  --mint-500: #6cd3a8;
+  /* radios */
+  --yap-radio: 12px;      /* controles: botones, campos, selects */
+  --yap-radio-caja: 16px; /* tarjetas, bloques, cabeceras, diálogos */
+  --yap-radio-ficha: 12px;
 
-  --lavender-300: #d8c8ff;
-  --lavender-500: #9d8bff;
+  /* el relieve: filo de luz arriba y sombra corta debajo. La gramática de
+     todo lo que se pulsa, se escribe o contiene algo. */
+  --yap-luz: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --yap-hundido: inset 0 1px 2px rgba(64, 46, 12, 0.09);
+  --yap-relieve: var(--yap-luz), 0 1px 2px rgba(64, 46, 12, 0.1),
+    0 2px 8px rgba(64, 46, 12, 0.06);
+  --yap-relieve-alto: var(--yap-luz), 0 2px 4px rgba(64, 46, 12, 0.12),
+    0 10px 24px rgba(64, 46, 12, 0.14);
+  --yap-tecla: linear-gradient(180deg, #f4682e 0%, var(--yap-voz) 100%);
+  --yap-tecla-tinta: #fff6ef;
+  --yap-anillo: 0 0 0 3px rgba(224, 80, 42, 0.26);
 
-  --ink-100: #f5f3eb;
-  --ink-300: #c9c4b8;
-  --ink-500: #76726a;
-  --ink-700: #3a382f;
-  --ink-900: #1a1a1a;
+  /* sombras de caja genéricas (paneles flotantes, diálogos) */
+  --yap-sombra: 0 1px 2px rgba(64, 46, 12, 0.06), 0 4px 14px rgba(64, 46, 12, 0.07);
+  --yap-sombra-alta: 0 2px 6px rgba(64, 46, 12, 0.08), 0 18px 44px rgba(64, 46, 12, 0.14);
 
-  --bg: var(--cream-100);
-  --bg-2: var(--cream-50);
-  --surface: #ffffff;
-  --surface-soft: rgba(255, 255, 255, 0.55);
-  --border: var(--ink-900);
+  /* movimiento */
+  --yap-brote: cubic-bezier(0.2, 0.9, 0.3, 1.15);
+  --yap-salida: cubic-bezier(0.16, 1, 0.3, 1);
 
-  --text: var(--ink-900);
-  --text-dim: var(--ink-500);
-  --text-mute: #908a7c;
+  /* el grano del papel: huella del proceso, casi invisible */
+  --yap-grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0 0.06 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
 
-  --radius-xs: 10px;
-  --radius-sm: 14px;
-  --radius-md: 20px;
-  --radius-lg: 28px;
-  --radius-xl: 36px;
-
-  /* "Hand-drawn" elevation — short shadow offset, hard line */
-  --shadow-hd-1: 3px 3px 0 var(--ink-900);
-  --shadow-hd-2: 5px 5px 0 var(--ink-900);
-  --shadow-hd-3: 8px 8px 0 var(--ink-900);
-
-  --ease-emph: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
 }
 
-* { box-sizing: border-box; }
+/* La sesión de noche: papel nocturno azulado, coral aclarado, el mismo
+   relieve con las luces bajadas. El grano se apaga (sobre tinta no hay
+   grano que valga). */
+:root[data-theme="dark"] {
+  --yap-papel: #191b22;
+  --yap-superficie: #232631;
+  --yap-superficie-2: #2b2f3d;
+  --yap-borde: #3a3d4a;
+  --yap-tinta: #f2edda;
+  --yap-tinta-suave: #a9a48c;
+  --yap-voz: #ff7a4d;
+  --yap-voz-fuerte: #e0502a;
+  --yap-voz-suave: #45281c;
+  --yap-ultramar: #93a5ff;
+  --yap-ultramar-suave: #232a4a;
+  --yap-subrayador: rgba(232, 180, 26, 0.32);
+  --yap-ok: #66bb6a;
+  --yap-peligro: #ef7466;
+  --yap-peligro-suave: #46231f;
+  --yap-luz: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --yap-hundido: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  --yap-relieve: var(--yap-luz), 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+  --yap-relieve-alto: var(--yap-luz), 0 2px 4px rgba(0, 0, 0, 0.45),
+    0 10px 24px rgba(0, 0, 0, 0.4);
+  --yap-tecla: linear-gradient(180deg, #ff8f61 0%, #f26236 100%);
+  --yap-tecla-tinta: #3a1508;
+  --yap-anillo: 0 0 0 3px rgba(255, 122, 77, 0.3);
+  --yap-sombra: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
+  --yap-sombra-alta: 0 2px 6px rgba(0, 0, 0, 0.45), 0 18px 44px rgba(0, 0, 0, 0.4);
+  --yap-grano: none;
+  color-scheme: dark;
+}
 
-html, body { margin: 0; padding: 0; height: 100%; }
+/* «Sistema»: sigue al SO. Mismo bloque que el oscuro, activado por media
+   query. (Duplicado a conciencia: las custom properties no se pueden
+   reutilizar entre selectores condicionales sin preprocesador.) */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] {
+    --yap-papel: #191b22;
+    --yap-superficie: #232631;
+    --yap-superficie-2: #2b2f3d;
+    --yap-borde: #3a3d4a;
+    --yap-tinta: #f2edda;
+    --yap-tinta-suave: #a9a48c;
+    --yap-voz: #ff7a4d;
+    --yap-voz-fuerte: #e0502a;
+    --yap-voz-suave: #45281c;
+    --yap-ultramar: #93a5ff;
+    --yap-ultramar-suave: #232a4a;
+    --yap-subrayador: rgba(232, 180, 26, 0.32);
+    --yap-ok: #66bb6a;
+    --yap-peligro: #ef7466;
+    --yap-peligro-suave: #46231f;
+    --yap-luz: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    --yap-hundido: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+    --yap-relieve: var(--yap-luz), 0 1px 2px rgba(0, 0, 0, 0.4),
+      0 2px 8px rgba(0, 0, 0, 0.3);
+    --yap-relieve-alto: var(--yap-luz), 0 2px 4px rgba(0, 0, 0, 0.45),
+      0 10px 24px rgba(0, 0, 0, 0.4);
+    --yap-tecla: linear-gradient(180deg, #ff8f61 0%, #f26236 100%);
+    --yap-tecla-tinta: #3a1508;
+    --yap-anillo: 0 0 0 3px rgba(255, 122, 77, 0.3);
+    --yap-sombra: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
+    --yap-sombra-alta: 0 2px 6px rgba(0, 0, 0, 0.45), 0 18px 44px rgba(0, 0, 0, 0.4);
+    --yap-grano: none;
+    color-scheme: dark;
+  }
+}
 
-/* Dynamic Type — root font-size scales with the iOS "Larger Text"
-   accessibility setting via WebKit's text-size-adjust hook. iOS users who
-   set a larger system font size see Yappy's UI scale up proportionally;
-   desktop users with no system size override stay at 15px baseline. */
+/* ── Base ────────────────────────────────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+}
+
 html {
   font-size: 15px;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.5;
+  margin: 0;
+  font-family: var(--yap-fuente);
   font-weight: 500;
-  letter-spacing: -0.005em;
+  color: var(--yap-tinta);
+  background-color: var(--yap-papel);
+  background-image: var(--yap-grano);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  overflow: hidden;
-  /* Soft paper-grain look via repeating gradient */
-  background-image:
-    radial-gradient(circle at 18% 22%, rgba(255, 200, 220, 0.35) 0%, transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(195, 238, 219, 0.35) 0%, transparent 32%),
-    radial-gradient(circle at 76% 88%, rgba(216, 200, 255, 0.30) 0%, transparent 35%);
-  background-attachment: fixed;
+  overscroll-behavior: none;
 }
 
-#app { height: 100%; }
+::selection {
+  background: var(--yap-subrayador);
+}
 
-button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+:focus-visible {
+  outline: 2px solid var(--yap-voz);
+  outline-offset: 2px;
+}
 
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--yap-borde);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+kbd {
+  font-family: var(--yap-mono);
+  font-size: 0.78em;
+  padding: 2px 7px;
+  border-radius: 7px;
+  background: var(--yap-superficie);
+  box-shadow: var(--yap-relieve);
+  border: 1px solid var(--yap-borde);
+}
+
+/* ── La gramática del relieve ────────────────────────────────────────── */
+
+/* La tecla: el gesto del botón principal. Degradado vertical de la voz,
+   filo de luz, sombra corta. Al pulsar, se hunde un píxel. */
+.yap-tecla {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--yap-fuente);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--yap-tecla-tinta);
+  background: var(--yap-tecla);
+  border-radius: var(--yap-radio);
+  padding: 9px 16px;
+  box-shadow: var(--yap-relieve);
+  transition: transform 0.12s var(--yap-salida), box-shadow 0.12s var(--yap-salida),
+    filter 0.12s;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.yap-tecla:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: var(--yap-relieve-alto);
+}
+.yap-tecla:active {
+  transform: translateY(1px);
+  box-shadow: var(--yap-luz), 0 1px 1px rgba(64, 46, 12, 0.08);
+}
+.yap-tecla:disabled {
+  cursor: default;
+  filter: saturate(0.25) opacity(0.55);
+  transform: none;
+}
+
+/* El botón llano: superficie con relieve, para acciones secundarias. */
+.yap-boton {
+  appearance: none;
+  cursor: pointer;
+  font-family: var(--yap-fuente);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--yap-tinta);
+  background: var(--yap-superficie);
+  border: 1px solid var(--yap-borde);
+  border-radius: var(--yap-radio);
+  padding: 8px 14px;
+  box-shadow: var(--yap-relieve);
+  transition: transform 0.12s var(--yap-salida), box-shadow 0.12s var(--yap-salida);
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.yap-boton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--yap-relieve-alto);
+}
+.yap-boton:active {
+  transform: translateY(1px);
+  box-shadow: var(--yap-hundido);
+}
+.yap-boton:disabled {
+  cursor: default;
+  opacity: 0.5;
+  transform: none;
+}
+.yap-boton.es-peligro {
+  color: var(--yap-peligro);
+}
+.yap-boton.es-fantasma {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.yap-boton.es-fantasma:hover {
+  background: var(--yap-superficie-2);
+}
+
+/* La tarjeta: se puede pulsar, así que levanta al pasar. */
+.yap-tarjeta {
+  background: var(--yap-superficie);
+  border: 1px solid var(--yap-borde);
+  border-radius: var(--yap-radio-caja);
+  box-shadow: var(--yap-relieve);
+  transition: transform 0.16s var(--yap-salida), box-shadow 0.16s var(--yap-salida),
+    border-color 0.16s;
+}
+a.yap-tarjeta,
+button.yap-tarjeta,
+.yap-tarjeta.es-pulsable {
+  cursor: pointer;
+}
+a.yap-tarjeta:hover,
+button.yap-tarjeta:hover,
+.yap-tarjeta.es-pulsable:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--yap-relieve-alto);
+  border-color: var(--yap-voz);
+}
+
+/* El bloque: igual que la tarjeta pero quieto (no se pulsa). */
+.yap-bloque {
+  background: var(--yap-superficie);
+  border: 1px solid var(--yap-borde);
+  border-radius: var(--yap-radio-caja);
+  box-shadow: var(--yap-relieve);
+}
+
+/* El hueco: bandeja hundida donde se suelta o se escribe algo. */
+.yap-hueco {
+  background: var(--yap-superficie-2);
+  border: 1px dashed var(--yap-borde);
+  border-radius: 14px;
+  box-shadow: var(--yap-hundido);
+}
+
+/* La ficha: fila de lista con relieve corto. */
+.yap-ficha {
+  background: var(--yap-superficie);
+  border: 1px solid var(--yap-borde);
+  border-radius: var(--yap-radio-ficha);
+  box-shadow: var(--yap-luz), 0 1px 2px rgba(64, 46, 12, 0.07);
+  transition: transform 0.14s var(--yap-salida), box-shadow 0.14s var(--yap-salida),
+    border-color 0.14s;
+}
+.yap-ficha.es-pulsable {
+  cursor: pointer;
+}
+.yap-ficha.es-pulsable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--yap-relieve);
+  border-color: var(--yap-voz);
+}
+.yap-ficha.es-activa {
+  background: var(--yap-voz-suave);
+  border-color: var(--yap-voz);
+}
+
+/* Campos: lo que recibe escritura se hunde, y al enfocar conserva el
+   hundido y añade el anillo (que no parezca que el campo sale de la
+   página justo cuando se va a escribir en él). */
+.yap-campo,
+input.yap-campo,
+textarea.yap-campo,
+select.yap-campo {
+  font-family: var(--yap-fuente);
+  font-size: 0.95rem;
+  color: var(--yap-tinta);
+  background: var(--yap-superficie-2);
+  border: 1px solid var(--yap-borde);
+  border-radius: var(--yap-radio);
+  padding: 8px 12px;
+  box-shadow: var(--yap-hundido);
+}
+.yap-campo:focus {
+  outline: none;
+  box-shadow: var(--yap-hundido), var(--yap-anillo);
+  border-color: var(--yap-voz);
+}
+.yap-campo::placeholder {
+  color: var(--yap-tinta-suave);
+}
+
+/* El buscador: píldora hundida con la lupa embutida. */
+.yap-buscador {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--yap-superficie-2);
+  border: 1px solid var(--yap-borde);
+  border-radius: 999px;
+  padding: 7px 14px;
+  box-shadow: var(--yap-hundido);
+}
+.yap-buscador:focus-within {
+  box-shadow: var(--yap-hundido), var(--yap-anillo);
+  border-color: var(--yap-voz);
+}
+.yap-buscador input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: var(--yap-fuente);
+  font-size: 0.92rem;
+  color: var(--yap-tinta);
+  width: 100%;
+}
+
+/* Las pestañas: raíl hundido; la elegida sube como tecla. */
+.yap-pestanas {
+  display: inline-flex;
+  gap: 4px;
+  background: var(--yap-superficie-2);
+  border: 1px solid var(--yap-borde);
+  border-radius: 999px;
+  padding: 4px;
+  box-shadow: var(--yap-hundido);
+}
+.yap-pestana {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--yap-fuente);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--yap-tinta-suave);
+  background: transparent;
+  border-radius: 999px;
+  padding: 6px 14px;
+  transition: color 0.14s, background 0.14s, box-shadow 0.14s;
+}
+.yap-pestana:hover {
+  color: var(--yap-tinta);
+}
+.yap-pestana.es-activa {
+  color: var(--yap-tecla-tinta);
+  background: var(--yap-tecla);
+  box-shadow: var(--yap-relieve);
+}
+
+/* La cabecera de sección: gradiente hacia la voz, con relieve. */
+.yap-cabecera {
+  background: linear-gradient(135deg, var(--yap-superficie) 30%, var(--yap-voz-suave) 100%);
+  border: 1px solid var(--yap-borde);
+  border-radius: var(--yap-radio-caja);
+  box-shadow: var(--yap-relieve);
+}
+
+/* Píldoras e insignias. */
+.yap-pildora {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 3px 10px;
+  background: var(--yap-superficie-2);
+  border: 1px solid var(--yap-borde);
+  color: var(--yap-tinta-suave);
+}
+.yap-pildora.es-ok {
+  background: color-mix(in srgb, var(--yap-ok) 14%, transparent);
+  border-color: color-mix(in srgb, var(--yap-ok) 40%, transparent);
+  color: var(--yap-ok);
+}
+.yap-pildora.es-peligro {
+  background: var(--yap-peligro-suave);
+  border-color: color-mix(in srgb, var(--yap-peligro) 40%, transparent);
+  color: var(--yap-peligro);
+}
+.yap-pildora.es-voz {
+  background: var(--yap-voz-suave);
+  border-color: color-mix(in srgb, var(--yap-voz) 40%, transparent);
+  color: var(--yap-voz-fuerte);
+}
+
+/* El grito y el susurro. */
+.yap-grito {
+  font-family: var(--yap-fuente);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+.yap-susurro {
+  font-family: var(--yap-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--yap-tinta-suave);
+}
+
+/* La superficie de lectura: el guion se lee en serif de libro. */
+.yap-lectura {
+  font-family: var(--yap-lectura);
+  font-weight: 420;
+  line-height: 1.62;
+  font-variation-settings: "opsz" 16;
+}
+
+/* El subrayador del karaoke: la marca dorada que sigue a la voz. */
+mark.yap-karaoke,
+.yap-karaoke {
+  background: var(--yap-subrayador);
+  color: inherit;
+  border-radius: 4px;
+  padding: 0 2px;
+  margin: 0 -2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Entrada suave de cada vista. */
+.yap-enter {
+  animation: yap-entrar 0.25s var(--yap-salida) both;
+}
+@keyframes yap-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* El brinco de la criatura (compartido por Criatura.svelte). */
+@keyframes yap-brinco {
+  from {
+    transform: scaleY(0.96) scaleX(1.02);
+  }
+  to {
+    transform: scaleY(1.04) scaleX(0.98) translateY(-5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PUENTE VIEJO: los nombres de variable del sistema anterior, mapeados a
+   los tokens nuevos para que las pantallas aún no migradas se impriman ya
+   con la paleta nueva. Cada pantalla que se migra deja de necesitarlo;
+   cuando ninguna lo use, este bloque se borra entero.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root,
+:root[data-theme="dark"],
+:root[data-theme="system"] {
+  --cream-50: var(--yap-superficie);
+  --cream-100: var(--yap-papel);
+  --cream-200: var(--yap-superficie-2);
+  --cream-300: var(--yap-borde);
+
+  --pink-300: var(--yap-voz-suave);
+  --pink-400: color-mix(in srgb, var(--yap-voz) 55%, var(--yap-voz-suave));
+  --pink-500: var(--yap-voz);
+  --pink-600: var(--yap-voz);
+  --pink-700: var(--yap-voz-fuerte);
+
+  --mint-300: color-mix(in srgb, var(--yap-ok) 22%, var(--yap-papel));
+  --mint-500: var(--yap-ok);
+  --lavender-300: var(--yap-ultramar-suave);
+  --lavender-500: var(--yap-ultramar);
+
+  --ink-100: var(--yap-superficie-2);
+  --ink-200: var(--yap-borde);
+  --ink-300: var(--yap-borde);
+  --ink-500: var(--yap-tinta-suave);
+  --ink-700: var(--yap-tinta);
+  --ink-900: var(--yap-tinta);
+
+  --bg: var(--yap-papel);
+  --bg-2: var(--yap-superficie);
+  --surface: var(--yap-superficie);
+  --surface-soft: color-mix(in srgb, var(--yap-superficie) 55%, transparent);
+  --border: var(--yap-borde);
+  --text: var(--yap-tinta);
+  --text-dim: var(--yap-tinta-suave);
+  --text-mute: var(--yap-tinta-suave);
+
+  --font-sans: var(--yap-fuente);
+  --font-display: var(--yap-fuente);
+  --font-mono: var(--yap-mono);
+
+  --radius-xs: 10px;
+  --radius-sm: var(--yap-radio);
+  --radius-md: var(--yap-radio-caja);
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+
+  /* Las sombras duras del neobrutalismo anterior se traducen al relieve. */
+  --shadow-hd-1: var(--yap-relieve);
+  --shadow-hd-2: var(--yap-relieve);
+  --shadow-hd-3: var(--yap-relieve-alto);
+
+  --ease-emph: var(--yap-brote);
+  --ease-out: var(--yap-salida);
+}
+
+/* Base heredada que las pantallas viejas dan por hecha. */
+#app {
+  height: 100%;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
 button {
   border: none;
   background: none;
@@ -102,111 +611,121 @@ button {
   appearance: none;
   -webkit-tap-highlight-color: transparent;
 }
-
-button:focus-visible, input:focus-visible, select:focus-visible {
-  outline: 3px solid var(--pink-500);
-  outline-offset: 3px;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-a { color: inherit; text-decoration: none; }
-
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--ink-900); border-radius: 8px; opacity: 0.4; }
-::-webkit-scrollbar-thumb:hover { background: var(--ink-900); opacity: 0.7; }
-
-/* Reusable card with hard hand-drawn border */
+/* Clases del sistema anterior, reescritas sobre el relieve. Se borran
+   cuando la última pantalla vieja migre a las clases yap-*. */
 .card {
-  background: var(--surface);
-  border: 2.5px solid var(--ink-900);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-hd-2);
+  background: var(--yap-superficie);
+  border: 1px solid var(--yap-borde);
+  border-radius: var(--yap-radio-caja);
+  box-shadow: var(--yap-relieve);
 }
-
-/* Primary big chunky button */
 .btn-pink {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 26px;
-  background: var(--pink-500);
-  color: var(--ink-900);
-  border: 2.5px solid var(--ink-900);
+  padding: 12px 24px;
+  background: var(--yap-tecla);
+  color: var(--yap-tecla-tinta);
+  border: 0;
   border-radius: 999px;
-  font-family: var(--font-sans);
+  font-family: var(--yap-fuente);
   font-weight: 700;
   font-size: 16px;
-  letter-spacing: -0.005em;
-  box-shadow: var(--shadow-hd-2);
-  transition: transform 0.12s var(--ease-emph), box-shadow 0.12s var(--ease-emph);
+  box-shadow: var(--yap-relieve);
+  transition: transform 0.12s var(--yap-salida), box-shadow 0.12s var(--yap-salida),
+    filter 0.12s;
 }
-.btn-pink:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 6px 6px 0 var(--ink-900); }
-.btn-pink:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink-900); }
-.btn-pink:disabled { opacity: 0.5; cursor: not-allowed; }
-
+.btn-pink:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: var(--yap-relieve-alto);
+}
+.btn-pink:active {
+  transform: translateY(1px);
+  box-shadow: var(--yap-luz), 0 1px 1px rgba(64, 46, 12, 0.08);
+}
+.btn-pink:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 12px 18px;
+  padding: 11px 16px;
   background: transparent;
-  color: var(--ink-900);
+  color: var(--yap-tinta);
   border: none;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 15px;
-  letter-spacing: -0.005em;
-  border-radius: 12px;
+  border-radius: var(--yap-radio);
   transition: background 0.15s ease;
 }
-.btn-ghost:hover { background: var(--cream-200); }
-
+.btn-ghost:hover {
+  background: var(--yap-superficie-2);
+}
 .btn-outline {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 18px;
-  background: var(--surface);
-  color: var(--ink-900);
-  border: 2.5px solid var(--ink-900);
+  padding: 9px 16px;
+  background: var(--yap-superficie);
+  color: var(--yap-tinta);
+  border: 1px solid var(--yap-borde);
   border-radius: 999px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 14px;
-  box-shadow: var(--shadow-hd-1);
-  transition: transform 0.12s var(--ease-emph), box-shadow 0.12s var(--ease-emph);
+  box-shadow: var(--yap-relieve);
+  transition: transform 0.12s var(--yap-salida), box-shadow 0.12s var(--yap-salida);
 }
-.btn-outline:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink-900); }
-.btn-outline:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink-900); }
-
-/* Gradient text — kept playful */
+.btn-outline:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--yap-relieve-alto);
+}
+.btn-outline:active {
+  transform: translateY(1px);
+  box-shadow: var(--yap-hundido);
+}
 .gradient-text {
-  background: linear-gradient(180deg, var(--pink-600) 0%, var(--pink-500) 100%);
+  background: linear-gradient(180deg, var(--yap-voz-fuerte) 0%, var(--yap-voz) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-
-kbd, .kbd {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 28px; height: 28px; padding: 0 8px;
-  background: var(--surface);
-  border: 2.5px solid var(--ink-900);
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  background: var(--yap-superficie);
+  border: 1px solid var(--yap-borde);
   border-radius: 8px;
-  font-family: var(--font-mono);
-  font-size: 12px; font-weight: 700;
-  box-shadow: 2px 2px 0 var(--ink-900);
+  font-family: var(--yap-mono);
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--yap-relieve);
 }
-
-/* Hand-drawn wobble for hover states */
 @keyframes wobble {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-1.5deg); }
-  75% { transform: rotate(1.5deg); }
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-1.5deg);
+  }
+  75% {
+    transform: rotate(1.5deg);
+  }
 }
-
-/* Subtle paper grain */
 .paper {
-  background:
-    radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.5), transparent 60%),
-    var(--surface);
+  background: radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.5), transparent 60%),
+    var(--yap-superficie);
 }
