@@ -46,4 +46,5 @@ echo "✓ IPA produced: $(ls -lh "$IPA" | awk '{print $5}')"
 # uploads the IPA to ASC as part of the export. Verify by polling.
 echo
 echo "→ waiting for build to surface + process in App Store Connect…"
-node "$ROOT/scripts/asc-helper.mjs" pipeline 0.1.0
+VERSION="$(node -p 'require(process.argv[1]).version.split(".").slice(0,3).join(".")' "$ROOT/yappy-app/src-tauri/tauri.conf.json")"
+node "$ROOT/scripts/asc-helper.mjs" pipeline "$VERSION"

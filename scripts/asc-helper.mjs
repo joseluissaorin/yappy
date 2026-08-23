@@ -98,7 +98,10 @@ async function listBuilds(app) {
 async function buildState({ version, app }) {
   app ||= await getApp();
   if (!app) throw new Error("App not in ASC yet");
-  const r = await asc("GET", `/builds?filter[app]=${app.id}&filter[preReleaseVersion.version]=${encodeURIComponent(version)}&limit=10`);
+  // sort=-uploadedDate: sin él, ASC devolvía primero un build antiguo ya
+  // procesado y wait-for-build daba por terminada una subida que seguía
+  // en cocción.
+  const r = await asc("GET", `/builds?filter[app]=${app.id}&filter[preReleaseVersion.version]=${encodeURIComponent(version)}&sort=-uploadedDate&limit=10`);
   return r.data;
 }
 
@@ -275,6 +278,54 @@ async function cmd_pipeline() {
   console.log(`  Beta App Review typically completes in 24–48h.`);
 }
 
+async function cmd_internalGroup() {
+  // TestFlight interno: grupo isInternalGroup con hasAccessToAllBuilds, sin
+  // Beta App Review. Los probadores deben ser usuarios del equipo en ASC.
+  const app = await getApp();
+  if (!app) { console.log("no App"); process.exit(1); }
+  const groups = await asc("GET", `/betaGroups?filter[app]=${app.id}`);
+  let group = groups.data.find((g) => g.attributes.isInternalGroup);
+  if (!group) {
+    const r = await asc("POST", "/betaGroups", {
+      data: {
+        type: "betaGroups",
+        attributes: { name: "Equipo", isInternalGroup: true, hasAccessToAllBuilds: true },
+        relationships: { app: { data: { type: "apps", id: app.id } } },
+      },
+    });
+    group = r.data;
+    console.log(`✓ grupo interno creado: ${group.attributes.name} (id=${group.id})`);
+  } else {
+    console.log(`✓ grupo interno ya existe: ${group.attributes.name} (id=${group.id})`);
+    if (!group.attributes.hasAccessToAllBuilds) {
+      await asc("PATCH", `/betaGroups/${group.id}`, {
+        data: { type: "betaGroups", id: group.id, attributes: { hasAccessToAllBuilds: true } },
+      });
+      console.log("✓ acceso automático a todos los builds activado");
+    }
+  }
+  const users = await asc("GET", "/users?limit=200");
+  const testers = await asc("GET", `/betaTesters?filter[betaGroups]=${group.id}&limit=200`);
+  const ya = new Set(testers.data.map((t) => (t.attributes.email || "").toLowerCase()));
+  for (const u of users.data) {
+    const email = (u.attributes.username || "").toLowerCase();
+    if (!email || ya.has(email)) continue;
+    try {
+      await asc("POST", "/betaTesters", {
+        data: {
+          type: "betaTesters",
+          attributes: { email, firstName: u.attributes.firstName, lastName: u.attributes.lastName },
+          relationships: { betaGroups: { data: [{ type: "betaGroups", id: group.id }] } },
+        },
+      });
+      console.log(`✓ probador interno dado de alta: ${email}`);
+    } catch (e) {
+      console.log(`(no se pudo dar de alta a ${email}: ${String(e.message).split("\n")[1] ?? "error"})`);
+    }
+  }
+  console.log("✓ TestFlight interno listo: cada build procesado llega solo al grupo.");
+}
+
 const sub = process.argv[2];
 switch (sub) {
   case "status":              await cmd_status(); break;
@@ -285,7 +336,8 @@ switch (sub) {
   case "add-build-to-beta":   await cmd_addBuildToBeta(); break;
   case "submit-beta-review":  await cmd_submitBetaReview(); break;
   case "pipeline":            await cmd_pipeline(); break;
+  case "internal-group":      await cmd_internalGroup(); break;
   default:
-    console.log("usage: asc-helper.mjs <status|wait-for-app|list-builds|wait-for-build|create-beta-group|add-build-to-beta|submit-beta-review|pipeline>");
+    console.log("usage: asc-helper.mjs <status|wait-for-app|list-builds|wait-for-build|create-beta-group|add-build-to-beta|submit-beta-review|pipeline|internal-group>");
     process.exit(1);
 }
