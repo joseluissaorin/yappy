@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import { goto } from "$app/navigation";
   import { reader } from "$lib/readerStore.svelte";
+  import { guardarProgreso } from "$lib/progreso";
   import { haptic } from "$lib/haptic";
   import {
     type PlaybackSnapshot,
@@ -22,6 +23,9 @@
     shareFile,
     onAudiobookRenderProgress,
     onAudiobookRenderDone,
+    puenteMovilEstado,
+    puenteConvertir,
+    onPuenteProgreso,
   } from "$lib/ipc";
 
   // Immersive single-column mobile reader WITH editor parity: per-document rhythm
@@ -31,6 +35,10 @@
   const doc = $derived(reader.doc);
   const paras = $derived(doc?.paragraphs ?? []);
   const kinds = $derived(doc?.paragraph_kinds ?? []);
+  const pausesDefault = $derived(doc?.paragraph_pauses ?? []);
+  function defaultPause(i: number): number {
+    return pausesDefault[i] ?? 0;
+  }
   const title = $derived((doc?.filename ?? "document").replace(/\.[^.]+$/, "").replace(/[-_]/g, " "));
 
   // Per-paragraph editable state (parity with the desktop editor's ParaState).
@@ -64,6 +72,9 @@
   let rendering = $state(false);
   let renderProgress = $state<{ index: number; total: number; stage: string } | null>(null);
   let exportDone = $state<{ path: string } | null>(null);
+  let puenteVinculado = $state(false);
+  let puenteOcupado = $state(false);
+  let puenteEtapa = $state<string | null>(null);
   let toast = $state<string | null>(null);
 
   const isPlaying = $derived(!!playback?.playing && !playback?.paused);
@@ -72,6 +83,20 @@
     (isPlaying || isPaused) && playback ? baseIndex + (playback.current_paragraph_index ?? 0) : -1,
   );
   const globalSpeed = $derived(settings?.speed ?? 1.05);
+
+  // Progreso persistente: cada vez que avanza el párrafo que suena, se
+  // apunta dónde vamos. «Sigue donde ibas» y la Biblioteca leen esto.
+  $effect(() => {
+    if (currentPara >= 0 && doc?.path && paras.length > 0) {
+      guardarProgreso({
+        ruta: doc.path,
+        titulo: title,
+        parrafo: currentPara,
+        total_parrafos: paras.length,
+        cuando_unix: Math.floor(Date.now() / 1000),
+      });
+    }
+  });
   const docVoiceName = $derived(
     docVoice ? (voices.find((v) => v.id === docVoice || v.name === docVoice)?.name ?? docVoice) : "default voice",
   );
@@ -99,6 +124,18 @@
     }));
     cleanups.push(await onPlaybackState((s) => (playback = s)));
     cleanups.push(await onAudiobookRenderProgress((p) => (renderProgress = p)));
+    puenteVinculado = !!(await puenteMovilEstado().catch(() => null))?.token;
+    cleanups.push(await onPuenteProgreso((p) => {
+      if (p.etapa === "sintetizando" && p.total) {
+        puenteEtapa = `${p.hecho}/${p.total}`;
+      } else if (p.etapa === "codificando") {
+        puenteEtapa = "…";
+      } else if (p.etapa === "hecho") {
+        puenteEtapa = null;
+        puenteOcupado = false;
+        flashToast("audiobook back from your computer — in your Library");
+      }
+    }));
     cleanups.push(await onAudiobookRenderDone((p) => {
       rendering = false;
       renderProgress = null;
@@ -166,7 +203,15 @@
   async function readFrom(index: number) {
     haptic("light");
     baseIndex = index;
-    await readDocumentParagraphs(paras, index, docVoice ?? undefined, effectiveSpeedForPlay());
+    await readDocumentParagraphs(paras, index, docVoice ?? undefined, effectiveSpeedForPlay(), {
+      kinds: overrides.map((o) => o.kind ?? "paragraph"),
+      pausas: overrides.map((o, i) => (o.pauseBefore ?? defaultPause(i)) * rhythmMult),
+      velocidades: overrides.map((o) => {
+        const base = settings?.speed ?? 1.05;
+        return o.speed ? Math.max(0.25, Math.min(2.0, o.speed / base)) : 1.0;
+      }),
+      voces: overrides.map((o) => o.voice ?? null),
+    });
   }
   async function toggle() { haptic("medium"); await togglePause(); }
   function back() { goto("/"); }
@@ -189,6 +234,23 @@
   function progressPct(): number {
     if (currentPara < 0 || paras.length === 0) return 0;
     return Math.min(100, ((currentPara + 1) / paras.length) * 100);
+  }
+
+  // ── Convertir en el ordenador (el puente) ───────────────────────────────────
+  async function convertirEnOrdenador() {
+    if (puenteOcupado || !doc) return;
+    settingsOpen = false;
+    haptic("medium");
+    puenteOcupado = true;
+    puenteEtapa = "0";
+    flashToast("sent to your computer — it will come back on its own");
+    try {
+      await puenteConvertir(title, paras.join("\n\n"));
+    } catch (e) {
+      puenteOcupado = false;
+      puenteEtapa = null;
+      flashToast(String(e));
+    }
   }
 
   // ── Export to .m4b ───────────────────────────────────────────────────────────
@@ -354,6 +416,11 @@
       <button class="btn-export" onclick={exportAudiobook} disabled={rendering}>
         {rendering ? "building…" : "💾 save as audiobook (.m4b)"}
       </button>
+      {#if puenteVinculado}
+        <button class="sheet-row primary" onclick={convertirEnOrdenador} disabled={puenteOcupado}>
+          {puenteOcupado ? `converting on your computer… ${puenteEtapa ?? ""}` : "🖥 convert on your computer"}
+        </button>
+      {/if}
       {#if exportDone}
         <div class="export-done">
           <span>✓ saved to your Library</span>

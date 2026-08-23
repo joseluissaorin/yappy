@@ -2,7 +2,8 @@
   import { onMount, onDestroy } from "svelte";
   import { invoke } from "@tauri-apps/api/core";
   import { listen, type UnlistenFn } from "@tauri-apps/api/event";
-  import { openPath, revealItemInDir } from "@tauri-apps/plugin-opener";
+  import { revealExtensionFolder } from "$lib/ipc";
+  import { atajoLeer, nombreAparato } from "$lib/atajos";
   import { openBrowserExtensions } from "$lib/ipc";
   import { isIOS, ready as platformReady } from "$lib/platform";
   import { haptic } from "$lib/haptic";
@@ -28,11 +29,12 @@
     } catch {}
   }
 
-  function revealExtensionFolder() {
-    // The extension folder is shipped alongside the binary in production builds, and
-    // lives at <repo>/extension/chromium in dev. We open it in Finder.
-    const dev = "/Users/joseluissaorin/Dropbox/Jose Luis Hijo/Dev/Yappy/extension/chromium";
-    revealItemInDir(dev).catch(() => openPath(dev).catch(() => {}));
+  async function abrirCarpetaExtension() {
+    try {
+      await revealExtensionFolder();
+    } catch (e) {
+      console.error("reveal extension folder:", e);
+    }
   }
 
   function openExtensions(name: string) {
@@ -74,7 +76,7 @@
               <button class="btn-pink" onclick={() => { haptic("medium"); onDone(); }}>get started →</button>
             </div>
           {:else}
-            <p>local, friendly text-to-speech for your mac. press <kbd>⌥⌘R</kbd> anywhere to hear what you're looking at, in 31 languages, on-device.</p>
+            <p>local, friendly text-to-speech for {$nombreAparato}. press <kbd>{$atajoLeer}</kbd> anywhere to hear what you're looking at, in 31 languages, on-device.</p>
             <div class="buttons">
               <button class="btn-pink" onclick={() => (step = 2)}>set up browsers →</button>
               <button class="btn-outline" onclick={onDone}>i'll do this later</button>
@@ -89,7 +91,7 @@
             two clicks, no token to copy.
           </p>
           <div class="install-row">
-            <button class="btn-pink" onclick={revealExtensionFolder}>
+            <button class="btn-pink" onclick={abrirCarpetaExtension}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M1 3.5 C1 3 1.4 2.5 2 2.5 H5.5 L6.5 3.5 H12 C12.5 3.5 13 4 13 4.5 V11.5 C13 12 12.5 12.5 12 12.5 H2 C1.4 12.5 1 12 1 11.5 Z"/></svg>
               reveal extension folder
             </button>

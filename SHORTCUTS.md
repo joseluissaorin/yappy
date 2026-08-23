@@ -1,34 +1,34 @@
-# Yappy iOS — Siri Shortcuts recipes
+# Yappy y los atajos del sistema
 
-Yappy registers the `yappy://` URL scheme. Anything iOS does via "Open URL" can drive it.
+## iPhone: App Intents (lo nuevo, sin recetas)
 
-## Hey Siri, read my clipboard
+Yappy expone App Intents de verdad: aparecen SOLOS en la app **Atajos**, en
+**Siri** y se pueden asignar al **botón de acción**. No hay nada que montar.
 
-1. Open the **Shortcuts** app.
-2. Tap **+** (new shortcut).
-3. Add action: **Get Clipboard**.
-4. Add action: **URL** — set the URL field to `yappy://shared`.
-5. Add action: **Open URLs**.
-6. Tap the settings icon at the bottom → rename to "Read clipboard with Yappy" → toggle **Add to Siri**.
-7. Say "Hey Siri, read clipboard with Yappy" — Yappy opens, sees the pasteboard, fires the launch banner.
+- **Lee mi portapapeles** («Oye Siri, lee mi portapapeles con Yappy»)
+- **Reanuda la lectura** («Reanuda la lectura en Yappy»)
+- **Escuchar un enlace** (acepta una URL como parámetro: perfecta para
+  automatizaciones de Atajos que terminan en «…y que Yappy me lo lea»)
 
-## Hey Siri, read this article
+## iPhone: deep links `yappy://`
 
-1. New shortcut.
-2. Action: **URL** — set the URL field to a `yappy://shared?url=https://example.com/article` template.
-3. Use **Ask for Input** if you want to prompt; otherwise hardcode the URL.
-4. Save → Add to Siri.
+Para automatizaciones a mano, el esquema sigue disponible y AHORA se
+procesa de verdad:
 
-## Home screen long-press menu
+| URL | Qué hace |
+|---|---|
+| `yappy://action/read-clipboard` | lee el portapapeles ya |
+| `yappy://action/resume` | reanuda (o alterna) la reproducción |
+| `yappy://action/open` | abre el selector de documento |
+| `yappy://library?path=…` | reproduce ese audiolibro |
+| `yappy://pair?d=…` | empareja con un ordenador (el puente) |
 
-Long-press the Yappy icon. You'll see:
-- **Read clipboard** — equivalent to "Hey Siri, read my clipboard"
-- **Resume last** — opens the last document
-- **Open document** — file picker
+## Escritorio: atajos globales
 
-These are registered in `Info.plist` (`UIApplicationShortcutItems`); they map to the same `yappy://action/*` URLs.
+Configurables en Preferencias; por defecto:
 
-## Sharing other apps' content into Yappy
-
-Already wired without a shortcut. In any iOS app:
-- Tap **Share** → **Yappy** in the share sheet. URLs get fetched + defuddle-extracted; text goes straight to TTS.
+| Acción | macOS | Windows/Linux |
+|---|---|---|
+| Leer lo que estoy mirando | ⌥⌘R | Ctrl+Alt+R |
+| Pausar / reanudar | ⌥⌘Espacio | Ctrl+Alt+Espacio |
+| Leer el portapapeles | ⌥⌘V | Ctrl+Alt+V |

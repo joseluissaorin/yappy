@@ -1,16 +1,13 @@
-// Share Extension — Yappy's in-place transcription modal.
+// Share Extension: la puerta de entrada de Yappy.
 //
-// When the user shares an **audio** message (e.g. a WhatsApp voice note) into
-// Yappy, this presents a modal RIGHT OVER the host app: it transcribes the audio
-// on-device (CoreML Parakeet, via the shared `YappyTranscriber`) without ever
-// leaving WhatsApp, shows the text with Copy / Open-in-Yappy, and queues the
-// transcript into the App Group so it also lands in Yappy's in-app history.
-//
-// Shared **text/URL** keeps the original lightweight behavior: queue it and open
-// the main app to read it aloud.
+// Todo lo compartido (una URL, un texto, una nota de voz, un PDF, un EPUB,
+// un Word) se ENCOLA en el App Group y se reabre la app, que lo mete en la
+// cola con estado visible y hace la extracción con su presupuesto de
+// memoria completo. Aquí dentro no se procesa nada: el límite de ~120 MB
+// de las extensiones convierte cualquier modelo o parser grande en un
+// jetsam seguro.
 
 import UIKit
-import SwiftUI
 import UniformTypeIdentifiers
 
 private let APP_GROUP = "group.com.joseluissaorin.yappy"
@@ -33,6 +30,18 @@ class ShareViewController: UIViewController {
         handleInput()
     }
 
+    /// UTIs de documento que aceptamos como FICHERO (se copian al App Group
+    /// tal cual, sin cargarlos en memoria: el límite de ~120 MB de las
+    /// extensiones no perdona). El DOCX no tiene constante estática.
+    private static let documentUTIs: [String] = [
+        UTType.pdf.identifier,
+        UTType.epub.identifier,
+        "org.openxmlformats.wordprocessingml.document",
+        "com.microsoft.word.doc",
+        "org.oasis-open.opendocument.text",
+        UTType.rtf.identifier,
+    ]
+
     private func handleInput() {
         let items = (extensionContext?.inputItems as? [NSExtensionItem]) ?? []
         for item in items {
@@ -43,8 +52,62 @@ class ShareViewController: UIViewController {
                 }
             }
         }
-        // No audio — fall back to the legacy text/URL queue-and-open flow.
+        // Documentos (PDF, EPUB, Word…) antes que url/text, porque Safari
+        // adjunta un PDF Y su URL a la vez y queremos el fichero.
+        for item in items {
+            for provider in (item.attachments ?? []) {
+                for uti in Self.documentUTIs where provider.hasItemConformingToTypeIdentifier(uti) {
+                    loadFile(provider, uti: uti)
+                    return
+                }
+            }
+        }
+        // Sin audio ni ficheros: el camino clásico de texto/URL.
         handleTextOrUrl(items)
+    }
+
+    // MARK: - Documento → copiar al App Group y encolar
+
+    private func loadFile(_ provider: NSItemProvider, uti: String) {
+        // loadFileRepresentation entrega un temporal SIN cargarlo en RAM; hay
+        // que copiarlo dentro del callback (el temporal muere al volver).
+        provider.loadFileRepresentation(forTypeIdentifier: uti) { [weak self] url, error in
+            guard let self else { return }
+            var sharedURL: URL?
+            if let url {
+                sharedURL = self.copyToSharedFiles(url)
+            } else {
+                NSLog("[yappy/share] loadFileRepresentation(\(uti)) failed: \(String(describing: error))")
+            }
+            DispatchQueue.main.async {
+                if let sharedURL {
+                    NSLog("[yappy/share] queued file:\(sharedURL.lastPathComponent)")
+                    self.persistPayload("file:\(sharedURL.path)")
+                    self.openMainAppAndClose()
+                } else {
+                    self.close()
+                }
+            }
+        }
+    }
+
+    private func copyToSharedFiles(_ url: URL) -> URL? {
+        guard let container = FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: APP_GROUP) else { return nil }
+        let dir = container.appendingPathComponent("shared-files", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let ext = url.pathExtension.isEmpty ? "bin" : url.pathExtension
+        let base = url.deletingPathExtension().lastPathComponent
+            .replacingOccurrences(of: "/", with: "-")
+            .prefix(60)
+        let dest = dir.appendingPathComponent("\(base)-\(UUID().uuidString.prefix(6)).\(ext)")
+        do {
+            try FileManager.default.copyItem(at: url, to: dest)
+            return dest
+        } catch {
+            NSLog("[yappy/share] copy failed: \(error)")
+            return nil
+        }
     }
 
     // MARK: - Audio → in-place transcription modal
@@ -74,18 +137,6 @@ class ShareViewController: UIViewController {
                     self.close()
                 }
             }
-        }
-    }
-
-    private func presentTranscription(_ audioURL: URL) {
-        let model = TranscriptionModel(audioURL: audioURL,
-                                       onPersist: { [weak self] text in self?.persistTranscript(text) },
-                                       onOpenApp: { [weak self] in self?.openMainAppAndClose() },
-                                       onClose: { [weak self] in self?.close() })
-        let host = UIHostingController(rootView: TranscriptionView(model: model))
-        host.modalPresentationStyle = .automatic
-        present(host, animated: true) {
-            model.start()
         }
     }
 
@@ -225,95 +276,5 @@ class ShareViewController: UIViewController {
         guard !finished else { return }
         finished = true
         extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-    }
-}
-
-// MARK: - SwiftUI modal
-
-@MainActor
-final class TranscriptionModel: ObservableObject {
-    enum Phase { case loading, done, error }
-    @Published var phase: Phase = .loading
-    @Published var text: String = ""
-    @Published var message: String = "Transcribing…"
-
-    private let audioURL: URL
-    private let onPersist: (String) -> Void
-    let onOpenApp: () -> Void
-    let onClose: () -> Void
-
-    init(audioURL: URL, onPersist: @escaping (String) -> Void,
-         onOpenApp: @escaping () -> Void, onClose: @escaping () -> Void) {
-        self.audioURL = audioURL
-        self.onPersist = onPersist
-        self.onOpenApp = onOpenApp
-        self.onClose = onClose
-    }
-
-    func start() {
-        guard #available(iOS 17.0, *) else {
-            phase = .error
-            message = "Transcription needs iOS 17 or later."
-            return
-        }
-        // The model is downloaded by the main app into the App Group; the
-        // extension only loads it. If it's missing, ask the user to open Yappy.
-        if !YappyTranscriber.shared.isReady {
-            phase = .error
-            message = "Open Yappy once to download the transcription model, then try again."
-            return
-        }
-        Task {
-            let result = await YappyTranscriber.shared.transcribe(path: audioURL.path)
-            await MainActor.run {
-                if let result, !result.isEmpty {
-                    self.text = result
-                    self.phase = .done
-                    self.onPersist(result)
-                } else {
-                    self.phase = .error
-                    self.message = "Couldn't transcribe that audio."
-                }
-            }
-        }
-    }
-
-    func copy() { UIPasteboard.general.string = text }
-}
-
-struct TranscriptionView: View {
-    @ObservedObject var model: TranscriptionModel
-    @State private var copied = false
-
-    var body: some View {
-        VStack(spacing: 16) {
-            HStack {
-                Text("Yappy").font(.headline)
-                Spacer()
-                Button("Done") { model.onClose() }
-            }
-            switch model.phase {
-            case .loading:
-                ProgressView(model.message).frame(maxWidth: .infinity, minHeight: 120)
-            case .error:
-                VStack(spacing: 12) {
-                    Text(model.message).multilineTextAlignment(.center).foregroundColor(.secondary)
-                    Button("Open Yappy") { model.onOpenApp() }.buttonStyle(.borderedProminent)
-                }.frame(maxWidth: .infinity, minHeight: 120)
-            case .done:
-                ScrollView {
-                    Text(model.text).frame(maxWidth: .infinity, alignment: .leading).textSelection(.enabled)
-                }.frame(maxHeight: 280)
-                HStack {
-                    Button(copied ? "Copied!" : "Copy") {
-                        model.copy(); copied = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { copied = false }
-                    }.buttonStyle(.bordered)
-                    Spacer()
-                    Button("Open in Yappy") { model.onOpenApp() }.buttonStyle(.borderedProminent)
-                }
-            }
-        }
-        .padding(20)
     }
 }

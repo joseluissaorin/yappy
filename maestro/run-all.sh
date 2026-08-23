@@ -15,8 +15,8 @@ if [ ! -d "$APP" ]; then
   exit 1
 fi
 
-echo "→ uninstall com.yappy.app from $SIM"
-xcrun simctl uninstall "$SIM" com.yappy.app 2>&1 | tail -1 || true
+echo "→ uninstall com.joseluissaorin.yappy from $SIM"
+xcrun simctl uninstall "$SIM" com.joseluissaorin.yappy 2>&1 | tail -1 || true
 echo "→ install fresh build"
 xcrun simctl install "$SIM" "$APP"
 echo

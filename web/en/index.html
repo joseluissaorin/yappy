@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yappy: any text, read aloud, without leaving your device</title>
+  <meta name="description" content="Yappy turns articles, PDFs, EPUBs, Word files and videos into natural speech, in 31 languages, with a model that runs entirely on your computer or iPhone. No cloud, no accounts, no telemetry. Open source (MIT)." />
+  <link rel="icon" href="../favicon.png" />
+  <link rel="stylesheet" href="../estilo.css" />
+  <meta property="og:title" content="Yappy: any text, read aloud" />
+  <meta property="og:description" content="Natural local speech in 31 languages. Share an article, a PDF or a video and listen. No cloud. Open source." />
+  <meta property="og:image" content="https://yappy.joseluissaorin.com/og.png" />
+  <meta property="og:url" content="https://yappy.joseluissaorin.com/en/" />
+  <meta name="theme-color" content="#f7f2e7" />
+  <link rel="alternate" hreflang="es" href="https://yappy.joseluissaorin.com/" />
+</head>
+<body>
+  <header class="cabecera envoltura">
+    <a class="marca" href="/en/" aria-label="Yappy">
+      <img src="../loro.svg" alt="" width="44" height="44" />
+      <span>yappy</span>
+    </a>
+    <nav>
+      <a href="#demo">Hear it</a>
+      <a href="#guionizador">The scriptwriter</a>
+      <a href="#descargas">Downloads</a>
+      <a href="https://github.com/joseluissaorin/yappy">GitHub</a>
+      <a href="/" lang="es">ES</a>
+    </nav>
+  </header>
+
+  <main class="envoltura">
+    <section class="hero">
+      <p class="susurro">local · 31 languages · open source (mit)</p>
+      <h1>Any <span class="texto">text</span>, read <span class="voz">aloud</span>.</h1>
+      <p class="entradilla">
+        Share an article, a PDF, an EPUB, a Word file or a video, and Yappy
+        turns it into a natural voice you can listen to while you cook, walk,
+        or rest your eyes. The model runs entirely on your device: nothing
+        ever leaves it.
+      </p>
+      <div class="acciones">
+        <a class="tecla" href="#descargas">Download free</a>
+        <a class="boton" href="#demo">Hear a sample</a>
+      </div>
+    </section>
+
+    <section class="demo" id="demo">
+      <p class="susurro">generated on an ordinary laptop, no cloud, in seconds</p>
+      <div class="idiomas" role="tablist" aria-label="sample language">
+        <button data-lang="es">español</button>
+        <button class="activa" data-lang="en">english</button>
+        <button data-lang="fr">français</button>
+        <button data-lang="de">deutsch</button>
+        <button data-lang="it">italiano</button>
+        <button data-lang="pt">português</button>
+      </div>
+      <p class="frase" id="demo-frase">
+        In <mark>1985</mark>, a letter arrived forty years late.
+        <mark>Henry VIII</mark> never read it, but the
+        <mark>21st century</mark> did.
+      </p>
+      <div class="controles">
+        <button class="reproducir" id="demo-play" aria-label="play the sample">▶</button>
+        <p class="nota">
+          The highlighted parts are verbalized by the scriptwriter: "1985"
+          becomes "nineteen eighty-five" and "Henry VIII" becomes "Henry the
+          Eighth", with each language's own rules.
+        </p>
+      </div>
+      <audio id="demo-audio" src="../audio/demo-en.m4a" preload="none"></audio>
+    </section>
+
+    <section class="bloque">
+      <p class="susurro">why it exists</p>
+      <h2>No cloud, no accounts, no per-character fee.</h2>
+      <div class="rejilla">
+        <div class="tarjeta">
+          <div class="icono"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+          <h3>Nothing leaves your device</h3>
+          <p>Speech is synthesized on your computer or iPhone by an open
+          ~66-million-parameter model. It works offline too: forever.</p>
+        </div>
+        <div class="tarjeta">
+          <div class="icono"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg></div>
+          <h3>31 real languages</h3>
+          <p>Ten voices, each of them polyglot. Documents with quotes in
+          another language switch on their own, paragraph by paragraph.</p>
+        </div>
+        <div class="tarjeta">
+          <div class="icono"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13M7 8l5-5 5 5"/></svg></div>
+          <h3>Share anything</h3>
+          <p>An article from Safari, a YouTube video, a PDF from your email, a
+          voice note. Everything lands in the queue, gets prepared, and gets
+          listened to.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloque" id="guionizador">
+      <p class="susurro">the piece nobody else shows</p>
+      <h2>The scriptwriter: from written to spoken.</h2>
+      <p style="max-width: 62ch; color: var(--tinta-suave)">
+        Reading aloud is not spelling out. "1492" is said "fourteen
+        ninety-two"; "Henry VIII" is "Henry the Eighth", but "Louis XIV" in
+        French is "Louis quatorze"; "EL CID" is not a Roman numeral; the FBI
+        is spelled out and NASA is not. Yappy turns every text into a reading
+        script with each language's rules, and this box proves it: it runs
+        the same Rust code as the app, compiled for your browser.
+      </p>
+      <div class="guionizador">
+        <label class="susurro" for="guion-entrada">type something (numbers, centuries, dates, acronyms…)</label>
+        <textarea id="guion-entrada" spellcheck="false">The 19th century ended in 1900. Henry VIII spent $3.50 on ice cream on May 24, 1533, and the FBI never knew.</textarea>
+        <div class="acciones" style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
+          <button class="tecla" id="guion-boton" type="button">Make the script</button>
+          <select class="boton" id="guion-idioma" aria-label="language">
+            <option value="es">español</option>
+            <option value="en" selected>english</option>
+            <option value="fr">français</option>
+            <option value="de">deutsch</option>
+            <option value="it">italiano</option>
+            <option value="pt">português</option>
+          </select>
+        </div>
+        <div class="salida" id="guion-salida" aria-live="polite">
+          <span style="color: var(--tinta-suave)">The script will appear here, with every transformation highlighted.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloque">
+      <p class="susurro">everything that comes in</p>
+      <h2>Sharing is the door.</h2>
+      <div class="rejilla">
+        <div class="tarjeta"><h3>Articles</h3><p>The page cleans itself: menus, banners and footers out. The prose stays, with its headings and its rhythm.</p></div>
+        <div class="tarjeta"><h3>YouTube videos</h3><p>The transcript comes along and reads like an article. No ads in between.</p></div>
+        <div class="tarjeta"><h3>PDF and EPUB</h3><p>With navigable chapters and export to a real .m4b audiobook, bookmarks included.</p></div>
+        <div class="tarjeta"><h3>Word and ODT</h3><p>Headings, lists and quotes keep their structure, and the scriptwriter gives them their breathing.</p></div>
+        <div class="tarjeta"><h3>Voice notes</h3><p>The local ear (Parakeet) transcribes them on-device and leaves them readable and listenable.</p></div>
+        <div class="tarjeta"><h3>Whatever you're looking at</h3><p>On desktop, one shortcut reads your selection, the browser page, or the active document. One second and it speaks.</p></div>
+      </div>
+    </section>
+
+    <section class="bloque" id="descargas">
+      <p class="susurro">free, mit, no sign-up</p>
+      <h2>Downloads</h2>
+      <div class="descargas">
+        <a class="descarga" href="https://github.com/joseluissaorin/yappy/releases/latest">
+          <strong>macOS</strong>
+          <span>Apple Silicon and Intel · notarized .dmg</span>
+        </a>
+        <a class="descarga" href="https://github.com/joseluissaorin/yappy/releases/latest">
+          <strong>Windows</strong>
+          <span>.exe or .msi installer · x64</span>
+        </a>
+        <a class="descarga" href="https://github.com/joseluissaorin/yappy/releases/latest">
+          <strong>Linux</strong>
+          <span>AppImage and .deb · x64</span>
+        </a>
+        <div class="descarga apagada">
+          <strong>iPhone</strong>
+          <span>on TestFlight very soon</span>
+        </div>
+      </div>
+      <p style="color: var(--tinta-suave); font-size: 0.9rem; margin-top: 14px">
+        First launch downloads the voice model (~380 MB) once. After that,
+        Yappy works offline forever.
+      </p>
+    </section>
+
+    <section class="bloque">
+      <p class="susurro">questions that arrive</p>
+      <h2>Questions</h2>
+      <details>
+        <summary>Is it really free?</summary>
+        <p>Yes. Yappy is open source under the MIT license. Being able to hear
+        what you read is an accessibility matter, and accessibility tools
+        should not ask for a credit card.</p>
+      </details>
+      <details>
+        <summary>Which voice model does it use?</summary>
+        <p>Supertonic 3, an open model by Supertone of about 66 million
+        parameters that fits in 380 MB and synthesizes faster than real time
+        on any laptop from the last few years.</p>
+      </details>
+      <details>
+        <summary>Do my texts go to a server?</summary>
+        <p>No. Synthesis, transcription and article extraction happen on your
+        device. The only network Yappy touches is the initial model download
+        and, if you share a URL, the visit to that URL from your own
+        machine.</p>
+      </details>
+      <details>
+        <summary>Which languages does it speak?</summary>
+        <p>Arabic, Bulgarian, Croatian, Czech, Danish, Dutch, English,
+        Estonian, Finnish, French, German, Greek, Hindi, Hungarian,
+        Indonesian, Italian, Japanese, Korean, Latvian, Lithuanian, Polish,
+        Portuguese, Romanian, Russian, Slovak, Slovenian, Spanish, Swedish,
+        Turkish, Ukrainian and Vietnamese.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    <div class="envoltura">
+      <span>Made by <a href="https://joseluissaorin.com">José Luis Saorín</a> in Tenerife.</span>
+      <span><a href="https://github.com/joseluissaorin/yappy">Source</a> · <a href="https://github.com/joseluissaorin/yappy/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/joseluissaorin/yappy/releases">Changelog</a></span>
+    </div>
+    <div class="paseo" aria-hidden="true"><img src="../loro.svg" alt="" /></div>
+    <div class="paseo" aria-hidden="true"><img src="../loro.svg" alt="" /></div>
+  </footer>
+
+  <script src="../demo.js" defer></script>
+</body>
+</html>

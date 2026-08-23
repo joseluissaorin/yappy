@@ -102,6 +102,10 @@ export interface PlaybackSnapshot {
   current_index: number;
   /// Paragraph index in the input. Use for paragraph-level karaoke.
   current_paragraph_index: number;
+  /// Rango (en caracteres) del texto ORIGINAL del párrafo que suena ahora.
+  /// El karaoke subraya exactamente esto; no hay que buscar substrings.
+  current_origen_ini: number;
+  current_origen_fin: number;
   total: number;
   total_paragraphs: number;
   elapsed_secs: number;
@@ -269,18 +273,106 @@ export function onDocumentLoaded(cb: (d: DocumentLoaded) => void): Promise<Unlis
 export function onDocumentError(cb: (p: { filename: string; error: string }) => void): Promise<UnlistenFn> {
   return listen("document_error", (ev: any) => cb(ev.payload));
 }
+export interface GuionEnriquecido {
+  /// Clase de cada párrafo (heading1..6, quote, list, hr, verse, paragraph).
+  kinds?: string[];
+  /// Pausa previa EFECTIVA por párrafo en segundos (con el ritmo aplicado).
+  pausas?: number[];
+  /// Multiplicador de velocidad por párrafo.
+  velocidades?: number[];
+  /// Voz por párrafo (null = la global).
+  voces?: (string | null)[];
+}
 export const readDocumentParagraphs = (
   paragraphs: string[],
   fromIndex: number,
   voiceOverride?: string,
   speedOverride?: number,
+  guion?: GuionEnriquecido,
 ): Promise<void> =>
   invoke("read_document_paragraphs_cmd", {
     paragraphs,
     fromIndex,
     voiceOverride: voiceOverride ?? null,
     speedOverride: speedOverride ?? null,
+    kinds: guion?.kinds ?? null,
+    pausas: guion?.pausas ?? null,
+    velocidades: guion?.velocidades ?? null,
+    voces: guion?.voces ?? null,
   });
+// ── La cola (la puerta de entrada del móvil) ────────────────────────────
+export type TipoItemCola = "url" | "youtube" | "archivo" | "texto" | "audio";
+export type EstadoItemCola = "pendiente" | "preparando" | "listo" | "error";
+export interface ItemCola {
+  id: string;
+  tipo: TipoItemCola;
+  titulo: string;
+  origen: string;
+  ruta: string | null;
+  estado: EstadoItemCola;
+  error: string | null;
+  agregado_unix: number;
+  chars: number | null;
+}
+export const colaListar = (): Promise<ItemCola[]> => invoke("cola_listar_cmd");
+export const colaAgregarUrl = (url: string): Promise<ItemCola> =>
+  invoke("cola_agregar_url_cmd", { url });
+export const colaAgregarTexto = (texto: string, titulo?: string): Promise<ItemCola> =>
+  invoke("cola_agregar_texto_cmd", { texto, titulo: titulo ?? null });
+export const colaAgregarArchivo = (ruta: string): Promise<ItemCola> =>
+  invoke("cola_agregar_archivo_cmd", { ruta });
+export const colaAgregarAudio = (ruta: string): Promise<ItemCola> =>
+  invoke("cola_agregar_audio_cmd", { ruta });
+export const colaEliminar = (id: string): Promise<void> =>
+  invoke("cola_eliminar_cmd", { id });
+export const colaReintentar = (id: string): Promise<void> =>
+  invoke("cola_reintentar_cmd", { id });
+export function onColaActualizada(cb: () => void): Promise<UnlistenFn> {
+  return listen("cola_actualizada", () => cb());
+}
+
+export interface DocumentoBiblioteca {
+  doc_path: string;
+  filename: string;
+  saved_at: string | null;
+  parrafos: number;
+  existe: boolean;
+}
+export const bibliotecaDocumentos = (): Promise<DocumentoBiblioteca[]> =>
+  invoke("biblioteca_documentos_cmd");
+export const bibliotecaOlvidar = (docPath: string): Promise<void> =>
+  invoke("biblioteca_olvidar_cmd", { docPath });
+
+// ── El puente (el móvil usa el ordenador) ───────────────────────────────
+export interface EstadoPuente {
+  activo: boolean;
+  addr: string | null;
+  enlace: string | null;
+  tokens: string[];
+}
+export interface ConfigPuenteMovil {
+  addr: string | null;
+  token: string | null;
+  nombre: string | null;
+}
+export const puenteEstado = (): Promise<EstadoPuente> => invoke("puente_estado_cmd");
+export const puenteEmparejarNuevo = (): Promise<{ enlace: string; qr_svg: string }> =>
+  invoke("puente_emparejar_nuevo_cmd");
+export const puenteRevocar = (prefijo: string): Promise<void> =>
+  invoke("puente_revocar_cmd", { prefijo });
+export const puenteVincular = (dato: string): Promise<ConfigPuenteMovil> =>
+  invoke("puente_vincular_cmd", { dato });
+export const puenteMovilEstado = (): Promise<ConfigPuenteMovil> =>
+  invoke("puente_movil_estado_cmd");
+export const puenteDesvincular = (): Promise<void> => invoke("puente_desvincular_cmd");
+export const puenteConvertir = (titulo: string, texto: string): Promise<string> =>
+  invoke("puente_convertir_cmd", { titulo, texto });
+export function onPuenteProgreso(
+  cb: (p: { etapa: string; hecho?: number; total?: number; ruta?: string }) => void,
+): Promise<UnlistenFn> {
+  return listen("puente_progreso", (ev: any) => cb(ev.payload));
+}
+
 export const getCurrentDocument = (): Promise<DocumentLoaded | null> =>
   invoke("get_current_document_cmd");
 export const documentWindowReady = (): Promise<void> => invoke("document_window_ready_cmd");

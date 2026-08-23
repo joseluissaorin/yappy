@@ -21,6 +21,8 @@ private func ensurePermission(_ then: @escaping (Bool) -> Void) {
         switch settings.authorizationStatus {
         case .authorized, .provisional:
             then(true)
+        case .ephemeral:
+            fallthrough
         case .denied:
             then(false)
         case .notDetermined:

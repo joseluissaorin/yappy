@@ -15,18 +15,43 @@ pub fn detect_lang(text: &str, default_lang: &str) -> String {
         Some(i) => i,
         None => return default_lang.to_string(),
     };
-    // Accept lower-confidence detections for short text — Spanish/Italian/French often
-    // get flagged "not reliable" by whatlang on short inputs even when correct.
-    let len = stripped.chars().count();
-    if !info.is_reliable() && len > 12 && info.confidence() < 0.50 {
+    let code = whatlang_to_supertonic(info.lang());
+    let detectado = match code {
+        Some(c) => c,
+        // Idioma sin equivalente en Supertonic: si la detección ni siquiera
+        // es fiable, mejor el idioma base; si es fiable de verdad (un texto
+        // realmente en catalán, hebreo…), el modo agnóstico «na».
+        None if info.is_reliable() => return "na".to_string(),
+        None => return default_lang.to_string(),
+    };
+    if detectado == default_lang {
         return default_lang.to_string();
     }
-    let code = whatlang_to_supertonic(info.lang());
-    if let Some(c) = code {
-        c.to_string()
-    } else {
-        // Supertonic supports "na" as language-agnostic.
-        "na".to_string()
+    // Para CONTRADECIR el idioma base hace falta una detección FIABLE.
+    // whatlang marca «no fiable» los párrafos cortos o con muchos números
+    // y nombres propios, y verbalizar en el idioma equivocado es mucho
+    // peor que quedarse con el del documento. (Su campo de confianza es
+    // casi inservible: da 0,09 a un español evidente; no se usa.)
+    if !info.is_reliable() {
+        return default_lang.to_string();
+    }
+    detectado.to_string()
+}
+
+/// Idioma del documento entero. Con una muestra larga, el primer candidato
+/// de whatlang acierta aunque se declare «no fiable» (le bajan la nota los
+/// números y los nombres), así que aquí SÍ se acepta el top-1.
+pub fn detect_document_lang(text: &str, fallback: &str) -> String {
+    let muestra: String = text.chars().take(4000).collect();
+    let stripped = muestra.trim();
+    if stripped.chars().count() < 120 {
+        return detect_lang(stripped, fallback);
+    }
+    match whatlang::detect(stripped) {
+        Some(info) => whatlang_to_supertonic(info.lang())
+            .unwrap_or(fallback)
+            .to_string(),
+        None => fallback.to_string(),
     }
 }
 

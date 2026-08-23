@@ -20,9 +20,15 @@ import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
 import {
   synthesizeText,
   saveTranscript,
-  transcribeAudio,
   readTextAsDocument,
   readDocumentParagraphs,
+  colaAgregarUrl,
+  colaAgregarTexto,
+  colaAgregarArchivo,
+  colaAgregarAudio,
+  colaListar,
+  onColaActualizada,
+  readDocument,
 } from "$lib/ipc";
 import { reader } from "$lib/readerStore.svelte";
 
@@ -102,68 +108,120 @@ async function fetchHtml(url: string): Promise<string> {
   return await resp.text();
 }
 
-// One payload line — "url:<...>" or "text:<...>" — handled.
-async function handleOne(line: string): Promise<void> {
-  if (line.startsWith("url:")) {
-    const url = line.slice(4);
-    console.log("[shareIntake] URL share:", url);
+// El pitch entero cabe en un gesto: estás leyendo un artículo, te tienes
+// que poner a cocinar, compartes con Yappy y EMPIEZA A LEERSE SOLO. Por eso
+// cada línea del payload entra en LA COLA (la extracción ocurre en Rust,
+// con estado visible) y lo recién compartido queda apuntado para
+// reproducirse en cuanto esté listo, sin más toques.
+const reproducirAlLlegar = new Set<string>();
+let vigilanciaColá: UnlistenFn | null = null;
+
+async function vigilarAutoplay(): Promise<void> {
+  if (vigilanciaColá) return;
+  vigilanciaColá = await onColaActualizada(async () => {
+    if (reproducirAlLlegar.size === 0) return;
     try {
-      const html = await fetchHtml(url);
-      const article = await extractArticleFromHtml(html, url);
-      console.log(`[shareIntake] defuddle extracted ${article.length} chars`);
-      await openInReaderAndRead(article, titleFromArticle(article));
+      const items = await colaListar();
+      for (const item of items) {
+        if (!reproducirAlLlegar.has(item.id)) continue;
+        if (item.estado === "error") {
+          reproducirAlLlegar.delete(item.id);
+          continue;
+        }
+        if (item.estado === "listo" && item.ruta) {
+          reproducirAlLlegar.delete(item.id);
+          const doc = await readDocument(item.ruta);
+          doc.filename = item.titulo;
+          reader.doc = doc;
+          await goto("/read");
+          await readDocumentParagraphs(doc.paragraphs, 0);
+          break;
+        }
+      }
     } catch (e) {
-      console.error("[shareIntake] URL handling failed:", e);
-      // Fall back to reading the URL itself so the user at least hears
-      // *something* — better than silent failure.
-      await synthesizeText(`couldn't extract the article. shared URL: ${url}`);
+      console.error("[shareIntake] autoplay:", e);
     }
-    return;
-  }
-  if (line.startsWith("text:")) {
+  });
+}
+
+async function handleOne(line: string): Promise<void> {
+  let encolado = false;
+  if (line.startsWith("url:")) {
+    const url = line.slice(4).trim();
+    if (url) {
+      const item = await colaAgregarUrl(url);
+      reproducirAlLlegar.add(item.id);
+      await vigilarAutoplay();
+      encolado = true;
+    }
+  } else if (line.startsWith("text:")) {
     const text = line.slice(5).trim();
     if (text) {
-      console.log(`[shareIntake] text share: ${text.length} chars`);
-      // Short snippets read fine blind; longer text opens in the reader.
-      if (text.length > 280) {
-        await openInReaderAndRead(text, titleFromArticle(text));
-      } else {
-        await synthesizeText(text);
+      const item = await colaAgregarTexto(text);
+      encolado = true;
+      if (text.length <= 280) {
+        synthesizeText(text).catch(() => {});
+      } else if (item.ruta) {
+        // Texto largo compartido: al lector, y sonando.
+        try {
+          const doc = await readDocument(item.ruta);
+          reader.doc = doc;
+          await goto("/read");
+          await readDocumentParagraphs(doc.paragraphs, 0);
+          return;
+        } catch {}
       }
     }
-    return;
-  }
-  // The iOS Share Extension transcribed an audio message in-place and handed us
-  // the finished text. Persist it to history and surface it in the app.
-  if (line.startsWith("transcript:")) {
+  } else if (line.startsWith("transcript:")) {
     const text = line.slice("transcript:".length).trim();
     if (text) {
-      console.log(`[shareIntake] transcript share: ${text.length} chars`);
+      await colaAgregarTexto(text, "Transcripción");
+      encolado = true;
       try {
         const entry = await saveTranscript(text, "Shared");
         window.dispatchEvent(new CustomEvent("yappy:transcript", { detail: entry }));
-      } catch (e) {
-        console.error("[shareIntake] saveTranscript failed:", e);
-      }
+      } catch {}
     }
-    return;
-  }
-  // An audio file was shared but not transcribed in-extension (handoff). Path
-  // points into the App Group container; transcribe it here.
-  if (line.startsWith("audio:")) {
+  } else if (line.startsWith("audio:")) {
     const path = line.slice("audio:".length).trim();
     if (path) {
-      console.log("[shareIntake] audio share:", path);
-      try {
-        const result = await transcribeAudio(path, undefined, "Shared");
-        window.dispatchEvent(new CustomEvent("yappy:transcript", { detail: result }));
-      } catch (e) {
-        console.error("[shareIntake] transcribeAudio failed:", e);
+      await colaAgregarAudio(path);
+      encolado = true;
+    }
+  } else if (line.startsWith("file:")) {
+    // PDF, EPUB, DOCX…: la extensión los copió al App Group. Un archivo
+    // queda «listo» al instante, así que suena directamente.
+    const path = line.slice("file:".length).trim();
+    if (path) {
+      const item = await colaAgregarArchivo(path);
+      encolado = true;
+      if (item.ruta) {
+        try {
+          const doc = await readDocument(item.ruta);
+          reader.doc = doc;
+          await goto("/read");
+          await readDocumentParagraphs(doc.paragraphs, 0);
+          return;
+        } catch (e) {
+          console.error("[shareIntake] abrir archivo compartido:", e);
+        }
       }
     }
-    return;
+  } else if (line.startsWith("accion:")) {
+    // Los App Intents (Siri, Atajos, botón de acción) encolan acciones por
+    // este mismo canal.
+    const accion = line.slice("accion:".length).trim();
+    if (accion === "read-clipboard") {
+      await invoke("read_clipboard_cmd").catch(() => {});
+    } else if (accion === "resume") {
+      await invoke("toggle_pause_cmd").catch(() => {});
+    }
+  } else {
+    console.warn("[shareIntake] unknown payload prefix:", line.slice(0, 30));
   }
-  console.warn("[shareIntake] unknown payload prefix:", line.slice(0, 30));
+  if (encolado) {
+    goto("/escuchar").catch(() => {});
+  }
 }
 
 // Process a newline-separated payload string (one share entry per line).
@@ -185,7 +243,7 @@ async function handlePayload(payload: string): Promise<void> {
 // losing the shared item. Pulling when WE'RE ready — on mount and on every
 // foreground — guarantees we never miss one. No-op off iOS (returns null).
 let draining = false;
-async function drainPending(): Promise<void> {
+export async function drainPending(): Promise<void> {
   if (draining) return;
   draining = true;
   try {
@@ -203,6 +261,7 @@ async function drainPending(): Promise<void> {
 
 let unlisten: UnlistenFn | null = null;
 let visibilityHandler: (() => void) | null = null;
+let intervaloDrain: ReturnType<typeof setInterval> | null = null;
 
 /// Start listening for Share-Sheet payloads. Call once at app boot.
 /// Safe to call multiple times — re-installing replaces the previous listener.
@@ -227,6 +286,13 @@ export async function startShareIntake(): Promise<void> {
       if (document.visibilityState === "visible") drainPending();
     };
     document.addEventListener("visibilitychange", visibilityHandler);
+  }
+
+  // Android entrega los intents con la app YA visible (onNewIntent), sin
+  // cambio de visibilidad que dispare el drenaje: un pulso barato lo cubre
+  // (leer un fichero pequeño cada pocos segundos).
+  if (!intervaloDrain) {
+    intervaloDrain = setInterval(() => drainPending(), 6000);
   }
 
   // Dev helper: expose handleOne on window so we can drive the defuddle

@@ -1,0 +1,505 @@
+/* Yappy, la web: dos tintas sobre papel. La tinta del texto (ultramar) y
+   la tinta de la voz (coral), con el subrayador dorado siguiendo a la voz.
+   Misma doctrina que la app: papel nunca blanco, tinta nunca negra, el
+   relieve de tecla para lo pulsable, el grito y el susurro. */
+
+:root {
+  --papel: #f7f2e7;
+  --superficie: #fffdf7;
+  --superficie-2: #f3ecdb;
+  --borde: #e6dcc6;
+  --tinta: #2b2418;
+  --tinta-suave: #82755a;
+  --voz: #e0502a;
+  --voz-fuerte: #c43e1c;
+  --voz-suave: #fbe3d8;
+  --ultramar: #2f4bc4;
+  --dorado: #e8b41a;
+  --subrayador: rgba(232, 180, 26, 0.42);
+  --luz: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --hundido: inset 0 1px 2px rgba(64, 46, 12, 0.09);
+  --relieve: var(--luz), 0 1px 2px rgba(64, 46, 12, 0.1), 0 2px 8px rgba(64, 46, 12, 0.06);
+  --relieve-alto: var(--luz), 0 2px 4px rgba(64, 46, 12, 0.12), 0 10px 24px rgba(64, 46, 12, 0.14);
+  --tecla: linear-gradient(180deg, #f4682e 0%, var(--voz) 100%);
+  --fuente: "Baloo 2", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --lectura: "Literata", Georgia, serif;
+  --mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --papel: #191b22;
+    --superficie: #232631;
+    --superficie-2: #2b2f3d;
+    --borde: #3a3d4a;
+    --tinta: #f2edda;
+    --tinta-suave: #a9a48c;
+    --voz: #ff7a4d;
+    --voz-fuerte: #e0502a;
+    --voz-suave: #45281c;
+    --ultramar: #93a5ff;
+    --subrayador: rgba(232, 180, 26, 0.32);
+    --luz: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    --hundido: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+    --relieve: var(--luz), 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --relieve-alto: var(--luz), 0 2px 4px rgba(0, 0, 0, 0.45), 0 10px 24px rgba(0, 0, 0, 0.4);
+    --tecla: linear-gradient(180deg, #ff8f61 0%, #f26236 100%);
+  }
+}
+
+@font-face {
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("fonts/Baloo2-Variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/SpaceMono-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Literata";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("fonts/literata-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  font-family: var(--fuente);
+  font-weight: 500;
+  color: var(--tinta);
+  background-color: var(--papel);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0 0.06 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  line-height: 1.55;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-image: none;
+  }
+}
+::selection {
+  background: var(--subrayador);
+}
+a {
+  color: var(--ultramar);
+}
+
+.envoltura {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+/* ── Cabecera ── */
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 0 8px;
+}
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.marca img {
+  width: 44px;
+  height: 44px;
+}
+.marca span {
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  color: var(--voz);
+  transform: rotate(-2deg);
+  display: inline-block;
+}
+.cabecera nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.cabecera nav a {
+  color: var(--tinta-suave);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 7px 12px;
+  border-radius: 999px;
+}
+.cabecera nav a:hover {
+  background: var(--superficie-2);
+  color: var(--tinta);
+}
+
+/* ── Hero ── */
+.hero {
+  padding: 64px 0 30px;
+  text-align: left;
+  position: relative;
+}
+.hero h1 {
+  font-weight: 800;
+  font-size: clamp(44px, 8vw, 96px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: 0 0 18px;
+  transform: rotate(-1.5deg);
+  max-width: 15ch;
+}
+.hero h1 .voz {
+  color: var(--voz);
+}
+.hero h1 .texto {
+  color: var(--ultramar);
+}
+.hero p.entradilla {
+  font-size: clamp(17px, 2.3vw, 21px);
+  color: var(--tinta-suave);
+  max-width: 52ch;
+  margin: 0 0 26px;
+}
+.hero .acciones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.susurro {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+/* ── Teclas y botones ── */
+.tecla {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--fuente);
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: #fff6ef;
+  background: var(--tecla);
+  border-radius: 14px;
+  padding: 13px 22px;
+  box-shadow: var(--relieve);
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s;
+}
+.tecla:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: var(--relieve-alto);
+}
+.tecla:active {
+  transform: translateY(1px);
+}
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  padding: 12px 20px;
+  box-shadow: var(--relieve);
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.boton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--relieve-alto);
+}
+
+/* ── La demo sonora ── */
+.demo {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 20px;
+  box-shadow: var(--relieve-alto);
+  padding: 22px;
+  margin: 42px 0;
+}
+.demo .idiomas {
+  display: inline-flex;
+  gap: 4px;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  padding: 4px;
+  box-shadow: var(--hundido);
+  flex-wrap: wrap;
+}
+.demo .idiomas button {
+  border: 0;
+  cursor: pointer;
+  font-family: var(--fuente);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--tinta-suave);
+  background: transparent;
+  border-radius: 999px;
+  padding: 7px 14px;
+}
+.demo .idiomas button.activa {
+  color: #fff6ef;
+  background: var(--tecla);
+  box-shadow: var(--relieve);
+}
+.demo .frase {
+  font-family: var(--lectura);
+  font-size: clamp(18px, 2.6vw, 24px);
+  line-height: 1.6;
+  margin: 20px 0 16px;
+  min-height: 3.2em;
+}
+.demo .frase mark {
+  background: var(--subrayador);
+  color: inherit;
+  border-radius: 4px;
+  padding: 0 2px;
+}
+.demo .controles {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.demo .reproducir {
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  background: var(--tecla);
+  color: #fff6ef;
+  box-shadow: var(--relieve);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.demo .nota {
+  font-size: 0.85rem;
+  color: var(--tinta-suave);
+}
+
+/* ── Secciones ── */
+section.bloque {
+  margin: 70px 0;
+}
+section.bloque h2 {
+  font-weight: 800;
+  font-size: clamp(26px, 4vw, 38px);
+  letter-spacing: -0.02em;
+  margin: 6px 0 14px;
+}
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+.tarjeta {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: var(--relieve);
+  padding: 18px;
+}
+.tarjeta h3 {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.tarjeta p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--tinta-suave);
+}
+.tarjeta .icono {
+  color: var(--voz);
+  margin-bottom: 10px;
+}
+
+/* ── El guionizador en vivo ── */
+.guionizador textarea {
+  width: 100%;
+  font-family: var(--lectura);
+  font-size: 1.05rem;
+  color: var(--tinta);
+  background: var(--superficie-2);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  box-shadow: var(--hundido);
+  padding: 14px;
+  min-height: 90px;
+  resize: vertical;
+}
+.guionizador textarea:focus {
+  outline: none;
+  border-color: var(--voz);
+  box-shadow: var(--hundido), 0 0 0 3px rgba(224, 80, 42, 0.26);
+}
+.guionizador .salida {
+  font-family: var(--lectura);
+  font-size: 1.08rem;
+  line-height: 1.7;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  box-shadow: var(--relieve);
+  padding: 16px;
+  margin-top: 12px;
+  min-height: 60px;
+}
+.guionizador .salida .cambio {
+  background: var(--subrayador);
+  border-radius: 4px;
+  padding: 0 2px;
+}
+.guionizador .salida .pausa {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ultramar);
+  letter-spacing: 0.08em;
+}
+
+/* ── Descargas ── */
+.descargas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+.descarga {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: var(--relieve);
+  padding: 16px 18px;
+  text-decoration: none;
+  color: var(--tinta);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s;
+}
+.descarga:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--relieve-alto);
+  border-color: var(--voz);
+}
+.descarga strong {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.descarga span {
+  font-size: 0.82rem;
+  color: var(--tinta-suave);
+}
+.descarga.apagada {
+  opacity: 0.62;
+  pointer-events: none;
+}
+
+/* ── FAQ ── */
+details {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  box-shadow: var(--relieve);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+details p {
+  color: var(--tinta-suave);
+  margin: 10px 0 2px;
+}
+
+/* ── Pie con el paseo del loro ── */
+footer {
+  margin-top: 90px;
+  border-top: 1px solid var(--borde);
+  padding: 26px 0 90px;
+  position: relative;
+  overflow: hidden;
+}
+footer .envoltura {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  color: var(--tinta-suave);
+  font-size: 0.88rem;
+}
+footer a {
+  color: var(--tinta-suave);
+}
+.paseo {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  width: 72px;
+  animation: cruza 26s linear infinite;
+  pointer-events: none;
+}
+.paseo img {
+  width: 100%;
+  animation: brinco 0.55s ease-in-out infinite alternate;
+  transform-origin: 50% 100%;
+}
+.paseo:nth-child(2) {
+  animation-delay: -11s;
+  width: 48px;
+}
+@keyframes cruza {
+  from {
+    transform: translateX(-90px);
+  }
+  to {
+    transform: translateX(calc(100vw + 90px));
+  }
+}
+@keyframes brinco {
+  from {
+    transform: scaleY(0.96) scaleX(1.02);
+  }
+  to {
+    transform: scaleY(1.04) scaleX(0.98) translateY(-5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .paseo,
+  .paseo img {
+    animation: none;
+  }
+  .paseo {
+    left: 24px;
+  }
+}

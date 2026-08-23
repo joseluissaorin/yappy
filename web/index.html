@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yappy: cualquier texto, en voz alta, sin salir de tu dispositivo</title>
+  <meta name="description" content="Yappy convierte artículos, PDF, EPUB, Word y vídeos en voz natural, en 31 idiomas, con un modelo que corre entero en tu ordenador o tu iPhone. Sin nube, sin cuentas, sin telemetría. Código abierto (MIT)." />
+  <link rel="icon" href="favicon.png" />
+  <link rel="stylesheet" href="estilo.css" />
+  <meta property="og:title" content="Yappy: cualquier texto, en voz alta" />
+  <meta property="og:description" content="Voz natural local en 31 idiomas. Comparte un artículo, un PDF o un vídeo y escúchalo. Sin nube. Código abierto." />
+  <meta property="og:image" content="https://yappy.joseluissaorin.com/og.png" />
+  <meta property="og:url" content="https://yappy.joseluissaorin.com" />
+  <meta name="theme-color" content="#f7f2e7" />
+  <link rel="alternate" hreflang="en" href="https://yappy.joseluissaorin.com/en/" />
+</head>
+<body>
+  <header class="cabecera envoltura">
+    <a class="marca" href="/" aria-label="Yappy">
+      <img src="loro.svg" alt="" width="44" height="44" />
+      <span>yappy</span>
+    </a>
+    <nav>
+      <a href="#demo">Escúchalo</a>
+      <a href="#guionizador">El guionizador</a>
+      <a href="#descargas">Descargas</a>
+      <a href="https://github.com/joseluissaorin/yappy">GitHub</a>
+      <a href="/en/" lang="en">EN</a>
+    </nav>
+  </header>
+
+  <main class="envoltura">
+    <section class="hero">
+      <p class="susurro">local · 31 idiomas · código abierto (mit)</p>
+      <h1>Cualquier <span class="texto">texto</span>, en <span class="voz">voz alta</span>.</h1>
+      <p class="entradilla">
+        Comparte un artículo, un PDF, un EPUB, un Word o un vídeo, y Yappy lo
+        convierte en una voz natural que puedes escuchar mientras cocinas,
+        caminas o cierras los ojos. El modelo corre entero en tu dispositivo:
+        nada sale de él, nunca.
+      </p>
+      <div class="acciones">
+        <a class="tecla" href="#descargas">Descargar gratis</a>
+        <a class="boton" href="#demo">Escuchar una muestra</a>
+      </div>
+    </section>
+
+    <section class="demo" id="demo">
+      <p class="susurro">generado en un portátil corriente, sin nube, en segundos</p>
+      <div class="idiomas" role="tablist" aria-label="idioma de la muestra">
+        <button class="activa" data-lang="es">español</button>
+        <button data-lang="en">english</button>
+        <button data-lang="fr">français</button>
+        <button data-lang="de">deutsch</button>
+        <button data-lang="it">italiano</button>
+        <button data-lang="pt">português</button>
+      </div>
+      <p class="frase" id="demo-frase">
+        En <mark>1492</mark>, tres carabelas zarparon de Palos. El
+        <mark>siglo XV</mark> terminaba, y nadie a bordo sabía que llevaban el
+        mapa del mundo por dibujar.
+      </p>
+      <div class="controles">
+        <button class="reproducir" id="demo-play" aria-label="reproducir la muestra">▶</button>
+        <p class="nota">
+          Lo subrayado lo verbaliza el guionizador: «1492» se dice
+          «mil cuatrocientos noventa y dos» y «siglo XV» se dice «siglo quince»,
+          con las reglas de cada idioma.
+        </p>
+      </div>
+      <audio id="demo-audio" src="audio/demo-es.m4a" preload="none"></audio>
+    </section>
+
+    <section class="bloque">
+      <p class="susurro">por qué existe</p>
+      <h2>Sin nube, sin cuentas, sin tarifa por carácter.</h2>
+      <div class="rejilla">
+        <div class="tarjeta">
+          <div class="icono"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+          <h3>Nada sale de tu dispositivo</h3>
+          <p>La voz se sintetiza en tu ordenador o tu iPhone con un modelo
+          abierto de ~66 millones de parámetros. Sin conexión también
+          funciona: para siempre.</p>
+        </div>
+        <div class="tarjeta">
+          <div class="icono"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg></div>
+          <h3>31 idiomas de verdad</h3>
+          <p>Diez voces, cada una políglota. Los documentos con citas en otra
+          lengua cambian de idioma solos, párrafo a párrafo.</p>
+        </div>
+        <div class="tarjeta">
+          <div class="icono"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13M7 8l5-5 5 5"/></svg></div>
+          <h3>Comparte cualquier cosa</h3>
+          <p>Un artículo desde Safari, un vídeo de YouTube, un PDF desde el
+          correo, una nota de voz. Todo aterriza en la cola, se prepara y se
+          escucha.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloque" id="guionizador">
+      <p class="susurro">la pieza que nadie más enseña</p>
+      <h2>El guionizador: de lo escrito a lo dicho.</h2>
+      <p style="max-width: 62ch; color: var(--tinta-suave)">
+        Leer en voz alta no es deletrear. «1492» se dice «mil cuatrocientos
+        noventa y dos»; «Enrique VIII» se dice «Enrique octavo», pero
+        «Luis XIV» en francés se dice «Louis quatorze»; «EL CID» no es un
+        número romano; el FBI se deletrea y la NASA no. Yappy convierte cada
+        texto en un guion de lectura con las reglas de cada lengua, y esta
+        caja lo demuestra: corre el mismo código Rust de la app, compilado
+        para tu navegador.
+      </p>
+      <div class="guionizador">
+        <label class="susurro" for="guion-entrada">escribe algo (números, siglos, fechas, siglas…)</label>
+        <textarea id="guion-entrada" spellcheck="false">El siglo XIX terminó en 1900. Luis XIV reinó 72 años, gastó 3,50 € en helado y el FBI nunca lo supo.</textarea>
+        <div class="acciones" style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
+          <button class="tecla" id="guion-boton" type="button">Guionizar</button>
+          <select class="boton" id="guion-idioma" aria-label="idioma">
+            <option value="es" selected>español</option>
+            <option value="en">english</option>
+            <option value="fr">français</option>
+            <option value="de">deutsch</option>
+            <option value="it">italiano</option>
+            <option value="pt">português</option>
+          </select>
+        </div>
+        <div class="salida" id="guion-salida" aria-live="polite">
+          <span style="color: var(--tinta-suave)">El guion aparecerá aquí, con lo transformado subrayado.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloque">
+      <p class="susurro">todo lo que entra</p>
+      <h2>Compartir es la puerta.</h2>
+      <div class="rejilla">
+        <div class="tarjeta"><h3>Artículos</h3><p>La página se limpia sola: fuera menús, banners y pies. Queda la prosa, con sus títulos y su ritmo.</p></div>
+        <div class="tarjeta"><h3>Vídeos de YouTube</h3><p>Se trae la transcripción y se escucha como un artículo. Sin anuncios de por medio.</p></div>
+        <div class="tarjeta"><h3>PDF y EPUB</h3><p>Con capítulos navegables y exportación a audiolibro .m4b de verdad, con marcadores.</p></div>
+        <div class="tarjeta"><h3>Word y ODT</h3><p>Títulos, listas y citas conservan su estructura, y el guionizador les da su respiración.</p></div>
+        <div class="tarjeta"><h3>Notas de voz</h3><p>El oído local (Parakeet) las transcribe en el dispositivo y te las deja legibles y escuchables.</p></div>
+        <div class="tarjeta"><h3>Lo que estés mirando</h3><p>En el escritorio, un atajo lee la selección, la página del navegador o el documento activo. Un segundo y suena.</p></div>
+      </div>
+    </section>
+
+    <section class="bloque" id="descargas">
+      <p class="susurro">gratis, mit, sin registro</p>
+      <h2>Descargas</h2>
+      <div class="descargas">
+        <a class="descarga" href="https://github.com/joseluissaorin/yappy/releases/latest">
+          <strong>macOS</strong>
+          <span>Apple Silicon e Intel · .dmg notarizado</span>
+        </a>
+        <a class="descarga" href="https://github.com/joseluissaorin/yappy/releases/latest">
+          <strong>Windows</strong>
+          <span>instalador .exe o .msi · x64</span>
+        </a>
+        <a class="descarga" href="https://github.com/joseluissaorin/yappy/releases/latest">
+          <strong>Linux</strong>
+          <span>AppImage y .deb · x64</span>
+        </a>
+        <div class="descarga apagada">
+          <strong>iPhone</strong>
+          <span>en TestFlight muy pronto</span>
+        </div>
+      </div>
+      <p style="color: var(--tinta-suave); font-size: 0.9rem; margin-top: 14px">
+        El primer arranque descarga el modelo de voces (~380 MB) una sola vez.
+        Después, Yappy funciona sin conexión para siempre.
+      </p>
+    </section>
+
+    <section class="bloque">
+      <p class="susurro">preguntas que llegan</p>
+      <h2>Preguntas</h2>
+      <details>
+        <summary>¿De verdad es gratis?</summary>
+        <p>Sí. Yappy es código abierto con licencia MIT. Poder escuchar lo que
+        uno lee es una cuestión de accesibilidad, y las herramientas de
+        accesibilidad no deberían pedir tarjeta.</p>
+      </details>
+      <details>
+        <summary>¿Qué modelo de voz usa?</summary>
+        <p>Supertonic 3, un modelo abierto de Supertone de unos 66 millones de
+        parámetros que cabe en 380 MB y sintetiza más rápido que el tiempo
+        real en cualquier portátil de los últimos años.</p>
+      </details>
+      <details>
+        <summary>¿Mis textos van a algún servidor?</summary>
+        <p>No. La síntesis, la transcripción y la extracción de artículos
+        ocurren en tu dispositivo. La única red que toca Yappy es la descarga
+        inicial del modelo y, si compartes una URL, la visita a esa URL desde
+        tu propio aparato.</p>
+      </details>
+      <details>
+        <summary>¿Qué idiomas habla?</summary>
+        <p>Alemán, árabe, búlgaro, checo, coreano, croata, danés, eslovaco,
+        esloveno, español, estonio, finés, francés, griego, hindi, húngaro,
+        indonesio, inglés, italiano, japonés, letón, lituano, neerlandés,
+        polaco, portugués, rumano, ruso, sueco, turco, ucraniano y vietnamita.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    <div class="envoltura">
+      <span>Hecho por <a href="https://joseluissaorin.com">José Luis Saorín</a> en Tenerife.</span>
+      <span><a href="https://github.com/joseluissaorin/yappy">Código</a> · <a href="https://github.com/joseluissaorin/yappy/blob/main/LICENSE">Licencia MIT</a> · <a href="https://github.com/joseluissaorin/yappy/releases">Novedades</a></span>
+    </div>
+    <div class="paseo" aria-hidden="true"><img src="loro.svg" alt="" /></div>
+    <div class="paseo" aria-hidden="true"><img src="loro.svg" alt="" /></div>
+  </footer>
+
+  <script src="demo.js" defer></script>
+</body>
+</html>

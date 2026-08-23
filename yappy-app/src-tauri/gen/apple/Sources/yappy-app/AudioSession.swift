@@ -85,12 +85,13 @@ private actor SilentAudioKeepalive {
 /// outputs sound on iOS when an AVAudioSession is active in .playback category;
 /// without this, streaming TTS plays silently. Called once at playback startup.
 /// Synchronous (not a Task) so the session is active before cpal builds its
-/// output stream. `.duckOthers` lowers other audio while Yappy reads.
+/// output stream. Audio hablado estandar: interrumpe a otras apps (que
+/// pausan y luego reanudan), en vez de dejarlas sonando por debajo.
 @_cdecl("yappy_audio_session_activate")
 public func yappy_audio_session_activate() {
     let session = AVAudioSession.sharedInstance()
     do {
-        try session.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
+        try session.setCategory(.playback, mode: .spokenAudio, options: [])
         try session.setActive(true)
     } catch {
         NSLog("[yappy/audio] playback session activate failed: \(error)")

@@ -10,7 +10,7 @@
       <h2>yappy</h2>
       <p class="ver">version 0.1.0</p>
       <p class="desc">
-        the free, open source, local text-to-speech app for your mac.
+        the free, open source, local text-to-speech app for your computer.
         reads anything in any app, with supertonic 3, on your device.
       </p>
       <ul class="bits">

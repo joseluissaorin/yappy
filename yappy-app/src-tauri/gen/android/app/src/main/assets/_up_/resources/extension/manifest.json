@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Yappy — read this page aloud",
+  "version": "0.1.0",
+  "description": "Send the current tab's clean article text to the Yappy desktop app to be read aloud — locally, with Supertonic 3.",
+  "action": {
+    "default_title": "Read this page in Yappy",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "background": { "service_worker": "background.js" },
+  "options_ui": { "page": "options.html", "open_in_tab": false },
+  "commands": {
+    "send-page": {
+      "suggested_key": { "default": "Alt+Shift+Y", "mac": "Alt+Shift+Y" },
+      "description": "Send current tab to Yappy"
+    }
+  },
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  }
+}

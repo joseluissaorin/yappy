@@ -1,0 +1,23 @@
+# Yappy
+
+> Lector en voz alta local-first: convierte artículos, PDF, EPUB, Word,
+> vídeos de YouTube y notas de voz en habla natural, en 31 idiomas, con un
+> modelo abierto (~66 M de parámetros, Supertonic 3) que corre entero en el
+> dispositivo. Sin nube, sin cuentas, sin telemetría. Código abierto (MIT).
+
+- Web: https://yappy.joseluissaorin.com (es) · /en/ (en)
+- Código: https://github.com/joseluissaorin/yappy
+- Descargas: https://github.com/joseluissaorin/yappy/releases/latest
+- Autor: José Luis Saorín Ferrer · https://joseluissaorin.com
+
+## Piezas
+
+- El guionizador: convierte texto escrito en guion de lectura (números,
+  romanos según las reglas de cada lengua, fechas, horas, monedas, siglas)
+  con datos RBNF de CLDR interpretados en Rust; la demo de la web ejecuta
+  el mismo código compilado a WebAssembly.
+- Escritorio (macOS, Windows, Linux): atajo global que lee la selección, la
+  página del navegador o el documento activo; editor de audiolibros con
+  exportación .m4b con capítulos.
+- iPhone: share sheet (artículo, PDF, EPUB, Word, nota de voz), cola con
+  estados, reproducción con pantalla bloqueada, transcripción local.

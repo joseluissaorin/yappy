@@ -1,53 +1,55 @@
-# Full iOS smoke: cold launch → onboarding sanity → iOS-Settings gating.
+# Smoke de iOS: arranque en frío → la jerarquía móvil nueva (Escuchar /
+# Biblioteca / Ajustes) con la app SIN modelo instalado.
 #
-# Run via maestro/run-all.sh — that wrapper uninstalls + reinstalls Yappy
-# first so the cold-launch onboarding actually appears (Maestro's
-# `clearState: true` doesn't wipe iOS UserDefaults).
-#
-# This flow is intentionally sequential — it walks the iOS user's
-# first-launch journey end to end so a single run exercises every
-# platform-specific code path I touched in the iOS port.
-appId: com.yappy.app
+# Se corre con maestro/run-all.sh, que desinstala y reinstala Yappy antes
+# (el clearState de Maestro no borra los UserDefaults de iOS).
+appId: com.joseluissaorin.yappy
 ---
 - launchApp
 
-# ── ONBOARDING ─────────────────────────────────────────────────────────
-- assertVisible: "welcome to yappy"
-# Body paragraph contains BOTH iOS-specific phrases — confirms platform.ts
-# is resolving to "ios" and the {#if mobileOnboarding} branch fired.
-- assertVisible:
-    text: ".*for your phone.*"
-- assertVisible:
-    text: ".*share an article.*"
-# Desktop-only CTAs MUST NOT appear on iOS.
-- assertNotVisible: "set up browsers"
-- assertNotVisible: "i'll do this later"
-
-# Dismiss with the single-CTA "get started"
-- tapOn:
-    text: "get started →"
-- waitForAnimationToEnd
-
-# ── POST-ONBOARDING ───────────────────────────────────────────────────
-# Should land on install-voices since the model isn't bundled.
+# ── ESCUCHAR (la raíz del móvil) ────────────────────────────────────────
 - extendedWaitUntil:
-    visible: "install voices"
-    timeout: 5000
+    visible: "yappy"
+    timeout: 10000
+# La tarjeta de instalación de voces, porque el modelo no viene en el IPA.
 - assertVisible:
-    text: ".*one-time download.*"
-- assertVisible: "download voices"
+    text: ".*380 MB.*"
+# La cola vacía con su percha.
+- assertVisible:
+    text: ".*perch.*|.*percha.*"
+# Las dos pestañas de la jerarquía nueva.
+- assertVisible:
+    text: "Listen|Escuchar"
+- assertVisible:
+    text: "Library|Biblioteca"
+# Nada de conceptos de escritorio en el móvil.
+- assertNotVisible: "read what i'm looking at"
+- assertNotVisible: "set up browsers"
 
-# ── SETTINGS iOS GATING ────────────────────────────────────────────────
-# Navigate to Settings if a "preferences" entry is reachable, otherwise
-# skip (some app states won't surface it until model is installed).
-- runFlow:
-    when:
-      visible: "preferences"
-    commands:
-      - tapOn: "preferences"
-      - waitForAnimationToEnd
-      # Desktop-only sections must NOT appear in the iOS Settings page.
-      - assertNotVisible: "hotkey — read what i'm looking at"
-      - assertNotVisible: "hotkey — pause / resume"
-      - assertNotVisible: "launch at login"
-      - assertNotVisible: "set up browsers"
+# ── AÑADIR (el menú de entradas manuales) ──────────────────────────────
+- tapOn:
+    text: ".*Add.*|.*Añadir.*"
+- assertVisible:
+    text: "Paste a link|Pegar un enlace"
+- assertVisible:
+    text: "Read the clipboard|Leer el portapapeles"
+- tapOn:
+    text: ".*Add.*|.*Añadir.*"
+
+# ── BIBLIOTECA ─────────────────────────────────────────────────────────
+- tapOn:
+    text: "Library|Biblioteca"
+- extendedWaitUntil:
+    visible:
+      text: "Audiobooks|Audiolibros"
+    timeout: 8000
+- assertVisible:
+    text: "Documents|Documentos"
+
+# ── VUELTA A ESCUCHAR ──────────────────────────────────────────────────
+- tapOn:
+    text: "Listen|Escuchar"
+- extendedWaitUntil:
+    visible:
+      text: ".*Add.*|.*Añadir.*"
+    timeout: 8000

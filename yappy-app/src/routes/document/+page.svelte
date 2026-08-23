@@ -62,7 +62,7 @@
   // ── playback / synth state ─────────────────────────────────────────────────
   let snap: PlaybackSnapshot = $state({
     playing: false, paused: false, current_text: "", current_index: 0,
-    current_paragraph_index: 0, total: 0, total_paragraphs: 0,
+    current_paragraph_index: 0, current_origen_ini: 0, current_origen_fin: 0, total: 0, total_paragraphs: 0,
     elapsed_secs: 0, duration_secs: 0, volume: 1.0, output_sample_rate: 44100,
   });
   let baseParagraphIndex = $state(0);
@@ -644,38 +644,34 @@
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
   }
-  /// Loose substring search ignoring case + collapsing whitespace differences.
-  function findChunkOffset(full: string, chunk: string): { start: number; end: number } | null {
-    const c = chunk.trim();
-    if (!c || c.length < 3) return null;
-    // Exact first.
-    let idx = full.indexOf(c);
-    if (idx >= 0) return { start: idx, end: idx + c.length };
-    // Case-insensitive.
-    const lf = full.toLowerCase();
-    const lc = c.toLowerCase();
-    idx = lf.indexOf(lc);
-    if (idx >= 0) return { start: idx, end: idx + c.length };
-    // Loose: collapse runs of whitespace.
-    const normalize = (s: string) => s.replace(/\s+/g, " ").trim();
-    const nf = normalize(full).toLowerCase();
-    const nc = normalize(c).toLowerCase();
-    idx = nf.indexOf(nc);
-    if (idx >= 0) {
-      // Map back to original by walking char-by-char — close-enough offsets.
-      return { start: idx, end: idx + nc.length };
-    }
-    return null;
-  }
-  /// Render a paragraph's text with the currently-playing chunk highlighted
-  /// inline (and the preceding text dimmed as "already read").
-  function renderParaWithKaraoke(full: string, chunk: string): string {
-    const range = findChunkOffset(full, chunk);
-    if (!range) return escapeHtml(full);
-    const before = escapeHtml(full.slice(0, range.start));
-    const active = escapeHtml(full.slice(range.start, range.end));
-    const after = escapeHtml(full.slice(range.end));
+  /// Karaoke por rangos: el backend nos dice exactamente qué caracteres del
+  /// texto ORIGINAL corresponden al trozo que suena (los spans del
+  /// guionizador). Rango en caracteres, no en unidades UTF-16.
+  function renderParaWithKaraoke(full: string, ini: number, fin: number): string {
+    const cs = Array.from(full);
+    if (!(fin > ini) || ini >= cs.length) return escapeHtml(full);
+    const corte = Math.min(fin, cs.length);
+    const before = escapeHtml(cs.slice(0, ini).join(""));
+    const active = escapeHtml(cs.slice(ini, corte).join(""));
+    const after = escapeHtml(cs.slice(corte).join(""));
     return `<span class="kar-read">${before}</span><mark class="kar-active">${active}</mark><span class="kar-upcoming">${after}</span>`;
+  }
+
+  /// Los arrays paralelos del guion que viajan al backend con cada
+  /// reproducción: clase, pausa efectiva (ritmo aplicado), multiplicador de
+  /// velocidad por párrafo y voz por párrafo.
+  function guionActual(indices?: number[]) {
+    const base = settings?.speed ?? 1.05;
+    const lista = indices ?? paragraphs.map((_, i) => i);
+    return {
+      kinds: lista.map((i) => paragraphs[i]?.kind ?? "paragraph"),
+      pausas: lista.map((i) => (paragraphs[i]?.pauseBefore ?? 0) * rhythmMult),
+      velocidades: lista.map((i) => {
+        const s = paragraphs[i]?.speed;
+        return s ? Math.max(0.25, Math.min(2.0, s / base)) : 1.0;
+      }),
+      voces: lista.map((i) => paragraphs[i]?.voice ?? null),
+    };
   }
 
   /// Scroll the given paragraph into view inside the reader.
@@ -696,14 +692,26 @@
 
   async function playAll() {
     if (!doc || paragraphs.length === 0) return;
-    await readDocumentParagraphs(paragraphs.map((p) => p.text), 0, undefined, effectiveSpeedForPlay());
+    await readDocumentParagraphs(
+      paragraphs.map((p) => p.text),
+      0,
+      undefined,
+      effectiveSpeedForPlay(),
+      guionActual(),
+    );
   }
 
   async function playFrom(index: number, voiceOverride?: string) {
     if (!doc) return;
     voicePickerForParagraph = -1;
     const v = voiceOverride ?? paragraphs[index]?.voice ?? undefined;
-    await readDocumentParagraphs(paragraphs.map((p) => p.text), index, v, effectiveSpeedForPlay());
+    await readDocumentParagraphs(
+      paragraphs.map((p) => p.text),
+      index,
+      v,
+      effectiveSpeedForPlay(),
+      guionActual(),
+    );
   }
 
   function startEdit(index: number) {
@@ -828,7 +836,7 @@
     // gaps we still want them spoken as a continuous run — so we pluck out the
     // chosen paragraph TEXTS into a fresh list and read from paragraph 0.
     const subset = indices.map((i) => paragraphs[i].text);
-    await readDocumentParagraphs(subset, 0, undefined, effectiveSpeedForPlay());
+    await readDocumentParagraphs(subset, 0, undefined, effectiveSpeedForPlay(), guionActual(indices));
   }
 
   async function renderToWav() {
@@ -1356,11 +1364,11 @@
                 onclick={() => playFrom(i)}
                 title="read from this paragraph"
               >
-                {#if activeParagraphIndex === i && snap.current_text && (snap.playing || snap.paused)}
-                  <!-- Active paragraph: render with chunk-level karaoke. The currently
-                       playing chunk is wrapped in <mark class="kar-active">, preceding
-                       text is dimmed, upcoming text is normal. Updates every audio tick. -->
-                  {@html renderParaWithKaraoke(p.text, snap.current_text)}
+                {#if activeParagraphIndex === i && (snap.playing || snap.paused)}
+                  <!-- Párrafo activo: karaoke por rangos del guionizador. El
+                       trozo que SUENA va en <mark class="kar-active">; lo ya
+                       leído, atenuado. Se actualiza en cada tick de audio. -->
+                  {@html renderParaWithKaraoke(p.text, snap.current_origen_ini, snap.current_origen_fin)}
                 {:else}
                   {p.text || "(empty paragraph)"}
                 {/if}

@@ -10,9 +10,7 @@ use std::sync::Mutex;
 
 use anyhow::{Context, Result};
 
-use crate::chunker::{chunk_for_language, Chunk};
-use crate::lang_detect::detect_lang;
-use crate::normalize::normalize;
+use crate::guion::{construir_desde_texto, trocear, Guion};
 use crate::supertonic::{load_voice_style, voice_style_path, Style, TextToSpeech};
 use crate::voices::{by_name, default_voice, Voice};
 
@@ -27,6 +25,11 @@ pub struct SynthesisOptions {
     pub total_steps: usize,
     /// Optional deterministic seed (for tests / reproducibility).
     pub seed: Option<u64>,
+    /// Si false, no se detecta idioma por pieza: todo va en default_lang.
+    pub detectar_idioma: bool,
+    /// Silencio mínimo entre párrafos llanos (el ajuste del usuario);
+    /// las pausas de ritmo de títulos/citas mandan si son mayores.
+    pub pausa_entre_parrafos_s: f32,
 }
 
 impl Default for SynthesisOptions {
@@ -37,6 +40,8 @@ impl Default for SynthesisOptions {
             default_lang: "en".to_string(),
             total_steps: 8,
             seed: None,
+            detectar_idioma: true,
+            pausa_entre_parrafos_s: 0.0,
         }
     }
 }
@@ -56,8 +61,13 @@ pub struct AudioChunk {
     pub lang: String,
     pub samples: Vec<f32>,
     pub sample_rate: i32,
-    pub start_char: usize,
-    pub end_char: usize,
+    /// Rango (en CARACTERES) del texto ORIGINAL de la pieza al que
+    /// corresponde este trozo. Es lo que permite el karaoke exacto aunque
+    /// la verbalización haya cambiado el texto hablado.
+    pub origen_ini: usize,
+    pub origen_fin: usize,
+    /// true si es un silencio de ritmo (pausa antes de una pieza), no voz.
+    pub es_pausa: bool,
 }
 
 /// Engine wide configuration.
@@ -120,64 +130,122 @@ impl TtsEngine {
 
     /// Stream chunks to a callback as they're rendered. The callback may return
     /// `Err` to abort early (e.g. when the user pressed pause / stop).
-    pub fn synthesize_streaming<F>(&self, text: &str, opts: &SynthesisOptions, mut on_chunk: F) -> Result<()>
+    ///
+    /// El texto plano pasa primero por el guionizador: piezas con ritmo,
+    /// idioma por pieza y verbalización con spans.
+    pub fn synthesize_streaming<F>(&self, text: &str, opts: &SynthesisOptions, on_chunk: F) -> Result<()>
     where
         F: FnMut(AudioChunk) -> Result<()>,
     {
-        let voice = self.voice_for(&opts.voice);
-        let style = self.style_for(voice)?;
+        let mut guion = construir_desde_texto(text, &opts.default_lang);
+        if !opts.detectar_idioma {
+            for p in &mut guion.piezas {
+                p.idioma = guion.idioma_base.clone();
+            }
+        }
+        self.synthesize_guion(&guion, opts, on_chunk)
+    }
 
-        // Per-paragraph detect language, normalize, chunk.
-        let paragraphs: Vec<&str> = text.split("\n\n").collect();
-        let total: usize = paragraphs
+    /// Sintetiza un Guion completo, con el ritmo EN VIVO: las pausas de
+    /// título/cita/separador se emiten como trozos de silencio y la
+    /// velocidad por pieza multiplica la global.
+    pub fn synthesize_guion<F>(&self, guion: &Guion, opts: &SynthesisOptions, mut on_chunk: F) -> Result<()>
+    where
+        F: FnMut(AudioChunk) -> Result<()>,
+    {
+        let estilo_global = self.style_for(self.voice_for(&opts.voice))?;
+
+        // Primera pasada barata: contar trozos (voz + silencios de ritmo)
+        // para que el progreso y los índices cuadren con lo emitido.
+        let total: usize = guion
+            .piezas
             .iter()
-            .map(|p| {
-                let lang = detect_lang(p, &opts.default_lang);
-                let normed = normalize(p.trim(), &lang);
-                chunk_for_language(&normed, &lang).len()
+            .enumerate()
+            .map(|(i, p)| {
+                let pausa = if i > 0 {
+                    p.pausa_antes_s.max(opts.pausa_entre_parrafos_s)
+                } else {
+                    p.pausa_antes_s
+                };
+                trocear(p).len() + usize::from(pausa > 0.005)
             })
             .sum();
+        let total_paragraphs = guion.piezas.len();
+        let sample_rate = self.sample_rate();
 
-        let total_paragraphs = paragraphs.iter().filter(|p| !p.trim().is_empty()).count();
-        let mut emit_idx: usize = 0;
-        let mut para_idx: usize = 0;
-        for para in paragraphs {
-            if para.trim().is_empty() {
-                continue;
-            }
-            let lang = detect_lang(para, &opts.default_lang);
-            tracing::info!("synth: paragraph {} lang={} chars={}", para_idx, lang, para.chars().count());
-            let normed = normalize(para.trim(), &lang);
-            let chunks: Vec<Chunk> = chunk_for_language(&normed, &lang);
+        let mut emit_idx = 0usize;
+        for (para_idx, pieza) in guion.piezas.iter().enumerate() {
+            let trozos = trocear(pieza);
 
-            for c in chunks {
-                let mut tts = self.tts.lock().unwrap();
-                let samples = tts.synthesize_chunk(
-                    &c.text,
-                    &lang,
-                    &style,
-                    opts.total_steps,
-                    opts.speed,
-                    opts.seed,
-                )?;
-                let sample_rate = tts.sample_rate;
-                drop(tts);
-                let chunk = AudioChunk {
+            // La pausa de ritmo, como silencio real, ANTES de la pieza. El
+            // ajuste «silencio entre párrafos» pone el suelo (no aplica a la
+            // primera pieza).
+            let pausa = if para_idx > 0 {
+                pieza.pausa_antes_s.max(opts.pausa_entre_parrafos_s)
+            } else {
+                pieza.pausa_antes_s
+            };
+            if pausa > 0.005 {
+                let n = (pausa * sample_rate as f32) as usize;
+                on_chunk(AudioChunk {
                     index: emit_idx,
                     paragraph_index: para_idx,
                     total,
                     total_paragraphs,
-                    text: c.text.clone(),
-                    lang: lang.clone(),
+                    text: String::new(),
+                    lang: pieza.idioma.clone(),
+                    samples: vec![0.0; n],
+                    sample_rate,
+                    origen_ini: 0,
+                    origen_fin: 0,
+                    es_pausa: true,
+                })?;
+                emit_idx += 1;
+            }
+            if trozos.is_empty() {
+                continue;
+            }
+
+            let estilo = match &pieza.voz {
+                Some(v) => self.style_for(self.voice_for(v))?,
+                None => estilo_global.clone(),
+            };
+            let velocidad = (opts.speed * pieza.mult_velocidad).clamp(0.3, 3.0);
+            tracing::info!(
+                "synth: pieza {} lang={} trozos={} vel={:.2}",
+                para_idx,
+                pieza.idioma,
+                trozos.len(),
+                velocidad
+            );
+
+            for t in trozos {
+                let mut tts = self.tts.lock().unwrap();
+                let samples = tts.synthesize_chunk(
+                    &t.texto,
+                    &pieza.idioma,
+                    &estilo,
+                    opts.total_steps,
+                    velocidad,
+                    opts.seed,
+                )?;
+                let sample_rate = tts.sample_rate;
+                drop(tts);
+                on_chunk(AudioChunk {
+                    index: emit_idx,
+                    paragraph_index: para_idx,
+                    total,
+                    total_paragraphs,
+                    text: t.texto,
+                    lang: pieza.idioma.clone(),
                     samples,
                     sample_rate,
-                    start_char: c.start,
-                    end_char: c.end,
-                };
+                    origen_ini: t.origen.start,
+                    origen_fin: t.origen.end,
+                    es_pausa: false,
+                })?;
                 emit_idx += 1;
-                on_chunk(chunk)?;
             }
-            para_idx += 1;
         }
         Ok(())
     }

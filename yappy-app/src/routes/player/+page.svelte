@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { atajoLeer } from "$lib/atajos";
   import { onMount, onDestroy } from "svelte";
   import { save as dialogSave } from "@tauri-apps/plugin-dialog";
   import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -32,7 +33,7 @@
 
   let snap: PlaybackSnapshot = $state({
     playing: false, paused: false, current_text: "", current_index: 0,
-    current_paragraph_index: 0, total: 0, total_paragraphs: 0,
+    current_paragraph_index: 0, current_origen_ini: 0, current_origen_fin: 0, total: 0, total_paragraphs: 0,
     elapsed_secs: 0, duration_secs: 0, volume: 1.0, output_sample_rate: 44100,
   });
   let voices: Voice[] = $state([]);
@@ -214,7 +215,14 @@
 
 <svelte:window on:keydown={onKey} />
 
-<div class="player" class:expanded class:playing={snap.playing && !snap.paused} class:pinned>
+<div
+  class="player"
+  class:expanded
+  class:playing={snap.playing && !snap.paused}
+  class:pinned
+  data-tema-player={settings?.player_theme ?? "cream"}
+  style="opacity: {Math.max(0.35, Math.min(1, settings?.player_opacity ?? 1))}"
+>
   <div class="player-row top">
     <!-- drag handle on the left edge: 4px gripper -->
     <div class="grip" bind:this={dragHandle} role="presentation" title="drag to move"></div>
@@ -234,7 +242,7 @@
             <span class="dots"><i></i><i></i><i></i></span>
             thinking…
           </span>
-        {:else if capture?.source}
+        {:else if capture?.source && (settings?.player_show_source ?? true)}
           <SourcePill source={capture.source as any} compact />
         {/if}
         <span class="time">{fmtTime(snap.elapsed_secs)} / {fmtTime(snap.duration_secs)}</span>
@@ -244,12 +252,12 @@
         {/if}
       </div>
       <div class="player-text" class:paused={snap.paused}>
-        {#if snap.current_text}
+        {#if snap.current_text && (settings?.karaoke_in_player ?? true)}
           {snap.current_text}
         {:else if snap.playing}
           <span class="muted">preparing audio<span class="dots-text">{".".repeat(pulse + 1)}</span></span>
         {:else}
-          <span class="muted">ready — press ⌥⌘R</span>
+          <span class="muted">ready — press {$atajoLeer}</span>
         {/if}
       </div>
       <div class="progress-track">
@@ -308,7 +316,7 @@
         <input type="range" min="0" max="1.5" step="0.05" value={snap.volume}
           oninput={(e) => setVol(parseFloat((e.target as HTMLInputElement).value))} />
       </div>
-      <SoundWaves active={snap.playing && !snap.paused} height={14} bars={9} />
+      {#if settings?.player_show_waves ?? true}<SoundWaves active={snap.playing && !snap.paused} height={14} bars={9} />{/if}
       <button class="ico-btn labelled" onclick={saveAudio} data-tip="save current reading as a .wav file" disabled={snap.duration_secs < 0.1}>
         <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1 H8 L11 4 V12 C11 12.5 10.5 13 10 13 H3 C2.5 13 2 12.5 2 12 V2 C2 1.5 2.5 1 3 1 Z M7.5 2 V4.5 H10 L7.5 2 Z M6.5 6 V8.5 H8.5 L6.5 11 L4.5 8.5 H6.5 Z"/></svg>
         <span class="ico-label">save wav</span>
@@ -626,4 +634,14 @@
   20%, 80% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, -10px); }
 }
+  .player[data-tema-player="dark"] {
+    background: #232631;
+    color: #f2edda;
+    border-color: #3a3d4a;
+  }
+  .player[data-tema-player="translucent"] {
+    background: color-mix(in srgb, var(--yap-superficie) 62%, transparent);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  }
 </style>

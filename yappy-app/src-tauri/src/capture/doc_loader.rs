@@ -191,9 +191,9 @@ fn pdf_to_text(path: &Path) -> Result<String> {
     // yet, so for now scanned-PDF OCR falls through to an error on iOS;
     // born-digital PDFs still work via pdf_oxide above.
     tracing::info!("pdf_to_text: no text from pdf_oxide; rasterizing via pdfium for OCR");
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(any(target_os = "ios", target_os = "android")))]
     return pdf_to_text_via_pdfium_ocr(path);
-    #[cfg(target_os = "ios")]
+    #[cfg(any(target_os = "ios", target_os = "android"))]
     return Err(anyhow!(
         "scanned PDF OCR is not yet available on iOS — pdfium XCFramework bundling pending"
     ));
@@ -251,7 +251,7 @@ fn pdf_oxide_extract(path: &Path) -> Result<String> {
     Ok(buf)
 }
 
-#[cfg(not(target_os = "ios"))]
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
 fn pdf_to_text_via_pdfium_ocr(path: &Path) -> Result<String> {
     use pdfium_render::prelude::*;
 
@@ -307,7 +307,7 @@ fn pdf_to_text_via_pdfium_ocr(path: &Path) -> Result<String> {
 ///   - macOS:   libpdfium.dylib inside the .app's Contents/Resources/_up_/resources/pdfium/
 ///   - Windows: pdfium.dll next to the exe (Tauri MSI/NSIS layout)
 ///   - Linux:   libpdfium.so in the AppImage's usr/lib or alongside the binary
-#[cfg(not(target_os = "ios"))]
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
 fn find_pdfium_dylib() -> Option<std::path::PathBuf> {
     #[cfg(target_os = "macos")]
     let lib_name = "libpdfium.dylib";

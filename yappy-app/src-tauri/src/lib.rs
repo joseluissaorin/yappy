@@ -7,6 +7,8 @@
 pub mod audiobook;
 mod bridge;
 mod capture;
+mod cola;
+mod enlaces;
 mod commands;
 mod credits;
 mod history;
@@ -18,13 +20,19 @@ mod asr_model;
 mod transcripts;
 mod asr_decode;
 mod playback;
+mod puente;
 mod settings;
 mod state;
 mod tray;
 mod windows;
 
 // Mobile-only helpers — Share-extension payload pickup, UIPasteboard wrapper.
-#[cfg(mobile)]
+// El módulo real llama a FFI de Swift: SOLO iOS. Android recibe stubs con
+// la misma superficie (su share llega por intents → fichero en app data).
+#[cfg(target_os = "ios")]
+mod mobile;
+#[cfg(target_os = "android")]
+#[path = "mobile_android.rs"]
 mod mobile;
 
 // Windows-native helpers — SMTC (system media transport controls) +
@@ -115,21 +123,16 @@ pub fn run() {
         let mut eps: Vec<ort::execution_providers::ExecutionProviderDispatch> = Vec::new();
         let mut requested: Vec<&'static str> = Vec::new();
 
-        // ─ macOS: CoreML (Neural Engine + Apple GPU + CPU). Macs have generous
-        //   RAM and no per-process memory cap, so compiling/duplicating large
-        //   MLPrograms for the ANE is fine.
+        // ─ macOS: SIN CoreML desde macOS 26. El compilador E5RT (ANE y
+        //   también el camino GPU del MLProgram) rechaza el vector_estimator
+        //   de Supertonic («unbounded dimension», error -7) y ORT no cae al
+        //   siguiente EP cuando falla la COMPILACIÓN de la sesión: la carga
+        //   moría. Verificado el 23-08-2026 con el smoke del bundle. XNNPACK
+        //   (registrado abajo para todas las plataformas) sintetiza ~7× más
+        //   rápido que el tiempo real en Apple Silicon: sobra.
         #[cfg(target_os = "macos")]
         {
-            use ort::execution_providers::coreml::{
-                CoreMLComputeUnits, CoreMLExecutionProvider, CoreMLModelFormat,
-            };
-            eps.push(
-                CoreMLExecutionProvider::default()
-                    .with_compute_units(CoreMLComputeUnits::All)
-                    .with_model_format(CoreMLModelFormat::MLProgram)
-                    .build(),
-            );
-            requested.push("CoreML");
+            requested.push("CoreML-disabled(macOS 26: E5RT rechaza el modelo)");
         }
 
         // ─ iOS (device AND simulator): XNNPACK/CPU only — NO CoreML.
@@ -225,6 +228,8 @@ pub fn run() {
             default_lang: "en".to_string(),
             total_steps: 8,
             seed: Some(7),
+            detectar_idioma: true,
+            pausa_entre_parrafos_s: 0.0,
         };
         let mut first = true;
         let sid = pb.begin_session();
@@ -236,6 +241,8 @@ pub fn run() {
                     total: chunk.total,
                     total_paragraphs: chunk.total_paragraphs,
                     text: chunk.text.clone(),
+                    origen_ini: chunk.origen_ini,
+                    origen_fin: chunk.origen_fin,
                     samples: chunk.samples.clone(),
                     source_sample_rate: chunk.sample_rate as u32,
                 };
@@ -264,6 +271,8 @@ pub fn run() {
             default_lang: "en".to_string(),
             total_steps: 8,
             seed: Some(42),
+            detectar_idioma: true,
+            pausa_entre_parrafos_s: 0.0,
         };
         let mut all = Vec::new();
         engine
@@ -326,6 +335,7 @@ pub fn run() {
             .plugin(tauri_plugin_global_shortcut::Builder::new().build());
     }
     builder
+        .plugin(tauri_plugin_deep_link::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
@@ -340,6 +350,23 @@ pub fn run() {
         .setup(move |app| {
             if let Err(e) = settings::SettingsStore::ensure(app.handle(), &state) {
                 tracing::error!("settings init: {e:?}");
+            }
+
+            // El puente escucha en el escritorio desde el arranque: barato
+            // (un socket QUIC dormido) y necesario para que el QR exista.
+            #[cfg(desktop)]
+            puente::iniciar_servidor(app.handle().clone());
+
+            // Los deep links yappy:// se procesan de verdad (Quick Actions,
+            // widget, Spotlight, emparejamiento). Sin esto solo abrían la app.
+            {
+                use tauri_plugin_deep_link::DeepLinkExt;
+                let asa = app.handle().clone();
+                app.deep_link().on_open_url(move |event| {
+                    for url in event.urls() {
+                        enlaces::manejar(&asa, url.as_str());
+                    }
+                });
             }
 
             // Tray, bridge, hotkey: stubbed to no-ops on mobile (see each module).
@@ -390,19 +417,19 @@ pub fn run() {
                 state.playback.subscribe(move |snap| {
                     // Skip refreshes when nothing's actually playing or queued.
                     if snap.duration_secs < 0.1 {
-                        mobile::now_playing_set("", "", "", 0.0, 0.0, false);
+                        // Si lo que suena es un audiolibro por AVAudioPlayer
+                        // (la Biblioteca), NO pisar su Now Playing.
+                        if !mobile::audiofile_is_playing() {
+                            mobile::now_playing_set("", "", "", 0.0, 0.0, false);
+                        }
                         return;
                     }
-                    // Pull the document name from the active document, fall
-                    // back to a generic title.
+                    // El título de la sesión de lectura actual, no «el primer
+                    // documento del HashMap».
                     let title = app_handle
                         .try_state::<std::sync::Arc<crate::state::AppState>>()
-                        .and_then(|s| {
-                            s.documents
-                                .lock()
-                                .ok()
-                                .and_then(|d| d.values().next().map(|doc| doc.filename.clone()))
-                        })
+                        .map(|s| s.titulo_actual.lock().unwrap().clone())
+                        .filter(|t| !t.is_empty())
                         .unwrap_or_else(|| "Yappy".to_string());
                     mobile::now_playing_set(
                         &title,
@@ -470,6 +497,22 @@ pub fn run() {
             }
         })
         .invoke_handler(tauri::generate_handler![
+            cola::cola_listar_cmd,
+            cola::cola_agregar_url_cmd,
+            cola::cola_agregar_texto_cmd,
+            cola::cola_agregar_archivo_cmd,
+            cola::cola_agregar_audio_cmd,
+            cola::cola_eliminar_cmd,
+            cola::cola_reintentar_cmd,
+            puente::puente_estado_cmd,
+            puente::puente_emparejar_nuevo_cmd,
+            puente::puente_revocar_cmd,
+            puente::puente_vincular_cmd,
+            puente::puente_movil_estado_cmd,
+            puente::puente_desvincular_cmd,
+            puente::puente_convertir_cmd,
+            commands::biblioteca_documentos_cmd,
+            commands::biblioteca_olvidar_cmd,
             commands::list_voices,
             commands::get_settings,
             commands::set_settings,

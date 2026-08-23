@@ -49,6 +49,10 @@
     onBridgePaired,
     onBridgeDisconnected,
     onBridgeTokenChanged,
+    puenteEstado,
+    puenteEmparejarNuevo,
+    puenteRevocar,
+    type EstadoPuente,
   } from "$lib/ipc";
 
   let settings: Settings | null = $state(null);
@@ -58,6 +62,21 @@
   let bridgeBusy = $state(false);
   let bridgeToastText: string | null = $state(null);
   let creditsOpen = $state(false);
+  let puente = $state<EstadoPuente | null>(null);
+  let puenteQR = $state<{ enlace: string; qr_svg: string } | null>(null);
+
+  async function refrescarPuente() {
+    try { puente = await puenteEstado(); } catch {}
+  }
+  async function emparejarMovil() {
+    try {
+      puenteQR = await puenteEmparejarNuevo();
+      await refrescarPuente();
+    } catch (e) { bridgeToast(String(e)); }
+  }
+  async function revocarPuente(prefijo: string) {
+    try { await puenteRevocar(prefijo); await refrescarPuente(); } catch {}
+  }
 
   const OVERRIDE_LANGS: string[] = ["en", "es", "fr", "de", "it", "pt", "nl", "ja", "ko", "ru"];
   let cleanups: (() => void)[] = [];
@@ -115,7 +134,6 @@
   async function changeAppTheme(t: AppTheme) { if (!settings) return; settings = { ...settings, app_theme: t }; await setAppTheme(t); document.documentElement.dataset.theme = t; }
   async function changeOcrEngine(e: OcrEngine) { if (!settings) return; settings = { ...settings, ocr_engine: e }; await setOcrEngine(e); }
   async function changePlayerOpacity(v: number) { if (!settings) return; settings = { ...settings, player_opacity: v }; await setSettings(settings); }
-  async function changeAutoHide(v: number) { if (!settings) return; settings = { ...settings, player_autohide_secs: v }; await setSettings(settings); }
   async function doResetSettings() {
     if (!confirm("reset all settings to defaults? this can't be undone.")) return;
     settings = await resetSettings();
@@ -140,7 +158,7 @@
     } catch (e) { notifyError(String(e)); }
   }
 
-  async function refreshBridgeStatus() { try { bridge = await bridgeStatus(); } catch {} }
+  async function refreshBridgeStatus() { try { bridge = await bridgeStatus(); await refrescarPuente(); } catch {} }
   function bridgeToast(t: string) { bridgeToastText = t; setTimeout(() => (bridgeToastText = null), 2500); }
   async function copyToken() {
     if (!bridge?.token) return;
@@ -387,12 +405,6 @@
               oninput={(e) => changePlayerOpacity(parseFloat((e.target as HTMLInputElement).value))} />
             <span class="lbl-num">{Math.round(settings.player_opacity * 100)}%</span>
           </div>
-          <div class="pref-line">
-            <span class="lbl">auto-hide</span>
-            <input type="range" min="0" max="60" step="1" value={settings.player_autohide_secs}
-              oninput={(e) => changeAutoHide(parseInt((e.target as HTMLInputElement).value))} />
-            <span class="lbl-num">{settings.player_autohide_secs === 0 ? "off" : settings.player_autohide_secs + "s"}</span>
-          </div>
           <div class="pref-line toggles">
             <label class="mini-toggle">
               <input type="checkbox" bind:checked={settings.player_show_source} onchange={async () => settings && setSettings(settings)} />
@@ -445,16 +457,6 @@
         </div>
         <label class="toggle">
           <input type="checkbox" bind:checked={settings.notify_on_done} onchange={async () => settings && setSettings(settings)} />
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="pref-row">
-        <div>
-          <div class="pref-label">sound effects</div>
-          <div class="pref-sub">tiny chimes on ready / done / error.</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" bind:checked={settings.sound_effects} onchange={async () => settings && setSettings(settings)} />
           <span class="slider"></span>
         </label>
       </div>
@@ -600,6 +602,50 @@
         </div>
         <button class="btn-outline danger" onclick={doResetSettings}>reset…</button>
       </div>
+    </div>
+  </section>
+
+  <!-- ── El puente: tu iPhone usa este ordenador para convertir ────────── -->
+  <section class="pref-card">
+    <h2>phone bridge</h2>
+    <div class="pref-body">
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">let your phone render here</div>
+          <div class="pref-sub">
+            queue a whole book from your iPhone and this computer synthesizes
+            it overnight — the finished audiobook lands back on the phone.
+            end-to-end encrypted (iroh); no accounts.
+          </div>
+        </div>
+        <button class="btn-pink" onclick={emparejarMovil}>pair a phone</button>
+      </div>
+      {#if puenteQR}
+        <div class="puente-qr">
+          <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+          {@html puenteQR.qr_svg}
+          <div class="puente-qr-texto">
+            <p>scan with the iPhone <strong>Camera</strong> app and tap
+            «Open in Yappy». Or copy the link and paste it in the phone's
+            Settings → Your computer.</p>
+            <button class="btn-outline" onclick={async () => { try { await navigator.clipboard.writeText(puenteQR!.enlace); bridgeToast("link copied"); } catch {} }}>copy pairing link</button>
+          </div>
+        </div>
+      {/if}
+      {#if puente && puente.tokens.length > 0}
+        <div class="pref-row">
+          <div>
+            <div class="pref-label">paired phones</div>
+            <div class="pref-sub">each pairing is a revocable token.</div>
+          </div>
+        </div>
+        {#each puente.tokens as t (t)}
+          <div class="pref-row puente-token">
+            <code>{t}…</code>
+            <button class="btn-outline danger" onclick={() => revocarPuente(t)}>revoke</button>
+          </div>
+        {/each}
+      {/if}
     </div>
   </section>
 {/if}

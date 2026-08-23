@@ -929,6 +929,64 @@ pub fn load_project_cmd(app: AppHandle, doc_path: String) -> Result<Option<Strin
     Ok(Some(json))
 }
 
+/// Una entrada de la biblioteca de documentos del escritorio: cada proyecto
+/// autosalvado (que hasta ahora era invisible) con lo justo para pintar la
+/// ficha y reabrirlo.
+#[derive(Debug, Clone, Serialize)]
+pub struct DocumentoBiblioteca {
+    pub doc_path: String,
+    pub filename: String,
+    pub saved_at: Option<String>,
+    pub parrafos: usize,
+    /// false si el fichero original ya no está donde estaba.
+    pub existe: bool,
+}
+
+#[tauri::command]
+pub fn biblioteca_documentos_cmd(app: AppHandle) -> Result<Vec<DocumentoBiblioteca>, String> {
+    let mut dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
+    dir.push("projects");
+    let mut salida = Vec::new();
+    let Ok(entradas) = std::fs::read_dir(&dir) else {
+        return Ok(salida);
+    };
+    for entrada in entradas.flatten() {
+        let ruta = entrada.path();
+        if ruta.extension().and_then(|e| e.to_str()) != Some("json") {
+            continue;
+        }
+        let Ok(json) = std::fs::read_to_string(&ruta) else { continue };
+        let Ok(v) = serde_json::from_str::<serde_json::Value>(&json) else { continue };
+        let Some(doc_path) = v.get("doc_path").and_then(|p| p.as_str()) else { continue };
+        let filename = std::path::Path::new(doc_path)
+            .file_name()
+            .map(|n| n.to_string_lossy().to_string())
+            .unwrap_or_else(|| doc_path.to_string());
+        salida.push(DocumentoBiblioteca {
+            doc_path: doc_path.to_string(),
+            filename,
+            saved_at: v.get("saved_at").and_then(|s| s.as_str()).map(String::from),
+            parrafos: v
+                .get("paragraphs")
+                .and_then(|p| p.as_array())
+                .map(|a| a.len())
+                .unwrap_or(0),
+            existe: std::path::Path::new(doc_path).exists(),
+        });
+    }
+    salida.sort_by(|a, b| b.saved_at.cmp(&a.saved_at));
+    Ok(salida)
+}
+
+#[tauri::command]
+pub fn biblioteca_olvidar_cmd(app: AppHandle, doc_path: String) -> Result<(), String> {
+    let p = project_path(&app, &doc_path)?;
+    if p.exists() {
+        std::fs::remove_file(&p).map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
+
 /// One paragraph as the audiobook renderer sees it: text + optional voice/speed
 /// override + optional pause (silence in seconds) before it.
 #[derive(Debug, Clone, Deserialize)]
@@ -973,6 +1031,8 @@ pub async fn render_audiobook_cmd(
     }
     let root = model::model_root(&app).map_err(|e| e.to_string())?;
     let engine = state.engine_or_load(&root).map_err(|e| e.to_string())?;
+    #[cfg(desktop)]
+    let avisar_al_terminar = state.settings.lock().unwrap().notify_on_done;
 
     let (default_voice, default_speed, default_lang, total_steps) = {
         let s = state.settings.lock().unwrap();
@@ -1054,6 +1114,8 @@ pub async fn render_audiobook_cmd(
                 default_lang: default_lang.clone(),
                 total_steps,
                 seed: None,
+            detectar_idioma: true,
+            pausa_entre_parrafos_s: 0.0,
             };
 
             let captured: std::sync::Mutex<Vec<(u32, Vec<f32>)>> = std::sync::Mutex::new(Vec::new());
@@ -1156,6 +1218,21 @@ pub async fn render_audiobook_cmd(
             crate::os_win::taskbar_progress_clear();
             crate::os_win::smtc_clear();
         }
+        // Escritorio: la notificación de «audiolibro listo» que el ajuste
+        // notify_on_done prometía desde la 0.1.
+        #[cfg(desktop)]
+        {
+            if avisar_al_terminar {
+                use tauri_plugin_notification::NotificationExt;
+                let mins = (combined.len() as f64 / final_sr as f64 / 60.0).round() as i64;
+                let _ = app_for_thread
+                    .notification()
+                    .builder()
+                    .title("Audiobook ready")
+                    .body(format!("{} min of audio, in your library", mins.max(1)))
+                    .show();
+            }
+        }
         Ok(())
     })
     .await
@@ -1168,15 +1245,25 @@ pub async fn render_audiobook_cmd(
 /// `voice_override` is a one-shot voice that supersedes the persisted user voice
 /// for THIS playback only — used by the "re-read this section with another voice" UI.
 #[tauri::command]
+#[allow(clippy::too_many_arguments)]
 pub async fn read_document_paragraphs_cmd(
     app: AppHandle,
     state: State<'_, Arc<AppState>>,
     paragraphs: Vec<String>,
     from_index: usize,
     voice_override: Option<String>,
-    // One-shot overrides for THIS playback. Used by the document window's rhythm
-    // slider — multiplies the persisted global speed without mutating settings.
+    // One-shot overrides for THIS playback. Used by the document window's
+    // rhythm slider; multiplies the persisted global speed without mutating
+    // settings.
     speed_override: Option<f32>,
+    // El guion enriquecido del editor: clase de cada párrafo y anulaciones
+    // por párrafo (pausa previa efectiva en segundos, multiplicador de
+    // velocidad, voz). Arrays paralelos a `paragraphs`, opcionales para
+    // compatibilidad con llamadores viejos.
+    kinds: Option<Vec<String>>,
+    pausas: Option<Vec<f32>>,
+    velocidades: Option<Vec<f32>>,
+    voces: Option<Vec<Option<String>>>,
 ) -> Result<(), String> {
     let joined = paragraphs
         .iter()
@@ -1191,8 +1278,8 @@ pub async fn read_document_paragraphs_cmd(
         Some(v) if !v.is_empty() => v,
         _ => state.settings.lock().unwrap().voice.clone(),
     };
-    // Optional one-shot speed override. We temporarily mutate settings in-memory
-    // to feed the engine — the disk-persisted value isn't touched.
+    // Optional one-shot speed override. We temporarily mutate settings
+    // in-memory to feed the engine; the disk-persisted value isn't touched.
     let original_speed = if let Some(s) = speed_override {
         let mut settings = state.settings.lock().unwrap();
         let prev = settings.speed;
@@ -1202,10 +1289,47 @@ pub async fn read_document_paragraphs_cmd(
         None
     };
 
-    let result = read_with_voice_lang_internal_with_mode(
+    // Construye el Guion con lo que sabe el editor. Cada pieza pasa por el
+    // guionizador (idioma + verbalización con spans) y luego recibe sus
+    // anulaciones.
+    let idioma_base = {
+        let pref = state.settings.lock().unwrap().default_lang.clone();
+        yappy_core::lang_detect::detect_document_lang(&joined, &pref)
+    };
+    let guion = {
+        use yappy_core::guion::{construir_pieza, ClasePieza, Guion};
+        let mut piezas = Vec::new();
+        for (i, texto) in paragraphs.iter().enumerate().skip(from_index) {
+            if texto.trim().is_empty() {
+                continue;
+            }
+            let clase = kinds
+                .as_ref()
+                .and_then(|k| k.get(i))
+                .map(|k| ClasePieza::desde_kind(k))
+                .unwrap_or(ClasePieza::Parrafo);
+            let mut pieza = construir_pieza(texto, clase, &idioma_base);
+            if let Some(p) = pausas.as_ref().and_then(|v| v.get(i)) {
+                pieza.pausa_antes_s = p.clamp(0.0, 10.0);
+            }
+            if let Some(m) = velocidades.as_ref().and_then(|v| v.get(i)) {
+                pieza.mult_velocidad = m.clamp(0.25, 2.0);
+            }
+            if let Some(Some(v)) = voces.as_ref().and_then(|v| v.get(i)) {
+                if !v.is_empty() {
+                    pieza.voz = Some(v.clone());
+                }
+            }
+            piezas.push(pieza);
+        }
+        Guion { idioma_base, piezas }
+    };
+
+    let result = read_internal(
         &app,
         state.inner().clone(),
         joined,
+        Some(guion),
         voice,
         None,
         "document".into(),
@@ -1262,14 +1386,14 @@ pub fn haptic_cmd(kind: String) {
 /// frontend calls this when its listeners are ready (on mount + each
 /// foreground) so a cold-launch share is never lost to a startup race.
 /// Returns a newline-separated string (`url:`/`text:`/`audio:`/`transcript:`
-/// lines) or null when the queue is empty. No-op (null) off iOS.
+/// lines) or null when the queue is empty. No-op (null) on desktop.
 #[tauri::command]
 pub fn drain_shared_payloads_cmd() -> Option<String> {
-    #[cfg(target_os = "ios")]
+    #[cfg(any(target_os = "ios", target_os = "android"))]
     {
         crate::mobile::drain_shared_payload_string()
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(any(target_os = "ios", target_os = "android")))]
     {
         None
     }
@@ -1463,13 +1587,40 @@ pub fn library_play_cmd(_app: AppHandle, path: String, from_start: Option<bool>)
 #[tauri::command]
 pub fn library_pause_cmd() {
     #[cfg(target_os = "ios")]
-    crate::mobile::audiofile_pause();
+    {
+        crate::mobile::audiofile_pause();
+        // La pantalla de bloqueo debe reflejar la pausa (antes se quedaba
+        // en «reproduciendo» para siempre).
+        actualizar_now_playing_biblioteca(false);
+    }
 }
 
 #[tauri::command]
 pub fn library_resume_cmd() {
     #[cfg(target_os = "ios")]
-    crate::mobile::audiofile_resume();
+    {
+        crate::mobile::audiofile_resume();
+        actualizar_now_playing_biblioteca(true);
+    }
+}
+
+#[cfg(target_os = "ios")]
+fn actualizar_now_playing_biblioteca(reproduciendo: bool) {
+    if let Some(ruta) = crate::mobile::audiofile_current_path() {
+        let titulo = std::path::Path::new(&ruta)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or("Yappy")
+            .to_string();
+        crate::mobile::now_playing_set(
+            &titulo,
+            "Yappy",
+            "",
+            crate::mobile::audiofile_duration(),
+            crate::mobile::audiofile_position(),
+            reproduciendo,
+        );
+    }
 }
 
 #[tauri::command]
@@ -1611,6 +1762,16 @@ pub async fn read_clipboard_cmd(
     app: AppHandle,
     state: State<'_, Arc<AppState>>,
 ) -> Result<(), String> {
+    leer_portapapeles(app, state.inner().clone())
+        .await
+        .map_err(|e| e.to_string())
+}
+
+/// El mismo gesto, invocable desde el atajo global (sin State extractor).
+pub async fn leer_portapapeles<R: Runtime>(
+    app: AppHandle<R>,
+    state: Arc<AppState>,
+) -> anyhow::Result<()> {
     let text = capture::clipboard::read_text()
         .ok()
         .flatten()
@@ -1619,9 +1780,8 @@ pub async fn read_clipboard_cmd(
         let _ = app.emit("capture_empty", true);
         return Ok(());
     }
-    read_text(&app, state.inner().clone(), text, "clipboard".into())
+    read_text(&app, state, text, "clipboard".into())
         .await
-        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -1966,6 +2126,24 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
     source: String,
     mode: ReadMode,
 ) -> Result<()> {
+    read_internal(app, state, text, None, voice, forced_lang, source, mode).await
+}
+
+/// El camino común de toda lectura. Si llega un Guion ya construido (el
+/// editor de documentos, con sus clases de pieza y sus anulaciones por
+/// párrafo), se sintetiza tal cual; si no, el texto plano pasa por el
+/// guionizador dentro del motor.
+#[allow(clippy::too_many_arguments)]
+async fn read_internal<R: Runtime>(
+    app: &AppHandle<R>,
+    state: Arc<AppState>,
+    text: String,
+    guion: Option<yappy_core::guion::Guion>,
+    voice: String,
+    forced_lang: Option<String>,
+    source: String,
+    mode: ReadMode,
+) -> Result<()> {
     tracing::info!(
         "read_with_voice: voice={} source={} chars={} forced_lang={:?}",
         voice,
@@ -2002,6 +2180,8 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
                 default_lang: forced_lang.clone().unwrap_or_else(|| s.default_lang.clone()),
                 total_steps: s.quality.total_steps(),
                 seed: None,
+                detectar_idioma: s.auto_lang_detect,
+                pausa_entre_parrafos_s: s.silence_secs.clamp(0.0, 5.0),
             },
             s.voice_overrides.clone(),
             s.save_history,
@@ -2030,6 +2210,20 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
         ReadMode::Document { base_paragraph_index } => *base_paragraph_index,
         ReadMode::MiniPlayer => 0,
     };
+    // El título de la sesión: la primera línea con chicha del texto. Es lo
+    // que enseñan la pantalla de bloqueo y el widget.
+    {
+        let titulo: String = text
+            .lines()
+            .find(|l| !l.trim().is_empty())
+            .unwrap_or("Yappy")
+            .trim_start_matches('#')
+            .trim()
+            .chars()
+            .take(70)
+            .collect();
+        *state.titulo_actual.lock().unwrap() = titulo;
+    }
     let _ = app.emit(
         "playback_starting",
         serde_json::json!({
@@ -2042,6 +2236,7 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
     let app_for_thread = app.clone();
     let state_for_thread = state.clone();
     let text_for_thread = text.clone();
+    let guion_for_thread = guion;
     let app_for_history = app.clone();
     let source_for_history = source.clone();
     let preview_for_history: String = text.chars().take(180).collect();
@@ -2051,7 +2246,7 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
         let mut detected_lang = String::new();
         let opts_local = opts.clone();
         let my_session = session_id;
-        let res = engine.synthesize_streaming(&text_for_thread, &opts_local, |chunk| {
+        let al_chunk = |chunk: yappy_core::engine::AudioChunk| {
             // Cooperative cancel: if Stop fired (or a new read started), the controller
             // has bumped its session id. Bail out *before* spending more time on this chunk's
             // downstream work — the engine respects an Err return by halting the loop.
@@ -2065,6 +2260,8 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
                 total: chunk.total,
                 total_paragraphs: chunk.total_paragraphs,
                 text: chunk.text.clone(),
+                origen_ini: chunk.origen_ini,
+                origen_fin: chunk.origen_fin,
                 samples: chunk.samples.clone(),
                 source_sample_rate: chunk.sample_rate as u32,
             };
@@ -2096,7 +2293,12 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
             );
             let _ = &voice_overrides;
             Ok(())
-        });
+        };
+
+        let res = match &guion_for_thread {
+            Some(g) => engine.synthesize_guion(g, &opts_local, al_chunk),
+            None => engine.synthesize_streaming(&text_for_thread, &opts_local, al_chunk),
+        };
 
         // A cancellation is an expected outcome, not an error worth surfacing.
         let cancelled = matches!(&res, Err(e) if e.to_string().contains("session cancelled"));
@@ -2308,6 +2510,31 @@ async fn run_transcription(
     .await
     .map_err(|e| format!("transcription task panicked: {e}"))?
     .map_err(|e| e.to_string())
+}
+
+/// Transcripción al servicio de la cola: mismo motor que la pestaña de
+/// transcribir, devolviendo solo el texto. En iOS exige el modelo ya
+/// descargado (la cola enseña el error con claridad si falta).
+pub async fn transcribir_para_cola<R: Runtime>(
+    app: &AppHandle<R>,
+    ruta: &str,
+) -> anyhow::Result<String> {
+    if !asr_model::is_asr_model_ready(app)? {
+        anyhow::bail!("falta el modelo de transcripción (descárgalo en ajustes)");
+    }
+    let root = asr_model::asr_model_root(app)?;
+    let ruta = ruta.to_string();
+    let res = tokio::task::spawn_blocking(move || -> anyhow::Result<String> {
+        let samples = crate::asr_decode::decode_to_mono16k(std::path::Path::new(&ruta))?;
+        let opts = yappy_core::asr::TranscribeOptions::default();
+        let out = asr_engine_cache::with_engine(&root, |eng| {
+            use yappy_core::asr::Transcriber;
+            eng.transcribe_mono16k(&samples, &opts)
+        })?;
+        Ok(out.text)
+    })
+    .await??;
+    Ok(res)
 }
 
 /// Persist a transcript that was produced elsewhere (e.g. the iOS Share

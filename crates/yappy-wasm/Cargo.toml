@@ -1,0 +1,20 @@
+[package]
+name = "yappy-wasm"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+# El guionizador compilado al navegador para la demo de la web. Incluye los
+# MISMOS ficheros fuente de yappy-core por ruta (el crate entero no puede
+# venir porque arrastra ONNX Runtime, que no existe en wasm).
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+serde = { workspace = true }
+serde_json = { workspace = true }
+regex = { workspace = true }
+once_cell = { workspace = true }
+whatlang = { workspace = true }

@@ -33,7 +33,7 @@
   font-size: 14px; font-weight: 700; transition: all 0.15s ease;
 }
 .nav button:hover { background: var(--cream-200); }
-.nav button.active { background: var(--ink-900); color: var(--cream-100); }
+.nav button.active { background: var(--yap-tecla); color: var(--yap-tecla-tinta); box-shadow: var(--yap-relieve); }
 .actions { display: flex; gap: 4px; }
 .btn-ghost.icon-only {
   width: 32px; height: 32px; padding: 0; font-size: 16px; font-weight: 700;
@@ -514,7 +514,7 @@ main {
   transition: transform 0.12s var(--ease-emph), background 0.15s ease;
 }
 .voice-pill:hover { background: var(--cream-200); transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink-900); }
-.voice-pill.active { background: var(--pink-500); color: var(--ink-900); }
+.voice-pill.active { background: var(--yap-tecla); color: var(--yap-tecla-tinta); box-shadow: var(--yap-relieve); }
 .voice-pill .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ink-900); border: 1.5px solid var(--ink-900); }
 .voice-pill .dot[data-id^="F"] { background: var(--pink-500); }
 .voice-pill .dot[data-id^="M"] { background: var(--lavender-500); }
@@ -570,7 +570,7 @@ main {
 .voice-desc { font-size: 13px; color: var(--ink-700); margin: 4px 0 8px; line-height: 1.45; flex: 1; font-weight: 500; }
 .voice-actions { display: flex; justify-content: space-between; align-items: center; }
 .voice-id { font-family: var(--font-mono); font-size: 11px; color: var(--ink-500); font-weight: 700; }
-.voice-active-pill { font-size: 11px; padding: 3px 10px; border-radius: 999px; background: var(--ink-900); color: var(--cream-100); font-weight: 700; }
+.voice-active-pill { font-size: 11px; padding: 3px 10px; border-radius: 999px; background: var(--yap-tecla); color: var(--yap-tecla-tinta); font-weight: 700; box-shadow: var(--yap-relieve); }
 
 /* Preferences */
 .prefs { max-width: 820px; margin: 0 auto; }

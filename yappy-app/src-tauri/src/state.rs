@@ -44,6 +44,10 @@ pub struct AppState {
     /// This makes multi-window possible — each doc window has its own state, and emits
     /// are targeted at the specific label so events don't cross-pollute.
     pub documents: Mutex<HashMap<String, CurrentDocument>>,
+    /// El título de LO QUE SUENA AHORA (pantalla de bloqueo, widget). Antes
+    /// se cogía «el primer documento del HashMap», que con dos ventanas
+    /// enseñaba el equivocado.
+    pub titulo_actual: Mutex<String>,
 }
 
 impl AppState {
@@ -55,6 +59,7 @@ impl AppState {
             playback: Arc::new(PlaybackController::new()),
             bridge: Bridge::default(),
             documents: Mutex::new(HashMap::new()),
+            titulo_actual: Mutex::new(String::new()),
         }
     }
 
