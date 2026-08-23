@@ -238,6 +238,10 @@ pub fn trocear(pieza: &Pieza) -> Vec<Trozo> {
 /// en blanco y reconoce títulos (#), citas (>), listas (-, *, número.) y
 /// separadores (---).
 pub fn construir_desde_texto(texto: &str, idioma_base: &str) -> Guion {
+    // El idioma del documento se decide mirando el documento entero (sobre
+    // texto largo la detección es fiable); el parámetro queda de respaldo.
+    let idioma_base = crate::lang_detect::detect_document_lang(texto, idioma_base);
+    let idioma_base = idioma_base.as_str();
     let mut piezas = Vec::new();
     for bloque in texto.split("\n\n") {
         let bloque = bloque.trim();

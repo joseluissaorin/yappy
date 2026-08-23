@@ -1215,7 +1215,10 @@ pub async fn read_document_paragraphs_cmd(
     // Construye el Guion con lo que sabe el editor. Cada pieza pasa por el
     // guionizador (idioma + verbalización con spans) y luego recibe sus
     // anulaciones.
-    let idioma_base = state.settings.lock().unwrap().default_lang.clone();
+    let idioma_base = {
+        let pref = state.settings.lock().unwrap().default_lang.clone();
+        yappy_core::lang_detect::detect_document_lang(&joined, &pref)
+    };
     let guion = {
         use yappy_core::guion::{construir_pieza, ClasePieza, Guion};
         let mut piezas = Vec::new();

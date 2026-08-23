@@ -31,6 +31,10 @@
   const doc = $derived(reader.doc);
   const paras = $derived(doc?.paragraphs ?? []);
   const kinds = $derived(doc?.paragraph_kinds ?? []);
+  const pausesDefault = $derived(doc?.paragraph_pauses ?? []);
+  function defaultPause(i: number): number {
+    return pausesDefault[i] ?? 0;
+  }
   const title = $derived((doc?.filename ?? "document").replace(/\.[^.]+$/, "").replace(/[-_]/g, " "));
 
   // Per-paragraph editable state (parity with the desktop editor's ParaState).
@@ -166,7 +170,15 @@
   async function readFrom(index: number) {
     haptic("light");
     baseIndex = index;
-    await readDocumentParagraphs(paras, index, docVoice ?? undefined, effectiveSpeedForPlay());
+    await readDocumentParagraphs(paras, index, docVoice ?? undefined, effectiveSpeedForPlay(), {
+      kinds: overrides.map((o) => o.kind ?? "paragraph"),
+      pausas: overrides.map((o, i) => (o.pauseBefore ?? defaultPause(i)) * rhythmMult),
+      velocidades: overrides.map((o) => {
+        const base = settings?.speed ?? 1.05;
+        return o.speed ? Math.max(0.25, Math.min(2.0, o.speed / base)) : 1.0;
+      }),
+      voces: overrides.map((o) => o.voice ?? null),
+    });
   }
   async function toggle() { haptic("medium"); await togglePause(); }
   function back() { goto("/"); }

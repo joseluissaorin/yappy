@@ -102,6 +102,10 @@ export interface PlaybackSnapshot {
   current_index: number;
   /// Paragraph index in the input. Use for paragraph-level karaoke.
   current_paragraph_index: number;
+  /// Rango (en caracteres) del texto ORIGINAL del párrafo que suena ahora.
+  /// El karaoke subraya exactamente esto; no hay que buscar substrings.
+  current_origen_ini: number;
+  current_origen_fin: number;
   total: number;
   total_paragraphs: number;
   elapsed_secs: number;
@@ -269,17 +273,32 @@ export function onDocumentLoaded(cb: (d: DocumentLoaded) => void): Promise<Unlis
 export function onDocumentError(cb: (p: { filename: string; error: string }) => void): Promise<UnlistenFn> {
   return listen("document_error", (ev: any) => cb(ev.payload));
 }
+export interface GuionEnriquecido {
+  /// Clase de cada párrafo (heading1..6, quote, list, hr, verse, paragraph).
+  kinds?: string[];
+  /// Pausa previa EFECTIVA por párrafo en segundos (con el ritmo aplicado).
+  pausas?: number[];
+  /// Multiplicador de velocidad por párrafo.
+  velocidades?: number[];
+  /// Voz por párrafo (null = la global).
+  voces?: (string | null)[];
+}
 export const readDocumentParagraphs = (
   paragraphs: string[],
   fromIndex: number,
   voiceOverride?: string,
   speedOverride?: number,
+  guion?: GuionEnriquecido,
 ): Promise<void> =>
   invoke("read_document_paragraphs_cmd", {
     paragraphs,
     fromIndex,
     voiceOverride: voiceOverride ?? null,
     speedOverride: speedOverride ?? null,
+    kinds: guion?.kinds ?? null,
+    pausas: guion?.pausas ?? null,
+    velocidades: guion?.velocidades ?? null,
+    voces: guion?.voces ?? null,
   });
 export const getCurrentDocument = (): Promise<DocumentLoaded | null> =>
   invoke("get_current_document_cmd");
