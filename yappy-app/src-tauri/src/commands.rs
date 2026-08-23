@@ -2383,6 +2383,31 @@ async fn run_transcription(
     .map_err(|e| e.to_string())
 }
 
+/// Transcripción al servicio de la cola: mismo motor que la pestaña de
+/// transcribir, devolviendo solo el texto. En iOS exige el modelo ya
+/// descargado (la cola enseña el error con claridad si falta).
+pub async fn transcribir_para_cola<R: Runtime>(
+    app: &AppHandle<R>,
+    ruta: &str,
+) -> anyhow::Result<String> {
+    if !asr_model::is_asr_model_ready(app)? {
+        anyhow::bail!("falta el modelo de transcripción (descárgalo en ajustes)");
+    }
+    let root = asr_model::asr_model_root(app)?;
+    let ruta = ruta.to_string();
+    let res = tokio::task::spawn_blocking(move || -> anyhow::Result<String> {
+        let samples = crate::asr_decode::decode_to_mono16k(std::path::Path::new(&ruta))?;
+        let opts = yappy_core::asr::TranscribeOptions::default();
+        let out = asr_engine_cache::with_engine(&root, |eng| {
+            use yappy_core::asr::Transcriber;
+            eng.transcribe_mono16k(&samples, &opts)
+        })?;
+        Ok(out.text)
+    })
+    .await??;
+    Ok(res)
+}
+
 /// Persist a transcript that was produced elsewhere (e.g. the iOS Share
 /// Extension transcribed in-place and handed Yappy the finished text). Returns
 /// the stored entry so the UI can surface it immediately.

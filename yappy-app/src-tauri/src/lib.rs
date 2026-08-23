@@ -7,6 +7,7 @@
 pub mod audiobook;
 mod bridge;
 mod capture;
+mod cola;
 mod commands;
 mod credits;
 mod history;
@@ -472,6 +473,13 @@ pub fn run() {
             }
         })
         .invoke_handler(tauri::generate_handler![
+            cola::cola_listar_cmd,
+            cola::cola_agregar_url_cmd,
+            cola::cola_agregar_texto_cmd,
+            cola::cola_agregar_archivo_cmd,
+            cola::cola_agregar_audio_cmd,
+            cola::cola_eliminar_cmd,
+            cola::cola_reintentar_cmd,
             commands::list_voices,
             commands::get_settings,
             commands::set_settings,

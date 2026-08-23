@@ -28,9 +28,25 @@ export const ROUTES: Record<Section, string> = {
   diagnostics: "/diagnostics",
 };
 
+/// En el móvil la jerarquía es otra: dos secciones y ajustes. Cualquier
+/// destino de escritorio se traduce a su casa móvil.
+const RUTAS_MOVIL: Record<Section, string> = {
+  home: "/escuchar",
+  voices: "/ajustes",
+  transcribe: "/escuchar",
+  library: "/biblioteca",
+  preferences: "/ajustes",
+  history: "/biblioteca",
+  diagnostics: "/ajustes",
+};
+
 /// Navigate to a section. `opts.path` hands an audio file to transcription.
 export async function goPage(section: Section, opts?: { path?: string }) {
-  if (section === "transcribe" && !get(isIOS)) {
+  if (get(isIOS)) {
+    await goto(RUTAS_MOVIL[section]);
+    return;
+  }
+  if (section === "transcribe") {
     // Desktop: dedicated transcription window.
     await openTranscribeWindow(opts?.path);
     return;

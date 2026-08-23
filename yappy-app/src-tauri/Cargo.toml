@@ -92,6 +92,8 @@ futures-util = "0.3"
 # Misc.
 dirs = "5"
 base64 = "0.22"
+dom_smoothie = "0.18"
+yt-transcript-rs = "0.1"
 
 # ─── macOS-only deps (AppKit / Core Foundation / Core Graphics).
 [target.'cfg(target_os = "macos")'.dependencies]

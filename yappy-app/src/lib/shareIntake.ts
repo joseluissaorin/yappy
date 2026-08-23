@@ -20,9 +20,12 @@ import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
 import {
   synthesizeText,
   saveTranscript,
-  transcribeAudio,
   readTextAsDocument,
   readDocumentParagraphs,
+  colaAgregarUrl,
+  colaAgregarTexto,
+  colaAgregarArchivo,
+  colaAgregarAudio,
 } from "$lib/ipc";
 import { reader } from "$lib/readerStore.svelte";
 
@@ -102,68 +105,56 @@ async function fetchHtml(url: string): Promise<string> {
   return await resp.text();
 }
 
-// One payload line — "url:<...>" or "text:<...>" — handled.
+// Cada línea del payload entra en LA COLA: la extracción (readability,
+// transcripción de YouTube, ASR) ocurre en Rust con estado visible, y la
+// app navega a «Escuchar» para que se vea llegar. Los textos cortos además
+// suenan al instante, que es el gesto de «léeme esto» de toda la vida.
 async function handleOne(line: string): Promise<void> {
+  let encolado = false;
   if (line.startsWith("url:")) {
-    const url = line.slice(4);
-    console.log("[shareIntake] URL share:", url);
-    try {
-      const html = await fetchHtml(url);
-      const article = await extractArticleFromHtml(html, url);
-      console.log(`[shareIntake] defuddle extracted ${article.length} chars`);
-      await openInReaderAndRead(article, titleFromArticle(article));
-    } catch (e) {
-      console.error("[shareIntake] URL handling failed:", e);
-      // Fall back to reading the URL itself so the user at least hears
-      // *something* — better than silent failure.
-      await synthesizeText(`couldn't extract the article. shared URL: ${url}`);
+    const url = line.slice(4).trim();
+    if (url) {
+      await colaAgregarUrl(url);
+      encolado = true;
     }
-    return;
-  }
-  if (line.startsWith("text:")) {
+  } else if (line.startsWith("text:")) {
     const text = line.slice(5).trim();
     if (text) {
-      console.log(`[shareIntake] text share: ${text.length} chars`);
-      // Short snippets read fine blind; longer text opens in the reader.
-      if (text.length > 280) {
-        await openInReaderAndRead(text, titleFromArticle(text));
-      } else {
-        await synthesizeText(text);
+      await colaAgregarTexto(text);
+      encolado = true;
+      if (text.length <= 280) {
+        synthesizeText(text).catch(() => {});
       }
     }
-    return;
-  }
-  // The iOS Share Extension transcribed an audio message in-place and handed us
-  // the finished text. Persist it to history and surface it in the app.
-  if (line.startsWith("transcript:")) {
+  } else if (line.startsWith("transcript:")) {
     const text = line.slice("transcript:".length).trim();
     if (text) {
-      console.log(`[shareIntake] transcript share: ${text.length} chars`);
+      await colaAgregarTexto(text, "Transcripción");
+      encolado = true;
       try {
         const entry = await saveTranscript(text, "Shared");
         window.dispatchEvent(new CustomEvent("yappy:transcript", { detail: entry }));
-      } catch (e) {
-        console.error("[shareIntake] saveTranscript failed:", e);
-      }
+      } catch {}
     }
-    return;
-  }
-  // An audio file was shared but not transcribed in-extension (handoff). Path
-  // points into the App Group container; transcribe it here.
-  if (line.startsWith("audio:")) {
+  } else if (line.startsWith("audio:")) {
     const path = line.slice("audio:".length).trim();
     if (path) {
-      console.log("[shareIntake] audio share:", path);
-      try {
-        const result = await transcribeAudio(path, undefined, "Shared");
-        window.dispatchEvent(new CustomEvent("yappy:transcript", { detail: result }));
-      } catch (e) {
-        console.error("[shareIntake] transcribeAudio failed:", e);
-      }
+      await colaAgregarAudio(path);
+      encolado = true;
     }
-    return;
+  } else if (line.startsWith("file:")) {
+    // PDF, EPUB, DOCX, imagen…: la extensión los copió al App Group.
+    const path = line.slice("file:".length).trim();
+    if (path) {
+      await colaAgregarArchivo(path);
+      encolado = true;
+    }
+  } else {
+    console.warn("[shareIntake] unknown payload prefix:", line.slice(0, 30));
   }
-  console.warn("[shareIntake] unknown payload prefix:", line.slice(0, 30));
+  if (encolado) {
+    goto("/escuchar").catch(() => {});
+  }
 }
 
 // Process a newline-separated payload string (one share entry per line).

@@ -25,6 +25,15 @@ export const isMobile: Readable<boolean> = derived(platformName, ($p) => $p === 
 // decisions based on platform should `await ready` before rendering
 // platform-dependent branches.
 export const ready: Promise<string> = (async () => {
+  // Override de desarrollo: ?plataforma=ios permite ver la interfaz móvil
+  // en un navegador normal (sin Tauri) para revisarla y capturarla.
+  try {
+    const forzada = new URLSearchParams(window.location.search).get("plataforma");
+    if (forzada) {
+      platformName.set(forzada);
+      return forzada;
+    }
+  } catch {}
   try {
     const t = await osType();
     platformName.set(t);

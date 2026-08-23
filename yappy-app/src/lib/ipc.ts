@@ -300,6 +300,37 @@ export const readDocumentParagraphs = (
     velocidades: guion?.velocidades ?? null,
     voces: guion?.voces ?? null,
   });
+// ── La cola (la puerta de entrada del móvil) ────────────────────────────
+export type TipoItemCola = "url" | "youtube" | "archivo" | "texto" | "audio";
+export type EstadoItemCola = "pendiente" | "preparando" | "listo" | "error";
+export interface ItemCola {
+  id: string;
+  tipo: TipoItemCola;
+  titulo: string;
+  origen: string;
+  ruta: string | null;
+  estado: EstadoItemCola;
+  error: string | null;
+  agregado_unix: number;
+  chars: number | null;
+}
+export const colaListar = (): Promise<ItemCola[]> => invoke("cola_listar_cmd");
+export const colaAgregarUrl = (url: string): Promise<ItemCola> =>
+  invoke("cola_agregar_url_cmd", { url });
+export const colaAgregarTexto = (texto: string, titulo?: string): Promise<ItemCola> =>
+  invoke("cola_agregar_texto_cmd", { texto, titulo: titulo ?? null });
+export const colaAgregarArchivo = (ruta: string): Promise<ItemCola> =>
+  invoke("cola_agregar_archivo_cmd", { ruta });
+export const colaAgregarAudio = (ruta: string): Promise<ItemCola> =>
+  invoke("cola_agregar_audio_cmd", { ruta });
+export const colaEliminar = (id: string): Promise<void> =>
+  invoke("cola_eliminar_cmd", { id });
+export const colaReintentar = (id: string): Promise<void> =>
+  invoke("cola_reintentar_cmd", { id });
+export function onColaActualizada(cb: () => void): Promise<UnlistenFn> {
+  return listen("cola_actualizada", () => cb());
+}
+
 export const getCurrentDocument = (): Promise<DocumentLoaded | null> =>
   invoke("get_current_document_cmd");
 export const documentWindowReady = (): Promise<void> => invoke("document_window_ready_cmd");

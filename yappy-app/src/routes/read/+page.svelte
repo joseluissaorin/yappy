@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import { goto } from "$app/navigation";
   import { reader } from "$lib/readerStore.svelte";
+  import { guardarProgreso } from "$lib/progreso";
   import { haptic } from "$lib/haptic";
   import {
     type PlaybackSnapshot,
@@ -76,6 +77,20 @@
     (isPlaying || isPaused) && playback ? baseIndex + (playback.current_paragraph_index ?? 0) : -1,
   );
   const globalSpeed = $derived(settings?.speed ?? 1.05);
+
+  // Progreso persistente: cada vez que avanza el párrafo que suena, se
+  // apunta dónde vamos. «Sigue donde ibas» y la Biblioteca leen esto.
+  $effect(() => {
+    if (currentPara >= 0 && doc?.path && paras.length > 0) {
+      guardarProgreso({
+        ruta: doc.path,
+        titulo: title,
+        parrafo: currentPara,
+        total_parrafos: paras.length,
+        cuando_unix: Math.floor(Date.now() / 1000),
+      });
+    }
+  });
   const docVoiceName = $derived(
     docVoice ? (voices.find((v) => v.id === docVoice || v.name === docVoice)?.name ?? docVoice) : "default voice",
   );
