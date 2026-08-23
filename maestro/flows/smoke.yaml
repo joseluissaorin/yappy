@@ -7,7 +7,7 @@
 # This flow is intentionally sequential — it walks the iOS user's
 # first-launch journey end to end so a single run exercises every
 # platform-specific code path I touched in the iOS port.
-appId: com.yappy.app
+appId: com.joseluissaorin.yappy
 ---
 - launchApp
 

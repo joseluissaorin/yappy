@@ -24,24 +24,30 @@ pub fn normalize(text: &str, lang: &str) -> String {
     // Strip backticks (code) and reduce parentheticals like "(see footnote 3)".
     t = t.replace('`', "");
 
-    // 2/3. Abbreviations and units (en/es full, others light)
-    t = expand_abbreviations(&t, lang);
-    t = expand_units(&t, lang);
+    // Rules 2-8 exist only for en/es. For every other language, falling back
+    // to English rules actively corrupts the text (German gets "two thousand"
+    // spliced in, etc.); Supertonic reads digits natively in its supported
+    // languages, so pass-through beats a wrong expansion.
+    if matches!(lang, "en" | "es") {
+        // 2/3. Abbreviations and units
+        t = expand_abbreviations(&t, lang);
+        t = expand_units(&t, lang);
 
-    // 4. Currencies
-    t = expand_currencies(&t, lang);
+        // 4. Currencies
+        t = expand_currencies(&t, lang);
 
-    // 5. Dates
-    t = expand_dates(&t, lang);
+        // 5. Dates
+        t = expand_dates(&t, lang);
 
-    // 6. Times
-    t = expand_times(&t, lang);
+        // 6. Times
+        t = expand_times(&t, lang);
 
-    // 7. Roman numerals (centuries / monarchs)
-    t = expand_roman_numerals(&t, lang);
+        // 7. Roman numerals (centuries / monarchs)
+        t = expand_roman_numerals(&t, lang);
 
-    // 8. Generic numbers
-    t = expand_numbers(&t, lang);
+        // 8. Generic numbers
+        t = expand_numbers(&t, lang);
+    }
 
     // Collapse whitespace
     static WS: Lazy<Regex> = Lazy::new(|| Regex::new(r"\s+").unwrap());
@@ -188,7 +194,9 @@ fn expand_units(text: &str, lang: &str) -> String {
         (r"(?P<n>\d+(?:[.,]\d+)?)\s?°F\b", label_fahrenheit),
         (r"(?P<n>\d+(?:[.,]\d+)?)\s?km/h\b", label_kmh),
         (r"(?P<n>\d+(?:[.,]\d+)?)\s?mph\b", label_mph),
-        (r"(?P<n>\d+(?:[.,]\d+)?)\s?%\b", label_pct),
+        // No trailing \b: "%" is not a word character, so \b would require a
+        // letter glued right after the sign and the rule would never fire.
+        (r"(?P<n>\d+(?:[.,]\d+)?)\s?%", label_pct),
         (r"(?P<n>\d+(?:[.,]\d+)?)\s?kHz\b", label_khz),
         (r"(?P<n>\d+(?:[.,]\d+)?)\s?MHz\b", label_mhz),
         (r"(?P<n>\d+(?:[.,]\d+)?)\s?Hz\b", label_hz),

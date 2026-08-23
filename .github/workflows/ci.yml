@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [main, relanzamiento]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core:
+    name: yappy-core tests
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Test yappy-core
+        run: cargo test -p yappy-core --locked
+
+  frontend:
+    name: svelte-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: yappy-app/package-lock.json
+      - run: npm ci
+        working-directory: yappy-app
+      - run: npm run check
+        working-directory: yappy-app
