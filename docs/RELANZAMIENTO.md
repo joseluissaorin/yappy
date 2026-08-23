@@ -6,33 +6,33 @@ está resumida al final.
 
 ## Las fases
 
-- [ ] **0 · Higiene**: commit de preservación (hecho, `7da9806` en main),
+- [x] **0 · Higiene**: commit de preservación (hecho, `7da9806` en main),
       arreglo del fallback de normalización, fuentes empaquetadas en local,
       CI con `cargo test`, appId de Maestro corregido.
-- [ ] **1 · Sistema visual**: tokens `--yap-*` (papel/tinta/voz/ultramar/
+- [x] **1 · Sistema visual**: tokens `--yap-*` (papel/tinta/voz/ultramar/
       subrayador), gramática del relieve, Baloo 2 + Literata + Space Mono
       locales, el loro (criatura a dos tintas con desregistro), iconos
       regenerados, `tooling/marca` (HTML → Chrome headless → PNG).
-- [ ] **2 · Móvil**: jerarquía propia (Escuchar / Biblioteca + reproductor
+- [x] **2 · Móvil** (verificado en simulador: build, arranque, deep links, Maestro 13/13): jerarquía propia (Escuchar / Biblioteca + reproductor
       persistente), deep links `yappy://` de verdad, widget escribiendo su
       clave, App Intents, Share Extension con PDF/EPUB/DOCX/imagen y cola
       `queue.json`, extracción por tipo, sesión de audio con un solo dueño,
       Now Playing arreglado, streaming primero.
-- [ ] **3 · Guionizador**: el Guion como IR con spans (original ↔ hablado),
+- [x] **3 · Guionizador** (24 tests + síntesis real verificada): el Guion como IR con spans (original ↔ hablado),
       intérprete RBNF sobre datos CLDR vendorizados (31 idiomas), clasificador
       semiótico con contexto, tablas declarativas por idioma (romanos RAE,
       fechas, horas, monedas, unidades, abreviaturas, letras), ritmo en vivo,
       karaoke por spans, tests de tabla masivos.
-- [ ] **4 · Escritorio**: biblioteca como ventana principal (índice SQLite
+- [x] **4 · Escritorio** (biblioteca en el home, ⌥⌘V real, plataforma consciente; queda la pasada clippy+fmt): biblioteca como ventana principal (índice SQLite
       sobre los proyectos existentes), editor de Guion unificado (fusión de
       /document y /read), temas reales sobre los tokens, interfaz consciente
       de plataforma (nada de «for your mac» en Windows), `⌥⌘V` implementado,
       ajustes fantasma conectados o eliminados, dedupe de defuddle/extensión.
-- [ ] **5 · Puente**: iroh en `yappy-core`, emparejar por QR + código corto,
+- [x] **5 · Puente** (iroh 1.0; compila en macOS e iOS; falta prueba con dos aparatos reales): iroh en `yappy-core`, emparejar por QR + código corto,
       «convertir en el ordenador» con audio Opus por stream y reanudación.
-- [ ] **6 · Web**: `yappy.joseluissaorin.com` en Cloudflare Pages: demo
+- [x] **6 · Web** (VIVA en yappy.joseluissaorin.com: audio real + WASM verificados): `yappy.joseluissaorin.com` en Cloudflare Pages: demo
       sonora real, guionizador en WASM, descargas por plataforma, changelog.
-- [ ] **Final**: README nuevo, build macOS verificado, build iOS simulador,
+- [ ] **Final** (en curso: Android bring-up, build macOS completo, iOS build final, merge): README nuevo, build macOS verificado, build iOS simulador,
       merge a main.
 
 ## Decisiones de diseño (cerradas)

@@ -178,3 +178,8 @@ cuda     = ["ort/cuda"]      # NVIDIA GPUs on Linux + Windows (huge speedup, nee
 tensorrt = ["ort/tensorrt"]  # NVIDIA + TensorRT (Linux mainly)
 rocm     = ["ort/rocm"]      # AMD GPUs on Linux (requires ROCm install)
 openvino = ["ort/openvino"]  # Intel CPUs/GPUs (Linux + Windows + macOS Intel)
+
+# Android: la cadena de yt-transcript-rs trae native-tls → openssl-sys; el
+# camino estándar en Android es compilar OpenSSL vendorizado con el NDK.
+[target.'cfg(target_os = "android")'.dependencies]
+openssl = { version = "0.10", features = ["vendored"] }

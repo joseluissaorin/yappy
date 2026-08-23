@@ -27,7 +27,12 @@ mod tray;
 mod windows;
 
 // Mobile-only helpers — Share-extension payload pickup, UIPasteboard wrapper.
-#[cfg(mobile)]
+// El módulo real llama a FFI de Swift: SOLO iOS. Android recibe stubs con
+// la misma superficie (su share llega por intents → fichero en app data).
+#[cfg(target_os = "ios")]
+mod mobile;
+#[cfg(target_os = "android")]
+#[path = "mobile_android.rs"]
 mod mobile;
 
 // Windows-native helpers — SMTC (system media transport controls) +
