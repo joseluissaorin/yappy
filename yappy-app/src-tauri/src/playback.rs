@@ -186,6 +186,24 @@ fn run_audio_thread(
     session_samples: Arc<Mutex<Vec<f32>>>,
     live_session_id: Arc<AtomicU64>,
 ) -> Result<()> {
+    // Android: cpal (AAudio) necesita el contexto NDK que Tauri inicializa
+    // en su arranque; este hilo puede llegar antes. Esperar a que exista en
+    // vez de reventar (el pánico de ndk-context mataba el hilo de audio).
+    #[cfg(target_os = "android")]
+    {
+        let mut intentos = 0;
+        while std::panic::catch_unwind(|| {
+            let _ = ndk_context::android_context();
+        })
+        .is_err()
+        {
+            intentos += 1;
+            if intentos > 100 {
+                return Err(anyhow!("contexto Android nunca llegó"));
+            }
+            std::thread::sleep(std::time::Duration::from_millis(100));
+        }
+    }
     let host = cpal::default_host();
     let device = host
         .default_output_device()

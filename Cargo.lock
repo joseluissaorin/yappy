@@ -11105,6 +11105,7 @@ dependencies = [
  "image",
  "iroh",
  "mp4",
+ "ndk-context",
  "objc2",
  "objc2-app-kit",
  "objc2-foundation",

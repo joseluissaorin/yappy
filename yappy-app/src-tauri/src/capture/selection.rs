@@ -9,17 +9,17 @@ use anyhow::Result;
 // other applications. The "capture text the user has selected in another
 // app" feature simply doesn't exist on iOS — the same payload arrives via
 // the Share Sheet extension instead (see mobile::pickup_shared_payload).
-#[cfg(target_os = "ios")]
+#[cfg(any(target_os = "ios", target_os = "android"))]
 pub fn capture_selection() -> Result<Option<String>> {
     Ok(None)
 }
 
-#[cfg(not(target_os = "ios"))]
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
 use std::time::Duration;
-#[cfg(not(target_os = "ios"))]
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
 use super::clipboard;
 
-#[cfg(not(target_os = "ios"))]
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
 pub fn capture_selection() -> Result<Option<String>> {
     // On Windows we snapshot EVERY clipboard format so that HTML / RTF /
     // images the user had on the clipboard survive the Ctrl+C trick. On

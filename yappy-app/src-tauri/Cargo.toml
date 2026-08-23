@@ -183,3 +183,6 @@ openvino = ["ort/openvino"]  # Intel CPUs/GPUs (Linux + Windows + macOS Intel)
 # cuando su reqwest sea configurable a rustls).
 [target.'cfg(not(target_os = "android"))'.dependencies]
 yt-transcript-rs = "0.1"
+
+[target.'cfg(target_os = "android")'.dependencies]
+ndk-context = "0.1"

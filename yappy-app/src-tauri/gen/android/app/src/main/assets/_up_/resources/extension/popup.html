@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="logo">yappy</div>
+      <div id="status" class="status">…</div>
+    </div>
+    <p id="hint" class="hint">looking for yappy on your mac…</p>
+
+    <!-- Preview of the cleaned (defuddled) page content. -->
+    <div id="preview" class="preview" hidden>
+      <div id="preview-title" class="preview-title"></div>
+      <div id="preview-stats" class="preview-stats"></div>
+      <div id="preview-body" class="preview-body"></div>
+    </div>
+
+    <div class="actions">
+      <button id="send" class="primary" disabled>read this page in yappy</button>
+      <button id="copy" class="ghost" disabled title="copy cleaned text to clipboard">copy text</button>
+    </div>
+    <a id="open-options" href="#" class="link">pairing settings</a>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

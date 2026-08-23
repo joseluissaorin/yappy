@@ -13,7 +13,7 @@ use crate::settings::OcrEngine;
 
 // ---------- screen capture (focused window or whole screen) ----------
 
-#[cfg(target_os = "ios")]
+#[cfg(any(target_os = "ios", target_os = "android"))]
 pub fn screen_ocr_focused() -> Result<String> {
     // iOS apps cannot capture other apps' screens — the OS forbids it without
     // a Broadcast Upload Extension and a private entitlement Apple doesn't
@@ -24,7 +24,7 @@ pub fn screen_ocr_focused() -> Result<String> {
     ))
 }
 
-#[cfg(not(target_os = "ios"))]
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
 pub fn screen_ocr_focused() -> Result<String> {
     let tmp = std::env::temp_dir().join(format!(
         "yappy-screen-{}.png",

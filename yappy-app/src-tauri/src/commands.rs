@@ -1386,14 +1386,14 @@ pub fn haptic_cmd(kind: String) {
 /// frontend calls this when its listeners are ready (on mount + each
 /// foreground) so a cold-launch share is never lost to a startup race.
 /// Returns a newline-separated string (`url:`/`text:`/`audio:`/`transcript:`
-/// lines) or null when the queue is empty. No-op (null) off iOS.
+/// lines) or null when the queue is empty. No-op (null) on desktop.
 #[tauri::command]
 pub fn drain_shared_payloads_cmd() -> Option<String> {
-    #[cfg(target_os = "ios")]
+    #[cfg(any(target_os = "ios", target_os = "android"))]
     {
         crate::mobile::drain_shared_payload_string()
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(any(target_os = "ios", target_os = "android")))]
     {
         None
     }

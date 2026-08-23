@@ -164,19 +164,19 @@ pub fn change_count() -> i64 {
 // for the explicit "Read clipboard" command only — we deliberately avoid
 // the change-count polling that the desktop code does.
 
-#[cfg(target_os = "ios")]
+#[cfg(any(target_os = "ios", target_os = "android"))]
 pub fn read_text() -> Result<Option<String>> {
     Ok(None)
 }
-#[cfg(target_os = "ios")]
+#[cfg(any(target_os = "ios", target_os = "android"))]
 pub fn write_text(_text: &str) -> Result<()> {
     Ok(())
 }
-#[cfg(target_os = "ios")]
+#[cfg(any(target_os = "ios", target_os = "android"))]
 pub fn snapshot() -> Result<Option<String>> {
     Ok(None)
 }
-#[cfg(target_os = "ios")]
+#[cfg(any(target_os = "ios", target_os = "android"))]
 pub fn change_count() -> i64 {
     0
 }

@@ -260,6 +260,7 @@ export async function drainPending(): Promise<void> {
 
 let unlisten: UnlistenFn | null = null;
 let visibilityHandler: (() => void) | null = null;
+let intervaloDrain: ReturnType<typeof setInterval> | null = null;
 
 /// Start listening for Share-Sheet payloads. Call once at app boot.
 /// Safe to call multiple times — re-installing replaces the previous listener.
@@ -284,6 +285,13 @@ export async function startShareIntake(): Promise<void> {
       if (document.visibilityState === "visible") drainPending();
     };
     document.addEventListener("visibilitychange", visibilityHandler);
+  }
+
+  // Android entrega los intents con la app YA visible (onNewIntent), sin
+  // cambio de visibilidad que dispare el drenaje: un pulso barato lo cubre
+  // (leer un fichero pequeño cada pocos segundos).
+  if (!intervaloDrain) {
+    intervaloDrain = setInterval(() => drainPending(), 6000);
   }
 
   // Dev helper: expose handleOne on window so we can drive the defuddle
