@@ -827,6 +827,136 @@ footer a {
   height: auto;
 }
 
+/* ── Capturas con marco dibujado (mockups) ── */
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 26px 18px;
+  margin-top: 26px;
+  align-items: end;
+}
+.captura {
+  margin: 0;
+  text-align: center;
+}
+.captura figcaption {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin-top: 12px;
+}
+.marco-iphone {
+  position: relative;
+  display: inline-block;
+  border: 4px solid var(--tinta);
+  border-radius: 44px;
+  padding: 9px;
+  background: var(--tinta);
+  box-shadow: var(--relieve-alto);
+  transform: rotate(-1.3deg);
+  max-width: 100%;
+}
+.captura:nth-child(even) .marco-iphone {
+  transform: rotate(1.2deg);
+}
+.marco-iphone img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 32px;
+}
+.marco-iphone::after {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26%;
+  height: 22px;
+  background: var(--tinta);
+  border-radius: 999px;
+}
+.marco-mac {
+  display: inline-block;
+  border: 3px solid var(--tinta);
+  border-radius: 14px;
+  background: var(--superficie);
+  box-shadow: var(--relieve-alto);
+  overflow: hidden;
+  transform: rotate(-0.6deg);
+  max-width: 100%;
+}
+.marco-mac .barra-mac {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  padding: 9px 12px;
+  border-bottom: 2px solid var(--tinta);
+  background: var(--superficie-2);
+}
+.marco-mac .barra-mac i {
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  border: 2px solid var(--tinta);
+  display: inline-block;
+}
+.marco-mac .barra-mac i:nth-child(1) { background: var(--voz); }
+.marco-mac .barra-mac i:nth-child(2) { background: var(--dorado); }
+.marco-mac .barra-mac i:nth-child(3) { background: var(--superficie); }
+.marco-mac img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.captura-ancha {
+  grid-column: 1 / -1;
+}
+.marco-crudo {
+  display: inline-block;
+  border-radius: 14px;
+  box-shadow: var(--relieve-alto);
+  overflow: hidden;
+  max-width: 100%;
+}
+.marco-crudo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Escenas dibujadas (los tres momentos). */
+.escenas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+.escena {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: var(--relieve);
+  padding: 18px;
+  text-align: center;
+}
+.escena svg {
+  max-width: 100%;
+  height: auto;
+}
+.escena h3 {
+  margin: 10px 0 4px;
+  font-size: 1.02rem;
+  font-weight: 800;
+}
+.escena p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--tinta-suave);
+}
+
 /* El pie ahora también navega. */
 .pie-nav {
   display: flex;
