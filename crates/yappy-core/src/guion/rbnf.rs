@@ -228,6 +228,14 @@ fn parsear_cuerpo(s: &str) -> Vec<Tok> {
                 toks.push(Tok::Plural { ordinal: tipo.trim() == "ordinal", casos });
                 i = j + 2;
             }
+            '\'' => {
+                // Apóstrofo de cita RBNF (ICU): protege espacios o signos al
+                // principio del texto («' e», «' '») y se descarta siempre.
+                // Ningún dato vendorizado usa «''» como apóstrofo literal
+                // (el ucraniano escribe «пʼять» con U+02BC, que no es este
+                // carácter), así que soltarlo sin más es seguro.
+                i += 1;
+            }
             _ => {
                 lit.push(c);
                 i += 1;
@@ -683,7 +691,23 @@ pub fn cardinal(lang: &str, numero: &Numero, genero: Genero) -> Option<String> {
             "spellout-cardinal-masculine",
         ],
     };
-    let conjunto = primero_disponible(m, orden)?;
+    // Con decimales, el conjunto elegido tiene que saber leer la fracción:
+    // en inglés «spellout-numbering» no trae regla x.x (vive en
+    // «spellout-cardinal», con su «point»), y quedarse en el primero
+    // convertía «2.5» en nada.
+    let conjunto = if numero.decimales.is_some() {
+        orden
+            .iter()
+            .find(|nombre| {
+                m.conjuntos
+                    .get(**nombre)
+                    .is_some_and(|c| c.fraccion.is_some() || c.fraccion_coma.is_some())
+            })
+            .map(|s| s.to_string())
+            .or_else(|| primero_disponible(m, orden))?
+    } else {
+        primero_disponible(m, orden)?
+    };
     m.deletrear(numero, &conjunto).map(limpiar)
 }
 
@@ -821,7 +845,27 @@ mod tests {
                         "{lang} deja dígitos en {n}: {s:?}"
                     );
                 }
+                // El apóstrofo de cita de ICU jamás debe llegar a la voz.
+                assert!(
+                    !s.as_deref().unwrap().contains('\''),
+                    "{lang} filtra un apóstrofo en {n}: {s:?}"
+                );
             }
         }
+    }
+
+    #[test]
+    fn portugues_sin_apostrofo() {
+        let n = Numero::entero_de(1234);
+        assert_eq!(
+            cardinal("pt", &n, Genero::Masculino).unwrap(),
+            "mil duzentos e trinta e quatro"
+        );
+    }
+
+    #[test]
+    fn decimal_ingles_con_point() {
+        let n = Numero { negativo: false, entero: 2, decimales: Some("5".into()) };
+        assert_eq!(cardinal("en", &n, Genero::Masculino).unwrap(), "two point five");
     }
 }

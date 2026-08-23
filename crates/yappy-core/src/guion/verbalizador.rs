@@ -45,6 +45,11 @@ impl<'a> Lienzo<'a> {
             .map(|i| i + 1)
             .unwrap_or(0);
         let palabra = &antes[inicio..];
+        // Un signo fuerte entre la palabra y la posición rompe el contexto:
+        // en «…the century; D…», «century» ya no acompaña a la «D».
+        if palabra.ends_with([';', ':', '!', '?', '…']) {
+            return None;
+        }
         let palabra = palabra.trim_matches(|c: char| {
             !(c.is_alphanumeric() || c == '.' || c == 'º' || c == 'ª')
         });
@@ -505,8 +510,10 @@ fn pasada_ordinales(l: &mut Lienzo, t: &TablaIdioma) {
     }
 }
 
+// La frontera FINAL importa: sin ella, la «D» de «Dr.» casaba sola como
+// romano (quinientos) y se comía la abreviatura.
 static RE_ROMANO: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"\b([MDCLXVI]+)(?:(e|ème|er)\b)?").unwrap());
+    Lazy::new(|| Regex::new(r"\b([MDCLXVI]+)(?:(e|ème|er))?\b").unwrap());
 
 fn pasada_romanos(l: &mut Lienzo, t: &TablaIdioma) {
     let capturas: Vec<(usize, usize, String)> = RE_ROMANO
@@ -528,12 +535,22 @@ fn pasada_romanos(l: &mut Lienzo, t: &TablaIdioma) {
         let ant = minus(anterior);
         let sig = minus(siguiente);
         let en_lista = |palabra: &Option<String>, lista: &[&str]| {
-            palabra
-                .as_deref()
-                .is_some_and(|p| lista.iter().any(|x| x.eq_ignore_ascii_case(p)))
+            palabra.as_deref().is_some_and(|p| {
+                // «del XX secolo.» llega con el punto final de la frase
+                // pegado; para comparar con la lista se pela la puntuación
+                // de cierre (sin tocar claves con punto propio como «s.»).
+                let pelado = p.trim_end_matches(['.', ',', ';', ':']);
+                lista
+                    .iter()
+                    .any(|x| x.eq_ignore_ascii_case(p) || x.eq_ignore_ascii_case(pelado))
+            })
         };
 
-        let hablado = if en_lista(&ant, t.palabras_siglo) || en_lista(&sig, t.palabras_siglo) {
+        // Ningún siglo real pasa de cien: sin este tope, un falso contexto
+        // convertía romanos enormes en ordinales absurdos.
+        let hablado = if (en_lista(&ant, t.palabras_siglo) || en_lista(&sig, t.palabras_siglo))
+            && (1..=100).contains(&n)
+        {
             (t.romano_siglo)(n)
         } else if en_lista(&ant, t.palabras_capitulo) {
             (t.romano_capitulo)(n)
@@ -556,7 +573,17 @@ fn pasada_romanos(l: &mut Lienzo, t: &TablaIdioma) {
         };
 
         if let Some(h) = hablado {
-            l.reclamar(ini, fin, ClaseSpan::Romano, h);
+            // Alemán: «Heinrich VIII.» escribe el ordinal con punto. Si la
+            // frase sigue en minúscula, ese punto pertenece al romano y se
+            // reclama con él; si no, era un final de oración y se respeta.
+            let mut fin_real = fin;
+            if t.lang == "de" && l.texto[fin..].starts_with('.') {
+                let resto = l.texto[fin + 1..].trim_start();
+                if resto.chars().next().is_some_and(|c| c.is_lowercase()) {
+                    fin_real = fin + 1;
+                }
+            }
+            l.reclamar(ini, fin_real, ClaseSpan::Romano, h);
         }
     }
 }
@@ -824,5 +851,35 @@ mod tests {
     #[test]
     fn urls_se_omiten() {
         assert_eq!(habla("mira https://example.com/x ya", "es"), "mira ya");
+    }
+
+    #[test]
+    fn decimales_ingleses_y_porcentaje() {
+        assert_eq!(habla("2.5% of it", "en"), "two point five percent of it");
+        assert_eq!(habla("it is 2.5 today", "en"), "it is two point five today");
+    }
+
+    #[test]
+    fn dr_no_es_romano() {
+        assert_eq!(habla("Dr. Lopez came 3rd.", "en"), "Doctor Lopez came third.");
+    }
+
+    #[test]
+    fn siglo_pospuesto_italiano() {
+        assert_eq!(habla("un gelato del XX secolo.", "it"), "un gelato del ventesimo secolo.");
+    }
+
+    #[test]
+    fn ordinal_aleman_con_punto() {
+        assert_eq!(habla("Heinrich VIII. genau", "de"), "Heinrich der Achte genau");
+    }
+
+    #[test]
+    fn contexto_roto_por_punto_y_coma() {
+        // «century; D» no debe leer la D como romano de quinientos.
+        assert_eq!(
+            habla("the century; Dr. Lopez arrived", "en"),
+            "the century; Doctor Lopez arrived"
+        );
     }
 }
