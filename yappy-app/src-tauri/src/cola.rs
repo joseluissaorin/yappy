@@ -381,6 +381,12 @@ pub fn extraer_articulo(html: &str, url: &str) -> Result<(Option<String>, String
     Ok((titulo, markdown))
 }
 
+#[cfg(target_os = "android")]
+async fn preparar_youtube<R: Runtime>(_app: &AppHandle<R>, _item: &ItemCola) -> Result<()> {
+    Err(anyhow!("los subtítulos de YouTube llegan pronto a Android; de momento comparte artículos, documentos o audio"))
+}
+
+#[cfg(not(target_os = "android"))]
 async fn preparar_youtube<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> Result<()> {
     let video = id_video_youtube(&item.origen)
         .ok_or_else(|| anyhow!("no reconozco el identificador del vídeo"))?;

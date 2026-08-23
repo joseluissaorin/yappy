@@ -1112,6 +1112,8 @@ pub async fn render_audiobook_cmd(
                 default_lang: default_lang.clone(),
                 total_steps,
                 seed: None,
+            detectar_idioma: true,
+            pausa_entre_parrafos_s: 0.0,
             };
 
             let captured: std::sync::Mutex<Vec<(u32, Vec<f32>)>> = std::sync::Mutex::new(Vec::new());
@@ -1213,6 +1215,26 @@ pub async fn render_audiobook_cmd(
         {
             crate::os_win::taskbar_progress_clear();
             crate::os_win::smtc_clear();
+        }
+        // Escritorio: la notificación de «audiolibro listo» que el ajuste
+        // notify_on_done prometía desde la 0.1.
+        #[cfg(desktop)]
+        {
+            let avisar = state_for_thread
+                .settings
+                .lock()
+                .map(|s| s.notify_on_done)
+                .unwrap_or(false);
+            if avisar {
+                use tauri_plugin_notification::NotificationExt;
+                let mins = (combined.len() as f64 / final_sr as f64 / 60.0).round() as i64;
+                let _ = app_for_thread
+                    .notification()
+                    .builder()
+                    .title("Audiobook ready")
+                    .body(format!("{} min of audio, in your library", mins.max(1)))
+                    .show();
+            }
         }
         Ok(())
     })
@@ -2161,6 +2183,8 @@ async fn read_internal<R: Runtime>(
                 default_lang: forced_lang.clone().unwrap_or_else(|| s.default_lang.clone()),
                 total_steps: s.quality.total_steps(),
                 seed: None,
+                detectar_idioma: s.auto_lang_detect,
+                pausa_entre_parrafos_s: s.silence_secs.clamp(0.0, 5.0),
             },
             s.voice_overrides.clone(),
             s.save_history,

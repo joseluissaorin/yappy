@@ -25,6 +25,11 @@ pub struct SynthesisOptions {
     pub total_steps: usize,
     /// Optional deterministic seed (for tests / reproducibility).
     pub seed: Option<u64>,
+    /// Si false, no se detecta idioma por pieza: todo va en default_lang.
+    pub detectar_idioma: bool,
+    /// Silencio mínimo entre párrafos llanos (el ajuste del usuario);
+    /// las pausas de ritmo de títulos/citas mandan si son mayores.
+    pub pausa_entre_parrafos_s: f32,
 }
 
 impl Default for SynthesisOptions {
@@ -35,6 +40,8 @@ impl Default for SynthesisOptions {
             default_lang: "en".to_string(),
             total_steps: 8,
             seed: None,
+            detectar_idioma: true,
+            pausa_entre_parrafos_s: 0.0,
         }
     }
 }
@@ -130,7 +137,12 @@ impl TtsEngine {
     where
         F: FnMut(AudioChunk) -> Result<()>,
     {
-        let guion = construir_desde_texto(text, &opts.default_lang);
+        let mut guion = construir_desde_texto(text, &opts.default_lang);
+        if !opts.detectar_idioma {
+            for p in &mut guion.piezas {
+                p.idioma = guion.idioma_base.clone();
+            }
+        }
         self.synthesize_guion(&guion, opts, on_chunk)
     }
 
@@ -148,7 +160,15 @@ impl TtsEngine {
         let total: usize = guion
             .piezas
             .iter()
-            .map(|p| trocear(p).len() + usize::from(p.pausa_antes_s > 0.005))
+            .enumerate()
+            .map(|(i, p)| {
+                let pausa = if i > 0 {
+                    p.pausa_antes_s.max(opts.pausa_entre_parrafos_s)
+                } else {
+                    p.pausa_antes_s
+                };
+                trocear(p).len() + usize::from(pausa > 0.005)
+            })
             .sum();
         let total_paragraphs = guion.piezas.len();
         let sample_rate = self.sample_rate();
@@ -157,9 +177,16 @@ impl TtsEngine {
         for (para_idx, pieza) in guion.piezas.iter().enumerate() {
             let trozos = trocear(pieza);
 
-            // La pausa de ritmo, como silencio real, ANTES de la pieza.
-            if pieza.pausa_antes_s > 0.005 {
-                let n = (pieza.pausa_antes_s * sample_rate as f32) as usize;
+            // La pausa de ritmo, como silencio real, ANTES de la pieza. El
+            // ajuste «silencio entre párrafos» pone el suelo (no aplica a la
+            // primera pieza).
+            let pausa = if para_idx > 0 {
+                pieza.pausa_antes_s.max(opts.pausa_entre_parrafos_s)
+            } else {
+                pieza.pausa_antes_s
+            };
+            if pausa > 0.005 {
+                let n = (pausa * sample_rate as f32) as usize;
                 on_chunk(AudioChunk {
                     index: emit_idx,
                     paragraph_index: para_idx,

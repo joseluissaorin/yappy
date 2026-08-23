@@ -233,6 +233,8 @@ pub fn run() {
             default_lang: "en".to_string(),
             total_steps: 8,
             seed: Some(7),
+            detectar_idioma: true,
+            pausa_entre_parrafos_s: 0.0,
         };
         let mut first = true;
         let sid = pb.begin_session();
@@ -274,6 +276,8 @@ pub fn run() {
             default_lang: "en".to_string(),
             total_steps: 8,
             seed: Some(42),
+            detectar_idioma: true,
+            pausa_entre_parrafos_s: 0.0,
         };
         let mut all = Vec::new();
         engine

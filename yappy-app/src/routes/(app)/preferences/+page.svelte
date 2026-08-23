@@ -134,7 +134,6 @@
   async function changeAppTheme(t: AppTheme) { if (!settings) return; settings = { ...settings, app_theme: t }; await setAppTheme(t); document.documentElement.dataset.theme = t; }
   async function changeOcrEngine(e: OcrEngine) { if (!settings) return; settings = { ...settings, ocr_engine: e }; await setOcrEngine(e); }
   async function changePlayerOpacity(v: number) { if (!settings) return; settings = { ...settings, player_opacity: v }; await setSettings(settings); }
-  async function changeAutoHide(v: number) { if (!settings) return; settings = { ...settings, player_autohide_secs: v }; await setSettings(settings); }
   async function doResetSettings() {
     if (!confirm("reset all settings to defaults? this can't be undone.")) return;
     settings = await resetSettings();
@@ -406,12 +405,6 @@
               oninput={(e) => changePlayerOpacity(parseFloat((e.target as HTMLInputElement).value))} />
             <span class="lbl-num">{Math.round(settings.player_opacity * 100)}%</span>
           </div>
-          <div class="pref-line">
-            <span class="lbl">auto-hide</span>
-            <input type="range" min="0" max="60" step="1" value={settings.player_autohide_secs}
-              oninput={(e) => changeAutoHide(parseInt((e.target as HTMLInputElement).value))} />
-            <span class="lbl-num">{settings.player_autohide_secs === 0 ? "off" : settings.player_autohide_secs + "s"}</span>
-          </div>
           <div class="pref-line toggles">
             <label class="mini-toggle">
               <input type="checkbox" bind:checked={settings.player_show_source} onchange={async () => settings && setSettings(settings)} />
@@ -464,16 +457,6 @@
         </div>
         <label class="toggle">
           <input type="checkbox" bind:checked={settings.notify_on_done} onchange={async () => settings && setSettings(settings)} />
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="pref-row">
-        <div>
-          <div class="pref-label">sound effects</div>
-          <div class="pref-sub">tiny chimes on ready / done / error.</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" bind:checked={settings.sound_effects} onchange={async () => settings && setSettings(settings)} />
           <span class="slider"></span>
         </label>
       </div>

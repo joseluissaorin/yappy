@@ -209,6 +209,8 @@ async fn atender(app: AppHandle, conn: iroh::endpoint::Connection) -> Result<()>
             default_lang: guion.idioma_base.clone(),
             total_steps: steps,
             seed: None,
+            detectar_idioma: true,
+            pausa_entre_parrafos_s: 0.0,
         };
         let mut samples: Vec<f32> = Vec::new();
         let mut sample_rate = 44_100u32;

@@ -93,7 +93,6 @@ futures-util = "0.3"
 dirs = "5"
 base64 = "0.22"
 dom_smoothie = "0.18"
-yt-transcript-rs = "0.1"
 tauri-plugin-deep-link = "2.4.9"
 iroh = "1"
 qrcode = "0.14"
@@ -179,7 +178,8 @@ tensorrt = ["ort/tensorrt"]  # NVIDIA + TensorRT (Linux mainly)
 rocm     = ["ort/rocm"]      # AMD GPUs on Linux (requires ROCm install)
 openvino = ["ort/openvino"]  # Intel CPUs/GPUs (Linux + Windows + macOS Intel)
 
-# Android: la cadena de yt-transcript-rs trae native-tls → openssl-sys; el
-# camino estándar en Android es compilar OpenSSL vendorizado con el NDK.
-[target.'cfg(target_os = "android")'.dependencies]
-openssl = { version = "0.10", features = ["vendored"] }
+# yt-transcript-rs arrastra native-tls → openssl; en Android queda fuera
+# (v1: los subtítulos de YouTube llegan en la pasada Android completa, o
+# cuando su reqwest sea configurable a rustls).
+[target.'cfg(not(target_os = "android"))'.dependencies]
+yt-transcript-rs = "0.1"
