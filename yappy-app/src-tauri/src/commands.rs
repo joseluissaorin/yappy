@@ -1031,6 +1031,8 @@ pub async fn render_audiobook_cmd(
     }
     let root = model::model_root(&app).map_err(|e| e.to_string())?;
     let engine = state.engine_or_load(&root).map_err(|e| e.to_string())?;
+    #[cfg(desktop)]
+    let avisar_al_terminar = state.settings.lock().unwrap().notify_on_done;
 
     let (default_voice, default_speed, default_lang, total_steps) = {
         let s = state.settings.lock().unwrap();
@@ -1220,12 +1222,7 @@ pub async fn render_audiobook_cmd(
         // notify_on_done prometía desde la 0.1.
         #[cfg(desktop)]
         {
-            let avisar = state_for_thread
-                .settings
-                .lock()
-                .map(|s| s.notify_on_done)
-                .unwrap_or(false);
-            if avisar {
+            if avisar_al_terminar {
                 use tauri_plugin_notification::NotificationExt;
                 let mins = (combined.len() as f64 / final_sr as f64 / 60.0).round() as i64;
                 let _ = app_for_thread

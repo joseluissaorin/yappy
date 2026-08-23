@@ -1,3 +1,9 @@
+> **OJO (23-08-2026):** documento HISTÓRICO del traspaso de mayo de 2026.
+> Varias afirmaciones ya no valen tras el relanzamiento (la normalización,
+> el ⌥⌘V, los temas, la biblioteca…). El estado vivo está en
+> `docs/RELANZAMIENTO.md`. Lo que sigue valiendo: la matriz de aceleración
+> ONNX, las trampas de Windows/Linux y el porqué de CoreML apagado en iOS.
+
 # Yappy Desktop — Linux + Windows verification session brief
 
 You're picking up a port from a macOS session that touched a lot of
