@@ -12,6 +12,7 @@
 
 import Foundation
 import MediaPlayer
+import WidgetKit
 import AVFoundation
 
 // ─── C-ABI callback type for Rust handlers ───────────────────────────────
@@ -142,14 +143,20 @@ public func yappy_now_playing_set(
     info[MPNowPlayingInfoPropertyMediaType]     = MPMediaType.audioBook.rawValue
     MPNowPlayingInfoCenter.default().nowPlayingInfo = info
 
-    // Make sure the AVAudioSession is active so the system actually surfaces
-    // these controls. The silent-keepalive code in AudioSession.swift uses
-    // the same session — calling setActive(true) when it's already active is
-    // a no-op.
+    // La sesion la configura UN solo sitio (AudioSession.swift); aqui solo
+    // se asegura activa para que el sistema muestre los controles.
     do {
-        try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio, options: [])
         try AVAudioSession.sharedInstance().setActive(true)
     } catch {
         NSLog("[yappy/nowplaying] activate session failed: \(error)")
+    }
+
+    // El widget de inicio lee este titulo del App Group; sin esta escritura
+    // se quedaba para siempre en el texto generico.
+    if let defaults = UserDefaults(suiteName: "group.com.joseluissaorin.yappy") {
+        defaults.set(title, forKey: "last_played_title")
+    }
+    if #available(iOS 14.0, *) {
+        WidgetCenter.shared.reloadTimelines(ofKind: "YappyHomeWidget")
     }
 }

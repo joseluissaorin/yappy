@@ -149,6 +149,15 @@ async function handleOne(line: string): Promise<void> {
       await colaAgregarArchivo(path);
       encolado = true;
     }
+  } else if (line.startsWith("accion:")) {
+    // Los App Intents (Siri, Atajos, botón de acción) encolan acciones por
+    // este mismo canal.
+    const accion = line.slice("accion:".length).trim();
+    if (accion === "read-clipboard") {
+      await invoke("read_clipboard_cmd").catch(() => {});
+    } else if (accion === "resume") {
+      await invoke("toggle_pause_cmd").catch(() => {});
+    }
   } else {
     console.warn("[shareIntake] unknown payload prefix:", line.slice(0, 30));
   }
@@ -176,7 +185,7 @@ async function handlePayload(payload: string): Promise<void> {
 // losing the shared item. Pulling when WE'RE ready — on mount and on every
 // foreground — guarantees we never miss one. No-op off iOS (returns null).
 let draining = false;
-async function drainPending(): Promise<void> {
+export async function drainPending(): Promise<void> {
   if (draining) return;
   draining = true;
   try {

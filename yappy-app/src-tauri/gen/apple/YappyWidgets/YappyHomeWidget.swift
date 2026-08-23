@@ -66,11 +66,11 @@ struct YappyHomeWidgetEntryView: View {
         VStack(alignment: .leading, spacing: 6) {
             Image(systemName: "waveform.circle.fill")
                 .font(.system(size: 28))
-                .foregroundColor(.pink)
+                .foregroundColor(Color(red: 0.878, green: 0.314, blue: 0.165))
             Spacer(minLength: 4)
             Text("yappy")
                 .font(.system(size: 18, weight: .heavy, design: .rounded))
-                .foregroundColor(.pink)
+                .foregroundColor(Color(red: 0.878, green: 0.314, blue: 0.165))
             Text(entry.lastTitle ?? "read anything aloud")
                 .font(.caption)
                 .foregroundColor(.secondary)
@@ -84,11 +84,11 @@ struct YappyHomeWidgetEntryView: View {
         HStack(spacing: 14) {
             Image(systemName: "waveform.circle.fill")
                 .font(.system(size: 40))
-                .foregroundColor(.pink)
+                .foregroundColor(Color(red: 0.878, green: 0.314, blue: 0.165))
             VStack(alignment: .leading, spacing: 6) {
                 Text("yappy")
                     .font(.system(size: 20, weight: .heavy, design: .rounded))
-                    .foregroundColor(.pink)
+                    .foregroundColor(Color(red: 0.878, green: 0.314, blue: 0.165))
                 Text(entry.lastTitle ?? "tap to read your clipboard")
                     .font(.callout)
                     .lineLimit(2)

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Yappy">
+  <!-- El loro de Yappy: un pájaro-huevo que repite en voz alta lo que le
+       llega, en el idioma que le enseñes. Dos tintas y un desregistro de
+       imprenta: la voz (coral) delante, el texto (ultramar) detrás, casi
+       superpuestos pero no del todo, porque lo dicho nunca es exactamente
+       lo escrito. La cara, tres trazos; el pico, papel. -->
+  <g transform="rotate(-3 32 32)">
+    <g fill="#2f4bc4" transform="translate(1.8 2)">
+      <path d="M32 7 C42.5 6.5 50 14 50.5 24 C51 33 49.5 41.5 43 46.4 C39 49.4 25 49.4 21 46.4 C14.5 41.5 13 33 13.5 24 C14 14 21.5 6.5 32 7 Z" />
+      <path d="M29.2 7.4 C26.8 1.8 32 -0.6 37.8 1.6 C34.6 3.1 33.7 5 34 7 Z" />
+      <ellipse cx="23.5" cy="49.6" rx="5.6" ry="4.2" />
+      <ellipse cx="40.5" cy="50.8" rx="5.6" ry="4.2" />
+    </g>
+    <g fill="#e0502a">
+      <path d="M32 7 C42.5 6.5 50 14 50.5 24 C51 33 49.5 41.5 43 46.4 C39 49.4 25 49.4 21 46.4 C14.5 41.5 13 33 13.5 24 C14 14 21.5 6.5 32 7 Z" />
+      <path d="M29.2 7.4 C26.8 1.8 32 -0.6 37.8 1.6 C34.6 3.1 33.7 5 34 7 Z" />
+      <ellipse cx="23.5" cy="49.6" rx="5.6" ry="4.2" />
+      <ellipse cx="40.5" cy="50.8" rx="5.6" ry="4.2" />
+    </g>
+    <circle cx="19.8" cy="29.5" r="2.9" fill="#f7f2e7" opacity=".55" />
+    <circle cx="44.2" cy="29.5" r="2.9" fill="#f7f2e7" opacity=".55" />
+    <g fill="#2b2418">
+      <ellipse cx="25.5" cy="23.5" rx="2" ry="3.7" />
+      <ellipse cx="38.5" cy="23.5" rx="2" ry="3.7" />
+    </g>
+    <path d="M28 29 Q32 27.8 36 29 Q36.2 35.4 32.6 38.9 Q32 39.4 31.5 38.9 Q28 35.4 28 29 Z" fill="#f7f2e7" />
+  </g>
+</svg>

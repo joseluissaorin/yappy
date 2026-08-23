@@ -18,7 +18,11 @@
     togglePause,
     type PlaybackSnapshot,
   } from "$lib/ipc";
-  import { startShareIntake } from "$lib/shareIntake";
+  import { startShareIntake, drainPending } from "$lib/shareIntake";
+  import { listen } from "@tauri-apps/api/event";
+  import { readClipboard, colaAgregarArchivo } from "$lib/ipc";
+  import { invoke } from "@tauri-apps/api/core";
+  import { open as abrirDialogo } from "@tauri-apps/plugin-dialog";
 
   let { children } = $props();
 
@@ -46,6 +50,40 @@
       }),
     );
     startShareIntake();
+
+    // Acciones que llegan por deep link (widget, Spotlight, atajos).
+    cleanups.push(
+      await listen<{ tipo: string; path: string | null }>("yappy_accion", async (ev) => {
+        const a = ev.payload;
+        switch (a.tipo) {
+          case "shared":
+            await drainPending();
+            break;
+          case "read-clipboard":
+            await readClipboard().catch(() => {});
+            break;
+          case "open": {
+            const ruta = await abrirDialogo({
+              multiple: false,
+              filters: [
+                {
+                  name: "Documentos",
+                  extensions: ["txt", "md", "markdown", "rtf", "docx", "doc", "odt", "pdf", "epub", "html", "htm"],
+                },
+              ],
+            }).catch(() => null);
+            if (typeof ruta === "string") await colaAgregarArchivo(ruta).catch(() => {});
+            break;
+          }
+          case "library":
+            if (a.path) {
+              await invoke("library_play_cmd", { path: a.path, fromStart: false }).catch(() => {});
+              goto("/biblioteca/audiolibros");
+            }
+            break;
+        }
+      }),
+    );
   });
   onDestroy(() => cleanups.forEach((c) => c()));
 

@@ -3,6 +3,13 @@
   "productName": "Yappy",
   "version": "0.2.0",
   "identifier": "com.yappy.app",
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["yappy"]
+      }
+    }
+  },
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",

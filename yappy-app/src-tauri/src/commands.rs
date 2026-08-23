@@ -1510,13 +1510,40 @@ pub fn library_play_cmd(_app: AppHandle, path: String, from_start: Option<bool>)
 #[tauri::command]
 pub fn library_pause_cmd() {
     #[cfg(target_os = "ios")]
-    crate::mobile::audiofile_pause();
+    {
+        crate::mobile::audiofile_pause();
+        // La pantalla de bloqueo debe reflejar la pausa (antes se quedaba
+        // en «reproduciendo» para siempre).
+        actualizar_now_playing_biblioteca(false);
+    }
 }
 
 #[tauri::command]
 pub fn library_resume_cmd() {
     #[cfg(target_os = "ios")]
-    crate::mobile::audiofile_resume();
+    {
+        crate::mobile::audiofile_resume();
+        actualizar_now_playing_biblioteca(true);
+    }
+}
+
+#[cfg(target_os = "ios")]
+fn actualizar_now_playing_biblioteca(reproduciendo: bool) {
+    if let Some(ruta) = crate::mobile::audiofile_current_path() {
+        let titulo = std::path::Path::new(&ruta)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or("Yappy")
+            .to_string();
+        crate::mobile::now_playing_set(
+            &titulo,
+            "Yappy",
+            "",
+            crate::mobile::audiofile_duration(),
+            crate::mobile::audiofile_position(),
+            reproduciendo,
+        );
+    }
 }
 
 #[tauri::command]
@@ -2095,6 +2122,20 @@ async fn read_internal<R: Runtime>(
         ReadMode::Document { base_paragraph_index } => *base_paragraph_index,
         ReadMode::MiniPlayer => 0,
     };
+    // El título de la sesión: la primera línea con chicha del texto. Es lo
+    // que enseñan la pantalla de bloqueo y el widget.
+    {
+        let titulo: String = text
+            .lines()
+            .find(|l| !l.trim().is_empty())
+            .unwrap_or("Yappy")
+            .trim_start_matches('#')
+            .trim()
+            .chars()
+            .take(70)
+            .collect();
+        *state.titulo_actual.lock().unwrap() = titulo;
+    }
     let _ = app.emit(
         "playback_starting",
         serde_json::json!({

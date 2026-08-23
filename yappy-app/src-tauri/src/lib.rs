@@ -8,6 +8,7 @@ pub mod audiobook;
 mod bridge;
 mod capture;
 mod cola;
+mod enlaces;
 mod commands;
 mod credits;
 mod history;
@@ -329,6 +330,7 @@ pub fn run() {
             .plugin(tauri_plugin_global_shortcut::Builder::new().build());
     }
     builder
+        .plugin(tauri_plugin_deep_link::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
@@ -343,6 +345,18 @@ pub fn run() {
         .setup(move |app| {
             if let Err(e) = settings::SettingsStore::ensure(app.handle(), &state) {
                 tracing::error!("settings init: {e:?}");
+            }
+
+            // Los deep links yappy:// se procesan de verdad (Quick Actions,
+            // widget, Spotlight, emparejamiento). Sin esto solo abrían la app.
+            {
+                use tauri_plugin_deep_link::DeepLinkExt;
+                let asa = app.handle().clone();
+                app.deep_link().on_open_url(move |event| {
+                    for url in event.urls() {
+                        enlaces::manejar(&asa, url.as_str());
+                    }
+                });
             }
 
             // Tray, bridge, hotkey: stubbed to no-ops on mobile (see each module).
@@ -393,19 +407,19 @@ pub fn run() {
                 state.playback.subscribe(move |snap| {
                     // Skip refreshes when nothing's actually playing or queued.
                     if snap.duration_secs < 0.1 {
-                        mobile::now_playing_set("", "", "", 0.0, 0.0, false);
+                        // Si lo que suena es un audiolibro por AVAudioPlayer
+                        // (la Biblioteca), NO pisar su Now Playing.
+                        if !mobile::audiofile_is_playing() {
+                            mobile::now_playing_set("", "", "", 0.0, 0.0, false);
+                        }
                         return;
                     }
-                    // Pull the document name from the active document, fall
-                    // back to a generic title.
+                    // El título de la sesión de lectura actual, no «el primer
+                    // documento del HashMap».
                     let title = app_handle
                         .try_state::<std::sync::Arc<crate::state::AppState>>()
-                        .and_then(|s| {
-                            s.documents
-                                .lock()
-                                .ok()
-                                .and_then(|d| d.values().next().map(|doc| doc.filename.clone()))
-                        })
+                        .map(|s| s.titulo_actual.lock().unwrap().clone())
+                        .filter(|t| !t.is_empty())
                         .unwrap_or_else(|| "Yappy".to_string());
                     mobile::now_playing_set(
                         &title,
