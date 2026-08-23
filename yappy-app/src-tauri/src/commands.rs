@@ -15,6 +15,8 @@ use crate::credits;
 use crate::history;
 use crate::hotkey;
 use crate::model;
+use crate::asr_model;
+use crate::transcripts;
 use crate::playback::AudioChunk;
 use crate::settings::{
     self, AppTheme, OcrEngine, PlayerPositionPreset, PlayerTheme, Quality, Settings, SettingsStore,
@@ -509,6 +511,43 @@ pub fn set_player_position_cmd(
     .map_err(|e| e.to_string())
 }
 
+/// Decode a percent-encoded string (`%20` → space, etc.). Bytes that aren't a
+/// valid `%XX` triplet pass through unchanged.
+fn percent_decode(s: &str) -> String {
+    let b = s.as_bytes();
+    let mut out: Vec<u8> = Vec::with_capacity(b.len());
+    let mut i = 0;
+    while i < b.len() {
+        if b[i] == b'%' && i + 2 < b.len() {
+            let hi = (b[i + 1] as char).to_digit(16);
+            let lo = (b[i + 2] as char).to_digit(16);
+            if let (Some(h), Some(l)) = (hi, lo) {
+                out.push((h * 16 + l) as u8);
+                i += 3;
+                continue;
+            }
+        }
+        out.push(b[i]);
+        i += 1;
+    }
+    String::from_utf8_lossy(&out).into_owned()
+}
+
+/// Normalize a path that may arrive as a `file://` URL with percent-encoding —
+/// which is exactly how iOS hands us a file shared or opened into the app
+/// (e.g. `file:///private/var/.../Inbox/Cajita%20azul%20MD.md`). Strips the
+/// `file:`/`file://` scheme and percent-decodes. Plain filesystem paths pass
+/// through unchanged.
+fn normalize_local_path(input: &str) -> std::path::PathBuf {
+    let mut s = input.trim();
+    if let Some(rest) = s.strip_prefix("file://") {
+        s = rest;
+    } else if let Some(rest) = s.strip_prefix("file:") {
+        s = rest;
+    }
+    std::path::PathBuf::from(percent_decode(s))
+}
+
 #[tauri::command]
 pub async fn read_file_cmd(
     app: AppHandle,
@@ -531,7 +570,9 @@ pub async fn read_file_cmd(
         _ => windows::next_document_label(),
     };
     tracing::info!("[doc:cmd] read_file_cmd: target window label = {label} (caller={caller_label})");
-    let p = std::path::PathBuf::from(&path);
+    // iOS hands shared/opened files as percent-encoded `file://` URLs — normalize.
+    let p = normalize_local_path(&path);
+    let path = p.to_string_lossy().into_owned();
     let ext = p
         .extension()
         .and_then(|e| e.to_str())
@@ -678,6 +719,83 @@ pub async fn read_file_cmd(
     Ok(())
 }
 
+/// Parse a document and RETURN its content directly — no window, no AppState
+/// juggling. The iOS mobile reader (`/read`) renders the document in-page
+/// instead of opening a desktop-style editor window.
+#[tauri::command]
+pub async fn read_document_cmd(path: String) -> Result<crate::state::CurrentDocument, String> {
+    // iOS hands shared/opened files as percent-encoded `file://` URLs — normalize.
+    let p = normalize_local_path(&path);
+    let path = p.to_string_lossy().into_owned();
+    let ext = p.extension().and_then(|e| e.to_str()).unwrap_or("").to_lowercase();
+    let filename = p
+        .file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or("document")
+        .to_string();
+    if !p.exists() {
+        return Err(format!("file not found: {path}"));
+    }
+    let path_for_thread = p.clone();
+    let parse = tokio::time::timeout(
+        std::time::Duration::from_secs(180),
+        tokio::task::spawn_blocking(move || capture::doc_loader::load_rich_from_file(&path_for_thread)),
+    )
+    .await;
+    let rich = match parse {
+        Ok(Ok(Ok(v))) => v,
+        Ok(Ok(Err(e))) => return Err(e.to_string()),
+        Ok(Err(e)) => return Err(format!("parse task failed: {e}")),
+        Err(_) => return Err(format!("timed out parsing {filename} after 180s")),
+    };
+    if rich.iter().all(|rp| rp.text.trim().is_empty()) {
+        return Err("no readable text in this document".into());
+    }
+    let total_chars: usize = rich.iter().map(|rp| rp.text.chars().count()).sum();
+    let (mut paragraphs, mut pauses, mut speeds, mut kinds) =
+        (Vec::new(), Vec::new(), Vec::new(), Vec::new());
+    for rp in rich {
+        paragraphs.push(rp.text);
+        pauses.push(rp.pause_before);
+        speeds.push(rp.speed_mult);
+        kinds.push(rp.kind);
+    }
+    Ok(crate::state::CurrentDocument {
+        path,
+        filename,
+        extension: ext,
+        paragraphs,
+        char_count: total_chars,
+        loading: false,
+        paragraph_pauses: pauses,
+        paragraph_speed_mult: speeds,
+        paragraph_kinds: kinds,
+    })
+}
+
+/// Load in-memory text (e.g. a web article extracted by defuddle from a shared
+/// URL) as a document: write it to a temp `.md` and parse it through the normal
+/// markdown reader so it gets sections/rhythm and opens in the reader instead of
+/// being read "blind" via synthesize_text. Returns the same CurrentDocument that
+/// read_document_cmd produces.
+#[tauri::command]
+pub async fn read_text_as_document_cmd(
+    text: String,
+    filename: String,
+) -> Result<crate::state::CurrentDocument, String> {
+    let stem: String = filename
+        .chars()
+        .filter(|c| c.is_alphanumeric() || *c == ' ' || *c == '-' || *c == '_')
+        .collect::<String>()
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ");
+    let stem = if stem.is_empty() { "Shared article".to_string() } else { stem.chars().take(60).collect() };
+    let path = std::env::temp_dir().join(format!("{stem}.md"));
+    std::fs::write(&path, text.as_bytes()).map_err(|e| e.to_string())?;
+    read_document_cmd(path.to_string_lossy().into_owned()).await
+}
+
 /// Pulled by the document window on mount to recover from the open-race
 /// (backend emits the load event before the window's JS subscribes).
 #[tauri::command]
@@ -741,11 +859,31 @@ pub fn clear_current_document_cmd(
     state.documents.lock().unwrap().remove(label);
 }
 
-/// Stable filesystem-safe key for project autosave. Encodes the absolute document
-/// path as base64-url so different files don't collide and we can debug by eye.
+/// Stable filesystem-safe key for project autosave. Short paths keep a
+/// base64-url encoding of the absolute path (reversible, eyeball-debuggable).
+/// Long paths — e.g. iOS app-container paths, whose base64 blows past the
+/// 255-byte filename limit once we append ".json"/".json.tmp" and silently
+/// fails the write — fall back to a fixed-length, deterministic hash prefixed
+/// with the file stem so it's still recognisable.
 fn project_key(path: &str) -> String {
     use base64::Engine;
-    base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(path.as_bytes())
+    let b64 = base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(path.as_bytes());
+    if b64.len() <= 180 {
+        return b64;
+    }
+    use std::hash::{Hash, Hasher};
+    let mut h = std::collections::hash_map::DefaultHasher::new();
+    path.hash(&mut h);
+    let stem: String = std::path::Path::new(path)
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or("doc")
+        .chars()
+        .filter(|c| c.is_alphanumeric() || *c == '-' || *c == '_')
+        .take(48)
+        .collect();
+    let stem = if stem.is_empty() { "doc".to_string() } else { stem };
+    format!("{stem}-{:016x}", h.finish())
 }
 
 fn project_path(app: &AppHandle, doc_path: &str) -> Result<std::path::PathBuf, String> {
@@ -766,10 +904,16 @@ pub fn save_project_cmd(
     project_json: String,
 ) -> Result<(), String> {
     let p = project_path(&app, &doc_path)?;
-    tracing::info!("[doc:cmd] save_project_cmd → {}", p.display());
     let tmp = p.with_extension("json.tmp");
-    std::fs::write(&tmp, &project_json).map_err(|e| e.to_string())?;
-    std::fs::rename(&tmp, &p).map_err(|e| e.to_string())?;
+    if let Err(e) = std::fs::write(&tmp, &project_json) {
+        tracing::error!("[doc:cmd] save_project_cmd write failed ({}): {e}", tmp.display());
+        return Err(e.to_string());
+    }
+    if let Err(e) = std::fs::rename(&tmp, &p) {
+        tracing::error!("[doc:cmd] save_project_cmd rename failed ({}): {e}", p.display());
+        return Err(e.to_string());
+    }
+    tracing::info!("[doc:cmd] save_project_cmd → {} ({} bytes)", p.display(), project_json.len());
     Ok(())
 }
 
@@ -1114,6 +1258,23 @@ pub fn haptic_cmd(kind: String) {
     let _ = kind;
 }
 
+/// Pull any pending iOS Share-Sheet payloads from the App Group queue. The
+/// frontend calls this when its listeners are ready (on mount + each
+/// foreground) so a cold-launch share is never lost to a startup race.
+/// Returns a newline-separated string (`url:`/`text:`/`audio:`/`transcript:`
+/// lines) or null when the queue is empty. No-op (null) off iOS.
+#[tauri::command]
+pub fn drain_shared_payloads_cmd() -> Option<String> {
+    #[cfg(target_os = "ios")]
+    {
+        crate::mobile::drain_shared_payload_string()
+    }
+    #[cfg(not(target_os = "ios"))]
+    {
+        None
+    }
+}
+
 /// Present iOS's system share sheet for a file at `path`. The sheet shows
 /// AirDrop, Apple Books, Messages, Mail, Files, etc. as destinations.
 /// No-op on desktop (desktop already has its own "Save as" + Reveal in Finder).
@@ -1124,6 +1285,36 @@ pub fn share_file_cmd(path: String) -> Result<(), String> {
     #[cfg(not(target_os = "ios"))]
     let _ = path;
     Ok(())
+}
+
+/// Build a destination path for an exported audiobook inside the app's
+/// Documents directory. iOS has no save dialog and the webview can't touch the
+/// filesystem, so the frontend asks the backend where to write; the resulting
+/// `.m4b` then shows up in the in-app Library and can be shared out. `name` is a
+/// human title (e.g. the document filename); we sanitise it into a safe
+/// filename and always use the `.m4b` extension.
+#[tauri::command]
+pub fn audiobook_export_path_cmd(app: AppHandle, name: String) -> Result<String, String> {
+    use tauri::Manager;
+    let dir = app.path().document_dir().map_err(|e| e.to_string())?;
+    std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+    let stem = {
+        let cleaned: String = name
+            .trim()
+            .chars()
+            .map(|c| if c.is_alphanumeric() || c == ' ' || c == '-' || c == '_' { c } else { ' ' })
+            .collect();
+        let cleaned = cleaned.split_whitespace().collect::<Vec<_>>().join(" ");
+        if cleaned.is_empty() { "audiobook".to_string() } else { cleaned }
+    };
+    let mut path = dir.join(format!("{stem}.m4b"));
+    // Avoid clobbering an existing export: append " (2)", " (3)", …
+    let mut n = 2;
+    while path.exists() {
+        path = dir.join(format!("{stem} ({n}).m4b"));
+        n += 1;
+    }
+    Ok(path.to_string_lossy().into_owned())
 }
 
 /// List rendered audiobook files (`.m4b`, `.wav`, `.mp3`, `.m4a`) in the
@@ -1456,6 +1647,25 @@ pub fn open_main_window(app: AppHandle) -> Result<(), String> {
 #[tauri::command]
 pub fn open_player_window(app: AppHandle) -> Result<(), String> {
     windows::show_player(&app).map_err(|e| e.to_string())
+}
+
+/// Open (or focus) the dedicated transcription window on desktop. If `path` is
+/// given, emit `transcribe_file` to that window so it transcribes the file. iOS
+/// never calls this — it navigates to the `/transcribe` route in-window instead.
+#[tauri::command]
+pub fn open_transcribe_window(app: AppHandle, path: Option<String>) -> Result<(), String> {
+    windows::show_transcribe(&app).map_err(|e| e.to_string())?;
+    if let Some(p) = path {
+        // The freshly-created window's JS may not have registered its listener
+        // yet; a tiny delay lets it subscribe before we emit. Mirrors the
+        // document-window hand-off race handled via AppState elsewhere.
+        let app2 = app.clone();
+        std::thread::spawn(move || {
+            std::thread::sleep(std::time::Duration::from_millis(250));
+            let _ = app2.emit_to("transcribe", "transcribe_file", p);
+        });
+    }
+    Ok(())
 }
 
 #[tauri::command]
@@ -1806,6 +2016,10 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
 
     match &mode {
         ReadMode::MiniPlayer => {
+            // Desktop pops the floating player window. On iOS/Android there is no
+            // separate window — a compact mini-player bar is rendered inside the
+            // main window by the frontend (app layout) from `playback_state`.
+            #[cfg(not(any(target_os = "ios", target_os = "android")))]
             let _ = windows::show_player(app);
         }
         ReadMode::Document { .. } => {
@@ -1930,4 +2144,275 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
     });
 
     Ok(())
+}
+
+// ═══════════════════════ SPEECH-TO-TEXT (ASR) ═══════════════════════════
+//
+// Transcribe arbitrary audio with Parakeet TDT. On desktop the ONNX engine in
+// `yappy-core::asr` runs (CoreML/ANE on macOS, DirectML on Windows, XNNPACK/CUDA
+// on Linux, all inherited from the global EP list in `lib.rs`). On iOS the work
+// is done natively in Swift over the C-ABI in `mobile.rs`. The transcript is
+// saved to `transcripts.rs` so it shows up in the in-app history.
+
+use yappy_core::asr::{TranscribeOptions, TranscriptResult};
+
+/// Cached, lazily-loaded desktop ASR engine. Loading the ~670 MB model takes a
+/// moment, so we keep it resident across calls (mirrors the TTS engine cache in
+/// `AppState`). Desktop-only; iOS holds its CoreML model in Swift.
+mod asr_engine_cache {
+    use std::path::Path;
+    use std::sync::{Mutex, OnceLock};
+    use yappy_core::asr::ParakeetAsr;
+
+    static ENGINE: OnceLock<Mutex<Option<ParakeetAsr>>> = OnceLock::new();
+
+    pub fn with_engine<R>(
+        dir: &Path,
+        f: impl FnOnce(&mut ParakeetAsr) -> anyhow::Result<R>,
+    ) -> anyhow::Result<R> {
+        let slot = ENGINE.get_or_init(|| Mutex::new(None));
+        let mut guard = slot.lock().unwrap();
+        if guard.is_none() {
+            *guard = Some(ParakeetAsr::from_dir(dir)?);
+        }
+        f(guard.as_mut().expect("engine just loaded"))
+    }
+}
+
+#[tauri::command]
+pub fn is_asr_model_ready(app: AppHandle) -> Result<bool, String> {
+    // ONNX model, every platform — the main app's engine is `yappy-core::asr`
+    // (ORT). The Share Extension's separate CoreML model is managed in Swift.
+    asr_model::is_asr_model_ready(&app).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub async fn download_asr_model_cmd(app: AppHandle) -> Result<(), String> {
+    let h = app.clone();
+    asr_model::download_asr_model(&app, move |p| {
+        let _ = h.emit("asr_model_download", &p);
+    })
+    .await
+    .map_err(|e| e.to_string())
+}
+
+/// Transcribe an audio file at `path`. `source` labels where it came from
+/// ("File" / "Shared"), `options` controls language hint + timestamp mode.
+#[tauri::command]
+pub async fn transcribe_audio_cmd(
+    app: AppHandle,
+    state: State<'_, Arc<AppState>>,
+    path: String,
+    options: Option<TranscribeOptions>,
+    source: Option<String>,
+) -> Result<TranscriptResult, String> {
+    let opts = options.unwrap_or_default();
+    // Shared/opened audio can arrive as a percent-encoded `file://` URL — normalize.
+    let path = normalize_local_path(&path).to_string_lossy().into_owned();
+    let (save, history_max) = {
+        let s = state.settings.lock().unwrap();
+        (s.save_history, s.history_max)
+    };
+    let filename = std::path::Path::new(&path)
+        .file_name()
+        .and_then(|s| s.to_str())
+        .map(|s| s.to_string());
+
+    let ready = is_asr_model_ready(app.clone()).unwrap_or(false);
+    if !ready {
+        let _ = app.emit("asr_model_missing", true);
+        return Err("transcription model not downloaded".into());
+    }
+
+    let _ = app.emit("transcribe_progress", "transcribing");
+    let result = run_transcription(&app, &path, &opts).await?;
+
+    if save && !result.text.trim().is_empty() {
+        let entry = transcripts::Transcript {
+            id: format!(
+                "{}-{}",
+                transcripts::now_unix(),
+                uuid::Uuid::new_v4().simple().to_string().chars().take(8).collect::<String>()
+            ),
+            created_at: transcripts::now_unix(),
+            source: source.unwrap_or_else(|| "File".into()),
+            filename,
+            duration_secs: result.audio_secs,
+            language: result.language.clone(),
+            text: result.text.clone(),
+        };
+        let _ = transcripts::append(&app, entry, history_max.max(50));
+    }
+    let _ = app.emit("transcribe_progress", "done");
+    Ok(result)
+}
+
+/// A short bundled speech clip ("The quick brown fox… Yappy transcription is
+/// working.") embedded in the binary so the user (and our tests) can verify
+/// transcription without supplying a file — works identically on every platform
+/// incl. the iOS Simulator.
+const SAMPLE_WAV: &[u8] = include_bytes!("../../resources/sample-speech.wav");
+
+/// A bundled sample **Markdown** document ("The Lighthouse Keeper") so the
+/// document reader can be tried without picking a file. Markdown (rather than the
+/// flat PDF) is deliberate: it preserves real structure — headings at multiple
+/// levels, a blockquote, a list, a horizontal rule — so the reader exercises
+/// chapters, section rhythm, and per-section/per-paragraph controls end to end.
+const SAMPLE_DOC: &[u8] = include_bytes!("../../resources/sample-doc.md");
+
+#[tauri::command]
+pub fn sample_document_path_cmd() -> Result<String, String> {
+    let path = std::env::temp_dir().join("the-lighthouse-keeper.md");
+    std::fs::write(&path, SAMPLE_DOC).map_err(|e| e.to_string())?;
+    Ok(path.to_string_lossy().into_owned())
+}
+
+/// Transcribe the bundled sample clip. Reuses the normal transcribe flow.
+#[tauri::command]
+pub async fn transcribe_sample_cmd(
+    app: AppHandle,
+    state: State<'_, Arc<AppState>>,
+    options: Option<TranscribeOptions>,
+) -> Result<TranscriptResult, String> {
+    let path = std::env::temp_dir().join("yappy-sample-speech.wav");
+    std::fs::write(&path, SAMPLE_WAV).map_err(|e| e.to_string())?;
+    transcribe_audio_cmd(
+        app,
+        state,
+        path.to_string_lossy().into_owned(),
+        options,
+        Some("Sample".into()),
+    )
+    .await
+}
+
+/// Transcribe via the ONNX Parakeet engine (`yappy-core::asr`) on EVERY platform.
+/// ORT uses the global EP chain: CoreML on Apple devices, XNNPACK/CPU otherwise
+/// (incl. the iOS Simulator) — this is the CoreML→ONNX/CPU fallback. The Share
+/// Extension is the only place that uses native CoreML (FluidAudio) directly.
+async fn run_transcription(
+    app: &AppHandle,
+    path: &str,
+    opts: &TranscribeOptions,
+) -> Result<TranscriptResult, String> {
+    let root = asr_model::asr_model_root(app).map_err(|e| e.to_string())?;
+    let path = path.to_string();
+    let opts = opts.clone();
+    tokio::task::spawn_blocking(move || -> anyhow::Result<TranscriptResult> {
+        let samples = crate::asr_decode::decode_to_mono16k(std::path::Path::new(&path))?;
+        asr_engine_cache::with_engine(&root, |eng| {
+            use yappy_core::asr::Transcriber;
+            eng.transcribe_mono16k(&samples, &opts)
+        })
+    })
+    .await
+    .map_err(|e| format!("transcription task panicked: {e}"))?
+    .map_err(|e| e.to_string())
+}
+
+/// Persist a transcript that was produced elsewhere (e.g. the iOS Share
+/// Extension transcribed in-place and handed Yappy the finished text). Returns
+/// the stored entry so the UI can surface it immediately.
+#[tauri::command]
+pub fn save_transcript_cmd(
+    app: AppHandle,
+    state: State<'_, Arc<AppState>>,
+    text: String,
+    source: Option<String>,
+    filename: Option<String>,
+    language: Option<String>,
+    duration_secs: Option<f32>,
+) -> Result<transcripts::Transcript, String> {
+    let history_max = { state.settings.lock().unwrap().history_max };
+    let entry = transcripts::Transcript {
+        id: format!(
+            "{}-{}",
+            transcripts::now_unix(),
+            uuid::Uuid::new_v4().simple().to_string().chars().take(8).collect::<String>()
+        ),
+        created_at: transcripts::now_unix(),
+        source: source.unwrap_or_else(|| "Shared".into()),
+        filename,
+        duration_secs: duration_secs.unwrap_or(0.0),
+        language,
+        text,
+    };
+    transcripts::append(&app, entry.clone(), history_max.max(50)).map_err(|e| e.to_string())?;
+    Ok(entry)
+}
+
+/// Result of the audio round-trip self-test.
+#[derive(Debug, Serialize)]
+pub struct AudioSelfTest {
+    pub ok: bool,
+    pub rms: f32,
+    pub peak: f32,
+    pub synth_secs: f32,
+    pub heard: String,
+}
+
+/// Creative audio verification that doesn't need speakers: synthesize a known
+/// phrase with the TTS engine, measure the signal (RMS/peak — silence would be
+/// ~0), then feed that exact audio back into the Parakeet STT engine. If it
+/// transcribes back to the phrase, the synthesized audio is provably real,
+/// intelligible speech (i.e. the audio pipeline genuinely produces sound).
+#[tauri::command]
+pub async fn audio_selftest_cmd(
+    app: AppHandle,
+    state: State<'_, Arc<AppState>>,
+) -> Result<AudioSelfTest, String> {
+    let st = state.inner().clone();
+    let model_root = model::model_root(&app).map_err(|e| e.to_string())?;
+    let asr_root = asr_model::asr_model_root(&app).map_err(|e| e.to_string())?;
+    let voice = { st.settings.lock().unwrap().voice.clone() };
+    tokio::task::spawn_blocking(move || -> anyhow::Result<AudioSelfTest> {
+        const PHRASE: &str = "The quick brown fox jumps over the lazy dog.";
+        // 1) TTS synth → raw samples.
+        let engine = st.engine_or_load(&model_root)?;
+        let opts = SynthesisOptions { voice, ..Default::default() };
+        let chunks = engine.synthesize(PHRASE, &opts)?;
+        let sr = engine.sample_rate();
+        let mut samples: Vec<f32> = Vec::new();
+        for c in &chunks {
+            samples.extend_from_slice(&c.samples);
+        }
+        let n = samples.len().max(1) as f32;
+        let rms = (samples.iter().map(|s| s * s).sum::<f32>() / n).sqrt();
+        let peak = samples.iter().fold(0f32, |a, &s| a.max(s.abs()));
+        let synth_secs = samples.len() as f32 / sr as f32;
+        // 2) Resample to 16 kHz and transcribe the synthesized audio back.
+        let mono16 = crate::playback::resample_mono(&samples, sr as u32, 16_000)?;
+        let heard = asr_engine_cache::with_engine(&asr_root, |eng| {
+            use yappy_core::asr::Transcriber;
+            Ok(eng
+                .transcribe_mono16k(&mono16, &yappy_core::asr::TranscribeOptions::default())?
+                .text)
+        })
+        .unwrap_or_default();
+        Ok(AudioSelfTest {
+            ok: rms > 0.003 && !heard.trim().is_empty(),
+            rms,
+            peak,
+            synth_secs,
+            heard,
+        })
+    })
+    .await
+    .map_err(|e| format!("audio self-test panicked: {e}"))?
+    .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn get_transcripts(app: AppHandle) -> Result<transcripts::Transcripts, String> {
+    transcripts::load(&app).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn clear_transcripts_cmd(app: AppHandle) -> Result<(), String> {
+    transcripts::clear(&app).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn delete_transcript_cmd(app: AppHandle, id: String) -> Result<(), String> {
+    transcripts::delete(&app, &id).map_err(|e| e.to_string())
 }

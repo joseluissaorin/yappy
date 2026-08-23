@@ -132,6 +132,27 @@ export interface History {
   entries: HistoryEntry[];
 }
 
+// --- Speech-to-text (ASR) ---
+export type TimestampMode = "tokens" | "words";
+export interface TimedSegment { text: string; start: number; end: number; }
+export interface TranscribeOptions { language?: string | null; timestamps?: TimestampMode; }
+export interface TranscriptResult {
+  text: string;
+  segments: TimedSegment[];
+  language: string | null;
+  audio_secs: number;
+}
+export interface Transcript {
+  id: string;
+  created_at: number;
+  source: string;
+  filename: string | null;
+  duration_secs: number;
+  language: string | null;
+  text: string;
+}
+export interface Transcripts { entries: Transcript[]; }
+
 // --- Commands ---
 export const listVoices = (): Promise<Voice[]> => invoke("list_voices");
 export const getSettings = (): Promise<Settings> => invoke("get_settings");
@@ -159,12 +180,50 @@ export const isModelReady = (): Promise<boolean> => invoke("is_model_ready");
 export const downloadModel = (): Promise<void> => invoke("download_model_cmd");
 export const openMain = (): Promise<void> => invoke("open_main_window");
 export const openPlayer = (): Promise<void> => invoke("open_player_window");
+/// Open (or focus) the dedicated transcription window on desktop, optionally
+/// handing it an audio file path to transcribe. No-op route on iOS (use goto).
+export const openTranscribeWindow = (path?: string): Promise<void> =>
+  invoke("open_transcribe_window", { path: path ?? null });
+export function onTranscribeFile(cb: (path: string) => void): Promise<UnlistenFn> {
+  return listen<string>("transcribe_file", (ev) => cb(ev.payload));
+}
 export const requestMacosPermissions = (): Promise<void> => invoke("request_macos_permissions");
 export const captureDiagnostics = (): Promise<CaptureDiagnostics> => invoke("capture_diagnostics");
 
 export const getHistory = (): Promise<History> => invoke("get_history");
 export const clearHistory = (): Promise<void> => invoke("clear_history_cmd");
 export const replayHistory = (id: string): Promise<void> => invoke("replay_history_cmd", { id });
+
+// Speech-to-text commands.
+export const isAsrModelReady = (): Promise<boolean> => invoke("is_asr_model_ready");
+export const downloadAsrModel = (): Promise<void> => invoke("download_asr_model_cmd");
+export const transcribeAudio = (
+  path: string,
+  options?: TranscribeOptions,
+  source?: string,
+): Promise<TranscriptResult> =>
+  invoke("transcribe_audio_cmd", { path, options: options ?? null, source: source ?? null });
+export const saveTranscript = (
+  text: string,
+  source?: string,
+  filename?: string,
+  language?: string,
+  durationSecs?: number,
+): Promise<Transcript> =>
+  invoke("save_transcript_cmd", {
+    text,
+    source: source ?? null,
+    filename: filename ?? null,
+    language: language ?? null,
+    durationSecs: durationSecs ?? null,
+  });
+export const transcribeSample = (options?: TranscribeOptions): Promise<TranscriptResult> =>
+  invoke("transcribe_sample_cmd", { options: options ?? null });
+export interface AudioSelfTest { ok: boolean; rms: number; peak: number; synth_secs: number; heard: string; }
+export const audioSelfTest = (): Promise<AudioSelfTest> => invoke("audio_selftest_cmd");
+export const getTranscripts = (): Promise<Transcripts> => invoke("get_transcripts");
+export const clearTranscripts = (): Promise<void> => invoke("clear_transcripts_cmd");
+export const deleteTranscript = (id: string): Promise<void> => invoke("delete_transcript_cmd", { id });
 export const saveCurrentAudio = (path: string): Promise<void> => invoke("save_current_audio_cmd", { path });
 export const setHotkey = (action: "read_now" | "pause_resume" | "read_clipboard", combo: string): Promise<void> =>
   invoke("set_hotkey_cmd", { action, combo });
@@ -175,6 +234,15 @@ export const setPlayerPosition = (x: number | null, y: number | null): Promise<v
 /// If absent and the caller is the main window, a brand-new document window is created.
 export const readFile = (path: string, targetWindow?: string): Promise<void> =>
   invoke("read_file_cmd", { path, targetWindow });
+/// Returns a temp path to a bundled sample document (for trying the editor).
+export const sampleDocumentPath = (): Promise<string> => invoke("sample_document_path_cmd");
+/// Parse a document and return its content directly (iOS in-page reader).
+export const readDocument = (path: string): Promise<DocumentLoaded> =>
+  invoke("read_document_cmd", { path });
+/// Load in-memory text (e.g. a shared web article) as a document so it opens in
+/// the reader with sections, instead of being read "blind".
+export const readTextAsDocument = (text: string, filename: string): Promise<DocumentLoaded> =>
+  invoke("read_text_as_document_cmd", { text, filename });
 
 // Document reader (separate window, full-screen reading view).
 export interface DocumentLoaded {
@@ -252,6 +320,13 @@ export function onAudiobookRenderProgress(
 export function onAudiobookRenderDone(cb: (p: { path: string; samples: number; sample_rate: number }) => void): Promise<UnlistenFn> {
   return listen("audiobook_render_done", (ev: any) => cb(ev.payload));
 }
+/// iOS: where to write an exported audiobook (app Documents dir → shows in the
+/// Library + can be shared). `name` is a human title; backend sanitises it.
+export const audiobookExportPath = (name: string): Promise<string> =>
+  invoke("audiobook_export_path_cmd", { name });
+/// iOS: present the system share sheet for a file (AirDrop, Books, Files, …).
+export const shareFile = (path: string): Promise<void> =>
+  invoke("share_file_cmd", { path });
 
 export const openBrowserExtensions = (browser: string): Promise<void> =>
   invoke("open_browser_extensions_cmd", { browser });
@@ -336,6 +411,15 @@ export function onCaptureProgress(cb: (stage: string) => void): Promise<Unlisten
 }
 export function onModelMissing(cb: () => void): Promise<UnlistenFn> {
   return listen("model_missing", () => cb());
+}
+export function onAsrModelDownload(cb: (p: DownloadProgress) => void): Promise<UnlistenFn> {
+  return listen<DownloadProgress>("asr_model_download", (ev) => cb(ev.payload));
+}
+export function onAsrModelMissing(cb: () => void): Promise<UnlistenFn> {
+  return listen("asr_model_missing", () => cb());
+}
+export function onTranscribeProgress(cb: (stage: string) => void): Promise<UnlistenFn> {
+  return listen<string>("transcribe_progress", (ev) => cb(ev.payload));
 }
 export function onSynthError(cb: (msg: string) => void): Promise<UnlistenFn> {
   return listen<string>("synth_error", (ev) => cb(ev.payload));

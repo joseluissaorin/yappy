@@ -81,6 +81,22 @@ private actor SilentAudioKeepalive {
 
 // ─── C-ABI exports — Rust calls these via `extern "C"` ──────────────────
 
+/// Activate the audio session for normal TTS playback. cpal/CoreAudio only
+/// outputs sound on iOS when an AVAudioSession is active in .playback category;
+/// without this, streaming TTS plays silently. Called once at playback startup.
+/// Synchronous (not a Task) so the session is active before cpal builds its
+/// output stream. `.duckOthers` lowers other audio while Yappy reads.
+@_cdecl("yappy_audio_session_activate")
+public func yappy_audio_session_activate() {
+    let session = AVAudioSession.sharedInstance()
+    do {
+        try session.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
+        try session.setActive(true)
+    } catch {
+        NSLog("[yappy/audio] playback session activate failed: \(error)")
+    }
+}
+
 @_cdecl("yappy_background_audio_begin")
 public func yappy_background_audio_begin() {
     Task {

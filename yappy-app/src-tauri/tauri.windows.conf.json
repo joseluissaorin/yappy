@@ -55,6 +55,13 @@
           "description": "Plain text or markdown",
           "role": "Editor",
           "mimeType": "text/plain"
+        },
+        {
+          "ext": ["mp3", "m4a", "aac", "wav", "flac", "ogg", "oga", "opus", "caf", "amr"],
+          "name": "Audio File",
+          "description": "Audio to transcribe with Yappy",
+          "role": "Editor",
+          "mimeType": "audio/*"
         }
       ]
     }

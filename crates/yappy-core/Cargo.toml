@@ -21,6 +21,11 @@ hound.workspace = true
 unicode-normalization.workspace = true
 unicode-segmentation.workspace = true
 whatlang.workspace = true
+# Real-valued FFT for the Parakeet ASR mel-spectrogram front-end (asr::audio).
+# Pure-Rust (wraps RustFFT); links cleanly on every target. The ASR ONNX engine
+# itself is desktop-gated, but the mel front-end is cheap and harmless to compile
+# everywhere, so realfft stays an unconditional dep.
+realfft = "3"
 
 [features]
 default = []

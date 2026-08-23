@@ -293,6 +293,38 @@ ORT_DISABLE_ALL_HW=1 ./yappy
   - [ ] **WebView2 bootstrap**: install Yappy on a fresh Windows 10 LTSC
         VM (no WebView2 runtime). The installer should pull WebView2 down
         silently and Yappy should launch first time.
+  - [ ] **Per-monitor DPI awareness**: on a multi-monitor rig with a 100%
+        and a 200% display, drag Yappy from one to the other. The UI
+        should re-render crisp (no blurry bitmap scaling) on both. With
+        the old per-system DPI mode, dragging from primary to secondary
+        used to leave Yappy bilinearly scaled until restart. The
+        `SetProcessDpiAwarenessContext(PER_MONITOR_AWARE_V2)` call in
+        `lib.rs::run()` should kick in before any window is created.
+  - [ ] **UIA budget timeout**: open an Electron app known for slow a11y
+        trees (e.g., Slack with 50+ DMs). Hit Ctrl+Alt+R. If UIA is going
+        to take more than 500ms, capture should fall through to OCR
+        rather than hang. Look for `uia: budget exceeded` in `yappy.log`
+        — that's the expected log line on bail-out.
+  - [ ] **Browser DocumentRange path**: open a news article in Edge. Hit
+        Ctrl+Alt+R with no selection. Yappy should read the article body
+        (without the nav / ads / sidebar). `yappy.log` shows
+        `uia: browser DocumentRange extracted N chars`. Repeat in
+        Chrome, Firefox, Brave — all should hit this path. Same article
+        in Notepad (paste body in) should hit the standard visible-ranges
+        path, not the browser one.
+  - [ ] **Multi-format clipboard preservation**: in Word, select a
+        styled paragraph and Ctrl+C it. Open another app (notepad++,
+        or paste a quick image into Paint and Ctrl+C the image instead).
+        Now go back to Word, select something else and hit Ctrl+Alt+R.
+        After Yappy reads it, paste the clipboard in Paint or Word — the
+        original styled paragraph (or image) should still be there, fully
+        formatted. Previously only `CF_UNICODETEXT` survived, so the
+        format/image was silently lost.
+  - [ ] **UIA cached singleton**: instrument `os_win.rs` or just observe
+        `yappy.log` over 10 consecutive Ctrl+Alt+R presses. The first
+        press logs the COM init time; subsequent presses should be
+        ~5-15ms faster on the UIA leg because the `IUIAutomation` is
+        cached.
 
 ### 4.11 Edge cases
 
@@ -303,6 +335,53 @@ ORT_DISABLE_ALL_HW=1 ./yappy
   - [ ] Open a 200+ page PDF — doesn't OOM
   - [ ] Render audiobook for a 50,000-word document — completes within
         reasonable time (~10-30 min depending on hardware)
+
+### 4.12 Code signing (Windows, release-build only)
+
+Signed installers don't trigger the **SmartScreen "Unknown publisher"**
+dialog the first time a user runs Yappy. Without signing, users have to
+click "More info → Run anyway" once before Yappy launches at all.
+
+**Local signing** (developer with a PFX on disk):
+
+```pwsh
+$env:WINDOWS_PFX_PATH     = "C:\path\to\codesign.pfx"
+$env:WINDOWS_PFX_PASSWORD = "..."
+pwsh ./scripts/sign-windows.ps1 -BundleDir "yappy-app/src-tauri/target/release/bundle"
+```
+
+The script finds `signtool.exe` under the Windows 10/11 SDK, then signs
+every `.exe` and `.msi` under `-BundleDir` with SHA256 + a timestamp from
+DigiCert (override via `-TimestampUrl`). It verifies each signature
+afterwards via `signtool verify /pa /v`.
+
+**CI signing** (GitHub Actions, secrets-based):
+
+Add two repo secrets:
+  - `WINDOWS_PFX_BASE64` — `base64 -w0 codesign.pfx` output
+  - `WINDOWS_PFX_PASSWORD` — the PFX password
+
+The `release.yml` workflow auto-signs after collecting bundle paths,
+gated on `WINDOWS_PFX_BASE64 != ''`. Forked / local builds keep working
+unsigned; only the official release flow signs.
+
+**Buying a cert:** OV (Organization Validation) certs from DigiCert /
+Sectigo / GlobalSign cost $200-400/year, take a few days to issue, and
+give you publisher-name-only on first run. EV (Extended Validation)
+certs cost $300-600/year, ship on a USB token (or via Azure Key Vault),
+and unlock instant SmartScreen reputation. For Yappy, OV is enough —
+once a few hundred users run the OV-signed installer Microsoft's
+reputation system auto-suppresses the warning.
+
+Verify a signed bundle locally:
+
+```pwsh
+& "${env:ProgramFiles(x86)}\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe" `
+  verify /pa /v ".\yappy-app\src-tauri\target\release\bundle\nsis\Yappy_*_x64-setup.exe"
+```
+
+You should see the chain validate up to the CA root and a "Successfully
+verified" line.
 
 ## 5. Known issues (don't waste time on these)
 

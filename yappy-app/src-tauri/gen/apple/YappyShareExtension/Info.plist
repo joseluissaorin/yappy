@@ -19,20 +19,19 @@
 	<key>CFBundleShortVersionString</key>
 	<string>0.1.0</string>
 	<key>CFBundleVersion</key>
-	<string>0.1.0</string>
+	<string>0.2.0.1</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>NSExtensionActivationRule</key>
-			<dict>
-				<key>NSExtensionActivationSupportsText</key>
-				<true/>
-				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
-				<integer>1</integer>
-				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-				<integer>1</integer>
-			</dict>
+			<string>SUBQUERY(extensionItems, $item,
+  SUBQUERY($item.attachments, $att,
+    ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.audio"
+    OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.text"
+    OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
+  ).@count &gt; 0
+).@count &gt; 0</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>

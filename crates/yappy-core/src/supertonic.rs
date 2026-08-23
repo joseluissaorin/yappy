@@ -261,27 +261,14 @@ impl TextToSpeech {
         // is safe even if some Supertonic ops don't map to CoreML.
         let session = |name: &str| -> Result<Session> {
             let p = onnx_dir.join(name);
-            let mut builder = Session::builder()?;
-            #[cfg(any(target_os = "macos", target_os = "ios"))]
-            {
-                use ort::execution_providers::coreml::{
-                    CoreMLComputeUnits, CoreMLExecutionProvider, CoreMLModelFormat,
-                };
-                let ep = CoreMLExecutionProvider::default()
-                    // All = CPU + GPU + Neural Engine. The runtime picks the
-                    // fastest path per op.
-                    .with_compute_units(CoreMLComputeUnits::All)
-                    // MLProgram (the modern .mlpackage format) supports more
-                    // operators and is generally faster than the legacy
-                    // NeuralNetwork format.
-                    .with_model_format(CoreMLModelFormat::MLProgram)
-                    .build();
-                // append_execution_provider returns a Result we want to
-                // SOFTEN — if CoreML init fails (e.g. on an older OS) we
-                // still want the session to load on CPU rather than erroring.
-                builder = builder.with_execution_providers([ep])?;
-            }
-            builder
+            // Execution providers are registered ONCE, globally, at the ORT
+            // environment level by the host app (yappy-app `lib.rs`: CoreML on
+            // Apple, DirectML on Windows, XNNPACK/CUDA on Linux). Sessions inherit
+            // them. Registering CoreML again here per-session errors with
+            // "Provider CoreMLExecutionProvider has already been registered" on
+            // iOS/macOS — which made the TTS engine fail to load. So we just build
+            // the session and let it pick up the environment EPs.
+            Session::builder()?
                 .commit_from_file(&p)
                 .with_context(|| format!("loading ONNX session {}", p.display()))
         };

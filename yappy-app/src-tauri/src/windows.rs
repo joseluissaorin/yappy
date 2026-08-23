@@ -129,6 +129,47 @@ pub fn create_document_window<R: Runtime>(
     Ok(())
 }
 
+/// Show (or create) the single reusable transcription window. Desktop only —
+/// on iOS transcription is a client-side route inside the one main window.
+pub fn show_transcribe<R: Runtime>(handle: &tauri::AppHandle<R>) -> Result<()> {
+    match handle.get_webview_window("transcribe") {
+        Some(w) => {
+            let _ = w.show();
+            #[cfg(desktop)]
+            let _ = w.unminimize();
+            let _ = w.set_focus();
+            Ok(())
+        }
+        None => create_transcribe_window(handle),
+    }
+}
+
+/// Create the `transcribe` window at the `/transcribe` route. Mirrors
+/// `create_document_window` (same chrome treatment), but with a single fixed
+/// label so there's only ever one transcription window.
+pub fn create_transcribe_window<R: Runtime>(handle: &tauri::AppHandle<R>) -> Result<()> {
+    use tauri::WebviewUrl;
+    let url = WebviewUrl::App("/transcribe".into());
+    let builder = tauri::WebviewWindowBuilder::new(handle, "transcribe", url)
+        .title("Yappy — Transcribe")
+        .inner_size(760.0, 640.0)
+        .min_inner_size(560.0, 460.0)
+        .resizable(true)
+        .visible(true)
+        .background_color(tauri::webview::Color(0xff, 0xf8, 0xd7, 0xff));
+    #[cfg(desktop)]
+    let builder = builder.decorations(true).center().shadow(true);
+    #[cfg(target_os = "macos")]
+    let builder = builder
+        .hidden_title(true)
+        .title_bar_style(tauri::TitleBarStyle::Overlay);
+    builder
+        .build()
+        .map_err(|e| anyhow::anyhow!("create transcribe window: {e:?}"))?;
+    tracing::info!("[transcribe:win] created");
+    Ok(())
+}
+
 /// Generate a fresh window label, monotonically increasing.
 pub fn next_document_label() -> String {
     use std::sync::atomic::{AtomicU64, Ordering};

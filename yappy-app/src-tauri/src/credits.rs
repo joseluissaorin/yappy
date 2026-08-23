@@ -30,7 +30,27 @@ pub fn credits() -> &'static [Credit] {
             note: "Reference Rust inference code vendored into yappy-core." },
         Credit { name: "ONNX Runtime", kind: "library", version: "2.0.0-rc.10", license: "MIT",
             url: "https://onnxruntime.ai/",
-            note: "Powers Supertonic 3 + PaddleOCR inference." },
+            note: "Powers Supertonic 3 + PaddleOCR + Parakeet ASR inference." },
+
+        // Speech-to-text (ASR)
+        Credit { name: "Parakeet TDT 0.6B v3", kind: "model", version: "0.6b-v3", license: "CC-BY-4.0",
+            url: "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3",
+            note: "NVIDIA multilingual transducer ASR. ONNX (desktop) + CoreML (Apple)." },
+        Credit { name: "parakeet-rs", kind: "code", version: "0.3.5", license: "MIT / Apache-2.0",
+            url: "https://github.com/altunenes/parakeet-rs",
+            note: "Reference TDT ONNX decoder, adapted into yappy-core::asr." },
+        Credit { name: "FluidAudio", kind: "library", version: "0.12+", license: "Apache-2.0",
+            url: "https://github.com/FluidInference/FluidAudio",
+            note: "CoreML Parakeet on the Apple Neural Engine (iOS/macOS)." },
+        Credit { name: "realfft", kind: "library", version: "3", license: "MIT / Apache-2.0",
+            url: "https://crates.io/crates/realfft",
+            note: "FFT for the ASR mel-spectrogram front-end." },
+        Credit { name: "symphonia", kind: "library", version: "0.5", license: "MPL-2.0",
+            url: "https://crates.io/crates/symphonia",
+            note: "Decodes mp3/aac/m4a/flac/ogg audio for transcription (desktop)." },
+        Credit { name: "opus", kind: "library", version: "0.3", license: "MIT / Apache-2.0",
+            url: "https://crates.io/crates/opus",
+            note: "Decodes Ogg-Opus voice notes (WhatsApp) for transcription (desktop)." },
 
         // OCR + readability
         Credit { name: "PaddleOCR (PP-OCRv4)", kind: "model", version: "v4 mobile det+cls+rec", license: "Apache-2.0",

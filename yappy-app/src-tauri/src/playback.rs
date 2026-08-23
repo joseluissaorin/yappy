@@ -86,6 +86,13 @@ impl PlaybackController {
         let session_samples: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
         let session_id = Arc::new(AtomicU64::new(0));
 
+        // iOS: cpal/CoreAudio only actually outputs when an AVAudioSession is
+        // active in the .playback category. Activate it BEFORE the audio thread
+        // builds the output stream — otherwise TTS "plays" silently (the
+        // playback clock never advances). Mirrors what the render keepalive does.
+        #[cfg(target_os = "ios")]
+        crate::mobile::audio_session_activate();
+
         let snap_for_thread = snapshot.clone();
         let listeners_for_thread = listeners.clone();
         let session_for_thread = session_samples.clone();
@@ -286,6 +293,12 @@ fn run_audio_thread(
                     if session_id != live_session_id.load(Ordering::SeqCst) {
                         continue;
                     }
+                    // iOS: (re)activate the audio session right as playback begins.
+                    // The Now-Playing bridge can deactivate it while idle, and
+                    // cpal's RemoteIO output unit produces nothing if the session
+                    // isn't active — so re-assert it here, not just at startup.
+                    #[cfg(target_os = "ios")]
+                    crate::mobile::audio_session_activate();
                     *buffer.lock().unwrap() = Vec::new();
                     *session_samples.lock().unwrap() = Vec::new();
                     session_total = chunks.first().map(|c| c.total).unwrap_or(0);
@@ -512,21 +525,24 @@ pub fn resample_mono(input: &[f32], sr_in: u32, sr_out: u32) -> Result<Vec<f32>>
     if sr_in == sr_out {
         return Ok(input.to_vec());
     }
-    let chunk = 1024usize;
-    let mut resampler = FftFixedInOut::<f32>::new(sr_in as usize, sr_out as usize, chunk, 1)?;
+    let mut resampler = FftFixedInOut::<f32>::new(sr_in as usize, sr_out as usize, 1024, 1)?;
     let mut out: Vec<f32> = Vec::with_capacity(
         ((input.len() as f64) * (sr_out as f64) / (sr_in as f64)).ceil() as usize,
     );
+    // FftFixedInOut requires EXACTLY `input_frames_next()` input frames per
+    // process() call (e.g. 1323 for 44.1k→16k) — feeding a fixed 1024 errors
+    // with "Insufficient buffer size". Drive the loop by that size and
+    // zero-pad the final partial block.
     let mut pos = 0usize;
     while pos < input.len() {
-        let end = (pos + chunk).min(input.len());
-        let mut frame = vec![0.0f32; chunk];
+        let need = resampler.input_frames_next();
+        let end = (pos + need).min(input.len());
+        let mut frame = vec![0.0f32; need];
         let slice = &input[pos..end];
         frame[..slice.len()].copy_from_slice(slice);
-        let waves_in: [&[f32]; 1] = [&frame];
-        let waves_out = resampler.process(&waves_in, None)?;
+        let waves_out = resampler.process(&[frame.as_slice()], None)?;
         out.extend_from_slice(&waves_out[0]);
-        pos = end;
+        pos += need;
     }
     Ok(out)
 }

@@ -54,12 +54,17 @@ pub fn send_ctrl_c() -> bool { false }
 pub fn capture_foreground_window_png(_out: &std::path::Path) -> anyhow::Result<()> {
     anyhow::bail!("capture_foreground_window_png: not available on this OS")
 }
+#[cfg(not(target_os = "windows"))]
+pub fn clipboard_snapshot_all() -> Vec<(u32, Vec<u8>)> { Vec::new() }
+#[cfg(not(target_os = "windows"))]
+pub fn clipboard_restore_all(_snapshot: &[(u32, Vec<u8>)]) {}
 
 // ─── Windows implementations ───────────────────────────────────────────
 
 #[cfg(target_os = "windows")]
 mod imp {
     use std::sync::{Mutex, OnceLock};
+    use std::time::Instant;
 
     use windows::Foundation::TypedEventHandler;
     use windows::Media::{
@@ -372,6 +377,86 @@ mod imp {
         }
     }
 
+    /// Snapshot EVERY clipboard format the current owner has published.
+    /// Returns `(format_id, bytes)` pairs. Sub-ms typically.
+    ///
+    /// Why: our selection-capture trick (snapshot → SendInput Ctrl+C →
+    /// read new clipboard → restore old) used to only preserve
+    /// CF_UNICODETEXT, which silently dropped any HTML / RTF / image data
+    /// the user had on the clipboard. After Ctrl+Alt+R their formatted
+    /// "paste with formatting" paste would lose its formatting. Now we
+    /// preserve every format byte-perfect.
+    pub fn clipboard_snapshot_all() -> Vec<(u32, Vec<u8>)> {
+        use windows::Win32::System::DataExchange::EnumClipboardFormats;
+        use windows::Win32::System::Memory::GlobalSize;
+        unsafe {
+            if OpenClipboard(None).is_err() {
+                return Vec::new();
+            }
+            let mut out: Vec<(u32, Vec<u8>)> = Vec::new();
+            let mut fmt: u32 = 0;
+            loop {
+                fmt = EnumClipboardFormats(fmt);
+                if fmt == 0 {
+                    break;
+                }
+                // Some formats (CF_OWNERDISPLAY, CF_DSPBITMAP, etc.) are
+                // delayed-rendered or owner-drawn — copying them via
+                // GetClipboardData triggers the owner to draw, which may
+                // fail or be slow. Stick to plain HGLOBAL-backed formats.
+                let Ok(h) = GetClipboardData(fmt) else { continue };
+                let hglobal = windows::Win32::Foundation::HGLOBAL(h.0);
+                let ptr = GlobalLock(hglobal);
+                if ptr.is_null() {
+                    continue;
+                }
+                let size = GlobalSize(hglobal);
+                if size == 0 || size > 64 * 1024 * 1024 {
+                    // 64 MB cap to avoid surprise blow-ups on huge image data.
+                    let _ = GlobalUnlock(hglobal);
+                    continue;
+                }
+                let mut buf = vec![0u8; size];
+                std::ptr::copy_nonoverlapping(ptr as *const u8, buf.as_mut_ptr(), size);
+                let _ = GlobalUnlock(hglobal);
+                out.push((fmt, buf));
+            }
+            let _ = CloseClipboard();
+            out
+        }
+    }
+
+    /// Restore every format from a previous snapshot. Empties the
+    /// clipboard first, then publishes each format back in original order.
+    pub fn clipboard_restore_all(snapshot: &[(u32, Vec<u8>)]) {
+        unsafe {
+            if snapshot.is_empty() {
+                return;
+            }
+            if OpenClipboard(None).is_err() {
+                return;
+            }
+            let _ = EmptyClipboard();
+            for (fmt, bytes) in snapshot {
+                let size = bytes.len();
+                if size == 0 {
+                    continue;
+                }
+                let Ok(hmem) = GlobalAlloc(GMEM_MOVEABLE, size) else {
+                    continue;
+                };
+                let dst = GlobalLock(hmem);
+                if dst.is_null() {
+                    continue;
+                }
+                std::ptr::copy_nonoverlapping(bytes.as_ptr(), dst as *mut u8, size);
+                let _ = GlobalUnlock(hmem);
+                let _ = SetClipboardData(*fmt, Some(HANDLE(hmem.0 as _)));
+            }
+            let _ = CloseClipboard();
+        }
+    }
+
     /// Synthesise Ctrl+C via SendInput — the Windows equivalent of macOS's
     /// CGEvent ⌘C in `capture/selection.rs`. No PowerShell flash, sub-ms.
     pub fn send_ctrl_c() -> bool {
@@ -520,31 +605,84 @@ mod imp {
     }
 
     use windows::Win32::UI::Accessibility::{
-        CUIAutomation, IUIAutomation, IUIAutomationElement,
-        IUIAutomationTextPattern, UIA_TextPatternId, TreeScope_Subtree,
+        CUIAutomation, IUIAutomation, IUIAutomationElement, IUIAutomationCondition,
+        IUIAutomationTextPattern, UIA_DocumentControlTypeId, UIA_ControlTypePropertyId,
+        UIA_TextPatternId, TreeScope_Subtree, TreeScope_Descendants,
     };
+    use windows::core::VARIANT;
+
+    // Cache the IUIAutomation singleton across calls. Creating it costs
+    // ~5-15ms (COM marshaling + library load) — fine once, but Yappy's
+    // Ctrl+Alt+R can fire dozens of times in a session and that
+    // adds up. The COM object is thread-safe per Microsoft's docs as
+    // long as we use it from the same MTA apartment.
+    static UIA_CACHE: OnceLock<Mutex<Option<IUIAutomation>>> = OnceLock::new();
+
+    fn get_uia() -> Option<IUIAutomation> {
+        let cell = UIA_CACHE.get_or_init(|| Mutex::new(None));
+        let mut guard = cell.lock().ok()?;
+        if let Some(u) = guard.as_ref() {
+            return Some(u.clone());
+        }
+        ensure_com_init();
+        unsafe {
+            let u: IUIAutomation =
+                CoCreateInstance(&CUIAutomation, None, CLSCTX_INPROC_SERVER).ok()?;
+            *guard = Some(u.clone());
+            Some(u)
+        }
+    }
+
+    /// Soft per-call budget for the entire UIA traversal. If we blow past
+    /// this, return None and the capture chain falls through to OCR.
+    /// Sized large enough for legitimate big DOMs (chrome with 1000+
+    /// elements ≈ 200ms) but bails on truly stuck apps.
+    const UIA_BUDGET_MS: u64 = 500;
 
     pub fn active_window_text() -> Option<String> {
+        let started = Instant::now();
         unsafe {
             ensure_com_init();
             let hwnd = GetForegroundWindow();
             if hwnd.0.is_null() {
                 return None;
             }
-            let uia: IUIAutomation =
-                CoCreateInstance(&CUIAutomation, None, CLSCTX_INPROC_SERVER).ok()?;
+            let uia = get_uia()?;
             let elem: IUIAutomationElement = uia.ElementFromHandle(hwnd).ok()?;
 
-            // Walk the subtree looking for an element that supports the
-            // TextPattern. ElementFromHandle returns the top-level frame;
-            // the document/editor that actually has text is usually a few
-            // levels down.
+            // ── Fast path: ANY app with a Document control-type role.
+            // Browsers (every Chromium fork including Helium / Arc / Thorium
+            // — no exe-name allowlist needed), Word, PDF readers, Notion,
+            // VS Code, etc. all expose a Document element. TextPattern's
+            // DocumentRange returns the document text in a single COM call,
+            // bypassing the full descendants walk. This is the "seamless,
+            // works in every future browser" path.
+            //
+            // If the user has a selection inside the document, that wins
+            // first (matches macOS's "give me what the user is looking at"
+            // semantics). Otherwise we take the full DocumentRange text.
+            if let Some(text) = try_document_role_text(&uia, &elem) {
+                tracing::info!(
+                    "uia: Document-role extracted {} chars in {}ms",
+                    text.len(),
+                    started.elapsed().as_millis()
+                );
+                return Some(text);
+            }
+
+            // ── Walk the subtree with a budget. FindAll(TreeScope_Subtree)
+            // returns FAST for most apps; we still budget per-iteration in
+            // case an app's accessibility tree handler blocks.
             let condition = uia.CreateTrueCondition().ok()?;
             let descendants = elem.FindAll(TreeScope_Subtree, &condition).ok()?;
-            let count = descendants.Length().ok()?;
+            let count = descendants.Length().ok().unwrap_or(0);
 
-            // Prefer SELECTED text from the first element that has any.
+            // Pass 1: SELECTED text — same as before, matches macOS preference.
             for i in 0..count {
+                if started.elapsed().as_millis() as u64 > UIA_BUDGET_MS {
+                    tracing::warn!("uia: budget exceeded at selection-pass element {i}/{count}");
+                    return None;
+                }
                 let Ok(d) = descendants.GetElement(i) else { continue };
                 let Ok(pat_unknown) = d.GetCurrentPattern(UIA_TextPatternId) else { continue };
                 let Ok(text_pattern) = pat_unknown.cast::<IUIAutomationTextPattern>() else { continue };
@@ -564,7 +702,11 @@ mod imp {
                                 }
                             }
                             if !combined.trim().is_empty() {
-                                tracing::info!("uia: extracted {} chars from selection", combined.len());
+                                tracing::info!(
+                                    "uia: selection extracted {} chars in {}ms",
+                                    combined.len(),
+                                    started.elapsed().as_millis()
+                                );
                                 return Some(combined);
                             }
                         }
@@ -572,10 +714,12 @@ mod imp {
                 }
             }
 
-            // No selection — try the FIRST element's "visible ranges" which
-            // gives us roughly the on-screen viewport. Stops at the first
-            // element with non-trivial text content.
+            // Pass 2: visible viewport ranges.
             for i in 0..count {
+                if started.elapsed().as_millis() as u64 > UIA_BUDGET_MS {
+                    tracing::warn!("uia: budget exceeded at visible-ranges-pass element {i}/{count}");
+                    return None;
+                }
                 let Ok(d) = descendants.GetElement(i) else { continue };
                 let Ok(pat_unknown) = d.GetCurrentPattern(UIA_TextPatternId) else { continue };
                 let Ok(text_pattern) = pat_unknown.cast::<IUIAutomationTextPattern>() else { continue };
@@ -594,15 +738,75 @@ mod imp {
                             }
                         }
                         if combined.trim().chars().count() > 50 {
-                            // 50-char threshold avoids picking up tiny
-                            // toolbar labels and finding the actual content.
-                            tracing::info!("uia: extracted {} chars from visible viewport", combined.len());
+                            tracing::info!(
+                                "uia: visible-ranges extracted {} chars in {}ms",
+                                combined.len(),
+                                started.elapsed().as_millis()
+                            );
                             return Some(combined);
                         }
                     }
                 }
             }
 
+            None
+        }
+    }
+
+    /// Locate the first Document-role element in the foreground window's
+    /// accessibility tree, and return either its current selection (if
+    /// the user has one) or the full DocumentRange text. Works for any
+    /// app that exposes a Document role + TextPattern: every Chromium
+    /// browser (Chrome / Edge / Brave / Arc / Helium / Thorium / future
+    /// forks), Firefox, Word, PDF readers, Notion. No process-name
+    /// allowlist — purely UIA-role-driven, so it auto-adapts to new
+    /// browsers without us touching the code.
+    unsafe fn try_document_role_text(
+        uia: &IUIAutomation,
+        root: &IUIAutomationElement,
+    ) -> Option<String> {
+        // Build a property condition: ControlType == Document.
+        // VARIANT::from(i32) yields a VT_I4 — the right type for ControlType IDs.
+        let control_type = VARIANT::from(UIA_DocumentControlTypeId.0);
+        let cond: IUIAutomationCondition = uia
+            .CreatePropertyCondition(UIA_ControlTypePropertyId, &control_type)
+            .ok()?;
+        let doc_elem = root.FindFirst(TreeScope_Descendants, &cond).ok()?;
+        let pat_unknown = doc_elem.GetCurrentPattern(UIA_TextPatternId).ok()?;
+        let text_pattern: IUIAutomationTextPattern = pat_unknown.cast().ok()?;
+
+        // Selection wins over full document (matches macOS preference).
+        if let Ok(selection) = text_pattern.GetSelection() {
+            if let Ok(sel_len) = selection.Length() {
+                if sel_len > 0 {
+                    let mut combined = String::new();
+                    for s in 0..sel_len {
+                        if let Ok(r) = selection.GetElement(s) {
+                            if let Ok(t) = r.GetText(-1) {
+                                let txt = t.to_string();
+                                if !txt.trim().is_empty() {
+                                    if !combined.is_empty() { combined.push('\n'); }
+                                    combined.push_str(&txt);
+                                }
+                            }
+                        }
+                    }
+                    if !combined.trim().is_empty() {
+                        return Some(combined);
+                    }
+                }
+            }
+        }
+
+        // No selection — return the full document text.
+        let doc_range = text_pattern.DocumentRange().ok()?;
+        let raw = doc_range.GetText(-1).ok()?;
+        let s = raw.to_string();
+        if s.trim().chars().count() > 50 {
+            // Same threshold as the visible-ranges path — guards against
+            // empty / tiny Document elements (e.g. an unloaded browser tab).
+            Some(s)
+        } else {
             None
         }
     }
@@ -652,3 +856,7 @@ pub fn send_ctrl_c() -> bool { imp::send_ctrl_c() }
 pub fn capture_foreground_window_png(out: &std::path::Path) -> anyhow::Result<()> {
     imp::capture_foreground_window_png(out)
 }
+#[cfg(target_os = "windows")]
+pub fn clipboard_snapshot_all() -> Vec<(u32, Vec<u8>)> { imp::clipboard_snapshot_all() }
+#[cfg(target_os = "windows")]
+pub fn clipboard_restore_all(snapshot: &[(u32, Vec<u8>)]) { imp::clipboard_restore_all(snapshot) }

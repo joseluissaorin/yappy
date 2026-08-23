@@ -1,9 +1,18 @@
 name: yappy-app
 options:
   bundleIdPrefix: com.yappy.app
+  # Bumped 14.0 → 17.0: on-device transcription uses FluidAudio's CoreML Parakeet
+  # (AsrModels), whose built module declares a minimum deployment target of
+  # iOS 17.0. Covers iPhone XS and later.
   deploymentTarget:
-    iOS: 14.0
+    iOS: 17.0
 fileGroups: [../../src]
+# Swift packages. FluidAudio provides the CoreML Parakeet ASR engine used by the
+# main app (over the C ABI in Transcriber.swift) and the Share Extension.
+packages:
+  FluidAudio:
+    url: https://github.com/FluidInference/FluidAudio.git
+    from: 0.12.4
 configs:
   debug: debug
   release: release
@@ -66,8 +75,13 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        CFBundleShortVersionString: 0.1.0
-        CFBundleVersion: "0.1.0"
+        CFBundleShortVersionString: 0.2.0
+        CFBundleVersion: "0.2.0"
+        # Export compliance: Yappy uses only exempt encryption (HTTPS for model
+        # downloads + Apple's standard system crypto; no proprietary algorithms),
+        # so it's exempt. Declaring this here skips the "Missing Compliance"
+        # prompt in TestFlight/App Store Connect on every upload.
+        ITSAppUsesNonExemptEncryption: false
         # Background modes:
         #  - audio: keeps the process alive whenever we're producing audio.
         #    This is the trick we use for "render audiobook" — we begin a
@@ -156,6 +170,8 @@ targets:
     dependencies:
       - framework: libapp.a
         embed: false
+      # On-device speech-to-text (CoreML Parakeet). Used by Transcriber.swift.
+      - package: FluidAudio
       # YappyWidgets Live Activity extension — embedded as an app extension.
       - target: YappyWidgets
         embed: true
@@ -231,8 +247,8 @@ targets:
       path: YappyWidgets/Info.plist
       properties:
         CFBundleDisplayName: YappyWidgets
-        CFBundleShortVersionString: 0.1.0
-        CFBundleVersion: "0.1.0"
+        CFBundleShortVersionString: 0.2.0
+        CFBundleVersion: "0.2.0"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     entitlements:
@@ -268,20 +284,30 @@ targets:
     platform: iOS
     sources:
       - path: YappyShareExtension
+      # Shared CoreML transcription engine — the extension transcribes audio
+      # in-place using the same code as the main app.
+      - path: Sources/yappy-app/Transcriber.swift
     info:
       path: YappyShareExtension/Info.plist
       properties:
         CFBundleDisplayName: Yappy
-        CFBundleShortVersionString: 0.1.0
-        CFBundleVersion: "0.1.0"
+        CFBundleShortVersionString: 0.2.0
+        CFBundleVersion: "0.2.0"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
           NSExtensionAttributes:
-            NSExtensionActivationRule:
-              NSExtensionActivationSupportsText: true
-              NSExtensionActivationSupportsWebURLWithMaxCount: 1
-              NSExtensionActivationSupportsWebPageWithMaxCount: 1
+            # Accept audio (WhatsApp voice notes etc.), text, or a URL. A
+            # predicate (not the dictionary form) is required to match audio
+            # without also matching every image/PDF/file share.
+            NSExtensionActivationRule: >-
+              SUBQUERY(extensionItems, $item,
+                SUBQUERY($item.attachments, $att,
+                  ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.audio"
+                  OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.text"
+                  OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
+                ).@count > 0
+              ).@count > 0
     entitlements:
       path: YappyShareExtension/YappyShareExtension.entitlements
       properties:
@@ -293,7 +319,8 @@ targets:
         PRODUCT_NAME: YappyShare
         DEVELOPMENT_TEAM: 9LYNY2477X
         CODE_SIGN_STYLE: Automatic
-        IPHONEOS_DEPLOYMENT_TARGET: "14.0"
+        # 17.0: FluidAudio's CoreML Parakeet (AsrModels) requires iOS 17+.
+        IPHONEOS_DEPLOYMENT_TARGET: "17.0"
         SWIFT_VERSION: "5.0"
         SKIP_INSTALL: YES
         ENABLE_BITCODE: false
@@ -305,3 +332,8 @@ targets:
       - sdk: UIKit.framework
       - sdk: MobileCoreServices.framework
       - sdk: UniformTypeIdentifiers.framework
+      # In-extension transcription: CoreML Parakeet + audio decode + SwiftUI modal.
+      - package: FluidAudio
+      - sdk: AVFoundation.framework
+      - sdk: CoreML.framework
+      - sdk: SwiftUI.framework

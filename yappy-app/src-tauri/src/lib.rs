@@ -12,6 +12,11 @@ mod credits;
 mod history;
 mod hotkey;
 mod model;
+// Speech-to-text (ASR): Parakeet TDT model manager + transcript history. Audio
+// decoding is desktop-only (iOS decodes via AVFoundation in Swift).
+mod asr_model;
+mod transcripts;
+mod asr_decode;
 mod playback;
 mod settings;
 mod state;
@@ -36,6 +41,19 @@ use crate::state::AppState;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // ─── Platform-specific startup environment ─────────────────────────────
+
+    // Windows: declare Per-Monitor V2 DPI awareness BEFORE any HWND is
+    // created. Without this, GetWindowRect + BitBlt return DPI-virtualized
+    // pixel coordinates on 4K + mixed-DPI multi-monitor setups, so the OCR
+    // fallback captures the wrong region. Per-Monitor V2 also lets the
+    // Tauri webview render crisp on Hi-DPI screens.
+    #[cfg(target_os = "windows")]
+    unsafe {
+        use windows::Win32::UI::HiDpi::{
+            SetProcessDpiAwarenessContext, DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2,
+        };
+        let _ = SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+    }
 
     // Linux: GTK4 + WebKit2GTK 2.42+ default to the DMABUF renderer, which
     // is broken on many configurations (Intel UHD, Nvidia proprietary with
@@ -97,8 +115,10 @@ pub fn run() {
         let mut eps: Vec<ort::execution_providers::ExecutionProviderDispatch> = Vec::new();
         let mut requested: Vec<&'static str> = Vec::new();
 
-        // ─ Apple platforms: CoreML (Neural Engine + Apple GPU + CPU).
-        #[cfg(any(target_os = "macos", target_os = "ios"))]
+        // ─ macOS: CoreML (Neural Engine + Apple GPU + CPU). Macs have generous
+        //   RAM and no per-process memory cap, so compiling/duplicating large
+        //   MLPrograms for the ANE is fine.
+        #[cfg(target_os = "macos")]
         {
             use ort::execution_providers::coreml::{
                 CoreMLComputeUnits, CoreMLExecutionProvider, CoreMLModelFormat,
@@ -110,6 +130,21 @@ pub fn run() {
                     .build(),
             );
             requested.push("CoreML");
+        }
+
+        // ─ iOS (device AND simulator): XNNPACK/CPU only — NO CoreML.
+        //   On a real device, CoreML compiles Supertonic's ~256 MB MLProgram for
+        //   the Neural Engine and duplicates the weights, which blows past iOS's
+        //   hard per-app memory limit and the session creation hangs / the app is
+        //   jetsam-killed (the symptom: "loading TextToSpeech…" never finishing,
+        //   transcription stuck). The simulator separately can't compile large
+        //   MLPrograms at all (error -7). XNNPACK loads the ONNX weights once,
+        //   runs on the CPU, stays well under the memory cap, and is what we
+        //   verified working. (XNNPACK is also pushed below for every platform;
+        //   on iOS it ends up being the only EP, which is intentional.)
+        #[cfg(target_os = "ios")]
+        {
+            requested.push("CoreML-disabled(iOS: memory limit)");
         }
 
         // ─ Windows: DirectML routes to any DX12 GPU (NVIDIA / AMD / Intel /
@@ -336,13 +371,16 @@ pub fn run() {
                 }
             }
 
-            // iOS startup: pick up any Share-extension payload that landed in
-            // the App Group container while the app was closed, AND install
-            // MPRemoteCommandCenter handlers so lock-screen / AirPods / CarPlay
-            // can drive playback.
+            // iOS startup: install MPRemoteCommandCenter handlers so lock-screen
+            // / AirPods / CarPlay can drive playback.
+            //
+            // NOTE: we deliberately do NOT drain the Share-extension payload here.
+            // Draining + emitting at setup races the webview, which hasn't
+            // registered its listener yet on a cold launch, so the shared item is
+            // lost. Instead the frontend pulls pending payloads via
+            // `drain_shared_payloads_cmd` once it's ready (see shareIntake.ts).
             #[cfg(mobile)]
             {
-                mobile::pickup_shared_payload(app.handle(), &state);
                 mobile::install_now_playing_handlers(state.playback.clone());
 
                 // Subscribe to playback snapshots — whenever play state /
@@ -455,6 +493,7 @@ pub fn run() {
             commands::is_model_ready,
             commands::open_main_window,
             commands::open_player_window,
+            commands::open_transcribe_window,
             commands::request_macos_permissions,
             commands::sample_voice,
             commands::capture_diagnostics,
@@ -485,6 +524,8 @@ pub fn run() {
             commands::log_frontend_cmd,
             commands::set_launch_at_login_cmd,
             commands::read_document_paragraphs_cmd,
+            commands::read_document_cmd,
+            commands::read_text_as_document_cmd,
             commands::get_current_document_cmd,
             commands::document_window_ready_cmd,
             commands::clear_current_document_cmd,
@@ -493,6 +534,8 @@ pub fn run() {
             commands::render_audiobook_cmd,
             commands::haptic_cmd,
             commands::share_file_cmd,
+            commands::drain_shared_payloads_cmd,
+            commands::audiobook_export_path_cmd,
             commands::list_rendered_audiobooks_cmd,
             commands::library_play_cmd,
             commands::library_pause_cmd,
@@ -503,6 +546,16 @@ pub fn run() {
             commands::library_delete_cmd,
             commands::library_chapters_cmd,
             commands::library_reindex_spotlight_cmd,
+            commands::is_asr_model_ready,
+            commands::download_asr_model_cmd,
+            commands::transcribe_audio_cmd,
+            commands::transcribe_sample_cmd,
+            commands::sample_document_path_cmd,
+            commands::save_transcript_cmd,
+            commands::audio_selftest_cmd,
+            commands::get_transcripts,
+            commands::clear_transcripts_cmd,
+            commands::delete_transcript_cmd,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

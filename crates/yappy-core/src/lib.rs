@@ -8,6 +8,7 @@
 //!   - `chunker`    — paragraph / sentence chunking for streaming synthesis
 //!   - `engine`     — high-level Engine tying the above together
 
+pub mod asr;
 pub mod chunker;
 pub mod engine;
 pub mod lang_detect;
@@ -15,5 +16,6 @@ pub mod normalize;
 pub mod supertonic;
 pub mod voices;
 
+pub use asr::{TimedSegment, TimestampMode, TranscribeOptions, TranscriptResult};
 pub use engine::{AudioChunk, EngineConfig, SynthesisOptions, TtsEngine};
 pub use voices::{Voice, VOICES};

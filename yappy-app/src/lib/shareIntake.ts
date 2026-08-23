@@ -14,8 +14,39 @@
 // extract the article body. For plain text we route directly to TTS.
 
 import { listen, type UnlistenFn } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api/core";
+import { goto } from "$app/navigation";
 import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
-import { synthesizeText } from "$lib/ipc";
+import {
+  synthesizeText,
+  saveTranscript,
+  transcribeAudio,
+  readTextAsDocument,
+  readDocumentParagraphs,
+} from "$lib/ipc";
+import { reader } from "$lib/readerStore.svelte";
+
+// Load extracted/shared text into the immersive reader as a document (so it
+// shows with sections + maintains proper playback state / mini-player), then
+// start reading it aloud from the top. Falls back to a blind synth if loading
+// the document fails for any reason.
+async function openInReaderAndRead(text: string, title: string): Promise<void> {
+  try {
+    const doc = await readTextAsDocument(text, title);
+    reader.doc = doc;
+    await goto("/read");
+    await readDocumentParagraphs(doc.paragraphs, 0);
+  } catch (e) {
+    console.error("[shareIntake] openInReader failed, falling back to blind synth:", e);
+    await synthesizeText(text);
+  }
+}
+
+// Derive a short, filename-safe title from the first heading/line of markdown.
+function titleFromArticle(article: string): string {
+  const first = article.split("\n").find((l) => l.trim().length > 0) ?? "Shared article";
+  return first.replace(/^#+\s*/, "").trim().slice(0, 60) || "Shared article";
+}
 
 // ────────────────────────────────────────────────────────────────────────
 // Lazy-load defuddle.js (1.3 MB minified) only when first needed. Defuddle
@@ -26,9 +57,12 @@ async function loadDefuddle(): Promise<any> {
   if ((window as any).Defuddle) return (window as any).Defuddle;
   if (defuddlePromise) return defuddlePromise;
   defuddlePromise = (async () => {
-    // The file is bundled as a Tauri resource at /resources/defuddle.js by
-    // tauri.conf.json. SvelteKit serves it from /resources/ in dev too.
-    const resp = await fetch("/resources/defuddle.js");
+    // Served as a SvelteKit static asset at /defuddle.js (static/defuddle.js).
+    // NOTE: it is NOT fetchable from /resources/ — that path is a Tauri *bundle
+    // resource* (not exposed to the webview), so fetching it 404s on device and
+    // article extraction silently falls back. Keep this pointing at the static
+    // copy. (static/defuddle.js is kept in sync with resources/defuddle.js.)
+    const resp = await fetch("/defuddle.js");
     if (!resp.ok) throw new Error(`defuddle.js fetch failed: ${resp.status}`);
     const src = await resp.text();
     // eslint-disable-next-line no-new-func
@@ -77,7 +111,7 @@ async function handleOne(line: string): Promise<void> {
       const html = await fetchHtml(url);
       const article = await extractArticleFromHtml(html, url);
       console.log(`[shareIntake] defuddle extracted ${article.length} chars`);
-      await synthesizeText(article);
+      await openInReaderAndRead(article, titleFromArticle(article));
     } catch (e) {
       console.error("[shareIntake] URL handling failed:", e);
       // Fall back to reading the URL itself so the user at least hears
@@ -90,14 +124,85 @@ async function handleOne(line: string): Promise<void> {
     const text = line.slice(5).trim();
     if (text) {
       console.log(`[shareIntake] text share: ${text.length} chars`);
-      await synthesizeText(text);
+      // Short snippets read fine blind; longer text opens in the reader.
+      if (text.length > 280) {
+        await openInReaderAndRead(text, titleFromArticle(text));
+      } else {
+        await synthesizeText(text);
+      }
+    }
+    return;
+  }
+  // The iOS Share Extension transcribed an audio message in-place and handed us
+  // the finished text. Persist it to history and surface it in the app.
+  if (line.startsWith("transcript:")) {
+    const text = line.slice("transcript:".length).trim();
+    if (text) {
+      console.log(`[shareIntake] transcript share: ${text.length} chars`);
+      try {
+        const entry = await saveTranscript(text, "Shared");
+        window.dispatchEvent(new CustomEvent("yappy:transcript", { detail: entry }));
+      } catch (e) {
+        console.error("[shareIntake] saveTranscript failed:", e);
+      }
+    }
+    return;
+  }
+  // An audio file was shared but not transcribed in-extension (handoff). Path
+  // points into the App Group container; transcribe it here.
+  if (line.startsWith("audio:")) {
+    const path = line.slice("audio:".length).trim();
+    if (path) {
+      console.log("[shareIntake] audio share:", path);
+      try {
+        const result = await transcribeAudio(path, undefined, "Shared");
+        window.dispatchEvent(new CustomEvent("yappy:transcript", { detail: result }));
+      } catch (e) {
+        console.error("[shareIntake] transcribeAudio failed:", e);
+      }
     }
     return;
   }
   console.warn("[shareIntake] unknown payload prefix:", line.slice(0, 30));
 }
 
+// Process a newline-separated payload string (one share entry per line).
+async function handlePayload(payload: string): Promise<void> {
+  for (const line of (payload || "").split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    try {
+      await handleOne(trimmed);
+    } catch (e) {
+      console.error("[shareIntake] failed:", e);
+    }
+  }
+}
+
+// Pull any pending Share-Sheet payloads from the App Group queue. We do this
+// (rather than only listening for the Rust-emitted event) because on a COLD
+// launch the backend would emit before this webview registered its listener,
+// losing the shared item. Pulling when WE'RE ready — on mount and on every
+// foreground — guarantees we never miss one. No-op off iOS (returns null).
+let draining = false;
+async function drainPending(): Promise<void> {
+  if (draining) return;
+  draining = true;
+  try {
+    const payload = await invoke<string | null>("drain_shared_payloads_cmd");
+    if (payload) {
+      console.log("[shareIntake] drained pending payload(s)");
+      await handlePayload(payload);
+    }
+  } catch (e) {
+    console.error("[shareIntake] drain failed:", e);
+  } finally {
+    draining = false;
+  }
+}
+
 let unlisten: UnlistenFn | null = null;
+let visibilityHandler: (() => void) | null = null;
 
 /// Start listening for Share-Sheet payloads. Call once at app boot.
 /// Safe to call multiple times — re-installing replaces the previous listener.
@@ -106,18 +211,23 @@ export async function startShareIntake(): Promise<void> {
     unlisten();
     unlisten = null;
   }
+  // Keep the event path too (the backend may still emit while we're alive).
   unlisten = await listen<string>("ios_shared_payload", async (ev) => {
-    const payload = ev.payload || "";
-    for (const line of payload.split("\n")) {
-      const trimmed = line.trim();
-      if (!trimmed) continue;
-      try {
-        await handleOne(trimmed);
-      } catch (e) {
-        console.error("[shareIntake] failed:", e);
-      }
-    }
+    await handlePayload(ev.payload || "");
   });
+
+  // Cold-launch: pull whatever's already queued now that we're ready.
+  await drainPending();
+
+  // Warm reopen: when the Share Extension re-opens the app (yappy://shared)
+  // while it's already running, the webview becomes visible again — re-pull.
+  if (typeof document !== "undefined") {
+    if (visibilityHandler) document.removeEventListener("visibilitychange", visibilityHandler);
+    visibilityHandler = () => {
+      if (document.visibilityState === "visible") drainPending();
+    };
+    document.addEventListener("visibilitychange", visibilityHandler);
+  }
 
   // Dev helper: expose handleOne on window so we can drive the defuddle
   // path from Safari Web Inspector / WKWebView console for iOS testing

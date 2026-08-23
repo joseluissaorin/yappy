@@ -21,11 +21,23 @@ use super::clipboard;
 
 #[cfg(not(target_os = "ios"))]
 pub fn capture_selection() -> Result<Option<String>> {
+    // On Windows we snapshot EVERY clipboard format so that HTML / RTF /
+    // images the user had on the clipboard survive the Ctrl+C trick. On
+    // macOS / Linux we currently still do a text-only snapshot (the
+    // platforms can carry richer NSPasteboard / XCLIPBOARD targets but
+    // capturing every type would need much more code; text-only matches
+    // the pre-bundle behaviour and is non-regressing).
+    #[cfg(target_os = "windows")]
+    let full_snapshot = crate::os_win::clipboard_snapshot_all();
+    #[cfg(not(target_os = "windows"))]
     let prev = clipboard::snapshot().ok().flatten();
+
     let prev_change = clipboard::change_count();
 
     if let Err(e) = send_copy_key() {
         tracing::debug!("send_copy_key failed: {e:?}");
+        #[cfg(target_os = "windows")]
+        crate::os_win::clipboard_restore_all(&full_snapshot);
         return Ok(None);
     }
 
@@ -40,6 +52,9 @@ pub fn capture_selection() -> Result<Option<String>> {
         }
     }
 
+    #[cfg(target_os = "windows")]
+    crate::os_win::clipboard_restore_all(&full_snapshot);
+    #[cfg(not(target_os = "windows"))]
     if let Some(prev_text) = prev {
         let _ = clipboard::write_text(&prev_text);
     }

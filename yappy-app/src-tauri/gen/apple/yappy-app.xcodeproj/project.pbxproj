@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00A50B7B53546B1D9A604579 /* Transcriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE272FD54178048E0A9541EC /* Transcriber.swift */; };
 		0B121BF56A14DA7510E9DC01 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DB48BB735B5750C43A43BA /* Haptics.swift */; };
 		1AD315940EA48FBD8A5E7AD9 /* YappyShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B80CC66E3EA95DEABCEA0221 /* YappyShareExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2BB9987F977E32878AB9ADEA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ADAB30D4ABAAF920F7204EF /* AVFoundation.framework */; };
 		2E1157FAA77A5775AF366A62 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AC793DBBC9E8C9CFD64D2B /* MediaPlayer.framework */; };
 		2ECA68CB885E90C37B24D6F0 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 0475A5B4D70EB82E962947E4 /* assets */; };
+		2F2A53658A613C6F8FE82941 /* FluidAudio in Frameworks */ = {isa = PBXBuildFile; productRef = B371F6FBA17B5145C8B6F9BB /* FluidAudio */; };
+		3B18C5A4C1417A130DB2339D /* Transcriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE272FD54178048E0A9541EC /* Transcriber.swift */; };
 		3E69589CF40DCCDA1133A771 /* YappyHomeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A1FAB9378B7B7941C656CA /* YappyHomeWidget.swift */; };
 		43B7E8BEEB5DA997B66FFFD5 /* YappyWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 11D8807FE02A0A9A28B2AC44 /* YappyWidgets.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		450331386243A28C0C5EF0C9 /* AudioFilePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07B5C0EC4CB481A9F8969C /* AudioFilePlayer.swift */; };
@@ -20,10 +23,12 @@
 		5401E6FD8EA5634E1BE7FF0D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88594DFE20DA9B69DC2A4E99 /* WidgetKit.framework */; };
 		54B42924FD2BD435948E4ACE /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF68D4C8B5EBC48614AC97F /* SwiftUI.framework */; };
 		5E31786E8489DD919EB4AA4F /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEE01B2664954222E0E31092 /* UniformTypeIdentifiers.framework */; };
+		63D61553859A0ADD86A9135D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF68D4C8B5EBC48614AC97F /* SwiftUI.framework */; };
 		68F811C2E0BA287081AD8074 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */; };
 		70ADC16704D4D95F4AAA06B6 /* RenderActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */; };
 		732DF0CFD0AE3F3981A77004 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 363A26549E377A68164ED52E /* ActivityKit.framework */; };
 		758C79CFF95A21E5CE4FB398 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43793F4F8BD751B2AFA0ECEC /* UIKit.framework */; };
+		7F1A8B10D9773818ECDE9399 /* CoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E89394FA1041CC34292F2D82 /* CoreML.framework */; };
 		7FFB71259B4B64D8F8703746 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E72460E29FCCF765437E0F /* CoreGraphics.framework */; };
 		87529D2938FCFFC1C041BCD0 /* RenderActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */; };
 		89DCF1B92F9EF63C90319B0C /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C44503F0D59289D3BF32A9A /* Notifications.swift */; };
@@ -36,6 +41,7 @@
 		B5B64E7C8157E7BCFD359AF1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59D7E849AA6DCC8B6821280 /* QuartzCore.framework */; };
 		B95540DB6E39CCD706BD7194 /* YappyRenderActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1250D842062C23F3CC91E1F2 /* YappyRenderActivityWidget.swift */; };
 		BDAD17F788E24454432BBED6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E45153695F56A85774F88DB /* WebKit.framework */; };
+		C1DED57F83314C52636FEF43 /* FluidAudio in Frameworks */ = {isa = PBXBuildFile; productRef = 10B1E30095536B1CB3D15346 /* FluidAudio */; };
 		C24D1121CD236148B1C3BF90 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61EC3F47616E76D432A8CEB0 /* Metal.framework */; };
 		C3C5412D4024DB71C4580100 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 00562FA81F04105893057E28 /* main.mm */; };
 		D331B7CBB178B171645BA590 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A7DD34A3CA870707D62BD0F /* LaunchScreen.storyboard */; };
@@ -45,6 +51,7 @@
 		F976FF05F055C14256E7E8ED /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */; };
 		FCA153A76EC118E0E6697166 /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBA15D588B3157A3A10AC2E /* AudioSession.swift */; };
 		FD930011339239B45F581C0A /* Spotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A344FE8B33B01973CA2E20 /* Spotlight.swift */; };
+		FE29ABB131A12A36B02A329D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ADAB30D4ABAAF920F7204EF /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +99,7 @@
 		18613248F19D1206BFBDD757 /* browser.rs */ = {isa = PBXFileReference; path = browser.rs; sourceTree = "<group>"; };
 		1A0537A578132C07C9FE7B01 /* model.rs */ = {isa = PBXFileReference; path = model.rs; sourceTree = "<group>"; };
 		1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderActivityAttributes.swift; sourceTree = "<group>"; };
+		2224DF472455BAD0FFD787FD /* asr_model.rs */ = {isa = PBXFileReference; path = asr_model.rs; sourceTree = "<group>"; };
 		2D765DEF987A4C99009FBF4F /* playback.rs */ = {isa = PBXFileReference; path = playback.rs; sourceTree = "<group>"; };
 		2E6980B3593B5B998F491689 /* clipboard.rs */ = {isa = PBXFileReference; path = clipboard.rs; sourceTree = "<group>"; };
 		308239F0EB0A270EAE2AABC6 /* active_doc.rs */ = {isa = PBXFileReference; path = active_doc.rs; sourceTree = "<group>"; };
@@ -109,6 +117,7 @@
 		70021004515EA8DD472525B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7124B570D459F8126326E519 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		72F16A281CFDE25986529BA4 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		785C5DE7E55F390A2CD4E417 /* transcripts.rs */ = {isa = PBXFileReference; path = transcripts.rs; sourceTree = "<group>"; };
 		7D299F16AAF69ACF1D91AEB5 /* LiveActivityBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityBridge.swift; sourceTree = "<group>"; };
 		7E4EE4663B4CAB417323B2BA /* audiobook.rs */ = {isa = PBXFileReference; path = audiobook.rs; sourceTree = "<group>"; };
 		7E502C65C6D812B209E0A8D6 /* YappyWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YappyWidgets.entitlements; sourceTree = "<group>"; };
@@ -132,15 +141,18 @@
 		BD85DC09DEB935DC077C48F6 /* mod.rs */ = {isa = PBXFileReference; path = mod.rs; sourceTree = "<group>"; };
 		C4A0E693883D414F1113A2E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C940BC52027D84098E726FFA /* mobile.rs */ = {isa = PBXFileReference; path = mobile.rs; sourceTree = "<group>"; };
+		CE272FD54178048E0A9541EC /* Transcriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcriber.swift; sourceTree = "<group>"; };
 		CEE01B2664954222E0E31092 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		D0D44C315F8CBC76E4D04319 /* lib.rs */ = {isa = PBXFileReference; path = lib.rs; sourceTree = "<group>"; };
 		D19B4AC8C2A772BBB82F4983 /* NowPlaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlaying.swift; sourceTree = "<group>"; };
 		D6A344FE8B33B01973CA2E20 /* Spotlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotlight.swift; sourceTree = "<group>"; };
+		D883C92336DEA40DBB858EF7 /* os_win.rs */ = {isa = PBXFileReference; path = os_win.rs; sourceTree = "<group>"; };
 		DC18C2A657D1465FBD618DEB /* commands.rs */ = {isa = PBXFileReference; path = commands.rs; sourceTree = "<group>"; };
 		DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		DDF68D4C8B5EBC48614AC97F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		E05E1F95C8EE8920F16508E2 /* ocr.rs */ = {isa = PBXFileReference; path = ocr.rs; sourceTree = "<group>"; };
 		E59D7E849AA6DCC8B6821280 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E6940CDB472F0C4510CFD72A /* asr_decode.rs */ = {isa = PBXFileReference; path = asr_decode.rs; sourceTree = "<group>"; };
 		E89394FA1041CC34292F2D82 /* CoreML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreML.framework; path = System/Library/Frameworks/CoreML.framework; sourceTree = SDKROOT; };
 		EA797AB2EDD7200335B9F936 /* windows.rs */ = {isa = PBXFileReference; path = windows.rs; sourceTree = "<group>"; };
 		F0D2AF1742BF8372CC16E3CC /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
@@ -155,6 +167,10 @@
 				92ACF377CCE9E1F3A4E8A4AA /* UIKit.framework in Frameworks */,
 				8EE1096973FB2D0CF4C2AAD9 /* MobileCoreServices.framework in Frameworks */,
 				5E31786E8489DD919EB4AA4F /* UniformTypeIdentifiers.framework in Frameworks */,
+				2F2A53658A613C6F8FE82941 /* FluidAudio in Frameworks */,
+				FE29ABB131A12A36B02A329D /* AVFoundation.framework in Frameworks */,
+				7F1A8B10D9773818ECDE9399 /* CoreML.framework in Frameworks */,
+				63D61553859A0ADD86A9135D /* SwiftUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				450EF73371F034EB0BC204E5 /* libapp.a in Frameworks */,
+				C1DED57F83314C52636FEF43 /* FluidAudio in Frameworks */,
 				7FFB71259B4B64D8F8703746 /* CoreGraphics.framework in Frameworks */,
 				C24D1121CD236148B1C3BF90 /* Metal.framework in Frameworks */,
 				F976FF05F055C14256E7E8ED /* MetalKit.framework in Frameworks */,
@@ -203,6 +220,7 @@
 				1CF7C38F0C3C3292EA5F3BD9 /* RenderActivityAttributes.swift */,
 				F0D2AF1742BF8372CC16E3CC /* ShareSheet.swift */,
 				D6A344FE8B33B01973CA2E20 /* Spotlight.swift */,
+				CE272FD54178048E0A9541EC /* Transcriber.swift */,
 				8AE152D5EDFF9859E207934E /* bindings */,
 			);
 			name = "yappy-app";
@@ -306,6 +324,8 @@
 		C3E34AFD95FBCD973FB259B0 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				E6940CDB472F0C4510CFD72A /* asr_decode.rs */,
+				2224DF472455BAD0FFD787FD /* asr_model.rs */,
 				7E4EE4663B4CAB417323B2BA /* audiobook.rs */,
 				01EEBFBDC0FEB7FDD51077E0 /* bridge.rs */,
 				DC18C2A657D1465FBD618DEB /* commands.rs */,
@@ -316,9 +336,11 @@
 				96AEBF7E16B41A1D15A49708 /* main.rs */,
 				C940BC52027D84098E726FFA /* mobile.rs */,
 				1A0537A578132C07C9FE7B01 /* model.rs */,
+				D883C92336DEA40DBB858EF7 /* os_win.rs */,
 				2D765DEF987A4C99009FBF4F /* playback.rs */,
 				B8CE0A30A6D2701B251FEBBF /* settings.rs */,
 				4B810A445B1E97783FB5D77F /* state.rs */,
+				785C5DE7E55F390A2CD4E417 /* transcripts.rs */,
 				0D80D67051A0BA4644EE31BD /* tray.rs */,
 				EA797AB2EDD7200335B9F936 /* windows.rs */,
 				84EC2296E653219BD3584DFE /* capture */,
@@ -365,6 +387,7 @@
 			);
 			name = "yappy-app_iOS";
 			packageProductDependencies = (
+				10B1E30095536B1CB3D15346 /* FluidAudio */,
 			);
 			productName = "yappy-app_iOS";
 			productReference = 391184EBB76F63148530350F /* yappy-app_iOS.app */;
@@ -401,6 +424,7 @@
 			);
 			name = YappyShareExtension;
 			packageProductDependencies = (
+				B371F6FBA17B5145C8B6F9BB /* FluidAudio */,
 			);
 			productName = YappyShareExtension;
 			productReference = B80CC66E3EA95DEABCEA0221 /* YappyShareExtension.appex */;
@@ -438,6 +462,9 @@
 			);
 			mainGroup = CE1A9DFF9DC63BC1A9C627EF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				ADB0D798567A61523D56AF40 /* XCRemoteSwiftPackageReference "FluidAudio" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2A82CA0658518588DF925913 /* Products */;
 			projectDirPath = "";
@@ -493,6 +520,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68F811C2E0BA287081AD8074 /* ShareViewController.swift in Sources */,
+				00A50B7B53546B1D9A604579 /* Transcriber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +548,7 @@
 				87529D2938FCFFC1C041BCD0 /* RenderActivityAttributes.swift in Sources */,
 				A10E671BC369D5547E724E48 /* ShareSheet.swift in Sources */,
 				FD930011339239B45F581C0A /* Spotlight.swift in Sources */,
+				3B18C5A4C1417A130DB2339D /* Transcriber.swift in Sources */,
 				C3C5412D4024DB71C4580100 /* main.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -591,7 +620,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -616,7 +645,7 @@
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
 				INFOPLIST_FILE = YappyShareExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -677,7 +706,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -701,7 +730,7 @@
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
 				INFOPLIST_FILE = YappyShareExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -881,6 +910,30 @@
 			defaultConfigurationName = debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		ADB0D798567A61523D56AF40 /* XCRemoteSwiftPackageReference "FluidAudio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FluidInference/FluidAudio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.12.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		10B1E30095536B1CB3D15346 /* FluidAudio */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ADB0D798567A61523D56AF40 /* XCRemoteSwiftPackageReference "FluidAudio" */;
+			productName = FluidAudio;
+		};
+		B371F6FBA17B5145C8B6F9BB /* FluidAudio */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ADB0D798567A61523D56AF40 /* XCRemoteSwiftPackageReference "FluidAudio" */;
+			productName = FluidAudio;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A522621C285A5A566AC0324E /* Project object */;
 }

@@ -205,17 +205,27 @@ impl SettingsStore {
         let json = serde_json::to_vec_pretty(settings)?;
         // 1) write to tmp.
         std::fs::write(&tmp, &json)?;
-        // 2) verify tmp parses to the same struct (catches disk-full / partial-write).
-        let verified: Settings = serde_json::from_slice(&std::fs::read(&tmp)?)?;
-        if serde_json::to_vec(&verified)? != serde_json::to_vec(settings)? {
-            return Err(anyhow::anyhow!("settings round-trip verification failed"));
+        // 2) sanity-check the tmp re-parses (catches disk-full / partial writes).
+        //    We deliberately DON'T byte-compare re-serializations: `voice_overrides`
+        //    is a HashMap whose key order isn't stable across instances, so the old
+        //    `to_vec(verified) != to_vec(settings)` check failed spuriously and
+        //    aborted the save — settings then never persisted (e.g. on iOS the
+        //    onboarding flag never stuck and the modal reappeared every launch).
+        if serde_json::from_slice::<Settings>(&std::fs::read(&tmp)?).is_err() {
+            return Err(anyhow::anyhow!("settings tmp failed to re-parse"));
         }
         // 3) move current main to .bak (best effort).
         if p.exists() {
             let _ = std::fs::rename(&p, &bak);
         }
-        // 4) rename tmp to main.
-        std::fs::rename(&tmp, &p)?;
+        // 4) promote tmp → main. rename is atomic where supported; if it fails
+        //    (observed in some iOS sandbox cases) fall back to a direct write so
+        //    the settings still persist.
+        if let Err(e) = std::fs::rename(&tmp, &p) {
+            tracing::warn!("settings rename failed ({e}); writing directly");
+            std::fs::write(&p, &json)?;
+            let _ = std::fs::remove_file(&tmp);
+        }
         Ok(())
     }
 

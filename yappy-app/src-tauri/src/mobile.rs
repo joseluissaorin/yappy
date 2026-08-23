@@ -37,9 +37,72 @@ pub fn pickup_shared_payload<R: tauri::Runtime>(
     let _ = tauri::Emitter::emit(handle, "ios_shared_payload", s);
 }
 
+/// Drain the App Group share queue and RETURN the payload string (newline-
+/// separated `url:`/`text:`/`audio:`/`transcript:` lines), or None if empty.
+///
+/// This is the pull-based counterpart to `pickup_shared_payload`: the frontend
+/// calls it via `drain_shared_payloads_cmd` once its listeners are ready (on
+/// mount + every foreground). Draining from the frontend — rather than emitting
+/// an event at startup — avoids a cold-launch race where the event fires before
+/// the webview has registered its listener and the shared item is lost.
+pub fn drain_shared_payload_string() -> Option<String> {
+    let raw = unsafe { yappy_drain_shared_payload() };
+    if raw.is_null() {
+        return None;
+    }
+    let s = unsafe { std::ffi::CStr::from_ptr(raw) }
+        .to_string_lossy()
+        .into_owned();
+    unsafe { yappy_free_string(raw) };
+    let s = s.trim().to_string();
+    if s.is_empty() {
+        None
+    } else {
+        tracing::info!("mobile: frontend drained {} shared payload(s)", s.lines().count());
+        Some(s)
+    }
+}
+
 extern "C" {
     fn yappy_drain_shared_payload() -> *mut std::os::raw::c_char;
     fn yappy_free_string(ptr: *mut std::os::raw::c_char);
+}
+
+// ─── SPEECH-TO-TEXT (CoreML Parakeet via FluidAudio) ─────────────────────
+//
+// Transcription on Apple platforms runs natively in Swift (Transcriber.swift)
+// on the Neural Engine — light enough to also run inside the Share Extension.
+// The main app reaches it over this C ABI.
+
+extern "C" {
+    fn yappy_transcribe(path: *const std::os::raw::c_char) -> *mut std::os::raw::c_char;
+    fn yappy_asr_model_ready() -> bool;
+    fn yappy_asr_download_model();
+}
+
+/// Transcribe the audio file at `path`. Returns None on failure.
+pub fn transcribe(path: &str) -> Option<String> {
+    use std::ffi::CString;
+    let c = CString::new(path).ok()?;
+    let raw = unsafe { yappy_transcribe(c.as_ptr()) };
+    if raw.is_null() {
+        return None;
+    }
+    let s = unsafe { std::ffi::CStr::from_ptr(raw) }
+        .to_string_lossy()
+        .into_owned();
+    unsafe { yappy_free_string(raw) };
+    Some(s)
+}
+
+/// Whether the CoreML transcription model is downloaded + present.
+pub fn asr_model_ready() -> bool {
+    unsafe { yappy_asr_model_ready() }
+}
+
+/// Download the CoreML transcription model into the shared App Group dir.
+pub fn asr_download_model() {
+    unsafe { yappy_asr_download_model() }
 }
 
 // ─── NOW PLAYING (LOCK SCREEN / CONTROL CENTER / AIRPODS) ───────────────
@@ -131,10 +194,14 @@ extern "C" fn cb_skip_forward() {
 extern "C" fn cb_skip_backward() {
     if let Some(p) = PLAYBACK.get() { p.seek(-15.0); }
 }
-extern "C" fn cb_seek(_absolute_secs: f64) {
-    // playback.seek is delta-based, so we'd need to compute the diff from
-    // the current position. For now, treat lock-screen scrubbing as a no-op
-    // (rarely used during audiobook listening; v0.2 polish).
+extern "C" fn cb_seek(absolute_secs: f64) {
+    // The lock-screen scrubber hands us an ABSOLUTE position; PlaybackController
+    // seeks by a delta, so convert against the current elapsed time.
+    if let Some(p) = PLAYBACK.get() {
+        let elapsed = p.snapshot().elapsed_secs as f64;
+        let delta = absolute_secs - elapsed;
+        p.seek(delta as f32);
+    }
 }
 
 // ─── HAPTICS ────────────────────────────────────────────────────────────
@@ -252,6 +319,7 @@ pub fn install_now_playing_handlers(playback: std::sync::Arc<crate::playback::Pl
 // the C ABI and provide RAII wrappers.
 
 extern "C" {
+    fn yappy_audio_session_activate();
     fn yappy_background_audio_begin();
     fn yappy_background_audio_end();
     // ─── Live Activity (ActivityKit) — see LiveActivityBridge.swift ───
@@ -263,6 +331,13 @@ extern "C" {
         title: *const std::os::raw::c_char,
     );
     fn yappy_activity_end(title: *const std::os::raw::c_char);
+}
+
+/// Activate the AVAudioSession (.playback) so cpal/CoreAudio actually outputs
+/// TTS audio on iOS. Without this, streaming playback is silent. Called once
+/// from `PlaybackController::new` before the cpal stream is built.
+pub fn audio_session_activate() {
+    unsafe { yappy_audio_session_activate() };
 }
 
 /// Start a Live Activity for an audiobook render. The widget shows progress

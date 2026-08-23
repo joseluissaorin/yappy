@@ -117,8 +117,14 @@ public func yappy_now_playing_set(
 ) {
     if titlePtr == nil {
         // Clear all metadata — kicks Yappy off the lock screen.
+        // IMPORTANT: do NOT setActive(false) here. This is called on every
+        // playback snapshot where duration < 0.1s — including the brief moment
+        // right as "read aloud" starts, before the first chunk is synthesized.
+        // Deactivating the shared AVAudioSession at that instant silences cpal's
+        // output unit (it relies on an active session), so live TTS playback
+        // would stay frozen at 0:00. Just clear the Now Playing info; the
+        // PlaybackController owns the session lifecycle.
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
-        try? AVAudioSession.sharedInstance().setActive(false, options: [.notifyOthersOnDeactivation])
         return
     }
 

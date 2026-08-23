@@ -69,6 +69,10 @@ ort = { workspace = true }
 # Audio output. cpal supports CoreAudio on macOS AND iOS.
 cpal = "0.15"
 rubato = "0.16"
+# Pure-Rust audio decoding (mp3/aac/m4a/flac/vorbis/wav) for ASR input. Works on
+# every platform incl. iOS; Ogg-Opus is layered on top via the desktop-only
+# `opus` dep (see below).
+symphonia = { version = "0.5", features = ["mp3", "aac", "isomp4", "ogg", "vorbis", "flac", "wav", "pcm", "alac"] }
 
 # M4B audiobook encoding. fdk-aac vendors its C source and builds via cc+cmake;
 # mp4 crate is pure Rust. Both compile on iOS.
@@ -105,6 +109,12 @@ objc2-app-kit = { version = "0.3", features = ["NSPasteboard", "NSWorkspace", "N
 pdfium-render = { version = "0.8", features = ["thread_safe", "image"] }
 tauri-plugin-global-shortcut = "2"
 tauri-plugin-autostart = "2"
+# ─── Audio decoding for ASR. Arbitrary audio (WhatsApp voice notes etc.) is
+# decoded to mono 16 kHz f32 before hitting yappy-core's Parakeet engine.
+# Ogg-Opus (WhatsApp Android) uses the `ogg` demuxer + `opus` decoder (libopus,
+# C) — desktop-only to keep that C dep off iOS. Resampling reuses rubato.
+ogg = "0.9"
+opus = "0.3"
 
 # ─── Windows-native APIs ─────────────────────────────────────────────────
 # `windows` crate features kept tight — each enabled feature adds compile
@@ -138,6 +148,7 @@ windows = { version = "0.58", features = [
     "Win32_System_Threading",
     "Win32_System_WinRT",
     "Win32_UI_Accessibility",
+    "Win32_UI_HiDpi",
     "Win32_UI_Input_KeyboardAndMouse",
     "Win32_UI_Shell",
     "Win32_UI_Shell_Common",
