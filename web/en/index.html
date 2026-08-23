@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Yappy: any text, read aloud, without leaving your device</title>
   <meta name="description" content="Yappy turns articles, PDFs, EPUBs, Word files and videos into natural speech, in 31 languages, with a model that runs entirely on your computer or iPhone. No cloud, no accounts, no telemetry. Open source (MIT)." />
-  <link rel="icon" href="../favicon.png" />
-  <link rel="stylesheet" href="../estilo.css" />
+  <link rel="icon" href="/favicon.png" />
+  <link rel="stylesheet" href="/estilo.css" />
+  <link rel="canonical" href="https://yappy.joseluissaorin.com/en/" />
   <meta property="og:title" content="Yappy: any text, read aloud" />
   <meta property="og:description" content="Natural local speech in 31 languages. Share an article, a PDF or a video and listen. No cloud. Open source." />
   <meta property="og:image" content="https://yappy.joseluissaorin.com/og.png" />
@@ -15,18 +16,34 @@
   <link rel="alternate" hreflang="es" href="https://yappy.joseluissaorin.com/" />
 </head>
 <body>
-  <header class="cabecera envoltura">
-    <a class="marca" href="/en/" aria-label="Yappy">
-      <img src="../loro.svg" alt="" width="44" height="44" />
-      <span>yappy</span>
-    </a>
-    <nav>
-      <a href="#demo">Hear it</a>
-      <a href="#guionizador">The scriptwriter</a>
-      <a href="#descargas">Downloads</a>
-      <a href="https://github.com/joseluissaorin/yappy">GitHub</a>
-      <a href="/" lang="es">ES</a>
-    </nav>
+  <header class="cabecera">
+    <div class="cabecera-int">
+      <a class="marca" href="/en/" aria-label="Yappy, home">
+        <img src="/loro.svg" alt="" width="40" height="40" />
+        <span>yappy</span>
+      </a>
+      <nav class="nav-lineal" aria-label="sections">
+        <a href="/en/usage/">Usage</a>
+        <a href="/en/guionizador/">The guionizador</a>
+        <a href="/en/downloads/">Downloads</a>
+        <a href="/en/faq/">FAQ</a>
+        <a href="https://github.com/joseluissaorin/yappy">GitHub</a>
+        <a href="/" lang="es" hreflang="es">ES</a>
+      </nav>
+      <details class="menu">
+        <summary aria-label="open the menu">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </summary>
+        <nav aria-label="sections">
+          <a href="/en/usage/">How to use it</a>
+          <a href="/en/guionizador/">The guionizador</a>
+          <a href="/en/downloads/">Downloads</a>
+          <a href="/en/faq/">FAQ</a>
+          <a class="separada" href="https://github.com/joseluissaorin/yappy">GitHub</a>
+          <a href="/" lang="es" hreflang="es">Español</a>
+        </nav>
+      </details>
+    </div>
   </header>
 
   <main class="envoltura">
@@ -99,7 +116,7 @@
 
     <section class="bloque" id="guionizador">
       <p class="susurro">the piece nobody else shows</p>
-      <h2>The scriptwriter: from written to spoken.</h2>
+      <h2>The guionizador: from written to spoken.</h2>
       <p style="max-width: 62ch; color: var(--tinta-suave)">
         Reading aloud is not spelling out. "1492" is said "fourteen
         ninety-two"; "Henry VIII" is "Henry the Eighth", but "Louis XIV" in
@@ -139,6 +156,7 @@
         <div class="tarjeta"><h3>Voice notes</h3><p>The local ear (Parakeet) transcribes them on-device and leaves them readable and listenable.</p></div>
         <div class="tarjeta"><h3>Whatever you're looking at</h3><p>On desktop, one shortcut reads your selection, the browser page, or the active document. One second and it speaks.</p></div>
       </div>
+      <p style="margin-top: 16px"><a href="/en/usage/">The complete usage guide, step by step →</a></p>
     </section>
 
     <section class="bloque" id="descargas">
@@ -157,14 +175,15 @@
           <strong>Linux</strong>
           <span>AppImage and .deb · x64</span>
         </a>
-        <div class="descarga apagada">
-          <strong>iPhone</strong>
-          <span>on TestFlight very soon</span>
-        </div>
+        <a class="descarga" href="https://testflight.apple.com/join/SGqJdh6S">
+          <strong>iPhone and iPad</strong>
+          <span>beta via TestFlight · iOS 17+</span>
+        </a>
       </div>
       <p style="color: var(--tinta-suave); font-size: 0.9rem; margin-top: 14px">
         First launch downloads the voice model (~380 MB) once. After that,
         Yappy works offline forever.
+        <a href="/en/downloads/">Requirements and details →</a>
       </p>
     </section>
 
@@ -198,18 +217,38 @@
         Portuguese, Romanian, Russian, Slovak, Slovenian, Spanish, Swedish,
         Turkish, Ukrainian and Vietnamese.</p>
       </details>
+      <p style="margin-top: 14px"><a href="/en/faq/">Every question, answered straight →</a></p>
+    </section>
+
+    <section class="bloque">
+      <p class="susurro">keep reading</p>
+      <h2>The rest of the house.</h2>
+      <div class="rejilla">
+        <a class="descarga" href="/en/usage/"><strong>How to use it</strong><span>The whole guide: mobile, desktop, Siri, the QR bridge and audiobooks.</span></a>
+        <a class="descarga" href="/en/guionizador/"><strong>The guionizador</strong><span>The piece that turns "1492" into words. With a live demo and examples in six languages.</span></a>
+        <a class="descarga" href="/en/downloads/"><strong>Downloads</strong><span>macOS, Windows, Linux and the iPhone beta via TestFlight. Free, MIT.</span></a>
+        <a class="descarga" href="/en/faq/"><strong>FAQ</strong><span>Privacy, languages, licenses and faults, no detours.</span></a>
+      </div>
     </section>
   </main>
 
   <footer>
     <div class="envoltura">
       <span>Made by <a href="https://joseluissaorin.com">José Luis Saorín</a> in Tenerife.</span>
-      <span><a href="https://github.com/joseluissaorin/yappy">Source</a> · <a href="https://github.com/joseluissaorin/yappy/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/joseluissaorin/yappy/releases">Changelog</a></span>
+      <nav class="pie-nav" aria-label="site map">
+        <a href="/en/usage/">Usage</a>
+        <a href="/en/guionizador/">The guionizador</a>
+        <a href="/en/downloads/">Downloads</a>
+        <a href="/en/faq/">FAQ</a>
+        <a href="https://github.com/joseluissaorin/yappy">Source</a>
+        <a href="https://github.com/joseluissaorin/yappy/blob/main/LICENSE">MIT License</a>
+        <a href="https://github.com/joseluissaorin/yappy/releases">Changelog</a>
+      </nav>
     </div>
-    <div class="paseo" aria-hidden="true"><img src="../loro.svg" alt="" /></div>
-    <div class="paseo" aria-hidden="true"><img src="../loro.svg" alt="" /></div>
+    <div class="paseo" aria-hidden="true"><img src="/loro.svg" alt="" /></div>
+    <div class="paseo" aria-hidden="true"><img src="/loro.svg" alt="" /></div>
   </footer>
 
-  <script src="../demo.js" defer></script>
+  <script src="/demo.js" defer></script>
 </body>
 </html>

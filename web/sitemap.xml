@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://yappy.joseluissaorin.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yappy.joseluissaorin.com/en/"/>
+  </url>
+  <url>
+    <loc>https://yappy.joseluissaorin.com/uso/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yappy.joseluissaorin.com/en/usage/"/>
+  </url>
+  <url>
+    <loc>https://yappy.joseluissaorin.com/guionizador/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yappy.joseluissaorin.com/en/guionizador/"/>
+  </url>
+  <url>
+    <loc>https://yappy.joseluissaorin.com/descargas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yappy.joseluissaorin.com/en/downloads/"/>
+  </url>
+  <url>
+    <loc>https://yappy.joseluissaorin.com/preguntas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yappy.joseluissaorin.com/en/faq/"/>
+  </url>
+  <url>
+    <loc>https://yappy.joseluissaorin.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://yappy.joseluissaorin.com/"/>
+  </url>
+  <url>
+    <loc>https://yappy.joseluissaorin.com/en/usage/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://yappy.joseluissaorin.com/uso/"/>
+  </url>
+  <url>
+    <loc>https://yappy.joseluissaorin.com/en/guionizador/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://yappy.joseluissaorin.com/guionizador/"/>
+  </url>
+  <url>
+    <loc>https://yappy.joseluissaorin.com/en/downloads/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://yappy.joseluissaorin.com/descargas/"/>
+  </url>
+  <url>
+    <loc>https://yappy.joseluissaorin.com/en/faq/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://yappy.joseluissaorin.com/preguntas/"/>
+  </url>
+</urlset>

@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Yappy: cualquier texto, en voz alta, sin salir de tu dispositivo</title>
   <meta name="description" content="Yappy convierte artículos, PDF, EPUB, Word y vídeos en voz natural, en 31 idiomas, con un modelo que corre entero en tu ordenador o tu iPhone. Sin nube, sin cuentas, sin telemetría. Código abierto (MIT)." />
-  <link rel="icon" href="favicon.png" />
-  <link rel="stylesheet" href="estilo.css" />
+  <link rel="icon" href="/favicon.png" />
+  <link rel="stylesheet" href="/estilo.css" />
+  <link rel="canonical" href="https://yappy.joseluissaorin.com/" />
   <meta property="og:title" content="Yappy: cualquier texto, en voz alta" />
   <meta property="og:description" content="Voz natural local en 31 idiomas. Comparte un artículo, un PDF o un vídeo y escúchalo. Sin nube. Código abierto." />
   <meta property="og:image" content="https://yappy.joseluissaorin.com/og.png" />
@@ -15,18 +16,34 @@
   <link rel="alternate" hreflang="en" href="https://yappy.joseluissaorin.com/en/" />
 </head>
 <body>
-  <header class="cabecera envoltura">
-    <a class="marca" href="/" aria-label="Yappy">
-      <img src="loro.svg" alt="" width="44" height="44" />
-      <span>yappy</span>
-    </a>
-    <nav>
-      <a href="#demo">Escúchalo</a>
-      <a href="#guionizador">El guionizador</a>
-      <a href="#descargas">Descargas</a>
-      <a href="https://github.com/joseluissaorin/yappy">GitHub</a>
-      <a href="/en/" lang="en">EN</a>
-    </nav>
+  <header class="cabecera">
+    <div class="cabecera-int">
+      <a class="marca" href="/" aria-label="Yappy, portada">
+        <img src="/loro.svg" alt="" width="40" height="40" />
+        <span>yappy</span>
+      </a>
+      <nav class="nav-lineal" aria-label="secciones">
+        <a href="/uso/">Uso</a>
+        <a href="/guionizador/">El guionizador</a>
+        <a href="/descargas/">Descargas</a>
+        <a href="/preguntas/">Preguntas</a>
+        <a href="https://github.com/joseluissaorin/yappy">GitHub</a>
+        <a href="/en/" lang="en" hreflang="en">EN</a>
+      </nav>
+      <details class="menu">
+        <summary aria-label="abrir el menú">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </summary>
+        <nav aria-label="secciones">
+          <a href="/uso/">Cómo se usa</a>
+          <a href="/guionizador/">El guionizador</a>
+          <a href="/descargas/">Descargas</a>
+          <a href="/preguntas/">Preguntas</a>
+          <a class="separada" href="https://github.com/joseluissaorin/yappy">GitHub</a>
+          <a href="/en/" lang="en" hreflang="en">English</a>
+        </nav>
+      </details>
+    </div>
   </header>
 
   <main class="envoltura">
@@ -141,6 +158,7 @@
         <div class="tarjeta"><h3>Notas de voz</h3><p>El oído local (Parakeet) las transcribe en el dispositivo y te las deja legibles y escuchables.</p></div>
         <div class="tarjeta"><h3>Lo que estés mirando</h3><p>En el escritorio, un atajo lee la selección, la página del navegador o el documento activo. Un segundo y suena.</p></div>
       </div>
+      <p style="margin-top: 16px"><a href="/uso/">La guía completa de uso, paso a paso →</a></p>
     </section>
 
     <section class="bloque" id="descargas">
@@ -159,14 +177,15 @@
           <strong>Linux</strong>
           <span>AppImage y .deb · x64</span>
         </a>
-        <div class="descarga apagada">
-          <strong>iPhone</strong>
-          <span>en TestFlight muy pronto</span>
-        </div>
+        <a class="descarga" href="https://testflight.apple.com/join/SGqJdh6S">
+          <strong>iPhone y iPad</strong>
+          <span>beta por TestFlight · iOS 17+</span>
+        </a>
       </div>
       <p style="color: var(--tinta-suave); font-size: 0.9rem; margin-top: 14px">
         El primer arranque descarga el modelo de voces (~380 MB) una sola vez.
         Después, Yappy funciona sin conexión para siempre.
+        <a href="/descargas/">Requisitos y detalles →</a>
       </p>
     </section>
 
@@ -199,18 +218,38 @@
         indonesio, inglés, italiano, japonés, letón, lituano, neerlandés,
         polaco, portugués, rumano, ruso, sueco, turco, ucraniano y vietnamita.</p>
       </details>
+      <p style="margin-top: 14px"><a href="/preguntas/">Todas las preguntas, respondidas de frente →</a></p>
+    </section>
+
+    <section class="bloque">
+      <p class="susurro">sigue leyendo</p>
+      <h2>El resto de la casa.</h2>
+      <div class="rejilla">
+        <a class="descarga" href="/uso/"><strong>Cómo se usa</strong><span>La guía entera: móvil, escritorio, Siri, el puente por QR y los audiolibros.</span></a>
+        <a class="descarga" href="/guionizador/"><strong>El guionizador</strong><span>La pieza que convierte «1492» en palabras. Con demo en vivo y ejemplos en seis lenguas.</span></a>
+        <a class="descarga" href="/descargas/"><strong>Descargas</strong><span>macOS, Windows, Linux y la beta de iPhone por TestFlight. Gratis, MIT.</span></a>
+        <a class="descarga" href="/preguntas/"><strong>Preguntas</strong><span>Privacidad, idiomas, licencias y averías, sin rodeos.</span></a>
+      </div>
     </section>
   </main>
 
   <footer>
     <div class="envoltura">
       <span>Hecho por <a href="https://joseluissaorin.com">José Luis Saorín</a> en Tenerife.</span>
-      <span><a href="https://github.com/joseluissaorin/yappy">Código</a> · <a href="https://github.com/joseluissaorin/yappy/blob/main/LICENSE">Licencia MIT</a> · <a href="https://github.com/joseluissaorin/yappy/releases">Novedades</a></span>
+      <nav class="pie-nav" aria-label="mapa del sitio">
+        <a href="/uso/">Uso</a>
+        <a href="/guionizador/">El guionizador</a>
+        <a href="/descargas/">Descargas</a>
+        <a href="/preguntas/">Preguntas</a>
+        <a href="https://github.com/joseluissaorin/yappy">Código</a>
+        <a href="https://github.com/joseluissaorin/yappy/blob/main/LICENSE">Licencia MIT</a>
+        <a href="https://github.com/joseluissaorin/yappy/releases">Novedades</a>
+      </nav>
     </div>
-    <div class="paseo" aria-hidden="true"><img src="loro.svg" alt="" /></div>
-    <div class="paseo" aria-hidden="true"><img src="loro.svg" alt="" /></div>
+    <div class="paseo" aria-hidden="true"><img src="/loro.svg" alt="" /></div>
+    <div class="paseo" aria-hidden="true"><img src="/loro.svg" alt="" /></div>
   </footer>
 
-  <script src="demo.js" defer></script>
+  <script src="/demo.js" defer></script>
 </body>
 </html>

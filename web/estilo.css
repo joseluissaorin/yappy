@@ -75,6 +75,7 @@
 }
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 86px;
 }
 body {
   margin: 0;
@@ -100,51 +101,139 @@ a {
 .envoltura {
   max-width: 980px;
   margin: 0 auto;
-  padding: 0 22px;
+  padding-left: max(22px, env(safe-area-inset-left));
+  padding-right: max(22px, env(safe-area-inset-right));
 }
 
-/* ── Cabecera ── */
+/* ── Cabecera pegajosa y responsive ──
+   Banda a todo el ancho con desenfoque sobre el papel; dentro, la marca a
+   la izquierda y, según el ancho, la fila de enlaces o el menú plegado
+   (details/summary: funciona sin JavaScript). */
 .cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--papel);
+  background: color-mix(in srgb, var(--papel) 86%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--borde);
+}
+.cabecera-int {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 10px max(22px, env(safe-area-inset-right)) 10px max(22px, env(safe-area-inset-left));
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 0 8px;
+  gap: 10px;
 }
 .marca {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 .marca img {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
 }
 .marca span {
   font-weight: 800;
-  font-size: 28px;
+  font-size: 26px;
   letter-spacing: -0.02em;
   color: var(--voz);
   transform: rotate(-2deg);
   display: inline-block;
 }
-.cabecera nav {
+.nav-lineal {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
-.cabecera nav a {
+.nav-lineal a {
   color: var(--tinta-suave);
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
-  padding: 7px 12px;
+  font-size: clamp(0.82rem, 1.6vw, 0.95rem);
+  padding: 7px clamp(7px, 1.4vw, 12px);
   border-radius: 999px;
+  white-space: nowrap;
 }
-.cabecera nav a:hover {
+.nav-lineal a:hover {
   background: var(--superficie-2);
   color: var(--tinta);
+}
+.nav-lineal a[aria-current="page"],
+.menu nav a[aria-current="page"] {
+  background: var(--voz-suave);
+  color: var(--voz-fuerte);
+}
+.menu {
+  display: none;
+  position: relative;
+  flex-shrink: 0;
+}
+.menu summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  box-shadow: var(--relieve);
+}
+.menu summary::-webkit-details-marker {
+  display: none;
+}
+.menu[open] summary {
+  box-shadow: var(--hundido);
+  transform: translateY(1px);
+}
+.menu nav {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 230px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: var(--relieve-alto);
+  padding: 8px;
+}
+.menu nav a {
+  padding: 12px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--tinta);
+  font-weight: 600;
+}
+.menu nav a:hover {
+  background: var(--superficie-2);
+}
+.menu nav .separada {
+  border-top: 1px solid var(--borde);
+  margin-top: 6px;
+  padding-top: 12px;
+}
+@media (max-width: 780px) {
+  .nav-lineal {
+    display: none;
+  }
+  .menu {
+    display: block;
+  }
 }
 
 /* ── Hero ── */
@@ -502,4 +591,251 @@ footer a {
   .paseo {
     left: 24px;
   }
+}
+
+/* ── Páginas interiores ── */
+.migas {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin: 26px 0 0;
+}
+.migas a {
+  color: var(--tinta-suave);
+  text-decoration: none;
+}
+.migas a:hover {
+  color: var(--tinta);
+}
+.hero-pagina {
+  padding: 26px 0 8px;
+}
+.hero-pagina h1 {
+  font-weight: 800;
+  font-size: clamp(34px, 6.5vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 8px 0 14px;
+  transform: rotate(-1deg);
+  max-width: 22ch;
+}
+.hero-pagina .entradilla {
+  font-size: clamp(16px, 2.1vw, 19px);
+  color: var(--tinta-suave);
+  max-width: 58ch;
+  margin: 0 0 10px;
+}
+
+/* El índice de pastillas que salta a las secciones de la página. */
+.indice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 6px;
+}
+.indice a {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  padding: 8px 14px;
+  text-decoration: none;
+  box-shadow: var(--relieve);
+}
+.indice a:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--relieve-alto);
+}
+
+/* Pasos numerados a mano. */
+.pasos {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.paso {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 14px;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: var(--relieve);
+  padding: 16px 18px;
+  align-items: start;
+}
+.paso .numero {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--tecla);
+  color: #fff6ef;
+  font-weight: 800;
+  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-4deg);
+  box-shadow: var(--relieve);
+}
+.paso h3 {
+  margin: 2px 0 4px;
+  font-size: 1.02rem;
+  font-weight: 800;
+}
+.paso p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--tinta-suave);
+}
+.paso kbd,
+.tabla kbd {
+  font-family: var(--mono);
+  font-size: 0.8em;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 1px 6px;
+  color: var(--tinta);
+  white-space: nowrap;
+}
+
+/* Tablas (atajos, esquemas). */
+.tabla-marco {
+  overflow-x: auto;
+  margin-top: 16px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--superficie);
+  box-shadow: var(--relieve);
+}
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.tabla th {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  text-align: left;
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid var(--borde);
+}
+.tabla td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--borde);
+  vertical-align: top;
+}
+.tabla tr:last-child td {
+  border-bottom: 0;
+}
+.tabla code {
+  font-family: var(--mono);
+  font-size: 0.84em;
+  color: var(--ultramar);
+  word-break: break-all;
+}
+
+/* Ejemplos del guionizador: entrada y salida reales. */
+.ejemplo {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  box-shadow: var(--relieve);
+  padding: 14px 16px;
+  margin-top: 10px;
+}
+.ejemplo .entrada {
+  font-family: var(--lectura);
+  margin: 0 0 8px;
+}
+.ejemplo .salida-e {
+  font-family: var(--lectura);
+  margin: 0;
+  color: var(--tinta);
+  padding-left: 18px;
+  border-left: 3px solid var(--dorado);
+}
+.ejemplo .salida-e::before {
+  content: "se dice: ";
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* Glosas y llamadas. */
+.glosa {
+  border-left: 4px solid var(--ultramar);
+  background: var(--superficie);
+  border-radius: 0 14px 14px 0;
+  padding: 12px 16px;
+  margin: 18px 0;
+  color: var(--tinta-suave);
+  font-size: 0.94rem;
+}
+.glosa strong {
+  color: var(--tinta);
+}
+.cta-final {
+  text-align: center;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 20px;
+  box-shadow: var(--relieve-alto);
+  padding: 34px 22px;
+  margin: 70px 0 20px;
+}
+.cta-final h2 {
+  font-weight: 800;
+  font-size: clamp(24px, 4vw, 34px);
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+.cta-final p {
+  color: var(--tinta-suave);
+  margin: 0 0 18px;
+}
+.cta-final .acciones {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Ilustraciones dibujadas (SVG en línea). */
+.ilustracion {
+  display: flex;
+  justify-content: center;
+  margin: 22px 0 6px;
+}
+.ilustracion svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* El pie ahora también navega. */
+.pie-nav {
+  display: flex;
+  gap: 4px 14px;
+  flex-wrap: wrap;
+}
+.pie-nav a {
+  text-decoration: none;
+}
+.pie-nav a:hover {
+  color: var(--tinta);
 }
