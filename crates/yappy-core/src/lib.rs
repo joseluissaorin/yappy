@@ -11,6 +11,7 @@
 pub mod asr;
 pub mod chunker;
 pub mod engine;
+pub mod guion;
 pub mod lang_detect;
 pub mod normalize;
 pub mod supertonic;
