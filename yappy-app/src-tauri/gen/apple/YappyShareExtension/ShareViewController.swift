@@ -243,32 +243,65 @@ class ShareViewController: UIViewController {
 
     /// Open the containing app (yappy://shared), then tear down the extension.
     ///
-    /// The working technique is to walk the responder chain to whoever responds
-    /// to the SINGLE-argument `openURL:` selector and `perform` it. (My earlier
-    /// bug: I used `open(_:options:completionHandler:)` — a 3-arg selector — via
-    /// `perform(_:with:)`, which only passes one argument, so it silently did
-    /// nothing. That's why the app never opened, NOT an iOS restriction.) We fall
-    /// back to `NSExtensionContext.open` if nothing in the chain responds, then
-    /// complete the request after a short delay so the launch can take effect.
+    /// iOS no da API oficial para esto desde una extensión de compartir, así
+    /// que se intenta una CASCADA de técnicas conocidas, de la más limpia a
+    /// la más terca, con log por etapa para diagnosticar en el aparato:
+    ///   1. cadena de responders + selector de UN argumento `openURL:`
+    ///      (funcionaba hasta iOS 17; en versiones nuevas la cadena a veces
+    ///      ya no llega a nadie que responda),
+    ///   2. cadena de responders + `openURL:options:completionHandler:`
+    ///      llamado por IMP (perform solo pasa un argumento; con el puntero
+    ///      C se pasan los tres),
+    ///   3. `UIApplication` por reflexión (`sharedApplication` vía KVC: la
+    ///      API está vetada en tiempo de compilación para extensiones, pero
+    ///      el objeto existe en tiempo de ejecución),
+    ///   4. `NSExtensionContext.open` (documentado solo para widgets, pero
+    ///      gratis intentarlo).
+    /// Después se completa la petición con un respiro para que el salto
+    /// tenga tiempo de despegar.
     private func openMainAppAndClose() {
         guard let url = URL(string: "yappy://shared") else { close(); return }
-        let openSel = NSSelectorFromString("openURL:")
+        NSLog("[yappy/share] abriendo la app contenedora…")
+        let sel1 = NSSelectorFromString("openURL:")
+        let sel3 = NSSelectorFromString("openURL:options:completionHandler:")
+        typealias AbrirTres = @convention(c) (NSObject, Selector, NSURL, NSDictionary, Any?) -> Void
         var opened = false
-        var responder: UIResponder? = self
-        while let r = responder {
-            if r.responds(to: openSel) {
-                r.perform(openSel, with: url)
-                opened = true
-                NSLog("[yappy/share] opened main app via openURL: on \(type(of: r))")
-                break
+
+        // SOLO sobre la instancia real de UIApplication: otros responders
+        // «responden» al selector pero LANZAN NSException al invocarlo (el
+        // veto de extensiones), y una excepción aquí mata el proceso sin
+        // completar la petición: la hoja se queda gris para siempre.
+        if let appClass = NSClassFromString("UIApplication") {
+            var responder: UIResponder? = self
+            while let r = responder {
+                if r.isKind(of: appClass), let obj = r as? NSObject {
+                    // El de TRES argumentos primero: en iOS moderno el
+                    // «openURL:» clásico responde pero es un no-op para
+                    // abrir otra app; el moderno sí despega.
+                    if r.responds(to: sel3) {
+                        let imp = obj.method(for: sel3)
+                        let fn = unsafeBitCast(imp, to: AbrirTres.self)
+                        fn(obj, sel3, url as NSURL, [:] as NSDictionary, nil)
+                        opened = true
+                        NSLog("[yappy/share] salto vía openURL:options: (IMP) en \(type(of: r))")
+                    } else if r.responds(to: sel1) {
+                        r.perform(sel1, with: url)
+                        opened = true
+                        NSLog("[yappy/share] salto vía openURL: en \(type(of: r))")
+                    }
+                    break
+                }
+                responder = r.next
             }
-            responder = r.next
         }
+
         if !opened {
-            NSLog("[yappy/share] no openURL: responder; trying extensionContext.open")
-            extensionContext?.open(url, completionHandler: nil)
+            NSLog("[yappy/share] sin UIApplication en la cadena; probando extensionContext.open")
+            extensionContext?.open(url, completionHandler: { ok in
+                NSLog("[yappy/share] extensionContext.open → \(ok)")
+            })
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { self.close() }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.close() }
     }
 
     private func close() {
