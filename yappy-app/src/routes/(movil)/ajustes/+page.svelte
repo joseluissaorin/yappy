@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   import { t } from "$lib/i18n";
   import { haptic } from "$lib/haptic";
+  import Criatura from "$lib/Criatura.svelte";
   import {
     getSettings,
     setAppTheme,
@@ -68,6 +69,12 @@
     await setAppTheme(tema).catch(() => {});
   }
 
+  // Cada voz es un pájaro con su tinta: el cromo se elige y se presenta.
+  const TINTAS_VOZ = [
+    "#e0502a", "#2f4bc4", "#e8b41a", "#2e7d5b", "#8a4fbe",
+    "#c43e6a", "#1f8a9c", "#b8651f", "#5b6d2e", "#7a4a32",
+  ];
+
   async function elegirVoz(v: Voice) {
     if (!settings) return;
     haptic("light");
@@ -122,30 +129,25 @@
 
   <section class="yap-bloque grupo">
     <h2 class="yap-susurro">{$t("ajustes.voz")}</h2>
-    <button class="fila" onclick={() => (vozAbierta = !vozAbierta)}>
-      <span>{$t("ajustes.voz_defecto")}</span>
-      <span class="valor">{settings.voice} {vozAbierta ? "▴" : "▾"}</span>
-    </button>
-    {#if vozAbierta}
-      <ul class="voces yap-enter">
-        {#each voices as v (v.name)}
-          <li>
-            <button class="voz" class:elegida={settings.voice === v.name} onclick={() => elegirVoz(v)}>
-              <span class="voz-nombre">{v.name}</span>
-              <span class="voz-desc">{v.description}</span>
-            </button>
-            <button
-              class="yap-boton es-fantasma"
-              aria-label="escuchar una muestra"
-              onclick={(e) => {
-                e.stopPropagation();
-                probar(v);
-              }}>{probando === v.name ? "…" : "▶"}</button
-            >
-          </li>
-        {/each}
-      </ul>
-    {/if}
+    <p class="voces-pista">{$t("voces.pista")}</p>
+    <div class="cromos" role="listbox" aria-label={$t("voces.titulo")}>
+      {#each voices as v, i (v.name)}
+        <button
+          class="cromo"
+          class:elegido={settings.voice === v.name}
+          role="option"
+          aria-selected={settings.voice === v.name}
+          onclick={() => {
+            elegirVoz(v);
+            probar(v);
+          }}
+        >
+          <Criatura size={84} tinta={TINTAS_VOZ[i % TINTAS_VOZ.length]} cantando={probando === v.name} />
+          <strong>{v.name}</strong>
+          <span class="cromo-desc">{v.description}</span>
+        </button>
+      {/each}
+    </div>
     <div class="fila">
       <span>{$t("ajustes.velocidad")}</span>
       <span class="valor mono">{settings.speed.toFixed(2)}×</span>
@@ -176,7 +178,7 @@
         onchange={(e) => cambiarIdioma(e.currentTarget.value)}
       >
         {#each LANGUAGES as l (l.code)}
-          <option value={l.code}>{l.flag ?? ""} {l.label}</option>
+          <option value={l.code}>{l.label}</option>
         {/each}
       </select>
     </label>
@@ -231,6 +233,53 @@
 {/if}
 
 <style>
+  .voces-pista {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: var(--yap-tinta-suave);
+  }
+  .cromos {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 4px 2px 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cromo {
+    scroll-snap-align: center;
+    flex: 0 0 128px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 10px 12px;
+    border-radius: 18px;
+    border: 2px solid var(--yap-borde);
+    background: var(--yap-superficie);
+    color: var(--yap-tinta);
+    box-shadow: var(--yap-relieve);
+    cursor: pointer;
+  }
+  .cromo.elegido {
+    border-color: var(--yap-voz, #e0502a);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--yap-voz, #e0502a) 25%, transparent), var(--yap-relieve-alto, 0 10px 22px rgba(64,46,12,0.16));
+    transform: rotate(-1.4deg);
+  }
+  .cromo strong {
+    font-weight: 800;
+    font-size: 15px;
+  }
+  .cromo-desc {
+    font-size: 10.5px;
+    color: var(--yap-tinta-suave);
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .cabecera-pagina {
     display: flex;
     align-items: center;

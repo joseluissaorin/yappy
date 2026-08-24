@@ -483,6 +483,9 @@ export const importSettings = (json: string): Promise<Settings> => invoke("impor
 export function onModelDownload(cb: (p: DownloadProgress) => void): Promise<UnlistenFn> {
   return listen<DownloadProgress>("model_download", (ev) => cb(ev.payload));
 }
+export const playbackSnapshot = (): Promise<PlaybackSnapshot> =>
+  invoke("playback_snapshot_cmd");
+
 export function onPlaybackState(cb: (s: PlaybackSnapshot) => void): Promise<UnlistenFn> {
   return listen<PlaybackSnapshot>("playback_state", (ev) => cb(ev.payload));
 }

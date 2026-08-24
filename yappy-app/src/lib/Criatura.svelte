@@ -12,7 +12,8 @@
     andando = false,
     cantando = false,
     mirando = 1,
-  }: { size?: number; andando?: boolean; cantando?: boolean; mirando?: 1 | -1 } = $props();
+    tinta = null,
+  }: { size?: number; andando?: boolean; cantando?: boolean; mirando?: 1 | -1; tinta?: string | null } = $props();
 </script>
 
 <span
@@ -31,7 +32,7 @@
         <ellipse cx="23.5" cy="49.6" rx="5.6" ry="4.2" />
         <ellipse cx="40.5" cy="50.8" rx="5.6" ry="4.2" />
       </g>
-      <g fill="#e0502a">
+      <g fill={tinta ?? "#e0502a"}>
         <path
           d="M32 7 C42.5 6.5 50 14 50.5 24 C51 33 49.5 41.5 43 46.4 C39 49.4 25 49.4 21 46.4 C14.5 41.5 13 33 13.5 24 C14 14 21.5 6.5 32 7 Z"
         />

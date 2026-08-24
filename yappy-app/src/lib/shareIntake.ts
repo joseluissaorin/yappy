@@ -31,6 +31,7 @@ import {
   readDocument,
 } from "$lib/ipc";
 import { reader } from "$lib/readerStore.svelte";
+import { soltarLlegada } from "$lib/llegada.svelte";
 
 // Load extracted/shared text into the immersive reader as a document (so it
 // shows with sections + maintains proper playback state / mini-player), then
@@ -133,6 +134,7 @@ async function vigilarAutoplay(): Promise<void> {
           const doc = await readDocument(item.ruta);
           doc.filename = item.titulo;
           reader.doc = doc;
+          soltarLlegada(item.titulo);
           await goto("/read");
           await readDocumentParagraphs(doc.paragraphs, 0);
           break;

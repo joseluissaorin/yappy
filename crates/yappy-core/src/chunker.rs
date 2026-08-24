@@ -48,15 +48,10 @@ pub fn chunk_paragraphs(text: &str, max_chars: usize) -> Vec<Chunk> {
             continue;
         }
         let para_start = start_in_text + raw_para.find(para.chars().next().unwrap_or(' ')).unwrap_or(0);
-        if para.chars().count() <= max_chars {
-            chunks.push(Chunk {
-                text: para.to_string(),
-                start: para_start,
-                end: para_start + para.len(),
-            });
-            continue;
-        }
-        // Split the paragraph into sentences and re-merge up to max_chars.
+        // SIEMPRE por frases: la palabra gigante del móvil vive de esta
+        // granularidad (karaoke frase a frase, primer audio antes). Las
+        // frases minúsculas (<25 caracteres) se pegan a la anterior para no
+        // trocear el fraseo en migas.
         let sentences = split_sentences(para);
         let mut current = String::new();
         let mut current_start = para_start;
@@ -88,7 +83,9 @@ pub fn chunk_paragraphs(text: &str, max_chars: usize) -> Vec<Chunk> {
                 current_start = running_offset;
                 continue;
             }
-            if (current.chars().count() + s_len_chars + 1) > max_chars && !current.is_empty() {
+            let cabe_la_miga = s.trim().chars().count() < 25
+                && (current.chars().count() + s_len_chars) <= max_chars;
+            if !current.is_empty() && !cabe_la_miga {
                 chunks.push(Chunk {
                     text: current.trim().to_string(),
                     start: current_start,
@@ -97,8 +94,8 @@ pub fn chunk_paragraphs(text: &str, max_chars: usize) -> Vec<Chunk> {
                 current.clear();
                 current_start = running_offset;
             }
-            if !current.is_empty() {
-                current.push(' ');
+            if current.is_empty() {
+                current_start = running_offset;
             }
             current.push_str(&s);
             running_offset += s.len();
@@ -207,4 +204,28 @@ fn split_too_long(s: &str, max_chars: usize) -> Vec<String> {
         out.push(s.trim().to_string());
     }
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parte_por_frases_siempre() {
+        let texto = "La primera frase dice una cosa con calma. La segunda dice otra distinta y algo más larga. ¿Sí?";
+        let trozos = chunk_paragraphs(texto, 300);
+        // Dos frases largas + una miga («¿Sí?» < 25) pegada a la segunda.
+        assert_eq!(trozos.len(), 2);
+        assert!(trozos[0].text.starts_with("La primera"));
+        assert!(trozos[1].text.starts_with("La segunda"));
+        assert!(trozos[1].text.ends_with("¿Sí?"));
+        // Los offsets siguen cubriendo el texto en orden.
+        assert!(trozos[0].start < trozos[1].start);
+    }
+
+    #[test]
+    fn parrafo_de_una_frase_queda_entero() {
+        let trozos = chunk_paragraphs("Una sola frase tranquila sin más compañía.", 300);
+        assert_eq!(trozos.len(), 1);
+    }
 }

@@ -157,6 +157,17 @@ fn id_video_youtube(url: &str) -> Option<String> {
 }
 
 pub fn agregar_url<R: Runtime>(app: &AppHandle<R>, url: String) -> Result<ItemCola> {
+    // La misma URL compartida dos veces (el doble toque, el reintento del
+    // usuario impaciente) no duplica el segmento: se devuelve el que ya
+    // está en la cinta, salvo que aquel muriera en error.
+    if let Ok(items) = listar(app) {
+        if let Some(existente) = items
+            .iter()
+            .find(|i| i.origen == url && i.estado != EstadoItem::Error)
+        {
+            return Ok(existente.clone());
+        }
+    }
     let tipo = if es_youtube(&url) { TipoItem::Youtube } else { TipoItem::Url };
     let item = ItemCola {
         id: nuevo_id(),

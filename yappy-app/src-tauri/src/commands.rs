@@ -1789,6 +1789,14 @@ pub fn is_model_ready(app: AppHandle) -> Result<bool, String> {
     model::is_model_ready(&app).map_err(|e| e.to_string())
 }
 
+/// La foto actual de la reproducción, bajo demanda. Las páginas que montan
+/// DESPUÉS de que algo suene (la cinta, el cartel) la necesitan para pintar
+/// la aguja o el estado de pausa sin esperar a la siguiente emisión.
+#[tauri::command]
+pub fn playback_snapshot_cmd(state: tauri::State<'_, AppState>) -> crate::playback::PlaybackSnapshot {
+    state.playback.snapshot()
+}
+
 #[tauri::command]
 pub async fn download_model_cmd(app: AppHandle) -> Result<(), String> {
     let h = app.clone();

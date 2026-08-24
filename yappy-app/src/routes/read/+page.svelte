@@ -1,4 +1,12 @@
 <script lang="ts">
+  // LA PALABRA GIGANTE. La pantalla es el botón: mientras Yappy lee, la
+  // frase que suena ocupa la pantalla entera en Literata de cartel, con el
+  // subrayador dorado barriéndola en tiempo real. Tocar en cualquier sitio
+  // pausa y reanuda; deslizar a los lados salta de párrafo; arrastrar por
+  // el borde derecho cambia la velocidad con el número estampado gigante.
+  // La interfaz solo existe cuando la voz calla: en pausa suben las tres
+  // teclas de piano del mando, y desde ahí se llega al guion (el texto
+  // completo) y al taller (voz, ritmo, exportar, el puente).
   import { onMount, onDestroy } from "svelte";
   import { goto } from "$app/navigation";
   import { reader } from "$lib/readerStore.svelte";
@@ -11,11 +19,11 @@
     type PlaybackSnapshot,
     type Voice,
     type Settings,
-    type ParagraphSpec,
     readDocumentParagraphs,
     stopPlayback,
     togglePause,
     onPlaybackState,
+    playbackSnapshot,
     onPlaybackStarting,
     listVoices,
     getSettings,
@@ -31,10 +39,6 @@
     onPuenteProgreso,
   } from "$lib/ipc";
 
-  // Immersive single-column mobile reader WITH editor parity: per-document rhythm
-  // + voice, and per-paragraph speed / pause / voice overrides — persisted to the
-  // same project file the desktop editor uses, and used to render an .m4b
-  // audiobook. Tap a paragraph to read from there; tap its ⋯ to adjust it.
   const doc = $derived(reader.doc);
   const paras = $derived(doc?.paragraphs ?? []);
   const kinds = $derived(doc?.paragraph_kinds ?? []);
@@ -42,36 +46,26 @@
   function defaultPause(i: number): number {
     return pausesDefault[i] ?? 0;
   }
-  const title = $derived((doc?.filename ?? "document").replace(/\.[^.]+$/, "").replace(/[-_]/g, " "));
+  const title = $derived((doc?.filename ?? "").replace(/\.[^.]+$/, "").replace(/[-_]/g, " "));
 
-  // Per-paragraph editable state (parity with the desktop editor's ParaState).
-  // null override = inherit the document/global value.
+  // Ajustes por párrafo (paridad con el editor de escritorio): se conservan
+  // en el mismo fichero de proyecto, y el taller los expone.
   type ParaState = { voice: string | null; speed: number | null; pauseBefore: number | null; kind: string };
   let overrides = $state<ParaState[]>([]);
-  // Document-level controls.
   let rhythmMult = $state(1.0);
-  let docVoice = $state<string | null>(null); // null = global voice from settings
-
+  let docVoice = $state<string | null>(null);
   let voices = $state<Voice[]>([]);
   let settings = $state<Settings | null>(null);
 
-  // Chapters = heading paragraphs.
-  const chapters = $derived(
-    paras
-      .map((text, index) => ({ text, index, level: Number((kinds[index] || "").replace("heading", "")) || 0 }))
-      .filter((p) => (kinds[p.index] || "").startsWith("heading")),
-  );
-
   let playback = $state<PlaybackSnapshot | null>(null);
   let baseIndex = $state(0);
-  let chaptersOpen = $state(false);
-  let settingsOpen = $state(false);
-  let tweakIndex = $state(-1); // per-paragraph adjust sheet (-1 = closed)
+  let guionAbierto = $state(false);
+  let tallerAbierto = $state(false);
+  let tweakIndex = $state(-1);
   let voicePickerFor = $state<"doc" | "para" | null>(null);
-  let paraEls: (HTMLElement | null)[] = $state([]);
   let cleanups: (() => void)[] = [];
 
-  // Export state.
+  // Exportación y puente.
   let rendering = $state(false);
   let renderProgress = $state<{ index: number; total: number; stage: string } | null>(null);
   let exportDone = $state<{ path: string } | null>(null);
@@ -82,13 +76,63 @@
 
   const isPlaying = $derived(!!playback?.playing && !playback?.paused);
   const isPaused = $derived(!!playback?.paused);
+  const activo = $derived(isPlaying || isPaused);
   const currentPara = $derived(
-    (isPlaying || isPaused) && playback ? baseIndex + (playback.current_paragraph_index ?? 0) : -1,
+    activo && playback ? baseIndex + (playback.current_paragraph_index ?? 0) : -1,
   );
   const globalSpeed = $derived(settings?.speed ?? 1.05);
 
-  // Progreso persistente: cada vez que avanza el párrafo que suena, se
-  // apunta dónde vamos. «Sigue donde ibas» y la Biblioteca leen esto.
+  // ── La frase que suena, por code points (los índices llegan en chars) ──
+  const letrasParrafo = $derived(currentPara >= 0 ? Array.from(paras[currentPara] ?? "") : []);
+  const oIni = $derived(Math.min(playback?.current_origen_ini ?? 0, letrasParrafo.length));
+  const oFin = $derived(Math.min(Math.max(playback?.current_origen_fin ?? 0, oIni), letrasParrafo.length));
+  const hayOrigen = $derived(oFin > oIni);
+  const dichas = $derived(hayOrigen ? letrasParrafo.slice(0, oIni).join("").trim() : "");
+  const frase = $derived(
+    (oFin > oIni ? letrasParrafo.slice(oIni, oFin).join("") : letrasParrafo.join("")).trim(),
+  );
+  const porVenir = $derived(hayOrigen ? letrasParrafo.slice(oFin).join("").trim() : "");
+  const esTitulo = $derived((kinds[currentPara] ?? "").startsWith("heading"));
+
+  // Tamaño de cartel: cuanto más corta la frase, más grita.
+  const cuerpoFrase = $derived.by(() => {
+    const c = Math.max(16, frase.length);
+    return Math.round(Math.max(30, Math.min(80, 46 * Math.sqrt(150 / c))));
+  });
+
+  // ── El barrido dorado: avanza al ritmo estimado de la voz ─────────────
+  let barrido = $state(0);
+  let rafId = 0;
+  let claveFrase = $state("");
+  $effect(() => {
+    const clave = `${currentPara}·${oIni}·${oFin}`;
+    if (clave !== claveFrase) {
+      claveFrase = clave;
+      barrido = 0;
+      cancelAnimationFrame(rafId);
+      if (isPlaying && frase) {
+        const dur = Math.max(0.9, (frase.length * 0.062) / effectiveSpeedForPlay());
+        const t0 = performance.now();
+        const paso = (ahora: number) => {
+          barrido = Math.min(1, (ahora - t0) / (dur * 1000));
+          if (barrido < 1 && isPlaying) rafId = requestAnimationFrame(paso);
+        };
+        rafId = requestAnimationFrame(paso);
+      }
+    } else if (!isPlaying) {
+      cancelAnimationFrame(rafId);
+    } else if (isPlaying && barrido === 0 && frase) {
+      const dur = Math.max(0.9, (frase.length * 0.062) / effectiveSpeedForPlay());
+      const t0 = performance.now();
+      const paso = (ahora: number) => {
+        barrido = Math.min(1, (ahora - t0) / (dur * 1000));
+        if (barrido < 1 && isPlaying) rafId = requestAnimationFrame(paso);
+      };
+      rafId = requestAnimationFrame(paso);
+    }
+  });
+
+  // Progreso persistente por párrafo.
   $effect(() => {
     if (currentPara >= 0 && doc?.path && paras.length > 0) {
       guardarProgreso({
@@ -100,12 +144,12 @@
       });
     }
   });
-  const docVoiceName = $derived(
-    docVoice ? (voices.find((v) => v.id === docVoice || v.name === docVoice)?.name ?? docVoice) : null,
-  );
-  // Has the reader been customised away from the plain defaults?
+
   const customised = $derived(
     rhythmMult !== 1.0 || docVoice !== null || overrides.some((o) => o.voice || o.speed != null || o.pauseBefore != null),
+  );
+  const docVoiceName = $derived(
+    docVoice ? (voices.find((v) => v.id === docVoice || v.name === docVoice)?.name ?? docVoice) : null,
   );
 
   function clampSpeed(s: number) { return Math.max(0.3, Math.min(3.0, s)); }
@@ -113,18 +157,15 @@
   function flashToast(msg: string) { toast = msg; setTimeout(() => (toast = null), 2400); }
 
   onMount(async () => {
-    if (!doc) { goto("/"); return; }
+    if (!doc) { goto(get(isMobile) ? "/escuchar" : "/"); return; }
     voices = await listVoices().catch(() => []);
     settings = await getSettings().catch(() => null);
-
-    // Seed per-paragraph state from the document's markdown rhythm hints, then
-    // try to restore any saved project (parity with the desktop editor).
     seedOverrides();
     await tryRestoreProject();
-
     cleanups.push(await onPlaybackStarting((p: any) => {
       if (typeof p?.base_paragraph_index === "number") baseIndex = p.base_paragraph_index;
     }));
+    playback = await playbackSnapshot().catch(() => null);
     cleanups.push(await onPlaybackState((s) => (playback = s)));
     cleanups.push(await onAudiobookRenderProgress((p) => (renderProgress = p)));
     puenteVinculado = !!(await puenteMovilEstado().catch(() => null))?.token;
@@ -146,7 +187,10 @@
       flashToast(get(t)("lector.t_guardado"));
     }));
   });
-  onDestroy(() => cleanups.forEach((c) => c()));
+  onDestroy(() => {
+    cancelAnimationFrame(rafId);
+    cleanups.forEach((c) => c());
+  });
 
   function seedOverrides() {
     overrides = paras.map((_, i) => ({
@@ -157,7 +201,7 @@
     }));
   }
 
-  // ── Project persistence (same v2 schema as the desktop editor) ──────────────
+  // ── Proyecto (mismo esquema v2 que el editor de escritorio) ───────────
   let saveTimer: ReturnType<typeof setTimeout> | undefined;
   function scheduleSave() {
     if (!doc?.path) return;
@@ -179,7 +223,7 @@
           saved_at: new Date().toISOString(),
         };
         await saveProject(doc!.path, JSON.stringify(snap));
-      } catch { /* best-effort */ }
+      } catch { /* mejor esfuerzo */ }
     }, 500);
   }
   async function tryRestoreProject() {
@@ -196,13 +240,11 @@
           kind: p.kind ?? kinds[i] ?? "paragraph",
         }));
       }
-      if (typeof parsed.rhythm_mult === "number") rhythmMult = parsed.rhythm_mult;
-      if (typeof parsed.doc_voice === "string" || parsed.doc_voice === null) docVoice = parsed.doc_voice ?? null;
-      flashToast(get(t)("lector.t_restaurado"));
-    } catch { /* ignore */ }
+      if (typeof parsed?.rhythm_mult === "number") rhythmMult = parsed.rhythm_mult;
+      if (typeof parsed?.doc_voice === "string" || parsed?.doc_voice === null) docVoice = parsed.doc_voice;
+    } catch { /* proyecto viejo o ilegible: se ignora */ }
   }
 
-  // ── Playback ────────────────────────────────────────────────────────────────
   async function readFrom(index: number) {
     haptic("light");
     baseIndex = index;
@@ -217,12 +259,8 @@
     });
   }
   async function toggle() { haptic("medium"); await togglePause(); }
-  // En la mano, «volver» vuelve a la casa móvil; el «/» de escritorio no
-  // existe en el teléfono.
   function back() { goto(get(isMobile) ? "/escuchar" : "/"); }
-  function jumpToChapter(index: number) { chaptersOpen = false; readFrom(index); }
 
-  // ── Per-paragraph adjusters ──────────────────────────────────────────────────
   function setParaSpeed(i: number, v: number | null) { overrides[i].speed = v; scheduleSave(); }
   function setParaPause(i: number, v: number | null) { overrides[i].pauseBefore = v; scheduleSave(); }
   function setParaVoice(i: number, v: string | null) { overrides[i].voice = v; voicePickerFor = null; scheduleSave(); }
@@ -236,15 +274,10 @@
     flashToast(get(t)("lector.t_reiniciado"));
   }
 
-  function progressPct(): number {
-    if (currentPara < 0 || paras.length === 0) return 0;
-    return Math.min(100, ((currentPara + 1) / paras.length) * 100);
-  }
-
-  // ── Convertir en el ordenador (el puente) ───────────────────────────────────
+  // ── El puente y la exportación ────────────────────────────────────────
   async function convertirEnOrdenador() {
     if (puenteOcupado || !doc) return;
-    settingsOpen = false;
+    tallerAbierto = false;
     haptic("medium");
     puenteOcupado = true;
     puenteEtapa = "0";
@@ -257,43 +290,26 @@
       flashToast(String(e));
     }
   }
-
-  // ── Export to .m4b ───────────────────────────────────────────────────────────
   async function exportAudiobook() {
     if (rendering || !doc) return;
-    settingsOpen = false;
     haptic("medium");
+    rendering = true;
+    exportDone = null;
     try {
-      const base = title;
-      let lastChapterAt = -1;
-      const specs: ParagraphSpec[] = paras.map((text, i) => {
-        const o = overrides[i] ?? { voice: null, speed: null, pauseBefore: null, kind: kinds[i] || "paragraph" };
-        const baseSpeed = o.speed ?? globalSpeed;
-        const hasPause = (o.pauseBefore ?? 0) > 0;
-        let chapterTitle: string | null = null;
-        if (/^heading[1-6]$/.test(o.kind)) {
-          chapterTitle = text.trim() || `Chapter ${lastChapterAt + 2}`;
-          lastChapterAt = i;
-        } else if (i === 0 && lastChapterAt === -1) {
-          chapterTitle = base;
-          lastChapterAt = 0;
-        }
-        return {
+      const out = await audiobookExportPath(title);
+      await renderAudiobook(
+        title,
+        paras.map((text, i) => ({
           text,
-          voice: o.voice,
-          speed: clampSpeed(baseSpeed * rhythmMult),
-          pause_before: hasPause ? (o.pauseBefore as number) / Math.max(0.1, rhythmMult) : null,
-          chapter_title: chapterTitle,
-        };
-      });
-      const path = await audiobookExportPath(base);
-      rendering = true;
-      exportDone = null;
-      renderProgress = { index: 0, total: specs.length, stage: "synth" };
-      await renderAudiobook(specs, path, { title: base, album: base });
+          voice: overrides[i]?.voice ?? docVoice ?? null,
+          speed: overrides[i]?.speed ?? null,
+          pauseBefore: (overrides[i]?.pauseBefore ?? defaultPause(i)) * rhythmMult,
+          kind: overrides[i]?.kind ?? "paragraph",
+        })),
+        out,
+      );
     } catch (e) {
       rendering = false;
-      renderProgress = null;
       flashToast(get(t)("lector.t_fallo_export") + String(e));
     }
   }
@@ -301,400 +317,810 @@
     if (!exportDone) return;
     try { await shareFile(exportDone.path); } catch (e) { flashToast(String(e)); }
   }
+
+  // ── Gestos del escenario: tocar, deslizar, y el dial del borde ────────
+  let gesto: { x: number; y: number; t: number; borde: boolean; velocidadInicial: number } | null = null;
+  let dialVisible = $state(false);
+  let dialValor = $state(1.0);
+
+  function escenarioDown(e: PointerEvent) {
+    if (guionAbierto || tallerAbierto || tweakIndex >= 0) return;
+    const ancho = (e.currentTarget as HTMLElement).clientWidth;
+    gesto = {
+      x: e.clientX,
+      y: e.clientY,
+      t: performance.now(),
+      borde: e.clientX > ancho - 60 && activo,
+      velocidadInicial: effectiveSpeedForPlay(),
+    };
+    if (gesto.borde) {
+      dialValor = gesto.velocidadInicial;
+      dialVisible = true;
+    }
+  }
+  function escenarioMove(e: PointerEvent) {
+    if (!gesto) return;
+    if (gesto.borde) {
+      const dv = (gesto.y - e.clientY) / 220;
+      dialValor = clampSpeed(Math.round((gesto.velocidadInicial + dv) * 20) / 20);
+    }
+  }
+  async function escenarioUp(e: PointerEvent) {
+    const g = gesto;
+    gesto = null;
+    if (!g) return;
+    const dx = e.clientX - g.x;
+    const dy = e.clientY - g.y;
+    const dt = performance.now() - g.t;
+    if (g.borde) {
+      dialVisible = false;
+      if (Math.abs(dialValor - g.velocidadInicial) >= 0.05) {
+        rhythmMult = clampSpeed(dialValor / globalSpeed);
+        scheduleSave();
+        if (activo && currentPara >= 0) await readFrom(currentPara);
+      }
+      return;
+    }
+    if (Math.abs(dx) > 72 && Math.abs(dx) > Math.abs(dy) * 1.4 && activo) {
+      const destino = dx < 0 ? currentPara + 1 : currentPara - 1;
+      if (destino >= 0 && destino < paras.length) await readFrom(destino);
+      return;
+    }
+    if (Math.abs(dx) < 12 && Math.abs(dy) < 12 && dt < 450) {
+      if (activo) await toggle();
+    }
+  }
 </script>
 
-<div class="reader" data-tauri-drag-region>
-  <header class="r-head">
-    <button class="r-icon" onclick={back} aria-label={$t("lector.volver")}>
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-    </button>
-    <div class="r-title">{title}</div>
-    <button class="r-icon" class:dot={customised} onclick={() => (settingsOpen = true)} aria-label={$t("lector.ajustes")}>
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
-    {#if chapters.length > 0}
-      <button class="r-icon" onclick={() => (chaptersOpen = true)} aria-label={$t("lector.capitulos")}>
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-      </button>
-    {/if}
-  </header>
-  <div class="r-progress"><div class="r-progress-fill" style="width: {progressPct()}%"></div></div>
+<div
+  class="escenario"
+  class:leyendo={isPlaying}
+  onpointerdown={escenarioDown}
+  onpointermove={escenarioMove}
+  onpointerup={escenarioUp}
+>
+  <!-- El hilo de progreso: lo único que existe mientras la voz habla. -->
+  <div class="hilo"><div class="hilo-lleno" style="width: {paras.length ? Math.min(100, ((Math.max(currentPara, 0) + 1) / paras.length) * 100) : 0}%"></div></div>
 
-  <main class="r-body">
-    {#each paras as text, i}
-      {@const kind = kinds[i] || "paragraph"}
-      {#if kind === "hr"}
-        <hr class="r-hr" />
-      {:else}
-        {@const o = overrides[i]}
-        {@const tweaked = !!o && (o.voice || o.speed != null || o.pauseBefore != null)}
-        <div class="r-row" class:active={i === currentPara}>
-          <button
-            class="r-para k-{kind}"
-            class:active={i === currentPara}
-            bind:this={paraEls[i]}
-            onclick={() => readFrom(i)}
-          >
-            {text}
-          </button>
-          <button class="r-tweak" class:on={tweaked} onclick={() => { tweakIndex = i; haptic("light"); }} aria-label={$t("lector.ajustar_parrafo")}>⋯</button>
-        </div>
+  {#if activo}
+    <!-- EL CARTEL -->
+    <section class="cartel" class:atenuado={isPaused}>
+      {#if dichas}
+        <p class="dichas">{dichas}</p>
       {/if}
-    {/each}
-    <div class="r-end">· · ·</div>
-  </main>
+      <p
+        class="frase"
+        class:titulo={esTitulo}
+        style="font-size: {cuerpoFrase}px; background-size: {Math.round(barrido * 100)}% 0.34em;"
+      >
+        {frase}
+      </p>
+      {#if porVenir}
+        <p class="porvenir">{porVenir}</p>
+      {/if}
+    </section>
 
-  <!-- Floating reading control -->
-  <div class="r-dock">
-    {#if isPlaying || isPaused}
-      <button class="r-play" onclick={toggle} aria-label={isPaused ? $t("player.reanudar") : $t("player.pausar")}>
-        {#if isPaused}
-          <svg width="22" height="22" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5C3 0.7 3.85 0.25 4.5 0.7L12.5 6.2c0.6 0.4 0.6 1.3 0 1.7l-8 5.5c-0.7 0.4-1.5 0-1.5-0.8V1.5Z"/></svg>
-        {:else}
-          <svg width="22" height="22" viewBox="0 0 14 14" fill="currentColor"><rect x="2.5" y="2" width="3.2" height="10" rx="1"/><rect x="8.3" y="2" width="3.2" height="10" rx="1"/></svg>
-        {/if}
-      </button>
-      <div class="r-dock-meta">
-        <div class="r-dock-title">{isPaused ? $t("lector.en_pausa") : $t("lector.leyendo")}</div>
-        <div class="r-dock-sub">{$t("lector.parrafo")} {currentPara + 1} {$t("lector.de")} {paras.length} · {effectiveSpeedForPlay().toFixed(2)}×</div>
-      </div>
-      <button class="r-dock-stop" onclick={() => stopPlayback()} aria-label={$t("lector.detener")}>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="2" width="10" height="10" rx="2"/></svg>
-      </button>
-    {:else}
-      <button class="r-readall" onclick={() => readFrom(0)}>
-        <svg width="16" height="16" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5C3 0.7 3.85 0.25 4.5 0.7L12.5 6.2c0.6 0.4 0.6 1.3 0 1.7l-8 5.5c-0.7 0.4-1.5 0-1.5-0.8V1.5Z"/></svg>
-        {$t("lector.leer_todo")}
-      </button>
+    {#if isPaused}
+      <!-- Cromo mínimo, solo en pausa. -->
+      <header class="pausa-arriba">
+        <button class="p-icono" onclick={back} aria-label={$t("lector.volver")}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </button>
+        <span class="p-titulo">{title}</span>
+        <button class="p-icono" onclick={() => (guionAbierto = true)} aria-label={$t("cartel.guion")}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+        </button>
+        <button class="p-icono" class:pendiente={customised} onclick={() => (tallerAbierto = true)} aria-label={$t("cartel.taller")}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17v3h3l5.5-5.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.1-2.1z"/></svg>
+        </button>
+      </header>
+
+      <!-- EL MANDO: tres teclas de piano. -->
+      <nav class="mando">
+        <button class="tecla-piano" onclick={() => currentPara > 0 && readFrom(currentPara - 1)} aria-label={$t("mando.atras")}>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M18 6v12L9.5 12zM8 6H5.6v12H8z"/></svg>
+        </button>
+        <button class="tecla-piano seguir" onclick={toggle}>
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11.5 7.2c0.9 0.6 0.9 1.9 0 2.4L9.2 20.4C8.2 21 7 20.3 7 19.2z"/></svg>
+          <span>{$t("mando.seguir")}</span>
+        </button>
+        <button class="tecla-piano" onclick={() => currentPara < paras.length - 1 && readFrom(currentPara + 1)} aria-label={$t("mando.adelante")}>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M6 6v12l8.5-6zM16 6h2.4v12H16z"/></svg>
+        </button>
+      </nav>
     {/if}
-  </div>
+  {:else}
+    <!-- LA PORTADA: aún no suena (o terminó). -->
+    <section class="portada">
+      <header class="pausa-arriba portada-arriba">
+        <button class="p-icono" onclick={back} aria-label={$t("lector.volver")}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </button>
+        <span class="p-titulo"></span>
+        <button class="p-icono" onclick={() => (guionAbierto = true)} aria-label={$t("cartel.guion")}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+        </button>
+        <button class="p-icono" onclick={() => (tallerAbierto = true)} aria-label={$t("cartel.taller")}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17v3h3l5.5-5.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.1-2.1z"/></svg>
+        </button>
+      </header>
+      <h1 class="portada-titulo">{title}</h1>
+      <p class="portada-meta">{paras.length} ¶</p>
+      <button class="leer-gigante" onclick={() => readFrom(0)}>
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11.5 7.2c0.9 0.6 0.9 1.9 0 2.4L9.2 20.4C8.2 21 7 20.3 7 19.2z"/></svg>
+        {$t("cartel.leer")}
+      </button>
+    </section>
+  {/if}
 
-  <!-- Render-progress strip -->
-  {#if rendering && renderProgress}
-    <div class="r-render">
-      <div class="r-render-bar"><div style="width: {renderProgress.total ? (renderProgress.index / renderProgress.total) * 100 : 0}%"></div></div>
-      <div class="r-render-txt">{$t("lector.creando")} · {renderProgress.stage} {renderProgress.index}/{renderProgress.total}</div>
+  {#if dialVisible}
+    <div class="dial">
+      <strong>{dialValor.toFixed(2).replace(".", ",")}×</strong>
+      <span>{$t("cartel.velocidad")}</span>
     </div>
   {/if}
 
-  {#if toast}<div class="r-toast">{toast}</div>{/if}
+  {#if rendering && renderProgress}
+    <div class="tira-render">
+      <div class="tira-barra"><div style="width: {renderProgress.total ? (renderProgress.index / renderProgress.total) * 100 : 0}%"></div></div>
+      <span>{$t("lector.creando")} · {renderProgress.index}/{renderProgress.total}</span>
+    </div>
+  {/if}
+  {#if toast}<div class="brindis">{toast}</div>{/if}
 
-  <!-- ── Chapters bottom sheet ── -->
-  {#if chaptersOpen}
-    <div class="r-sheet-scrim" onclick={() => (chaptersOpen = false)} role="presentation"></div>
-    <div class="r-sheet">
-      <div class="r-sheet-grip"></div>
-      <div class="r-sheet-head">{$t("lector.capitulos")}</div>
-      <div class="r-sheet-list">
-        {#each chapters as ch}
-          <button class="r-chapter lvl-{ch.level}" class:active={ch.index === currentPara} onclick={() => jumpToChapter(ch.index)}>
-            <span class="r-chapter-dot"></span>
-            {ch.text}
-          </button>
+  <!-- ── EL GUION: el texto completo, para saltar y ajustar ── -->
+  {#if guionAbierto}
+    <div class="velo" role="presentation" onclick={() => (guionAbierto = false)}></div>
+    <div class="hoja">
+      <div class="hoja-asa"></div>
+      <div class="hoja-cabeza">{$t("cartel.guion")}</div>
+      <div class="guion-lista">
+        {#each paras as p, i}
+          <div class="guion-fila" class:actual={i === currentPara} class:es-titulo={(kinds[i] ?? "").startsWith("heading")}>
+            <button class="guion-parrafo" onclick={() => { guionAbierto = false; readFrom(i); }}>{p}</button>
+            <button
+              class="guion-ajustar"
+              class:tocado={!!(overrides[i]?.voice || overrides[i]?.speed != null || overrides[i]?.pauseBefore != null)}
+              onclick={() => { tweakIndex = i; haptic("light"); }}
+              aria-label={$t("lector.ajustar_parrafo")}
+            >⋯</button>
+          </div>
         {/each}
       </div>
     </div>
   {/if}
 
-  <!-- ── Document reading-settings sheet ── -->
-  {#if settingsOpen}
-    <div class="r-sheet-scrim" onclick={() => { settingsOpen = false; voicePickerFor = null; }} role="presentation"></div>
-    <div class="r-sheet">
-      <div class="r-sheet-grip"></div>
-      <div class="r-sheet-head">{$t("lector.ajustes")}</div>
+  <!-- ── EL TALLER: voz, ritmo, exportar, el puente ── -->
+  {#if tallerAbierto}
+    <div class="velo" role="presentation" onclick={() => { tallerAbierto = false; voicePickerFor = null; }}></div>
+    <div class="hoja">
+      <div class="hoja-asa"></div>
+      <div class="hoja-cabeza">{$t("cartel.taller")}</div>
 
       <div class="ctl">
-        <div class="ctl-row"><span class="ctl-label">{$t("lector.ritmo")}</span><span class="ctl-val">{rhythmMult.toFixed(2)}×</span></div>
-        <input class="slider" type="range" min="0.5" max="2.0" step="0.05" bind:value={rhythmMult} oninput={scheduleSave} aria-label={$t("lector.ritmo")} />
-        <div class="ctl-hint">{$t("lector.ritmo_pista")}</div>
+        <div class="ctl-fila"><span class="ctl-rotulo">{$t("lector.ritmo")}</span><span class="ctl-valor">{rhythmMult.toFixed(2)}×</span></div>
+        <input class="deslizador" type="range" min="0.5" max="2.0" step="0.05" bind:value={rhythmMult} oninput={scheduleSave} aria-label={$t("lector.ritmo")} />
+        <div class="ctl-pista">{$t("lector.ritmo_pista")}</div>
       </div>
 
-      <button class="ctl-pick" onclick={() => (voicePickerFor = voicePickerFor === "doc" ? null : "doc")}>
-        <span class="ctl-label">{$t("lector.voz")}</span>
-        <span class="ctl-pick-val">{docVoiceName ?? $t("lector.voz_defecto")} <span class="caret">▾</span></span>
+      <button class="ctl-selector" onclick={() => (voicePickerFor = voicePickerFor === "doc" ? null : "doc")}>
+        <span class="ctl-rotulo">{$t("lector.voz")}</span>
+        <span class="ctl-selector-valor">{docVoiceName ?? $t("lector.voz_defecto")} <span class="caret">▾</span></span>
       </button>
       {#if voicePickerFor === "doc"}
-        <div class="voice-list">
-          <button class="voice-opt" class:on={docVoice === null} onclick={() => setDocVoice(null)}>{$t("lector.voz_defecto")}</button>
+        <div class="lista-voces">
+          <button class="voz-opcion" class:activa={docVoice === null} onclick={() => setDocVoice(null)}>{$t("lector.voz_defecto")}</button>
           {#each voices as v}
-            <button class="voice-opt" class:on={docVoice === v.id || docVoice === v.name} onclick={() => setDocVoice(v.id)}>
-              {v.name}<span class="voice-tag">{v.tags?.[0] ?? v.gender}</span>
+            <button class="voz-opcion" class:activa={docVoice === v.id || docVoice === v.name} onclick={() => setDocVoice(v.id)}>
+              {v.name}<span class="voz-etiqueta">{v.tags?.[0] ?? v.gender}</span>
             </button>
           {/each}
         </div>
       {/if}
 
-      <button class="btn-export" onclick={exportAudiobook} disabled={rendering}>
+      <button class="tecla-exportar" onclick={exportAudiobook} disabled={rendering}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17H20v5H6.5a2.5 2.5 0 0 1 0-5z"/></svg>
         {rendering ? $t("lector.creando_corto") : $t("lector.guardar_m4b")}
       </button>
       {#if puenteVinculado}
-        <button class="sheet-row primary" onclick={convertirEnOrdenador} disabled={puenteOcupado}>
+        <button class="tecla-exportar puente" onclick={convertirEnOrdenador} disabled={puenteOcupado}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
           {puenteOcupado ? `${$t("lector.convirtiendo")} ${puenteEtapa ?? ""}` : $t("lector.convertir")}
         </button>
       {/if}
       {#if exportDone}
-        <div class="export-done">
+        <div class="exporte-hecho">
           <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px"><path d="M20 6 9 17l-5-5"/></svg> {$t("lector.guardado")}</span>
-          <div class="export-actions">
-            <button onclick={() => { settingsOpen = false; goto("/library"); }}>{$t("lector.abrir_biblioteca")}</button>
+          <div class="exporte-acciones">
             <button onclick={shareExport}>{$t("lector.compartir")}</button>
           </div>
         </div>
       {/if}
-
       {#if customised}
-        <button class="btn-reset" onclick={resetAll}>{$t("lector.reiniciar_todo")}</button>
+        <button class="tecla-reiniciar" onclick={resetAll}>{$t("lector.reiniciar_todo")}</button>
       {/if}
     </div>
   {/if}
 
-  <!-- ── Per-paragraph adjust sheet ── -->
+  <!-- ── Ajustar un párrafo (desde el guion) ── -->
   {#if tweakIndex >= 0}
     {@const o = overrides[tweakIndex]}
-    <div class="r-sheet-scrim" onclick={() => { tweakIndex = -1; voicePickerFor = null; }} role="presentation"></div>
-    <div class="r-sheet">
-      <div class="r-sheet-grip"></div>
-      <div class="r-sheet-head">{$t("lector.ajustar")} {tweakIndex + 1}</div>
-      <div class="tweak-preview">{paras[tweakIndex]}</div>
+    <div class="velo" role="presentation" onclick={() => { tweakIndex = -1; voicePickerFor = null; }}></div>
+    <div class="hoja">
+      <div class="hoja-asa"></div>
+      <div class="hoja-cabeza">{$t("lector.ajustar")} {tweakIndex + 1}</div>
+      <div class="tweak-vista">{paras[tweakIndex]}</div>
 
       <div class="ctl">
-        <div class="ctl-row">
-          <span class="ctl-label">{$t("lector.velocidad")}</span>
-          <span class="ctl-val">{(o.speed ?? globalSpeed).toFixed(2)}× {#if o.speed == null}<em>{$t("lector.heredada")}</em>{/if}</span>
+        <div class="ctl-fila">
+          <span class="ctl-rotulo">{$t("lector.velocidad")}</span>
+          <span class="ctl-valor">{(o.speed ?? globalSpeed).toFixed(2)}× {#if o.speed == null}<em>{$t("lector.heredada")}</em>{/if}</span>
         </div>
-        <input class="slider" type="range" min="0.5" max="2.0" step="0.05" value={o.speed ?? globalSpeed}
+        <input class="deslizador" type="range" min="0.5" max="2.0" step="0.05" value={o.speed ?? globalSpeed}
           oninput={(e) => setParaSpeed(tweakIndex, parseFloat((e.target as HTMLInputElement).value))} aria-label={$t("lector.velocidad")} />
-        {#if o.speed != null}<button class="link-reset" onclick={() => setParaSpeed(tweakIndex, null)}>{$t("lector.heredar")}</button>{/if}
+        {#if o.speed != null}<button class="enlace-reiniciar" onclick={() => setParaSpeed(tweakIndex, null)}>{$t("lector.heredar")}</button>{/if}
       </div>
 
       <div class="ctl">
-        <div class="ctl-row">
-          <span class="ctl-label">{$t("lector.pausa_antes")}</span>
-          <span class="ctl-val">{(o.pauseBefore ?? 0).toFixed(1)}s</span>
+        <div class="ctl-fila">
+          <span class="ctl-rotulo">{$t("lector.pausa_antes")}</span>
+          <span class="ctl-valor">{(o.pauseBefore ?? 0).toFixed(1)}s</span>
         </div>
-        <input class="slider" type="range" min="0" max="5" step="0.1" value={o.pauseBefore ?? 0}
+        <input class="deslizador" type="range" min="0" max="5" step="0.1" value={o.pauseBefore ?? 0}
           disabled={tweakIndex === 0}
           oninput={(e) => setParaPause(tweakIndex, parseFloat((e.target as HTMLInputElement).value) || null)} aria-label={$t("lector.pausa_antes")} />
-        {#if tweakIndex === 0}<div class="ctl-hint">{$t("lector.primera_pausa")}</div>{/if}
+        {#if tweakIndex === 0}<div class="ctl-pista">{$t("lector.primera_pausa")}</div>{/if}
       </div>
 
-      <button class="ctl-pick" onclick={() => (voicePickerFor = voicePickerFor === "para" ? null : "para")}>
-        <span class="ctl-label">{$t("lector.voz")}</span>
-        <span class="ctl-pick-val">
+      <button class="ctl-selector" onclick={() => (voicePickerFor = voicePickerFor === "para" ? null : "para")}>
+        <span class="ctl-rotulo">{$t("lector.voz")}</span>
+        <span class="ctl-selector-valor">
           {o.voice ? (voices.find((v) => v.id === o.voice || v.name === o.voice)?.name ?? o.voice) : $t("lector.heredada_palabra")} <span class="caret">▾</span>
         </span>
       </button>
       {#if voicePickerFor === "para"}
-        <div class="voice-list">
-          <button class="voice-opt" class:on={o.voice === null} onclick={() => setParaVoice(tweakIndex, null)}>{$t("lector.heredar_doc")}</button>
+        <div class="lista-voces">
+          <button class="voz-opcion" class:activa={o.voice === null} onclick={() => setParaVoice(tweakIndex, null)}>{$t("lector.heredar_doc")}</button>
           {#each voices as v}
-            <button class="voice-opt" class:on={o.voice === v.id || o.voice === v.name} onclick={() => setParaVoice(tweakIndex, v.id)}>
-              {v.name}<span class="voice-tag">{v.tags?.[0] ?? v.gender}</span>
+            <button class="voz-opcion" class:activa={o.voice === v.id || o.voice === v.name} onclick={() => setParaVoice(tweakIndex, v.id)}>
+              {v.name}<span class="voz-etiqueta">{v.tags?.[0] ?? v.gender}</span>
             </button>
           {/each}
         </div>
       {/if}
 
-      <div class="tweak-foot">
-        <button class="btn-play-para" onclick={() => { tweakIndex = -1; readFrom(o ? overrides.indexOf(o) : 0); }}>▶ {$t("lector.leer_desde_aqui")}</button>
-        <button class="btn-done" onclick={() => { tweakIndex = -1; voicePickerFor = null; }}>{$t("lector.hecho")}</button>
+      <div class="tweak-pie">
+        <button class="tecla-exportar" onclick={() => { const i = tweakIndex; tweakIndex = -1; readFrom(i); }}>▶ {$t("lector.leer_desde_aqui")}</button>
+        <button class="tecla-hecho" onclick={() => { tweakIndex = -1; voicePickerFor = null; }}>{$t("lector.hecho")}</button>
       </div>
     </div>
   {/if}
 </div>
 
 <style>
-  .reader {
-    min-height: 100vh;
-    background: var(--bg, #fff8d7);
-    color: var(--ink-900);
+  .escenario {
+    position: fixed;
+    inset: 0;
+    background: var(--yap-papel);
+    overflow: hidden;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .hilo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: color-mix(in srgb, var(--yap-borde) 60%, transparent);
+    z-index: 4;
+  }
+  .hilo-lleno {
+    height: 100%;
+    background: var(--yap-voz, #e0502a);
+    transition: width 0.4s ease;
+  }
+
+  /* ── El cartel ── */
+  .cartel {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    padding: calc(env(safe-area-inset-top) + 34px) 26px calc(env(safe-area-inset-bottom) + 40px);
+    gap: 20px;
+    transition: opacity 0.25s ease;
   }
-  /* Header */
-  .r-head {
-    position: sticky; top: 0; z-index: 5;
-    display: flex; align-items: center; gap: 10px;
-    padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px;
-    background: color-mix(in srgb, var(--bg, #fff8d7) 88%, transparent);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  .cartel.atenuado {
+    opacity: 0.45;
   }
-  .r-icon {
-    flex: 0 0 auto; width: 38px; height: 38px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 700; color: var(--ink-900);
-    background: var(--bg-2, #fffdf2); border: 2px solid var(--ink-900);
-    box-shadow: 2px 2px 0 var(--ink-900); position: relative;
+  .dichas,
+  .porvenir {
+    font-family: var(--yap-lectura, Georgia, serif);
+    color: var(--yap-tinta-suave, #82755a);
+    margin: 0;
+    line-height: 1.35;
+    font-size: 16px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-  .r-icon.dot::after {
-    content: ""; position: absolute; top: -3px; right: -3px;
-    width: 10px; height: 10px; border-radius: 50%;
-    background: var(--pink-500); border: 2px solid var(--bg-2, #fffdf2);
+  .dichas {
+    -webkit-line-clamp: 4;
+    color: color-mix(in srgb, var(--yap-ultramar, #2f4bc4) 62%, var(--yap-papel));
+    mask-image: linear-gradient(to top, black 55%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 55%, transparent 100%);
   }
-  .r-icon:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink-900); }
-  .r-title {
-    flex: 1; min-width: 0; text-align: center;
-    font-family: var(--font-display); font-size: 19px; color: var(--pink-600);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    text-transform: capitalize;
+  .porvenir {
+    -webkit-line-clamp: 3;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
   }
-  .r-progress { height: 3px; background: var(--ink-100); }
-  .r-progress-fill { height: 100%; background: var(--pink-500); transition: width 0.4s ease; }
+  .frase {
+    margin: 0;
+    font-family: var(--yap-lectura, Georgia, serif);
+    font-weight: 720;
+    font-variation-settings: "opsz" 40;
+    line-height: 1.14;
+    letter-spacing: -0.014em;
+    overflow-wrap: break-word;
+    color: var(--yap-tinta);
+    background-image: linear-gradient(color-mix(in srgb, var(--yap-dorado, #e8b41a) 46%, transparent), color-mix(in srgb, var(--yap-dorado, #e8b41a) 46%, transparent));
+    background-repeat: no-repeat;
+    background-position: 0 92%;
+    transition: background-size 0.12s linear;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .frase.titulo {
+    color: var(--yap-voz, #e0502a);
+    letter-spacing: -0.02em;
+  }
 
-  /* Body — comfortable reading column */
-  .r-body {
+  /* ── Cromo de pausa ── */
+  .pausa-arriba {
+    position: absolute;
+    top: calc(env(safe-area-inset-top) + 12px);
+    left: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 6;
+  }
+  .p-titulo {
     flex: 1;
-    padding: 18px 22px calc(120px + env(safe-area-inset-bottom, 0px));
-    max-width: 70ch; margin: 0 auto; width: 100%; box-sizing: border-box;
+    min-width: 0;
+    text-align: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--yap-voz, #e0502a);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .r-row { display: flex; align-items: flex-start; gap: 4px; margin: 0 -12px 4px; }
-  .r-row.active { background: var(--pink-300); border-radius: 12px; }
-  .r-para {
-    display: block; flex: 1; min-width: 0; text-align: left;
-    font-family: var(--font-sans); font-size: 18px; line-height: 1.72;
-    color: var(--ink-900); font-weight: 500;
-    padding: 6px 12px; border-radius: 12px;
-    border-left: 3px solid transparent; background: transparent;
-    transition: background 0.2s ease, border-color 0.2s ease;
-    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  .p-icono {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    border: 1.5px solid var(--yap-tinta);
+    background: var(--yap-superficie);
+    color: var(--yap-tinta);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--yap-relieve);
+    flex-shrink: 0;
+    cursor: pointer;
   }
-  .r-para:active { background: var(--cream-200); }
-  .r-para.active { border-left-color: var(--pink-600); }
-  .r-tweak {
-    flex: 0 0 auto; width: 30px; height: 30px; margin-top: 6px; border-radius: 9px;
-    font-size: 16px; font-weight: 800; color: var(--ink-500);
-    background: transparent; border: none; opacity: 0.5;
-    -webkit-tap-highlight-color: transparent;
+  .p-icono:active {
+    transform: translateY(1px);
+    box-shadow: var(--yap-hundido);
   }
-  .r-tweak.on { opacity: 1; color: var(--pink-600); background: var(--pink-100, #ffe6f1); }
-  .r-tweak:active { transform: scale(0.92); }
-  .k-heading1 { font-family: var(--font-display); font-size: 30px; line-height: 1.2; color: var(--pink-600); margin-top: 22px; font-weight: 400; }
-  .k-heading2 { font-family: var(--font-display); font-size: 24px; line-height: 1.25; color: var(--ink-900); margin-top: 18px; font-weight: 400; }
-  .k-heading3 { font-weight: 800; font-size: 19px; margin-top: 12px; }
-  .k-quote { font-style: italic; color: var(--ink-700); border-left: 3px solid var(--ink-300); }
-  .k-code { font-family: var(--font-mono); font-size: 15px; background: var(--ink-100); }
-  .r-hr { border: none; border-top: 2px dashed var(--ink-300); margin: 22px 12px; }
-  .r-end { text-align: center; color: var(--ink-300); letter-spacing: 6px; padding: 20px 0; }
+  .p-icono.pendiente::after {
+    content: "";
+    position: absolute;
+    margin-left: 30px;
+    margin-top: -30px;
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: var(--yap-dorado, #e8b41a);
+  }
 
-  /* Floating dock */
-  .r-dock {
-    position: fixed; left: 14px; right: 14px;
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    z-index: 10; display: flex; align-items: center; gap: 12px;
+  /* ── El mando de piano ── */
+  .mando {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: calc(env(safe-area-inset-bottom) + 16px);
+    display: grid;
+    grid-template-columns: 1fr 2.1fr 1fr;
+    gap: 10px;
+    z-index: 6;
+    animation: mando-sube 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
   }
-  .r-readall {
-    margin: 0 auto; display: flex; align-items: center; gap: 8px;
-    padding: 14px 26px; border-radius: 999px;
-    background: var(--pink-500); color: var(--ink-900);
-    border: 2.5px solid var(--ink-900); box-shadow: 4px 4px 0 var(--ink-900);
-    font-weight: 800; font-size: 16px;
+  @keyframes mando-sube {
+    from { transform: translateY(120%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
-  .r-readall:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink-900); }
-  .r-play, .r-dock-stop {
-    flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
-    border: 2.5px solid var(--ink-900);
+  .tecla-piano {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 86px;
+    border-radius: 20px;
+    border: 2px solid var(--yap-tinta);
+    background: var(--yap-superficie);
+    color: var(--yap-tinta);
+    font-weight: 800;
+    font-size: 18px;
+    box-shadow: 0 4px 0 var(--yap-tinta), var(--yap-relieve-alto, 0 10px 22px rgba(64, 46, 12, 0.16));
+    cursor: pointer;
   }
-  .r-play { width: 52px; height: 52px; border-radius: 16px; background: var(--pink-500); color: var(--ink-900); box-shadow: 4px 4px 0 var(--ink-900); }
-  .r-dock-meta {
-    flex: 1; min-width: 0; background: var(--ink-900); color: var(--cream-100);
-    border-radius: 14px; padding: 8px 14px; box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  .tecla-piano:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 var(--yap-tinta), var(--yap-hundido);
   }
-  .r-dock-title { font-weight: 800; font-size: 14px; }
-  .r-dock-sub { font-size: 11px; opacity: 0.75; font-variant-numeric: tabular-nums; }
-  .r-dock-stop { width: 46px; height: 46px; border-radius: 14px; background: var(--bg-2, #fffdf2); color: var(--ink-900); box-shadow: 3px 3px 0 var(--ink-900); }
+  .tecla-piano.seguir {
+    background: var(--yap-tecla-fondo, linear-gradient(180deg, #f4682e, #e0502a));
+    color: #fff6ef;
+    border-color: color-mix(in srgb, var(--yap-tinta) 70%, #7a2810);
+  }
 
-  /* Render progress + toast */
-  .r-render {
-    position: fixed; left: 14px; right: 14px; bottom: calc(82px + env(safe-area-inset-bottom, 0px));
-    z-index: 11; background: var(--ink-900); color: var(--cream-100);
-    border-radius: 14px; padding: 10px 14px; box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  /* ── La portada ── */
+  .portada {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 26px;
+    text-align: center;
   }
-  .r-render-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.2); overflow: hidden; margin-bottom: 6px; }
-  .r-render-bar > div { height: 100%; background: var(--pink-400, #ff8fc0); transition: width 0.3s ease; }
-  .r-render-txt { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .r-toast {
-    position: fixed; left: 50%; transform: translateX(-50%);
-    bottom: calc(150px + env(safe-area-inset-bottom, 0px)); z-index: 30;
-    background: var(--ink-900); color: var(--cream-100); font-weight: 700; font-size: 13px;
-    padding: 10px 18px; border-radius: 999px; box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    animation: toast-in 0.2s ease;
+  .portada-arriba {
+    top: calc(env(safe-area-inset-top) + 12px);
   }
-  @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+  .portada-titulo {
+    margin: 0;
+    font-family: var(--yap-lectura, Georgia, serif);
+    font-weight: 780;
+    font-size: clamp(30px, 9vw, 46px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--yap-voz, #e0502a);
+    transform: rotate(-1.2deg);
+    max-width: 22ch;
+  }
+  .portada-meta {
+    margin: 0;
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--yap-tinta-suave);
+  }
+  .leer-gigante {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 34px;
+    border-radius: 24px;
+    border: 2px solid color-mix(in srgb, var(--yap-tinta) 70%, #7a2810);
+    background: var(--yap-tecla-fondo, linear-gradient(180deg, #f4682e, #e0502a));
+    color: #fff6ef;
+    font-weight: 800;
+    font-size: 22px;
+    box-shadow: 0 5px 0 var(--yap-tinta), var(--yap-relieve-alto, 0 14px 30px rgba(64, 46, 12, 0.2));
+    cursor: pointer;
+  }
+  .leer-gigante:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 var(--yap-tinta), var(--yap-hundido);
+  }
 
-  /* Bottom sheets (shared) */
-  .r-sheet-scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.28); z-index: 20; }
-  .r-sheet {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 21;
-    background: var(--bg-2, #fffdf2); border-top: 3px solid var(--ink-900);
-    border-radius: 24px 24px 0 0; padding: 10px 18px calc(24px + env(safe-area-inset-bottom, 0px));
-    max-height: 80vh; overflow-y: auto; box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
-    animation: sheet-up 0.22s ease;
+  /* ── El dial de velocidad ── */
+  .dial {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: color-mix(in srgb, var(--yap-papel) 72%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    pointer-events: none;
   }
-  @keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .r-sheet-grip { width: 44px; height: 5px; border-radius: 3px; background: var(--ink-300); margin: 4px auto 12px; }
-  .r-sheet-head { font-family: var(--font-display); font-size: 22px; color: var(--pink-600); margin-bottom: 8px; }
-  .r-chapter {
-    display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
-    padding: 12px 8px; border-bottom: 2px dashed var(--ink-300);
-    font-size: 16px; font-weight: 700; color: var(--ink-900);
+  .dial strong {
+    font-size: clamp(72px, 26vw, 130px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--yap-voz, #e0502a);
+    transform: rotate(-2deg);
   }
-  .r-chapter.lvl-2 { padding-left: 22px; font-weight: 600; font-size: 15px; color: var(--ink-700); }
-  .r-chapter.lvl-3 { padding-left: 38px; font-weight: 500; font-size: 14px; color: var(--ink-700); }
-  .r-chapter-dot { flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; background: var(--pink-500); }
-  .r-chapter.active { color: var(--pink-600); }
-  .r-chapter:active { background: var(--cream-200); }
+  .dial span {
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave);
+  }
 
-  /* Controls inside sheets */
-  .ctl { margin: 14px 0; }
-  .ctl-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-  .ctl-label { font-weight: 800; font-size: 15px; color: var(--ink-900); }
-  .ctl-val { font-size: 14px; font-weight: 700; color: var(--pink-600); font-variant-numeric: tabular-nums; }
-  .ctl-val em { color: var(--ink-500); font-style: normal; font-weight: 600; font-size: 12px; }
-  .ctl-hint { font-size: 12px; color: var(--ink-500); margin-top: 6px; line-height: 1.4; }
-  .slider { width: 100%; accent-color: var(--pink-500); height: 28px; }
-  .slider:disabled { opacity: 0.4; }
-  .link-reset { background: none; border: none; color: var(--pink-600); font-weight: 700; font-size: 13px; padding: 6px 0 0; }
-  .ctl-pick {
-    display: flex; justify-content: space-between; align-items: center; width: 100%;
-    padding: 14px 14px; margin: 8px 0; border-radius: 14px;
-    background: var(--cream-100, #fffdf2); border: 2px solid var(--ink-300);
-    font-size: 15px; color: var(--ink-900);
+  /* ── Hojas (guion, taller, ajuste) ── */
+  .velo {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: rgba(43, 36, 24, 0.35);
   }
-  .ctl-pick-val { font-weight: 700; color: var(--ink-700); }
-  .caret { color: var(--ink-500); }
-  .voice-list { max-height: 240px; overflow-y: auto; border: 2px solid var(--ink-300); border-radius: 14px; margin: 0 0 8px; }
-  .voice-opt {
-    display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left;
-    padding: 12px 14px; border-bottom: 1px solid var(--ink-200, #eee);
-    font-size: 15px; font-weight: 600; color: var(--ink-900); background: transparent;
+  .hoja {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
+    max-height: 82dvh;
+    overflow-y: auto;
+    background: var(--yap-papel);
+    border-radius: 22px 22px 0 0;
+    box-shadow: 0 -12px 40px rgba(64, 46, 12, 0.28);
+    padding: 10px 16px calc(env(safe-area-inset-bottom) + 18px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: hoja-sube 0.26s ease both;
   }
-  .voice-opt:last-child { border-bottom: none; }
-  .voice-opt.on { background: var(--pink-300); color: var(--ink-900); }
-  .voice-tag { font-size: 11px; font-weight: 700; color: var(--ink-500); text-transform: lowercase; }
-  .btn-export {
-    width: 100%; margin-top: 14px; padding: 15px; border-radius: 16px;
-    background: var(--pink-500); color: var(--ink-900);
-    border: 2.5px solid var(--ink-900); box-shadow: 3px 3px 0 var(--ink-900);
-    font-weight: 800; font-size: 16px;
+  @keyframes hoja-sube {
+    from { transform: translateY(30%); opacity: 0.4; }
+    to { transform: translateY(0); opacity: 1; }
   }
-  .btn-export:disabled { opacity: 0.6; }
-  .btn-export:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink-900); }
-  .export-done { margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: var(--pink-300); border: 2px solid var(--ink-900); }
-  .export-done > span { font-weight: 800; }
-  .export-actions { display: flex; gap: 10px; margin-top: 10px; }
-  .export-actions button {
-    flex: 1; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 14px;
-    background: var(--bg-2, #fffdf2); border: 2px solid var(--ink-900); color: var(--ink-900);
+  .hoja-asa {
+    width: 44px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--yap-borde);
+    margin: 2px auto 0;
   }
-  .btn-reset { width: 100%; margin-top: 12px; padding: 12px; border-radius: 14px; background: transparent; border: 2px dashed var(--ink-300); color: var(--ink-500); font-weight: 700; }
-  .tweak-preview {
-    font-size: 14px; color: var(--ink-700); line-height: 1.5; max-height: 84px; overflow: hidden;
-    padding: 10px 12px; background: var(--cream-100, #fffdf2); border-radius: 12px; border: 2px solid var(--ink-200, #eee);
-    margin-bottom: 6px;
+  .hoja-cabeza {
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave);
+    text-align: center;
   }
-  .tweak-foot { display: flex; gap: 10px; margin-top: 14px; }
-  .btn-play-para { flex: 1; padding: 13px; border-radius: 14px; background: var(--ink-900); color: var(--cream-100); border: none; font-weight: 800; font-size: 15px; }
-  .btn-done { flex: 0 0 auto; padding: 13px 22px; border-radius: 14px; background: var(--pink-500); color: var(--ink-900); border: 2.5px solid var(--ink-900); font-weight: 800; }
+
+  .guion-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .guion-fila {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    border-radius: 12px;
+  }
+  .guion-fila.actual {
+    background: color-mix(in srgb, var(--yap-dorado, #e8b41a) 22%, transparent);
+  }
+  .guion-parrafo {
+    flex: 1;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    color: var(--yap-tinta);
+    font-family: var(--yap-lectura, Georgia, serif);
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 8px 6px 8px 10px;
+    cursor: pointer;
+  }
+  .guion-fila.es-titulo .guion-parrafo {
+    font-weight: 800;
+    color: var(--yap-voz, #e0502a);
+    font-size: 18px;
+  }
+  .guion-ajustar {
+    border: 0;
+    background: transparent;
+    color: var(--yap-tinta-suave);
+    font-size: 18px;
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+  .guion-ajustar.tocado {
+    color: var(--yap-dorado, #e8b41a);
+  }
+
+  .ctl {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--yap-superficie);
+    border: 1px solid var(--yap-borde);
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+  .ctl-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .ctl-rotulo {
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave);
+  }
+  .ctl-valor {
+    font-weight: 800;
+  }
+  .ctl-pista {
+    font-size: 12px;
+    color: var(--yap-tinta-suave);
+  }
+  .deslizador {
+    width: 100%;
+    accent-color: var(--yap-voz, #e0502a);
+  }
+  .ctl-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--yap-superficie);
+    border: 1px solid var(--yap-borde);
+    border-radius: 14px;
+    padding: 14px;
+    color: var(--yap-tinta);
+    cursor: pointer;
+  }
+  .ctl-selector-valor {
+    font-weight: 800;
+  }
+  .lista-voces {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .voz-opcion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--yap-borde);
+    background: var(--yap-superficie);
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: var(--yap-tinta);
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .voz-opcion.activa {
+    border-color: var(--yap-voz, #e0502a);
+    background: color-mix(in srgb, var(--yap-voz, #e0502a) 10%, var(--yap-superficie));
+  }
+  .voz-etiqueta {
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave);
+  }
+  .tecla-exportar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 14px;
+    border: 0;
+    background: var(--yap-tecla-fondo, linear-gradient(180deg, #f4682e, #e0502a));
+    color: #fff6ef;
+    font-weight: 800;
+    font-size: 15px;
+    box-shadow: var(--yap-relieve);
+    cursor: pointer;
+  }
+  .tecla-exportar.puente {
+    background: var(--yap-ultramar, #2f4bc4);
+  }
+  .tecla-exportar:disabled {
+    opacity: 0.6;
+  }
+  .tecla-reiniciar,
+  .tecla-hecho,
+  .enlace-reiniciar {
+    border: 0;
+    background: transparent;
+    color: var(--yap-tinta-suave);
+    font-weight: 700;
+    padding: 8px;
+    cursor: pointer;
+  }
+  .exporte-hecho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: color-mix(in srgb, var(--yap-dorado, #e8b41a) 16%, var(--yap-superficie));
+    border: 1px solid var(--yap-borde);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 700;
+  }
+  .exporte-acciones button {
+    border: 0;
+    background: transparent;
+    color: var(--yap-ultramar, #2f4bc4);
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .tweak-vista {
+    font-family: var(--yap-lectura, Georgia, serif);
+    font-size: 14px;
+    color: var(--yap-tinta-suave);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .tweak-pie {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tira-render {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: calc(env(safe-area-inset-bottom) + 110px);
+    z-index: 7;
+    background: var(--yap-superficie);
+    border: 1px solid var(--yap-borde);
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--yap-tinta-suave);
+    box-shadow: var(--yap-relieve);
+  }
+  .tira-barra {
+    height: 8px;
+    border-radius: 5px;
+    background: var(--yap-superficie-2);
+    overflow: hidden;
+  }
+  .tira-barra div {
+    height: 100%;
+    background: var(--yap-dorado, #e8b41a);
+  }
+  .brindis {
+    position: absolute;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom) + 120px);
+    transform: translateX(-50%);
+    z-index: 9;
+    background: var(--yap-tinta);
+    color: var(--yap-papel);
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 14px;
+    max-width: 84vw;
+    text-align: center;
+  }
 </style>

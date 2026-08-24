@@ -534,6 +534,7 @@ pub fn run() {
             commands::read_file_cmd,
             commands::download_model_cmd,
             commands::is_model_ready,
+            commands::playback_snapshot_cmd,
             commands::open_main_window,
             commands::open_player_window,
             commands::open_transcribe_window,
