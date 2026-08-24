@@ -35,10 +35,12 @@ pub fn load_rich_from_file(path: &Path) -> Result<Vec<RichParagraph>> {
     }
     // For PDFs: pdf_oxide outputs proper markdown with headings, so route through
     // the markdown rhythm parser. Falls back to plain text if to_markdown fails.
+    // Después, refinar_parrafos_pdf repara lo que la maquetación rompe: frases
+    // partidas en bloques, guiones de final de línea y mobiliario de página.
     if ext == "pdf" {
         if let Ok(md) = pdf_oxide_to_markdown(path) {
             if md.trim().chars().count() > 40 {
-                return Ok(parse_markdown_rhythm(&md));
+                return Ok(refinar_parrafos_pdf(parse_markdown_rhythm(&md)));
             }
         }
     }
@@ -682,4 +684,259 @@ fn strip_rtf(rtf: &str) -> String {
         }
     }
     out
+}
+
+// ── Refinado de PDFs ─────────────────────────────────────────────────────
+//
+// Los extractores de PDF devuelven la PÁGINA, no el TEXTO: frases partidas
+// en bloques allí donde la maqueta cambió de caja, palabras con guion de
+// final de línea, y el mobiliario de página (cabeceras corrientes, folios,
+// pies repetidos) mezclado con la prosa. Escuchado, eso suena a tartamudeo.
+// Esta pasada lo repara con tres etapas, en este orden:
+//   1. fuera el mobiliario (bloques cortos repetidos y números de página),
+//   2. fusión de continuaciones (un bloque que empieza en minúscula
+//      continúa al anterior; un «heading» que empieza en minúscula es un
+//      falso positivo del extractor y se degrada a prosa),
+//   3. desguionizado («len- guaje» → «lenguaje»).
+
+pub fn refinar_parrafos_pdf(parrafos: Vec<RichParagraph>) -> Vec<RichParagraph> {
+    let sin_mobiliario = quitar_mobiliario(parrafos);
+    let fusionados = fusionar_continuaciones(sin_mobiliario);
+    fusionados
+        .into_iter()
+        .map(|mut p| {
+            p.text = desguionizar(&p.text);
+            p
+        })
+        .collect()
+}
+
+/// Un bloque corto que se repite idéntico tres o más veces es mobiliario de
+/// página (cabecera corriente, pie, URL del documento): se quitan TODAS sus
+/// apariciones. Los folios («12», «01 / 19», «xii») caen por forma.
+fn quitar_mobiliario(parrafos: Vec<RichParagraph>) -> Vec<RichParagraph> {
+    use std::collections::HashMap;
+    // La clave ignora los espacios: la MISMA cabecera corriente sale con
+    // huecos distintos según la página («ESC EN A 3 .1» / «ESC ENA 3.1»).
+    let clave = |t: &str| -> String { t.chars().filter(|c| !c.is_whitespace()).collect() };
+    let mut veces: HashMap<String, usize> = HashMap::new();
+    for p in &parrafos {
+        if p.text.chars().count() < 90 && !p.text.is_empty() {
+            *veces.entry(clave(&p.text)).or_default() += 1;
+        }
+    }
+    parrafos
+        .into_iter()
+        .filter(|p| {
+            if p.text.is_empty() {
+                return true; // separadores hr: solo llevan pausa
+            }
+            if p.text.chars().count() < 90 && veces.get(&clave(&p.text)).copied().unwrap_or(0) >= 3 {
+                return false;
+            }
+            !es_folio(&p.text) && !es_letras_esparcidas(&p.text)
+        })
+        .collect()
+}
+
+/// Rótulo decorativo con letra-espaciado que el extractor rompió en fichas
+/// («F EC HA DE AUTÓGR AFO», «SUB GÉ NE RO»): corto, sin minúsculas y con
+/// la mitad de sus fichas de una o dos letras. Leído en voz alta es sopa de
+/// letras; mejor callarlo.
+fn es_letras_esparcidas(t: &str) -> bool {
+    if t.chars().count() > 60 || t.chars().any(|c| c.is_lowercase()) {
+        return false;
+    }
+    let fichas: Vec<&str> = t
+        .split_whitespace()
+        .filter(|f| f.chars().any(|c| c.is_alphabetic()))
+        .collect();
+    if fichas.len() < 2 {
+        return false;
+    }
+    // Los romanos cortos son legítimos («CAPÍTULO IV»): no cuentan como ficha rota.
+    let es_romano = |f: &str| f.chars().all(|c| "IVXLCDM".contains(c));
+    let cortas = fichas
+        .iter()
+        .filter(|f| f.chars().count() <= 2 && !es_romano(f))
+        .count();
+    cortas * 2 >= fichas.len()
+}
+
+/// ¿Tiene pinta de número de página? «12», «01 / 19», «- 7 -», «xiv».
+fn es_folio(t: &str) -> bool {
+    let limpio: String = t
+        .chars()
+        .filter(|c| !c.is_whitespace() && *c != '/' && *c != '-' && *c != '·' && *c != '.')
+        .collect();
+    if limpio.is_empty() || limpio.chars().count() > 8 {
+        return false;
+    }
+    limpio.chars().all(|c| c.is_ascii_digit())
+        || limpio.chars().all(|c| "ivxlcdmIVXLCDM".contains(c))
+}
+
+fn fusionar_continuaciones(parrafos: Vec<RichParagraph>) -> Vec<RichParagraph> {
+    let mut salida: Vec<RichParagraph> = Vec::new();
+    for mut p in parrafos {
+        let continua = salida
+            .last()
+            .map(|a| es_continuacion(a, &p))
+            .unwrap_or(false);
+        if continua {
+            let a = salida.last_mut().unwrap();
+            if a.text.ends_with('-') {
+                // Palabra partida justo en el borde del bloque.
+                a.text.pop();
+                a.text.push_str(p.text.trim_start());
+            } else {
+                a.text.push(' ');
+                a.text.push_str(p.text.trim_start());
+            }
+        } else {
+            // Un «heading» que empieza en minúscula es prosa mal clasificada
+            // (aunque no continúe nada: no merece pausa ni voz de título).
+            if p.kind.starts_with("heading") && empieza_en_minuscula(&p.text) {
+                p.kind = "paragraph".into();
+                p.pause_before = 0.0;
+                p.speed_mult = 1.0;
+            }
+            salida.push(p);
+        }
+    }
+    salida
+}
+
+/// ¿El bloque b continúa la frase del bloque a?
+fn es_continuacion(a: &RichParagraph, b: &RichParagraph) -> bool {
+    if a.text.is_empty() || b.text.is_empty() {
+        return false;
+    }
+    // Solo la prosa continúa prosa; un título de verdad corta.
+    let a_prosa = matches!(a.kind.as_str(), "paragraph" | "quote" | "list");
+    if !a_prosa {
+        return false;
+    }
+    let b_prosa = matches!(b.kind.as_str(), "paragraph" | "quote" | "list")
+        || (b.kind.starts_with("heading") && empieza_en_minuscula(&b.text));
+    if !b_prosa {
+        return false;
+    }
+    // b empieza en minúscula: en prosa ninguna frase nueva lo hace.
+    if empieza_en_minuscula(&b.text) {
+        return true;
+    }
+    // a quedó a media frase (sin puntuación de cierre) y encima acaba en
+    // guion: la palabra siguió en el bloque de abajo.
+    let fin = a.text.chars().last().unwrap_or('.');
+    if fin == '-' {
+        return true;
+    }
+    false
+}
+
+fn empieza_en_minuscula(t: &str) -> bool {
+    t.chars()
+        .find(|c| c.is_alphabetic())
+        .map(|c| c.is_lowercase())
+        .unwrap_or(false)
+}
+
+/// «len- guaje» → «lenguaje»: minúscula + guion + espacio + minúscula es la
+/// firma del corte de línea tipográfico, no de un compuesto real.
+fn desguionizar(t: &str) -> String {
+    static RE: once_cell::sync::Lazy<regex::Regex> = once_cell::sync::Lazy::new(|| {
+        regex::Regex::new(r"(\p{Ll})- (\p{Ll})").unwrap()
+    });
+    RE.replace_all(t, "$1$2").into_owned()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn parrafo(texto: &str, kind: &str) -> RichParagraph {
+        RichParagraph {
+            text: texto.into(),
+            pause_before: 0.0,
+            speed_mult: 1.0,
+            kind: kind.into(),
+        }
+    }
+
+    #[test]
+    fn fusiona_frase_partida_en_bloques() {
+        let v = vec![
+            parrafo("Llega el centro de la pieza, porque los actos están separados", "paragraph"),
+            parrafo("precisamente por esa elipsis y abre el tercer acto.", "heading2"),
+            parrafo("Otra frase que empieza como debe.", "paragraph"),
+        ];
+        let r = refinar_parrafos_pdf(v);
+        assert_eq!(r.len(), 2);
+        assert!(r[0].text.ends_with("por esa elipsis y abre el tercer acto."));
+        assert_eq!(r[0].kind, "paragraph");
+    }
+
+    #[test]
+    fn desguioniza_cortes_de_linea() {
+        let v = vec![parrafo("El ser del len- guaje y la catás- trofe.", "paragraph")];
+        let r = refinar_parrafos_pdf(v);
+        assert_eq!(r[0].text, "El ser del lenguaje y la catástrofe.");
+    }
+
+    #[test]
+    fn quita_mobiliario_repetido_y_folios() {
+        let mut v = vec![parrafo("La prosa de verdad sigue aquí.", "paragraph")];
+        for _ in 0..4 {
+            v.push(parrafo("LA DAMA BOBA · LOPE DE VEGA · 1613", "paragraph"));
+        }
+        v.push(parrafo("03 / 19", "paragraph"));
+        v.push(parrafo("xii", "paragraph"));
+        let r = refinar_parrafos_pdf(v);
+        assert_eq!(r.len(), 1);
+        assert!(r[0].text.starts_with("La prosa"));
+    }
+
+    #[test]
+    fn no_fusiona_titulos_de_verdad() {
+        let v = vec![
+            parrafo("La frase anterior termina bien.", "paragraph"),
+            parrafo("El capítulo siguiente", "heading1"),
+        ];
+        let r = refinar_parrafos_pdf(v);
+        assert_eq!(r.len(), 2);
+        assert_eq!(r[1].kind, "heading1");
+    }
+
+    #[test]
+    fn heading_falso_sin_continuar_se_degrada() {
+        let v = vec![parrafo("en cada década, porque cada una articula", "heading2")];
+        let r = refinar_parrafos_pdf(v);
+        assert_eq!(r[0].kind, "paragraph");
+        assert_eq!(r[0].pause_before, 0.0);
+    }
+
+    #[test]
+    fn guion_al_borde_del_bloque_une_la_palabra() {
+        let v = vec![
+            parrafo("El discurso de la natu-", "paragraph"),
+            parrafo("raleza sigue en el bloque de abajo.", "paragraph"),
+        ];
+        let r = refinar_parrafos_pdf(v);
+        assert_eq!(r.len(), 1);
+        assert!(r[0].text.contains("naturaleza sigue"));
+    }
+
+    /// Diagnóstico manual: vuelca lo que pdf_oxide emite para un PDF dado.
+    /// `YAPPY_PDF_PRUEBA=/ruta.pdf cargo test -p yappy-app vuelca_pdf -- --ignored --nocapture`
+    #[test]
+    #[ignore]
+    fn vuelca_pdf() {
+        let ruta = std::env::var("YAPPY_PDF_PRUEBA").expect("YAPPY_PDF_PRUEBA sin definir");
+        let md = pdf_oxide_to_markdown(std::path::Path::new(&ruta)).expect("pdf_oxide");
+        println!("════ PÁRRAFOS REFINADOS ════");
+        for (i, p) in refinar_parrafos_pdf(parse_markdown_rhythm(&md)).iter().enumerate() {
+            println!("[{i}] kind={} pausa={} → {:?}", p.kind, p.pause_before, p.text);
+        }
+    }
 }
