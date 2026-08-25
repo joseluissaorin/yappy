@@ -6,6 +6,8 @@
   import { t } from "$lib/i18n";
   import { haptic } from "$lib/haptic";
   import Criatura from "$lib/Criatura.svelte";
+  import { presionable } from "$lib/presionable";
+  import { TINTAS_VOZ, fijarTintaVoz } from "$lib/voces";
   import {
     getSettings,
     setAppTheme,
@@ -69,17 +71,12 @@
     await setAppTheme(tema).catch(() => {});
   }
 
-  // Cada voz es un pájaro con su tinta: el cromo se elige y se presenta.
-  const TINTAS_VOZ = [
-    "#e0502a", "#2f4bc4", "#e8b41a", "#2e7d5b", "#8a4fbe",
-    "#c43e6a", "#1f8a9c", "#b8651f", "#5b6d2e", "#7a4a32",
-  ];
-
-  async function elegirVoz(v: Voice) {
+  async function elegirVoz(v: Voice, indice: number) {
     if (!settings) return;
     haptic("light");
     settings.voice = v.name;
     vozAbierta = false;
+    fijarTintaVoz(TINTAS_VOZ[indice % TINTAS_VOZ.length]);
     await setVoice(v.name).catch(() => {});
   }
 
@@ -121,9 +118,9 @@
   <section class="yap-bloque grupo">
     <h2 class="yap-susurro">{$t("ajustes.tema")}</h2>
     <div class="yap-pestanas tema">
-      <button class="yap-pestana" class:es-activa={settings.app_theme === "cream"} onclick={() => cambiarTema("cream")}>{$t("ajustes.tema.papel")}</button>
-      <button class="yap-pestana" class:es-activa={settings.app_theme === "dark"} onclick={() => cambiarTema("dark")}>{$t("ajustes.tema.noche")}</button>
-      <button class="yap-pestana" class:es-activa={settings.app_theme === "system"} onclick={() => cambiarTema("system")}>{$t("ajustes.tema.sistema")}</button>
+      <button class="yap-pestana" use:presionable class:es-activa={settings.app_theme === "cream"} onclick={() => cambiarTema("cream")}>{$t("ajustes.tema.papel")}</button>
+      <button class="yap-pestana" use:presionable class:es-activa={settings.app_theme === "dark"} onclick={() => cambiarTema("dark")}>{$t("ajustes.tema.noche")}</button>
+      <button class="yap-pestana" use:presionable class:es-activa={settings.app_theme === "system"} onclick={() => cambiarTema("system")}>{$t("ajustes.tema.sistema")}</button>
     </div>
   </section>
 
@@ -133,12 +130,13 @@
     <div class="cromos" role="listbox" aria-label={$t("voces.titulo")}>
       {#each voices as v, i (v.name)}
         <button
+          use:presionable={{ hap: "soft" }}
           class="cromo"
           class:elegido={settings.voice === v.name}
           role="option"
           aria-selected={settings.voice === v.name}
           onclick={() => {
-            elegirVoz(v);
+            elegirVoz(v, i);
             probar(v);
           }}
         >
@@ -165,9 +163,9 @@
       <span>{$t("ajustes.calidad")}</span>
     </div>
     <div class="yap-pestanas tema">
-      <button class="yap-pestana" class:es-activa={settings.quality === "fast"} onclick={() => cambiarCalidad("fast")}>{$t("ajustes.calidad.rapida")}</button>
-      <button class="yap-pestana" class:es-activa={settings.quality === "balanced"} onclick={() => cambiarCalidad("balanced")}>{$t("ajustes.calidad.equilibrada")}</button>
-      <button class="yap-pestana" class:es-activa={settings.quality === "best"} onclick={() => cambiarCalidad("best")}>{$t("ajustes.calidad.mejor")}</button>
+      <button class="yap-pestana" use:presionable class:es-activa={settings.quality === "fast"} onclick={() => cambiarCalidad("fast")}>{$t("ajustes.calidad.rapida")}</button>
+      <button class="yap-pestana" use:presionable class:es-activa={settings.quality === "balanced"} onclick={() => cambiarCalidad("balanced")}>{$t("ajustes.calidad.equilibrada")}</button>
+      <button class="yap-pestana" use:presionable class:es-activa={settings.quality === "best"} onclick={() => cambiarCalidad("best")}>{$t("ajustes.calidad.mejor")}</button>
     </div>
     <label class="fila" for="idioma-preferido">
       <span>{$t("ajustes.idioma")}</span>
@@ -205,7 +203,7 @@
         onkeydown={(e) => e.key === "Enter" && vincular()}
       />
       {#if puenteError}<p class="pie-puente" style="color: var(--yap-peligro)">{puenteError}</p>{/if}
-      <button class="yap-tecla chica" onclick={vincular} disabled={!codigoPegado.trim()}>
+      <button class="yap-tecla chica" use:presionable onclick={vincular} disabled={!codigoPegado.trim()}>
         {$t("ajustes.vincular")}
       </button>
     {/if}
@@ -281,6 +279,7 @@
   }
 
   .cabecera-pagina {
+    padding-top: calc(env(safe-area-inset-top) + 10px);
     display: flex;
     align-items: center;
     gap: 8px;

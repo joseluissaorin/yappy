@@ -70,6 +70,10 @@ pub struct PlaybackController {
     /// and the audio thread drops their Enqueue commands. This is what makes Stop *definitive*
     /// — without it, the synth loop keeps generating chunks that get played after Stop.
     session_id: Arc<AtomicU64>,
+    /// Oyentes del NIVEL (RMS 0..1 de la ventana que está sonando, ~20 Hz):
+    /// el sistema nervioso de la interfaz viva (pico del loro, tipografía
+    /// que respira, latido de la aguja).
+    nivel_listeners: Arc<Mutex<Vec<Box<dyn Fn(f32) + Send + Sync>>>>,
 }
 
 impl PlaybackController {
@@ -102,16 +106,24 @@ impl PlaybackController {
         #[cfg(target_os = "ios")]
         crate::mobile::audio_session_activate();
 
+        let nivel_listeners: Arc<Mutex<Vec<Box<dyn Fn(f32) + Send + Sync>>>> =
+            Arc::new(Mutex::new(Vec::new()));
         let snap_for_thread = snapshot.clone();
         let listeners_for_thread = listeners.clone();
         let session_for_thread = session_samples.clone();
         let session_id_for_thread = session_id.clone();
+        let nivel_for_thread = nivel_listeners.clone();
         std::thread::Builder::new()
             .name("yappy-audio".into())
             .spawn(move || {
-                if let Err(e) =
-                    run_audio_thread(cmd_rx, snap_for_thread, listeners_for_thread, session_for_thread, session_id_for_thread)
-                {
+                if let Err(e) = run_audio_thread(
+                    cmd_rx,
+                    snap_for_thread,
+                    listeners_for_thread,
+                    session_for_thread,
+                    session_id_for_thread,
+                    nivel_for_thread,
+                ) {
                     tracing::error!("audio thread exited: {e:?}");
                 }
             })
@@ -123,6 +135,7 @@ impl PlaybackController {
             session_samples,
             listeners,
             session_id,
+            nivel_listeners,
         }
     }
 
@@ -177,6 +190,9 @@ impl PlaybackController {
     pub fn subscribe<F: Fn(&PlaybackSnapshot) + Send + Sync + 'static>(&self, f: F) {
         self.listeners.lock().unwrap().push(Box::new(f));
     }
+    pub fn subscribe_nivel<F: Fn(f32) + Send + Sync + 'static>(&self, f: F) {
+        self.nivel_listeners.lock().unwrap().push(Box::new(f));
+    }
 }
 
 fn run_audio_thread(
@@ -185,6 +201,7 @@ fn run_audio_thread(
     listeners: Arc<Mutex<Vec<Box<dyn Fn(&PlaybackSnapshot) + Send + Sync>>>>,
     session_samples: Arc<Mutex<Vec<f32>>>,
     live_session_id: Arc<AtomicU64>,
+    nivel_listeners: Arc<Mutex<Vec<Box<dyn Fn(f32) + Send + Sync>>>>,
 ) -> Result<()> {
     // Android: cpal (AAudio) necesita el contexto NDK que Tauri inicializa
     // en su arranque; este hilo puede llegar antes. Esperar a que exista en
@@ -304,6 +321,7 @@ fn run_audio_thread(
     let mut chunk_origen: Vec<(usize, usize)> = Vec::new();
     let mut current_paragraph_index: usize = 0;
     let mut total_paragraphs: usize = 0;
+    let mut nivel_anterior: f32 = 0.0;
 
     let emit = |snapshot: &Arc<Mutex<PlaybackSnapshot>>,
                 listeners: &Arc<Mutex<Vec<Box<dyn Fn(&PlaybackSnapshot) + Send + Sync>>>>| {
@@ -474,6 +492,37 @@ fn run_audio_thread(
                     drop(buf);
                     snapshot.lock().unwrap().elapsed_secs = target as f32 / out_sr as f32;
                     emit(&snapshot, &listeners);
+                }
+            }
+        }
+
+        // El NIVEL: RMS de la ventana que acaba de sonar, escalado a 0..1 y
+        // emitido a ~20 Hz solo cuando cambia lo suficiente. Es la señal que
+        // anima el pico del loro, el peso de la letra y la aguja.
+        {
+            let played = *played_samples.lock().unwrap() as usize;
+            let nivel = if paused_state {
+                0.0
+            } else {
+                let sesion = session_samples.lock().unwrap();
+                if played == 0 || sesion.is_empty() {
+                    0.0
+                } else {
+                    let fin = played.min(sesion.len());
+                    let ini = fin.saturating_sub(2048);
+                    let v = &sesion[ini..fin];
+                    if v.is_empty() {
+                        0.0
+                    } else {
+                        let rms = (v.iter().map(|x| x * x).sum::<f32>() / v.len() as f32).sqrt();
+                        (rms * 5.5).min(1.0)
+                    }
+                }
+            };
+            if (nivel - nivel_anterior).abs() > 0.02 || (nivel == 0.0 && nivel_anterior != 0.0) {
+                nivel_anterior = nivel;
+                for f in nivel_listeners.lock().unwrap().iter() {
+                    f(nivel);
                 }
             }
         }

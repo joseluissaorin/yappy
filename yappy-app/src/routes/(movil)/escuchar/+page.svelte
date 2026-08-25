@@ -5,14 +5,18 @@
   // audiolibros y, al final, la trastienda. Sustituye de un golpe a la
   // cola, la biblioteca, el historial y las pestañas.
   import { onMount, onDestroy } from "svelte";
+  import { flip } from "svelte/animate";
+  import { backOut, cubicOut } from "svelte/easing";
   import { goto } from "$app/navigation";
   import { t } from "$lib/i18n";
   import { get as getStore } from "svelte/store";
   import { haptic } from "$lib/haptic";
+  import { presionable } from "$lib/presionable";
   import Criatura from "$lib/Criatura.svelte";
   import IconoTipo from "$lib/IconoTipo.svelte";
   import { reader } from "$lib/readerStore.svelte";
   import { progresoDe } from "$lib/progreso";
+  import { tintaVoz } from "$lib/voces";
   import {
     colaListar,
     colaAgregarUrl,
@@ -22,6 +26,7 @@
     onColaActualizada,
     onPlaybackState,
     playbackSnapshot,
+    onNivel,
     readDocument,
     readDocumentParagraphs,
     readClipboard,
@@ -51,15 +56,80 @@
   let descargando = $state<DownloadProgress | null>(null);
   let cleanups: (() => void)[] = [];
 
+  // El sistema nervioso: nivel de la voz (0..1) y mirada del loro.
+  let nivel = $state(0);
+  let mirada = $state({ x: 0, y: 0 });
+  const durmiendo = $derived(
+    typeof document !== "undefined" &&
+      document.documentElement.dataset.theme === "dark" &&
+      !sonando,
+  );
+  function seguirDedo(e: PointerEvent) {
+    const w = window.innerWidth || 1;
+    const h = window.innerHeight || 1;
+    mirada = {
+      x: Math.max(-1, Math.min(1, (e.clientX / w) * 2 - 1)),
+      y: Math.max(-1, Math.min(1, (e.clientY / h) * 1.6 - 0.4)),
+    };
+  }
+
   const sonando = $derived(!!playback && (playback.playing || playback.paused));
+  let celebra = $state(false);
+  let sacudida = $state<string | null>(null);
+  let desfase = $state(0);
+  let cascada = $state(true);
+  let idsConocidos = new Set<string>();
+
+  // Cada pieza LLEGA (no aparece): cae, se asienta con su rotación.
+  function llega(_n: Element, o: { delay?: number } = {}) {
+    return {
+      delay: o.delay ?? 0,
+      duration: 380,
+      easing: backOut,
+      css: (t: number) =>
+        `transform: translateY(${-26 * (1 - t)}px) scale(${0.96 + 0.04 * t}) rotate(${(1 - t) * -1.6}deg); opacity: ${Math.min(1, t * 1.4)};`,
+    };
+  }
+  function seVa(_n: Element) {
+    return {
+      duration: 200,
+      easing: cubicOut,
+      css: (t: number, u: number) => `transform: translateX(${u * 140}px) rotate(${u * 5}deg); opacity: ${t};`,
+    };
+  }
+  function alScroll() {
+    desfase = (window.scrollY || 0) * 0.35;
+  }
+  function brincoDeLoro() {
+    celebra = true;
+    setTimeout(() => (celebra = false), 750);
+  }
 
   onMount(async () => {
     modeloListo = await isModelReady().catch(() => true);
     items = await colaListar().catch(() => []);
+    for (const it of items) idsConocidos.add(it.id);
+    setTimeout(() => (cascada = false), 900);
+    window.addEventListener("scroll", alScroll, { passive: true });
     bobinas = ((await invoke("list_rendered_audiobooks_cmd").catch(() => [])) as Bobina[]) ?? [];
-    cleanups.push(await onColaActualizada(async () => (items = await colaListar().catch(() => items))));
+    cleanups.push(
+      await onColaActualizada(async () => {
+        const nuevos = await colaListar().catch(() => items);
+        for (const it of nuevos) {
+          if (!idsConocidos.has(it.id)) {
+            idsConocidos.add(it.id);
+            if (!cascada) {
+              haptic("heavy");
+              brincoDeLoro();
+            }
+          }
+        }
+        items = nuevos;
+      }),
+    );
     playback = await playbackSnapshot().catch(() => null);
     cleanups.push(await onPlaybackState((s) => (playback = s)));
+    cleanups.push(await onNivel((v) => (nivel = v)));
     cleanups.push(
       await onModelDownload((p) => {
         descargando = p;
@@ -70,7 +140,10 @@
       }),
     );
   });
-  onDestroy(() => cleanups.forEach((c) => c()));
+  onDestroy(() => {
+    window.removeEventListener("scroll", alScroll);
+    cleanups.forEach((c) => c());
+  });
 
   // ── Grosor: los minutos se ven ────────────────────────────────────────
   function minutosDe(item: ItemCola): number {
@@ -103,7 +176,13 @@
       const desde = progresoDe(item.ruta)?.parrafo ?? 0;
       await readDocumentParagraphs(doc.paragraphs, Math.min(desde, Math.max(0, doc.paragraphs.length - 1)));
     } catch (e) {
+      // El fichero ya no está (o no se pudo leer): que se NOTE. El
+      // segmento se sacude, el loro se avergüenza y la háptica avisa.
       console.error("abrirItem:", e);
+      haptic("error");
+      sacudida = item.id;
+      brincoDeLoro();
+      setTimeout(() => (sacudida = null), 450);
     }
   }
 
@@ -221,36 +300,48 @@
   const vacia = $derived(items.length === 0 && bobinas.length === 0);
 </script>
 
-<main class="cinta" data-tauri-drag-region>
+<main class="cinta" data-tauri-drag-region onpointermove={seguirDedo} onpointerdown={seguirDedo}>
   <!-- El carrete de arranque: la marca como principio de la cinta. -->
   <header class="carrete">
-    <Criatura size={44} andando={sonando} cantando={!!playback?.playing} />
+    <Criatura
+      size={46}
+      estado={celebra ? "celebrando" : playback?.playing && !playback?.paused ? "hablando" : playback?.paused ? "pausa" : durmiendo ? "dormido" : "posado"}
+      apertura={playback?.playing && !playback?.paused ? nivel : 0}
+      {mirada}
+      tinta={$tintaVoz}
+    />
     <span class="marca-palabra">yappy</span>
   </header>
 
-  <div class="riel">
+  <div class="riel" style="--desfase: {desfase}px">
     {#if !modeloListo}
       <section class="segmento modelo yap-bloque">
         {#if descargando}
-          <div class="modelo-barra"><div style="width: {Math.round((descargando.overall_done / Math.max(1, descargando.overall_total)) * 100)}%"></div></div>
-          <p>{descargando.file} · {Math.round((descargando.overall_done / Math.max(1, descargando.overall_total)) * 100)}%</p>
+          {@const pct = descargando.overall_done / Math.max(1, descargando.overall_total)}
+          <div class="comiendo">
+            <Criatura size={64} estado="comiendo" barriga={pct} cantando />
+            <div class="comiendo-info">
+              <div class="modelo-barra"><div style="width: {Math.round(pct * 100)}%"></div></div>
+              <p>{descargando.file} · {Math.round(pct * 100)}%</p>
+            </div>
+          </div>
         {:else}
           <h3>{$t("ajustes.sin_voces")}</h3>
-          <button class="yap-tecla" onclick={() => downloadModel()}>{$t("ajustes.descargar")} (~380 MB)</button>
+          <button class="yap-tecla" use:presionable onclick={() => downloadModel()}>{$t("ajustes.descargar")} (~380 MB)</button>
         {/if}
       </section>
     {/if}
 
     {#if sonando}
       <!-- LA AGUJA: lo que suena ahora, clavado en la cinta. -->
-      <button class="aguja" onclick={() => goto("/read")}>
+      <button class="aguja" use:presionable onclick={() => goto("/read")}>
         <span class="aguja-punta" aria-hidden="true"></span>
         <span class="aguja-cuerpo">
           <span class="aguja-estado">{playback?.paused ? $t("cinta.en_pausa") : $t("cinta.sonando")}</span>
           <strong class="aguja-titulo">{(reader.doc?.filename ?? playback?.current_text ?? "").split("\n")[0].replace(/\.[^.]+$/, "").slice(0, 72)}</strong>
         </span>
         {#if playback?.playing}
-          <span class="ondas" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="ondas" aria-hidden="true" style="--nivel: {0.35 + nivel * 0.65}"><i></i><i></i><i></i><i></i></span>
         {/if}
       </button>
     {/if}
@@ -258,12 +349,13 @@
     <!-- LA BOCA: el principio de la cinta siempre está abierto. -->
     <section class="segmento boca" class:abierta={bocaAbierta}>
       {#if !bocaAbierta}
-        <button class="boca-cerrada" onclick={() => { haptic("light"); bocaAbierta = true; }}>
+        <button class="boca-cerrada" use:presionable={{ hap: "soft" }} onclick={() => { haptic("light"); bocaAbierta = true; }}>
           <span class="boca-cruz" aria-hidden="true">＋</span>
           <span class="boca-rotulo">{$t("cinta.pega_aqui")}</span>
         </button>
       {:else}
-        <div class="boca-abierta">
+        <div class="asomado" aria-hidden="true" in:llega><Criatura size={40} mirada={{ x: 0, y: 1 }} /></div>
+        <div class="boca-abierta" in:llega>
           <div class="enlace-fila">
             <!-- svelte-ignore a11y_autofocus -->
             <input
@@ -271,15 +363,19 @@
               type="url"
               bind:value={enlace}
               placeholder="https://…"
+              enterkeyhint="go"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
               autofocus
               onkeydown={(e) => e.key === "Enter" && pegarEnlace()}
             />
-            <button class="yap-tecla" onclick={pegarEnlace}>{$t("cinta.a_la_cola")}</button>
+            <button class="yap-tecla" use:presionable onclick={pegarEnlace}>{$t("cinta.a_la_cola")}</button>
           </div>
-          <button class="tecla-gorda" onclick={leerPortapapeles}>
+          <button class="tecla-gorda" use:presionable onclick={leerPortapapeles}>
             <IconoTipo tipo="portapapeles" size={22} /> {$t("cinta.portapapeles")}
           </button>
-          <button class="tecla-gorda" onclick={abrirArchivo}>
+          <button class="tecla-gorda" use:presionable onclick={abrirArchivo}>
             <IconoTipo tipo="documento" size={22} /> {$t("cinta.archivo")}
           </button>
           <button class="boca-cerrar" onclick={() => (bocaAbierta = false)} aria-label={$t("lector.hecho")}>▲</button>
@@ -289,29 +385,41 @@
 
     {#if vacia}
       <section class="vacia">
-        <Criatura size={148} andando />
+        <Criatura size={148} andando {mirada} tinta={$tintaVoz} />
         <h1>{$t("cinta.vacia_titulo")}</h1>
         <p>{$t("cinta.vacia_texto")}</p>
-        <button class="yap-tecla ensename" onclick={ensename}>{$t("cinta.ensename")}</button>
+        <button class="yap-tecla ensename" use:presionable={{ hap: "rigid" }} onclick={ensename}>{$t("cinta.ensename")}</button>
       </section>
     {/if}
 
     <!-- LOS SEGMENTOS: cada pieza, con su grosor en minutos. -->
-    {#each items as item (item.id)}
+    {#each items as item, i (item.id)}
       {@const pct = pctDe(item)}
       <article
-        class="segmento pieza estado-{item.estado}"
-        style="min-height: {altoDe(item)}px; transform: translateX({arrastre?.id === item.id ? arrastre.dx : 0}px); opacity: {arrastre?.id === item.id ? Math.max(0.25, 1 - Math.abs(arrastre.dx) / 340) : 1};"
+        class="segmento pieza estado-{item.estado}" class:sacude={sacudida === item.id}
+        animate:flip={{ duration: 300, easing: cubicOut }}
+        in:llega={{ delay: cascada ? Math.min(i * 45, 360) : 0 }}
+        out:seVa
+        style="min-height: {altoDe(item)}px; transform: translateX({arrastre?.id === item.id ? arrastre.dx : 0}px) rotate({arrastre?.id === item.id ? arrastre.dx / 26 : 0}deg); opacity: {arrastre?.id === item.id ? Math.max(0.25, 1 - Math.abs(arrastre.dx) / 340) : 1};"
         onpointerdown={(e) => alTocar(e, item.id)}
         onpointermove={alMover}
         onpointerup={alSoltar}
         onpointercancel={() => { arranque = null; arrastre = null; }}
       >
-        <button class="pieza-cuerpo" onclick={() => abrirItem(item)}>
-          <span class="pieza-tipo"><IconoTipo tipo={item.tipo} size={20} /></span>
+        <button class="pieza-cuerpo" use:presionable onclick={() => abrirItem(item)}>
+          {#if item.estado === "error"}
+            <span class="pieza-tipo"><Criatura size={34} estado="avergonzado" /></span>
+          {:else}
+            <span class="pieza-tipo"><IconoTipo tipo={item.tipo} size={20} /></span>
+          {/if}
           <span class="pieza-texto">
             <strong>{item.titulo}</strong>
-            {#if item.estado === "listo"}
+            {#if sonando && item.ruta && reader.doc?.path === item.ruta}
+              <span class="pieza-meta sonando-mini">
+                <span class="mini-ondas" style="--nivel: {0.35 + nivel * 0.65}" aria-hidden="true"><i></i><i></i><i></i></span>
+                {playback?.paused ? $t("cinta.en_pausa") : $t("cinta.sonando")}
+              </span>
+            {:else if item.estado === "listo"}
               <span class="pieza-meta">~{minutosDe(item)} {$t("cinta.min")}{#if pct > 0} · {pct}% {$t("cinta.escuchado")}{/if}</span>
             {:else if item.estado === "error"}
               <span class="pieza-meta error">{$t("cinta.error")}</span>
@@ -330,8 +438,8 @@
     {#if bobinas.length > 0}
       <p class="rotulo-tramo">{$t("cinta.bobinas")}</p>
       {#each bobinas as b (b.path)}
-        <article class="segmento bobina">
-          <button class="pieza-cuerpo" onclick={() => abrirBobina(b)}>
+        <article class="segmento bobina" in:llega>
+          <button class="pieza-cuerpo" use:presionable onclick={() => abrirBobina(b)}>
             <span class="bobina-carrete" aria-hidden="true">
               <svg viewBox="0 0 44 44" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="22" cy="22" r="17"/><circle cx="22" cy="22" r="5"/><path d="M22 5v6M22 33v6M5 22h6M33 22h6M10 10l4.4 4.4M29.6 29.6 34 34M34 10l-4.4 4.4M14.4 29.6 10 34"/></svg>
             </span>
@@ -345,7 +453,7 @@
     {/if}
 
     <!-- LA TRASTIENDA: el final de la cinta. -->
-    <button class="segmento trastienda" onclick={() => goto("/ajustes")}>
+    <button class="segmento trastienda" use:presionable onclick={() => goto("/ajustes")}>
       <strong>{$t("cinta.trastienda")}</strong>
       <span>{$t("cinta.trastienda_pista")}</span>
     </button>
@@ -390,7 +498,7 @@
     width: 12px;
     border-radius: 6px;
     background:
-      radial-gradient(circle at 6px 10px, var(--yap-papel) 2.6px, transparent 3px) 0 0 / 12px 26px,
+      radial-gradient(circle at 6px 10px, var(--yap-papel) 2.6px, transparent 3px) 0 var(--desfase, 0px) / 12px 26px,
       var(--yap-ultramar, #2f4bc4);
     opacity: 0.85;
   }
@@ -403,13 +511,15 @@
 
   /* ── La aguja ── */
   .aguja {
-    position: relative;
+    position: sticky;
+    top: calc(env(safe-area-inset-top) + 8px);
+    z-index: 20;
     display: flex;
     align-items: center;
     gap: 12px;
     border: 0;
     text-align: left;
-    background: var(--yap-tecla-fondo, linear-gradient(180deg, #f4682e, #e0502a));
+    background: linear-gradient(180deg, var(--acento-voz-claro, #f4682e), var(--acento-voz, #e0502a));
     color: #fff6ef;
     border-radius: 18px;
     padding: 16px 16px 16px 18px;
@@ -454,6 +564,11 @@
     gap: 3px;
     height: 26px;
   }
+  .ondas {
+    transform: scaleY(var(--nivel, 0.6));
+    transform-origin: 50% 100%;
+    transition: transform 0.1s linear;
+  }
   .ondas i {
     width: 5px;
     border-radius: 3px;
@@ -493,6 +608,12 @@
   .boca-cruz {
     font-size: 20px;
     font-weight: 700;
+  }
+  .asomado {
+    position: absolute;
+    top: -30px;
+    right: 18px;
+    pointer-events: none;
   }
   .boca-abierta {
     position: relative;
@@ -575,7 +696,6 @@
     border: 1px solid var(--yap-borde);
     box-shadow: var(--yap-relieve);
     overflow: hidden;
-    transition: transform 0.16s ease, opacity 0.16s ease;
   }
   .pieza-cuerpo {
     display: flex;
@@ -619,6 +739,31 @@
   .pieza-meta.error {
     color: var(--yap-voz, #e0502a);
   }
+  .sonando-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--acento-voz, var(--yap-voz));
+    font-weight: 700;
+  }
+  .mini-ondas {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+    transform: scaleY(var(--nivel, 0.6));
+    transform-origin: 50% 100%;
+    transition: transform 0.1s linear;
+  }
+  .mini-ondas i {
+    width: 3px;
+    border-radius: 2px;
+    background: var(--acento-voz, var(--yap-voz));
+    animation: onda 0.9s ease-in-out infinite;
+  }
+  .mini-ondas i:nth-child(1) { height: 45%; }
+  .mini-ondas i:nth-child(2) { height: 100%; animation-delay: 0.15s; }
+  .mini-ondas i:nth-child(3) { height: 70%; animation-delay: 0.3s; }
   .estado-pendiente,
   .estado-extrayendo,
   .estado-transcribiendo {
@@ -633,6 +778,15 @@
   }
   .estado-error {
     border-color: var(--yap-voz, #e0502a);
+  }
+  .sacude {
+    animation: sacudir 0.4s ease;
+  }
+  @keyframes sacudir {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-7px) rotate(-0.6deg); }
+    55% { transform: translateX(7px) rotate(0.6deg); }
+    80% { transform: translateX(-3px); }
   }
   .pieza-progreso {
     position: absolute;
@@ -686,6 +840,17 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+  .comiendo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .comiendo-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
   .modelo-barra {
     height: 10px;

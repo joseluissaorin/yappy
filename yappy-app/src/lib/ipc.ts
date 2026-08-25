@@ -486,6 +486,9 @@ export function onModelDownload(cb: (p: DownloadProgress) => void): Promise<Unli
 export const playbackSnapshot = (): Promise<PlaybackSnapshot> =>
   invoke("playback_snapshot_cmd");
 
+export function onNivel(cb: (v: number) => void): Promise<UnlistenFn> {
+  return listen<number>("playback_nivel", (ev) => cb(ev.payload));
+}
 export function onPlaybackState(cb: (s: PlaybackSnapshot) => void): Promise<UnlistenFn> {
   return listen<PlaybackSnapshot>("playback_state", (ev) => cb(ev.payload));
 }

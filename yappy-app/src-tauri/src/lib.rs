@@ -413,6 +413,15 @@ pub fn run() {
                 // Subscribe to playback snapshots — whenever play state /
                 // position changes, refresh the Now Playing metadata so the
                 // lock screen progress bar stays in sync.
+                {
+                    // El nivel de la voz (0..1, ~20 Hz): la señal nerviosa
+                    // de la interfaz viva. Evento aparte y ligerísimo para
+                    // no arrastrar el snapshot entero a esa cadencia.
+                    let app_nivel = app.handle().clone();
+                    state.playback.subscribe_nivel(move |v| {
+                        let _ = app_nivel.emit("playback_nivel", v);
+                    });
+                }
                 let app_handle = app.handle().clone();
                 state.playback.subscribe(move |snap| {
                     // Skip refreshes when nothing's actually playing or queued.

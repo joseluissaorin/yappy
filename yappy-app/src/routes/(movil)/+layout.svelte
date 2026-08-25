@@ -12,6 +12,7 @@
   import Criatura from "$lib/Criatura.svelte";
   import { haptic } from "$lib/haptic";
   import { llegada } from "$lib/llegada.svelte";
+  import { aplicarTintaVoz, tintaVoz } from "$lib/voces";
   import { startShareIntake, drainPending } from "$lib/shareIntake";
   import { listen } from "@tauri-apps/api/event";
   import { readClipboard, colaAgregarArchivo, puenteVincular } from "$lib/ipc";
@@ -30,6 +31,7 @@
     // Override de desarrollo para capturas: ?idioma=es|en.
     const idiomaForzado = new URLSearchParams(window.location.search).get("idioma");
     fijarIdiomaDesdeLocale(idiomaForzado ?? getStore(platformLocale));
+    aplicarTintaVoz();
     startShareIntake();
 
     // Acciones que llegan por deep link (widget, Spotlight, atajos).
@@ -95,7 +97,7 @@
         <strong>{llegada.titulo}</strong>
       </div>
       <div class="comensal">
-        <Criatura size={132} cantando />
+        <Criatura size={132} cantando tinta={$tintaVoz} />
       </div>
     </div>
   {/if}

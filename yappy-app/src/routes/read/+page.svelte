@@ -8,13 +8,17 @@
   // teclas de piano del mando, y desde ahí se llega al guion (el texto
   // completo) y al taller (voz, ritmo, exportar, el puente).
   import { onMount, onDestroy } from "svelte";
+  import { cubicOut, backOut } from "svelte/easing";
   import { goto } from "$app/navigation";
   import { reader } from "$lib/readerStore.svelte";
   import { guardarProgreso } from "$lib/progreso";
-  import { t } from "$lib/i18n";
+  import { t, idiomaUI } from "$lib/i18n";
   import { get } from "svelte/store";
   import { isMobile } from "$lib/platform";
   import { haptic } from "$lib/haptic";
+  import { presionable } from "$lib/presionable";
+  import Criatura from "$lib/Criatura.svelte";
+  import { tintaVoz } from "$lib/voces";
   import {
     type PlaybackSnapshot,
     type Voice,
@@ -24,6 +28,7 @@
     togglePause,
     onPlaybackState,
     playbackSnapshot,
+    onNivel,
     onPlaybackStarting,
     listVoices,
     getSettings,
@@ -58,6 +63,9 @@
   let settings = $state<Settings | null>(null);
 
   let playback = $state<PlaybackSnapshot | null>(null);
+  let nivel = $state(0);
+  let arrastreX = $state(0);
+  let anticipa = $state(0);
   let baseIndex = $state(0);
   let guionAbierto = $state(false);
   let tallerAbierto = $state(false);
@@ -97,7 +105,7 @@
   // Tamaño de cartel: cuanto más corta la frase, más grita.
   const cuerpoFrase = $derived.by(() => {
     const c = Math.max(16, frase.length);
-    return Math.round(Math.max(30, Math.min(80, 46 * Math.sqrt(150 / c))));
+    return Math.round(Math.max(30, Math.min(74, 46 * Math.sqrt(150 / c))));
   });
 
   // ── El barrido dorado: avanza al ritmo estimado de la voz ─────────────
@@ -107,10 +115,12 @@
   $effect(() => {
     const clave = `${currentPara}·${oIni}·${oFin}`;
     if (clave !== claveFrase) {
+      const primera = claveFrase === "";
       claveFrase = clave;
       barrido = 0;
       cancelAnimationFrame(rafId);
       if (isPlaying && frase) {
+        if (!primera) haptic("tick");
         const dur = Math.max(0.9, (frase.length * 0.062) / effectiveSpeedForPlay());
         const t0 = performance.now();
         const paso = (ahora: number) => {
@@ -152,6 +162,37 @@
     docVoice ? (voices.find((v) => v.id === docVoice || v.name === docVoice)?.name ?? docVoice) : null,
   );
 
+  // Coreografía de frases: follow-through arriba, aterrizaje con
+  // sobreimpulso abajo. La clase .se-va tiñe la salida de ultramar.
+  function saleFrase(_n: Element, o: { duration?: number } = {}) {
+    const duration = o.duration ?? 340;
+    return {
+      duration,
+      easing: cubicOut,
+      css: (t: number, u: number) =>
+        `transform: translateY(${-30 * u}px); opacity: ${Math.max(0, t * 0.9)}; color: color-mix(in srgb, var(--yap-ultramar, #2f4bc4) ${u * 80}%, var(--yap-tinta));`,
+    };
+  }
+  function entraFrase(_n: Element, o: { duration?: number } = {}) {
+    const duration = o.duration ?? 430;
+    return {
+      duration,
+      easing: backOut,
+      css: (t: number) => `transform: translateY(${26 * (1 - t)}px) scale(${0.982 + 0.018 * t}); opacity: ${t};`,
+    };
+  }
+
+  // Anticipación del mando: el cartel se inclina hacia el destino un
+  // instante antes de saltar.
+  async function saltarCon(direccion: -1 | 1) {
+    const destino = currentPara + direccion;
+    if (destino < 0 || destino >= paras.length) return;
+    anticipa = direccion;
+    setTimeout(() => (anticipa = 0), 200);
+    await new Promise((r) => setTimeout(r, 110));
+    await readFrom(destino);
+  }
+
   function clampSpeed(s: number) { return Math.max(0.3, Math.min(3.0, s)); }
   function effectiveSpeedForPlay() { return clampSpeed(globalSpeed * rhythmMult); }
   function flashToast(msg: string) { toast = msg; setTimeout(() => (toast = null), 2400); }
@@ -167,6 +208,7 @@
     }));
     playback = await playbackSnapshot().catch(() => null);
     cleanups.push(await onPlaybackState((s) => (playback = s)));
+    cleanups.push(await onNivel((v) => (nivel = v)));
     cleanups.push(await onAudiobookRenderProgress((p) => (renderProgress = p)));
     puenteVinculado = !!(await puenteMovilEstado().catch(() => null))?.token;
     cleanups.push(await onPuenteProgreso((p) => {
@@ -319,7 +361,7 @@
   }
 
   // ── Gestos del escenario: tocar, deslizar, y el dial del borde ────────
-  let gesto: { x: number; y: number; t: number; borde: boolean; velocidadInicial: number } | null = null;
+  let gesto: { x: number; y: number; t: number; borde: boolean; bordeIzq?: boolean; velocidadInicial: number } | null = null;
   let dialVisible = $state(false);
   let dialValor = $state(1.0);
 
@@ -331,6 +373,7 @@
       y: e.clientY,
       t: performance.now(),
       borde: e.clientX > ancho - 60 && activo,
+      bordeIzq: e.clientX < 26,
       velocidadInicial: effectiveSpeedForPlay(),
     };
     if (gesto.borde) {
@@ -342,7 +385,18 @@
     if (!gesto) return;
     if (gesto.borde) {
       const dv = (gesto.y - e.clientY) / 220;
-      dialValor = clampSpeed(Math.round((gesto.velocidadInicial + dv) * 20) / 20);
+      const nuevo = clampSpeed(Math.round((gesto.velocidadInicial + dv) * 20) / 20);
+      if (nuevo !== dialValor) haptic("tick");
+      dialValor = nuevo;
+      return;
+    }
+    if (!activo) return;
+    const dx = e.clientX - gesto.x;
+    const dy = e.clientY - gesto.y;
+    if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      const enBorde =
+        (dx > 0 && currentPara <= 0) || (dx < 0 && currentPara >= paras.length - 1);
+      arrastreX = dx * (enBorde ? 0.28 : 0.85);
     }
   }
   async function escenarioUp(e: PointerEvent) {
@@ -359,6 +413,13 @@
         scheduleSave();
         if (activo && currentPara >= 0) await readFrom(currentPara);
       }
+      return;
+    }
+    arrastreX = 0;
+    // Gesto de borde izquierdo: volver, como en cualquier app nativa.
+    if (g.bordeIzq && dx > 70 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+      haptic("soft");
+      back();
       return;
     }
     if (Math.abs(dx) > 72 && Math.abs(dx) > Math.abs(dy) * 1.4 && activo) {
@@ -379,52 +440,82 @@
   onpointermove={escenarioMove}
   onpointerup={escenarioUp}
 >
+  <!-- VoiceOver: la pantalla-botón, dicha con palabras. -->
+  {#if activo}
+    <button class="solo-voz" onclick={toggle}>{isPaused ? $t("player.reanudar") : $t("player.pausar")}</button>
+  {/if}
+
   <!-- El hilo de progreso: lo único que existe mientras la voz habla. -->
   <div class="hilo"><div class="hilo-lleno" style="width: {paras.length ? Math.min(100, ((Math.max(currentPara, 0) + 1) / paras.length) * 100) : 0}%"></div></div>
 
   {#if activo}
     <!-- EL CARTEL -->
-    <section class="cartel" class:atenuado={isPaused}>
-      {#if dichas}
-        <p class="dichas">{dichas}</p>
-      {/if}
-      <p
-        class="frase"
-        class:titulo={esTitulo}
-        style="font-size: {cuerpoFrase}px; background-size: {Math.round(barrido * 100)}% 0.34em;"
-      >
-        {frase}
-      </p>
+    <section
+      class="cartel"
+      class:atenuado={isPaused}
+      style="transform: translateX({arrastreX + anticipa * -16}px) rotate({(arrastreX + anticipa * -16) / 210}deg);"
+    >
+      <div class="zona-dichas">
+        {#key `d·${currentPara}·${oIni}`}
+          <p class="dichas" transition:saleFrase={{ duration: 260 }}>{dichas}</p>
+        {/key}
+      </div>
+      <div class="zona-frase">
+        {#key claveFrase}
+          <p
+            class="frase"
+            lang={$idiomaUI}
+            class:titulo={esTitulo}
+            class:pregunta={frase.endsWith("?")}
+            in:entraFrase
+            out:saleFrase
+            style="font-size: {cuerpoFrase}px; background-size: {Math.round(barrido * 100)}% {(0.3 + nivel * 0.17).toFixed(3)}em; font-variation-settings: 'wght' {Math.round(700 + nivel * 110)}, 'opsz' 34;"
+          >
+            {frase}
+          </p>
+        {/key}
+      </div>
       {#if porVenir}
         <p class="porvenir">{porVenir}</p>
       {/if}
     </section>
 
+    {#if !guionAbierto && !tallerAbierto && tweakIndex < 0}
+      <div class="cameo" class:sube={isPaused} aria-hidden="true">
+        <Criatura
+          size={62}
+          estado={isPlaying ? "hablando" : "pausa"}
+          apertura={isPlaying ? nivel : 0}
+          tinta={$tintaVoz}
+        />
+      </div>
+    {/if}
+
     {#if isPaused}
       <!-- Cromo mínimo, solo en pausa. -->
       <header class="pausa-arriba">
-        <button class="p-icono" onclick={back} aria-label={$t("lector.volver")}>
+        <button class="p-icono" use:presionable onclick={back} aria-label={$t("lector.volver")}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
         </button>
         <span class="p-titulo">{title}</span>
-        <button class="p-icono" onclick={() => (guionAbierto = true)} aria-label={$t("cartel.guion")}>
+        <button class="p-icono" use:presionable onclick={() => (guionAbierto = true)} aria-label={$t("cartel.guion")}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
         </button>
-        <button class="p-icono" class:pendiente={customised} onclick={() => (tallerAbierto = true)} aria-label={$t("cartel.taller")}>
+        <button class="p-icono" use:presionable class:pendiente={customised} onclick={() => (tallerAbierto = true)} aria-label={$t("cartel.taller")}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17v3h3l5.5-5.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.1-2.1z"/></svg>
         </button>
       </header>
 
       <!-- EL MANDO: tres teclas de piano. -->
       <nav class="mando">
-        <button class="tecla-piano" onclick={() => currentPara > 0 && readFrom(currentPara - 1)} aria-label={$t("mando.atras")}>
+        <button class="tecla-piano" use:presionable={{ hap: "rigid" }} onclick={() => saltarCon(-1)} aria-label={$t("mando.atras")}>
           <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M18 6v12L9.5 12zM8 6H5.6v12H8z"/></svg>
         </button>
-        <button class="tecla-piano seguir" onclick={toggle}>
+        <button class="tecla-piano seguir" use:presionable={{ hap: "rigid" }} onclick={toggle}>
           <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11.5 7.2c0.9 0.6 0.9 1.9 0 2.4L9.2 20.4C8.2 21 7 20.3 7 19.2z"/></svg>
           <span>{$t("mando.seguir")}</span>
         </button>
-        <button class="tecla-piano" onclick={() => currentPara < paras.length - 1 && readFrom(currentPara + 1)} aria-label={$t("mando.adelante")}>
+        <button class="tecla-piano" use:presionable={{ hap: "rigid" }} onclick={() => saltarCon(1)} aria-label={$t("mando.adelante")}>
           <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M6 6v12l8.5-6zM16 6h2.4v12H16z"/></svg>
         </button>
       </nav>
@@ -433,20 +524,20 @@
     <!-- LA PORTADA: aún no suena (o terminó). -->
     <section class="portada">
       <header class="pausa-arriba portada-arriba">
-        <button class="p-icono" onclick={back} aria-label={$t("lector.volver")}>
+        <button class="p-icono" use:presionable onclick={back} aria-label={$t("lector.volver")}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
         </button>
         <span class="p-titulo"></span>
-        <button class="p-icono" onclick={() => (guionAbierto = true)} aria-label={$t("cartel.guion")}>
+        <button class="p-icono" use:presionable onclick={() => (guionAbierto = true)} aria-label={$t("cartel.guion")}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
         </button>
-        <button class="p-icono" onclick={() => (tallerAbierto = true)} aria-label={$t("cartel.taller")}>
+        <button class="p-icono" use:presionable onclick={() => (tallerAbierto = true)} aria-label={$t("cartel.taller")}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17v3h3l5.5-5.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.1-2.1z"/></svg>
         </button>
       </header>
       <h1 class="portada-titulo">{title}</h1>
       <p class="portada-meta">{paras.length} ¶</p>
-      <button class="leer-gigante" onclick={() => readFrom(0)}>
+      <button class="leer-gigante" use:presionable={{ hap: "rigid" }} onclick={() => readFrom(0)}>
         <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11.5 7.2c0.9 0.6 0.9 1.9 0 2.4L9.2 20.4C8.2 21 7 20.3 7 19.2z"/></svg>
         {$t("cartel.leer")}
       </button>
@@ -455,7 +546,9 @@
 
   {#if dialVisible}
     <div class="dial">
-      <strong>{dialValor.toFixed(2).replace(".", ",")}×</strong>
+      {#key dialValor}
+        <strong in:entraFrase={{ duration: 130 }}>{dialValor.toFixed(2).replace(".", ",")}×</strong>
+      {/key}
       <span>{$t("cartel.velocidad")}</span>
     </div>
   {/if}
@@ -477,7 +570,7 @@
       <div class="guion-lista">
         {#each paras as p, i}
           <div class="guion-fila" class:actual={i === currentPara} class:es-titulo={(kinds[i] ?? "").startsWith("heading")}>
-            <button class="guion-parrafo" onclick={() => { guionAbierto = false; readFrom(i); }}>{p}</button>
+            <button class="guion-parrafo" use:presionable onclick={() => { guionAbierto = false; readFrom(i); }}>{p}</button>
             <button
               class="guion-ajustar"
               class:tocado={!!(overrides[i]?.voice || overrides[i]?.speed != null || overrides[i]?.pauseBefore != null)}
@@ -503,27 +596,27 @@
         <div class="ctl-pista">{$t("lector.ritmo_pista")}</div>
       </div>
 
-      <button class="ctl-selector" onclick={() => (voicePickerFor = voicePickerFor === "doc" ? null : "doc")}>
+      <button class="ctl-selector" use:presionable={{ hap: "soft" }} onclick={() => (voicePickerFor = voicePickerFor === "doc" ? null : "doc")}>
         <span class="ctl-rotulo">{$t("lector.voz")}</span>
         <span class="ctl-selector-valor">{docVoiceName ?? $t("lector.voz_defecto")} <span class="caret">▾</span></span>
       </button>
       {#if voicePickerFor === "doc"}
         <div class="lista-voces">
-          <button class="voz-opcion" class:activa={docVoice === null} onclick={() => setDocVoice(null)}>{$t("lector.voz_defecto")}</button>
+          <button class="voz-opcion" use:presionable class:activa={docVoice === null} onclick={() => setDocVoice(null)}>{$t("lector.voz_defecto")}</button>
           {#each voices as v}
-            <button class="voz-opcion" class:activa={docVoice === v.id || docVoice === v.name} onclick={() => setDocVoice(v.id)}>
+            <button class="voz-opcion" use:presionable class:activa={docVoice === v.id || docVoice === v.name} onclick={() => setDocVoice(v.id)}>
               {v.name}<span class="voz-etiqueta">{v.tags?.[0] ?? v.gender}</span>
             </button>
           {/each}
         </div>
       {/if}
 
-      <button class="tecla-exportar" onclick={exportAudiobook} disabled={rendering}>
+      <button class="tecla-exportar" use:presionable onclick={exportAudiobook} disabled={rendering}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17H20v5H6.5a2.5 2.5 0 0 1 0-5z"/></svg>
         {rendering ? $t("lector.creando_corto") : $t("lector.guardar_m4b")}
       </button>
       {#if puenteVinculado}
-        <button class="tecla-exportar puente" onclick={convertirEnOrdenador} disabled={puenteOcupado}>
+        <button class="tecla-exportar puente" use:presionable onclick={convertirEnOrdenador} disabled={puenteOcupado}>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
           {puenteOcupado ? `${$t("lector.convirtiendo")} ${puenteEtapa ?? ""}` : $t("lector.convertir")}
         </button>
@@ -572,7 +665,7 @@
         {#if tweakIndex === 0}<div class="ctl-pista">{$t("lector.primera_pausa")}</div>{/if}
       </div>
 
-      <button class="ctl-selector" onclick={() => (voicePickerFor = voicePickerFor === "para" ? null : "para")}>
+      <button class="ctl-selector" use:presionable={{ hap: "soft" }} onclick={() => (voicePickerFor = voicePickerFor === "para" ? null : "para")}>
         <span class="ctl-rotulo">{$t("lector.voz")}</span>
         <span class="ctl-selector-valor">
           {o.voice ? (voices.find((v) => v.id === o.voice || v.name === o.voice)?.name ?? o.voice) : $t("lector.heredada_palabra")} <span class="caret">▾</span>
@@ -580,9 +673,9 @@
       </button>
       {#if voicePickerFor === "para"}
         <div class="lista-voces">
-          <button class="voz-opcion" class:activa={o.voice === null} onclick={() => setParaVoice(tweakIndex, null)}>{$t("lector.heredar_doc")}</button>
+          <button class="voz-opcion" use:presionable class:activa={o.voice === null} onclick={() => setParaVoice(tweakIndex, null)}>{$t("lector.heredar_doc")}</button>
           {#each voices as v}
-            <button class="voz-opcion" class:activa={o.voice === v.id || o.voice === v.name} onclick={() => setParaVoice(tweakIndex, v.id)}>
+            <button class="voz-opcion" use:presionable class:activa={o.voice === v.id || o.voice === v.name} onclick={() => setParaVoice(tweakIndex, v.id)}>
               {v.name}<span class="voz-etiqueta">{v.tags?.[0] ?? v.gender}</span>
             </button>
           {/each}
@@ -590,7 +683,7 @@
       {/if}
 
       <div class="tweak-pie">
-        <button class="tecla-exportar" onclick={() => { const i = tweakIndex; tweakIndex = -1; readFrom(i); }}>▶ {$t("lector.leer_desde_aqui")}</button>
+        <button class="tecla-exportar" use:presionable onclick={() => { const i = tweakIndex; tweakIndex = -1; readFrom(i); }}>▶ {$t("lector.leer_desde_aqui")}</button>
         <button class="tecla-hecho" onclick={() => { tweakIndex = -1; voicePickerFor = null; }}>{$t("lector.hecho")}</button>
       </div>
     </div>
@@ -598,6 +691,15 @@
 </div>
 
 <style>
+  .solo-voz {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    border: 0;
+    padding: 0;
+  }
   .escenario {
     position: fixed;
     inset: 0;
@@ -619,7 +721,7 @@
   }
   .hilo-lleno {
     height: 100%;
-    background: var(--yap-voz, #e0502a);
+    background: var(--acento-voz, var(--yap-voz, #e0502a));
     transition: width 0.4s ease;
   }
 
@@ -632,10 +734,41 @@
     justify-content: center;
     padding: calc(env(safe-area-inset-top) + 34px) 26px calc(env(safe-area-inset-bottom) + 40px);
     gap: 20px;
-    transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease, transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    will-change: transform;
   }
   .cartel.atenuado {
-    opacity: 0.45;
+    opacity: 0.5;
+    transform: scale(0.985) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 150px);
+    padding-top: calc(env(safe-area-inset-top) + 74px);
+  }
+  .cartel.atenuado .porvenir {
+    filter: blur(2.5px);
+  }
+  .zona-dichas,
+  .zona-frase {
+    display: grid;
+    min-width: 0;
+  }
+  .zona-dichas > *,
+  .zona-frase > * {
+    grid-area: 1 / 1;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .frase.pregunta {
+    transform: rotate(-0.55deg);
+  }
+  .cameo {
+    position: absolute;
+    left: 16px;
+    bottom: calc(env(safe-area-inset-bottom) + 14px);
+    z-index: 5;
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.15);
+  }
+  .cameo.sube {
+    transform: translateY(-108px);
   }
   .dichas,
   .porvenir {
@@ -667,7 +800,8 @@
     font-variation-settings: "opsz" 40;
     line-height: 1.14;
     letter-spacing: -0.014em;
-    overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
     color: var(--yap-tinta);
     background-image: linear-gradient(color-mix(in srgb, var(--yap-dorado, #e8b41a) 46%, transparent), color-mix(in srgb, var(--yap-dorado, #e8b41a) 46%, transparent));
     background-repeat: no-repeat;
@@ -768,7 +902,7 @@
     box-shadow: 0 0 0 var(--yap-tinta), var(--yap-hundido);
   }
   .tecla-piano.seguir {
-    background: var(--yap-tecla-fondo, linear-gradient(180deg, #f4682e, #e0502a));
+    background: linear-gradient(180deg, var(--acento-voz-claro, #f4682e), var(--acento-voz, #e0502a));
     color: #fff6ef;
     border-color: color-mix(in srgb, var(--yap-tinta) 70%, #7a2810);
   }
@@ -814,7 +948,7 @@
     padding: 22px 34px;
     border-radius: 24px;
     border: 2px solid color-mix(in srgb, var(--yap-tinta) 70%, #7a2810);
-    background: var(--yap-tecla-fondo, linear-gradient(180deg, #f4682e, #e0502a));
+    background: linear-gradient(180deg, var(--acento-voz-claro, #f4682e), var(--acento-voz, #e0502a));
     color: #fff6ef;
     font-weight: 800;
     font-size: 22px;
