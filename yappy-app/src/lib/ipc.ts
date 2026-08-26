@@ -94,7 +94,20 @@ export interface DownloadProgress {
   overall_total: number;
 }
 
+export type EstadoReproduccion = "inactivo" | "preparando" | "sonando" | "pausa";
+
 export interface PlaybackSnapshot {
+  /// La máquina de verdad del motor. La interfaz pinta ESTO y nada más.
+  estado: EstadoReproduccion;
+  /// Revisión monótona: descartar cualquier snapshot con revisión menor
+  /// que la última pintada (mata los eventos rezagados).
+  revision: number;
+  /// Título y ruta de la sesión (la aguja y la restauración del lector).
+  titulo: string;
+  doc_path: string;
+  /// La cocina visible: trozos sintetizados y hasta qué párrafo hay audio.
+  chunks_cocinados: number;
+  parrafo_max_cocinado: number;
   playing: boolean;
   paused: boolean;
   current_text: string;
@@ -172,14 +185,22 @@ export const setSilence = (silence_secs: number): Promise<void> => invoke("set_s
 export const skip = (delta_secs: number): Promise<void> => invoke("skip_cmd", { deltaSecs: delta_secs });
 export const stopPlayback = (): Promise<void> => invoke("stop_playback_cmd");
 export const togglePause = (): Promise<void> => invoke("toggle_pause_cmd");
+/// Pausa y reanudación directas (no toggle): para mandos que saben lo que
+/// quieren (la aguja, la pantalla de bloqueo del frontend).
+export const pausar = (): Promise<void> => invoke("pausar_cmd");
+export const reanudar = (): Promise<void> => invoke("reanudar_cmd");
+/// Saltos INSTANTÁNEOS dentro de lo ya sintetizado (sin resíntesis).
+export const saltarFrase = (delta: number): Promise<void> => invoke("saltar_frase_cmd", { delta });
+export const saltarParrafo = (delta: number): Promise<void> => invoke("saltar_parrafo_cmd", { delta });
 export const readNow = (): Promise<void> => invoke("trigger_read_now_cmd");
 export const readClipboard = (): Promise<void> => invoke("read_clipboard_cmd");
 export const synthesizeText = (text: string): Promise<void> => invoke("synthesize_text", { text });
+/// Devuelve la duración de la muestra en segundos (0 si aún no se sabe).
 export const sampleVoice = (
   voice: string,
   lang?: string,
   sample_text?: string,
-): Promise<void> => invoke("sample_voice", { voice, lang: lang ?? null, sampleText: sample_text ?? null });
+): Promise<number> => invoke("sample_voice", { voice, lang: lang ?? null, sampleText: sample_text ?? null });
 export const isModelReady = (): Promise<boolean> => invoke("is_model_ready");
 export const downloadModel = (): Promise<void> => invoke("download_model_cmd");
 export const openMain = (): Promise<void> => invoke("open_main_window");
@@ -289,6 +310,9 @@ export const readDocumentParagraphs = (
   voiceOverride?: string,
   speedOverride?: number,
   guion?: GuionEnriquecido,
+  // Metadatos de sesión: ruta y título (la aguja, la pantalla de bloqueo)
+  // y arranque en pausa (reposicionar sin sonar).
+  meta?: { docPath?: string; titulo?: string; startPaused?: boolean },
 ): Promise<void> =>
   invoke("read_document_paragraphs_cmd", {
     paragraphs,
@@ -299,6 +323,9 @@ export const readDocumentParagraphs = (
     pausas: guion?.pausas ?? null,
     velocidades: guion?.velocidades ?? null,
     voces: guion?.voces ?? null,
+    docPath: meta?.docPath ?? null,
+    titulo: meta?.titulo ?? null,
+    startPaused: meta?.startPaused ?? null,
   });
 // ── La cola (la puerta de entrada del móvil) ────────────────────────────
 export type TipoItemCola = "url" | "youtube" | "archivo" | "texto" | "audio";
@@ -321,6 +348,9 @@ export const colaAgregarTexto = (texto: string, titulo?: string): Promise<ItemCo
   invoke("cola_agregar_texto_cmd", { texto, titulo: titulo ?? null });
 export const colaAgregarArchivo = (ruta: string): Promise<ItemCola> =>
   invoke("cola_agregar_archivo_cmd", { ruta });
+/// Lee el portapapeles él solo y lo añade a la cinta (texto o URL).
+export const colaAgregarPortapapeles = (): Promise<ItemCola> =>
+  invoke("cola_agregar_portapapeles_cmd");
 export const colaAgregarAudio = (ruta: string): Promise<ItemCola> =>
   invoke("cola_agregar_audio_cmd", { ruta });
 export const colaEliminar = (id: string): Promise<void> =>

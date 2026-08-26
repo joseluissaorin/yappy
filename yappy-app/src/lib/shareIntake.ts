@@ -42,7 +42,10 @@ async function openInReaderAndRead(text: string, title: string): Promise<void> {
     const doc = await readTextAsDocument(text, title);
     reader.doc = doc;
     await goto("/read");
-    await readDocumentParagraphs(doc.paragraphs, 0);
+    await readDocumentParagraphs(doc.paragraphs, 0, undefined, undefined, undefined, {
+      docPath: doc.path,
+      titulo: title,
+    });
   } catch (e) {
     console.error("[shareIntake] openInReader failed, falling back to blind synth:", e);
     await synthesizeText(text);

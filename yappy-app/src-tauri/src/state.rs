@@ -48,6 +48,10 @@ pub struct AppState {
     /// se cogía «el primer documento del HashMap», que con dos ventanas
     /// enseñaba el equivocado.
     pub titulo_actual: Mutex<String>,
+    /// Candado del motor de síntesis: dos síntesis simultáneas (la cocina de
+    /// muestras y una lectura) tumbaron el simulador entero por CPU/memoria.
+    /// La cocina lo sostiene por muestra; la lectura lo usa de barrera.
+    pub candado_motor: Mutex<()>,
 }
 
 impl AppState {
@@ -59,6 +63,7 @@ impl AppState {
             playback: Arc::new(PlaybackController::new()),
             bridge: Bridge::default(),
             documents: Mutex::new(HashMap::new()),
+            candado_motor: Mutex::new(()),
             titulo_actual: Mutex::new(String::new()),
         }
     }

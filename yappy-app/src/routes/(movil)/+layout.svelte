@@ -5,15 +5,18 @@
   // el guard de plataforma, la ingesta de lo compartido, las acciones de
   // deep link y LA LLEGADA: la escena en que lo compartido cae en el pico.
   import { onMount, onDestroy } from "svelte";
-  import { goto } from "$app/navigation";
+  import { goto, afterNavigate } from "$app/navigation";
+  import { page } from "$app/state";
   import { ready, platformLocale } from "$lib/platform";
   import { get as getStore } from "svelte/store";
   import { fijarIdiomaDesdeLocale } from "$lib/i18n";
   import Criatura from "$lib/Criatura.svelte";
+  import Aguja from "$lib/Aguja.svelte";
   import { haptic } from "$lib/haptic";
   import { llegada } from "$lib/llegada.svelte";
   import { aplicarTintaVoz, tintaVoz } from "$lib/voces";
   import { startShareIntake, drainPending } from "$lib/shareIntake";
+  import { arrancarEspejo, reconciliar, repro } from "$lib/reproduccion.svelte";
   import { listen } from "@tauri-apps/api/event";
   import { readClipboard, colaAgregarArchivo, puenteVincular } from "$lib/ipc";
   import { invoke } from "@tauri-apps/api/core";
@@ -21,6 +24,16 @@
 
   let { children } = $props();
   let cleanups: (() => void)[] = [];
+
+  // La aguja vive en TODAS las páginas del móvil; en el cartel (/read) el
+  // escenario entero YA es el mando, así que ahí se esconde.
+  const enCartel = $derived(page.url.pathname.startsWith("/read"));
+  const agujaViva = $derived(!enCartel && !!repro.snap && repro.snap.estado !== "inactivo");
+
+  // Reconciliación tras CADA navegación: lo primero es pintar la verdad.
+  afterNavigate(() => {
+    reconciliar();
+  });
 
   onMount(async () => {
     const plataforma = await ready;
@@ -32,6 +45,7 @@
     const idiomaForzado = new URLSearchParams(window.location.search).get("idioma");
     fijarIdiomaDesdeLocale(idiomaForzado ?? getStore(platformLocale));
     aplicarTintaVoz();
+    await arrancarEspejo();
     startShareIntake();
 
     // Acciones que llegan por deep link (widget, Spotlight, atajos).
@@ -82,8 +96,12 @@
   onDestroy(() => cleanups.forEach((c) => c()));
 </script>
 
-<div class="movil">
+<div class="movil" style="--aguja-hueco: {agujaViva ? '84px' : '0px'}">
   {@render children?.()}
+
+  {#if !enCartel}
+    <Aguja />
+  {/if}
 
   {#if llegada.titulo}
     <!-- La llegada: el papel cae, el loro lo atrapa, y empieza a hablar. -->

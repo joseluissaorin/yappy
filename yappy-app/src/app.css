@@ -189,9 +189,26 @@ textarea {
   --acento-voz-claro: color-mix(in srgb, #f4682e 72%, var(--voz-tinta) 28%);
 }
 
+:root {
+  /* El muelle de la casa: sobreimpulso al soltar. */
+  --yap-muelle: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* El muelle de vuelta: TODA tecla baja rápida (.pulsado) y vuelve con
+   sobreimpulso. La bajada la pone .pulsado con su transición corta; esta
+   base es el viaje de vuelta. */
+button {
+  transition:
+    transform 0.26s var(--yap-muelle),
+    box-shadow 0.26s var(--yap-muelle),
+    filter 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
 /* La física del pulsado (acción «presionable»): se hunde al POSAR el dedo. */
 .pulsado {
-  transform: translateY(1.5px) scale(0.975) !important;
+  transform: translateY(1.5px) scale(0.965) !important;
   filter: brightness(0.97);
   transition: transform 0.06s ease, filter 0.06s ease !important;
 }
@@ -221,6 +238,19 @@ textarea {
 }
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+/* En el táctil NO existen las barras de scroll de navegador: una app no
+   enseña sus tripas de web. (El escritorio conserva las suyas arriba.) */
+@media (pointer: coarse) {
+  * {
+    scrollbar-width: none;
+  }
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
 }
 
 kbd {

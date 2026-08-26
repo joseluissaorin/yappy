@@ -164,7 +164,13 @@ pub fn change_count() -> i64 {
 // for the explicit "Read clipboard" command only — we deliberately avoid
 // the change-count polling that the desktop code does.
 
-#[cfg(any(target_os = "ios", target_os = "android"))]
+#[cfg(target_os = "ios")]
+pub fn read_text() -> Result<Option<String>> {
+    // El puente Swift a UIPasteboard: el stub anterior devolvía None y
+    // TODO el camino de «pegar» en iOS llevaba muerto desde el principio.
+    Ok(crate::mobile::pasteboard_text())
+}
+#[cfg(target_os = "android")]
 pub fn read_text() -> Result<Option<String>> {
     Ok(None)
 }

@@ -14,6 +14,7 @@
 
 import Foundation
 import AVFoundation
+import UIKit
 
 private actor SilentAudioKeepalive {
     static let shared = SilentAudioKeepalive()
@@ -204,6 +205,18 @@ public func yappy_background_audio_end() {
     Task {
         await SilentAudioKeepalive.shared.end()
     }
+}
+
+// ─── EL PORTAPAPELES ────────────────────────────────────────────────────
+//
+// UIPasteboard para el gesto explícito de «Pegar lo copiado». iOS enseña
+// su aviso de «pegado de X» al leer: correcto, es un pegado que el usuario
+// acaba de pedir. Devuelve NULL si no hay texto.
+
+@_cdecl("yappy_pasteboard_text")
+public func yappy_pasteboard_text() -> UnsafeMutablePointer<CChar>? {
+    guard let s = UIPasteboard.general.string, !s.isEmpty else { return nil }
+    return strdup(s)
 }
 
 // ─── SHARE EXTENSION PAYLOAD DRAINING ────────────────────────────────────

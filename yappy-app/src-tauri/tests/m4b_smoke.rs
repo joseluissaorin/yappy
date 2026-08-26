@@ -15,9 +15,18 @@ fn writes_valid_m4b_with_chapters() {
         .collect();
 
     let chapters = vec![
-        Chapter { title: "Intro".into(), start_secs: 0.0 },
-        Chapter { title: "Middle thing".into(), start_secs: 2.0 },
-        Chapter { title: "Outro".into(), start_secs: 4.0 },
+        Chapter {
+            title: "Intro".into(),
+            start_secs: 0.0,
+        },
+        Chapter {
+            title: "Middle thing".into(),
+            start_secs: 2.0,
+        },
+        Chapter {
+            title: "Outro".into(),
+            start_secs: 4.0,
+        },
     ];
     let meta = M4bMetadata {
         title: "Yappy m4b smoke".into(),
@@ -30,7 +39,11 @@ fn writes_valid_m4b_with_chapters() {
     encode_m4b(&samples, sr, &chapters, &meta, &out).expect("encode_m4b");
 
     let bytes = fs::read(&out).expect("read out");
-    assert!(bytes.len() > 1000, "file suspiciously small: {} bytes", bytes.len());
+    assert!(
+        bytes.len() > 1000,
+        "file suspiciously small: {} bytes",
+        bytes.len()
+    );
     // Must contain ftyp/M4B major brand
     assert!(window_contains(&bytes, b"ftyp"), "missing ftyp box");
     assert!(window_contains(&bytes, b"M4B "), "missing M4B brand");
@@ -38,7 +51,10 @@ fn writes_valid_m4b_with_chapters() {
     assert!(window_contains(&bytes, b"chpl"), "missing chpl atom");
     // Chapter titles must be present in raw bytes
     assert!(window_contains(&bytes, b"Intro"), "missing Intro title");
-    assert!(window_contains(&bytes, b"Middle thing"), "missing middle title");
+    assert!(
+        window_contains(&bytes, b"Middle thing"),
+        "missing middle title"
+    );
     assert!(window_contains(&bytes, b"Outro"), "missing Outro title");
     // mdat box must exist (audio data)
     assert!(window_contains(&bytes, b"mdat"), "missing mdat box");

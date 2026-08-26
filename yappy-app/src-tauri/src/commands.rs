@@ -1089,6 +1089,7 @@ pub async fn render_audiobook_cmd(
         )
     };
 
+    let state_for_render = state.inner().clone();
     let app_for_thread = app.clone();
     let total = paragraphs.len();
     let want_m4b = std::path::Path::new(&output_path)
@@ -1107,6 +1108,9 @@ pub async fn render_audiobook_cmd(
     let activity_total = paragraphs.len() as i32;
 
     tokio::task::spawn_blocking(move || -> Result<(), String> {
+        // Una sola síntesis a la vez en todo el proceso: el render sostiene
+        // el candado del motor (la cocina de muestras usa try_lock y espera).
+        let _motor = state_for_render.candado_motor.lock().unwrap();
         // iOS: engage silent-audio keepalive + Live Activity for the duration
         // of the render. The OS otherwise suspends us within ~30s of going to
         // background; audiobook renders can run for hours. The Live Activity
@@ -2045,6 +2049,13 @@ fn cocinar_muestra_blocking(
     voice: &str,
     lang: &str,
 ) -> Result<std::path::PathBuf> {
+    // NUNCA dos síntesis a la vez: si el motor está ocupado (lectura en
+    // barrera, render de horas) la cocina NO espera: falla rápido y el
+    // bucle de fondo reintenta más tarde.
+    let _motor = state
+        .candado_motor
+        .try_lock()
+        .map_err(|_| anyhow::anyhow!("motor ocupado"))?;
     let root = model::model_root(app)?;
     let engine = state.engine_or_load(&root)?;
     let texto = sample_for_voice(voice, lang);
@@ -2149,8 +2160,14 @@ pub async fn sample_voice(
         if p.exists() {
             return Ok(crate::mobile::efecto_play(&p.to_string_lossy()));
         }
-        // Aún no: cocinarla al vuelo (corta, rápida) y sonarla. La sesión
-        // del documento NO se toca en ningún caso.
+        // Aún no cocinada. Con una sesión de lectura viva NO se sintetiza
+        // (dos síntesis a la vez tumbaron el simulador): la cocina de fondo
+        // la hará al volver el silencio.
+        if state.playback.snapshot().estado != "inactivo" {
+            return Ok(0.0);
+        }
+        // Cocinarla al vuelo (corta, rápida) y sonarla. La sesión del
+        // documento NO se toca en ningún caso.
         let app2 = app.clone();
         let st = state.inner().clone();
         let v = voice.clone();
@@ -2650,6 +2667,9 @@ async fn read_internal<R: Runtime>(
             Ok(())
         };
 
+        {
+            let _barrera = state_for_thread.candado_motor.lock().unwrap();
+        }
         let res = match &guion_for_thread {
             Some(g) => engine.synthesize_guion(g, &opts_local, al_chunk),
             None => engine.synthesize_streaming(&text_for_thread, &opts_local, al_chunk),

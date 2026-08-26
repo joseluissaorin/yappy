@@ -69,6 +69,26 @@ pub fn drain_shared_payload_string() -> Option<String> {
 extern "C" {
     fn yappy_drain_shared_payload() -> *mut std::os::raw::c_char;
     fn yappy_free_string(ptr: *mut std::os::raw::c_char);
+    fn yappy_pasteboard_text() -> *mut std::os::raw::c_char;
+}
+
+/// Texto del UIPasteboard (None si está vacío). Para el gesto EXPLÍCITO de
+/// «Pegar lo copiado»: iOS enseña su aviso de pegado, y está bien que lo
+/// enseñe, porque el usuario acaba de pedirlo.
+pub fn pasteboard_text() -> Option<String> {
+    let raw = unsafe { yappy_pasteboard_text() };
+    if raw.is_null() {
+        return None;
+    }
+    let s = unsafe { std::ffi::CStr::from_ptr(raw) }
+        .to_string_lossy()
+        .into_owned();
+    unsafe { yappy_free_string(raw) };
+    if s.trim().is_empty() {
+        None
+    } else {
+        Some(s)
+    }
 }
 
 // ─── SPEECH-TO-TEXT (CoreML Parakeet via FluidAudio) ─────────────────────

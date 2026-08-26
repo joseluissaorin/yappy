@@ -1,312 +1,112 @@
-// i18n mínima de la casa: dos diccionarios (español e inglés) y un t()
-// reactivo. El idioma de la interfaz sigue al del sistema; el español es
-// primera lengua del proyecto, no una traducción.
+// La i18n de la casa, tercera vida: TODOS los idiomas que Yappy habla
+// tienen interfaz (31 diccionarios en $lib/i18n/, mismas claves que es.ts).
+// El idioma sigue al del sistema, con override manual en la trastienda.
+// El español es primera lengua del proyecto; el inglés, la red de seguridad.
 import { derived, writable } from "svelte/store";
 
-export type IdiomaUI = "es" | "en";
+import es from "./i18n/es";
+import en from "./i18n/en";
+import fr from "./i18n/fr";
+import de from "./i18n/de";
+import it from "./i18n/it";
+import pt from "./i18n/pt";
+import nl from "./i18n/nl";
+import pl from "./i18n/pl";
+import ro from "./i18n/ro";
+import sv from "./i18n/sv";
+import da from "./i18n/da";
+import fi from "./i18n/fi";
+import et from "./i18n/et";
+import lt from "./i18n/lt";
+import lv from "./i18n/lv";
+import hr from "./i18n/hr";
+import sl from "./i18n/sl";
+import sk from "./i18n/sk";
+import cs from "./i18n/cs";
+import hu from "./i18n/hu";
+import el from "./i18n/el";
+import bg from "./i18n/bg";
+import uk from "./i18n/uk";
+import ru from "./i18n/ru";
+import tr from "./i18n/tr";
+import ar from "./i18n/ar";
+import hi from "./i18n/hi";
+import id from "./i18n/id";
+import vi from "./i18n/vi";
+import ko from "./i18n/ko";
+import ja from "./i18n/ja";
+
+export const IDIOMAS_UI = [
+  "es", "en", "fr", "de", "it", "pt", "nl", "pl", "ro", "sv", "da", "fi",
+  "et", "lt", "lv", "hr", "sl", "sk", "cs", "hu", "el", "bg", "uk", "ru",
+  "tr", "ar", "hi", "id", "vi", "ko", "ja",
+] as const;
+export type IdiomaUI = (typeof IDIOMAS_UI)[number];
 
 const DICCIONARIOS: Record<IdiomaUI, Record<string, string>> = {
-  es: {
-    // navegación
-    "nav.escuchar": "Escuchar",
-    "nav.biblioteca": "Biblioteca",
-    "nav.ajustes": "Ajustes",
-    // escuchar
-    "escuchar.sigue": "Sigue donde ibas",
-    "escuchar.cola": "Recién llegado",
-    "escuchar.vacia.titulo": "Nada en la percha",
-    "escuchar.vacia.texto":
-      "Comparte un artículo, un PDF o un vídeo desde cualquier app con el botón de compartir, y aparecerá aquí listo para escucharse.",
-    "escuchar.anadir": "Añadir",
-    "escuchar.sin_voces": "Las voces aún no están",
-    "escuchar.pegar_enlace": "Pegar un enlace",
-    "escuchar.leer_portapapeles": "Leer el portapapeles",
-    "escuchar.abrir_archivo": "Abrir un archivo",
-    "cinta.pega_aqui": "pega aquí",
-    "cinta.pega_texto": "Un enlace, el portapapeles o un archivo: cae en la cinta y suena.",
-    "cinta.enlace": "Pegar un enlace",
-    "cinta.portapapeles": "Leer el portapapeles",
-    "cinta.archivo": "Abrir un archivo",
-    "cinta.a_la_cola": "A la cinta",
-    "cinta.preparando": "preparándose",
-    "cinta.error": "no pudo · toca para reintentar",
-    "cinta.min": "min",
-    "cinta.escuchado": "escuchado",
-    "cinta.bobinas": "audiolibros",
-    "cinta.trastienda": "la trastienda",
-    "cinta.trastienda_pista": "voz, tema, el puente",
-    "cinta.sonando": "sonando",
-    "cinta.en_pausa": "en pausa",
-    "cinta.vacia_titulo": "Comparte algo con Yappy, y lo digo.",
-    "cinta.vacia_texto": "Desde Safari, el correo o donde sea: toca compartir y elige Yappy.",
-    "cinta.ensename": "Enséñame",
-    "cinta.borrar": "quitar de la cinta",
-    "cartel.leer": "Leer en voz alta",
-    "cartel.fin": "fin",
-    "cartel.taller": "el taller",
-    "cartel.guion": "el guion",
-    "cartel.toca_para_seguir": "toca para seguir",
-    "cartel.velocidad": "velocidad",
-    "mando.atras": "atrás",
-    "mando.seguir": "seguir",
-    "mando.adelante": "adelante",
-    "voces.titulo": "Las voces",
-    "voces.pista": "Diez pájaros, todos políglotas. Toca uno y se presenta.",
-    "voces.hola": "¡Hola! Soy",
-    "manual.titulo": "Así se usa Yappy",
-    "manual.p1": "Yappy convierte lo escrito en voz. Esto que oyes ahora mismo es Yappy leyéndose a sí mismo.",
-    "manual.t2": "Compartir es todo",
-    "manual.p2": "Desde cualquier aplicación, toca compartir y elige Yappy. El artículo, el PDF o el vídeo caen en la cinta y, en cuanto están listos, empiezan a sonar.",
-    "manual.t3": "La pantalla es el botón",
-    "manual.p3": "Mientras leo, toca en cualquier sitio para pausar, y otra vez para seguir. Desliza a los lados para saltar de párrafo. Arrastra por el borde derecho para cambiar la velocidad.",
-    "manual.t4": "La cinta",
-    "manual.p4": "Todo lo que escuchas vive en una sola cinta: lo que viene, lo que suena y lo ya escuchado. Arrastra un segmento hacia fuera para quitarlo. Al final de la cinta está la trastienda, con las voces y el puente a tu ordenador.",
-    "manual.p5": "Eso es todo el manual. Comparte algo, y hablamos.",
-    "lector.volver": "volver",
-    "lector.ajustes": "ajustes de lectura",
-    "lector.capitulos": "capítulos",
-    "lector.leyendo": "leyendo",
-    "lector.en_pausa": "en pausa",
-    "lector.parrafo": "párrafo",
-    "lector.de": "de",
-    "lector.detener": "detener",
-    "lector.leer_todo": "Leer en voz alta",
-    "lector.creando": "creando el audiolibro",
-    "lector.creando_corto": "creando…",
-    "lector.ritmo": "ritmo",
-    "lector.ritmo_pista": "escala la velocidad y las pausas de todas las secciones, como la rueda de ritmo del editor.",
-    "lector.voz": "voz",
-    "lector.voz_defecto": "la voz por defecto",
-    "lector.guardar_m4b": "Guardar como audiolibro (.m4b)",
-    "lector.convertir": "Convertir en el ordenador",
-    "lector.convirtiendo": "convirtiendo en el ordenador…",
-    "lector.guardado": "guardado en tu Biblioteca",
-    "lector.abrir_biblioteca": "abrir la Biblioteca",
-    "lector.compartir": "compartir",
-    "lector.reiniciar_todo": "devolverlo todo a lo suyo",
-    "lector.ajustar": "ajustar el párrafo",
-    "lector.ajustar_parrafo": "ajustar este párrafo",
-    "lector.velocidad": "velocidad",
-    "lector.heredada": "(heredada)",
-    "lector.heredar": "volver a heredar",
-    "lector.heredar_doc": "heredar (la voz del documento)",
-    "lector.heredada_palabra": "heredada",
-    "lector.pausa_antes": "pausa antes",
-    "lector.primera_pausa": "el primer párrafo no puede llevar pausa delante.",
-    "lector.leer_desde_aqui": "leer desde aquí",
-    "lector.hecho": "hecho",
-    "lector.t_vuelto": "el audiolibro ha vuelto del ordenador: está en tu Biblioteca",
-    "lector.t_guardado": "audiolibro guardado en tu Biblioteca",
-    "lector.t_restaurado": "tus ajustes de lectura, restaurados",
-    "lector.t_reiniciado": "todo devuelto a lo suyo",
-    "lector.t_enviado": "enviado a tu ordenador: volverá solo",
-    "lector.t_fallo_export": "no se pudo exportar: ",
-    "escuchar.enlace_titulo": "Escuchar un enlace",
-    "escuchar.enlace_placeholder": "https://…",
-    "escuchar.enlace_boton": "A la cola",
-    "estado.pendiente": "en cola",
-    "estado.preparando": "preparando el guion…",
-    "estado.listo": "listo para escuchar",
-    "estado.error": "no pude con esto",
-    "cola.reintentar": "Reintentar",
-    "cola.borrar": "Borrar",
-    "cola.escuchar": "Escuchar",
-    // biblioteca
-    "biblioteca.buscar": "Buscar en la biblioteca",
-    "biblioteca.documentos": "Documentos",
-    "biblioteca.audiolibros": "Audiolibros",
-    "biblioteca.vacia.titulo": "La estantería, recién estrenada",
-    "biblioteca.vacia.texto":
-      "Todo lo que compartas o abras se guarda aquí, con tu progreso de escucha.",
-    "biblioteca.continuar": "continuar",
-    "biblioteca.min": "min",
-    // ajustes
-    "ajustes.titulo": "La trastienda",
-    "ajustes.voz": "Voz",
-    "ajustes.voz_defecto": "Voz por defecto",
-    "ajustes.velocidad": "Velocidad",
-    "ajustes.calidad": "Calidad de la voz",
-    "ajustes.calidad.rapida": "Rápida",
-    "ajustes.calidad.equilibrada": "Equilibrada",
-    "ajustes.calidad.mejor": "La mejor",
-    "ajustes.idioma": "Idioma preferido",
-    "ajustes.modelos": "Modelos en este dispositivo",
-    "ajustes.modelo_voces": "Voces (Supertonic)",
-    "ajustes.modelo_oido": "Oído (transcripción)",
-    "ajustes.descargar": "Descargar",
-    "ajustes.descargado": "instalado",
-    "ajustes.diagnostico": "Diagnóstico",
-    "ajustes.tema": "Aspecto",
-    "ajustes.ordenador": "Tu ordenador",
-    "ajustes.ordenador_texto_no":
-      "Empareja Yappy del ordenador (Preferencias → phone bridge): escanea su QR con la cámara del iPhone, o pega aquí el enlace.",
-    "ajustes.ordenador_texto_si":
-      "Puedes mandarle libros enteros: se convierten allí y el audiolibro vuelve solo a tu Biblioteca.",
-    "ajustes.vincular": "Vincular",
-    "ajustes.desvincular": "Desvincular",
-    "ajustes.vinculado": "vinculado",
-    "ajustes.tema.papel": "Papel",
-    "ajustes.tema.noche": "Noche",
-    "ajustes.tema.sistema": "Como el sistema",
-    // reproductor
-    "player.reanudar": "Reanudar",
-    "player.pausar": "Pausar",
-    // genéricos
-    "comun.cancelar": "Cancelar",
-    "comun.hecho": "Hecho",
-  },
-  en: {
-    "nav.escuchar": "Listen",
-    "nav.biblioteca": "Library",
-    "nav.ajustes": "Settings",
-    "escuchar.sigue": "Pick up where you left off",
-    "escuchar.cola": "Just arrived",
-    "escuchar.vacia.titulo": "Nothing on the perch",
-    "escuchar.vacia.texto":
-      "Share an article, a PDF or a video from any app with the share button, and it will land here ready to listen.",
-    "escuchar.anadir": "Add",
-    "escuchar.sin_voces": "The voices aren't here yet",
-    "escuchar.pegar_enlace": "Paste a link",
-    "escuchar.leer_portapapeles": "Read the clipboard",
-    "escuchar.abrir_archivo": "Open a file",
-    "cinta.pega_aqui": "paste here",
-    "cinta.pega_texto": "A link, the clipboard or a file: it lands on the tape and speaks.",
-    "cinta.enlace": "Paste a link",
-    "cinta.portapapeles": "Read the clipboard",
-    "cinta.archivo": "Open a file",
-    "cinta.a_la_cola": "Onto the tape",
-    "cinta.preparando": "getting ready",
-    "cinta.error": "failed · tap to retry",
-    "cinta.min": "min",
-    "cinta.escuchado": "listened",
-    "cinta.bobinas": "audiobooks",
-    "cinta.trastienda": "the back room",
-    "cinta.trastienda_pista": "voice, theme, the bridge",
-    "cinta.sonando": "playing",
-    "cinta.en_pausa": "paused",
-    "cinta.vacia_titulo": "Share something with Yappy, and I'll say it.",
-    "cinta.vacia_texto": "From Safari, your email or anywhere: tap share and pick Yappy.",
-    "cinta.ensename": "Show me",
-    "cinta.borrar": "remove from the tape",
-    "cartel.leer": "Read aloud",
-    "cartel.fin": "the end",
-    "cartel.taller": "the workshop",
-    "cartel.guion": "the script",
-    "cartel.toca_para_seguir": "tap to resume",
-    "cartel.velocidad": "speed",
-    "mando.atras": "back",
-    "mando.seguir": "resume",
-    "mando.adelante": "ahead",
-    "voces.titulo": "The voices",
-    "voces.pista": "Ten birds, all polyglot. Tap one and it introduces itself.",
-    "voces.hola": "Hi! I'm",
-    "manual.titulo": "How Yappy works",
-    "manual.p1": "Yappy turns writing into voice. What you're hearing right now is Yappy reading itself.",
-    "manual.t2": "Sharing is everything",
-    "manual.p2": "From any app, tap share and pick Yappy. The article, the PDF or the video lands on the tape and starts speaking as soon as it's ready.",
-    "manual.t3": "The screen is the button",
-    "manual.p3": "While I read, tap anywhere to pause, and again to resume. Swipe sideways to jump between paragraphs. Drag along the right edge to change the speed.",
-    "manual.t4": "The tape",
-    "manual.p4": "Everything you listen to lives on a single tape: what's coming, what's playing and what's already heard. Drag a segment off to remove it. At the end of the tape is the back room, with the voices and the bridge to your computer.",
-    "manual.p5": "That's the whole manual. Share something, and we'll talk.",
-    "lector.volver": "back",
-    "lector.ajustes": "reading settings",
-    "lector.capitulos": "chapters",
-    "lector.leyendo": "reading aloud",
-    "lector.en_pausa": "paused",
-    "lector.parrafo": "paragraph",
-    "lector.de": "of",
-    "lector.detener": "stop",
-    "lector.leer_todo": "Read aloud",
-    "lector.creando": "building audiobook",
-    "lector.creando_corto": "building…",
-    "lector.ritmo": "pace",
-    "lector.ritmo_pista": "scales every section's speed and pauses, like the desktop editor's rhythm dial.",
-    "lector.voz": "voice",
-    "lector.voz_defecto": "default voice",
-    "lector.guardar_m4b": "Save as audiobook (.m4b)",
-    "lector.convertir": "Convert on your computer",
-    "lector.convirtiendo": "converting on your computer…",
-    "lector.guardado": "saved to your Library",
-    "lector.abrir_biblioteca": "open Library",
-    "lector.compartir": "share",
-    "lector.reiniciar_todo": "reset all to defaults",
-    "lector.ajustar": "adjust paragraph",
-    "lector.ajustar_parrafo": "adjust this paragraph",
-    "lector.velocidad": "speed",
-    "lector.heredada": "(inherit)",
-    "lector.heredar": "reset to inherit",
-    "lector.heredar_doc": "inherit (document voice)",
-    "lector.heredada_palabra": "inherit",
-    "lector.pausa_antes": "pause before",
-    "lector.primera_pausa": "the first paragraph can't have a leading pause.",
-    "lector.leer_desde_aqui": "read from here",
-    "lector.hecho": "done",
-    "lector.t_vuelto": "audiobook back from your computer: it's in your Library",
-    "lector.t_guardado": "audiobook saved to your Library",
-    "lector.t_restaurado": "your reading settings, restored",
-    "lector.t_reiniciado": "reset to defaults",
-    "lector.t_enviado": "sent to your computer: it will come back on its own",
-    "lector.t_fallo_export": "export failed: ",
-    "escuchar.enlace_titulo": "Listen to a link",
-    "escuchar.enlace_placeholder": "https://…",
-    "escuchar.enlace_boton": "Queue it",
-    "estado.pendiente": "queued",
-    "estado.preparando": "preparing the script…",
-    "estado.listo": "ready to listen",
-    "estado.error": "couldn't handle this",
-    "cola.reintentar": "Retry",
-    "cola.borrar": "Delete",
-    "cola.escuchar": "Listen",
-    "biblioteca.buscar": "Search the library",
-    "biblioteca.documentos": "Documents",
-    "biblioteca.audiolibros": "Audiobooks",
-    "biblioteca.vacia.titulo": "A brand-new shelf",
-    "biblioteca.vacia.texto":
-      "Everything you share or open is kept here, with your listening progress.",
-    "biblioteca.continuar": "continue",
-    "biblioteca.min": "min",
-    "ajustes.titulo": "The back room",
-    "ajustes.voz": "Voice",
-    "ajustes.voz_defecto": "Default voice",
-    "ajustes.velocidad": "Speed",
-    "ajustes.calidad": "Voice quality",
-    "ajustes.calidad.rapida": "Fast",
-    "ajustes.calidad.equilibrada": "Balanced",
-    "ajustes.calidad.mejor": "Best",
-    "ajustes.idioma": "Preferred language",
-    "ajustes.modelos": "Models on this device",
-    "ajustes.modelo_voces": "Voices (Supertonic)",
-    "ajustes.modelo_oido": "Ear (transcription)",
-    "ajustes.descargar": "Download",
-    "ajustes.descargado": "installed",
-    "ajustes.diagnostico": "Diagnostics",
-    "ajustes.tema": "Appearance",
-    "ajustes.ordenador": "Your computer",
-    "ajustes.ordenador_texto_no":
-      "Pair Yappy on your computer (Preferences → phone bridge): scan its QR with the iPhone camera, or paste the link here.",
-    "ajustes.ordenador_texto_si":
-      "You can send it whole books: they convert over there and the audiobook comes back to your Library on its own.",
-    "ajustes.vincular": "Link",
-    "ajustes.desvincular": "Unlink",
-    "ajustes.vinculado": "linked",
-    "ajustes.tema.papel": "Paper",
-    "ajustes.tema.noche": "Night",
-    "ajustes.tema.sistema": "Match the system",
-    "player.reanudar": "Resume",
-    "player.pausar": "Pause",
-    "comun.cancelar": "Cancel",
-    "comun.hecho": "Done",
-  },
+  es, en, fr, de, it, pt, nl, pl, ro, sv, da, fi, et, lt, lv, hr, sl, sk,
+  cs, hu, el, bg, uk, ru, tr, ar, hi, id, vi, ko, ja,
 };
+
+const CLAVE_PREFERENCIA = "yappy.idioma_ui";
+
+function preferenciaGuardada(): IdiomaUI | "auto" {
+  try {
+    const v = localStorage.getItem(CLAVE_PREFERENCIA);
+    if (v && (v === "auto" || (IDIOMAS_UI as readonly string[]).includes(v))) {
+      return v as IdiomaUI | "auto";
+    }
+  } catch {}
+  return "auto";
+}
+
+/// Resuelve un locale del sistema («es-ES», «pt_BR», «zh-Hant»…) al idioma
+/// de interfaz soportado más cercano. Inglés como red de seguridad.
+export function resolverIdioma(locale: string | null | undefined): IdiomaUI {
+  const l = (locale ?? "").toLowerCase().replace("_", "-");
+  const base = l.split("-")[0];
+  if ((IDIOMAS_UI as readonly string[]).includes(base)) return base as IdiomaUI;
+  // Noruego cae al danés (mutuamente legibles); gallego/catalán al español.
+  if (base === "nb" || base === "nn" || base === "no") return "da";
+  if (base === "gl" || base === "ca" || base === "eu") return "es";
+  return "en";
+}
 
 export const idiomaUI = writable<IdiomaUI>("en");
 
+let ultimoLocale: string | null = null;
+
 export function fijarIdiomaDesdeLocale(locale: string | null | undefined) {
-  idiomaUI.set(locale?.toLowerCase().startsWith("es") ? "es" : "en");
+  ultimoLocale = locale ?? null;
+  const pref = preferenciaGuardada();
+  idiomaUI.set(pref === "auto" ? resolverIdioma(locale) : pref);
 }
 
-/// t("clave") reactivo: $t en los componentes.
+/// El override manual de la trastienda: «auto» vuelve a seguir al sistema.
+export function fijarPreferenciaIdioma(codigo: IdiomaUI | "auto") {
+  try {
+    localStorage.setItem(CLAVE_PREFERENCIA, codigo);
+  } catch {}
+  idiomaUI.set(codigo === "auto" ? resolverIdioma(ultimoLocale) : codigo);
+}
+
+export function preferenciaIdioma(): IdiomaUI | "auto" {
+  return preferenciaGuardada();
+}
+
+/// El nombre de cada idioma, en su propio idioma (para el selector).
+export const NOMBRE_IDIOMA: Record<IdiomaUI, string> = {
+  es: "Español", en: "English", fr: "Français", de: "Deutsch", it: "Italiano",
+  pt: "Português", nl: "Nederlands", pl: "Polski", ro: "Română", sv: "Svenska",
+  da: "Dansk", fi: "Suomi", et: "Eesti", lt: "Lietuvių", lv: "Latviešu",
+  hr: "Hrvatski", sl: "Slovenščina", sk: "Slovenčina", cs: "Čeština",
+  hu: "Magyar", el: "Ελληνικά", bg: "Български", uk: "Українська",
+  ru: "Русский", tr: "Türkçe", ar: "العربية", hi: "हिन्दी",
+  id: "Bahasa Indonesia", vi: "Tiếng Việt", ko: "한국어", ja: "日本語",
+};
+
+/// t("clave") reactivo: $t en los componentes. Cae a inglés y luego a
+/// español antes de rendirse a la clave cruda.
 export const t = derived(idiomaUI, ($l) => (clave: string): string => {
-  return DICCIONARIOS[$l][clave] ?? DICCIONARIOS.en[clave] ?? clave;
+  return DICCIONARIOS[$l][clave] ?? DICCIONARIOS.en[clave] ?? DICCIONARIOS.es[clave] ?? clave;
 });
