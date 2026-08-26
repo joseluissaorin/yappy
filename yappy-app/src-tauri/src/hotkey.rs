@@ -39,8 +39,6 @@ pub fn set_hotkey<R: tauri::Runtime>(
 #[cfg(desktop)]
 use anyhow::anyhow;
 #[cfg(desktop)]
-use tauri::Manager;
-#[cfg(desktop)]
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState};
 
 #[cfg(desktop)]
@@ -73,7 +71,7 @@ pub fn parse_combo(combo: &str) -> Result<Shortcut> {
         let mut cur = String::new();
         for ch in combo.chars() {
             // glyph-based separators
-            if matches!(ch, '⌘' | '⌃' | '⌥' | '⇧' | '⎈' | '⇧') {
+            if matches!(ch, '⌘' | '⌃' | '⌥' | '⇧' | '⎈') {
                 if !cur.is_empty() {
                     tmp.push(cur.clone());
                     cur.clear();
@@ -200,7 +198,7 @@ pub fn register_from_settings<R: tauri::Runtime>(
 
     let app1 = handle.clone();
     let state1 = state.clone();
-    let read_sc = read_shortcut.clone();
+    let read_sc = read_shortcut;
     handle.global_shortcut().on_shortcut(
         read_shortcut,
         move |_app, sc, ev| {
@@ -218,7 +216,7 @@ pub fn register_from_settings<R: tauri::Runtime>(
 
     let app2 = handle.clone();
     let state2 = state.clone();
-    let pause_sc = pause_shortcut.clone();
+    let pause_sc = pause_shortcut;
     handle.global_shortcut().on_shortcut(
         pause_shortcut,
         move |_app, sc, ev| {
@@ -237,7 +235,7 @@ pub fn register_from_settings<R: tauri::Runtime>(
     if let Ok(clip_shortcut) = parse_combo(&clipboard_combo) {
         let app3 = handle.clone();
         let state3 = state.clone();
-        let clip_sc = clip_shortcut.clone();
+        let clip_sc = clip_shortcut;
         handle.global_shortcut().on_shortcut(
             clip_shortcut,
             move |_app, sc, ev| {

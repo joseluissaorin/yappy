@@ -451,10 +451,9 @@ async fn preparar_youtube<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> Re
         }
         actual.push_str(t);
         frases += 1;
-        if frases >= 4 && (t.ends_with('.') || t.ends_with('?') || t.ends_with('!')) {
-            parrafos.push(std::mem::take(&mut actual));
-            frases = 0;
-        } else if actual.chars().count() > 700 {
+        let corta_por_frases =
+            frases >= 4 && (t.ends_with('.') || t.ends_with('?') || t.ends_with('!'));
+        if corta_por_frases || actual.chars().count() > 700 {
             parrafos.push(std::mem::take(&mut actual));
             frases = 0;
         }
@@ -529,6 +528,26 @@ pub fn cola_agregar_texto_cmd(
 #[tauri::command]
 pub fn cola_agregar_archivo_cmd(app: AppHandle, ruta: String) -> Result<ItemCola, String> {
     agregar_archivo(&app, ruta).map_err(|e| e.to_string())
+}
+
+/// «Pegar lo copiado»: lee el portapapeles EL SOLO (nada de pelear con el
+/// menú de pegar del sistema) y lo añade a la cinta. Si lo copiado es una
+/// URL, entra por el camino de artículo.
+#[tauri::command]
+pub fn cola_agregar_portapapeles_cmd(app: AppHandle) -> Result<ItemCola, String> {
+    let texto = crate::capture::clipboard::read_text()
+        .map_err(|e| e.to_string())?
+        .unwrap_or_default();
+    let texto = texto.trim().to_string();
+    if texto.is_empty() {
+        return Err("portapapeles vacío".into());
+    }
+    let es_url = texto.starts_with("http://") || texto.starts_with("https://");
+    if es_url && !texto.contains(char::is_whitespace) {
+        agregar_url(&app, texto).map_err(|e| e.to_string())
+    } else {
+        agregar_texto(&app, texto, None).map_err(|e| e.to_string())
+    }
 }
 
 #[tauri::command]

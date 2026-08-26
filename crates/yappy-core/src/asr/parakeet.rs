@@ -210,7 +210,7 @@ impl ParakeetAsr {
                     .rev()
                     .take_while(|c| c.is_alphabetic())
                     .count();
-                let is_article_a = trailing_letters == 1 && full.chars().last() == Some('a');
+                let is_article_a = trailing_letters == 1 && full.ends_with('a');
                 if trailing_letters > 1 || is_article_a {
                     text.insert(0, ' ');
                 }

@@ -18,10 +18,14 @@
 //!   - Toast notifications (already covered by tauri-plugin-notification
 //!     which uses WinRT toasts on Windows)
 
+// Stubs multiplataforma: cada SO usa un subconjunto.
+#![allow(dead_code)]
+
 #![allow(unused_variables)]
 
 use std::sync::Arc;
 
+#[cfg(target_os = "windows")]
 use crate::state::AppState;
 
 // ─── Cross-platform stubs (compiled on every target) ───────────────────

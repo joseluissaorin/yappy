@@ -19,14 +19,14 @@ use crate::asr_model;
 use crate::transcripts;
 use crate::playback::AudioChunk;
 use crate::settings::{
-    self, AppTheme, OcrEngine, PlayerPositionPreset, PlayerTheme, Quality, Settings, SettingsStore,
+    self, AppTheme, OcrEngine, PlayerPositionPreset, PlayerTheme, Quality, Settings,
 };
 use crate::state::AppState;
 use crate::windows;
 
 #[tauri::command]
 pub fn list_voices() -> Vec<Voice> {
-    yappy_core::VOICES.iter().cloned().collect()
+    yappy_core::VOICES.to_vec()
 }
 
 #[tauri::command]
@@ -1047,11 +1047,13 @@ pub async fn render_audiobook_cmd(
         .map(|e| e.eq_ignore_ascii_case("m4b") || e.eq_ignore_ascii_case("m4a"))
         .unwrap_or(false);
 
+    #[allow(unused_variables)] // solo lo usa el brazo iOS del cierre
     let activity_title = std::path::Path::new(&output_path)
         .file_stem()
         .and_then(|s| s.to_str())
         .map(|s| s.to_string())
         .unwrap_or_else(|| "Audiobook".to_string());
+    #[allow(unused_variables)] // solo lo usa el brazo iOS del cierre
     let activity_total = paragraphs.len() as i32;
 
     tokio::task::spawn_blocking(move || -> Result<(), String> {
@@ -1094,7 +1096,7 @@ pub async fn render_audiobook_cmd(
                 let pause_secs = p.pause_before.unwrap_or(0.35).max(0.0);
                 if sample_rate > 0 && pause_secs > 0.0 {
                     let n = (pause_secs * sample_rate as f32) as usize;
-                    combined.extend(std::iter::repeat(0.0_f32).take(n));
+                    combined.extend(std::iter::repeat_n(0.0_f32, n));
                 }
             }
 
@@ -1264,6 +1266,12 @@ pub async fn read_document_paragraphs_cmd(
     pausas: Option<Vec<f32>>,
     velocidades: Option<Vec<f32>>,
     voces: Option<Vec<Option<String>>>,
+    // Ruta del documento (para la aguja y la restauración), título humano de
+    // la sesión, y si la sesión nace EN PAUSA (saltar desde el guion estando
+    // en pausa no debe arrancar audio). Opcionales por compatibilidad.
+    doc_path: Option<String>,
+    titulo: Option<String>,
+    start_paused: Option<bool>,
 ) -> Result<(), String> {
     let joined = paragraphs
         .iter()
@@ -1334,6 +1342,11 @@ pub async fn read_document_paragraphs_cmd(
         None,
         "document".into(),
         ReadMode::Document { base_paragraph_index: from_index },
+        SessionMeta {
+            doc_path: doc_path.unwrap_or_default(),
+            titulo: titulo.unwrap_or_default(),
+            start_paused: start_paused.unwrap_or(false),
+        },
     )
     .await
     .map_err(|e| e.to_string());
@@ -1350,6 +1363,31 @@ pub async fn read_document_paragraphs_cmd(
 #[tauri::command]
 pub fn stop_playback_cmd(state: State<'_, Arc<AppState>>) {
     state.playback.stop();
+}
+
+/// Salto por FRASE dentro de lo ya sintetizado: instantáneo, sin resíntesis.
+#[tauri::command]
+pub fn saltar_frase_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
+    state.playback.saltar_chunk(delta);
+}
+
+/// Salto por PÁRRAFO dentro de lo ya sintetizado.
+#[tauri::command]
+pub fn saltar_parrafo_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
+    state.playback.saltar_parrafo(delta);
+}
+
+/// Pausa directa (no toggle): para la aguja y los mandos que saben lo que
+/// quieren. Instantánea a nivel de mezclador.
+#[tauri::command]
+pub fn pausar_cmd(state: State<'_, Arc<AppState>>) {
+    state.playback.pause();
+}
+
+/// Reanudación directa (no toggle).
+#[tauri::command]
+pub fn reanudar_cmd(state: State<'_, Arc<AppState>>) {
+    state.playback.resume();
 }
 
 #[tauri::command]
@@ -1543,7 +1581,7 @@ pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryI
             resume_secs,
         });
     }
-    items.sort_by(|a, b| b.mtime_ms.cmp(&a.mtime_ms));
+    items.sort_by_key(|it| std::cmp::Reverse(it.mtime_ms));
     Ok(items)
 }
 
@@ -1649,6 +1687,8 @@ pub fn library_stop_cmd(app: AppHandle) {
 pub fn library_seek_cmd(secs: f64) {
     #[cfg(target_os = "ios")]
     crate::mobile::audiofile_seek(secs);
+    #[cfg(not(target_os = "ios"))]
+    let _ = secs;
 }
 
 #[derive(serde::Serialize, Debug, Clone)]
@@ -1892,6 +1932,118 @@ fn truncate(s: &str, max: usize) -> String {
     }
 }
 
+// ----- MUESTRAS DE VOZ PRECOCINADAS -----
+//
+// La presentación de cada voz se sintetiza UNA vez (calidad rápida, velocidad
+// 1.0) y se cachea como wav. Tocar un cromo = reproducir el fichero por el
+// canal de efectos: instantáneo, y SIN tocar la sesión del documento (el que
+// esté en pausa sigue en pausa). En el móvil, sintetizar en vivo tardaba
+// decenas de segundos y encima mataba la sesión.
+
+fn muestras_dir(app: &AppHandle) -> Result<std::path::PathBuf, String> {
+    let dir = app
+        .path()
+        .app_data_dir()
+        .map_err(|e| e.to_string())?
+        .join("muestras");
+    std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+    Ok(dir)
+}
+
+fn muestra_path(app: &AppHandle, voice: &str, lang: &str) -> Result<std::path::PathBuf, String> {
+    let v: String = voice
+        .chars()
+        .filter(|c| c.is_alphanumeric())
+        .collect::<String>()
+        .to_lowercase();
+    Ok(muestras_dir(app)?.join(format!("{v}-{lang}-v1.wav")))
+}
+
+/// Sintetiza la presentación de una voz y la escribe en la caché. Bloqueante:
+/// llamar desde spawn_blocking o el hilo de cocina.
+fn cocinar_muestra_blocking(
+    app: &AppHandle,
+    state: &Arc<AppState>,
+    voice: &str,
+    lang: &str,
+) -> Result<std::path::PathBuf> {
+    let root = model::model_root(app)?;
+    let engine = state.engine_or_load(&root)?;
+    let texto = sample_for_voice(voice, lang);
+    let opts = SynthesisOptions {
+        voice: voice.to_string(),
+        speed: 1.0,
+        default_lang: lang.to_string(),
+        total_steps: Quality::Fast.total_steps(),
+        seed: Some(7),
+        detectar_idioma: false,
+        pausa_entre_parrafos_s: 0.0,
+    };
+    let chunks = engine.synthesize(&texto, &opts)?;
+    let sr = chunks.first().map(|c| c.sample_rate).unwrap_or(44100) as u32;
+    let samples: Vec<f32> = chunks
+        .iter()
+        .flat_map(|c| c.samples.iter().copied())
+        .collect();
+    let p = muestra_path(app, voice, lang).map_err(|e| anyhow::anyhow!(e))?;
+    crate::playback::write_wav_file(&p, &samples, sr)?;
+    tracing::info!("muestra cocinada: {} ({lang}, {:.1}s)", voice, samples.len() as f32 / sr as f32);
+    Ok(p)
+}
+
+/// El idioma de las presentaciones: el preferido del usuario, con «na»
+/// (autodetección) cayendo a inglés.
+fn lang_de_muestras(state: &Arc<AppState>) -> String {
+    let l = state.settings.lock().unwrap().default_lang.clone();
+    if l == "na" || l.is_empty() { "en".into() } else { l }
+}
+
+/// La cocina de fondo (móvil): cuando el modelo está listo y no suena nada,
+/// va cocinando las presentaciones que falten. Corre en su propio hilo con
+/// paciencia infinita; nunca pisa una lectura en marcha.
+#[allow(dead_code)]
+pub fn precocinar_muestras(app: AppHandle, state: Arc<AppState>) {
+    std::thread::Builder::new()
+        .name("yappy-muestras".into())
+        .spawn(move || {
+            // Dejar que la app arranque tranquila antes de gastar CPU.
+            std::thread::sleep(std::time::Duration::from_secs(12));
+            loop {
+                if !model::is_model_ready(&app).unwrap_or(false) {
+                    std::thread::sleep(std::time::Duration::from_secs(30));
+                    continue;
+                }
+                let lang = lang_de_muestras(&state);
+                let faltan: Vec<String> = yappy_core::VOICES
+                    .iter()
+                    .filter(|v| {
+                        muestra_path(&app, v.name, &lang)
+                            .map(|p| !p.exists())
+                            .unwrap_or(false)
+                    })
+                    .map(|v| v.name.to_string())
+                    .collect();
+                if faltan.is_empty() {
+                    tracing::info!("muestras: todas cocinadas ({lang})");
+                    break;
+                }
+                for voz in faltan {
+                    // Nunca competir con una lectura: esperar al silencio.
+                    while state.playback.snapshot().estado != "inactivo" {
+                        std::thread::sleep(std::time::Duration::from_secs(5));
+                    }
+                    if let Err(e) = cocinar_muestra_blocking(&app, &state, &voz, &lang) {
+                        tracing::warn!("muestras: {voz} falló: {e:?}");
+                        std::thread::sleep(std::time::Duration::from_secs(10));
+                    }
+                }
+            }
+        })
+        .ok();
+}
+
+/// Devuelve la duración de la muestra en segundos (0.0 si hubo que cocinarla
+/// y no se sabe aún, o en el camino vivo del escritorio).
 #[tauri::command]
 pub async fn sample_voice(
     app: AppHandle,
@@ -1899,34 +2051,86 @@ pub async fn sample_voice(
     voice: String,
     lang: Option<String>,
     sample_text: Option<String>,
-) -> Result<(), String> {
-    let lang = lang.unwrap_or_else(|| state.settings.lock().unwrap().default_lang.clone());
-    let text = sample_text.unwrap_or_else(|| sample_for_voice(&voice, &lang));
-    state.playback.stop();
-    let h = app.clone();
-    let s = state.inner().clone();
-    tauri::async_runtime::spawn(async move {
-        if let Err(e) = read_with_voice_lang(&h, s, text, voice, lang, "sample".into()).await {
-            tracing::error!("sample_voice: {e:?}");
+) -> Result<f64, String> {
+    let lang = match lang {
+        Some(l) if !l.is_empty() && l != "na" => l,
+        _ => lang_de_muestras(state.inner()),
+    };
+    #[cfg(target_os = "ios")]
+    {
+        // Camino instantáneo: la muestra ya está cocinada.
+        let p = muestra_path(&app, &voice, &lang)?;
+        if p.exists() {
+            return Ok(crate::mobile::efecto_play(&p.to_string_lossy()));
         }
-    });
-    Ok(())
+        // Aún no: cocinarla al vuelo (corta, rápida) y sonarla. La sesión
+        // del documento NO se toca en ningún caso.
+        let app2 = app.clone();
+        let st = state.inner().clone();
+        let v = voice.clone();
+        let l = lang.clone();
+        let dur = tauri::async_runtime::spawn_blocking(move || -> Result<f64, String> {
+            let p = cocinar_muestra_blocking(&app2, &st, &v, &l).map_err(|e| e.to_string())?;
+            Ok(crate::mobile::efecto_play(&p.to_string_lossy()))
+        })
+        .await
+        .map_err(|e| e.to_string())??;
+        let _ = sample_text;
+        return Ok(dur);
+    }
+    #[cfg(not(target_os = "ios"))]
+    {
+        let text = sample_text.unwrap_or_else(|| sample_for_voice(&voice, &lang));
+        state.playback.stop();
+        let h = app.clone();
+        let s = state.inner().clone();
+        tauri::async_runtime::spawn(async move {
+            if let Err(e) = read_with_voice_lang(&h, s, text, voice, lang, "sample".into()).await {
+                tracing::error!("sample_voice: {e:?}");
+            }
+        });
+        Ok(0.0)
+    }
 }
 
+/// La presentación de cada voz, en el idioma preferido del usuario: los 31
+/// idiomas que Yappy habla. Formas sin marca de género donde la lengua lo
+/// pide (las voces son de ambos).
 fn sample_for_voice(name: &str, lang: &str) -> String {
     let v = yappy_core::voices::by_name(name).unwrap_or_else(yappy_core::voices::default_voice);
+    let n = &v.name;
     match lang {
-        "es" => format!("Hola, soy {}, y leeré todo lo que pongas delante de mí.", v.name),
-        "fr" => format!("Bonjour, je suis {}, et je lirai tout ce que vous me donnerez.", v.name),
-        "de" => format!("Hallo, ich bin {}, und ich lese gerne alles, was du mir gibst.", v.name),
-        "it" => format!("Ciao, sono {}, e leggerò ad alta voce qualsiasi cosa tu mi dia.", v.name),
-        "pt" => format!("Olá, eu sou {}, e vou ler tudo o que você me der.", v.name),
-        "ja" => format!("こんにちは、{}です。 何でも声に出して読みます。", v.name),
-        "ko" => format!("안녕하세요, 저는 {}입니다. 무엇이든 소리내어 읽어드릴게요.", v.name),
-        _ => format!(
-            "Hi, I'm {}. I'd love to read anything you put in front of me.",
-            v.name
-        ),
+        "es" => format!("Hola, soy {n}, y leeré todo lo que pongas delante de mí."),
+        "fr" => format!("Bonjour, je suis {n}, et je lirai tout ce que vous me donnerez."),
+        "de" => format!("Hallo, ich bin {n}, und ich lese gerne alles, was du mir gibst."),
+        "it" => format!("Ciao, sono {n}, e leggerò ad alta voce qualsiasi cosa tu mi dia."),
+        "pt" => format!("Olá, eu sou {n}, e vou ler tudo o que você me der."),
+        "nl" => format!("Hallo, ik ben {n}, en ik lees alles voor wat je me geeft."),
+        "pl" => format!("Cześć, jestem {n}. Przeczytam na głos wszystko, co mi dasz."),
+        "ro" => format!("Bună, sunt {n}, și voi citi cu voce tare tot ce îmi dai."),
+        "sv" => format!("Hej, jag är {n}, och jag läser gärna upp allt du ger mig."),
+        "da" => format!("Hej, jeg er {n}, og jeg læser gerne alt højt for dig."),
+        "fi" => format!("Hei, olen {n}. Luen ääneen kaiken, minkä annat minulle."),
+        "et" => format!("Tere, mina olen {n}. Loen ette kõik, mille mulle annad."),
+        "lt" => format!("Labas, aš esu {n}. Garsiai perskaitysiu viską, ką man duosi."),
+        "lv" => format!("Sveiki, es esmu {n}. Es skaļi nolasīšu visu, ko man iedosi."),
+        "hr" => format!("Bok, ja sam {n}. Naglas ću pročitati sve što mi daš."),
+        "sl" => format!("Živjo, jaz sem {n}. Na glas preberem vse, kar mi daš."),
+        "sk" => format!("Ahoj, som {n}. Nahlas prečítam všetko, čo mi dáš."),
+        "cs" => format!("Ahoj, jsem {n}. Nahlas přečtu všechno, co mi dáš."),
+        "hu" => format!("Szia, {n} vagyok. Felolvasok mindent, amit csak adsz."),
+        "el" => format!("Γεια σου, με λένε {n}. Διαβάζω δυνατά ό,τι μου δώσεις."),
+        "bg" => format!("Здравей, аз съм {n}. Ще прочета на глас всичко, което ми дадеш."),
+        "uk" => format!("Привіт, я {n}. Прочитаю вголос усе, що ти мені даси."),
+        "ru" => format!("Привет, я {n}. Прочитаю вслух всё, что ты мне дашь."),
+        "tr" => format!("Merhaba, ben {n}. Bana verdiğin her şeyi sesli okurum."),
+        "ar" => format!("مرحباً، أنا {n}. سأقرأ بصوت عالٍ كل ما تعطيني إياه."),
+        "hi" => format!("नमस्ते, मैं {n} हूँ। आप जो भी देंगे, उसे ज़ोर से पढ़ने के लिए तैयार हूँ।"),
+        "id" => format!("Halo, saya {n}. Saya akan membacakan apa pun yang kamu berikan."),
+        "vi" => format!("Xin chào, tôi là {n}. Tôi sẽ đọc to mọi thứ bạn đưa cho tôi."),
+        "ko" => format!("안녕하세요, 저는 {n}입니다. 무엇이든 소리내어 읽어드릴게요."),
+        "ja" => format!("こんにちは、{n}です。 何でも声に出して読みます。"),
+        _ => format!("Hi, I'm {n}. I'd love to read anything you put in front of me."),
     }
 }
 
@@ -2063,6 +2267,7 @@ pub async fn read_text<R: Runtime>(
 }
 
 /// Like `read_text`, but suppresses the mini-player (document window owns the UI).
+#[allow(dead_code)] // camino de escritorio que hoy solo usa una plataforma
 pub async fn read_text_in_document<R: Runtime>(
     app: &AppHandle<R>,
     state: Arc<AppState>,
@@ -2134,7 +2339,28 @@ async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
     source: String,
     mode: ReadMode,
 ) -> Result<()> {
-    read_internal(app, state, text, None, voice, forced_lang, source, mode).await
+    read_internal(
+        app,
+        state,
+        text,
+        None,
+        voice,
+        forced_lang,
+        source,
+        mode,
+        SessionMeta::default(),
+    )
+    .await
+}
+
+/// Metadatos de la sesión que viajan hasta el snapshot: ruta y título del
+/// documento (para la aguja y la pantalla de bloqueo) y si la sesión nace
+/// en pausa (reposicionar sin sonar).
+#[derive(Debug, Clone, Default)]
+pub struct SessionMeta {
+    pub doc_path: String,
+    pub titulo: String,
+    pub start_paused: bool,
 }
 
 /// El camino común de toda lectura. Si llega un Guion ya construido (el
@@ -2151,6 +2377,7 @@ async fn read_internal<R: Runtime>(
     forced_lang: Option<String>,
     source: String,
     mode: ReadMode,
+    meta: SessionMeta,
 ) -> Result<()> {
     tracing::info!(
         "read_with_voice: voice={} source={} chars={} forced_lang={:?}",
@@ -2218,20 +2445,27 @@ async fn read_internal<R: Runtime>(
         ReadMode::Document { base_paragraph_index } => *base_paragraph_index,
         ReadMode::MiniPlayer => 0,
     };
-    // El título de la sesión: la primera línea con chicha del texto. Es lo
-    // que enseñan la pantalla de bloqueo y el widget.
-    {
-        let titulo: String = text
-            .lines()
+    // El título de la sesión: el del documento si llegó; si no, la primera
+    // línea con chicha del texto. Lo enseñan la aguja, la pantalla de
+    // bloqueo y el widget.
+    let titulo_sesion: String = if !meta.titulo.trim().is_empty() {
+        meta.titulo.trim().chars().take(70).collect()
+    } else {
+        text.lines()
             .find(|l| !l.trim().is_empty())
             .unwrap_or("Yappy")
             .trim_start_matches('#')
             .trim()
             .chars()
             .take(70)
-            .collect();
-        *state.titulo_actual.lock().unwrap() = titulo;
-    }
+            .collect()
+    };
+    *state.titulo_actual.lock().unwrap() = titulo_sesion.clone();
+    // La cocina se ve desde el primer milisegundo: el snapshot pasa a
+    // «preparando» con su título y su ruta ANTES de que exista audio.
+    state
+        .playback
+        .preparando(session_id, &titulo_sesion, &meta.doc_path);
     let _ = app.emit(
         "playback_starting",
         serde_json::json!({
@@ -2245,10 +2479,10 @@ async fn read_internal<R: Runtime>(
     let state_for_thread = state.clone();
     let text_for_thread = text.clone();
     let guion_for_thread = guion;
-    let app_for_history = app.clone();
     let source_for_history = source.clone();
     let preview_for_history: String = text.chars().take(180).collect();
 
+    let arranque_pausado = meta.start_paused;
     tauri::async_runtime::spawn_blocking(move || {
         let mut first_emitted = false;
         let mut detected_lang = String::new();
@@ -2274,7 +2508,9 @@ async fn read_internal<R: Runtime>(
                 source_sample_rate: chunk.sample_rate as u32,
             };
             if !first_emitted {
-                state_for_thread.playback.new_session(my_session, vec![ac]);
+                state_for_thread
+                    .playback
+                    .new_session(my_session, vec![ac], arranque_pausado);
                 first_emitted = true;
             } else {
                 state_for_thread.playback.enqueue(my_session, ac);
@@ -2316,6 +2552,10 @@ async fn read_internal<R: Runtime>(
             } else {
                 tracing::error!("synthesize_streaming: {e:?}");
                 let _ = app_for_thread.emit("synth_error", e.to_string());
+                // Si murió antes del primer trozo, el snapshot sigue en
+                // «preparando»: devolverlo a inactivo para no dejar a la
+                // interfaz esperando una cocina que ya no existe.
+                state_for_thread.playback.fallo(my_session);
             }
         }
 

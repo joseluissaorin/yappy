@@ -14,6 +14,7 @@ import Foundation
 import MediaPlayer
 import WidgetKit
 import AVFoundation
+import UIKit
 
 // ─── C-ABI callback type for Rust handlers ───────────────────────────────
 public typealias YappyVoidCallback = @convention(c) () -> Void
@@ -46,17 +47,21 @@ private func configureRemoteCommands() {
         togglePlayPauseHandler?()
         return .success
     }
-    // Skip forward/back: jump 15 s, the audiobook-app standard.
-    center.skipForwardCommand.preferredIntervals = [15]
-    center.skipForwardCommand.addTarget { _ in
+    // Adelante/atrás con la MISMA semántica que dentro de la app: una FRASE
+    // (los flechazos de pista, honestos), no un «±15 s» que aquí mentiría.
+    // Los AirPods (doble/triple apretón) llegan por estos mismos comandos.
+    center.nextTrackCommand.isEnabled = true
+    center.nextTrackCommand.addTarget { _ in
         skipForwardHandler?()
         return .success
     }
-    center.skipBackwardCommand.preferredIntervals = [15]
-    center.skipBackwardCommand.addTarget { _ in
+    center.previousTrackCommand.isEnabled = true
+    center.previousTrackCommand.addTarget { _ in
         skipBackwardHandler?()
         return .success
     }
+    center.skipForwardCommand.isEnabled = false
+    center.skipBackwardCommand.isEnabled = false
     // Scrubbing (drag the lock-screen progress bar).
     center.changePlaybackPositionCommand.addTarget { event in
         guard let e = event as? MPChangePlaybackPositionCommandEvent else {
@@ -65,9 +70,6 @@ private func configureRemoteCommands() {
         seekHandler?(e.positionTime)
         return .success
     }
-    // We don't use next/previous track — disable so they don't show up.
-    center.nextTrackCommand.isEnabled = false
-    center.previousTrackCommand.isEnabled = false
 
     NSLog("[yappy/nowplaying] remote command center wired")
 }
@@ -137,6 +139,10 @@ public func yappy_now_playing_set(
     info[MPMediaItemPropertyTitle]              = title
     if !artist.isEmpty { info[MPMediaItemPropertyArtist]  = artist }
     if !album.isEmpty  { info[MPMediaItemPropertyAlbumTitle] = album }
+    // La carátula: el loro de la casa en la pantalla de bloqueo.
+    if let img = UIImage(named: "LoroCaratula") {
+        info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: img.size) { _ in img }
+    }
     info[MPMediaItemPropertyPlaybackDuration]   = max(0, durationSecs)
     info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = max(0, positionSecs)
     info[MPNowPlayingInfoPropertyPlaybackRate]  = isPlaying ? 1.0 : 0.0

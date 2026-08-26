@@ -129,6 +129,7 @@ extern "C" {
     fn yappy_register_skip_forward_handler(cb: extern "C" fn());
     fn yappy_register_skip_backward_handler(cb: extern "C" fn());
     fn yappy_register_seek_handler(cb: extern "C" fn(f64));
+    fn yappy_register_interruption_handler(cb: extern "C" fn(bool));
 }
 
 /// Updates the system Now Playing metadata. `title=""` clears it.
@@ -185,14 +186,34 @@ extern "C" fn cb_pause() {
 extern "C" fn cb_toggle() {
     if let Some(p) = PLAYBACK.get() {
         let s = p.snapshot();
-        if s.playing { p.pause(); } else { p.resume(); }
+        // OJO: `playing` sigue en true durante la pausa (compat escritorio).
+        // Mirar `paused`; mirar `playing` hacía imposible reanudar desde la
+        // pantalla de bloqueo (siempre re-pausaba).
+        if s.paused { p.resume(); } else if s.playing { p.pause(); }
     }
 }
 extern "C" fn cb_skip_forward() {
-    if let Some(p) = PLAYBACK.get() { p.seek(15.0); }
+    // La MISMA semántica que dentro de la app: una frase, no 15 segundos.
+    if let Some(p) = PLAYBACK.get() { p.saltar_chunk(1); }
 }
 extern "C" fn cb_skip_backward() {
-    if let Some(p) = PLAYBACK.get() { p.seek(-15.0); }
+    if let Some(p) = PLAYBACK.get() { p.saltar_chunk(-1); }
+}
+/// Interrupción del sistema (llamada, Siri, otra app tomando el audio) o
+/// auriculares desconectados: pausa inmediata. `terminada_y_reanudar` = el
+/// sistema dice explícitamente que la interrupción acabó y procede reanudar
+/// (p. ej. una consulta corta a Siri); solo entonces reanudamos.
+extern "C" fn cb_interrupcion(terminada_y_reanudar: bool) {
+    if let Some(p) = PLAYBACK.get() {
+        if terminada_y_reanudar {
+            let s = p.snapshot();
+            if s.paused {
+                p.resume();
+            }
+        } else {
+            p.pause();
+        }
+    }
 }
 extern "C" fn cb_seek(absolute_secs: f64) {
     // The lock-screen scrubber hands us an ABSOLUTE position; PlaybackController
@@ -280,6 +301,23 @@ pub fn audiofile_current_path() -> Option<String> {
     Some(s)
 }
 
+// ─── EFECTOS (muestras de voz, foley) ───────────────────────────────────
+// Un AVAudioPlayer aparte para sonidos cortos locales: NO toca la sesión de
+// lectura (el documento en pausa sigue en pausa) ni el Now Playing.
+extern "C" {
+    fn yappy_efecto_play(path: *const std::os::raw::c_char) -> f64;
+}
+
+/// Reproduce un fichero de audio corto por el canal de efectos. Devuelve su
+/// duración en segundos (0.0 si no se pudo).
+pub fn efecto_play(path: &str) -> f64 {
+    use std::ffi::CString;
+    match CString::new(path) {
+        Ok(c) => unsafe { yappy_efecto_play(c.as_ptr()) },
+        Err(_) => 0.0,
+    }
+}
+
 // ─── Spotlight indexing ────────────────────────────────────────────────
 extern "C" {
     fn yappy_spotlight_replace_all(payload: *const std::os::raw::c_char);
@@ -306,6 +344,7 @@ pub fn install_now_playing_handlers(playback: std::sync::Arc<crate::playback::Pl
         yappy_register_skip_forward_handler(cb_skip_forward);
         yappy_register_skip_backward_handler(cb_skip_backward);
         yappy_register_seek_handler(cb_seek);
+        yappy_register_interruption_handler(cb_interrupcion);
     }
     tracing::info!("mobile: Now Playing remote handlers installed");
 }

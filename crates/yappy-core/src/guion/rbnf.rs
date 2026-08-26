@@ -11,6 +11,8 @@
 //! (`1010/100:`), reglas -x / x.x / x,x / 0.x, y la selección de plural
 //! $(cardinal|ordinal, caso{...}...)$ de las lenguas eslavas y otras.
 
+#![allow(clippy::too_many_arguments, clippy::collapsible_match)]
+
 use std::collections::HashMap;
 use std::sync::OnceLock;
 
@@ -47,7 +49,10 @@ enum Tok {
     /// =%conjunto= : el mismo número por otro conjunto
     MismoConjunto(String),
     /// =0=, =0.0=, =#,##0= : el número en dígitos
-    Digitos { decimal: bool },
+    Digitos {
+        #[allow(dead_code)]
+        decimal: bool,
+    },
     /// [ ... ] : tramo opcional
     Opcional(Vec<Tok>),
     /// $(cardinal|ordinal, caso{texto}...)$

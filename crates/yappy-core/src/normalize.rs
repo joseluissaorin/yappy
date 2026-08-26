@@ -447,7 +447,7 @@ fn roman_to_int(s: &str) -> Option<u32> {
         _ => None,
     };
     let vals: Vec<u32> = s.chars().map(|c| map(c).unwrap_or(0)).collect();
-    if vals.iter().any(|&v| v == 0) {
+    if vals.contains(&0) {
         return None;
     }
     let mut total = 0i64;

@@ -28,9 +28,11 @@ use base64::Engine as _;
 use serde::{Deserialize, Serialize};
 use iroh::endpoint::presets;
 use tauri::{AppHandle, Emitter, Manager, Runtime};
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 const ALPN: &[u8] = b"yappy/puente/1";
+
+/// Muestras, frecuencia y capítulos (t, título) de una síntesis del puente.
+type SintesisPuente = (Vec<f32>, u32, Vec<(f64, String)>);
 const B64: base64::engine::general_purpose::GeneralPurpose =
     base64::engine::general_purpose::URL_SAFE_NO_PAD;
 
@@ -201,7 +203,7 @@ async fn atender(app: AppHandle, conn: iroh::endpoint::Connection) -> Result<()>
 
     let (progreso_tx, mut progreso_rx) = tokio::sync::mpsc::unbounded_channel::<(usize, usize)>();
     let texto = peticion.texto.clone();
-    let sintesis = tokio::task::spawn_blocking(move || -> Result<(Vec<f32>, u32, Vec<(f64, String)>)> {
+    let sintesis = tokio::task::spawn_blocking(move || -> Result<SintesisPuente> {
         let guion = yappy_core::guion::construir_desde_texto(&texto, "en");
         let opts = yappy_core::engine::SynthesisOptions {
             voice: voz,

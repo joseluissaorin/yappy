@@ -44,19 +44,14 @@ pub struct TimedSegment {
 }
 
 /// Granularity of the returned `segments` timestamps.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "lowercase")]
 pub enum TimestampMode {
     /// One segment per emitted sub-word token.
     Tokens,
     /// Segments merged at word boundaries (SentencePiece `▁`).
+    #[default]
     Words,
-}
-
-impl Default for TimestampMode {
-    fn default() -> Self {
-        TimestampMode::Words
-    }
 }
 
 /// Per-call transcription options.

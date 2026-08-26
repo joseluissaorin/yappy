@@ -42,7 +42,9 @@ mod os_win;
 
 use std::sync::Arc;
 
-use tauri::{Emitter, Manager};
+use tauri::Manager;
+#[cfg(mobile)]
+use tauri::Emitter;
 
 use crate::state::AppState;
 
@@ -246,7 +248,7 @@ pub fn run() {
                     samples: chunk.samples.clone(),
                     source_sample_rate: chunk.sample_rate as u32,
                 };
-                if first { pb.new_session(sid, vec![ac]); first = false; } else { pb.enqueue(sid, ac); }
+                if first { pb.new_session(sid, vec![ac], false); first = false; } else { pb.enqueue(sid, ac); }
                 Ok(())
             })
             .expect("synthesize");
@@ -410,6 +412,11 @@ pub fn run() {
             {
                 mobile::install_now_playing_handlers(state.playback.clone());
 
+                // La cocina de muestras: las presentaciones de las voces se
+                // sintetizan una vez en segundo plano y quedan en caché para
+                // que tocar un cromo suene al instante.
+                commands::precocinar_muestras(app.handle().clone(), state.clone());
+
                 // Subscribe to playback snapshots — whenever play state /
                 // position changes, refresh the Now Playing metadata so the
                 // lock screen progress bar stays in sync.
@@ -509,6 +516,7 @@ pub fn run() {
             cola::cola_listar_cmd,
             cola::cola_agregar_url_cmd,
             cola::cola_agregar_texto_cmd,
+            cola::cola_agregar_portapapeles_cmd,
             cola::cola_agregar_archivo_cmd,
             cola::cola_agregar_audio_cmd,
             cola::cola_eliminar_cmd,
@@ -528,6 +536,10 @@ pub fn run() {
             commands::trigger_read_now_cmd,
             commands::stop_playback_cmd,
             commands::toggle_pause_cmd,
+            commands::saltar_frase_cmd,
+            commands::saltar_parrafo_cmd,
+            commands::pausar_cmd,
+            commands::reanudar_cmd,
             commands::set_speed_cmd,
             commands::set_voice_cmd,
             commands::set_voice_override_cmd,

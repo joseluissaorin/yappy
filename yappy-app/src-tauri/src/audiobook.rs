@@ -219,7 +219,7 @@ fn aac_encode_mono(samples: &[f32], sample_rate: u32, bit_rate: u32) -> Result<V
         }
         // fdk-aac may consume fewer samples than provided if its internal
         // buffer fills up mid-frame; advance by what it consumed.
-        let consumed = (info.input_consumed / 1) as usize; // mono → 1 sample per "input"
+        let consumed = info.input_consumed as usize; // mono: 1 muestra por "input"
         if consumed == 0 {
             // Defensive: avoid infinite loop if encoder stalls
             break;
@@ -252,8 +252,8 @@ fn mux_aac_to_mp4(
     out_path: &Path,
 ) -> Result<()> {
     use mp4::{
-        AacConfig, AudioObjectType, MediaConfig, Mp4Config, Mp4Sample, Mp4Writer, SampleFreqIndex,
-        TrackConfig, TrackType,
+        AacConfig, AudioObjectType, MediaConfig, Mp4Config, Mp4Sample, Mp4Writer, TrackConfig,
+        TrackType,
     };
 
     let file = std::fs::File::create(out_path)

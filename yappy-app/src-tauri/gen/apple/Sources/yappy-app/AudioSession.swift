@@ -98,6 +98,100 @@ public func yappy_audio_session_activate() {
     }
 }
 
+// ─── INTERRUPCIONES DEL MUNDO REAL ──────────────────────────────────────
+//
+// Llamada entrante, Siri, otra app tomando el audio → pausa inmediata.
+// Auriculares desconectados → pausa inmediata (la ley de oro del audio
+// móvil: nadie quiere su artículo sonando por el altavoz del vagón).
+// Rust registra un callback: cb(false) = pausa YA; cb(true) = el sistema
+// dice explícitamente que la interrupción acabó y procede reanudar.
+
+public typealias YappyInterruptionCallback = @convention(c) (Bool) -> Void
+private var interruptionHandler: YappyInterruptionCallback?
+private var interruptionObserversInstalled = false
+
+@_cdecl("yappy_register_interruption_handler")
+public func yappy_register_interruption_handler(_ cb: YappyInterruptionCallback?) {
+    interruptionHandler = cb
+    guard !interruptionObserversInstalled else { return }
+    interruptionObserversInstalled = true
+
+    let nc = NotificationCenter.default
+    nc.addObserver(
+        forName: AVAudioSession.interruptionNotification,
+        object: AVAudioSession.sharedInstance(),
+        queue: .main
+    ) { note in
+        guard let info = note.userInfo,
+              let typeRaw = info[AVAudioSessionInterruptionTypeKey] as? UInt,
+              let type = AVAudioSession.InterruptionType(rawValue: typeRaw)
+        else { return }
+        switch type {
+        case .began:
+            NSLog("[yappy/audio] interrupción: comenzó → pausa")
+            interruptionHandler?(false)
+        case .ended:
+            let optsRaw = info[AVAudioSessionInterruptionOptionKey] as? UInt ?? 0
+            let opts = AVAudioSession.InterruptionOptions(rawValue: optsRaw)
+            if opts.contains(.shouldResume) {
+                NSLog("[yappy/audio] interrupción: terminó con shouldResume → reanudar")
+                // Reactivar la sesión antes de reanudar: el sistema pudo
+                // desactivarla durante la interrupción.
+                try? AVAudioSession.sharedInstance().setActive(true)
+                interruptionHandler?(true)
+            } else {
+                NSLog("[yappy/audio] interrupción: terminó sin shouldResume → seguimos en pausa")
+            }
+        @unknown default:
+            break
+        }
+    }
+    nc.addObserver(
+        forName: AVAudioSession.routeChangeNotification,
+        object: AVAudioSession.sharedInstance(),
+        queue: .main
+    ) { note in
+        guard let info = note.userInfo,
+              let reasonRaw = info[AVAudioSessionRouteChangeReasonKey] as? UInt,
+              let reason = AVAudioSession.RouteChangeReason(rawValue: reasonRaw)
+        else { return }
+        if reason == .oldDeviceUnavailable {
+            NSLog("[yappy/audio] auriculares fuera → pausa")
+            interruptionHandler?(false)
+        }
+    }
+    NSLog("[yappy/audio] observadores de interrupción instalados")
+}
+
+// ─── EL CANAL DE EFECTOS ────────────────────────────────────────────────
+//
+// Un AVAudioPlayer aparte para sonidos cortos locales (muestras de voz,
+// foley). NO toca la sesión de lectura: el documento en pausa sigue en
+// pausa, y el Now Playing no se entera.
+
+private var efectoPlayer: AVAudioPlayer?
+
+@_cdecl("yappy_efecto_play")
+public func yappy_efecto_play(_ pathPtr: UnsafePointer<CChar>?) -> Double {
+    guard let pathPtr = pathPtr else { return 0.0 }
+    let path = String(cString: pathPtr)
+    let url = URL(fileURLWithPath: path)
+    // La sesión debe estar activa para que suene también con la app recién
+    // abierta; .playback ya es la categoría de la casa.
+    try? AVAudioSession.sharedInstance().setActive(true)
+    do {
+        let player = try AVAudioPlayer(contentsOf: url)
+        efectoPlayer?.stop()
+        efectoPlayer = player
+        player.prepareToPlay()
+        player.play()
+        return player.duration
+    } catch {
+        NSLog("[yappy/efecto] no se pudo reproducir \(path): \(error)")
+        return 0.0
+    }
+}
+
 @_cdecl("yappy_background_audio_begin")
 public func yappy_background_audio_begin() {
     Task {

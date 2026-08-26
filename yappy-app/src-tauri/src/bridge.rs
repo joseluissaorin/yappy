@@ -80,7 +80,7 @@ use anyhow::Result;
 use serde::Deserialize;
 use tauri::{Emitter, Manager};
 use tokio::net::TcpListener;
-use tokio::sync::{mpsc, Mutex};
+use tokio::sync::mpsc;
 use tokio_tungstenite::tungstenite::Message;
 
 #[derive(Debug, Deserialize)]
@@ -335,10 +335,15 @@ fn clean_markdown_for_speech(md: &str) -> String {
     // Defuddle on Wikipedia often produces "Word (Word)" or "Word [Word]" — same word
     // repeated immediately as parenthetical. Collapse to one. Allow simple variations
     // of accents/case for robustness.
-    static DUP_PAREN: Lazy<Regex> =
-        Lazy::new(|| Regex::new(r"(\b\p{L}[\p{L}\p{M}0-9'’\-]{1,40})\s*\(\s*\1\s*\)").unwrap());
-    static DUP_BRACK: Lazy<Regex> =
-        Lazy::new(|| Regex::new(r"(\b\p{L}[\p{L}\p{M}0-9'’\-]{1,40})\s*\[\s*\1\s*\]").unwrap());
+    // OJO: el crate regex NO soporta retrorreferencias (\1): la versión
+    // anterior pánicaba en el primer uso. Capturamos las dos palabras y
+    // comparamos en código (sin distinguir mayúsculas).
+    static DUP_PAREN: Lazy<Regex> = Lazy::new(|| {
+        Regex::new(r"(\b\p{L}[\p{L}\p{M}0-9'’\-]{1,40})\s*\(\s*([\p{L}\p{M}0-9'’\-]{1,40})\s*\)").unwrap()
+    });
+    static DUP_BRACK: Lazy<Regex> = Lazy::new(|| {
+        Regex::new(r"(\b\p{L}[\p{L}\p{M}0-9'’\-]{1,40})\s*\[\s*([\p{L}\p{M}0-9'’\-]{1,40})\s*\]").unwrap()
+    });
     // Footnote markers like [1], [12], [edit].
     static FOOTNOTE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\[\d+\]|\[edit\]").unwrap());
 
@@ -370,13 +375,20 @@ fn clean_markdown_for_speech(md: &str) -> String {
     let s = HTML_TAG.replace_all(&s, "").into_owned();
     let s = FOOTNOTE.replace_all(&s, "").into_owned();
     let s = BARE_URL.replace_all(&s, "").into_owned();
-    let s = DUP_PAREN.replace_all(&s, "$1").into_owned();
-    let s = DUP_BRACK.replace_all(&s, "$1").into_owned();
+    let quita_duplicado = |caps: &regex::Captures| -> String {
+        if caps[1].to_lowercase() == caps[2].to_lowercase() {
+            caps[1].to_string()
+        } else {
+            caps[0].to_string()
+        }
+    };
+    let s = DUP_PAREN.replace_all(&s, &quita_duplicado).into_owned();
+    let s = DUP_BRACK.replace_all(&s, &quita_duplicado).into_owned();
 
     // Collapse runs of whitespace introduced by the strips.
     let mut compact = String::with_capacity(s.len());
     let mut prev_blank = false;
-    let mut prev_ws = false;
+    let mut prev_ws;
     for line in s.lines() {
         let t = line.trim();
         if t.is_empty() {

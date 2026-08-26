@@ -14,31 +14,27 @@ use anyhow::Result;
 pub fn read_text() -> Result<Option<String>> {
     use objc2_app_kit::NSPasteboard;
     use objc2_foundation::NSString;
-    unsafe {
-        let pb = NSPasteboard::generalPasteboard();
-        let nstype = NSString::from_str("public.utf8-plain-text");
-        if let Some(s) = pb.stringForType(&nstype) {
-            return Ok(Some(s.to_string()));
-        }
-        let nstype2 = NSString::from_str("NSStringPboardType");
-        if let Some(s) = pb.stringForType(&nstype2) {
-            return Ok(Some(s.to_string()));
-        }
-        Ok(None)
+    let pb = NSPasteboard::generalPasteboard();
+    let nstype = NSString::from_str("public.utf8-plain-text");
+    if let Some(s) = pb.stringForType(&nstype) {
+        return Ok(Some(s.to_string()));
     }
+    let nstype2 = NSString::from_str("NSStringPboardType");
+    if let Some(s) = pb.stringForType(&nstype2) {
+        return Ok(Some(s.to_string()));
+    }
+    Ok(None)
 }
 
 #[cfg(target_os = "macos")]
 pub fn write_text(text: &str) -> Result<()> {
     use objc2_app_kit::NSPasteboard;
     use objc2_foundation::NSString;
-    unsafe {
-        let pb = NSPasteboard::generalPasteboard();
-        pb.clearContents();
-        let ns = NSString::from_str(text);
-        let ty = NSString::from_str("public.utf8-plain-text");
-        let _ = pb.setString_forType(&ns, &ty);
-    }
+    let pb = NSPasteboard::generalPasteboard();
+    pb.clearContents();
+    let ns = NSString::from_str(text);
+    let ty = NSString::from_str("public.utf8-plain-text");
+    let _ = pb.setString_forType(&ns, &ty);
     Ok(())
 }
 
@@ -48,10 +44,8 @@ pub fn snapshot() -> Result<Option<String>> { read_text() }
 #[cfg(target_os = "macos")]
 pub fn change_count() -> i64 {
     use objc2_app_kit::NSPasteboard;
-    unsafe {
-        let pb = NSPasteboard::generalPasteboard();
-        pb.changeCount() as i64
-    }
+    let pb = NSPasteboard::generalPasteboard();
+    pb.changeCount() as i64
 }
 
 // ---------- Linux ----------

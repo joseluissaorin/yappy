@@ -1,14 +1,16 @@
 //! Load a document file (.txt .md .rtf .docx .pptx .xlsx .odt .pdf .html .epub) to plain text.
 //!
 //! Strategy, in order:
-//!   1. If `pandoc` is on PATH, use it for any office-y format (best quality).
-//!   2. Otherwise, pure-Rust crates:
-//!         .txt / .md / .markdown / .csv / .log  → fs::read_to_string + light markdown stripping
-//!         .docx / .pptx / .xlsx / .html         → anytomd
-//!         .pdf                                  → pdf-extract; if empty → rasterise + OCR
-//!         .rtf                                  → strip RTF control words (lightweight)
-//!         .epub                                 → epub crate, chapters joined
-//!         .odt                                  → unzip + parse content.xml
+//! 1. If `pandoc` is on PATH, use it for any office-y format (best quality).
+//! 2. Otherwise, pure-Rust crates:
+//! ```text
+//! .txt / .md / .markdown / .csv / .log  → fs::read_to_string + markdown stripping
+//! .docx / .pptx / .xlsx / .html         → anytomd
+//! .pdf                                  → pdf-extract; if empty → rasterise + OCR
+//! .rtf                                  → strip RTF control words (lightweight)
+//! .epub                                 → epub crate, chapters joined
+//! .odt                                  → unzip + parse content.xml
+//! ```
 //!
 //! Pandoc is treated as the "premium" path because it understands footnotes, formulas,
 //! footers, etc. better than any individual Rust parser.
@@ -65,7 +67,7 @@ pub fn load_rich_from_file(path: &Path) -> Result<Vec<RichParagraph>> {
 /// the markdown rhythm parser so headings get pauses.
 fn pdf_oxide_to_markdown(path: &Path) -> Result<String> {
     use pdf_oxide::converters::ConversionOptions;
-    let mut doc = pdf_oxide::PdfDocument::open(path).map_err(|e| anyhow!("pdf_oxide open: {e:?}"))?;
+    let doc = pdf_oxide::PdfDocument::open(path).map_err(|e| anyhow!("pdf_oxide open: {e:?}"))?;
     let pages = doc.page_count().map_err(|e| anyhow!("pdf_oxide page_count: {e:?}"))?;
     let opts = ConversionOptions::default();
     let mut buf = String::with_capacity(pages * 1024);
@@ -205,7 +207,7 @@ fn pdf_oxide_extract(path: &Path) -> Result<String> {
     use pdf_oxide::converters::ConversionOptions;
     let t0 = std::time::Instant::now();
     tracing::info!("pdf_oxide_extract: opening {}", path.display());
-    let mut doc = pdf_oxide::PdfDocument::open(path).map_err(|e| anyhow!("pdf_oxide open: {e:?}"))?;
+    let doc = pdf_oxide::PdfDocument::open(path).map_err(|e| anyhow!("pdf_oxide open: {e:?}"))?;
     tracing::info!("pdf_oxide_extract: open in {:?}", t0.elapsed());
 
     let pages = doc.page_count().map_err(|e| anyhow!("pdf_oxide page_count: {e:?}"))?;
@@ -540,9 +542,8 @@ pub fn parse_markdown_rhythm(md: &str) -> Vec<RichParagraph> {
             Some(rest)
         } else {
             // Numbered list "1. xxx"
-            let mut chars = stripped.chars();
             let mut digits = String::new();
-            while let Some(c) = chars.next() {
+            for c in stripped.chars() {
                 if c.is_ascii_digit() { digits.push(c); } else { break; }
             }
             if !digits.is_empty() && stripped.get(digits.len()..).map(|s| s.starts_with(". ")).unwrap_or(false) {

@@ -401,7 +401,7 @@ fn sample_noisy_latent(
         .map(|&d| (d * sample_rate as f32) as usize)
         .collect();
     let chunk_size = (base_chunk_size * chunk_compress) as usize;
-    let latent_len = (wav_len_max + chunk_size - 1) / chunk_size;
+    let latent_len = wav_len_max.div_ceil(chunk_size);
     let latent_dim_val = (latent_dim * chunk_compress) as usize;
     let mut noisy = Array3::<f32>::zeros((bsz, latent_dim_val, latent_len));
     let normal = Normal::new(0.0, 1.0).unwrap();
@@ -418,7 +418,7 @@ fn sample_noisy_latent(
     }
     let latent_lengths: Vec<usize> = wav_lengths
         .iter()
-        .map(|&len| (len + chunk_size - 1) / chunk_size)
+        .map(|&len| len.div_ceil(chunk_size))
         .collect();
     let latent_mask = length_to_mask(&latent_lengths, Some(latent_len));
     for b in 0..bsz {

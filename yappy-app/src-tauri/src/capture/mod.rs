@@ -11,6 +11,7 @@ use anyhow::Result;
 use serde::Serialize;
 
 /// What was captured, with enough context for the UI to show a clear pill.
+#[allow(dead_code)] // variantes construidas según la plataforma
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum CaptureSource {

@@ -10,7 +10,7 @@ use tauri::Manager;
 
 use crate::state::AppState;
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "kebab-case")]
 pub enum PlayerPositionPreset {
     TopLeft,
@@ -18,32 +18,46 @@ pub enum PlayerPositionPreset {
     TopRight,
     BottomLeft,
     BottomCenter,
+    #[default]
     BottomRight,
     Custom,
 }
-impl Default for PlayerPositionPreset {
-    fn default() -> Self { Self::BottomRight }
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "lowercase")]
+pub enum PlayerTheme {
+    #[default]
+    Cream,
+    Dark,
+    Translucent,
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "lowercase")]
-pub enum PlayerTheme { Cream, Dark, Translucent }
-impl Default for PlayerTheme { fn default() -> Self { Self::Cream } }
+pub enum AppTheme {
+    #[default]
+    Cream,
+    Dark,
+    System,
+}
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "lowercase")]
-pub enum AppTheme { Cream, Dark, System }
-impl Default for AppTheme { fn default() -> Self { Self::Cream } }
+pub enum OcrEngine {
+    #[default]
+    Auto,
+    AppleVision,
+    Paddle,
+}
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "lowercase")]
-pub enum OcrEngine { Auto, AppleVision, Paddle }
-impl Default for OcrEngine { fn default() -> Self { Self::Auto } }
-
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "lowercase")]
-pub enum Quality { Fast, Balanced, Best }
-impl Default for Quality { fn default() -> Self { Self::Balanced } }
+pub enum Quality {
+    Fast,
+    #[default]
+    Balanced,
+    Best,
+}
 impl Quality {
     pub fn total_steps(self) -> usize {
         match self { Quality::Fast => 5, Quality::Balanced => 8, Quality::Best => 12 }
@@ -271,6 +285,7 @@ where
 /// Save the current in-memory settings as-is (no mutation step).
 /// Used for places that already mutated the struct via the older inline pattern,
 /// or for explicit "save now" callsites. Same race-free guarantees as `update()`.
+#[allow(dead_code)]
 pub fn save_current(
     handle: &tauri::AppHandle<impl tauri::Runtime>,
     state: &Arc<AppState>,

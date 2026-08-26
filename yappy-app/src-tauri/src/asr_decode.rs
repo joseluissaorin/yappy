@@ -18,10 +18,12 @@ use crate::playback::resample_mono;
 
 /// Container/codecs we recognize by extension. Anything else is attempted via
 /// symphonia probing regardless.
+#[allow(dead_code)] // según plataforma
 pub const SUPPORTED_AUDIO_EXTS: &[&str] = &[
     "opus", "ogg", "oga", "m4a", "mp4", "aac", "mp3", "wav", "wave", "flac", "caf", "amr",
 ];
 
+#[allow(dead_code)] // según plataforma
 pub fn is_audio_ext(ext: &str) -> bool {
     let e = ext.trim_start_matches('.').to_ascii_lowercase();
     SUPPORTED_AUDIO_EXTS.contains(&e.as_str())
@@ -121,7 +123,7 @@ fn decode_symphonia(path: &Path) -> Result<Vec<f32>> {
         return Err(anyhow!("decoded no audio samples"));
     }
     let mono = downmix(&interleaved, channels);
-    Ok(resample_mono(&mono, src_rate, 16_000)?)
+    resample_mono(&mono, src_rate, 16_000)
 }
 
 /// Decode an Ogg-Opus file → mono 16 kHz. libopus always decodes at 48 kHz.
@@ -183,7 +185,7 @@ fn decode_ogg_opus(path: &Path) -> Result<Vec<f32>> {
     if pcm48.is_empty() {
         return Err(anyhow!("no opus audio decoded"));
     }
-    Ok(resample_mono(&pcm48, 48_000, 16_000)?)
+    resample_mono(&pcm48, 48_000, 16_000)
 }
 
 fn downmix(interleaved: &[f32], channels: usize) -> Vec<f32> {

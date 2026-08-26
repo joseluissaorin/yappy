@@ -3,6 +3,7 @@ use tauri::{LogicalPosition, Manager, PhysicalPosition, PhysicalSize, Runtime, W
 
 use crate::settings::PlayerPositionPreset;
 
+#[allow(dead_code)]
 pub fn position_player_bottom_right<R: Runtime>(player: &WebviewWindow<R>) -> Result<()> {
     position_player_with_preset(player, PlayerPositionPreset::BottomRight)
 }
@@ -60,6 +61,7 @@ pub fn show_player<R: Runtime>(handle: &tauri::AppHandle<R>) -> Result<()> {
     Ok(())
 }
 
+#[allow(dead_code)]
 pub fn hide_player<R: Runtime>(handle: &tauri::AppHandle<R>) -> Result<()> {
     if let Some(w) = handle.get_webview_window("player") {
         w.hide()?;

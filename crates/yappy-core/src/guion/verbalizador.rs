@@ -491,9 +491,9 @@ fn pasada_ordinales(l: &mut Lienzo, t: &TablaIdioma) {
         if !l.libre(ini, fin) {
             continue;
         }
-        let genero = if genero_por_sufijo && sufijo == "ª" {
-            Genero::Femenino
-        } else if t.lang == "fr" && (sufijo == "re" || sufijo == "ère") {
+        let genero = if (genero_por_sufijo && sufijo == "ª")
+            || (t.lang == "fr" && (sufijo == "re" || sufijo == "ère"))
+        {
             Genero::Femenino
         } else {
             Genero::Masculino

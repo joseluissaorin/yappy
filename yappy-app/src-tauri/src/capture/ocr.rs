@@ -127,6 +127,7 @@ fn full_screen_capture(_out: &Path) -> Result<()> {
 
 // ---------- OCR engine selection ----------
 
+#[allow(unreachable_code)] // según la plataforma, algún brazo devuelve siempre
 pub fn ocr_image(image_path: &Path, lang: &str) -> Result<String> {
     let engine = active_engine();
     match engine {
@@ -276,7 +277,7 @@ fn reorder_blocks_to_text(blocks: &[paddle_ocr_rs::ocr_result::TextBlock]) -> St
             let ys: Vec<i32> = b.box_points.iter().map(|p| p.y as i32).collect();
             let xs: Vec<i32> = b.box_points.iter().map(|p| p.x as i32).collect();
             let cy = (ys.iter().sum::<i32>() as f32) / (ys.len().max(1) as f32);
-            let cx = (xs.iter().min().copied().unwrap_or(0) as f32);
+            let cx = xs.iter().min().copied().unwrap_or(0) as f32;
             (cy, cx, b.text.as_str())
         })
         .collect();
