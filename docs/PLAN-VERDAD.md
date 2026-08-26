@@ -172,3 +172,32 @@ Pendientes que este plan NO cubre (declarados): restyle del reproductor m4b,
 foley procedural (el canal efecto ya queda listo), Android rebuild, y la
 verificación física en el iPhone de José Luis (háptica, bloqueo, llamadas,
 segundo plano real).
+
+## SELLO (2026-08-26, build 0.2.0.6)
+
+Ejecutado y verificado en simulador (iPhone 17, iOS 26.4), capturas en
+/tmp/capturas-verdad/:
+
+- F1 Motor ✓ (estado/revisión/título/ruta/cocina, saltos por frase y
+  párrafo con convención musical, arranque en pausa, Fallo; 7 tests).
+- F2 Nativo ✓ (toggle de pantalla de bloqueo arreglado, pista=frase,
+  interrupciones y auriculares, carátula del loro, canal de efectos,
+  y el puente a UIPasteboard: el pegar iOS llevaba muerto desde siempre).
+- F3 Espejo ✓ (reproduccion.svelte.ts, aguja universal con pausa fuera y
+  deslizar-para-detener verificados en pantalla, restauración por doc_path).
+- F4 Loro ✓ (silueta validada a 34/84/160, pico en dos piezas cantando en
+  captura, acicalado cazado en vivo, tintas del casting).
+- F5 Cinta ✓ (viewport exacto sin scroll, pórtico con trastienda,
+  sin riel, boca=añadir con pegar E2E verificado con el diálogo nativo).
+- F6 Cartel ✓ (karaoke por palabras en 3, 4 y 6 líneas capturado,
+  teleprompter cosido con puntuación, autoplay accidental muerto en
+  captura doble, fin honesto a portada).
+- F7 Mandos ✓ (Deslizador con imanes visible, muelles globales).
+- F8 Muestras ✓ (10 cocinadas en ~9 s en frío, reproducción instantánea
+  desde caché, candado del motor tras tumbar el simulador una vez).
+- F9 i18n ✓ (31 diccionarios, 149 claves, verificador en scripts/).
+- Hallazgos extra arreglados: export .m4b móvil (argumentos en orden
+  equivocado, moría siempre), regex con retrorreferencia en bridge.rs
+  (pánico al primer uso), clippy+fmt del workspace entero en el hook.
+- F10: build 0.2.0.6 subido a TestFlight (grupo interno con acceso
+  automático).
