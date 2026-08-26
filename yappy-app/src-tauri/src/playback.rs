@@ -9,7 +9,6 @@ use crossbeam_channel::{unbounded, Receiver, Sender};
 use rubato::{FftFixedInOut, Resampler};
 use serde::{Deserialize, Serialize};
 
-
 /// Oyentes del snapshot de reproducción.
 type Oyentes = Arc<Mutex<Vec<Box<dyn Fn(&PlaybackSnapshot) + Send + Sync>>>>;
 /// Oyentes del nivel (RMS 0..1 de la ventana que suena).
@@ -78,16 +77,29 @@ enum Command {
     /// La sesión existe pero aún no suena: la síntesis del primer trozo está
     /// en marcha. Fija título/ruta y pone estado=preparando. Con session_id
     /// para que un Preparando rezagado de una sesión muerta no reviva nada.
-    Preparando { session_id: u64, titulo: String, doc_path: String },
+    Preparando {
+        session_id: u64,
+        titulo: String,
+        doc_path: String,
+    },
     /// La síntesis murió antes del primer trozo: si seguimos en preparando
     /// de ESA sesión, volver a inactivo (sin esto el estado se queda
     /// colgado en «preparando» para siempre).
-    Fallo { session_id: u64 },
+    Fallo {
+        session_id: u64,
+    },
     /// Begin a new session. The session_id is the id this synth task was started with;
     /// the audio thread accepts it iff it matches the controller's `current_session`.
     /// `arranque_pausado`: reposicionar sin sonar (saltar desde el guion en pausa).
-    NewSession { session_id: u64, chunks: Vec<AudioChunk>, arranque_pausado: bool },
-    Enqueue { session_id: u64, chunk: AudioChunk },
+    NewSession {
+        session_id: u64,
+        chunks: Vec<AudioChunk>,
+        arranque_pausado: bool,
+    },
+    Enqueue {
+        session_id: u64,
+        chunk: AudioChunk,
+    },
     Pause,
     Resume,
     Stop,
@@ -96,9 +108,13 @@ enum Command {
     /// Salto por FRASE dentro de lo ya sintetizado: instantáneo, sin
     /// resíntesis. delta=+1/-1. Atrás respeta la convención musical: pasado
     /// 1,2 s dentro de la frase, vuelve al principio de la actual.
-    SaltarChunk { delta: i32 },
+    SaltarChunk {
+        delta: i32,
+    },
     /// Salto por PÁRRAFO dentro de lo ya sintetizado.
-    SaltarParrafo { delta: i32 },
+    SaltarParrafo {
+        delta: i32,
+    },
 }
 
 pub struct PlaybackController {
@@ -144,8 +160,7 @@ impl PlaybackController {
             volume: 1.0,
             output_sample_rate: 44100,
         }));
-        let listeners: Oyentes =
-            Arc::new(Mutex::new(Vec::new()));
+        let listeners: Oyentes = Arc::new(Mutex::new(Vec::new()));
         let session_samples: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
         let session_id = Arc::new(AtomicU64::new(0));
 
@@ -156,8 +171,7 @@ impl PlaybackController {
         #[cfg(target_os = "ios")]
         crate::mobile::audio_session_activate();
 
-        let nivel_listeners: OyentesNivel =
-            Arc::new(Mutex::new(Vec::new()));
+        let nivel_listeners: OyentesNivel = Arc::new(Mutex::new(Vec::new()));
         let snap_for_thread = snapshot.clone();
         let listeners_for_thread = listeners.clone();
         let session_for_thread = session_samples.clone();
@@ -216,9 +230,11 @@ impl PlaybackController {
         let _ = self.cmd_tx.send(Command::Fallo { session_id });
     }
     pub fn new_session(&self, session_id: u64, chunks: Vec<AudioChunk>, arranque_pausado: bool) {
-        let _ = self
-            .cmd_tx
-            .send(Command::NewSession { session_id, chunks, arranque_pausado });
+        let _ = self.cmd_tx.send(Command::NewSession {
+            session_id,
+            chunks,
+            arranque_pausado,
+        });
     }
     pub fn enqueue(&self, session_id: u64, chunk: AudioChunk) {
         let _ = self.cmd_tx.send(Command::Enqueue { session_id, chunk });
@@ -395,8 +411,7 @@ fn run_audio_thread(
     let mut total_paragraphs: usize = 0;
     let mut nivel_anterior: f32 = 0.0;
 
-    let emit = |snapshot: &Arc<Mutex<PlaybackSnapshot>>,
-                listeners: &Oyentes| {
+    let emit = |snapshot: &Arc<Mutex<PlaybackSnapshot>>, listeners: &Oyentes| {
         // La revisión crece en CADA emisión: la interfaz descarta lo viejo.
         let snap = {
             let mut s = snapshot.lock().unwrap();
@@ -421,7 +436,11 @@ fn run_audio_thread(
                         snapshot: &Arc<Mutex<PlaybackSnapshot>>,
                         out_sr: u32|
      -> (usize, String, usize) {
-        let inicio = if destino == 0 { 0 } else { chunk_boundaries[destino - 1] } as usize;
+        let inicio = if destino == 0 {
+            0
+        } else {
+            chunk_boundaries[destino - 1]
+        } as usize;
         let sesion = session_samples.lock().unwrap();
         let inicio = inicio.min(sesion.len());
         *played_samples.lock().unwrap() = inicio as u64;
@@ -449,7 +468,11 @@ fn run_audio_thread(
     loop {
         while let Ok(cmd) = cmd_rx.try_recv() {
             match cmd {
-                Command::Preparando { session_id, titulo, doc_path } => {
+                Command::Preparando {
+                    session_id,
+                    titulo,
+                    doc_path,
+                } => {
                     if session_id != live_session_id.load(Ordering::SeqCst) {
                         continue;
                     }
@@ -477,7 +500,11 @@ fn run_audio_thread(
                         emit(&snapshot, &listeners);
                     }
                 }
-                Command::NewSession { session_id, chunks, arranque_pausado } => {
+                Command::NewSession {
+                    session_id,
+                    chunks,
+                    arranque_pausado,
+                } => {
                     // Drop sessions that were already invalidated by a Stop that raced ahead.
                     if session_id != live_session_id.load(Ordering::SeqCst) {
                         continue;
@@ -642,14 +669,14 @@ fn run_audio_thread(
                         .iter()
                         .position(|&end| end > played)
                         .unwrap_or_else(|| chunk_boundaries.len().saturating_sub(1));
-                    let inicio_actual =
-                        if actual == 0 { 0 } else { chunk_boundaries[actual - 1] };
-                    let segs_en_frase =
-                        played.saturating_sub(inicio_actual) as f32 / out_sr as f32;
-                    let saltable: Vec<bool> = chunk_texts
-                        .iter()
-                        .map(|t| !t.trim().is_empty())
-                        .collect();
+                    let inicio_actual = if actual == 0 {
+                        0
+                    } else {
+                        chunk_boundaries[actual - 1]
+                    };
+                    let segs_en_frase = played.saturating_sub(inicio_actual) as f32 / out_sr as f32;
+                    let saltable: Vec<bool> =
+                        chunk_texts.iter().map(|t| !t.trim().is_empty()).collect();
                     let destino = destino_salto_frase(actual, segs_en_frase, delta, &saltable);
                     let (nuevo, _, parrafo) = reposicionar(
                         destino,
@@ -679,10 +706,8 @@ fn run_audio_thread(
                         .iter()
                         .position(|&end| end > played)
                         .unwrap_or_else(|| chunk_boundaries.len().saturating_sub(1));
-                    let saltable: Vec<bool> = chunk_texts
-                        .iter()
-                        .map(|t| !t.trim().is_empty())
-                        .collect();
+                    let saltable: Vec<bool> =
+                        chunk_texts.iter().map(|t| !t.trim().is_empty()).collect();
                     let destino =
                         destino_salto_parrafo(actual, delta, &chunk_paragraph_idx, &saltable);
                     let (nuevo, _, parrafo) = reposicionar(
@@ -715,8 +740,7 @@ fn run_audio_thread(
                     let session = session_samples.lock().unwrap().clone();
                     let played = *played_samples.lock().unwrap() as i64;
                     let delta_samples = (delta * out_sr as f32) as i64;
-                    let target = (played + delta_samples)
-                        .clamp(0, session.len() as i64) as usize;
+                    let target = (played + delta_samples).clamp(0, session.len() as i64) as usize;
                     *played_samples.lock().unwrap() = target as u64;
                     let mut buf = buffer.lock().unwrap();
                     buf.clear();

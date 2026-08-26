@@ -68,7 +68,9 @@ pub fn load_rich_from_file(path: &Path) -> Result<Vec<RichParagraph>> {
 fn pdf_oxide_to_markdown(path: &Path) -> Result<String> {
     use pdf_oxide::converters::ConversionOptions;
     let doc = pdf_oxide::PdfDocument::open(path).map_err(|e| anyhow!("pdf_oxide open: {e:?}"))?;
-    let pages = doc.page_count().map_err(|e| anyhow!("pdf_oxide page_count: {e:?}"))?;
+    let pages = doc
+        .page_count()
+        .map_err(|e| anyhow!("pdf_oxide page_count: {e:?}"))?;
     let opts = ConversionOptions::default();
     let mut buf = String::with_capacity(pages * 1024);
     for i in 0..pages {
@@ -112,8 +114,8 @@ pub fn load_text_from_file(path: &Path) -> Result<String> {
 }
 
 const PANDOC_SUPPORTED: &[&str] = &[
-    "docx", "doc", "rtf", "odt", "html", "htm", "epub", "tex", "latex", "rst", "org",
-    "fb2", "djvu", "pptx",
+    "docx", "doc", "rtf", "odt", "html", "htm", "epub", "tex", "latex", "rst", "org", "fb2",
+    "djvu", "pptx",
 ];
 
 fn read_utf8(path: &Path) -> Result<String> {
@@ -121,7 +123,11 @@ fn read_utf8(path: &Path) -> Result<String> {
     let bytes = std::fs::read(path).with_context(|| format!("reading {}", path.display()))?;
     // Strip UTF-8 BOM if present (some editors add it to .md files; the BOM
     // character renders as a stray glyph otherwise).
-    let bytes = if bytes.starts_with(&[0xEF, 0xBB, 0xBF]) { &bytes[3..] } else { &bytes[..] };
+    let bytes = if bytes.starts_with(&[0xEF, 0xBB, 0xBF]) {
+        &bytes[3..]
+    } else {
+        &bytes[..]
+    };
     // Try strict UTF-8 first. If that fails, fall back to UTF-8 with replacement
     // characters (best-effort) and log a warning. Most modern editors save UTF-8
     // so the fallback is rare — but legacy Latin-1 files would otherwise hard-fail.
@@ -159,8 +165,7 @@ fn pandoc_to_text(pandoc: &std::path::Path, path: &Path) -> Result<String> {
 fn anytomd_convert(path: &Path, _ext: &str) -> Result<String> {
     use anytomd::{convert_file, ConversionOptions};
     let opts = ConversionOptions::default();
-    let res = convert_file(path.to_str().unwrap(), &opts)
-        .map_err(|e| anyhow!("anytomd: {e:?}"))?;
+    let res = convert_file(path.to_str().unwrap(), &opts).map_err(|e| anyhow!("anytomd: {e:?}"))?;
     Ok(strip_md_markup(&res.markdown))
 }
 
@@ -168,7 +173,9 @@ fn odt_to_text(path: &Path) -> Result<String> {
     use std::io::Read;
     let f = std::fs::File::open(path)?;
     let mut z = zip::ZipArchive::new(f)?;
-    let mut entry = z.by_name("content.xml").context(".odt missing content.xml")?;
+    let mut entry = z
+        .by_name("content.xml")
+        .context(".odt missing content.xml")?;
     let mut xml = String::new();
     entry.read_to_string(&mut xml)?;
     Ok(strip_xml(&xml))
@@ -210,7 +217,9 @@ fn pdf_oxide_extract(path: &Path) -> Result<String> {
     let doc = pdf_oxide::PdfDocument::open(path).map_err(|e| anyhow!("pdf_oxide open: {e:?}"))?;
     tracing::info!("pdf_oxide_extract: open in {:?}", t0.elapsed());
 
-    let pages = doc.page_count().map_err(|e| anyhow!("pdf_oxide page_count: {e:?}"))?;
+    let pages = doc
+        .page_count()
+        .map_err(|e| anyhow!("pdf_oxide page_count: {e:?}"))?;
     tracing::info!("pdf_oxide_extract: {pages} pages");
 
     let mut buf = String::with_capacity(pages * 1024);
@@ -259,12 +268,12 @@ fn pdf_oxide_extract(path: &Path) -> Result<String> {
 fn pdf_to_text_via_pdfium_ocr(path: &Path) -> Result<String> {
     use pdfium_render::prelude::*;
 
-    let dylib = find_pdfium_dylib()
-        .ok_or_else(|| anyhow!("libpdfium.dylib not found in bundle — scanned-PDF OCR is unavailable"))?;
+    let dylib = find_pdfium_dylib().ok_or_else(|| {
+        anyhow!("libpdfium.dylib not found in bundle — scanned-PDF OCR is unavailable")
+    })?;
     tracing::info!("pdfium dylib: {}", dylib.display());
-    let pdfium = Pdfium::new(
-        Pdfium::bind_to_library(&dylib).map_err(|e| anyhow!("pdfium bind: {e:?}"))?,
-    );
+    let pdfium =
+        Pdfium::new(Pdfium::bind_to_library(&dylib).map_err(|e| anyhow!("pdfium bind: {e:?}"))?);
     let document = pdfium
         .load_pdf_from_file(path, None)
         .map_err(|e| anyhow!("pdfium open: {e:?}"))?;
@@ -352,9 +361,18 @@ fn find_pdfium_dylib() -> Option<std::path::PathBuf> {
         // Linux .deb / .rpm install paths.
         #[cfg(target_os = "linux")]
         {
-            candidates.push(std::path::PathBuf::from(format!("/usr/lib/yappy/resources/pdfium/{}", lib_name)));
-            candidates.push(std::path::PathBuf::from(format!("/usr/share/yappy/resources/pdfium/{}", lib_name)));
-            candidates.push(std::path::PathBuf::from(format!("/usr/lib/yappy/{}", lib_name)));
+            candidates.push(std::path::PathBuf::from(format!(
+                "/usr/lib/yappy/resources/pdfium/{}",
+                lib_name
+            )));
+            candidates.push(std::path::PathBuf::from(format!(
+                "/usr/share/yappy/resources/pdfium/{}",
+                lib_name
+            )));
+            candidates.push(std::path::PathBuf::from(format!(
+                "/usr/lib/yappy/{}",
+                lib_name
+            )));
         }
     }
 
@@ -419,7 +437,9 @@ fn strip_md_markup(s: &str) -> String {
             in_code = !in_code;
             continue;
         }
-        if in_code { continue; }
+        if in_code {
+            continue;
+        }
         let l = line.trim_start_matches(|c: char| c == '#' || c == '>' || c.is_whitespace());
         out.push_str(&strip_md_links(l));
         out.push('\n');
@@ -490,7 +510,9 @@ pub fn parse_markdown_rhythm(md: &str) -> Vec<RichParagraph> {
             flush(&mut paragraphs, &mut buf, &mut current_kind);
             continue;
         }
-        if in_code { continue; }
+        if in_code {
+            continue;
+        }
 
         // Horizontal rule.
         if matches!(stripped, "---" | "***" | "___" | "----" | "*****" | "_____") {
@@ -502,7 +524,9 @@ pub fn parse_markdown_rhythm(md: &str) -> Vec<RichParagraph> {
                 kind: "hr".into(),
             });
             // Pop the "(pause)" placeholder text — we just want the pause marker.
-            if let Some(last) = paragraphs.last_mut() { last.text = String::new(); }
+            if let Some(last) = paragraphs.last_mut() {
+                last.text = String::new();
+            }
             continue;
         }
 
@@ -532,23 +556,39 @@ pub fn parse_markdown_rhythm(md: &str) -> Vec<RichParagraph> {
                 flush(&mut paragraphs, &mut buf, &mut current_kind);
                 current_kind = "quote".into();
             }
-            if !buf.is_empty() { buf.push(' '); }
+            if !buf.is_empty() {
+                buf.push(' ');
+            }
             buf.push_str(&strip_md_inline(rest));
             continue;
         }
 
         // Unordered / ordered list item — each item becomes its own paragraph.
-        let list_match = if let Some(rest) = stripped.strip_prefix("- ").or_else(|| stripped.strip_prefix("* ")) {
+        let list_match = if let Some(rest) = stripped
+            .strip_prefix("- ")
+            .or_else(|| stripped.strip_prefix("* "))
+        {
             Some(rest)
         } else {
             // Numbered list "1. xxx"
             let mut digits = String::new();
             for c in stripped.chars() {
-                if c.is_ascii_digit() { digits.push(c); } else { break; }
+                if c.is_ascii_digit() {
+                    digits.push(c);
+                } else {
+                    break;
+                }
             }
-            if !digits.is_empty() && stripped.get(digits.len()..).map(|s| s.starts_with(". ")).unwrap_or(false) {
+            if !digits.is_empty()
+                && stripped
+                    .get(digits.len()..)
+                    .map(|s| s.starts_with(". "))
+                    .unwrap_or(false)
+            {
                 Some(&stripped[digits.len() + 2..])
-            } else { None }
+            } else {
+                None
+            }
         };
         if let Some(item) = list_match {
             flush(&mut paragraphs, &mut buf, &mut current_kind);
@@ -565,7 +605,9 @@ pub fn parse_markdown_rhythm(md: &str) -> Vec<RichParagraph> {
         }
 
         // Plain text line — accumulate into the current paragraph (or quote).
-        if !buf.is_empty() { buf.push(' '); }
+        if !buf.is_empty() {
+            buf.push(' ');
+        }
         buf.push_str(&strip_md_inline(stripped));
     }
     flush(&mut paragraphs, &mut buf, &mut current_kind);
@@ -583,7 +625,9 @@ fn strip_md_inline(s: &str) -> String {
         match c {
             '*' | '_' => {
                 // Skip another marker for bold (** or __).
-                if chars.peek() == Some(&c) { chars.next(); }
+                if chars.peek() == Some(&c) {
+                    chars.next();
+                }
                 // Otherwise it's italic — already skipped.
             }
             '`' => {
@@ -614,8 +658,7 @@ fn strip_md_links(s: &str) -> String {
 fn strip_xml(s: &str) -> String {
     use once_cell::sync::Lazy;
     use regex::Regex;
-    static STYLE: Lazy<Regex> =
-        Lazy::new(|| Regex::new(r"(?is)<style[^>]*>.*?</style>").unwrap());
+    static STYLE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(?is)<style[^>]*>.*?</style>").unwrap());
     static SCRIPT: Lazy<Regex> =
         Lazy::new(|| Regex::new(r"(?is)<script[^>]*>.*?</script>").unwrap());
     static TAG: Lazy<Regex> = Lazy::new(|| Regex::new(r"<[^>]*>").unwrap());
@@ -660,7 +703,12 @@ fn strip_rtf(rtf: &str) -> String {
                 // skip the control word
                 let mut hex = String::new();
                 while let Some(&n) = chars.peek() {
-                    if n.is_ascii_alphabetic() || n == '*' || n == '\'' || n.is_ascii_digit() || n == '-' {
+                    if n.is_ascii_alphabetic()
+                        || n == '*'
+                        || n == '\''
+                        || n.is_ascii_digit()
+                        || n == '-'
+                    {
                         hex.push(n);
                         chars.next();
                     } else {
@@ -732,7 +780,8 @@ fn quitar_mobiliario(parrafos: Vec<RichParagraph>) -> Vec<RichParagraph> {
             if p.text.is_empty() {
                 return true; // separadores hr: solo llevan pausa
             }
-            if p.text.chars().count() < 90 && veces.get(&clave(&p.text)).copied().unwrap_or(0) >= 3 {
+            if p.text.chars().count() < 90 && veces.get(&clave(&p.text)).copied().unwrap_or(0) >= 3
+            {
                 return false;
             }
             !es_folio(&p.text) && !es_letras_esparcidas(&p.text)
@@ -846,9 +895,8 @@ fn empieza_en_minuscula(t: &str) -> bool {
 /// «len- guaje» → «lenguaje»: minúscula + guion + espacio + minúscula es la
 /// firma del corte de línea tipográfico, no de un compuesto real.
 fn desguionizar(t: &str) -> String {
-    static RE: once_cell::sync::Lazy<regex::Regex> = once_cell::sync::Lazy::new(|| {
-        regex::Regex::new(r"(\p{Ll})- (\p{Ll})").unwrap()
-    });
+    static RE: once_cell::sync::Lazy<regex::Regex> =
+        once_cell::sync::Lazy::new(|| regex::Regex::new(r"(\p{Ll})- (\p{Ll})").unwrap());
     RE.replace_all(t, "$1$2").into_owned()
 }
 
@@ -868,19 +916,30 @@ mod tests {
     #[test]
     fn fusiona_frase_partida_en_bloques() {
         let v = vec![
-            parrafo("Llega el centro de la pieza, porque los actos están separados", "paragraph"),
-            parrafo("precisamente por esa elipsis y abre el tercer acto.", "heading2"),
+            parrafo(
+                "Llega el centro de la pieza, porque los actos están separados",
+                "paragraph",
+            ),
+            parrafo(
+                "precisamente por esa elipsis y abre el tercer acto.",
+                "heading2",
+            ),
             parrafo("Otra frase que empieza como debe.", "paragraph"),
         ];
         let r = refinar_parrafos_pdf(v);
         assert_eq!(r.len(), 2);
-        assert!(r[0].text.ends_with("por esa elipsis y abre el tercer acto."));
+        assert!(r[0]
+            .text
+            .ends_with("por esa elipsis y abre el tercer acto."));
         assert_eq!(r[0].kind, "paragraph");
     }
 
     #[test]
     fn desguioniza_cortes_de_linea() {
-        let v = vec![parrafo("El ser del len- guaje y la catás- trofe.", "paragraph")];
+        let v = vec![parrafo(
+            "El ser del len- guaje y la catás- trofe.",
+            "paragraph",
+        )];
         let r = refinar_parrafos_pdf(v);
         assert_eq!(r[0].text, "El ser del lenguaje y la catástrofe.");
     }
@@ -911,7 +970,10 @@ mod tests {
 
     #[test]
     fn heading_falso_sin_continuar_se_degrada() {
-        let v = vec![parrafo("en cada década, porque cada una articula", "heading2")];
+        let v = vec![parrafo(
+            "en cada década, porque cada una articula",
+            "heading2",
+        )];
         let r = refinar_parrafos_pdf(v);
         assert_eq!(r[0].kind, "paragraph");
         assert_eq!(r[0].pause_before, 0.0);
@@ -936,8 +998,14 @@ mod tests {
         let ruta = std::env::var("YAPPY_PDF_PRUEBA").expect("YAPPY_PDF_PRUEBA sin definir");
         let md = pdf_oxide_to_markdown(std::path::Path::new(&ruta)).expect("pdf_oxide");
         println!("════ PÁRRAFOS REFINADOS ════");
-        for (i, p) in refinar_parrafos_pdf(parse_markdown_rhythm(&md)).iter().enumerate() {
-            println!("[{i}] kind={} pausa={} → {:?}", p.kind, p.pause_before, p.text);
+        for (i, p) in refinar_parrafos_pdf(parse_markdown_rhythm(&md))
+            .iter()
+            .enumerate()
+        {
+            println!(
+                "[{i}] kind={} pausa={} → {:?}",
+                p.kind, p.pause_before, p.text
+            );
         }
     }
 }

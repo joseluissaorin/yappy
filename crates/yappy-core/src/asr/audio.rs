@@ -69,7 +69,10 @@ fn stft(audio: &[f32], n_fft: usize, hop_length: usize, win_length: usize) -> Re
 
     let window = hann_window(win_length);
     if padded.len() < n_fft {
-        return Err(anyhow!("audio too short for STFT ({} samples)", audio.len()));
+        return Err(anyhow!(
+            "audio too short for STFT ({} samples)",
+            audio.len()
+        ));
     }
     let num_frames = (padded.len() - n_fft) / hop_length + 1;
     let freq_bins = n_fft / 2 + 1;
@@ -158,7 +161,8 @@ pub fn extract_features(audio: &[f32], config: &MelConfig) -> Result<Array2<f32>
     let audio = apply_preemphasis(audio, config.preemphasis);
     let spectrogram = stft(&audio, config.n_fft, config.hop_length, config.win_length)?;
 
-    let mel_filterbank = create_mel_filterbank(config.n_fft, config.feature_size, config.sampling_rate);
+    let mel_filterbank =
+        create_mel_filterbank(config.n_fft, config.feature_size, config.sampling_rate);
     let mel_spectrogram = mel_filterbank.dot(&spectrogram);
 
     // NeMo: log_zero_guard_type="add", value=2^-24.

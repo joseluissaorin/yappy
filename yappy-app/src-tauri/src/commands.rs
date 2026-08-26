@@ -9,19 +9,19 @@ use tauri::{AppHandle, Emitter, Manager, Runtime, State};
 use yappy_core::engine::SynthesisOptions;
 use yappy_core::voices::Voice;
 
+use crate::asr_model;
 use crate::bridge::{ConnectionInfo, BRIDGE_PORT};
 use crate::capture;
 use crate::credits;
 use crate::history;
 use crate::hotkey;
 use crate::model;
-use crate::asr_model;
-use crate::transcripts;
 use crate::playback::AudioChunk;
 use crate::settings::{
     self, AppTheme, OcrEngine, PlayerPositionPreset, PlayerTheme, Quality, Settings,
 };
 use crate::state::AppState;
+use crate::transcripts;
 use crate::windows;
 
 #[tauri::command]
@@ -196,8 +196,7 @@ pub fn set_player_size_cmd(
     size: String,
 ) -> Result<(), String> {
     let size_for_window = size.clone();
-    settings::update(&app, state.inner(), |s| s.player_size = size)
-        .map_err(|e| e.to_string())?;
+    settings::update(&app, state.inner(), |s| s.player_size = size).map_err(|e| e.to_string())?;
     if let Some(player) = app.get_webview_window("player") {
         let _ = windows::resize_player_for_size(&player, &size_for_window);
     }
@@ -275,9 +274,9 @@ pub fn get_extension_path_cmd(app: AppHandle) -> Result<String, String> {
 pub fn log_frontend_cmd(level: String, source: String, message: String) {
     match level.as_str() {
         "error" => tracing::error!(target = "frontend", "{source}: {message}"),
-        "warn"  => tracing::warn!(target = "frontend", "{source}: {message}"),
-        "info"  => tracing::info!(target = "frontend", "{source}: {message}"),
-        _       => tracing::debug!(target = "frontend", "{source}: {message}"),
+        "warn" => tracing::warn!(target = "frontend", "{source}: {message}"),
+        "info" => tracing::info!(target = "frontend", "{source}: {message}"),
+        _ => tracing::debug!(target = "frontend", "{source}: {message}"),
     }
 }
 
@@ -468,8 +467,7 @@ pub fn import_settings_cmd(
     json: String,
 ) -> Result<Settings, String> {
     let s: Settings = serde_json::from_str(&json).map_err(|e| e.to_string())?;
-    let result = settings::update(&app, state.inner(), |x| *x = s)
-        .map_err(|e| e.to_string())?;
+    let result = settings::update(&app, state.inner(), |x| *x = s).map_err(|e| e.to_string())?;
     let _ = hotkey::register_from_settings(&app, state.inner());
     Ok(result)
 }
@@ -566,10 +564,14 @@ pub async fn read_file_cmd(
     let caller_label = window.label().to_string();
     let label = match target_window {
         Some(l) if !l.is_empty() => l,
-        _ if caller_label.starts_with("document-") || caller_label == "document" => caller_label.clone(),
+        _ if caller_label.starts_with("document-") || caller_label == "document" => {
+            caller_label.clone()
+        }
         _ => windows::next_document_label(),
     };
-    tracing::info!("[doc:cmd] read_file_cmd: target window label = {label} (caller={caller_label})");
+    tracing::info!(
+        "[doc:cmd] read_file_cmd: target window label = {label} (caller={caller_label})"
+    );
     // iOS hands shared/opened files as percent-encoded `file://` URLs — normalize.
     let p = normalize_local_path(&path);
     let path = p.to_string_lossy().into_owned();
@@ -591,7 +593,10 @@ pub async fn read_file_cmd(
         filename
     );
     if !p.exists() {
-        tracing::warn!("[doc:cmd] read_file_cmd: file does not exist: {}", p.display());
+        tracing::warn!(
+            "[doc:cmd] read_file_cmd: file does not exist: {}",
+            p.display()
+        );
         return Err(format!("file not found: {path}"));
     }
 
@@ -626,7 +631,9 @@ pub async fn read_file_cmd(
     tracing::info!("[doc:cmd] read_file_cmd: emit_to({label}, document_loaded LOADING)");
     match app.emit_to(label.as_str(), "document_loaded", &loading_payload) {
         Ok(_) => tracing::info!("[doc:cmd] read_file_cmd: document_loaded (LOADING) emit OK"),
-        Err(e) => tracing::error!("[doc:cmd] read_file_cmd: document_loaded (LOADING) emit FAILED: {e:?}"),
+        Err(e) => {
+            tracing::error!("[doc:cmd] read_file_cmd: document_loaded (LOADING) emit FAILED: {e:?}")
+        }
     }
 
     // Stage 2: parse via the rich loader so markdown structure becomes reading
@@ -640,14 +647,15 @@ pub async fn read_file_cmd(
     )
     .await;
 
-    let rich_result: Result<Vec<crate::capture::doc_loader::RichParagraph>, String> = match parse_result {
-        Ok(Ok(Ok(v))) => Ok(v),
-        Ok(Ok(Err(e))) => Err(e.to_string()),
-        Ok(Err(e)) => Err(format!("parse task failed: {e}")),
-        Err(_) => Err(format!(
-            "timed out parsing {filename} after 180s — file may be too large or malformed"
-        )),
-    };
+    let rich_result: Result<Vec<crate::capture::doc_loader::RichParagraph>, String> =
+        match parse_result {
+            Ok(Ok(Ok(v))) => Ok(v),
+            Ok(Ok(Err(e))) => Err(e.to_string()),
+            Ok(Err(e)) => Err(format!("parse task failed: {e}")),
+            Err(_) => Err(format!(
+                "timed out parsing {filename} after 180s — file may be too large or malformed"
+            )),
+        };
 
     let rich = match rich_result {
         Ok(v) => {
@@ -709,11 +717,17 @@ pub async fn read_file_cmd(
         payload.paragraphs.len(),
         payload.char_count
     );
-    state.documents.lock().unwrap().insert(label.clone(), payload.clone());
+    state
+        .documents
+        .lock()
+        .unwrap()
+        .insert(label.clone(), payload.clone());
     tracing::info!("[doc:cmd] read_file_cmd: emit_to({label}, document_loaded FULL)");
     match app.emit_to(label.as_str(), "document_loaded", &payload) {
         Ok(_) => tracing::info!("[doc:cmd] read_file_cmd: document_loaded (FULL) emit OK"),
-        Err(e) => tracing::error!("[doc:cmd] read_file_cmd: document_loaded (FULL) emit FAILED: {e:?}"),
+        Err(e) => {
+            tracing::error!("[doc:cmd] read_file_cmd: document_loaded (FULL) emit FAILED: {e:?}")
+        }
     }
     tracing::info!("[doc:cmd] read_file_cmd EXIT OK");
     Ok(())
@@ -727,7 +741,11 @@ pub async fn read_document_cmd(path: String) -> Result<crate::state::CurrentDocu
     // iOS hands shared/opened files as percent-encoded `file://` URLs — normalize.
     let p = normalize_local_path(&path);
     let path = p.to_string_lossy().into_owned();
-    let ext = p.extension().and_then(|e| e.to_str()).unwrap_or("").to_lowercase();
+    let ext = p
+        .extension()
+        .and_then(|e| e.to_str())
+        .unwrap_or("")
+        .to_lowercase();
     let filename = p
         .file_name()
         .and_then(|n| n.to_str())
@@ -739,7 +757,9 @@ pub async fn read_document_cmd(path: String) -> Result<crate::state::CurrentDocu
     let path_for_thread = p.clone();
     let parse = tokio::time::timeout(
         std::time::Duration::from_secs(180),
-        tokio::task::spawn_blocking(move || capture::doc_loader::load_rich_from_file(&path_for_thread)),
+        tokio::task::spawn_blocking(move || {
+            capture::doc_loader::load_rich_from_file(&path_for_thread)
+        }),
     )
     .await;
     let rich = match parse {
@@ -790,7 +810,11 @@ pub async fn read_text_as_document_cmd(
         .split_whitespace()
         .collect::<Vec<_>>()
         .join(" ");
-    let stem = if stem.is_empty() { "Shared article".to_string() } else { stem.chars().take(60).collect() };
+    let stem = if stem.is_empty() {
+        "Shared article".to_string()
+    } else {
+        stem.chars().take(60).collect()
+    };
     let path = std::env::temp_dir().join(format!("{stem}.md"));
     std::fs::write(&path, text.as_bytes()).map_err(|e| e.to_string())?;
     read_document_cmd(path.to_string_lossy().into_owned()).await
@@ -850,10 +874,7 @@ pub fn document_window_ready_cmd(
 }
 
 #[tauri::command]
-pub fn clear_current_document_cmd(
-    state: State<'_, Arc<AppState>>,
-    window: tauri::Window,
-) {
+pub fn clear_current_document_cmd(state: State<'_, Arc<AppState>>, window: tauri::Window) {
     let label = window.label();
     tracing::info!("[doc:cmd] clear_current_document_cmd({label})");
     state.documents.lock().unwrap().remove(label);
@@ -882,15 +903,16 @@ fn project_key(path: &str) -> String {
         .filter(|c| c.is_alphanumeric() || *c == '-' || *c == '_')
         .take(48)
         .collect();
-    let stem = if stem.is_empty() { "doc".to_string() } else { stem };
+    let stem = if stem.is_empty() {
+        "doc".to_string()
+    } else {
+        stem
+    };
     format!("{stem}-{:016x}", h.finish())
 }
 
 fn project_path(app: &AppHandle, doc_path: &str) -> Result<std::path::PathBuf, String> {
-    let mut p = app
-        .path()
-        .app_config_dir()
-        .map_err(|e| e.to_string())?;
+    let mut p = app.path().app_config_dir().map_err(|e| e.to_string())?;
     p.push("projects");
     std::fs::create_dir_all(&p).map_err(|e| e.to_string())?;
     p.push(format!("{}.json", project_key(doc_path)));
@@ -906,14 +928,24 @@ pub fn save_project_cmd(
     let p = project_path(&app, &doc_path)?;
     let tmp = p.with_extension("json.tmp");
     if let Err(e) = std::fs::write(&tmp, &project_json) {
-        tracing::error!("[doc:cmd] save_project_cmd write failed ({}): {e}", tmp.display());
+        tracing::error!(
+            "[doc:cmd] save_project_cmd write failed ({}): {e}",
+            tmp.display()
+        );
         return Err(e.to_string());
     }
     if let Err(e) = std::fs::rename(&tmp, &p) {
-        tracing::error!("[doc:cmd] save_project_cmd rename failed ({}): {e}", p.display());
+        tracing::error!(
+            "[doc:cmd] save_project_cmd rename failed ({}): {e}",
+            p.display()
+        );
         return Err(e.to_string());
     }
-    tracing::info!("[doc:cmd] save_project_cmd → {} ({} bytes)", p.display(), project_json.len());
+    tracing::info!(
+        "[doc:cmd] save_project_cmd → {} ({} bytes)",
+        p.display(),
+        project_json.len()
+    );
     Ok(())
 }
 
@@ -921,11 +953,18 @@ pub fn save_project_cmd(
 pub fn load_project_cmd(app: AppHandle, doc_path: String) -> Result<Option<String>, String> {
     let p = project_path(&app, &doc_path)?;
     if !p.exists() {
-        tracing::info!("[doc:cmd] load_project_cmd: no project file at {}", p.display());
+        tracing::info!(
+            "[doc:cmd] load_project_cmd: no project file at {}",
+            p.display()
+        );
         return Ok(None);
     }
     let json = std::fs::read_to_string(&p).map_err(|e| e.to_string())?;
-    tracing::info!("[doc:cmd] load_project_cmd: loaded {} bytes from {}", json.len(), p.display());
+    tracing::info!(
+        "[doc:cmd] load_project_cmd: loaded {} bytes from {}",
+        json.len(),
+        p.display()
+    );
     Ok(Some(json))
 }
 
@@ -955,9 +994,15 @@ pub fn biblioteca_documentos_cmd(app: AppHandle) -> Result<Vec<DocumentoBibliote
         if ruta.extension().and_then(|e| e.to_str()) != Some("json") {
             continue;
         }
-        let Ok(json) = std::fs::read_to_string(&ruta) else { continue };
-        let Ok(v) = serde_json::from_str::<serde_json::Value>(&json) else { continue };
-        let Some(doc_path) = v.get("doc_path").and_then(|p| p.as_str()) else { continue };
+        let Ok(json) = std::fs::read_to_string(&ruta) else {
+            continue;
+        };
+        let Ok(v) = serde_json::from_str::<serde_json::Value>(&json) else {
+            continue;
+        };
+        let Some(doc_path) = v.get("doc_path").and_then(|p| p.as_str()) else {
+            continue;
+        };
         let filename = std::path::Path::new(doc_path)
             .file_name()
             .map(|n| n.to_string_lossy().to_string())
@@ -1036,7 +1081,12 @@ pub async fn render_audiobook_cmd(
 
     let (default_voice, default_speed, default_lang, total_steps) = {
         let s = state.settings.lock().unwrap();
-        (s.voice.clone(), s.speed, s.default_lang.clone(), s.quality.total_steps())
+        (
+            s.voice.clone(),
+            s.speed,
+            s.default_lang.clone(),
+            s.quality.total_steps(),
+        )
     };
 
     let app_for_thread = app.clone();
@@ -1330,7 +1380,10 @@ pub async fn read_document_paragraphs_cmd(
             }
             piezas.push(pieza);
         }
-        Guion { idioma_base, piezas }
+        Guion {
+            idioma_base,
+            piezas,
+        }
     };
 
     let result = read_internal(
@@ -1341,7 +1394,9 @@ pub async fn read_document_paragraphs_cmd(
         voice,
         None,
         "document".into(),
-        ReadMode::Document { base_paragraph_index: from_index },
+        ReadMode::Document {
+            base_paragraph_index: from_index,
+        },
         SessionMeta {
             doc_path: doc_path.unwrap_or_default(),
             titulo: titulo.unwrap_or_default(),
@@ -1464,10 +1519,20 @@ pub fn audiobook_export_path_cmd(app: AppHandle, name: String) -> Result<String,
         let cleaned: String = name
             .trim()
             .chars()
-            .map(|c| if c.is_alphanumeric() || c == ' ' || c == '-' || c == '_' { c } else { ' ' })
+            .map(|c| {
+                if c.is_alphanumeric() || c == ' ' || c == '-' || c == '_' {
+                    c
+                } else {
+                    ' '
+                }
+            })
             .collect();
         let cleaned = cleaned.split_whitespace().collect::<Vec<_>>().join(" ");
-        if cleaned.is_empty() { "audiobook".to_string() } else { cleaned }
+        if cleaned.is_empty() {
+            "audiobook".to_string()
+        } else {
+            cleaned
+        }
     };
     let mut path = dir.join(format!("{stem}.m4b"));
     // Avoid clobbering an existing export: append " (2)", " (3)", …
@@ -1517,7 +1582,10 @@ fn read_resume_map(app: &AppHandle) -> std::collections::HashMap<String, f64> {
         .unwrap_or_default()
 }
 
-fn write_resume_map(app: &AppHandle, map: &std::collections::HashMap<String, f64>) -> Result<(), String> {
+fn write_resume_map(
+    app: &AppHandle,
+    map: &std::collections::HashMap<String, f64>,
+) -> Result<(), String> {
     let p = library_resume_map_path(app)?;
     let s = serde_json::to_string_pretty(map).map_err(|e| e.to_string())?;
     std::fs::write(p, s).map_err(|e| e.to_string())
@@ -1526,10 +1594,7 @@ fn write_resume_map(app: &AppHandle, map: &std::collections::HashMap<String, f64
 #[tauri::command]
 pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryItem>, String> {
     use tauri::Manager;
-    let dir = app
-        .path()
-        .document_dir()
-        .map_err(|e| e.to_string())?;
+    let dir = app.path().document_dir().map_err(|e| e.to_string())?;
     let resume_map = read_resume_map(&app);
     let mut items: Vec<LibraryItem> = Vec::new();
     let entries = std::fs::read_dir(&dir).map_err(|e| e.to_string())?;
@@ -1539,7 +1604,10 @@ pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryI
             .extension()
             .and_then(|s| s.to_str())
             .map(|s| s.to_lowercase());
-        if !matches!(ext.as_deref(), Some("m4b") | Some("wav") | Some("mp3") | Some("m4a")) {
+        if !matches!(
+            ext.as_deref(),
+            Some("m4b") | Some("wav") | Some("mp3") | Some("m4a")
+        ) {
             continue;
         }
         let meta = match entry.metadata() {
@@ -1561,7 +1629,11 @@ pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryI
         let (duration_secs, chapter_count, first_chapter_title) =
             if matches!(ext.as_deref(), Some("m4b") | Some("m4a")) {
                 if let Some(info) = crate::audiobook::read_m4b_info(&path) {
-                    (Some(info.duration_secs), info.chapter_count, info.first_chapter_title)
+                    (
+                        Some(info.duration_secs),
+                        info.chapter_count,
+                        info.first_chapter_title,
+                    )
                 } else {
                     (None, 0, None)
                 }
@@ -1588,7 +1660,11 @@ pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryI
 /// Start playback of a saved audiobook via AVAudioPlayer (iOS only).
 /// Resumes from the last-known position unless `from_start` is true.
 #[tauri::command]
-pub fn library_play_cmd(_app: AppHandle, path: String, from_start: Option<bool>) -> Result<bool, String> {
+pub fn library_play_cmd(
+    _app: AppHandle,
+    path: String,
+    from_start: Option<bool>,
+) -> Result<bool, String> {
     let start_at = if from_start.unwrap_or(false) {
         0.0
     } else {
@@ -1670,7 +1746,8 @@ pub fn library_stop_cmd(app: AppHandle) {
         if let Some(p) = crate::mobile::audiofile_current_path() {
             let pos = crate::mobile::audiofile_position();
             let mut map = read_resume_map(&app);
-            if pos > 5.0 { // Only save if more than 5s in (avoids "resume from beginning")
+            if pos > 5.0 {
+                // Only save if more than 5s in (avoids "resume from beginning")
                 map.insert(p, pos);
                 let _ = write_resume_map(&app, &map);
             }
@@ -1820,8 +1897,7 @@ pub async fn leer_portapapeles<R: Runtime>(
         let _ = app.emit("capture_empty", true);
         return Ok(());
     }
-    read_text(&app, state, text, "clipboard".into())
-        .await
+    read_text(&app, state, text, "clipboard".into()).await
 }
 
 #[tauri::command]
@@ -1833,7 +1909,9 @@ pub fn is_model_ready(app: AppHandle) -> Result<bool, String> {
 /// DESPUÉS de que algo suene (la cinta, el cartel) la necesitan para pintar
 /// la aguja o el estado de pausa sin esperar a la siguiente emisión.
 #[tauri::command]
-pub fn playback_snapshot_cmd(state: tauri::State<'_, AppState>) -> crate::playback::PlaybackSnapshot {
+pub fn playback_snapshot_cmd(
+    state: tauri::State<'_, AppState>,
+) -> crate::playback::PlaybackSnapshot {
     state.playback.snapshot()
 }
 
@@ -1987,7 +2065,11 @@ fn cocinar_muestra_blocking(
         .collect();
     let p = muestra_path(app, voice, lang).map_err(|e| anyhow::anyhow!(e))?;
     crate::playback::write_wav_file(&p, &samples, sr)?;
-    tracing::info!("muestra cocinada: {} ({lang}, {:.1}s)", voice, samples.len() as f32 / sr as f32);
+    tracing::info!(
+        "muestra cocinada: {} ({lang}, {:.1}s)",
+        voice,
+        samples.len() as f32 / sr as f32
+    );
     Ok(p)
 }
 
@@ -1995,7 +2077,11 @@ fn cocinar_muestra_blocking(
 /// (autodetección) cayendo a inglés.
 fn lang_de_muestras(state: &Arc<AppState>) -> String {
     let l = state.settings.lock().unwrap().default_lang.clone();
-    if l == "na" || l.is_empty() { "en".into() } else { l }
+    if l == "na" || l.is_empty() {
+        "en".into()
+    } else {
+        l
+    }
 }
 
 /// La cocina de fondo (móvil): cuando el modelo está listo y no suena nada,
@@ -2167,10 +2253,7 @@ pub async fn replay_history_cmd(
 // ----- SAVE AS AUDIO -----
 
 #[tauri::command]
-pub fn save_current_audio_cmd(
-    state: State<'_, Arc<AppState>>,
-    path: String,
-) -> Result<(), String> {
+pub fn save_current_audio_cmd(state: State<'_, Arc<AppState>>, path: String) -> Result<(), String> {
     let (samples, sr) = state.playback.session_audio();
     if samples.is_empty() {
         return Err("no audio in current session".into());
@@ -2193,10 +2276,7 @@ pub async fn toggle_pause<R: Runtime>(app: AppHandle<R>, state: Arc<AppState>) -
     Ok(())
 }
 
-pub async fn trigger_read_now<R: Runtime>(
-    app: AppHandle<R>,
-    state: Arc<AppState>,
-) -> Result<()> {
+pub async fn trigger_read_now<R: Runtime>(app: AppHandle<R>, state: Arc<AppState>) -> Result<()> {
     tracing::info!("trigger_read_now: entering");
     let _ = app.emit("capture_progress", "thinking");
 
@@ -2221,7 +2301,13 @@ pub async fn trigger_read_now<R: Runtime>(
                         "preview": capture.text.chars().take(120).collect::<String>(),
                     }),
                 );
-                return read_text(&app, state, capture.text, capture.source.short_kind().to_string()).await;
+                return read_text(
+                    &app,
+                    state,
+                    capture.text,
+                    capture.source.short_kind().to_string(),
+                )
+                .await;
             }
             capture::FastCapture::Delegated(source) => {
                 let _ = app.emit(
@@ -2253,7 +2339,13 @@ pub async fn trigger_read_now<R: Runtime>(
             "preview": capture.text.chars().take(120).collect::<String>(),
         }),
     );
-    read_text(&app, state, capture.text, capture.source.short_kind().to_string()).await
+    read_text(
+        &app,
+        state,
+        capture.text,
+        capture.source.short_kind().to_string(),
+    )
+    .await
 }
 
 pub async fn read_text<R: Runtime>(
@@ -2283,7 +2375,9 @@ pub async fn read_text_in_document<R: Runtime>(
         voice,
         None,
         source,
-        ReadMode::Document { base_paragraph_index },
+        ReadMode::Document {
+            base_paragraph_index,
+        },
     )
     .await
 }
@@ -2327,7 +2421,16 @@ async fn read_with_voice_lang_internal<R: Runtime>(
     forced_lang: Option<String>,
     source: String,
 ) -> Result<()> {
-    read_with_voice_lang_internal_with_mode(app, state, text, voice, forced_lang, source, ReadMode::MiniPlayer).await
+    read_with_voice_lang_internal_with_mode(
+        app,
+        state,
+        text,
+        voice,
+        forced_lang,
+        source,
+        ReadMode::MiniPlayer,
+    )
+    .await
 }
 
 async fn read_with_voice_lang_internal_with_mode<R: Runtime>(
@@ -2405,14 +2508,20 @@ async fn read_internal<R: Runtime>(
     let (opts, voice_overrides, save_history, history_max, mut successful_reads, vol) = {
         let s = state.settings.lock().unwrap();
         let chosen_voice = match forced_lang.as_deref() {
-            Some(lang) => s.voice_overrides.get(lang).cloned().unwrap_or(voice.clone()),
+            Some(lang) => s
+                .voice_overrides
+                .get(lang)
+                .cloned()
+                .unwrap_or(voice.clone()),
             None => voice.clone(),
         };
         (
             SynthesisOptions {
                 voice: chosen_voice,
                 speed: s.speed,
-                default_lang: forced_lang.clone().unwrap_or_else(|| s.default_lang.clone()),
+                default_lang: forced_lang
+                    .clone()
+                    .unwrap_or_else(|| s.default_lang.clone()),
                 total_steps: s.quality.total_steps(),
                 seed: None,
                 detectar_idioma: s.auto_lang_detect,
@@ -2442,7 +2551,9 @@ async fn read_internal<R: Runtime>(
         }
     }
     let base_paragraph_index = match &mode {
-        ReadMode::Document { base_paragraph_index } => *base_paragraph_index,
+        ReadMode::Document {
+            base_paragraph_index,
+        } => *base_paragraph_index,
         ReadMode::MiniPlayer => 0,
     };
     // El título de la sesión: el del documento si llegó; si no, la primera
@@ -2562,7 +2673,11 @@ async fn read_internal<R: Runtime>(
         // Record history + bump successful_reads.
         if res.is_ok() && save_history {
             let entry = history::HistoryEntry {
-                id: format!("{}-{}", history::now_unix(), preview_for_history.chars().take(8).collect::<String>()),
+                id: format!(
+                    "{}-{}",
+                    history::now_unix(),
+                    preview_for_history.chars().take(8).collect::<String>()
+                ),
                 started_at: history::now_unix(),
                 source: source_for_history,
                 app_name: None,
@@ -2682,7 +2797,12 @@ pub async fn transcribe_audio_cmd(
             id: format!(
                 "{}-{}",
                 transcripts::now_unix(),
-                uuid::Uuid::new_v4().simple().to_string().chars().take(8).collect::<String>()
+                uuid::Uuid::new_v4()
+                    .simple()
+                    .to_string()
+                    .chars()
+                    .take(8)
+                    .collect::<String>()
             ),
             created_at: transcripts::now_unix(),
             source: source.unwrap_or_else(|| "File".into()),
@@ -2803,7 +2923,12 @@ pub fn save_transcript_cmd(
         id: format!(
             "{}-{}",
             transcripts::now_unix(),
-            uuid::Uuid::new_v4().simple().to_string().chars().take(8).collect::<String>()
+            uuid::Uuid::new_v4()
+                .simple()
+                .to_string()
+                .chars()
+                .take(8)
+                .collect::<String>()
         ),
         created_at: transcripts::now_unix(),
         source: source.unwrap_or_else(|| "Shared".into()),
@@ -2844,7 +2969,10 @@ pub async fn audio_selftest_cmd(
         const PHRASE: &str = "The quick brown fox jumps over the lazy dog.";
         // 1) TTS synth → raw samples.
         let engine = st.engine_or_load(&model_root)?;
-        let opts = SynthesisOptions { voice, ..Default::default() };
+        let opts = SynthesisOptions {
+            voice,
+            ..Default::default()
+        };
         let chunks = engine.synthesize(PHRASE, &opts)?;
         let sr = engine.sample_rate();
         let mut samples: Vec<f32> = Vec::new();

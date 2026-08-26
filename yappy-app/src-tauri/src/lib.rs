@@ -8,21 +8,21 @@ pub mod audiobook;
 mod bridge;
 mod capture;
 mod cola;
-mod enlaces;
 mod commands;
 mod credits;
+mod enlaces;
 mod history;
 mod hotkey;
 mod model;
 // Speech-to-text (ASR): Parakeet TDT model manager + transcript history. Audio
 // decoding is desktop-only (iOS decodes via AVFoundation in Swift).
-mod asr_model;
-mod transcripts;
 mod asr_decode;
+mod asr_model;
 mod playback;
 mod puente;
 mod settings;
 mod state;
+mod transcripts;
 mod tray;
 mod windows;
 
@@ -42,9 +42,9 @@ mod os_win;
 
 use std::sync::Arc;
 
-use tauri::Manager;
 #[cfg(mobile)]
 use tauri::Emitter;
+use tauri::Manager;
 
 use crate::state::AppState;
 
@@ -210,9 +210,7 @@ pub fn run() {
                 "ort: registered execution providers (priority order): {}",
                 requested.join(" → ")
             ),
-            Err(e) => tracing::warn!(
-                "ort: EP registration failed, falling back to CPU-only: {e}"
-            ),
+            Err(e) => tracing::warn!("ort: EP registration failed, falling back to CPU-only: {e}"),
         }
     }
 
@@ -236,27 +234,40 @@ pub fn run() {
         let mut first = true;
         let sid = pb.begin_session();
         engine
-            .synthesize_streaming("Yappy backend, playback and all, says hello.", &opts, |chunk| {
-                let ac = playback::AudioChunk {
-                    index: chunk.index,
-                    paragraph_index: chunk.paragraph_index,
-                    total: chunk.total,
-                    total_paragraphs: chunk.total_paragraphs,
-                    text: chunk.text.clone(),
-                    origen_ini: chunk.origen_ini,
-                    origen_fin: chunk.origen_fin,
-                    samples: chunk.samples.clone(),
-                    source_sample_rate: chunk.sample_rate as u32,
-                };
-                if first { pb.new_session(sid, vec![ac], false); first = false; } else { pb.enqueue(sid, ac); }
-                Ok(())
-            })
+            .synthesize_streaming(
+                "Yappy backend, playback and all, says hello.",
+                &opts,
+                |chunk| {
+                    let ac = playback::AudioChunk {
+                        index: chunk.index,
+                        paragraph_index: chunk.paragraph_index,
+                        total: chunk.total,
+                        total_paragraphs: chunk.total_paragraphs,
+                        text: chunk.text.clone(),
+                        origen_ini: chunk.origen_ini,
+                        origen_fin: chunk.origen_fin,
+                        samples: chunk.samples.clone(),
+                        source_sample_rate: chunk.sample_rate as u32,
+                    };
+                    if first {
+                        pb.new_session(sid, vec![ac], false);
+                        first = false;
+                    } else {
+                        pb.enqueue(sid, ac);
+                    }
+                    Ok(())
+                },
+            )
             .expect("synthesize");
         let start = std::time::Instant::now();
         loop {
             let s = pb.snapshot();
-            if !s.playing && s.duration_secs > 0.0 { break; }
-            if start.elapsed().as_secs() > 30 { break; }
+            if !s.playing && s.duration_secs > 0.0 {
+                break;
+            }
+            if start.elapsed().as_secs() > 30 {
+                break;
+            }
             std::thread::sleep(std::time::Duration::from_millis(200));
         }
         std::process::exit(0);
@@ -306,23 +317,21 @@ pub fn run() {
     // forwarded to it instead of spawning a duplicate process.
     #[cfg(target_os = "windows")]
     {
-        builder = builder.plugin(
-            tauri_plugin_single_instance::init(|app, argv, _cwd| {
-                tracing::info!("single-instance: re-launch argv = {:?}", argv);
-                if let Some(main) = app.get_webview_window("main") {
-                    let _ = main.show();
-                    let _ = main.set_focus();
-                    let _ = main.unminimize();
-                }
-                // Forward file argument (if any) to the frontend via event.
-                if let Some(path) = argv.iter().skip(1).find(|a| {
-                    let p = std::path::Path::new(a);
-                    p.exists() && p.is_file()
-                }) {
-                    let _ = app.emit("file_open_request", path);
-                }
-            }),
-        );
+        builder = builder.plugin(tauri_plugin_single_instance::init(|app, argv, _cwd| {
+            tracing::info!("single-instance: re-launch argv = {:?}", argv);
+            if let Some(main) = app.get_webview_window("main") {
+                let _ = main.show();
+                let _ = main.set_focus();
+                let _ = main.unminimize();
+            }
+            // Forward file argument (if any) to the frontend via event.
+            if let Some(path) = argv.iter().skip(1).find(|a| {
+                let p = std::path::Path::new(a);
+                p.exists() && p.is_file()
+            }) {
+                let _ = app.emit("file_open_request", path);
+            }
+        }));
     }
     // Desktop-only plugins. iOS has no autostart concept and no global
     // hotkeys; loading these plugins on mobile would compile-error in some

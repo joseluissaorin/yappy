@@ -63,10 +63,7 @@ impl AppState {
         }
     }
 
-    pub fn engine_or_load(
-        &self,
-        model_root: &std::path::Path,
-    ) -> anyhow::Result<Arc<TtsEngine>> {
+    pub fn engine_or_load(&self, model_root: &std::path::Path) -> anyhow::Result<Arc<TtsEngine>> {
         let mut slot = self.engine.lock().unwrap();
         if let Some(e) = slot.as_ref() {
             return Ok(e.clone());

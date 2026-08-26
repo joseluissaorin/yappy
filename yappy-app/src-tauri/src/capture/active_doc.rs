@@ -4,11 +4,18 @@ use anyhow::Result;
 
 pub fn doc_kind_for(app_name: &str) -> &'static str {
     match app_name {
-        "Safari" | "Google Chrome" | "Google Chrome Canary" | "Brave Browser" | "Arc"
-        | "Microsoft Edge" | "Vivaldi" | "Firefox" | "Orion" => "browser",
+        "Safari"
+        | "Google Chrome"
+        | "Google Chrome Canary"
+        | "Brave Browser"
+        | "Arc"
+        | "Microsoft Edge"
+        | "Vivaldi"
+        | "Firefox"
+        | "Orion" => "browser",
         "Preview" | "Adobe Acrobat" | "Adobe Reader" | "Skim" | "PDF Expert" => "pdf",
-        "TextEdit" | "Notes" | "Pages" | "Microsoft Word" | "Ulysses" | "iA Writer"
-        | "Bear" | "Obsidian" | "Typora" | "MarkdownEdit" => "editor",
+        "TextEdit" | "Notes" | "Pages" | "Microsoft Word" | "Ulysses" | "iA Writer" | "Bear"
+        | "Obsidian" | "Typora" | "MarkdownEdit" => "editor",
         _ => "document",
     }
 }
@@ -17,8 +24,12 @@ pub fn doc_kind_for(app_name: &str) -> &'static str {
 pub fn active_document_text(app_name: &str) -> Result<Option<String>> {
     let script = match app_name {
         "Safari" => Some(SAFARI),
-        "Google Chrome" | "Google Chrome Canary" | "Brave Browser" | "Arc"
-        | "Microsoft Edge" | "Vivaldi" => Some(CHROME),
+        "Google Chrome"
+        | "Google Chrome Canary"
+        | "Brave Browser"
+        | "Arc"
+        | "Microsoft Edge"
+        | "Vivaldi" => Some(CHROME),
         "Firefox" => Some(FIREFOX),
         "TextEdit" => Some(TEXTEDIT),
         "Notes" => Some(NOTES),

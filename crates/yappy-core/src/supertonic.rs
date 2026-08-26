@@ -81,7 +81,8 @@ pub struct Style {
 
 pub fn load_voice_style<P: AsRef<Path>>(path: P) -> Result<Style> {
     let path = path.as_ref();
-    let file = File::open(path).with_context(|| format!("opening voice style {}", path.display()))?;
+    let file =
+        File::open(path).with_context(|| format!("opening voice style {}", path.display()))?;
     let data: VoiceStyleData = serde_json::from_reader(BufReader::new(file))?;
 
     let ttl_dims = &data.style_ttl.dims;
@@ -224,14 +225,19 @@ pub fn preprocess_text(text: &str, lang: &str) -> Result<String> {
         .to_string();
 
     if !text.is_empty() {
-        let tail = Regex::new(r#"[.!?;:,'"\u{201C}\u{201D}\u{2018}\u{2019})\]}…。」』】〉》›»]$"#).unwrap();
+        let tail = Regex::new(r#"[.!?;:,'"\u{201C}\u{201D}\u{2018}\u{2019})\]}…。」』】〉》›»]$"#)
+            .unwrap();
         if !tail.is_match(&text) {
             text.push('.');
         }
     }
 
     if !is_valid_lang(lang) {
-        bail!("Invalid language: {}. Supported: {:?}", lang, AVAILABLE_LANGS);
+        bail!(
+            "Invalid language: {}. Supported: {:?}",
+            lang,
+            AVAILABLE_LANGS
+        );
     }
     Ok(format!("<{lang}>{text}</{lang}>"))
 }
@@ -334,7 +340,11 @@ impl TextToSpeech {
         })?;
         let (te_shape, te_data) = enc_out["text_emb"].try_extract_tensor::<f32>()?;
         let text_emb = Array3::from_shape_vec(
-            (te_shape[0] as usize, te_shape[1] as usize, te_shape[2] as usize),
+            (
+                te_shape[0] as usize,
+                te_shape[1] as usize,
+                te_shape[2] as usize,
+            ),
             te_data.to_vec(),
         )?;
 
@@ -374,7 +384,9 @@ impl TextToSpeech {
 
         // 4. vocoder
         let final_latent = Value::from_array(xt)?;
-        let voc_out = self.vocoder.run(ort::inputs! { "latent" => &final_latent })?;
+        let voc_out = self
+            .vocoder
+            .run(ort::inputs! { "latent" => &final_latent })?;
         let (_, wav_slice) = voc_out["wav_tts"].try_extract_tensor::<f32>()?;
         let wav: Vec<f32> = wav_slice.to_vec();
 

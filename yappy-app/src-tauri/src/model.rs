@@ -63,7 +63,10 @@ pub fn is_model_ready(handle: &tauri::AppHandle<impl tauri::Runtime>) -> Result<
 }
 
 /// Stream-download all required files into the model directory, emitting progress events.
-pub async fn download_model(handle: &tauri::AppHandle<impl tauri::Runtime>, emit: impl Fn(DownloadProgress) + Send + Sync + 'static) -> Result<()> {
+pub async fn download_model(
+    handle: &tauri::AppHandle<impl tauri::Runtime>,
+    emit: impl Fn(DownloadProgress) + Send + Sync + 'static,
+) -> Result<()> {
     use futures_util::StreamExt;
     let root = model_root(handle)?;
     std::fs::create_dir_all(root.join("onnx"))?;
@@ -72,13 +75,21 @@ pub async fn download_model(handle: &tauri::AppHandle<impl tauri::Runtime>, emit
     // Build the file list with target sizes.
     let mut files: Vec<(String, PathBuf, Option<u64>)> = Vec::new();
     for (name, size) in REQUIRED_ONNX {
-        files.push((format!("onnx/{name}"), root.join("onnx").join(name), Some(*size)));
+        files.push((
+            format!("onnx/{name}"),
+            root.join("onnx").join(name),
+            Some(*size),
+        ));
     }
     for aux in REQUIRED_AUX {
         files.push((format!("onnx/{aux}"), root.join("onnx").join(aux), None));
     }
     for vs in VOICE_STYLE_FILES {
-        files.push((format!("voice_styles/{vs}"), root.join("voice_styles").join(vs), None));
+        files.push((
+            format!("voice_styles/{vs}"),
+            root.join("voice_styles").join(vs),
+            None,
+        ));
     }
 
     // Pre-compute total expected bytes for files we know.
@@ -106,7 +117,10 @@ pub async fn download_model(handle: &tauri::AppHandle<impl tauri::Runtime>, emit
             overall_total,
         });
 
-        let resp = client.get(&url).send().await
+        let resp = client
+            .get(&url)
+            .send()
+            .await
             .with_context(|| format!("GET {url}"))?
             .error_for_status()?;
         let bytes_total = resp.content_length().unwrap_or(0);

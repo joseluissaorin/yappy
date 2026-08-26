@@ -12,20 +12,26 @@ pub fn position_player_with_preset<R: Runtime>(
     player: &WebviewWindow<R>,
     preset: PlayerPositionPreset,
 ) -> Result<()> {
-    let Some(monitor) = player.current_monitor()? else { return Ok(()); };
+    let Some(monitor) = player.current_monitor()? else {
+        return Ok(());
+    };
     let size = monitor.size();
     let pos = monitor.position();
     let scale = monitor.scale_factor();
-    let ps = player.outer_size().unwrap_or(PhysicalSize { width: 380, height: 94 });
+    let ps = player.outer_size().unwrap_or(PhysicalSize {
+        width: 380,
+        height: 94,
+    });
     let margin = (16.0 * scale) as i32;
     let top_margin = (40.0 * scale) as i32;
     let x = match preset {
-        PlayerPositionPreset::TopLeft
-        | PlayerPositionPreset::BottomLeft => pos.x + margin,
-        PlayerPositionPreset::TopCenter
-        | PlayerPositionPreset::BottomCenter => pos.x + (size.width as i32 - ps.width as i32) / 2,
-        PlayerPositionPreset::TopRight
-        | PlayerPositionPreset::BottomRight => pos.x + (size.width as i32 - ps.width as i32) - margin,
+        PlayerPositionPreset::TopLeft | PlayerPositionPreset::BottomLeft => pos.x + margin,
+        PlayerPositionPreset::TopCenter | PlayerPositionPreset::BottomCenter => {
+            pos.x + (size.width as i32 - ps.width as i32) / 2
+        }
+        PlayerPositionPreset::TopRight | PlayerPositionPreset::BottomRight => {
+            pos.x + (size.width as i32 - ps.width as i32) - margin
+        }
         PlayerPositionPreset::Custom => return Ok(()),
     };
     let y = match preset {
@@ -34,7 +40,9 @@ pub fn position_player_with_preset<R: Runtime>(
         | PlayerPositionPreset::TopRight => pos.y + top_margin,
         PlayerPositionPreset::BottomLeft
         | PlayerPositionPreset::BottomCenter
-        | PlayerPositionPreset::BottomRight => pos.y + (size.height as i32 - ps.height as i32) - margin - top_margin,
+        | PlayerPositionPreset::BottomRight => {
+            pos.y + (size.height as i32 - ps.height as i32) - margin - top_margin
+        }
         PlayerPositionPreset::Custom => return Ok(()),
     };
     player.set_position(PhysicalPosition::new(x, y))?;
@@ -42,11 +50,14 @@ pub fn position_player_with_preset<R: Runtime>(
 }
 
 pub fn resize_player_for_size<R: Runtime>(player: &WebviewWindow<R>, size: &str) -> Result<()> {
-    let scale = player.current_monitor()?.map(|m| m.scale_factor()).unwrap_or(1.0);
+    let scale = player
+        .current_monitor()?
+        .map(|m| m.scale_factor())
+        .unwrap_or(1.0);
     let (w, h) = match size {
-        "slim"    => (320.0, 78.0),
-        "large"   => (520.0, 130.0),
-        _         => (380.0, 94.0),
+        "slim" => (320.0, 78.0),
+        "large" => (520.0, 130.0),
+        _ => (380.0, 94.0),
     };
     let _ = player.set_size(PhysicalSize::new((w * scale) as u32, (h * scale) as u32));
     Ok(())
@@ -80,7 +91,9 @@ pub fn show_main<R: Runtime>(handle: &tauri::AppHandle<R>) -> Result<()> {
 pub fn show_document<R: Runtime>(handle: &tauri::AppHandle<R>, label: &str) -> Result<()> {
     match handle.get_webview_window(label) {
         Some(w) => {
-            tracing::info!("[doc:win] show_document({label}): window exists, calling show()+set_focus()");
+            tracing::info!(
+                "[doc:win] show_document({label}): window exists, calling show()+set_focus()"
+            );
             let _ = w.show();
             // `unminimize` only exists on desktop builds of Tauri (UIKit windows
             // can't be minimized — they're either visible or backgrounded by

@@ -54,7 +54,11 @@ fn ord_m(lang: &str, n: i128) -> Option<String> {
 // ── Español ──────────────────────────────────────────────────────────────
 
 fn fecha_es(d: u32, m: u32, a: i32) -> Option<String> {
-    let dia = if d == 1 { "uno".to_string() } else { card("es", d as i128)? };
+    let dia = if d == 1 {
+        "uno".to_string()
+    } else {
+        card("es", d as i128)?
+    };
     Some(format!(
         "{dia} de {} de {}",
         TABLA_ES.meses.get(m as usize - 1)?,
@@ -72,11 +76,19 @@ fn hora_es(h: u32, min: u32) -> Option<String> {
 fn romano_nombre_es(n: i128) -> Option<String> {
     // RAE: hasta el diez, ordinal (Enrique octavo); después, cardinal
     // (Alfonso trece, Luis quince).
-    if n <= 10 { ord_m("es", n) } else { card("es", n) }
+    if n <= 10 {
+        ord_m("es", n)
+    } else {
+        card("es", n)
+    }
 }
 fn romano_siglo_es(n: i128) -> Option<String> {
     // RAE: siglos I-X en ordinal culto; del XI en adelante, cardinal.
-    if n <= 10 { ord_m("es", n) } else { card("es", n) }
+    if n <= 10 {
+        ord_m("es", n)
+    } else {
+        card("es", n)
+    }
 }
 fn romano_capitulo_es(n: i128) -> Option<String> {
     card("es", n)
@@ -85,15 +97,53 @@ fn romano_capitulo_es(n: i128) -> Option<String> {
 static TABLA_ES: TablaIdioma = TablaIdioma {
     lang: "es",
     meses: [
-        "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
-        "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre",
     ],
     porcentaje: "por ciento",
     monedas: &[
-        Moneda { simbolo: "€", singular: "euro", plural: "euros", sub_singular: "céntimo", sub_plural: "céntimos", nexo: "con" },
-        Moneda { simbolo: "$", singular: "dólar", plural: "dólares", sub_singular: "centavo", sub_plural: "centavos", nexo: "con" },
-        Moneda { simbolo: "£", singular: "libra", plural: "libras", sub_singular: "penique", sub_plural: "peniques", nexo: "con" },
-        Moneda { simbolo: "¥", singular: "yen", plural: "yenes", sub_singular: "", sub_plural: "", nexo: "" },
+        Moneda {
+            simbolo: "€",
+            singular: "euro",
+            plural: "euros",
+            sub_singular: "céntimo",
+            sub_plural: "céntimos",
+            nexo: "con",
+        },
+        Moneda {
+            simbolo: "$",
+            singular: "dólar",
+            plural: "dólares",
+            sub_singular: "centavo",
+            sub_plural: "centavos",
+            nexo: "con",
+        },
+        Moneda {
+            simbolo: "£",
+            singular: "libra",
+            plural: "libras",
+            sub_singular: "penique",
+            sub_plural: "peniques",
+            nexo: "con",
+        },
+        Moneda {
+            simbolo: "¥",
+            singular: "yen",
+            plural: "yenes",
+            sub_singular: "",
+            sub_plural: "",
+            nexo: "",
+        },
     ],
     unidades: &[
         ("°C", "grado Celsius", "grados Celsius"),
@@ -122,36 +172,97 @@ static TABLA_ES: TablaIdioma = TablaIdioma {
         ("s", "segundo", "segundos"),
     ],
     abreviaturas: &[
-        ("Dra.", "doctora"), ("Dr.", "doctor"), ("Srta.", "señorita"),
-        ("Sra.", "señora"), ("Sr.", "señor"), ("Ud.", "usted"),
-        ("Uds.", "ustedes"), ("Vd.", "usted"), ("etc.", "etcétera"),
-        ("p. ej.", "por ejemplo"), ("p.ej.", "por ejemplo"),
-        ("núm.", "número"), ("Núm.", "número"), ("nº", "número"),
-        ("n.º", "número"), ("págs.", "páginas"), ("pág.", "página"),
-        ("pp.", "páginas"), ("cap.", "capítulo"), ("Cap.", "capítulo"),
-        ("art.", "artículo"), ("Art.", "artículo"), ("vol.", "volumen"),
-        ("Vol.", "volumen"), ("ed.", "edición"), ("Ed.", "editorial"),
-        ("a. C.", "antes de Cristo"), ("a.C.", "antes de Cristo"),
-        ("d. C.", "después de Cristo"), ("d.C.", "después de Cristo"),
-        ("a. de C.", "antes de Cristo"), ("S. A.", "sociedad anónima"),
-        ("S.A.", "sociedad anónima"), ("Avda.", "avenida"),
-        ("Av.", "avenida"), ("c/", "calle "), ("op. cit.", "obra citada"),
-        ("ibíd.", "ibídem"), ("íd.", "ídem"), ("ss.", "siguientes"),
-        ("trad.", "traducción"), ("coord.", "coordinador"),
-        ("dir.", "director"), ("comp.", "compilador"), ("vs.", "contra"),
+        ("Dra.", "doctora"),
+        ("Dr.", "doctor"),
+        ("Srta.", "señorita"),
+        ("Sra.", "señora"),
+        ("Sr.", "señor"),
+        ("Ud.", "usted"),
+        ("Uds.", "ustedes"),
+        ("Vd.", "usted"),
+        ("etc.", "etcétera"),
+        ("p. ej.", "por ejemplo"),
+        ("p.ej.", "por ejemplo"),
+        ("núm.", "número"),
+        ("Núm.", "número"),
+        ("nº", "número"),
+        ("n.º", "número"),
+        ("págs.", "páginas"),
+        ("pág.", "página"),
+        ("pp.", "páginas"),
+        ("cap.", "capítulo"),
+        ("Cap.", "capítulo"),
+        ("art.", "artículo"),
+        ("Art.", "artículo"),
+        ("vol.", "volumen"),
+        ("Vol.", "volumen"),
+        ("ed.", "edición"),
+        ("Ed.", "editorial"),
+        ("a. C.", "antes de Cristo"),
+        ("a.C.", "antes de Cristo"),
+        ("d. C.", "después de Cristo"),
+        ("d.C.", "después de Cristo"),
+        ("a. de C.", "antes de Cristo"),
+        ("S. A.", "sociedad anónima"),
+        ("S.A.", "sociedad anónima"),
+        ("Avda.", "avenida"),
+        ("Av.", "avenida"),
+        ("c/", "calle "),
+        ("op. cit.", "obra citada"),
+        ("ibíd.", "ibídem"),
+        ("íd.", "ídem"),
+        ("ss.", "siguientes"),
+        ("trad.", "traducción"),
+        ("coord.", "coordinador"),
+        ("dir.", "director"),
+        ("comp.", "compilador"),
+        ("vs.", "contra"),
     ],
     letras: &[
-        ('a', "a"), ('b', "be"), ('c', "ce"), ('d', "de"), ('e', "e"),
-        ('f', "efe"), ('g', "ge"), ('h', "hache"), ('i', "i"), ('j', "jota"),
-        ('k', "ka"), ('l', "ele"), ('m', "eme"), ('n', "ene"), ('ñ', "eñe"),
-        ('o', "o"), ('p', "pe"), ('q', "cu"), ('r', "erre"), ('s', "ese"),
-        ('t', "te"), ('u', "u"), ('v', "uve"), ('w', "uve doble"),
-        ('x', "equis"), ('y', "i griega"), ('z', "zeta"),
+        ('a', "a"),
+        ('b', "be"),
+        ('c', "ce"),
+        ('d', "de"),
+        ('e', "e"),
+        ('f', "efe"),
+        ('g', "ge"),
+        ('h', "hache"),
+        ('i', "i"),
+        ('j', "jota"),
+        ('k', "ka"),
+        ('l', "ele"),
+        ('m', "eme"),
+        ('n', "ene"),
+        ('ñ', "eñe"),
+        ('o', "o"),
+        ('p', "pe"),
+        ('q', "cu"),
+        ('r', "erre"),
+        ('s', "ese"),
+        ('t', "te"),
+        ('u', "u"),
+        ('v', "uve"),
+        ('w', "uve doble"),
+        ('x', "equis"),
+        ('y', "i griega"),
+        ('z', "zeta"),
     ],
     palabras_siglo: &["siglo", "siglos", "s."],
     palabras_capitulo: &[
-        "capítulo", "cap.", "acto", "tomo", "libro", "parte", "volumen",
-        "vol.", "escena", "canto", "título", "anexo", "apéndice", "sección",
+        "capítulo",
+        "cap.",
+        "acto",
+        "tomo",
+        "libro",
+        "parte",
+        "volumen",
+        "vol.",
+        "escena",
+        "canto",
+        "título",
+        "anexo",
+        "apéndice",
+        "sección",
     ],
     fecha: fecha_es,
     hora: hora_es,
@@ -194,15 +305,53 @@ fn romano_capitulo_en(n: i128) -> Option<String> {
 static TABLA_EN: TablaIdioma = TablaIdioma {
     lang: "en",
     meses: [
-        "January", "February", "March", "April", "May", "June", "July",
-        "August", "September", "October", "November", "December",
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
     ],
     porcentaje: "percent",
     monedas: &[
-        Moneda { simbolo: "$", singular: "dollar", plural: "dollars", sub_singular: "cent", sub_plural: "cents", nexo: "" },
-        Moneda { simbolo: "€", singular: "euro", plural: "euros", sub_singular: "cent", sub_plural: "cents", nexo: "" },
-        Moneda { simbolo: "£", singular: "pound", plural: "pounds", sub_singular: "penny", sub_plural: "pence", nexo: "" },
-        Moneda { simbolo: "¥", singular: "yen", plural: "yen", sub_singular: "", sub_plural: "", nexo: "" },
+        Moneda {
+            simbolo: "$",
+            singular: "dollar",
+            plural: "dollars",
+            sub_singular: "cent",
+            sub_plural: "cents",
+            nexo: "",
+        },
+        Moneda {
+            simbolo: "€",
+            singular: "euro",
+            plural: "euros",
+            sub_singular: "cent",
+            sub_plural: "cents",
+            nexo: "",
+        },
+        Moneda {
+            simbolo: "£",
+            singular: "pound",
+            plural: "pounds",
+            sub_singular: "penny",
+            sub_plural: "pence",
+            nexo: "",
+        },
+        Moneda {
+            simbolo: "¥",
+            singular: "yen",
+            plural: "yen",
+            sub_singular: "",
+            sub_plural: "",
+            nexo: "",
+        },
     ],
     unidades: &[
         ("°C", "degree Celsius", "degrees Celsius"),
@@ -232,30 +381,66 @@ static TABLA_EN: TablaIdioma = TablaIdioma {
         ("s", "second", "seconds"),
     ],
     abreviaturas: &[
-        ("Dr.", "Doctor"), ("Mr.", "Mister"), ("Mrs.", "Missus"),
-        ("Ms.", "Miss"), ("Prof.", "Professor"), ("Jr.", "Junior"),
-        ("St.", "Saint"), ("Ave.", "Avenue"), ("Blvd.", "Boulevard"),
-        ("Dept.", "Department"), ("Inc.", "Incorporated"),
-        ("Ltd.", "Limited"), ("Corp.", "Corporation"), ("Ph.D.", "PhD"),
-        ("etc.", "etcetera"), ("vs.", "versus"), ("i.e.", "that is"),
-        ("e.g.", "for example"), ("No.", "number"), ("vol.", "volume"),
-        ("Vol.", "volume"), ("pp.", "pages"), ("p.", "page"),
-        ("ed.", "edition"), ("cf.", "compare"), ("ca.", "circa"),
+        ("Dr.", "Doctor"),
+        ("Mr.", "Mister"),
+        ("Mrs.", "Missus"),
+        ("Ms.", "Miss"),
+        ("Prof.", "Professor"),
+        ("Jr.", "Junior"),
+        ("St.", "Saint"),
+        ("Ave.", "Avenue"),
+        ("Blvd.", "Boulevard"),
+        ("Dept.", "Department"),
+        ("Inc.", "Incorporated"),
+        ("Ltd.", "Limited"),
+        ("Corp.", "Corporation"),
+        ("Ph.D.", "PhD"),
+        ("etc.", "etcetera"),
+        ("vs.", "versus"),
+        ("i.e.", "that is"),
+        ("e.g.", "for example"),
+        ("No.", "number"),
+        ("vol.", "volume"),
+        ("Vol.", "volume"),
+        ("pp.", "pages"),
+        ("p.", "page"),
+        ("ed.", "edition"),
+        ("cf.", "compare"),
+        ("ca.", "circa"),
     ],
     // En inglés basta con separar las letras: el modelo las lee bien.
     letras: &[
-        ('a', "A"), ('b', "B"), ('c', "C"), ('d', "D"), ('e', "E"),
-        ('f', "F"), ('g', "G"), ('h', "H"), ('i', "I"), ('j', "J"),
-        ('k', "K"), ('l', "L"), ('m', "M"), ('n', "N"), ('o', "O"),
-        ('p', "P"), ('q', "Q"), ('r', "R"), ('s', "S"), ('t', "T"),
-        ('u', "U"), ('v', "V"), ('w', "W"), ('x', "X"), ('y', "Y"),
+        ('a', "A"),
+        ('b', "B"),
+        ('c', "C"),
+        ('d', "D"),
+        ('e', "E"),
+        ('f', "F"),
+        ('g', "G"),
+        ('h', "H"),
+        ('i', "I"),
+        ('j', "J"),
+        ('k', "K"),
+        ('l', "L"),
+        ('m', "M"),
+        ('n', "N"),
+        ('o', "O"),
+        ('p', "P"),
+        ('q', "Q"),
+        ('r', "R"),
+        ('s', "S"),
+        ('t', "T"),
+        ('u', "U"),
+        ('v', "V"),
+        ('w', "W"),
+        ('x', "X"),
+        ('y', "Y"),
         ('z', "Z"),
     ],
     palabras_siglo: &["century", "centuries"],
     palabras_capitulo: &[
-        "chapter", "act", "book", "part", "volume", "vol.", "scene",
-        "canto", "appendix", "section", "annex", "war", "phase", "type",
-        "level", "grade", "class",
+        "chapter", "act", "book", "part", "volume", "vol.", "scene", "canto", "appendix",
+        "section", "annex", "war", "phase", "type", "level", "grade", "class",
     ],
     fecha: fecha_en,
     hora: hora_en,
@@ -267,7 +452,11 @@ static TABLA_EN: TablaIdioma = TablaIdioma {
 // ── Francés ──────────────────────────────────────────────────────────────
 
 fn fecha_fr(d: u32, m: u32, a: i32) -> Option<String> {
-    let dia = if d == 1 { "premier".to_string() } else { card("fr", d as i128)? };
+    let dia = if d == 1 {
+        "premier".to_string()
+    } else {
+        card("fr", d as i128)?
+    };
     Some(format!(
         "{dia} {} {}",
         TABLA_FR.meses.get(m as usize - 1)?,
@@ -286,27 +475,73 @@ fn hora_fr(h: u32, min: u32) -> Option<String> {
 fn romano_nombre_fr(n: i128) -> Option<String> {
     // «François Ier» → «François premier»; el resto, cardinal
     // («Louis XIV» → «Louis quatorze»).
-    if n == 1 { Some("premier".to_string()) } else { card("fr", n) }
+    if n == 1 {
+        Some("premier".to_string())
+    } else {
+        card("fr", n)
+    }
 }
 fn romano_siglo_fr(n: i128) -> Option<String> {
     rbnf::ordinal("fr", n, Genero::Masculino)
 }
 fn romano_capitulo_fr(n: i128) -> Option<String> {
-    if n == 1 { Some("premier".to_string()) } else { card("fr", n) }
+    if n == 1 {
+        Some("premier".to_string())
+    } else {
+        card("fr", n)
+    }
 }
 
 static TABLA_FR: TablaIdioma = TablaIdioma {
     lang: "fr",
     meses: [
-        "janvier", "février", "mars", "avril", "mai", "juin", "juillet",
-        "août", "septembre", "octobre", "novembre", "décembre",
+        "janvier",
+        "février",
+        "mars",
+        "avril",
+        "mai",
+        "juin",
+        "juillet",
+        "août",
+        "septembre",
+        "octobre",
+        "novembre",
+        "décembre",
     ],
     porcentaje: "pour cent",
     monedas: &[
-        Moneda { simbolo: "€", singular: "euro", plural: "euros", sub_singular: "", sub_plural: "", nexo: "" },
-        Moneda { simbolo: "$", singular: "dollar", plural: "dollars", sub_singular: "", sub_plural: "", nexo: "" },
-        Moneda { simbolo: "£", singular: "livre", plural: "livres", sub_singular: "", sub_plural: "", nexo: "" },
-        Moneda { simbolo: "¥", singular: "yen", plural: "yens", sub_singular: "", sub_plural: "", nexo: "" },
+        Moneda {
+            simbolo: "€",
+            singular: "euro",
+            plural: "euros",
+            sub_singular: "",
+            sub_plural: "",
+            nexo: "",
+        },
+        Moneda {
+            simbolo: "$",
+            singular: "dollar",
+            plural: "dollars",
+            sub_singular: "",
+            sub_plural: "",
+            nexo: "",
+        },
+        Moneda {
+            simbolo: "£",
+            singular: "livre",
+            plural: "livres",
+            sub_singular: "",
+            sub_plural: "",
+            nexo: "",
+        },
+        Moneda {
+            simbolo: "¥",
+            singular: "yen",
+            plural: "yens",
+            sub_singular: "",
+            sub_plural: "",
+            nexo: "",
+        },
     ],
     unidades: &[
         ("°C", "degré Celsius", "degrés Celsius"),
@@ -335,25 +570,52 @@ static TABLA_FR: TablaIdioma = TablaIdioma {
         ("s", "seconde", "secondes"),
     ],
     abreviaturas: &[
-        ("Mme", "madame"), ("Mlle", "mademoiselle"), ("Dr", "docteur"),
-        ("etc.", "et cetera"), ("p. ex.", "par exemple"),
-        ("c.-à-d.", "c'est-à-dire"), ("n°", "numéro"), ("N°", "numéro"),
-        ("vol.", "volume"), ("chap.", "chapitre"), ("éd.", "édition"),
+        ("Mme", "madame"),
+        ("Mlle", "mademoiselle"),
+        ("Dr", "docteur"),
+        ("etc.", "et cetera"),
+        ("p. ex.", "par exemple"),
+        ("c.-à-d.", "c'est-à-dire"),
+        ("n°", "numéro"),
+        ("N°", "numéro"),
+        ("vol.", "volume"),
+        ("chap.", "chapitre"),
+        ("éd.", "édition"),
         ("av. J.-C.", "avant Jésus-Christ"),
         ("ap. J.-C.", "après Jésus-Christ"),
     ],
     letras: &[
-        ('a', "a"), ('b', "bé"), ('c', "cé"), ('d', "dé"), ('e', "e"),
-        ('f', "effe"), ('g', "gé"), ('h', "ache"), ('i', "i"), ('j', "ji"),
-        ('k', "ka"), ('l', "elle"), ('m', "emme"), ('n', "enne"), ('o', "o"),
-        ('p', "pé"), ('q', "cu"), ('r', "erre"), ('s', "esse"), ('t', "té"),
-        ('u', "u"), ('v', "vé"), ('w', "double vé"), ('x', "ixe"),
-        ('y', "i grec"), ('z', "zède"),
+        ('a', "a"),
+        ('b', "bé"),
+        ('c', "cé"),
+        ('d', "dé"),
+        ('e', "e"),
+        ('f', "effe"),
+        ('g', "gé"),
+        ('h', "ache"),
+        ('i', "i"),
+        ('j', "ji"),
+        ('k', "ka"),
+        ('l', "elle"),
+        ('m', "emme"),
+        ('n', "enne"),
+        ('o', "o"),
+        ('p', "pé"),
+        ('q', "cu"),
+        ('r', "erre"),
+        ('s', "esse"),
+        ('t', "té"),
+        ('u', "u"),
+        ('v', "vé"),
+        ('w', "double vé"),
+        ('x', "ixe"),
+        ('y', "i grec"),
+        ('z', "zède"),
     ],
     palabras_siglo: &["siècle", "siècles"],
     palabras_capitulo: &[
-        "chapitre", "acte", "tome", "livre", "partie", "volume", "vol.",
-        "scène", "chant", "annexe", "section",
+        "chapitre", "acte", "tome", "livre", "partie", "volume", "vol.", "scène", "chant",
+        "annexe", "section",
     ],
     fecha: fecha_fr,
     hora: hora_fr,
@@ -386,7 +648,9 @@ fn romano_nombre_de(n: i128) -> Option<String> {
     // «Heinrich VIII.» → «Heinrich der Achte»
     let o = ord_m("de", n)?;
     let mut cs = o.chars();
-    let mayuscula = cs.next().map(|c| c.to_uppercase().collect::<String>() + cs.as_str());
+    let mayuscula = cs
+        .next()
+        .map(|c| c.to_uppercase().collect::<String>() + cs.as_str());
     Some(format!("der {}", mayuscula?))
 }
 fn romano_siglo_de(n: i128) -> Option<String> {
@@ -399,15 +663,53 @@ fn romano_capitulo_de(n: i128) -> Option<String> {
 static TABLA_DE: TablaIdioma = TablaIdioma {
     lang: "de",
     meses: [
-        "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
-        "August", "September", "Oktober", "November", "Dezember",
+        "Januar",
+        "Februar",
+        "März",
+        "April",
+        "Mai",
+        "Juni",
+        "Juli",
+        "August",
+        "September",
+        "Oktober",
+        "November",
+        "Dezember",
     ],
     porcentaje: "Prozent",
     monedas: &[
-        Moneda { simbolo: "€", singular: "Euro", plural: "Euro", sub_singular: "Cent", sub_plural: "Cent", nexo: "" },
-        Moneda { simbolo: "$", singular: "Dollar", plural: "Dollar", sub_singular: "Cent", sub_plural: "Cent", nexo: "" },
-        Moneda { simbolo: "£", singular: "Pfund", plural: "Pfund", sub_singular: "Penny", sub_plural: "Pence", nexo: "" },
-        Moneda { simbolo: "¥", singular: "Yen", plural: "Yen", sub_singular: "", sub_plural: "", nexo: "" },
+        Moneda {
+            simbolo: "€",
+            singular: "Euro",
+            plural: "Euro",
+            sub_singular: "Cent",
+            sub_plural: "Cent",
+            nexo: "",
+        },
+        Moneda {
+            simbolo: "$",
+            singular: "Dollar",
+            plural: "Dollar",
+            sub_singular: "Cent",
+            sub_plural: "Cent",
+            nexo: "",
+        },
+        Moneda {
+            simbolo: "£",
+            singular: "Pfund",
+            plural: "Pfund",
+            sub_singular: "Penny",
+            sub_plural: "Pence",
+            nexo: "",
+        },
+        Moneda {
+            simbolo: "¥",
+            singular: "Yen",
+            plural: "Yen",
+            sub_singular: "",
+            sub_plural: "",
+            nexo: "",
+        },
     ],
     unidades: &[
         ("°C", "Grad Celsius", "Grad Celsius"),
@@ -435,24 +737,57 @@ static TABLA_DE: TablaIdioma = TablaIdioma {
         ("s", "Sekunde", "Sekunden"),
     ],
     abreviaturas: &[
-        ("z. B.", "zum Beispiel"), ("z.B.", "zum Beispiel"),
-        ("d. h.", "das heißt"), ("d.h.", "das heißt"),
-        ("usw.", "und so weiter"), ("bzw.", "beziehungsweise"),
-        ("ca.", "circa"), ("Nr.", "Nummer"), ("Bd.", "Band"),
-        ("Kap.", "Kapitel"), ("Jh.", "Jahrhundert"),
-        ("v. Chr.", "vor Christus"), ("n. Chr.", "nach Christus"),
+        ("z. B.", "zum Beispiel"),
+        ("z.B.", "zum Beispiel"),
+        ("d. h.", "das heißt"),
+        ("d.h.", "das heißt"),
+        ("usw.", "und so weiter"),
+        ("bzw.", "beziehungsweise"),
+        ("ca.", "circa"),
+        ("Nr.", "Nummer"),
+        ("Bd.", "Band"),
+        ("Kap.", "Kapitel"),
+        ("Jh.", "Jahrhundert"),
+        ("v. Chr.", "vor Christus"),
+        ("n. Chr.", "nach Christus"),
     ],
     letras: &[
-        ('a', "a"), ('b', "be"), ('c', "ce"), ('d', "de"), ('e', "e"),
-        ('f', "ef"), ('g', "ge"), ('h', "ha"), ('i', "i"), ('j', "jot"),
-        ('k', "ka"), ('l', "el"), ('m', "em"), ('n', "en"), ('o', "o"),
-        ('p', "pe"), ('q', "ku"), ('r', "er"), ('s', "es"), ('t', "te"),
-        ('u', "u"), ('v', "vau"), ('w', "we"), ('x', "ix"), ('y', "ypsilon"),
+        ('a', "a"),
+        ('b', "be"),
+        ('c', "ce"),
+        ('d', "de"),
+        ('e', "e"),
+        ('f', "ef"),
+        ('g', "ge"),
+        ('h', "ha"),
+        ('i', "i"),
+        ('j', "jot"),
+        ('k', "ka"),
+        ('l', "el"),
+        ('m', "em"),
+        ('n', "en"),
+        ('o', "o"),
+        ('p', "pe"),
+        ('q', "ku"),
+        ('r', "er"),
+        ('s', "es"),
+        ('t', "te"),
+        ('u', "u"),
+        ('v', "vau"),
+        ('w', "we"),
+        ('x', "ix"),
+        ('y', "ypsilon"),
         ('z', "zett"),
     ],
     palabras_siglo: &["Jahrhundert", "Jahrhunderts", "Jh."],
     palabras_capitulo: &[
-        "Kapitel", "Akt", "Band", "Buch", "Teil", "Szene", "Anhang",
+        "Kapitel",
+        "Akt",
+        "Band",
+        "Buch",
+        "Teil",
+        "Szene",
+        "Anhang",
         "Abschnitt",
     ],
     fecha: fecha_de,
@@ -465,7 +800,11 @@ static TABLA_DE: TablaIdioma = TablaIdioma {
 // ── Italiano ─────────────────────────────────────────────────────────────
 
 fn fecha_it(d: u32, m: u32, a: i32) -> Option<String> {
-    let dia = if d == 1 { "primo".to_string() } else { card("it", d as i128)? };
+    let dia = if d == 1 {
+        "primo".to_string()
+    } else {
+        card("it", d as i128)?
+    };
     Some(format!(
         "{dia} {} {}",
         TABLA_IT.meses.get(m as usize - 1)?,
@@ -494,15 +833,53 @@ fn romano_capitulo_it(n: i128) -> Option<String> {
 static TABLA_IT: TablaIdioma = TablaIdioma {
     lang: "it",
     meses: [
-        "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno",
-        "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre",
+        "gennaio",
+        "febbraio",
+        "marzo",
+        "aprile",
+        "maggio",
+        "giugno",
+        "luglio",
+        "agosto",
+        "settembre",
+        "ottobre",
+        "novembre",
+        "dicembre",
     ],
     porcentaje: "per cento",
     monedas: &[
-        Moneda { simbolo: "€", singular: "euro", plural: "euro", sub_singular: "centesimo", sub_plural: "centesimi", nexo: "e" },
-        Moneda { simbolo: "$", singular: "dollaro", plural: "dollari", sub_singular: "centesimo", sub_plural: "centesimi", nexo: "e" },
-        Moneda { simbolo: "£", singular: "sterlina", plural: "sterline", sub_singular: "penny", sub_plural: "pence", nexo: "e" },
-        Moneda { simbolo: "¥", singular: "yen", plural: "yen", sub_singular: "", sub_plural: "", nexo: "" },
+        Moneda {
+            simbolo: "€",
+            singular: "euro",
+            plural: "euro",
+            sub_singular: "centesimo",
+            sub_plural: "centesimi",
+            nexo: "e",
+        },
+        Moneda {
+            simbolo: "$",
+            singular: "dollaro",
+            plural: "dollari",
+            sub_singular: "centesimo",
+            sub_plural: "centesimi",
+            nexo: "e",
+        },
+        Moneda {
+            simbolo: "£",
+            singular: "sterlina",
+            plural: "sterline",
+            sub_singular: "penny",
+            sub_plural: "pence",
+            nexo: "e",
+        },
+        Moneda {
+            simbolo: "¥",
+            singular: "yen",
+            plural: "yen",
+            sub_singular: "",
+            sub_plural: "",
+            nexo: "",
+        },
     ],
     unidades: &[
         ("°C", "grado Celsius", "gradi Celsius"),
@@ -529,23 +906,59 @@ static TABLA_IT: TablaIdioma = TablaIdioma {
         ("s", "secondo", "secondi"),
     ],
     abreviaturas: &[
-        ("Sig.ra", "signora"), ("Sig.", "signor"), ("Dott.", "dottor"),
-        ("ecc.", "eccetera"), ("p. es.", "per esempio"), ("n.", "numero"),
-        ("vol.", "volume"), ("cap.", "capitolo"), ("ed.", "edizione"),
-        ("a.C.", "avanti Cristo"), ("d.C.", "dopo Cristo"),
+        ("Sig.ra", "signora"),
+        ("Sig.", "signor"),
+        ("Dott.", "dottor"),
+        ("ecc.", "eccetera"),
+        ("p. es.", "per esempio"),
+        ("n.", "numero"),
+        ("vol.", "volume"),
+        ("cap.", "capitolo"),
+        ("ed.", "edizione"),
+        ("a.C.", "avanti Cristo"),
+        ("d.C.", "dopo Cristo"),
     ],
     letras: &[
-        ('a', "a"), ('b', "bi"), ('c', "ci"), ('d', "di"), ('e', "e"),
-        ('f', "effe"), ('g', "gi"), ('h', "acca"), ('i', "i"),
-        ('j', "i lunga"), ('k', "cappa"), ('l', "elle"), ('m', "emme"),
-        ('n', "enne"), ('o', "o"), ('p', "pi"), ('q', "cu"), ('r', "erre"),
-        ('s', "esse"), ('t', "ti"), ('u', "u"), ('v', "vu"),
-        ('w', "doppia vu"), ('x', "ics"), ('y', "ipsilon"), ('z', "zeta"),
+        ('a', "a"),
+        ('b', "bi"),
+        ('c', "ci"),
+        ('d', "di"),
+        ('e', "e"),
+        ('f', "effe"),
+        ('g', "gi"),
+        ('h', "acca"),
+        ('i', "i"),
+        ('j', "i lunga"),
+        ('k', "cappa"),
+        ('l', "elle"),
+        ('m', "emme"),
+        ('n', "enne"),
+        ('o', "o"),
+        ('p', "pi"),
+        ('q', "cu"),
+        ('r', "erre"),
+        ('s', "esse"),
+        ('t', "ti"),
+        ('u', "u"),
+        ('v', "vu"),
+        ('w', "doppia vu"),
+        ('x', "ics"),
+        ('y', "ipsilon"),
+        ('z', "zeta"),
     ],
     palabras_siglo: &["secolo", "secoli", "sec."],
     palabras_capitulo: &[
-        "capitolo", "atto", "tomo", "libro", "parte", "volume", "vol.",
-        "scena", "canto", "appendice", "sezione",
+        "capitolo",
+        "atto",
+        "tomo",
+        "libro",
+        "parte",
+        "volume",
+        "vol.",
+        "scena",
+        "canto",
+        "appendice",
+        "sezione",
     ],
     fecha: fecha_it,
     hora: hora_it,
@@ -557,7 +970,11 @@ static TABLA_IT: TablaIdioma = TablaIdioma {
 // ── Portugués ────────────────────────────────────────────────────────────
 
 fn fecha_pt(d: u32, m: u32, a: i32) -> Option<String> {
-    let dia = if d == 1 { "primeiro".to_string() } else { card("pt", d as i128)? };
+    let dia = if d == 1 {
+        "primeiro".to_string()
+    } else {
+        card("pt", d as i128)?
+    };
     Some(format!(
         "{dia} de {} de {}",
         TABLA_PT.meses.get(m as usize - 1)?,
@@ -573,10 +990,18 @@ fn hora_pt(h: u32, min: u32) -> Option<String> {
     }
 }
 fn romano_nombre_pt(n: i128) -> Option<String> {
-    if n <= 10 { ord_m("pt", n) } else { card("pt", n) }
+    if n <= 10 {
+        ord_m("pt", n)
+    } else {
+        card("pt", n)
+    }
 }
 fn romano_siglo_pt(n: i128) -> Option<String> {
-    if n <= 10 { ord_m("pt", n) } else { card("pt", n) }
+    if n <= 10 {
+        ord_m("pt", n)
+    } else {
+        card("pt", n)
+    }
 }
 fn romano_capitulo_pt(n: i128) -> Option<String> {
     card("pt", n)
@@ -585,15 +1010,53 @@ fn romano_capitulo_pt(n: i128) -> Option<String> {
 static TABLA_PT: TablaIdioma = TablaIdioma {
     lang: "pt",
     meses: [
-        "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
-        "agosto", "setembro", "outubro", "novembro", "dezembro",
+        "janeiro",
+        "fevereiro",
+        "março",
+        "abril",
+        "maio",
+        "junho",
+        "julho",
+        "agosto",
+        "setembro",
+        "outubro",
+        "novembro",
+        "dezembro",
     ],
     porcentaje: "por cento",
     monedas: &[
-        Moneda { simbolo: "€", singular: "euro", plural: "euros", sub_singular: "cêntimo", sub_plural: "cêntimos", nexo: "e" },
-        Moneda { simbolo: "$", singular: "dólar", plural: "dólares", sub_singular: "centavo", sub_plural: "centavos", nexo: "e" },
-        Moneda { simbolo: "£", singular: "libra", plural: "libras", sub_singular: "péni", sub_plural: "pence", nexo: "e" },
-        Moneda { simbolo: "¥", singular: "iene", plural: "ienes", sub_singular: "", sub_plural: "", nexo: "" },
+        Moneda {
+            simbolo: "€",
+            singular: "euro",
+            plural: "euros",
+            sub_singular: "cêntimo",
+            sub_plural: "cêntimos",
+            nexo: "e",
+        },
+        Moneda {
+            simbolo: "$",
+            singular: "dólar",
+            plural: "dólares",
+            sub_singular: "centavo",
+            sub_plural: "centavos",
+            nexo: "e",
+        },
+        Moneda {
+            simbolo: "£",
+            singular: "libra",
+            plural: "libras",
+            sub_singular: "péni",
+            sub_plural: "pence",
+            nexo: "e",
+        },
+        Moneda {
+            simbolo: "¥",
+            singular: "iene",
+            plural: "ienes",
+            sub_singular: "",
+            sub_plural: "",
+            nexo: "",
+        },
     ],
     unidades: &[
         ("°C", "grau Celsius", "graus Celsius"),
@@ -620,24 +1083,62 @@ static TABLA_PT: TablaIdioma = TablaIdioma {
         ("s", "segundo", "segundos"),
     ],
     abreviaturas: &[
-        ("Sr.", "senhor"), ("Sra.", "senhora"), ("Dr.", "doutor"),
-        ("Dra.", "doutora"), ("etc.", "et cetera"), ("p. ex.", "por exemplo"),
-        ("n.º", "número"), ("pág.", "página"), ("cap.", "capítulo"),
-        ("vol.", "volume"), ("ed.", "edição"), ("a.C.", "antes de Cristo"),
+        ("Sr.", "senhor"),
+        ("Sra.", "senhora"),
+        ("Dr.", "doutor"),
+        ("Dra.", "doutora"),
+        ("etc.", "et cetera"),
+        ("p. ex.", "por exemplo"),
+        ("n.º", "número"),
+        ("pág.", "página"),
+        ("cap.", "capítulo"),
+        ("vol.", "volume"),
+        ("ed.", "edição"),
+        ("a.C.", "antes de Cristo"),
         ("d.C.", "depois de Cristo"),
     ],
     letras: &[
-        ('a', "á"), ('b', "bê"), ('c', "cê"), ('d', "dê"), ('e', "é"),
-        ('f', "efe"), ('g', "gê"), ('h', "agá"), ('i', "i"), ('j', "jota"),
-        ('k', "capa"), ('l', "ele"), ('m', "eme"), ('n', "ene"), ('o', "ó"),
-        ('p', "pê"), ('q', "quê"), ('r', "erre"), ('s', "esse"), ('t', "tê"),
-        ('u', "u"), ('v', "vê"), ('w', "dâblio"), ('x', "xis"),
-        ('y', "ípsilon"), ('z', "zê"),
+        ('a', "á"),
+        ('b', "bê"),
+        ('c', "cê"),
+        ('d', "dê"),
+        ('e', "é"),
+        ('f', "efe"),
+        ('g', "gê"),
+        ('h', "agá"),
+        ('i', "i"),
+        ('j', "jota"),
+        ('k', "capa"),
+        ('l', "ele"),
+        ('m', "eme"),
+        ('n', "ene"),
+        ('o', "ó"),
+        ('p', "pê"),
+        ('q', "quê"),
+        ('r', "erre"),
+        ('s', "esse"),
+        ('t', "tê"),
+        ('u', "u"),
+        ('v', "vê"),
+        ('w', "dâblio"),
+        ('x', "xis"),
+        ('y', "ípsilon"),
+        ('z', "zê"),
     ],
     palabras_siglo: &["século", "séculos", "séc."],
     palabras_capitulo: &[
-        "capítulo", "ato", "tomo", "livro", "parte", "volume", "vol.",
-        "cena", "canto", "apêndice", "secção", "seção",
+        "capítulo",
+        "ato",
+        "tomo",
+        "livro",
+        "parte",
+        "volume",
+        "vol.",
+        "cena",
+        "canto",
+        "apêndice",
+        "secção",
+        "seção",
     ],
     fecha: fecha_pt,
     hora: hora_pt,

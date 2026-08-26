@@ -40,17 +40,41 @@ pub fn manejar<R: Runtime>(app: &AppHandle<R>, url: &str) {
     };
 
     let accion = match ruta {
-        "shared" => Accion { tipo: "shared".into(), path: None, datos: None },
-        "action/read-clipboard" => Accion { tipo: "read-clipboard".into(), path: None, datos: None },
-        "action/resume" => Accion { tipo: "resume".into(), path: None, datos: None },
-        "action/open" => Accion { tipo: "open".into(), path: None, datos: None },
-        "library" => Accion { tipo: "library".into(), path: parametro("path"), datos: None },
+        "shared" => Accion {
+            tipo: "shared".into(),
+            path: None,
+            datos: None,
+        },
+        "action/read-clipboard" => Accion {
+            tipo: "read-clipboard".into(),
+            path: None,
+            datos: None,
+        },
+        "action/resume" => Accion {
+            tipo: "resume".into(),
+            path: None,
+            datos: None,
+        },
+        "action/open" => Accion {
+            tipo: "open".into(),
+            path: None,
+            datos: None,
+        },
+        "library" => Accion {
+            tipo: "library".into(),
+            path: parametro("path"),
+            datos: None,
+        },
         "pair" => Accion {
             tipo: "pair".into(),
             path: None,
             datos: query.map(|q| q.to_string()),
         },
-        otro => Accion { tipo: otro.to_string(), path: None, datos: None },
+        otro => Accion {
+            tipo: otro.to_string(),
+            path: None,
+            datos: None,
+        },
     };
 
     // Reanudar es tan común (widget, pantalla de bloqueo) que se resuelve

@@ -2,12 +2,12 @@
 //! incluidos por ruta, con una única función exportada. La demo de la web
 //! no simula nada: ejecuta este código.
 
-#[path = "../../yappy-core/src/lang_detect.rs"]
-pub mod lang_detect;
 #[path = "../../yappy-core/src/chunker.rs"]
 pub mod chunker;
 #[path = "../../yappy-core/src/guion/mod.rs"]
 pub mod guion;
+#[path = "../../yappy-core/src/lang_detect.rs"]
+pub mod lang_detect;
 
 use wasm_bindgen::prelude::*;
 

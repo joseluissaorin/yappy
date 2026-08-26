@@ -43,9 +43,13 @@ pub fn is_asr_model_ready(handle: &tauri::AppHandle<impl tauri::Runtime>) -> Res
     if !root.join("vocab.txt").exists() {
         return Ok(false);
     }
-    let has_encoder = ["encoder-model.int8.onnx", "encoder-model.onnx", "encoder.onnx"]
-        .iter()
-        .any(|f| file_big_enough(&root.join(f), 1_000_000));
+    let has_encoder = [
+        "encoder-model.int8.onnx",
+        "encoder-model.onnx",
+        "encoder.onnx",
+    ]
+    .iter()
+    .any(|f| file_big_enough(&root.join(f), 1_000_000));
     let has_decoder = [
         "decoder_joint-model.int8.onnx",
         "decoder_joint-model.onnx",
@@ -57,7 +61,9 @@ pub fn is_asr_model_ready(handle: &tauri::AppHandle<impl tauri::Runtime>) -> Res
 }
 
 fn file_big_enough(p: &std::path::Path, min: u64) -> bool {
-    std::fs::metadata(p).map(|m| m.len() >= min).unwrap_or(false)
+    std::fs::metadata(p)
+        .map(|m| m.len() >= min)
+        .unwrap_or(false)
 }
 
 /// Stream-download the int8 model set, emitting `DownloadProgress` events.

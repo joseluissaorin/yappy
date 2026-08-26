@@ -60,7 +60,11 @@ pub enum Quality {
 }
 impl Quality {
     pub fn total_steps(self) -> usize {
-        match self { Quality::Fast => 5, Quality::Balanced => 8, Quality::Best => 12 }
+        match self {
+            Quality::Fast => 5,
+            Quality::Balanced => 8,
+            Quality::Best => 12,
+        }
     }
 }
 
@@ -243,7 +247,10 @@ impl SettingsStore {
         Ok(())
     }
 
-    pub fn ensure(handle: &tauri::AppHandle<impl tauri::Runtime>, state: &Arc<AppState>) -> Result<()> {
+    pub fn ensure(
+        handle: &tauri::AppHandle<impl tauri::Runtime>,
+        state: &Arc<AppState>,
+    ) -> Result<()> {
         let path = Self::path(handle)?;
         let first = !path.exists();
         let s = Self::load(handle)?;

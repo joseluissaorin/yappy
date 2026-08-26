@@ -21,7 +21,8 @@ fn main() -> Result<()> {
     let mut args = std::env::args().skip(1);
     let mut root: PathBuf = PathBuf::from("/tmp/supertonic-3");
     let mut voice = String::from("Jessica");
-    let mut text = String::from("Yappy is now alive, and reading your text aloud with Supertonic 3.");
+    let mut text =
+        String::from("Yappy is now alive, and reading your text aloud with Supertonic 3.");
     let mut out = PathBuf::from("out.wav");
     let mut speed = 1.05f32;
     let mut lang = String::from("en");
@@ -35,7 +36,10 @@ fn main() -> Result<()> {
             "--lang" => lang = args.next().unwrap(),
             "--list-voices" => {
                 for v in yappy_core::voices::VOICES {
-                    println!("{:<8} {:<4} {:?}  — {}", v.name, v.id, v.gender, v.description);
+                    println!(
+                        "{:<8} {:<4} {:?}  — {}",
+                        v.name, v.id, v.gender, v.description
+                    );
                 }
                 return Ok(());
             }
@@ -103,7 +107,9 @@ fn transcribe_cmd(args: Vec<String>) -> Result<()> {
     let mut reader = hound::WavReader::open(&input)?;
     let spec = reader.spec();
     let samples: Vec<f32> = match spec.sample_format {
-        hound::SampleFormat::Float => reader.samples::<f32>().collect::<std::result::Result<_, _>>()?,
+        hound::SampleFormat::Float => reader
+            .samples::<f32>()
+            .collect::<std::result::Result<_, _>>()?,
         hound::SampleFormat::Int => reader
             .samples::<i32>()
             .map(|s| s.map(|v| v as f32 / (1i64 << (spec.bits_per_sample - 1)) as f32))

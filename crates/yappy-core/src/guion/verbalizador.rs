@@ -17,13 +17,17 @@ use regex::Regex;
 
 struct Lienzo<'a> {
     texto: &'a str,
-    reclamado: Vec<bool>, // por byte
+    reclamado: Vec<bool>,                          // por byte
     spans: Vec<(usize, usize, ClaseSpan, String)>, // rangos en bytes
 }
 
 impl<'a> Lienzo<'a> {
     fn new(texto: &'a str) -> Self {
-        Lienzo { texto, reclamado: vec![false; texto.len()], spans: Vec::new() }
+        Lienzo {
+            texto,
+            reclamado: vec![false; texto.len()],
+            spans: Vec::new(),
+        }
     }
 
     fn libre(&self, ini: usize, fin: usize) -> bool {
@@ -50,10 +54,13 @@ impl<'a> Lienzo<'a> {
         if palabra.ends_with([';', ':', '!', '?', '…']) {
             return None;
         }
-        let palabra = palabra.trim_matches(|c: char| {
-            !(c.is_alphanumeric() || c == '.' || c == 'º' || c == 'ª')
-        });
-        if palabra.is_empty() { None } else { Some(palabra) }
+        let palabra = palabra
+            .trim_matches(|c: char| !(c.is_alphanumeric() || c == '.' || c == 'º' || c == 'ª'));
+        if palabra.is_empty() {
+            None
+        } else {
+            Some(palabra)
+        }
     }
 
     /// La palabra siguiente al byte `fin`.
@@ -62,9 +69,12 @@ impl<'a> Lienzo<'a> {
         let final_ = despues
             .find(|c: char| c.is_whitespace())
             .unwrap_or(despues.len());
-        let palabra = despues[..final_]
-            .trim_matches(|c: char| !(c.is_alphanumeric() || c == '.'));
-        if palabra.is_empty() { None } else { Some(palabra) }
+        let palabra = despues[..final_].trim_matches(|c: char| !(c.is_alphanumeric() || c == '.'));
+        if palabra.is_empty() {
+            None
+        } else {
+            Some(palabra)
+        }
     }
 
     /// Convierte los spans reclamados + los huecos literales en la lista
@@ -118,14 +128,25 @@ fn decimal_con_punto(lang: &str) -> bool {
 
 /// Parsea «1.234,56» o «1,234.56» según la convención del idioma.
 fn parsear_numero(crudo: &str, lang: &str) -> Option<Numero> {
-    let (miles, decimal) = if decimal_con_punto(lang) { (',', '.') } else { ('.', ',') };
-    let limpio: String = crudo.chars().filter(|c| *c != miles && *c != ' ' && *c != '\u{a0}').collect();
+    let (miles, decimal) = if decimal_con_punto(lang) {
+        (',', '.')
+    } else {
+        ('.', ',')
+    };
+    let limpio: String = crudo
+        .chars()
+        .filter(|c| *c != miles && *c != ' ' && *c != '\u{a0}')
+        .collect();
     let (ent, dec) = match limpio.split_once(decimal) {
         Some((e, d)) => (e, Some(d.to_string())),
         None => (limpio.as_str(), None),
     };
     let entero: i128 = ent.parse().ok()?;
-    Some(Numero { negativo: false, entero, decimales: dec })
+    Some(Numero {
+        negativo: false,
+        entero,
+        decimales: dec,
+    })
 }
 
 fn cardinal_txt(lang: &str, numero: &Numero) -> Option<String> {
@@ -141,8 +162,14 @@ fn romano_a_entero(s: &str) -> Option<i128> {
     }
     let valor = |c: char| -> i128 {
         match c {
-            'I' => 1, 'V' => 5, 'X' => 10, 'L' => 50,
-            'C' => 100, 'D' => 500, 'M' => 1000, _ => 0,
+            'I' => 1,
+            'V' => 5,
+            'X' => 10,
+            'L' => 50,
+            'C' => 100,
+            'D' => 500,
+            'M' => 1000,
+            _ => 0,
         }
     };
     let cs: Vec<char> = s.chars().collect();
@@ -176,8 +203,7 @@ fn es_nombre_propio(palabra: &str) -> bool {
 
 // ── Pasadas ──────────────────────────────────────────────────────────────
 
-static RE_URL: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"https?://\S+|www\.\S+").unwrap());
+static RE_URL: Lazy<Regex> = Lazy::new(|| Regex::new(r"https?://\S+|www\.\S+").unwrap());
 static RE_EMAIL: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}").unwrap());
 
@@ -251,7 +277,9 @@ fn pasada_fechas(l: &mut Lienzo, t: &TablaIdioma) {
             if !(1..=31).contains(&d) || !l.libre(ini, fin) {
                 continue;
             }
-            let Some(dia) = rbnf::ordinal("en", d as i128, Genero::Masculino) else { continue };
+            let Some(dia) = rbnf::ordinal("en", d as i128, Genero::Masculino) else {
+                continue;
+            };
             let nombre_mes = TABLA_MESES_EN[mes as usize - 1];
             let hablado = match a.and_then(|a| rbnf::anio("en", a as i128)) {
                 Some(anio) => format!("{nombre_mes} {dia}, {anio}"),
@@ -263,8 +291,18 @@ fn pasada_fechas(l: &mut Lienzo, t: &TablaIdioma) {
 }
 
 static TABLA_MESES_EN: [&str; 12] = [
-    "January", "February", "March", "April", "May", "June", "July", "August",
-    "September", "October", "November", "December",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
 ];
 
 static RE_HORA: Lazy<Regex> =
@@ -314,18 +352,20 @@ fn pasada_horas(l: &mut Lienzo, lang: &str, t: Option<&TablaIdioma>) {
         };
         let Some(mut hablado) = hablado else { continue };
         if let Some(x) = ampm {
-            hablado.push_str(if x.eq_ignore_ascii_case(&'a') { " AM" } else { " PM" });
+            hablado.push_str(if x.eq_ignore_ascii_case(&'a') {
+                " AM"
+            } else {
+                " PM"
+            });
         }
         l.reclamar(ini, fin, ClaseSpan::Hora, hablado);
     }
 }
 
-static RE_MONEDA_PRE: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"([€$£¥])\s?(\d+(?:[.,\s\u{a0}]\d{3})*(?:[.,]\d{1,2})?)").unwrap()
-});
-static RE_MONEDA_POS: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"(\d+(?:[.,\s\u{a0}]\d{3})*(?:[.,]\d{1,2})?)\s?([€$£¥])").unwrap()
-});
+static RE_MONEDA_PRE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"([€$£¥])\s?(\d+(?:[.,\s\u{a0}]\d{3})*(?:[.,]\d{1,2})?)").unwrap());
+static RE_MONEDA_POS: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"(\d+(?:[.,\s\u{a0}]\d{3})*(?:[.,]\d{1,2})?)\s?([€$£¥])").unwrap());
 
 fn pasada_monedas(l: &mut Lienzo, t: &TablaIdioma) {
     let mut capturas: Vec<(usize, usize, String, String)> = Vec::new();
@@ -341,21 +381,40 @@ fn pasada_monedas(l: &mut Lienzo, t: &TablaIdioma) {
         if !l.libre(ini, fin) {
             continue;
         }
-        let Some(moneda) = t.monedas.iter().find(|m| m.simbolo == simbolo) else { continue };
-        let Some(numero) = parsear_numero(&crudo, t.lang) else { continue };
+        let Some(moneda) = t.monedas.iter().find(|m| m.simbolo == simbolo) else {
+            continue;
+        };
+        let Some(numero) = parsear_numero(&crudo, t.lang) else {
+            continue;
+        };
         let centimos = numero
             .decimales
             .as_deref()
             .filter(|d| d.len() == 2)
             .and_then(|d| d.parse::<i128>().ok())
             .filter(|c| *c > 0);
-        let entero = Numero { decimales: None, ..numero.clone() };
-        let Some(parte_entera) = cardinal_txt(t.lang, &entero) else { continue };
-        let palabra = if entero.entero == 1 { moneda.singular } else { moneda.plural };
+        let entero = Numero {
+            decimales: None,
+            ..numero.clone()
+        };
+        let Some(parte_entera) = cardinal_txt(t.lang, &entero) else {
+            continue;
+        };
+        let palabra = if entero.entero == 1 {
+            moneda.singular
+        } else {
+            moneda.plural
+        };
         let hablado = match centimos {
             Some(c) if !moneda.sub_plural.is_empty() => {
-                let Some(cent) = cardinal_txt(t.lang, &Numero::entero_de(c)) else { continue };
-                let sub = if c == 1 { moneda.sub_singular } else { moneda.sub_plural };
+                let Some(cent) = cardinal_txt(t.lang, &Numero::entero_de(c)) else {
+                    continue;
+                };
+                let sub = if c == 1 {
+                    moneda.sub_singular
+                } else {
+                    moneda.sub_plural
+                };
                 if moneda.nexo.is_empty() {
                     format!("{parte_entera} {palabra} {cent} {sub}")
                 } else {
@@ -363,7 +422,9 @@ fn pasada_monedas(l: &mut Lienzo, t: &TablaIdioma) {
                 }
             }
             Some(c) => {
-                let Some(cent) = cardinal_txt(t.lang, &Numero::entero_de(c)) else { continue };
+                let Some(cent) = cardinal_txt(t.lang, &Numero::entero_de(c)) else {
+                    continue;
+                };
                 format!("{parte_entera} {palabra} {cent}")
             }
             None => format!("{parte_entera} {palabra}"),
@@ -372,8 +433,7 @@ fn pasada_monedas(l: &mut Lienzo, t: &TablaIdioma) {
     }
 }
 
-static RE_PORCENTAJE: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"(\d+(?:[.,]\d+)?)\s?%").unwrap());
+static RE_PORCENTAJE: Lazy<Regex> = Lazy::new(|| Regex::new(r"(\d+(?:[.,]\d+)?)\s?%").unwrap());
 
 fn pasada_porcentajes(l: &mut Lienzo, t: &TablaIdioma) {
     let capturas: Vec<(usize, usize, String)> = RE_PORCENTAJE
@@ -387,9 +447,18 @@ fn pasada_porcentajes(l: &mut Lienzo, t: &TablaIdioma) {
         if !l.libre(ini, fin) {
             continue;
         }
-        let Some(n) = parsear_numero(&crudo, t.lang) else { continue };
-        let Some(num) = cardinal_txt(t.lang, &n) else { continue };
-        l.reclamar(ini, fin, ClaseSpan::Porcentaje, format!("{num} {}", t.porcentaje));
+        let Some(n) = parsear_numero(&crudo, t.lang) else {
+            continue;
+        };
+        let Some(num) = cardinal_txt(t.lang, &n) else {
+            continue;
+        };
+        l.reclamar(
+            ini,
+            fin,
+            ClaseSpan::Porcentaje,
+            format!("{num} {}", t.porcentaje),
+        );
     }
 }
 
@@ -412,14 +481,22 @@ fn pasada_unidades(l: &mut Lienzo, t: &TablaIdioma) {
         for (ini, fin, crudo) in capturas {
             // El símbolo no puede continuar en letra («10 ms» ya se capturó
             // antes que «10 m»; «5kmx» no es unidad).
-            if l.texto[fin..].chars().next().is_some_and(|c| c.is_alphanumeric() || c == '²' || c == '³') {
+            if l.texto[fin..]
+                .chars()
+                .next()
+                .is_some_and(|c| c.is_alphanumeric() || c == '²' || c == '³')
+            {
                 continue;
             }
             if !l.libre(ini, fin) {
                 continue;
             }
-            let Some(n) = parsear_numero(&crudo, t.lang) else { continue };
-            let Some(num) = cardinal_txt(t.lang, &n) else { continue };
+            let Some(n) = parsear_numero(&crudo, t.lang) else {
+                continue;
+            };
+            let Some(num) = cardinal_txt(t.lang, &n) else {
+                continue;
+            };
             let es_uno = n.entero == 1 && n.decimales.is_none();
             let palabra = if es_uno { singular } else { plural };
             l.reclamar(ini, fin, ClaseSpan::Unidad, format!("{num} {palabra}"));
@@ -434,8 +511,7 @@ fn pasada_ordinales(l: &mut Lienzo, t: &TablaIdioma) {
     // vierundzwanzigsten Mai»). Sin ese contexto, mejor no declinar a
     // ciegas.
     if t.lang == "de" {
-        static RE_DE: Lazy<Regex> =
-            Lazy::new(|| Regex::new(r"\b(\d{1,3})\.\s+\p{Lu}").unwrap());
+        static RE_DE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\b(\d{1,3})\.\s+\p{Lu}").unwrap());
         let capturas: Vec<(usize, usize, i128)> = RE_DE
             .captures_iter(l.texto)
             .filter_map(|c| {
@@ -451,11 +527,18 @@ fn pasada_ordinales(l: &mut Lienzo, t: &TablaIdioma) {
             let declinado = l
                 .palabra_anterior(ini)
                 .map(|p| p.to_lowercase())
-                .is_some_and(|p| matches!(p.as_str(), "am" | "im" | "vom" | "zum" | "den" | "dem" | "der"));
+                .is_some_and(|p| {
+                    matches!(
+                        p.as_str(),
+                        "am" | "im" | "vom" | "zum" | "den" | "dem" | "der"
+                    )
+                });
             if !declinado {
                 continue;
             }
-            let Some(base) = rbnf::ordinal("de", n, Genero::Masculino) else { continue };
+            let Some(base) = rbnf::ordinal("de", n, Genero::Masculino) else {
+                continue;
+            };
             l.reclamar(ini, fin, ClaseSpan::Ordinal, format!("{base}n"));
         }
         return;
@@ -463,13 +546,11 @@ fn pasada_ordinales(l: &mut Lienzo, t: &TablaIdioma) {
 
     let (re, genero_por_sufijo): (&Lazy<Regex>, bool) = match t.lang {
         "es" | "pt" | "it" => {
-            static RE: Lazy<Regex> =
-                Lazy::new(|| Regex::new(r"\b(\d+)\.?\s?([ºª°])").unwrap());
+            static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\b(\d+)\.?\s?([ºª°])").unwrap());
             (&RE, true)
         }
         "en" => {
-            static RE: Lazy<Regex> =
-                Lazy::new(|| Regex::new(r"\b(\d+)(st|nd|rd|th)\b").unwrap());
+            static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\b(\d+)(st|nd|rd|th)\b").unwrap());
             (&RE, false)
         }
         "fr" => {
@@ -501,7 +582,11 @@ fn pasada_ordinales(l: &mut Lienzo, t: &TablaIdioma) {
         // El primero francés es «premier/première», no el «unième» que
         // CLDR reserva para los compuestos («vingt-et-unième»).
         let hablado = if t.lang == "fr" && n == 1 {
-            Some(if genero == Genero::Femenino { "première".to_string() } else { "premier".to_string() })
+            Some(if genero == Genero::Femenino {
+                "première".to_string()
+            } else {
+                "premier".to_string()
+            })
         } else {
             rbnf::ordinal(t.lang, n, genero)
         };
@@ -527,7 +612,9 @@ fn pasada_romanos(l: &mut Lienzo, t: &TablaIdioma) {
         if !l.libre(ini, fin) {
             continue;
         }
-        let Some(n) = romano_a_entero(&crudo) else { continue };
+        let Some(n) = romano_a_entero(&crudo) else {
+            continue;
+        };
         let anterior = l.palabra_anterior(ini);
         let siguiente = l.palabra_siguiente(fin);
 
@@ -588,8 +675,7 @@ fn pasada_romanos(l: &mut Lienzo, t: &TablaIdioma) {
     }
 }
 
-static RE_SIGLA: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"\b([A-ZÑ]{2,6})\b").unwrap());
+static RE_SIGLA: Lazy<Regex> = Lazy::new(|| Regex::new(r"\b([A-ZÑ]{2,6})\b").unwrap());
 
 fn pasada_siglas(l: &mut Lienzo, t: &TablaIdioma) {
     let capturas: Vec<(usize, usize, String)> = RE_SIGLA
@@ -639,7 +725,10 @@ fn pasada_siglas(l: &mut Lienzo, t: &TablaIdioma) {
 
 fn pasada_abreviaturas(l: &mut Lienzo, t: &TablaIdioma) {
     for (clave, valor) in t.abreviaturas {
-        let solo_ante_numero = matches!(*clave, "p." | "pp." | "pág." | "págs." | "n.º" | "nº" | "n." | "No." | "Nr." | "n°" | "N°");
+        let solo_ante_numero = matches!(
+            *clave,
+            "p." | "pp." | "pág." | "págs." | "n.º" | "nº" | "n." | "No." | "Nr." | "n°" | "N°"
+        );
         let re = Regex::new(&format!(r"(?:^|[\s(«\[])({})", regex::escape(clave))).unwrap();
         let capturas: Vec<(usize, usize)> = re
             .captures_iter(l.texto)
@@ -651,7 +740,11 @@ fn pasada_abreviaturas(l: &mut Lienzo, t: &TablaIdioma) {
             }
             // La clave con punto no puede continuar en letra («art.» no
             // debe comerse el principio de «artículo» escrito entero).
-            if l.texto[fin..].chars().next().is_some_and(|c| c.is_alphanumeric()) {
+            if l.texto[fin..]
+                .chars()
+                .next()
+                .is_some_and(|c| c.is_alphanumeric())
+            {
                 continue;
             }
             if solo_ante_numero {
@@ -712,7 +805,9 @@ fn pasada_numeros(l: &mut Lienzo, lang: &str) {
         if !l.libre(ini, fin) {
             continue;
         }
-        let Ok(n) = crudo.parse::<i128>() else { continue };
+        let Ok(n) = crudo.parse::<i128>() else {
+            continue;
+        };
         // En inglés, un año de cuatro cifras se lee como año.
         let hablado = if lang == "en" && (1100..=2199).contains(&n) && crudo.len() == 4 {
             rbnf::anio(lang, n)
@@ -768,29 +863,59 @@ mod tests {
     fn habla(texto: &str, lang: &str) -> String {
         let spans = verbalizar(texto, lang);
         // Normaliza espacios para comparar cómodamente.
-        texto_hablado(&spans).split_whitespace().collect::<Vec<_>>().join(" ")
+        texto_hablado(&spans)
+            .split_whitespace()
+            .collect::<Vec<_>>()
+            .join(" ")
     }
 
     #[test]
     fn espanol_basico() {
-        assert_eq!(habla("En 1492 zarparon.", "es"), "En mil cuatrocientos noventa y dos zarparon.");
-        assert_eq!(habla("el siglo XX fue corto", "es"), "el siglo veinte fue corto");
-        assert_eq!(habla("el siglo IX fue largo", "es"), "el siglo noveno fue largo");
-        assert_eq!(habla("Enrique VIII tuvo seis esposas", "es"), "Enrique octavo tuvo seis esposas");
+        assert_eq!(
+            habla("En 1492 zarparon.", "es"),
+            "En mil cuatrocientos noventa y dos zarparon."
+        );
+        assert_eq!(
+            habla("el siglo XX fue corto", "es"),
+            "el siglo veinte fue corto"
+        );
+        assert_eq!(
+            habla("el siglo IX fue largo", "es"),
+            "el siglo noveno fue largo"
+        );
+        assert_eq!(
+            habla("Enrique VIII tuvo seis esposas", "es"),
+            "Enrique octavo tuvo seis esposas"
+        );
         assert_eq!(habla("Alfonso XIII reinó", "es"), "Alfonso trece reinó");
         assert_eq!(habla("EL CID CAMPEADOR", "es"), "EL CID CAMPEADOR");
         assert_eq!(habla("DERECHO CIVIL", "es"), "DERECHO CIVIL");
         assert_eq!(habla("subió un 50%", "es"), "subió un cincuenta por ciento");
-        assert_eq!(habla("el capítulo 21º", "es"), "el capítulo vigésimo primero");
+        assert_eq!(
+            habla("el capítulo 21º", "es"),
+            "el capítulo vigésimo primero"
+        );
         assert_eq!(habla("la 2ª edición", "es"), "la segunda edición");
-        assert_eq!(habla("cuesta 3,50 €", "es"), "cuesta tres euros con cincuenta céntimos");
+        assert_eq!(
+            habla("cuesta 3,50 €", "es"),
+            "cuesta tres euros con cincuenta céntimos"
+        );
         assert_eq!(habla("son las 14:30", "es"), "son las catorce y treinta");
-        assert_eq!(habla("mide 1,75 m de alto", "es"), "mide uno coma setenta y cinco m de alto");
+        assert_eq!(
+            habla("mide 1,75 m de alto", "es"),
+            "mide uno coma setenta y cinco m de alto"
+        );
         assert_eq!(habla("pesa 70kg", "es"), "pesa setenta kilogramos");
         assert_eq!(habla("el FBI investiga", "es"), "el efe be i investiga");
         assert_eq!(habla("la NASA lanzó", "es"), "la NASA lanzó");
-        assert_eq!(habla("Dr. Ramírez, pág. 12", "es"), "doctor Ramírez, página doce");
-        assert_eq!(habla("1.234 personas", "es"), "mil doscientos treinta y cuatro personas");
+        assert_eq!(
+            habla("Dr. Ramírez, pág. 12", "es"),
+            "doctor Ramírez, página doce"
+        );
+        assert_eq!(
+            habla("1.234 personas", "es"),
+            "mil doscientos treinta y cuatro personas"
+        );
     }
 
     #[test]
@@ -807,12 +932,24 @@ mod tests {
 
     #[test]
     fn ingles_basico() {
-        assert_eq!(habla("in 1985 it began", "en"), "in nineteen eighty-five it began");
-        assert_eq!(habla("Henry VIII had six wives", "en"), "Henry the eighth had six wives");
+        assert_eq!(
+            habla("in 1985 it began", "en"),
+            "in nineteen eighty-five it began"
+        );
+        assert_eq!(
+            habla("Henry VIII had six wives", "en"),
+            "Henry the eighth had six wives"
+        );
         assert_eq!(habla("World War II ended", "en"), "World War two ended");
         assert_eq!(habla("the 21st century", "en"), "the twenty-first century");
-        assert_eq!(habla("it costs $3.50", "en"), "it costs three dollars fifty cents");
-        assert_eq!(habla("May 24, 2026", "en"), "May twenty-fourth, twenty twenty-six");
+        assert_eq!(
+            habla("it costs $3.50", "en"),
+            "it costs three dollars fifty cents"
+        );
+        assert_eq!(
+            habla("May 24, 2026", "en"),
+            "May twenty-fourth, twenty twenty-six"
+        );
         assert_eq!(habla("50% of people", "en"), "fifty percent of people");
     }
 
@@ -821,16 +958,25 @@ mod tests {
         assert_eq!(habla("Louis XIV régna", "fr"), "Louis quatorze régna");
         assert_eq!(habla("le XIXe siècle", "fr"), "le dix-neuvième siècle");
         assert_eq!(habla("le 1er prix", "fr"), "le premier prix");
-        assert_eq!(habla("es kostet 3,50 €", "de"), "es kostet drei Euro fünfzig Cent");
+        assert_eq!(
+            habla("es kostet 3,50 €", "de"),
+            "es kostet drei Euro fünfzig Cent"
+        );
         assert_eq!(habla("um 14:30 Uhr", "de"), "um vierzehn Uhr dreißig");
-        assert_eq!(habla("im 19. Jahrhundert", "de"), "im neunzehnten Jahrhundert");
+        assert_eq!(
+            habla("im 19. Jahrhundert", "de"),
+            "im neunzehnten Jahrhundert"
+        );
         assert_eq!(habla("am 24. Mai", "de"), "am vierundzwanzigsten Mai");
     }
 
     #[test]
     fn idiomas_sin_tabla_no_se_tocan_las_palabras() {
         // Neerlandés: sin tabla profunda, los números sí, el resto intacto.
-        assert_eq!(habla("het jaar 1985", "nl"), "het jaar duizendnegenhonderdvijfentachtig");
+        assert_eq!(
+            habla("het jaar 1985", "nl"),
+            "het jaar duizendnegenhonderdvijfentachtig"
+        );
         assert_eq!(habla("Dr. Jansen", "nl"), "Dr. Jansen");
     }
 
@@ -861,17 +1007,26 @@ mod tests {
 
     #[test]
     fn dr_no_es_romano() {
-        assert_eq!(habla("Dr. Lopez came 3rd.", "en"), "Doctor Lopez came third.");
+        assert_eq!(
+            habla("Dr. Lopez came 3rd.", "en"),
+            "Doctor Lopez came third."
+        );
     }
 
     #[test]
     fn siglo_pospuesto_italiano() {
-        assert_eq!(habla("un gelato del XX secolo.", "it"), "un gelato del ventesimo secolo.");
+        assert_eq!(
+            habla("un gelato del XX secolo.", "it"),
+            "un gelato del ventesimo secolo."
+        );
     }
 
     #[test]
     fn ordinal_aleman_con_punto() {
-        assert_eq!(habla("Heinrich VIII. genau", "de"), "Heinrich der Achte genau");
+        assert_eq!(
+            habla("Heinrich VIII. genau", "de"),
+            "Heinrich der Achte genau"
+        );
     }
 
     #[test]

@@ -58,7 +58,10 @@ pub fn drain_shared_payload_string() -> Option<String> {
     if s.is_empty() {
         None
     } else {
-        tracing::info!("mobile: frontend drained {} shared payload(s)", s.lines().count());
+        tracing::info!(
+            "mobile: frontend drained {} shared payload(s)",
+            s.lines().count()
+        );
         Some(s)
     }
 }
@@ -178,10 +181,14 @@ use std::sync::OnceLock;
 static PLAYBACK: OnceLock<std::sync::Arc<crate::playback::PlaybackController>> = OnceLock::new();
 
 extern "C" fn cb_play() {
-    if let Some(p) = PLAYBACK.get() { p.resume(); }
+    if let Some(p) = PLAYBACK.get() {
+        p.resume();
+    }
 }
 extern "C" fn cb_pause() {
-    if let Some(p) = PLAYBACK.get() { p.pause(); }
+    if let Some(p) = PLAYBACK.get() {
+        p.pause();
+    }
 }
 extern "C" fn cb_toggle() {
     if let Some(p) = PLAYBACK.get() {
@@ -189,15 +196,23 @@ extern "C" fn cb_toggle() {
         // OJO: `playing` sigue en true durante la pausa (compat escritorio).
         // Mirar `paused`; mirar `playing` hacía imposible reanudar desde la
         // pantalla de bloqueo (siempre re-pausaba).
-        if s.paused { p.resume(); } else if s.playing { p.pause(); }
+        if s.paused {
+            p.resume();
+        } else if s.playing {
+            p.pause();
+        }
     }
 }
 extern "C" fn cb_skip_forward() {
     // La MISMA semántica que dentro de la app: una frase, no 15 segundos.
-    if let Some(p) = PLAYBACK.get() { p.saltar_chunk(1); }
+    if let Some(p) = PLAYBACK.get() {
+        p.saltar_chunk(1);
+    }
 }
 extern "C" fn cb_skip_backward() {
-    if let Some(p) = PLAYBACK.get() { p.saltar_chunk(-1); }
+    if let Some(p) = PLAYBACK.get() {
+        p.saltar_chunk(-1);
+    }
 }
 /// Interrupción del sistema (llamada, Siri, otra app tomando el audio) o
 /// auriculares desconectados: pausa inmediata. `terminada_y_reanudar` = el
@@ -281,19 +296,37 @@ extern "C" {
 
 pub fn audiofile_play(path: &str, start_at_secs: f64) -> bool {
     use std::ffi::CString;
-    let Ok(c) = CString::new(path) else { return false };
+    let Ok(c) = CString::new(path) else {
+        return false;
+    };
     unsafe { yappy_audiofile_play(c.as_ptr(), start_at_secs) }
 }
-pub fn audiofile_pause() { unsafe { yappy_audiofile_pause() } }
-pub fn audiofile_resume() { unsafe { yappy_audiofile_resume() } }
-pub fn audiofile_stop() { unsafe { yappy_audiofile_stop() } }
-pub fn audiofile_seek(secs: f64) { unsafe { yappy_audiofile_seek(secs) } }
-pub fn audiofile_position() -> f64 { unsafe { yappy_audiofile_position() } }
-pub fn audiofile_duration() -> f64 { unsafe { yappy_audiofile_duration() } }
-pub fn audiofile_is_playing() -> bool { unsafe { yappy_audiofile_is_playing() } }
+pub fn audiofile_pause() {
+    unsafe { yappy_audiofile_pause() }
+}
+pub fn audiofile_resume() {
+    unsafe { yappy_audiofile_resume() }
+}
+pub fn audiofile_stop() {
+    unsafe { yappy_audiofile_stop() }
+}
+pub fn audiofile_seek(secs: f64) {
+    unsafe { yappy_audiofile_seek(secs) }
+}
+pub fn audiofile_position() -> f64 {
+    unsafe { yappy_audiofile_position() }
+}
+pub fn audiofile_duration() -> f64 {
+    unsafe { yappy_audiofile_duration() }
+}
+pub fn audiofile_is_playing() -> bool {
+    unsafe { yappy_audiofile_is_playing() }
+}
 pub fn audiofile_current_path() -> Option<String> {
     let raw = unsafe { yappy_audiofile_current_path() };
-    if raw.is_null() { return None; }
+    if raw.is_null() {
+        return None;
+    }
     let s = unsafe { std::ffi::CStr::from_ptr(raw) }
         .to_string_lossy()
         .into_owned();

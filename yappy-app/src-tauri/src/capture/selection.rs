@@ -15,9 +15,9 @@ pub fn capture_selection() -> Result<Option<String>> {
 }
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
-use std::time::Duration;
-#[cfg(not(any(target_os = "ios", target_os = "android")))]
 use super::clipboard;
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
+use std::time::Duration;
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
 pub fn capture_selection() -> Result<Option<String>> {

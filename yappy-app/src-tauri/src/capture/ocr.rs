@@ -44,7 +44,12 @@ fn capture_focused_to(out: &Path) -> Result<()> {
     let bounds = focused_window_bounds();
     if let Some((x, y, w, h)) = bounds {
         let res = std::process::Command::new("screencapture")
-            .args(["-x", "-R", &format!("{x},{y},{w},{h}"), out.to_str().unwrap()])
+            .args([
+                "-x",
+                "-R",
+                &format!("{x},{y},{w},{h}"),
+                out.to_str().unwrap(),
+            ])
             .output()?;
         if res.status.success() && out.exists() {
             return Ok(());
@@ -93,16 +98,25 @@ tell application "System Events"
   return (item 1 of p as text) & "," & (item 2 of p as text) & "," & (item 1 of s as text) & "," & (item 2 of s as text)
 end tell
 "#;
-    let out = std::process::Command::new("osascript").args(["-e", script]).output().ok()?;
-    if !out.status.success() { return None; }
+    let out = std::process::Command::new("osascript")
+        .args(["-e", script])
+        .output()
+        .ok()?;
+    if !out.status.success() {
+        return None;
+    }
     let s = String::from_utf8_lossy(&out.stdout).trim().to_string();
     let parts: Vec<&str> = s.split(',').collect();
-    if parts.len() != 4 { return None; }
+    if parts.len() != 4 {
+        return None;
+    }
     let x = parts[0].trim().parse().ok()?;
     let y = parts[1].trim().parse().ok()?;
     let w = parts[2].trim().parse().ok()?;
     let h = parts[3].trim().parse().ok()?;
-    if w <= 0 || h <= 0 { return None; }
+    if w <= 0 || h <= 0 {
+        return None;
+    }
     Some((x, y, w, h))
 }
 
@@ -122,7 +136,9 @@ fn full_screen_capture(out: &Path) -> Result<()> {
 
 #[cfg(not(target_os = "macos"))]
 fn full_screen_capture(_out: &Path) -> Result<()> {
-    Err(anyhow::anyhow!("full-screen capture not implemented for this platform"))
+    Err(anyhow::anyhow!(
+        "full-screen capture not implemented for this platform"
+    ))
 }
 
 // ---------- OCR engine selection ----------
@@ -218,15 +234,21 @@ fn find_helper_script() -> Result<PathBuf> {
         }
     }
     let candidates = [
-        std::env::current_dir().ok().map(|d| d.join("macos/yappy-ocr.swift")),
-        std::env::current_dir().ok().map(|d| d.join("yappy-app/macos/yappy-ocr.swift")),
+        std::env::current_dir()
+            .ok()
+            .map(|d| d.join("macos/yappy-ocr.swift")),
+        std::env::current_dir()
+            .ok()
+            .map(|d| d.join("yappy-app/macos/yappy-ocr.swift")),
     ];
     for c in candidates.into_iter().flatten() {
         if c.exists() {
             return Ok(c);
         }
     }
-    Err(anyhow::anyhow!("could not locate yappy-ocr.swift helper script"))
+    Err(anyhow::anyhow!(
+        "could not locate yappy-ocr.swift helper script"
+    ))
 }
 
 #[cfg(not(target_os = "macos"))]
@@ -284,7 +306,9 @@ fn reorder_blocks_to_text(blocks: &[paddle_ocr_rs::ocr_result::TextBlock]) -> St
     items.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
 
     // Cluster into rows: y within ~half-line-height tolerance.
-    if items.is_empty() { return String::new(); }
+    if items.is_empty() {
+        return String::new();
+    }
     let mut rows: Vec<Vec<(f32, f32, &str)>> = vec![vec![items[0]]];
     let mut last_y = items[0].0;
     let line_h = estimate_line_height(blocks);
@@ -317,7 +341,9 @@ fn estimate_line_height(blocks: &[paddle_ocr_rs::ocr_result::TextBlock]) -> f32 
             max - min
         })
         .collect();
-    if hs.is_empty() { return 12.0; }
+    if hs.is_empty() {
+        return 12.0;
+    }
     hs.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
     hs[hs.len() / 2]
 }
@@ -327,8 +353,12 @@ fn paddle_models_dir() -> Result<PathBuf> {
     if let Ok(exe) = std::env::current_exe() {
         let candidates = [
             exe.parent().map(|p| p.join("paddleocr")),
-            exe.parent().and_then(|p| p.parent()).map(|p| p.join("Resources/paddleocr")),
-            exe.parent().and_then(|p| p.parent()).map(|p| p.join("Resources/_up_/resources/paddleocr")),
+            exe.parent()
+                .and_then(|p| p.parent())
+                .map(|p| p.join("Resources/paddleocr")),
+            exe.parent()
+                .and_then(|p| p.parent())
+                .map(|p| p.join("Resources/_up_/resources/paddleocr")),
         ];
         for c in candidates.into_iter().flatten() {
             if c.join("ch_PP-OCRv4_det_infer.onnx").exists() {

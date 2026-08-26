@@ -30,9 +30,9 @@ macro_rules! datos {
 }
 
 datos!(
-    "en", "ko", "ja", "ar", "bg", "cs", "da", "de", "el", "es", "et", "fi",
-    "fr", "hi", "hr", "hu", "id", "it", "lt", "lv", "nl", "pl", "pt", "ro",
-    "ru", "sk", "sl", "sv", "tr", "uk", "vi", "root",
+    "en", "ko", "ja", "ar", "bg", "cs", "da", "de", "el", "es", "et", "fi", "fr", "hi", "hr", "hu",
+    "id", "it", "lt", "lv", "nl", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "tr", "uk", "vi",
+    "root",
 );
 
 // ── Modelo ───────────────────────────────────────────────────────────────
@@ -56,7 +56,10 @@ enum Tok {
     /// [ ... ] : tramo opcional
     Opcional(Vec<Tok>),
     /// $(cardinal|ordinal, caso{texto}...)$
-    Plural { ordinal: bool, casos: Vec<(String, String)> },
+    Plural {
+        ordinal: bool,
+        casos: Vec<(String, String)>,
+    },
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -109,7 +112,11 @@ pub struct Numero {
 
 impl Numero {
     pub fn entero_de(n: i128) -> Self {
-        Numero { negativo: n < 0, entero: n.abs(), decimales: None }
+        Numero {
+            negativo: n < 0,
+            entero: n.abs(),
+            decimales: None,
+        }
     }
 }
 
@@ -143,7 +150,9 @@ fn parsear_cuerpo(s: &str) -> Vec<Tok> {
                         nombre.push(cs[j]);
                         j += 1;
                     }
-                    toks.push(Tok::Cociente(Some(nombre.trim_start_matches('%').to_string())));
+                    toks.push(Tok::Cociente(Some(
+                        nombre.trim_start_matches('%').to_string(),
+                    )));
                     i = j + 1;
                 }
             }
@@ -175,9 +184,13 @@ fn parsear_cuerpo(s: &str) -> Vec<Tok> {
                     j += 1;
                 }
                 if dentro.starts_with('%') {
-                    toks.push(Tok::MismoConjunto(dentro.trim_start_matches('%').to_string()));
+                    toks.push(Tok::MismoConjunto(
+                        dentro.trim_start_matches('%').to_string(),
+                    ));
                 } else {
-                    toks.push(Tok::Digitos { decimal: dentro.contains('.') });
+                    toks.push(Tok::Digitos {
+                        decimal: dentro.contains('.'),
+                    });
                 }
                 i = j + 1;
             }
@@ -230,7 +243,10 @@ fn parsear_cuerpo(s: &str) -> Vec<Tok> {
                         casos.push((nombre.trim().to_string(), texto));
                     }
                 }
-                toks.push(Tok::Plural { ordinal: tipo.trim() == "ordinal", casos });
+                toks.push(Tok::Plural {
+                    ordinal: tipo.trim() == "ordinal",
+                    casos,
+                });
                 i = j + 2;
             }
             '\'' => {
@@ -261,13 +277,18 @@ fn parsear(texto: &str, lang: &str) -> MotorRbnf {
             continue;
         }
         if linea.starts_with('%') {
-            let nombre = linea.trim_start_matches('%').trim_end_matches(':').to_string();
+            let nombre = linea
+                .trim_start_matches('%')
+                .trim_end_matches(':')
+                .to_string();
             conjuntos.entry(nombre.clone()).or_default();
             actual = Some(nombre);
             continue;
         }
         let Some(nombre) = &actual else { continue };
-        let Some((clave_txt, cuerpo_txt)) = linea.split_once(':') else { continue };
+        let Some((clave_txt, cuerpo_txt)) = linea.split_once(':') else {
+            continue;
+        };
         let cuerpo_txt = cuerpo_txt.trim_start().trim_end_matches(';');
         let cuerpo = parsear_cuerpo(cuerpo_txt);
         let clave_txt = clave_txt.trim();
@@ -292,7 +313,11 @@ fn parsear(texto: &str, lang: &str) -> MotorRbnf {
             }
         };
 
-        let regla = Regla { clave, radix, cuerpo };
+        let regla = Regla {
+            clave,
+            radix,
+            cuerpo,
+        };
         let conjunto = conjuntos.get_mut(nombre).expect("conjunto recién creado");
         match clave {
             Clave::Entero(_) => conjunto.reglas_enteras.push(regla),
@@ -319,7 +344,10 @@ fn parsear(texto: &str, lang: &str) -> MotorRbnf {
         });
     }
 
-    MotorRbnf { lang: lang.to_string(), conjuntos }
+    MotorRbnf {
+        lang: lang.to_string(),
+        conjuntos,
+    }
 }
 
 // ── Plurales (solo las lenguas cuyos datos usan $(...)$) ────────────────
@@ -356,13 +384,25 @@ fn categoria_cardinal(lang: &str, n: i128) -> &'static str {
             }
         }
         "bg" | "en" | "de" | "es" | "it" | "nl" | "sv" | "el" | "fi" | "et" | "hu" | "tr" => {
-            if n == 1 { "one" } else { "other" }
+            if n == 1 {
+                "one"
+            } else {
+                "other"
+            }
         }
         "fr" | "pt" => {
-            if n <= 1 { "one" } else { "other" }
+            if n <= 1 {
+                "one"
+            } else {
+                "other"
+            }
         }
         _ => {
-            if n == 1 { "one" } else { "other" }
+            if n == 1 {
+                "one"
+            } else {
+                "other"
+            }
         }
     }
 }
@@ -383,7 +423,11 @@ fn categoria_ordinal(lang: &str, n: i128) -> &'static str {
             }
         }
         "fr" => {
-            if n == 1 { "one" } else { "other" }
+            if n == 1 {
+                "one"
+            } else {
+                "other"
+            }
         }
         "sv" => {
             if (m10 == 1 || m10 == 2) && !(m100 == 11 || m100 == 12) {
@@ -396,13 +440,12 @@ fn categoria_ordinal(lang: &str, n: i128) -> &'static str {
     }
 }
 
-fn elegir_plural<'a>(
-    lang: &str,
-    n: i128,
-    ordinal: bool,
-    casos: &'a [(String, String)],
-) -> &'a str {
-    let cat = if ordinal { categoria_ordinal(lang, n) } else { categoria_cardinal(lang, n) };
+fn elegir_plural<'a>(lang: &str, n: i128, ordinal: bool, casos: &'a [(String, String)]) -> &'a str {
+    let cat = if ordinal {
+        categoria_ordinal(lang, n)
+    } else {
+        categoria_cardinal(lang, n)
+    };
     casos
         .iter()
         .find(|(c, _)| c == cat)
@@ -560,7 +603,13 @@ impl MotorRbnf {
                         continue;
                     }
                     salida.push_str(&self.evaluar_toks(
-                        nombre, conjunto, idx, dentro, n, divisor, prof + 1,
+                        nombre,
+                        conjunto,
+                        idx,
+                        dentro,
+                        n,
+                        divisor,
+                        prof + 1,
                     )?);
                 }
                 Tok::Plural { ordinal, casos } => {
@@ -588,7 +637,11 @@ impl MotorRbnf {
                         Tok::Literal(t) => salida.push_str(t),
                         Tok::Cociente(conj) => {
                             let destino = conj.as_deref().unwrap_or(conjunto);
-                            let e = if numero.negativo { -numero.entero } else { numero.entero };
+                            let e = if numero.negativo {
+                                -numero.entero
+                            } else {
+                                numero.entero
+                            };
                             salida.push_str(&self.evaluar_entero(destino, e, 0)?);
                         }
                         Tok::Resto(conj) => {
@@ -619,7 +672,11 @@ impl MotorRbnf {
             }
         }
 
-        let n = if numero.negativo { -numero.entero } else { numero.entero };
+        let n = if numero.negativo {
+            -numero.entero
+        } else {
+            numero.entero
+        };
         self.evaluar_entero(conjunto, n, 0)
     }
 
@@ -631,8 +688,7 @@ impl MotorRbnf {
 // ── Caché por idioma y fachada ───────────────────────────────────────────
 
 fn cache() -> &'static std::sync::Mutex<HashMap<String, &'static MotorRbnf>> {
-    static CACHE: OnceLock<std::sync::Mutex<HashMap<String, &'static MotorRbnf>>> =
-        OnceLock::new();
+    static CACHE: OnceLock<std::sync::Mutex<HashMap<String, &'static MotorRbnf>>> = OnceLock::new();
     CACHE.get_or_init(|| std::sync::Mutex::new(HashMap::new()))
 }
 
@@ -770,9 +826,20 @@ mod tests {
 
     #[test]
     fn espanol_decimales() {
-        let n = Numero { negativo: false, entero: 3, decimales: Some("14".into()) };
-        assert_eq!(cardinal("es", &n, Genero::Masculino).unwrap(), "tres coma catorce");
-        let pi = Numero { negativo: false, entero: 3, decimales: Some("1416".into()) };
+        let n = Numero {
+            negativo: false,
+            entero: 3,
+            decimales: Some("14".into()),
+        };
+        assert_eq!(
+            cardinal("es", &n, Genero::Masculino).unwrap(),
+            "tres coma catorce"
+        );
+        let pi = Numero {
+            negativo: false,
+            entero: 3,
+            decimales: Some("1416".into()),
+        };
         assert_eq!(
             cardinal("es", &pi, Genero::Masculino).unwrap(),
             "tres coma uno cuatro uno seis"
@@ -785,7 +852,10 @@ mod tests {
         assert_eq!(c("en", 1985), "one thousand nine hundred eighty-five");
         assert_eq!(anio("en", 1985).unwrap(), "nineteen eighty-five");
         assert_eq!(anio("en", 2026).unwrap(), "twenty twenty-six");
-        assert_eq!(ordinal("en", 21, Genero::Masculino).unwrap(), "twenty-first");
+        assert_eq!(
+            ordinal("en", 21, Genero::Masculino).unwrap(),
+            "twenty-first"
+        );
         assert_eq!(ordinal("en", 3, Genero::Masculino).unwrap(), "third");
     }
 
@@ -870,7 +940,14 @@ mod tests {
 
     #[test]
     fn decimal_ingles_con_point() {
-        let n = Numero { negativo: false, entero: 2, decimales: Some("5".into()) };
-        assert_eq!(cardinal("en", &n, Genero::Masculino).unwrap(), "two point five");
+        let n = Numero {
+            negativo: false,
+            entero: 2,
+            decimales: Some("5".into()),
+        };
+        assert_eq!(
+            cardinal("en", &n, Genero::Masculino).unwrap(),
+            "two point five"
+        );
     }
 }

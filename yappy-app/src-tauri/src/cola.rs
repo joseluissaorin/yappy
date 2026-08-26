@@ -64,7 +64,11 @@ fn nuevo_id() -> String {
     // Sin dependencia de uuid: tiempo + contador atómico basta y es legible.
     use std::sync::atomic::{AtomicU32, Ordering};
     static N: AtomicU32 = AtomicU32::new(0);
-    format!("{}-{:04}", ahora_unix(), N.fetch_add(1, Ordering::Relaxed) % 10000)
+    format!(
+        "{}-{:04}",
+        ahora_unix(),
+        N.fetch_add(1, Ordering::Relaxed) % 10000
+    )
 }
 
 fn dir_cola<R: Runtime>(app: &AppHandle<R>) -> Result<PathBuf> {
@@ -168,7 +172,11 @@ pub fn agregar_url<R: Runtime>(app: &AppHandle<R>, url: String) -> Result<ItemCo
             return Ok(existente.clone());
         }
     }
-    let tipo = if es_youtube(&url) { TipoItem::Youtube } else { TipoItem::Url };
+    let tipo = if es_youtube(&url) {
+        TipoItem::Youtube
+    } else {
+        TipoItem::Url
+    };
     let item = ItemCola {
         id: nuevo_id(),
         tipo,
@@ -374,9 +382,11 @@ pub fn extraer_articulo(html: &str, url: &str) -> Result<(Option<String>, String
         text_mode: TextMode::Markdown,
         ..Default::default()
     };
-    let mut r = Readability::new(html, Some(url), Some(cfg))
-        .map_err(|e| anyhow!("readability: {e:?}"))?;
-    let articulo = r.parse().map_err(|e| anyhow!("no parece un artículo legible ({e:?})"))?;
+    let mut r =
+        Readability::new(html, Some(url), Some(cfg)).map_err(|e| anyhow!("readability: {e:?}"))?;
+    let articulo = r
+        .parse()
+        .map_err(|e| anyhow!("no parece un artículo legible ({e:?})"))?;
     let titulo = {
         let t = articulo.title.trim();
         (!t.is_empty()).then(|| t.to_string())
@@ -496,7 +506,12 @@ fn terminar_con_markdown<R: Runtime>(
         if let Some(t) = titulo {
             it.titulo = t;
         } else if let Some(primera) = markdown.lines().find(|l| !l.trim().is_empty()) {
-            let limpio: String = primera.trim_start_matches('#').trim().chars().take(60).collect();
+            let limpio: String = primera
+                .trim_start_matches('#')
+                .trim()
+                .chars()
+                .take(60)
+                .collect();
             if !limpio.is_empty() {
                 it.titulo = limpio;
             }
@@ -602,8 +617,14 @@ mod tests {
 
     #[test]
     fn youtube_ids() {
-        assert_eq!(id_video_youtube("https://youtu.be/dQw4w9WgXcQ?t=1").as_deref(), Some("dQw4w9WgXcQ"));
-        assert_eq!(id_video_youtube("https://www.youtube.com/watch?v=abc123&x=1").as_deref(), Some("abc123"));
+        assert_eq!(
+            id_video_youtube("https://youtu.be/dQw4w9WgXcQ?t=1").as_deref(),
+            Some("dQw4w9WgXcQ")
+        );
+        assert_eq!(
+            id_video_youtube("https://www.youtube.com/watch?v=abc123&x=1").as_deref(),
+            Some("abc123")
+        );
         assert!(es_youtube("https://m.youtube.com/watch?v=x"));
         assert!(!es_youtube("https://example.com/watch"));
     }

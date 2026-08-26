@@ -63,8 +63,7 @@ pub fn read_m4b_info(path: &Path) -> Option<M4bInfo> {
     // Read the chpl atom by re-scanning the raw bytes — the `mp4` crate
     // doesn't expose user-data atoms, but we wrote the chpl ourselves so we
     // know the layout. Failure here is fine: just report 0 chapters.
-    let (chapter_count, first_chapter_title) = read_chpl_from_file(path)
-        .unwrap_or((0, None));
+    let (chapter_count, first_chapter_title) = read_chpl_from_file(path).unwrap_or((0, None));
     Some(M4bInfo {
         duration_secs,
         chapter_count,
@@ -98,8 +97,14 @@ pub fn read_chpl_chapters(path: &Path) -> Option<Vec<Chapter>> {
             break;
         }
         let start_100ns = u64::from_be_bytes([
-            bytes[cursor], bytes[cursor + 1], bytes[cursor + 2], bytes[cursor + 3],
-            bytes[cursor + 4], bytes[cursor + 5], bytes[cursor + 6], bytes[cursor + 7],
+            bytes[cursor],
+            bytes[cursor + 1],
+            bytes[cursor + 2],
+            bytes[cursor + 3],
+            bytes[cursor + 4],
+            bytes[cursor + 5],
+            bytes[cursor + 6],
+            bytes[cursor + 7],
         ]);
         cursor += 8;
         let title_len = bytes[cursor] as usize;
@@ -367,7 +372,7 @@ fn build_chpl_atom(chapters: &[Chapter]) -> Vec<u8> {
     body.write_u8(1).unwrap(); // version
     body.write_u24::<BigEndian>(0).unwrap(); // flags
     body.write_u32::<BigEndian>(0).unwrap(); // reserved
-    // count, capped to 255 because the count field is a single byte.
+                                             // count, capped to 255 because the count field is a single byte.
     let cap = chapters.len().min(255) as u8;
     body.write_u8(cap).unwrap();
     for c in chapters.iter().take(255) {
@@ -515,7 +520,12 @@ fn find_top_level_box(buf: &[u8], four_cc: &[u8; 4]) -> Option<usize> {
     None
 }
 
-fn find_child_box(buf: &[u8], body_start: usize, body_end: usize, four_cc: &[u8; 4]) -> Option<usize> {
+fn find_child_box(
+    buf: &[u8],
+    body_start: usize,
+    body_end: usize,
+    four_cc: &[u8; 4],
+) -> Option<usize> {
     let mut cursor = body_start;
     while cursor + 8 <= body_end {
         let size = read_box_size(buf, cursor) as usize;

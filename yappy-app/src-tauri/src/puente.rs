@@ -25,8 +25,8 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, Context, Result};
 use base64::Engine as _;
-use serde::{Deserialize, Serialize};
 use iroh::endpoint::presets;
+use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager, Runtime};
 
 const ALPN: &[u8] = b"yappy/puente/1";
@@ -70,7 +70,10 @@ fn leer_servidor<R: Runtime>(app: &AppHandle<R>) -> ConfigServidor {
 }
 
 fn guardar_servidor<R: Runtime>(app: &AppHandle<R>, c: &ConfigServidor) -> Result<()> {
-    std::fs::write(ruta_config(app, "puente-servidor.json")?, serde_json::to_string_pretty(c)?)?;
+    std::fs::write(
+        ruta_config(app, "puente-servidor.json")?,
+        serde_json::to_string_pretty(c)?,
+    )?;
     Ok(())
 }
 
@@ -83,7 +86,10 @@ pub fn leer_movil<R: Runtime>(app: &AppHandle<R>) -> ConfigMovil {
 }
 
 fn guardar_movil<R: Runtime>(app: &AppHandle<R>, c: &ConfigMovil) -> Result<()> {
-    std::fs::write(ruta_config(app, "puente-movil.json")?, serde_json::to_string_pretty(c)?)?;
+    std::fs::write(
+        ruta_config(app, "puente-movil.json")?,
+        serde_json::to_string_pretty(c)?,
+    )?;
     Ok(())
 }
 
@@ -179,7 +185,11 @@ async fn atender(app: AppHandle, conn: iroh::endpoint::Connection) -> Result<()>
 
     let admitidos = leer_servidor(&app).tokens;
     if !admitidos.contains(&peticion.token) {
-        enviar_json(&mut tx, &serde_json::json!({"tipo":"error","mensaje":"token no emparejado"})).await?;
+        enviar_json(
+            &mut tx,
+            &serde_json::json!({"tipo":"error","mensaje":"token no emparejado"}),
+        )
+        .await?;
         return Ok(());
     }
     tracing::info!(
@@ -267,11 +277,17 @@ async fn atender(app: AppHandle, conn: iroh::endpoint::Connection) -> Result<()>
     let tmp = std::env::temp_dir().join(format!("yappy-puente-{}.m4b", std::process::id()));
     {
         let chapters: Vec<crate::audiobook::Chapter> = if capitulos.is_empty() {
-            vec![crate::audiobook::Chapter { start_secs: 0.0, title: peticion.titulo.clone() }]
+            vec![crate::audiobook::Chapter {
+                start_secs: 0.0,
+                title: peticion.titulo.clone(),
+            }]
         } else {
             capitulos
                 .into_iter()
-                .map(|(s, t)| crate::audiobook::Chapter { start_secs: s, title: t })
+                .map(|(s, t)| crate::audiobook::Chapter {
+                    start_secs: s,
+                    title: t,
+                })
                 .collect()
         };
         let meta = crate::audiobook::M4bMetadata {
@@ -288,12 +304,20 @@ async fn atender(app: AppHandle, conn: iroh::endpoint::Connection) -> Result<()>
 
     let bytes = tokio::fs::read(&tmp).await?;
     let _ = tokio::fs::remove_file(&tmp).await;
-    enviar_json(&mut tx, &serde_json::json!({"tipo":"listo","bytes": bytes.len()})).await?;
+    enviar_json(
+        &mut tx,
+        &serde_json::json!({"tipo":"listo","bytes": bytes.len()}),
+    )
+    .await?;
     tx.write_all(&bytes).await?;
     tx.finish()?;
     // Esperar a que el otro lado cierre para no cortar los últimos bytes.
     let _ = conn.closed().await;
-    tracing::info!("puente: «{}» servido ({} bytes)", peticion.titulo, bytes.len());
+    tracing::info!(
+        "puente: «{}» servido ({} bytes)",
+        peticion.titulo,
+        bytes.len()
+    );
     Ok(())
 }
 
@@ -305,7 +329,8 @@ async fn convertir(app: AppHandle, titulo: String, texto: String) -> Result<Stri
         (Some(a), Some(t)) => (a, t),
         _ => return Err(anyhow!("no hay ningún ordenador emparejado")),
     };
-    let addr: iroh::EndpointAddr = serde_json::from_str(&addr_json).context("dirección corrupta")?;
+    let addr: iroh::EndpointAddr =
+        serde_json::from_str(&addr_json).context("dirección corrupta")?;
 
     let endpoint = iroh::Endpoint::builder(presets::N0)
         .bind()
@@ -348,14 +373,20 @@ async fn convertir(app: AppHandle, titulo: String, texto: String) -> Result<Stri
                 );
             }
             "codificando" => {
-                let _ = app.emit("puente_progreso", serde_json::json!({"etapa":"codificando"}));
+                let _ = app.emit(
+                    "puente_progreso",
+                    serde_json::json!({"etapa":"codificando"}),
+                );
             }
             "listo" => {
                 total_bytes = v["bytes"].as_u64().unwrap_or(0) as usize;
                 break;
             }
             "error" => {
-                return Err(anyhow!(v["mensaje"].as_str().unwrap_or("error remoto").to_string()));
+                return Err(anyhow!(v["mensaje"]
+                    .as_str()
+                    .unwrap_or("error remoto")
+                    .to_string()));
             }
             otro => return Err(anyhow!("respuesta desconocida: {otro}")),
         }
@@ -364,14 +395,22 @@ async fn convertir(app: AppHandle, titulo: String, texto: String) -> Result<Stri
     // El fichero, a la biblioteca de audiolibros (la misma carpeta que los
     // renders locales, así aparece en Biblioteca → Audiolibros).
     let mut cuerpo = vec![0u8; total_bytes];
-    rx.read_exact(&mut cuerpo).await.map_err(|e| anyhow!("descarga cortada: {e}"))?;
+    rx.read_exact(&mut cuerpo)
+        .await
+        .map_err(|e| anyhow!("descarga cortada: {e}"))?;
     conn.close(0u32.into(), b"gracias");
 
     let dir = app.path().document_dir().context("document_dir")?;
     std::fs::create_dir_all(&dir)?;
     let nombre_limpio: String = titulo
         .chars()
-        .map(|c| if c.is_alphanumeric() || c == ' ' || c == '-' { c } else { '-' })
+        .map(|c| {
+            if c.is_alphanumeric() || c == ' ' || c == '-' {
+                c
+            } else {
+                '-'
+            }
+        })
         .take(60)
         .collect();
     let destino = dir.join(format!("{}.m4b", nombre_limpio.trim()));
@@ -389,7 +428,9 @@ async fn leer_linea(rx: &mut iroh::endpoint::RecvStream, max: usize) -> Result<S
     let mut buf = Vec::new();
     let mut byte = [0u8; 1];
     while buf.len() < max {
-        rx.read_exact(&mut byte).await.map_err(|e| anyhow!("stream cortado: {e}"))?;
+        rx.read_exact(&mut byte)
+            .await
+            .map_err(|e| anyhow!("stream cortado: {e}"))?;
         if byte[0] == b'\n' {
             return Ok(String::from_utf8_lossy(&buf).to_string());
         }
@@ -398,10 +439,7 @@ async fn leer_linea(rx: &mut iroh::endpoint::RecvStream, max: usize) -> Result<S
     Err(anyhow!("línea demasiado larga"))
 }
 
-async fn enviar_json(
-    tx: &mut iroh::endpoint::SendStream,
-    v: &serde_json::Value,
-) -> Result<()> {
+async fn enviar_json(tx: &mut iroh::endpoint::SendStream, v: &serde_json::Value) -> Result<()> {
     tx.write_all(format!("{v}\n").as_bytes()).await?;
     Ok(())
 }
@@ -420,7 +458,9 @@ fn hex_a_bytes(s: &str) -> Result<Vec<u8>> {
 fn token_nuevo() -> String {
     use rand::Rng;
     let mut rng = rand::thread_rng();
-    (0..32).map(|_| format!("{:x}", rng.gen_range(0..16u8))).collect()
+    (0..32)
+        .map(|_| format!("{:x}", rng.gen_range(0..16u8)))
+        .collect()
 }
 
 fn nombre_maquina() -> String {
@@ -451,7 +491,11 @@ pub fn puente_estado_cmd(app: AppHandle) -> Result<EstadoPuente, String> {
         activo: addr.is_some(),
         addr,
         enlace,
-        tokens: cfg.tokens.iter().map(|t| t.chars().take(8).collect()).collect(),
+        tokens: cfg
+            .tokens
+            .iter()
+            .map(|t| t.chars().take(8).collect())
+            .collect(),
     })
 }
 
@@ -497,7 +541,9 @@ pub fn puente_vincular_cmd(app: AppHandle, dato: String) -> Result<ConfigMovil, 
         .trim()
         .trim_start_matches("yappy://pair?d=")
         .trim_start_matches("d=");
-    let json = B64.decode(b64.as_bytes()).map_err(|_| "código ilegible".to_string())?;
+    let json = B64
+        .decode(b64.as_bytes())
+        .map_err(|_| "código ilegible".to_string())?;
     let v: serde_json::Value =
         serde_json::from_slice(&json).map_err(|_| "código ilegible".to_string())?;
     let cfg = ConfigMovil {

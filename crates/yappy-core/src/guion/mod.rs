@@ -160,11 +160,10 @@ pub fn trocear(pieza: &Pieza) -> Vec<Trozo> {
     if hablado.trim().is_empty() {
         return Vec::new();
     }
-    let trozos_texto: Vec<String> =
-        crate::chunker::chunk_for_language(&hablado, &pieza.idioma)
-            .into_iter()
-            .map(|c| c.text)
-            .collect();
+    let trozos_texto: Vec<String> = crate::chunker::chunk_for_language(&hablado, &pieza.idioma)
+        .into_iter()
+        .map(|c| c.text)
+        .collect();
 
     // Segmentos hablado→original acumulando la longitud hablada de cada span.
     struct Seg {
@@ -254,7 +253,10 @@ pub fn construir_desde_texto(texto: &str, idioma_base: &str) -> Guion {
         }
         piezas.push(construir_pieza(&contenido, clase, idioma_base));
     }
-    Guion { idioma_base: idioma_base.to_string(), piezas }
+    Guion {
+        idioma_base: idioma_base.to_string(),
+        piezas,
+    }
 }
 
 fn clasificar_bloque(bloque: &str) -> (ClasePieza, String) {
@@ -282,7 +284,11 @@ fn clasificar_bloque(bloque: &str) -> (ClasePieza, String) {
     if recortado.starts_with("> ") {
         let limpio = recortado
             .lines()
-            .map(|l| l.trim_start().trim_start_matches("> ").trim_start_matches('>'))
+            .map(|l| {
+                l.trim_start()
+                    .trim_start_matches("> ")
+                    .trim_start_matches('>')
+            })
             .collect::<Vec<_>>()
             .join("\n");
         return (ClasePieza::Cita, limpio);
@@ -316,7 +322,9 @@ mod tests {
         assert_eq!(g.piezas.len(), 4);
         assert_eq!(g.piezas[0].clase, ClasePieza::Titulo1);
         assert_eq!(g.piezas[0].texto_hablado(), "El siglo veinte");
-        assert!(g.piezas[1].texto_hablado().contains("mil novecientos catorce"));
+        assert!(g.piezas[1]
+            .texto_hablado()
+            .contains("mil novecientos catorce"));
         assert_eq!(g.piezas[2].clase, ClasePieza::Separador);
         assert_eq!(g.piezas[3].clase, ClasePieza::Cita);
     }
@@ -325,6 +333,9 @@ mod tests {
     fn el_original_queda_intacto() {
         let g = construir_desde_texto("En 1492, Colón.", "es");
         assert_eq!(g.piezas[0].texto, "En 1492, Colón.");
-        assert_eq!(g.piezas[0].texto_hablado(), "En mil cuatrocientos noventa y dos, Colón.");
+        assert_eq!(
+            g.piezas[0].texto_hablado(),
+            "En mil cuatrocientos noventa y dos, Colón."
+        );
     }
 }

@@ -79,8 +79,12 @@ end timeout
             path = tmp.display(),
         ),
         // Chromium-family: use `execute javascript`
-        "Google Chrome" | "Google Chrome Canary" | "Brave Browser" | "Arc"
-        | "Microsoft Edge" | "Vivaldi" => format!(
+        "Google Chrome"
+        | "Google Chrome Canary"
+        | "Brave Browser"
+        | "Arc"
+        | "Microsoft Edge"
+        | "Vivaldi" => format!(
             r#"with timeout of 8 seconds
 set jsPath to "{path}"
 set theJs to read POSIX file jsPath as «class utf8»
@@ -139,7 +143,10 @@ end timeout
             match serde_json::from_str::<serde_json::Value>(&unq) {
                 Ok(v) => v,
                 Err(e) => {
-                    tracing::debug!("defuddle: could not parse JSON ({e}). raw_head={}", &raw[..raw.len().min(120)]);
+                    tracing::debug!(
+                        "defuddle: could not parse JSON ({e}). raw_head={}",
+                        &raw[..raw.len().min(120)]
+                    );
                     return Ok(None);
                 }
             }
@@ -149,8 +156,14 @@ end timeout
         tracing::debug!("defuddle reported error: {}", parsed["error"]);
         return Ok(None);
     }
-    let title = parsed.get("title").and_then(|v| v.as_str()).map(str::to_string);
-    let url = parsed.get("url").and_then(|v| v.as_str()).map(str::to_string);
+    let title = parsed
+        .get("title")
+        .and_then(|v| v.as_str())
+        .map(str::to_string);
+    let url = parsed
+        .get("url")
+        .and_then(|v| v.as_str())
+        .map(str::to_string);
     let content = parsed
         .get("content")
         .and_then(|v| v.as_str())
@@ -160,7 +173,10 @@ end timeout
     if text.trim().is_empty() {
         return Ok(None);
     }
-    let prefix = title.as_deref().map(|t| format!("{t}.\n\n")).unwrap_or_default();
+    let prefix = title
+        .as_deref()
+        .map(|t| format!("{t}.\n\n"))
+        .unwrap_or_default();
     Ok(Some(BrowserCapture {
         text: prefix + &text,
         url,
@@ -184,7 +200,9 @@ pub fn select_all_then_copy_in_browser(app_name: &str) -> Result<Option<String>>
 
     // Make sure the browser is frontmost before keystroking.
     let activate = format!(r#"tell application "{}" to activate"#, app_name);
-    let _ = std::process::Command::new("osascript").args(["-e", &activate]).status();
+    let _ = std::process::Command::new("osascript")
+        .args(["-e", &activate])
+        .status();
     sleep(Duration::from_millis(160));
 
     // Cmd+A then Cmd+C via System Events.
@@ -239,8 +257,9 @@ fn clean_markdown_for_speech(md: &str) -> String {
         // Replace markdown links [text](url) with just text.
         let cleaned = strip_md_links(line);
         // Strip leading "# ", "## ", "- ", "* " markers for readability.
-        let cleaned = cleaned
-            .trim_start_matches(|c: char| c == '#' || c == '>' || c == '-' || c == '*' || c.is_whitespace());
+        let cleaned = cleaned.trim_start_matches(|c: char| {
+            c == '#' || c == '>' || c == '-' || c == '*' || c.is_whitespace()
+        });
         out.push_str(cleaned);
         out.push('\n');
     }

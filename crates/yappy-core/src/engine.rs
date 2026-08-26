@@ -133,7 +133,12 @@ impl TtsEngine {
     ///
     /// El texto plano pasa primero por el guionizador: piezas con ritmo,
     /// idioma por pieza y verbalización con spans.
-    pub fn synthesize_streaming<F>(&self, text: &str, opts: &SynthesisOptions, on_chunk: F) -> Result<()>
+    pub fn synthesize_streaming<F>(
+        &self,
+        text: &str,
+        opts: &SynthesisOptions,
+        on_chunk: F,
+    ) -> Result<()>
     where
         F: FnMut(AudioChunk) -> Result<()>,
     {
@@ -149,7 +154,12 @@ impl TtsEngine {
     /// Sintetiza un Guion completo, con el ritmo EN VIVO: las pausas de
     /// título/cita/separador se emiten como trozos de silencio y la
     /// velocidad por pieza multiplica la global.
-    pub fn synthesize_guion<F>(&self, guion: &Guion, opts: &SynthesisOptions, mut on_chunk: F) -> Result<()>
+    pub fn synthesize_guion<F>(
+        &self,
+        guion: &Guion,
+        opts: &SynthesisOptions,
+        mut on_chunk: F,
+    ) -> Result<()>
     where
         F: FnMut(AudioChunk) -> Result<()>,
     {

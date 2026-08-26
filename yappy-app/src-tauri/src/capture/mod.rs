@@ -15,14 +15,28 @@ use serde::Serialize;
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum CaptureSource {
-    Selection { app_name: Option<String> },
-    ActiveDocument { app_name: String, doc_kind: String },
+    Selection {
+        app_name: Option<String>,
+    },
+    ActiveDocument {
+        app_name: String,
+        doc_kind: String,
+    },
     /// Browser tab whose HTML was parsed by defuddle.
-    Webpage { app_name: String, url: Option<String>, title: Option<String> },
-    Ocr { app_name: Option<String> },
+    Webpage {
+        app_name: String,
+        url: Option<String>,
+        title: Option<String>,
+    },
+    Ocr {
+        app_name: Option<String>,
+    },
     Manual,
     Clipboard,
-    File { path: String, extension: String },
+    File {
+        path: String,
+        extension: String,
+    },
     History,
 }
 
@@ -58,9 +72,7 @@ pub enum FastCapture {
 ///
 /// Order — selection ALWAYS wins, even if a paired browser is focused. This lets the
 /// user say "read THIS specific paragraph" by highlighting it inside any web page.
-pub async fn fast_capture(
-    state: &std::sync::Arc<crate::state::AppState>,
-) -> Option<FastCapture> {
+pub async fn fast_capture(state: &std::sync::Arc<crate::state::AppState>) -> Option<FastCapture> {
     let app_name = front_app_name();
 
     // 1. Selection — always first, always wins.
@@ -74,7 +86,9 @@ pub async fn fast_capture(
         if !sel.trim().is_empty() {
             return Some(FastCapture::Done(CaptureResult {
                 text: sel,
-                source: CaptureSource::Selection { app_name: app_name.clone() },
+                source: CaptureSource::Selection {
+                    app_name: app_name.clone(),
+                },
             }));
         }
     }
@@ -102,7 +116,9 @@ pub fn smart_capture_blocking() -> Result<CaptureResult> {
         if !sel.trim().is_empty() {
             return Ok(CaptureResult {
                 text: sel,
-                source: CaptureSource::Selection { app_name: app_name.clone() },
+                source: CaptureSource::Selection {
+                    app_name: app_name.clone(),
+                },
             });
         }
     }

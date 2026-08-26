@@ -63,8 +63,8 @@ fn decode_symphonia(path: &Path) -> Result<Vec<f32>> {
     use symphonia::core::meta::MetadataOptions;
     use symphonia::core::probe::Hint;
 
-    let file = std::fs::File::open(path)
-        .with_context(|| format!("opening audio {}", path.display()))?;
+    let file =
+        std::fs::File::open(path).with_context(|| format!("opening audio {}", path.display()))?;
     let mss = MediaSourceStream::new(Box::new(file), Default::default());
 
     let mut hint = Hint::new();
@@ -73,7 +73,12 @@ fn decode_symphonia(path: &Path) -> Result<Vec<f32>> {
     }
 
     let probed = symphonia::default::get_probe()
-        .format(&hint, mss, &FormatOptions::default(), &MetadataOptions::default())
+        .format(
+            &hint,
+            mss,
+            &FormatOptions::default(),
+            &MetadataOptions::default(),
+        )
         .context("probing audio format")?;
     let mut format = probed.format;
 
@@ -133,8 +138,7 @@ fn decode_ogg_opus(path: &Path) -> Result<Vec<f32>> {
     use ogg::PacketReader;
     use opus::{Channels, Decoder};
 
-    let file = std::fs::File::open(path)
-        .with_context(|| format!("opening {}", path.display()))?;
+    let file = std::fs::File::open(path).with_context(|| format!("opening {}", path.display()))?;
     let mut reader = PacketReader::new(file);
 
     let mut decoder: Option<Decoder> = None;
@@ -152,14 +156,20 @@ fn decode_ogg_opus(path: &Path) -> Result<Vec<f32>> {
             // input_rate(4) ...
             channels = *data.get(9).unwrap_or(&1) as usize;
             pre_skip = u16::from_le_bytes([data[10], data[11]]) as usize;
-            let ch = if channels >= 2 { Channels::Stereo } else { Channels::Mono };
+            let ch = if channels >= 2 {
+                Channels::Stereo
+            } else {
+                Channels::Mono
+            };
             decoder = Some(Decoder::new(48_000, ch).map_err(|e| anyhow!("opus init: {e}"))?);
             continue;
         }
         if data.starts_with(b"OpusTags") {
             continue;
         }
-        let Some(dec) = decoder.as_mut() else { continue };
+        let Some(dec) = decoder.as_mut() else {
+            continue;
+        };
         let decoded = dec
             .decode_float(data, &mut frame_buf, false)
             .map_err(|e| anyhow!("opus decode: {e}"))?;

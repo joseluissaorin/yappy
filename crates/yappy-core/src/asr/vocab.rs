@@ -18,8 +18,8 @@ pub struct Vocabulary {
 impl Vocabulary {
     pub fn from_file<P: AsRef<Path>>(path: P) -> Result<Self> {
         let path = path.as_ref();
-        let file = File::open(path)
-            .with_context(|| format!("opening vocab.txt at {}", path.display()))?;
+        let file =
+            File::open(path).with_context(|| format!("opening vocab.txt at {}", path.display()))?;
         let reader = BufReader::new(file);
         let mut id_to_token: Vec<String> = Vec::new();
 

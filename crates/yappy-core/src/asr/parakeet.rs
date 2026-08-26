@@ -47,7 +47,11 @@ impl ParakeetAsr {
         let vocab = Vocabulary::from_file(dir.join("vocab.txt"))?;
         let encoder = build_session(&find_one(
             dir,
-            &["encoder-model.onnx", "encoder.onnx", "encoder-model.int8.onnx"],
+            &[
+                "encoder-model.onnx",
+                "encoder.onnx",
+                "encoder-model.int8.onnx",
+            ],
             "encoder",
         )?)?;
         let decoder_joint = build_session(&find_one(
@@ -205,11 +209,7 @@ impl ParakeetAsr {
                 && !text.starts_with(' ')
                 && text.chars().all(|c| c.is_ascii_digit())
             {
-                let trailing_letters = full
-                    .chars()
-                    .rev()
-                    .take_while(|c| c.is_alphabetic())
-                    .count();
+                let trailing_letters = full.chars().rev().take_while(|c| c.is_alphabetic()).count();
                 let is_article_a = trailing_letters == 1 && full.ends_with('a');
                 if trailing_letters > 1 || is_article_a {
                     text.insert(0, ' ');

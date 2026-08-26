@@ -39,7 +39,9 @@ pub fn write_text(text: &str) -> Result<()> {
 }
 
 #[cfg(target_os = "macos")]
-pub fn snapshot() -> Result<Option<String>> { read_text() }
+pub fn snapshot() -> Result<Option<String>> {
+    read_text()
+}
 
 #[cfg(target_os = "macos")]
 pub fn change_count() -> i64 {
@@ -96,7 +98,9 @@ pub fn write_text(text: &str) -> Result<()> {
 }
 
 #[cfg(target_os = "linux")]
-pub fn snapshot() -> Result<Option<String>> { read_text() }
+pub fn snapshot() -> Result<Option<String>> {
+    read_text()
+}
 
 #[cfg(target_os = "linux")]
 pub fn change_count() -> i64 {
@@ -140,7 +144,9 @@ pub fn write_text(text: &str) -> Result<()> {
 }
 
 #[cfg(target_os = "windows")]
-pub fn snapshot() -> Result<Option<String>> { read_text() }
+pub fn snapshot() -> Result<Option<String>> {
+    read_text()
+}
 
 #[cfg(target_os = "windows")]
 pub fn change_count() -> i64 {

@@ -56,12 +56,9 @@ pub fn normalize(text: &str, lang: &str) -> String {
 
 // ---------- URLs / emails ----------
 
-static URL_RE: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"https?://\S+|www\.\S+").unwrap()
-});
-static EMAIL_RE: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}").unwrap()
-});
+static URL_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"https?://\S+|www\.\S+").unwrap());
+static EMAIL_RE: Lazy<Regex> =
+    Lazy::new(|| Regex::new(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}").unwrap());
 
 fn strip_urls_and_emails(text: &str) -> String {
     // Replace URLs with "[link]" and emails with "[email]" — those words are short enough
@@ -171,22 +168,80 @@ fn expand_abbreviations(text: &str, lang: &str) -> String {
 
 fn expand_units(text: &str, lang: &str) -> String {
     // Match number followed (optionally) by a space and a unit token.
-    let (label_kg, label_g, label_mg, label_km, label_m, label_cm, label_mm, label_l, label_ml,
-         label_celsius, label_fahrenheit, label_kmh, label_mph, label_pct, label_hz, label_khz, label_mhz,
-         label_kb, label_mb, label_gb, label_tb, label_ms, label_s) = match lang {
+    let (
+        label_kg,
+        label_g,
+        label_mg,
+        label_km,
+        label_m,
+        label_cm,
+        label_mm,
+        label_l,
+        label_ml,
+        label_celsius,
+        label_fahrenheit,
+        label_kmh,
+        label_mph,
+        label_pct,
+        label_hz,
+        label_khz,
+        label_mhz,
+        label_kb,
+        label_mb,
+        label_gb,
+        label_tb,
+        label_ms,
+        label_s,
+    ) = match lang {
         "es" => (
-            "kilogramos", "gramos", "miligramos", "kilómetros", "metros", "centímetros",
-            "milímetros", "litros", "mililitros", "grados Celsius", "grados Fahrenheit",
-            "kilómetros por hora", "millas por hora", "por ciento",
-            "hercios", "kilohercios", "megahercios",
-            "kilobytes", "megabytes", "gigabytes", "terabytes", "milisegundos", "segundos",
+            "kilogramos",
+            "gramos",
+            "miligramos",
+            "kilómetros",
+            "metros",
+            "centímetros",
+            "milímetros",
+            "litros",
+            "mililitros",
+            "grados Celsius",
+            "grados Fahrenheit",
+            "kilómetros por hora",
+            "millas por hora",
+            "por ciento",
+            "hercios",
+            "kilohercios",
+            "megahercios",
+            "kilobytes",
+            "megabytes",
+            "gigabytes",
+            "terabytes",
+            "milisegundos",
+            "segundos",
         ),
         _ => (
-            "kilograms", "grams", "milligrams", "kilometers", "meters", "centimeters",
-            "millimeters", "liters", "milliliters", "degrees Celsius", "degrees Fahrenheit",
-            "kilometers per hour", "miles per hour", "percent",
-            "hertz", "kilohertz", "megahertz",
-            "kilobytes", "megabytes", "gigabytes", "terabytes", "milliseconds", "seconds",
+            "kilograms",
+            "grams",
+            "milligrams",
+            "kilometers",
+            "meters",
+            "centimeters",
+            "millimeters",
+            "liters",
+            "milliliters",
+            "degrees Celsius",
+            "degrees Fahrenheit",
+            "kilometers per hour",
+            "miles per hour",
+            "percent",
+            "hertz",
+            "kilohertz",
+            "megahertz",
+            "kilobytes",
+            "megabytes",
+            "gigabytes",
+            "terabytes",
+            "milliseconds",
+            "seconds",
         ),
     };
     let units: &[(&str, &str)] = &[
@@ -233,22 +288,31 @@ fn expand_units(text: &str, lang: &str) -> String {
 fn expand_currencies(text: &str, lang: &str) -> String {
     let (dollars, dollar_sg, cents, euros, euro_sg, pounds, pound_sg, yen, yen_sg) = match lang {
         "es" => (
-            "dólares", "dólar", "centavos",
-            "euros", "euro",
-            "libras", "libra",
-            "yenes", "yen",
+            "dólares", "dólar", "centavos", "euros", "euro", "libras", "libra", "yenes", "yen",
         ),
         _ => (
-            "dollars", "dollar", "cents",
-            "euros", "euro",
-            "pounds", "pound",
-            "yen", "yen",
+            "dollars", "dollar", "cents", "euros", "euro", "pounds", "pound", "yen", "yen",
         ),
     };
     let patterns: &[(&str, &str, &str, Option<&str>)] = &[
-        (r"\$(?P<i>\d+(?:,\d{3})*)(?:\.(?P<f>\d{1,2}))?", dollars, dollar_sg, Some(cents)),
-        (r"€(?P<i>\d+(?:,\d{3})*)(?:\.(?P<f>\d{1,2}))?", euros, euro_sg, Some(cents)),
-        (r"£(?P<i>\d+(?:,\d{3})*)(?:\.(?P<f>\d{1,2}))?", pounds, pound_sg, Some(cents)),
+        (
+            r"\$(?P<i>\d+(?:,\d{3})*)(?:\.(?P<f>\d{1,2}))?",
+            dollars,
+            dollar_sg,
+            Some(cents),
+        ),
+        (
+            r"€(?P<i>\d+(?:,\d{3})*)(?:\.(?P<f>\d{1,2}))?",
+            euros,
+            euro_sg,
+            Some(cents),
+        ),
+        (
+            r"£(?P<i>\d+(?:,\d{3})*)(?:\.(?P<f>\d{1,2}))?",
+            pounds,
+            pound_sg,
+            Some(cents),
+        ),
         (r"¥(?P<i>\d+(?:,\d{3})*)", yen, yen_sg, None),
     ];
     let mut out = text.to_string();
@@ -257,7 +321,9 @@ fn expand_currencies(text: &str, lang: &str) -> String {
         out = re
             .replace_all(&out, |caps: &regex::Captures| {
                 let i: u64 = caps["i"].replace(',', "").parse().unwrap_or(0);
-                let cents_part = caps.name("f").map(|m| m.as_str().parse::<u64>().unwrap_or(0));
+                let cents_part = caps
+                    .name("f")
+                    .map(|m| m.as_str().parse::<u64>().unwrap_or(0));
                 let main_word = if i == 1 { *singular } else { *plural };
                 match (cents_part, fraction_label) {
                     (Some(c), Some(lbl)) if c > 0 => {
@@ -302,12 +368,32 @@ fn expand_dates(text: &str, lang: &str) -> String {
 
 fn spell_date(y: i32, m: u32, d: u32, lang: &str) -> String {
     let month_en = [
-        "January", "February", "March", "April", "May", "June", "July", "August", "September",
-        "October", "November", "December",
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
     ];
     let month_es = [
-        "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre",
-        "octubre", "noviembre", "diciembre",
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre",
     ];
     let m_idx = (m as usize).saturating_sub(1).min(11);
     let year_word = match lang {
@@ -389,7 +475,15 @@ fn expand_times(text: &str, lang: &str) -> String {
             return caps[0].to_string();
         }
         match lang {
-            "es" => format!("{} y {}", h, if m == 0 { "en punto".into() } else { m.to_string() }),
+            "es" => format!(
+                "{} y {}",
+                h,
+                if m == 0 {
+                    "en punto".into()
+                } else {
+                    m.to_string()
+                }
+            ),
             _ => {
                 let (h12, suffix) = if h == 0 {
                     (12, "AM")
@@ -491,8 +585,25 @@ fn expand_numbers(text: &str, lang: &str) -> String {
 
 fn num_to_english(n: u64) -> String {
     static ONES: &[&str] = &[
-        "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-        "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen",
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten",
+        "eleven",
+        "twelve",
+        "thirteen",
+        "fourteen",
+        "fifteen",
+        "sixteen",
+        "seventeen",
+        "eighteen",
         "nineteen",
     ];
     static TENS: &[&str] = &[
@@ -547,19 +658,33 @@ fn num_to_english(n: u64) -> String {
 
 fn spanish_number(n: u64) -> String {
     static UNITS: &[&str] = &[
-        "cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve",
-        "diez", "once", "doce", "trece", "catorce", "quince",
+        "cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez",
+        "once", "doce", "trece", "catorce", "quince",
     ];
-    static SPECIAL_TENS: &[&str] = &[
-        "dieciséis", "diecisiete", "dieciocho", "diecinueve",
-    ];
+    static SPECIAL_TENS: &[&str] = &["dieciséis", "diecisiete", "dieciocho", "diecinueve"];
     static TENS: &[&str] = &[
-        "", "", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta",
+        "",
+        "",
+        "veinte",
+        "treinta",
+        "cuarenta",
+        "cincuenta",
+        "sesenta",
+        "setenta",
+        "ochenta",
         "noventa",
     ];
     static HUNDREDS: &[&str] = &[
-        "", "ciento", "doscientos", "trescientos", "cuatrocientos", "quinientos", "seiscientos",
-        "setecientos", "ochocientos", "novecientos",
+        "",
+        "ciento",
+        "doscientos",
+        "trescientos",
+        "cuatrocientos",
+        "quinientos",
+        "seiscientos",
+        "setecientos",
+        "ochocientos",
+        "novecientos",
     ];
     fn under_1000(n: u64) -> String {
         if n < 16 {

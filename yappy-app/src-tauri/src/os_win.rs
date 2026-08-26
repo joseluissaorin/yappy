@@ -20,7 +20,6 @@
 
 // Stubs multiplataforma: cada SO usa un subconjunto.
 #![allow(dead_code)]
-
 #![allow(unused_variables)]
 
 use std::sync::Arc;
@@ -43,23 +42,37 @@ pub fn taskbar_progress_set(_value: u64, _total: u64) {}
 #[cfg(not(target_os = "windows"))]
 pub fn taskbar_progress_clear() {}
 #[cfg(not(target_os = "windows"))]
-pub fn front_app_name() -> Option<String> { None }
+pub fn front_app_name() -> Option<String> {
+    None
+}
 #[cfg(not(target_os = "windows"))]
-pub fn active_window_text() -> Option<String> { None }
+pub fn active_window_text() -> Option<String> {
+    None
+}
 #[cfg(not(target_os = "windows"))]
-pub fn clipboard_read_text() -> Option<String> { None }
+pub fn clipboard_read_text() -> Option<String> {
+    None
+}
 #[cfg(not(target_os = "windows"))]
-pub fn clipboard_write_text(_text: &str) -> bool { false }
+pub fn clipboard_write_text(_text: &str) -> bool {
+    false
+}
 #[cfg(not(target_os = "windows"))]
-pub fn clipboard_sequence_number() -> i64 { 0 }
+pub fn clipboard_sequence_number() -> i64 {
+    0
+}
 #[cfg(not(target_os = "windows"))]
-pub fn send_ctrl_c() -> bool { false }
+pub fn send_ctrl_c() -> bool {
+    false
+}
 #[cfg(not(target_os = "windows"))]
 pub fn capture_foreground_window_png(_out: &std::path::Path) -> anyhow::Result<()> {
     anyhow::bail!("capture_foreground_window_png: not available on this OS")
 }
 #[cfg(not(target_os = "windows"))]
-pub fn clipboard_snapshot_all() -> Vec<(u32, Vec<u8>)> { Vec::new() }
+pub fn clipboard_snapshot_all() -> Vec<(u32, Vec<u8>)> {
+    Vec::new()
+}
 #[cfg(not(target_os = "windows"))]
 pub fn clipboard_restore_all(_snapshot: &[(u32, Vec<u8>)]) {}
 
@@ -70,16 +83,18 @@ mod imp {
     use std::sync::{Mutex, OnceLock};
     use std::time::Instant;
 
+    use windows::core::Interface;
     use windows::Foundation::TypedEventHandler;
     use windows::Media::{
         MediaPlaybackStatus, MediaPlaybackType, SystemMediaTransportControls,
         SystemMediaTransportControlsButton, SystemMediaTransportControlsButtonPressedEventArgs,
     };
     use windows::Win32::Foundation::HWND;
-    use windows::Win32::System::Com::{CoInitializeEx, CoCreateInstance, CLSCTX_INPROC_SERVER, COINIT_APARTMENTTHREADED};
+    use windows::Win32::System::Com::{
+        CoCreateInstance, CoInitializeEx, CLSCTX_INPROC_SERVER, COINIT_APARTMENTTHREADED,
+    };
     use windows::Win32::System::WinRT::ISystemMediaTransportControlsInterop;
-    use windows::Win32::UI::Shell::{ITaskbarList3, TaskbarList, TBPF_NORMAL, TBPF_NOPROGRESS};
-    use windows::core::Interface;
+    use windows::Win32::UI::Shell::{ITaskbarList3, TaskbarList, TBPF_NOPROGRESS, TBPF_NORMAL};
 
     /// Stored SMTC instance — created on first metadata push, kept alive for
     /// the lifetime of the process so handler subscriptions stay valid.
@@ -125,7 +140,9 @@ mod imp {
     }
 
     pub fn set_metadata(title: &str, artist: &str, is_playing: bool) {
-        let Some(smtc) = smtc_get_or_create() else { return };
+        let Some(smtc) = smtc_get_or_create() else {
+            return;
+        };
         let title_h = windows::core::HSTRING::from(title);
         let artist_h = windows::core::HSTRING::from(artist);
         unsafe {
@@ -146,7 +163,9 @@ mod imp {
     }
 
     pub fn set_playback_status(is_playing: bool) {
-        let Some(smtc) = smtc_get_or_create() else { return };
+        let Some(smtc) = smtc_get_or_create() else {
+            return;
+        };
         unsafe {
             let _ = smtc.SetPlaybackStatus(if is_playing {
                 MediaPlaybackStatus::Playing
@@ -157,7 +176,9 @@ mod imp {
     }
 
     pub fn clear() {
-        let Some(smtc) = smtc_get_or_create() else { return };
+        let Some(smtc) = smtc_get_or_create() else {
+            return;
+        };
         unsafe {
             let _ = smtc.SetPlaybackStatus(MediaPlaybackStatus::Stopped);
             let _ = smtc.SetIsEnabled(false);
@@ -173,7 +194,9 @@ mod imp {
         if let Ok(mut g) = cell.lock() {
             *g = Some(HWND(hwnd_raw as _));
         }
-        let Some(smtc) = smtc_get_or_create() else { return };
+        let Some(smtc) = smtc_get_or_create() else {
+            return;
+        };
 
         // Move a clone of the playback Arc into the event handler.
         let pb_for_buttons = playback.clone();
@@ -211,7 +234,8 @@ mod imp {
         }
         ensure_com_init();
         unsafe {
-            let tl: ITaskbarList3 = CoCreateInstance(&TaskbarList, None, CLSCTX_INPROC_SERVER).ok()?;
+            let tl: ITaskbarList3 =
+                CoCreateInstance(&TaskbarList, None, CLSCTX_INPROC_SERVER).ok()?;
             tl.HrInit().ok()?;
             *guard = Some(tl.clone());
             Some(tl)
@@ -219,7 +243,9 @@ mod imp {
     }
 
     pub fn taskbar_progress_set(value: u64, total: u64) {
-        let Some(tb) = taskbar_get_or_create() else { return };
+        let Some(tb) = taskbar_get_or_create() else {
+            return;
+        };
         let hwnd_guard = MAIN_HWND.get().and_then(|c| c.lock().ok());
         let Some(g) = hwnd_guard else { return };
         let Some(hwnd) = *g else { return };
@@ -230,7 +256,9 @@ mod imp {
     }
 
     pub fn taskbar_progress_clear() {
-        let Some(tb) = taskbar_get_or_create() else { return };
+        let Some(tb) = taskbar_get_or_create() else {
+            return;
+        };
         let hwnd_guard = MAIN_HWND.get().and_then(|c| c.lock().ok());
         let Some(g) = hwnd_guard else { return };
         let Some(hwnd) = *g else { return };
@@ -311,8 +339,8 @@ mod imp {
     use windows::Win32::System::Memory::{GlobalAlloc, GlobalLock, GlobalUnlock, GMEM_MOVEABLE};
     use windows::Win32::System::Ole::CF_UNICODETEXT;
     use windows::Win32::UI::Input::KeyboardAndMouse::{
-        SendInput, INPUT, INPUT_0, INPUT_KEYBOARD, KEYBDINPUT, KEYBD_EVENT_FLAGS,
-        KEYEVENTF_KEYUP, VIRTUAL_KEY,
+        SendInput, INPUT, INPUT_0, INPUT_KEYBOARD, KEYBDINPUT, KEYBD_EVENT_FLAGS, KEYEVENTF_KEYUP,
+        VIRTUAL_KEY,
     };
 
     const VK_CONTROL: VIRTUAL_KEY = VIRTUAL_KEY(0x11);
@@ -345,7 +373,11 @@ mod imp {
                 }
                 let s = String::from_utf16_lossy(std::slice::from_raw_parts(p, len));
                 let _ = GlobalUnlock(hglobal);
-                if s.is_empty() { None } else { Some(s) }
+                if s.is_empty() {
+                    None
+                } else {
+                    Some(s)
+                }
             })();
             let _ = CloseClipboard();
             out
@@ -364,11 +396,7 @@ mod imp {
             if dst.is_null() {
                 return false;
             }
-            std::ptr::copy_nonoverlapping(
-                wide.as_ptr() as *const u8,
-                dst as *mut u8,
-                size_bytes,
-            );
+            std::ptr::copy_nonoverlapping(wide.as_ptr() as *const u8, dst as *mut u8, size_bytes);
             let _ = GlobalUnlock(hmem);
             if OpenClipboard(None).is_err() {
                 return false;
@@ -408,7 +436,9 @@ mod imp {
                 // delayed-rendered or owner-drawn — copying them via
                 // GetClipboardData triggers the owner to draw, which may
                 // fail or be slow. Stick to plain HGLOBAL-backed formats.
-                let Ok(h) = GetClipboardData(fmt) else { continue };
+                let Ok(h) = GetClipboardData(fmt) else {
+                    continue;
+                };
                 let hglobal = windows::Win32::Foundation::HGLOBAL(h.0);
                 let ptr = GlobalLock(hglobal);
                 if ptr.is_null() {
@@ -470,7 +500,11 @@ mod imp {
                 ki: KEYBDINPUT {
                     wVk: vk,
                     wScan: 0,
-                    dwFlags: if up { KEYEVENTF_KEYUP } else { KEYBD_EVENT_FLAGS(0) },
+                    dwFlags: if up {
+                        KEYEVENTF_KEYUP
+                    } else {
+                        KEYBD_EVENT_FLAGS(0)
+                    },
                     time: 0,
                     dwExtraInfo: 0,
                 },
@@ -485,9 +519,7 @@ mod imp {
             make(VK_C, true),
             make(VK_CONTROL, true),
         ];
-        unsafe {
-            SendInput(&inputs, std::mem::size_of::<INPUT>() as i32) == inputs.len() as u32
-        }
+        unsafe { SendInput(&inputs, std::mem::size_of::<INPUT>() as i32) == inputs.len() as u32 }
     }
 
     // ─── Native screen capture (GDI BitBlt → PNG) ───────────────────────
@@ -502,15 +534,15 @@ mod imp {
     // the full virtual screen if GetWindowRect returns garbage (e.g. when
     // the foreground window is the system shell with no rect).
 
-    use windows::Win32::Graphics::Gdi::{
-        BitBlt, CreateCompatibleBitmap, CreateCompatibleDC, DeleteDC, DeleteObject,
-        GetDC, GetDIBits, ReleaseDC, SelectObject, BITMAPINFO, BITMAPINFOHEADER,
-        BI_RGB, DIB_RGB_COLORS, SRCCOPY,
-    };
     use windows::Win32::Foundation::RECT;
+    use windows::Win32::Graphics::Gdi::{
+        BitBlt, CreateCompatibleBitmap, CreateCompatibleDC, DeleteDC, DeleteObject, GetDC,
+        GetDIBits, ReleaseDC, SelectObject, BITMAPINFO, BITMAPINFOHEADER, BI_RGB, DIB_RGB_COLORS,
+        SRCCOPY,
+    };
     use windows::Win32::UI::WindowsAndMessaging::{
-        GetSystemMetrics, GetWindowRect, SM_CXVIRTUALSCREEN, SM_CYVIRTUALSCREEN,
-        SM_XVIRTUALSCREEN, SM_YVIRTUALSCREEN,
+        GetSystemMetrics, GetWindowRect, SM_CXVIRTUALSCREEN, SM_CYVIRTUALSCREEN, SM_XVIRTUALSCREEN,
+        SM_YVIRTUALSCREEN,
     };
 
     pub fn capture_foreground_window_png(out: &std::path::Path) -> anyhow::Result<()> {
@@ -522,8 +554,10 @@ mod imp {
             let fg = GetForegroundWindow();
             let (x, y, w, h) = {
                 let mut r = RECT::default();
-                if !fg.0.is_null() && GetWindowRect(fg, &mut r).is_ok()
-                    && r.right > r.left && r.bottom > r.top
+                if !fg.0.is_null()
+                    && GetWindowRect(fg, &mut r).is_ok()
+                    && r.right > r.left
+                    && r.bottom > r.top
                 {
                     (r.left, r.top, r.right - r.left, r.bottom - r.top)
                 } else {
@@ -608,12 +642,12 @@ mod imp {
         }
     }
 
-    use windows::Win32::UI::Accessibility::{
-        CUIAutomation, IUIAutomation, IUIAutomationElement, IUIAutomationCondition,
-        IUIAutomationTextPattern, UIA_DocumentControlTypeId, UIA_ControlTypePropertyId,
-        UIA_TextPatternId, TreeScope_Subtree, TreeScope_Descendants,
-    };
     use windows::core::VARIANT;
+    use windows::Win32::UI::Accessibility::{
+        CUIAutomation, IUIAutomation, IUIAutomationCondition, IUIAutomationElement,
+        IUIAutomationTextPattern, TreeScope_Descendants, TreeScope_Subtree,
+        UIA_ControlTypePropertyId, UIA_DocumentControlTypeId, UIA_TextPatternId,
+    };
 
     // Cache the IUIAutomation singleton across calls. Creating it costs
     // ~5-15ms (COM marshaling + library load) — fine once, but Yappy's
@@ -687,9 +721,15 @@ mod imp {
                     tracing::warn!("uia: budget exceeded at selection-pass element {i}/{count}");
                     return None;
                 }
-                let Ok(d) = descendants.GetElement(i) else { continue };
-                let Ok(pat_unknown) = d.GetCurrentPattern(UIA_TextPatternId) else { continue };
-                let Ok(text_pattern) = pat_unknown.cast::<IUIAutomationTextPattern>() else { continue };
+                let Ok(d) = descendants.GetElement(i) else {
+                    continue;
+                };
+                let Ok(pat_unknown) = d.GetCurrentPattern(UIA_TextPatternId) else {
+                    continue;
+                };
+                let Ok(text_pattern) = pat_unknown.cast::<IUIAutomationTextPattern>() else {
+                    continue;
+                };
                 if let Ok(selection) = text_pattern.GetSelection() {
                     if let Ok(sel_len) = selection.Length() {
                         if sel_len > 0 {
@@ -699,7 +739,9 @@ mod imp {
                                     if let Ok(t) = r.GetText(-1) {
                                         let txt = t.to_string();
                                         if !txt.trim().is_empty() {
-                                            if !combined.is_empty() { combined.push('\n'); }
+                                            if !combined.is_empty() {
+                                                combined.push('\n');
+                                            }
                                             combined.push_str(&txt);
                                         }
                                     }
@@ -721,12 +763,20 @@ mod imp {
             // Pass 2: visible viewport ranges.
             for i in 0..count {
                 if started.elapsed().as_millis() as u64 > UIA_BUDGET_MS {
-                    tracing::warn!("uia: budget exceeded at visible-ranges-pass element {i}/{count}");
+                    tracing::warn!(
+                        "uia: budget exceeded at visible-ranges-pass element {i}/{count}"
+                    );
                     return None;
                 }
-                let Ok(d) = descendants.GetElement(i) else { continue };
-                let Ok(pat_unknown) = d.GetCurrentPattern(UIA_TextPatternId) else { continue };
-                let Ok(text_pattern) = pat_unknown.cast::<IUIAutomationTextPattern>() else { continue };
+                let Ok(d) = descendants.GetElement(i) else {
+                    continue;
+                };
+                let Ok(pat_unknown) = d.GetCurrentPattern(UIA_TextPatternId) else {
+                    continue;
+                };
+                let Ok(text_pattern) = pat_unknown.cast::<IUIAutomationTextPattern>() else {
+                    continue;
+                };
                 if let Ok(ranges) = text_pattern.GetVisibleRanges() {
                     if let Ok(r_len) = ranges.Length() {
                         let mut combined = String::new();
@@ -735,7 +785,9 @@ mod imp {
                                 if let Ok(t) = range.GetText(-1) {
                                     let txt = t.to_string();
                                     if !txt.trim().is_empty() {
-                                        if !combined.is_empty() { combined.push('\n'); }
+                                        if !combined.is_empty() {
+                                            combined.push('\n');
+                                        }
                                         combined.push_str(&txt);
                                     }
                                 }
@@ -789,7 +841,9 @@ mod imp {
                             if let Ok(t) = r.GetText(-1) {
                                 let txt = t.to_string();
                                 if !txt.trim().is_empty() {
-                                    if !combined.is_empty() { combined.push('\n'); }
+                                    if !combined.is_empty() {
+                                        combined.push('\n');
+                                    }
                                     combined.push_str(&txt);
                                 }
                             }
@@ -849,18 +903,30 @@ pub fn active_window_text() -> Option<String> {
     imp::active_window_text()
 }
 #[cfg(target_os = "windows")]
-pub fn clipboard_read_text() -> Option<String> { imp::clipboard_read_text() }
+pub fn clipboard_read_text() -> Option<String> {
+    imp::clipboard_read_text()
+}
 #[cfg(target_os = "windows")]
-pub fn clipboard_write_text(text: &str) -> bool { imp::clipboard_write_text(text) }
+pub fn clipboard_write_text(text: &str) -> bool {
+    imp::clipboard_write_text(text)
+}
 #[cfg(target_os = "windows")]
-pub fn clipboard_sequence_number() -> i64 { imp::clipboard_sequence_number() }
+pub fn clipboard_sequence_number() -> i64 {
+    imp::clipboard_sequence_number()
+}
 #[cfg(target_os = "windows")]
-pub fn send_ctrl_c() -> bool { imp::send_ctrl_c() }
+pub fn send_ctrl_c() -> bool {
+    imp::send_ctrl_c()
+}
 #[cfg(target_os = "windows")]
 pub fn capture_foreground_window_png(out: &std::path::Path) -> anyhow::Result<()> {
     imp::capture_foreground_window_png(out)
 }
 #[cfg(target_os = "windows")]
-pub fn clipboard_snapshot_all() -> Vec<(u32, Vec<u8>)> { imp::clipboard_snapshot_all() }
+pub fn clipboard_snapshot_all() -> Vec<(u32, Vec<u8>)> {
+    imp::clipboard_snapshot_all()
+}
 #[cfg(target_os = "windows")]
-pub fn clipboard_restore_all(snapshot: &[(u32, Vec<u8>)]) { imp::clipboard_restore_all(snapshot) }
+pub fn clipboard_restore_all(snapshot: &[(u32, Vec<u8>)]) {
+    imp::clipboard_restore_all(snapshot)
+}

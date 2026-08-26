@@ -47,7 +47,10 @@ pub fn chunk_paragraphs(text: &str, max_chars: usize) -> Vec<Chunk> {
         if para.is_empty() {
             continue;
         }
-        let para_start = start_in_text + raw_para.find(para.chars().next().unwrap_or(' ')).unwrap_or(0);
+        let para_start = start_in_text
+            + raw_para
+                .find(para.chars().next().unwrap_or(' '))
+                .unwrap_or(0);
         // SIEMPRE por frases: la palabra gigante del móvil vive de esta
         // granularidad (karaoke frase a frase, primer audio antes). Las
         // frases minúsculas (<25 caracteres) se pegan a la anterior para no
