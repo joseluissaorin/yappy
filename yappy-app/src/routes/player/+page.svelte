@@ -32,7 +32,7 @@
   }
 
   let snap: PlaybackSnapshot = $state({
-    estado: "inactivo", revision: 0, titulo: "", doc_path: "", chunks_cocinados: 0, parrafo_max_cocinado: 0,
+    estado: "inactivo", revision: 0, titulo: "", doc_path: "", chunks_cocinados: 0, parrafo_max_cocinado: 0, base_paragraph_index: 0,
     playing: false, paused: false, current_text: "", current_index: 0,
     current_paragraph_index: 0, current_origen_ini: 0, current_origen_fin: 0, total: 0, total_paragraphs: 0,
     elapsed_secs: 0, duration_secs: 0, volume: 1.0, output_sample_rate: 44100,

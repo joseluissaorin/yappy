@@ -51,6 +51,9 @@ pub struct ItemCola {
     pub agregado_unix: u64,
     /// Tamaño del texto extraído, para estimar duración en la ficha.
     pub chars: Option<usize>,
+    /// Favorito: fijado arriba de la cinta, con su estrella.
+    #[serde(default)]
+    pub favorito: bool,
 }
 
 fn ahora_unix() -> u64 {
@@ -98,13 +101,38 @@ fn listar_sin_candado<R: Runtime>(app: &AppHandle<R>) -> Result<Vec<ItemCola>> {
         return Ok(Vec::new());
     }
     let json = fs::read_to_string(&ruta)?;
-    Ok(serde_json::from_str(&json).unwrap_or_default())
+    let mut items: Vec<ItemCola> = serde_json::from_str(&json).unwrap_or_default();
+    // Las rutas se guardan RELATIVAS (solo el nombre de fichero) y se
+    // resuelven aquí contra el contenedor VIVO. iOS migra los datos a un
+    // contenedor con UUID nuevo en cada instalación o actualización: las
+    // rutas absolutas de ayer mienten hoy, y cada update de TestFlight
+    // dejaba TODA la cinta con piezas zombis que fallaban en silencio.
+    let dir = dir_cola(app)?;
+    for it in &mut items {
+        if let Some(r) = &it.ruta {
+            if let Some(nombre) = PathBuf::from(r).file_name() {
+                let viva = dir.join(nombre);
+                it.ruta = Some(viva.to_string_lossy().to_string());
+            }
+        }
+    }
+    Ok(items)
 }
 
 fn guardar<R: Runtime>(app: &AppHandle<R>, items: &[ItemCola]) -> Result<()> {
+    // Simetría con listar: al disco van solo los NOMBRES de fichero (el
+    // contenedor cambia de UUID con cada instalación).
+    let mut relativos = items.to_vec();
+    for it in &mut relativos {
+        if let Some(r) = &it.ruta {
+            if let Some(nombre) = PathBuf::from(r).file_name() {
+                it.ruta = Some(nombre.to_string_lossy().to_string());
+            }
+        }
+    }
     let ruta = ruta_indice(app)?;
     let tmp = ruta.with_extension("json.tmp");
-    fs::write(&tmp, serde_json::to_string_pretty(items)?)?;
+    fs::write(&tmp, serde_json::to_string_pretty(&relativos)?)?;
     fs::rename(&tmp, &ruta)?;
     Ok(())
 }
@@ -193,6 +221,7 @@ pub fn agregar_url<R: Runtime>(app: &AppHandle<R>, url: String) -> Result<ItemCo
         error: None,
         agregado_unix: ahora_unix(),
         chars: None,
+        favorito: false,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -229,6 +258,7 @@ pub fn agregar_texto<R: Runtime>(
         error: None,
         agregado_unix: ahora_unix(),
         chars: Some(texto.chars().count()),
+        favorito: false,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -238,6 +268,27 @@ pub fn agregar_texto<R: Runtime>(
 /// Un archivo (PDF, EPUB, DOCX, MD…) ya accesible en disco: se copia a la
 /// cola para que sobreviva aunque el original desaparezca (los ficheros
 /// del App Group del share sheet se limpian).
+/// El nombre de fichero, vuelto humano: sin extensión, sin el sufijo
+/// aleatorio «-a1b2c3» que añade la extensión de compartir, y con guiones
+/// y guiones bajos como espacios.
+fn titulo_de_nombre(nombre: &str) -> String {
+    let sin_ext = nombre.rsplit_once('.').map(|(a, _)| a).unwrap_or(nombre);
+    let sin_sufijo = match sin_ext.rsplit_once('-') {
+        Some((base, sufijo))
+            if sufijo.len() == 6 && sufijo.chars().all(|c| c.is_ascii_alphanumeric()) =>
+        {
+            base
+        }
+        _ => sin_ext,
+    };
+    let limpio = sin_sufijo.replace(['-', '_'], " ").trim().to_string();
+    if limpio.is_empty() {
+        "documento".into()
+    } else {
+        limpio
+    }
+}
+
 pub fn agregar_archivo<R: Runtime>(app: &AppHandle<R>, ruta_original: String) -> Result<ItemCola> {
     let origen = PathBuf::from(&ruta_original);
     let nombre = origen
@@ -254,13 +305,14 @@ pub fn agregar_archivo<R: Runtime>(app: &AppHandle<R>, ruta_original: String) ->
     let item = ItemCola {
         id,
         tipo: TipoItem::Archivo,
-        titulo: nombre.clone(),
+        titulo: titulo_de_nombre(&nombre),
         origen: nombre,
         ruta: Some(destino.to_string_lossy().to_string()),
         estado: EstadoItem::Listo,
         error: None,
         agregado_unix: ahora_unix(),
         chars: None,
+        favorito: false,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -290,6 +342,7 @@ pub fn agregar_audio<R: Runtime>(app: &AppHandle<R>, ruta_original: String) -> R
         error: None,
         agregado_unix: ahora_unix(),
         chars: None,
+        favorito: false,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -575,6 +628,46 @@ pub fn cola_agregar_audio_cmd(app: AppHandle, ruta: String) -> Result<ItemCola, 
 #[tauri::command]
 pub fn cola_eliminar_cmd(app: AppHandle, id: String) -> Result<(), String> {
     eliminar(&app, &id).map_err(|e| e.to_string())
+}
+
+/// Favorito: marca/desmarca y, al marcar, sube la pieza arriba del todo.
+#[tauri::command]
+pub fn cola_favorito_cmd(app: AppHandle, id: String, favorito: bool) -> Result<(), String> {
+    mutar(&app, |items| {
+        if let Some(pos) = items.iter().position(|i| i.id == id) {
+            items[pos].favorito = favorito;
+            if favorito {
+                let it = items.remove(pos);
+                items.insert(0, it);
+            }
+        }
+    })
+    .map(|_| ())
+    .map_err(|e| e.to_string())
+}
+
+/// Renombrar una pieza (el título humano de la ficha y del lector).
+#[tauri::command]
+pub fn cola_renombrar_cmd(app: AppHandle, id: String, titulo: String) -> Result<(), String> {
+    let titulo = titulo.trim().chars().take(120).collect::<String>();
+    if titulo.is_empty() {
+        return Err("título vacío".into());
+    }
+    actualizar_item(&app, &id, |it| it.titulo = titulo).map_err(|e| e.to_string())
+}
+
+/// Reordenar: mueve la pieza al índice destino (el arrastre de la cinta).
+#[tauri::command]
+pub fn cola_reordenar_cmd(app: AppHandle, id: String, indice: usize) -> Result<(), String> {
+    mutar(&app, |items| {
+        if let Some(pos) = items.iter().position(|i| i.id == id) {
+            let it = items.remove(pos);
+            let destino = indice.min(items.len());
+            items.insert(destino, it);
+        }
+    })
+    .map(|_| ())
+    .map_err(|e| e.to_string())
 }
 
 #[tauri::command]

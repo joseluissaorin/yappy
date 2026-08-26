@@ -10,6 +10,7 @@
   import Criatura from "$lib/Criatura.svelte";
   import Deslizador from "$lib/Deslizador.svelte";
   import { presionable } from "$lib/presionable";
+  import { openUrl } from "@tauri-apps/plugin-opener";
   import { TINTAS_VOZ, fijarTintaVoz } from "$lib/voces";
   import {
     getSettings,
@@ -263,6 +264,15 @@
         {/if}
       </div>
     </section>
+
+    <!-- El pie: quién hay detrás, con el loro paseando. -->
+    <footer class="pie-amor">
+      <Criatura size={44} andando mirando={-1} tinta={TINTAS_VOZ[0]} />
+      <p>{$t("ajustes.amor")}</p>
+      <button class="enlace-web" use:presionable={{ hap: "soft" }} onclick={() => { haptic("light"); openUrl("https://joseluissaorin.com").catch(() => {}); }}>
+        joseluissaorin.com
+      </button>
+    </footer>
   {/if}
 </div>
 
@@ -386,6 +396,45 @@
     max-width: 55%;
     min-height: 44px;
   }
+  /* Los rótulos de sección, con el vaivén del collage. */
+  .grupo:nth-of-type(odd) h2 {
+    transform: rotate(-0.8deg);
+  }
+  .grupo:nth-of-type(even) h2 {
+    transform: rotate(0.6deg);
+  }
+  .grupo h2 {
+    display: inline-block;
+  }
+
+  .pie-amor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 22px 10px 6px;
+    text-align: center;
+  }
+  .pie-amor p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--yap-tinta-suave);
+    transform: rotate(-0.7deg);
+  }
+  .enlace-web {
+    border: 0;
+    background: transparent;
+    color: var(--yap-ultramar, #2f4bc4);
+    font-weight: 800;
+    font-size: 15px;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+    transform: rotate(0.5deg);
+  }
+
   .pie-puente { margin: 0; font-size: 0.85rem; color: var(--yap-tinta-suave); }
   .chica { align-self: flex-start; padding: 10px 16px; font-size: 0.9rem; min-height: 44px; }
 </style>

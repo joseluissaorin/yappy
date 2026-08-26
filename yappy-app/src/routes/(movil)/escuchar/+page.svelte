@@ -19,11 +19,15 @@
   import { tintaVoz } from "$lib/voces";
   import { repro } from "$lib/reproduccion.svelte";
   import {
+    logToBackend,
     colaListar,
     colaAgregarUrl,
     colaAgregarArchivo,
     colaAgregarPortapapeles,
     colaEliminar,
+    colaFavorito,
+    colaRenombrar,
+    colaReordenar,
     colaReintentar,
     onColaActualizada,
     readDocument,
@@ -148,6 +152,7 @@
 
   // ── Abrir / reproducir (tocar una pieza ES el gesto de escuchar) ──────
   async function abrirItem(item: ItemCola) {
+    logToBackend("info", "cinta", `abrirItem ${item.id} estado=${item.estado}`);
     if (item.estado === "error") {
       haptic("light");
       await colaReintentar(item.id).catch(() => {});
@@ -159,20 +164,26 @@
       const doc = await readDocument(item.ruta);
       doc.filename = item.titulo;
       reader.doc = doc;
-      await goto("/read");
       const desde = progresoDe(item.ruta)?.parrafo ?? 0;
-      await readDocumentParagraphs(
-        doc.paragraphs,
-        Math.min(desde, Math.max(0, doc.paragraphs.length - 1)),
-        undefined,
-        undefined,
-        undefined,
-        { docPath: item.ruta, titulo: item.titulo },
-      );
+      if (desde > 0) {
+        // Hay progreso guardado: PRIMERO eliges (seguir donde ibas o desde
+        // el principio, en la portada) y DESPUÉS se cocina la voz. Nada de
+        // arrancar solo desde donde lo dejaste.
+        await goto("/read");
+        return;
+      }
+      // Pieza fresca: la voz se pone a cocinar ANTES de navegar, así el
+      // cartel nace ya en «preparando» (sin fotogramas de portada).
+      await readDocumentParagraphs(doc.paragraphs, 0, undefined, undefined, undefined, {
+        docPath: item.ruta,
+        titulo: item.titulo,
+      });
+      await goto("/read");
     } catch (e) {
       // El fichero ya no está (o no se pudo leer): que se NOTE. La pieza
       // se sacude, el loro se avergüenza y la háptica avisa.
       console.error("abrirItem:", e);
+      logToBackend("error", "cinta", `abrirItem falló: ${e}`);
       haptic("error");
       sacudida = item.id;
       brincoDeLoro();
@@ -211,15 +222,10 @@
   }
   async function abrirArchivo() {
     bocaAbierta = false;
-    const ruta = await abrirDialogo({
-      multiple: false,
-      filters: [
-        {
-          name: "Documentos",
-          extensions: ["txt", "md", "markdown", "rtf", "docx", "doc", "odt", "pdf", "epub", "html", "htm"],
-        },
-      ],
-    }).catch(() => null);
+    // SIN filtros: el selector de documentos de iOS no casaba las
+    // extensiones y dejaba TODO gris (no se podía añadir ningún archivo).
+    // El backend ya sabe decir «no puedo con esto» si llega algo raro.
+    const ruta = await abrirDialogo({ multiple: false }).catch(() => null);
     if (typeof ruta === "string") await colaAgregarArchivo(ruta).catch(() => {});
   }
 
@@ -265,32 +271,112 @@
     );
   }
 
-  // ── Arrastrar hacia fuera = quitar ────────────────────────────────────
+  // ── EL JUGUETE: la física de las piezas ──────────────────────────────
+  // Deslizar a los lados = descartar (inmediato). Mantener el dedo QUIETO
+  // levanta la pieza (háptica rigid): soltarla sin mover abre su menú;
+  // moverla la arrastra para REORDENAR con las demás recolocándose en
+  // vivo. La cinta se ordena con el dedo, como un fajo de recortes.
   let arrastre = $state<{ id: string; dx: number } | null>(null);
-  let arranque: { id: string; x: number; y: number; decidido: boolean } | null = null;
+  let levantada = $state<string | null>(null);
+  let vuelo = $state({ dy: 0, destino: -1, origen: -1, alto: 0 });
+  let menuPieza = $state<ItemCola | null>(null);
+  let renombrando = $state(false);
+  let nuevoNombre = $state("");
+  let arranque: { id: string; x: number; y: number; decidido: "no" | "swipe" } | null = null;
+  let holdTimer: ReturnType<typeof setTimeout> | undefined;
+  let rects: { id: string; mid: number; height: number }[] = [];
+
+  // La inclinación de collage: cada pieza con su ángulo, siempre el mismo.
+  function tiltDe(id: string): number {
+    let h = 0;
+    for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    return ((h % 7) - 3) * 0.5;
+  }
+
+  function medirPiezas() {
+    rects = Array.from(document.querySelectorAll<HTMLElement>("[data-pieza]")).map((el) => {
+      const r = el.getBoundingClientRect();
+      return { id: el.dataset.pieza!, mid: r.top + r.height / 2, height: r.height };
+    });
+  }
+
+  function levantar(id: string) {
+    const idx = items.findIndex((i) => i.id === id);
+    if (idx < 0) return;
+    haptic("rigid");
+    medirPiezas();
+    const propia = rects.find((r) => r.id === id);
+    levantada = id;
+    vuelo = { dy: 0, destino: idx, origen: idx, alto: propia?.height ?? 100 };
+  }
 
   function alTocar(e: PointerEvent, id: string) {
-    arranque = { id, x: e.clientX, y: e.clientY, decidido: false };
+    arranque = { id, x: e.clientX, y: e.clientY, decidido: "no" };
+    clearTimeout(holdTimer);
+    holdTimer = setTimeout(() => {
+      if (arranque && arranque.decidido === "no") levantar(arranque.id);
+    }, 380);
   }
   function alMover(e: PointerEvent) {
     if (!arranque) return;
     const dx = e.clientX - arranque.x;
     const dy = e.clientY - arranque.y;
-    if (!arranque.decidido) {
+    if (levantada === arranque.id) {
+      // Vuelo de reorden: la pieza sigue al dedo y el destino se calcula
+      // contra los centros medidos de las demás.
+      const propia = rects.find((r) => r.id === levantada);
+      if (!propia) return;
+      const centro = propia.mid + dy;
+      let destino = 0;
+      for (const r of rects) {
+        if (r.id === levantada) continue;
+        if (r.mid < centro) destino += 1;
+      }
+      if (destino !== vuelo.destino) haptic("tick");
+      vuelo = { ...vuelo, dy, destino };
+      return;
+    }
+    if (arranque.decidido === "no") {
       if (Math.abs(dx) < 14 && Math.abs(dy) < 14) return;
+      clearTimeout(holdTimer);
       if (Math.abs(dy) > Math.abs(dx)) {
-        arranque = null; // scroll vertical: no es un arrastre
+        arranque = null; // scroll vertical de la lista
         return;
       }
-      arranque.decidido = true;
+      arranque.decidido = "swipe";
       (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
     }
-    arrastre = { id: arranque.id, dx };
+    if (arranque.decidido === "swipe") arrastre = { id: arranque.id, dx };
   }
   async function alSoltar() {
+    clearTimeout(holdTimer);
     const a = arranque;
     const d = arrastre;
     arranque = null;
+    if (levantada) {
+      const id = levantada;
+      const { dy, destino, origen } = vuelo;
+      const seMovio = Math.abs(dy) > 8 || destino !== origen;
+      levantada = null;
+      if (!seMovio) {
+        // Levantada y soltada en el sitio: su menú.
+        haptic("soft");
+        menuPieza = items.find((i) => i.id === id) ?? null;
+        renombrando = false;
+        return;
+      }
+      // Reorden optimista + verdad al backend.
+      haptic("success");
+      const desde = items.findIndex((i) => i.id === id);
+      if (desde >= 0) {
+        const copia = [...items];
+        const [pieza] = copia.splice(desde, 1);
+        copia.splice(Math.min(destino, copia.length), 0, pieza);
+        items = copia;
+      }
+      await colaReordenar(id, destino).catch(() => {});
+      return;
+    }
     if (!a || !d) {
       arrastre = null;
       return;
@@ -305,6 +391,40 @@
     } else {
       arrastre = null;
     }
+  }
+
+  // El desplazamiento en vivo de las demás piezas durante el vuelo.
+  function corrimientoDe(id: string, indice: number): number {
+    if (!levantada || id === levantada) return 0;
+    const { origen, destino, alto } = vuelo;
+    const salto = alto + 13;
+    if (destino > origen && indice > origen && indice <= destino) return -salto;
+    if (destino < origen && indice >= destino && indice < origen) return salto;
+    return 0;
+  }
+
+  // ── El menú de la pieza (favorito, renombrar, quitar) ─────────────────
+  async function alternarFavorito() {
+    if (!menuPieza) return;
+    haptic("medium");
+    await colaFavorito(menuPieza.id, !menuPieza.favorito).catch(() => {});
+    items = await colaListar().catch(() => items);
+    menuPieza = null;
+  }
+  async function guardarNombre() {
+    if (!menuPieza || !nuevoNombre.trim()) return;
+    haptic("success");
+    await colaRenombrar(menuPieza.id, nuevoNombre.trim()).catch(() => {});
+    items = await colaListar().catch(() => items);
+    menuPieza = null;
+    renombrando = false;
+  }
+  async function borrarPieza() {
+    if (!menuPieza) return;
+    haptic("warning");
+    await colaEliminar(menuPieza.id).catch(() => {});
+    items = await colaListar().catch(() => items);
+    menuPieza = null;
   }
 
   const vacia = $derived(items.length === 0 && bobinas.length === 0);
@@ -378,7 +498,7 @@
   </section>
 
   <!-- LA LISTA: el único scroller, y solo si de verdad desborda. -->
-  <div class="lista">
+  <div class="lista" ontouchmove={(e) => { if (levantada) e.preventDefault(); }}>
     {#if !modeloListo}
       <section class="tarjeta modelo">
         {#if descargando}
@@ -409,24 +529,32 @@
     {#each items as item, i (item.id)}
       {@const pct = pctDe(item)}
       {@const esLaQueSuena = sonando && !!item.ruta && repro.snap?.doc_path === item.ruta}
+      {@const enVuelo = levantada === item.id}
+      {@const despl = corrimientoDe(item.id, i)}
       <article
-        class="tarjeta pieza estado-{item.estado}" class:sacude={sacudida === item.id} class:suena={esLaQueSuena}
+        data-pieza={item.id}
+        class="tarjeta pieza estado-{item.estado}" class:sacude={sacudida === item.id} class:suena={esLaQueSuena} class:en-vuelo={enVuelo}
         animate:flip={{ duration: 300, easing: cubicOut }}
         in:llega={{ delay: cascada ? Math.min(i * 45, 360) : 0 }}
         out:seVa
-        style="min-height: {altoDe(item)}px; transform: translateX({arrastre?.id === item.id ? arrastre.dx : 0}px) rotate({arrastre?.id === item.id ? arrastre.dx / 26 : 0}deg); opacity: {arrastre?.id === item.id ? Math.max(0.25, 1 - Math.abs(arrastre.dx) / 340) : 1};"
+        style="min-height: {altoDe(item)}px; z-index: {enVuelo ? 30 : 'auto'}; transform: translate({arrastre?.id === item.id ? arrastre.dx : 0}px, {enVuelo ? vuelo.dy : despl}px) rotate({arrastre?.id === item.id ? arrastre.dx / 26 : enVuelo ? tiltDe(item.id) * 2.2 : tiltDe(item.id)}deg) scale({enVuelo ? 1.045 : 1}); opacity: {arrastre?.id === item.id ? Math.max(0.25, 1 - Math.abs(arrastre.dx) / 340) : 1}; transition: {enVuelo || arrastre?.id === item.id ? 'none' : 'transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1)'};"
         onpointerdown={(e) => alTocar(e, item.id)}
         onpointermove={alMover}
         onpointerup={alSoltar}
-        onpointercancel={() => { arranque = null; arrastre = null; }}
+        onpointercancel={() => { clearTimeout(holdTimer); arranque = null; arrastre = null; levantada = null; }}
       >
+        {#if item.favorito}
+          <span class="estrella" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="var(--yap-dorado, #e8b41a)" stroke="var(--yap-tinta)" stroke-width="1.4" stroke-linejoin="round"><path d="M12 2.6l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2-5.6-3.2-5.6 3.2 1.3-6.2L3 9.1l6.3-.7z"/></svg>
+          </span>
+        {/if}
         <button class="pieza-cuerpo" use:presionable onclick={() => abrirItem(item)}>
           {#if item.estado === "error"}
             <span class="pieza-tipo"><Criatura size={36} estado="avergonzado" /></span>
           {:else if esLaQueSuena}
             <span class="pieza-tipo"><Criatura size={36} mirando={-1} estado={repro.snap?.estado === "pausa" ? "pausa" : "hablando"} apertura={repro.snap?.estado === "sonando" ? nivel : 0} tinta={$tintaVoz} /></span>
           {:else}
-            <span class="pieza-tipo"><IconoTipo tipo={iconoDe(item.tipo)} size={20} /></span>
+            <span class="pieza-tipo sello sello-{item.tipo}"><IconoTipo tipo={iconoDe(item.tipo)} size={20} /></span>
           {/if}
           <span class="pieza-texto">
             <strong>{item.titulo}</strong>
@@ -467,6 +595,35 @@
       {/each}
     {/if}
   </div>
+  {#if menuPieza}
+    <div class="velo" role="presentation" onclick={() => { menuPieza = null; renombrando = false; }}></div>
+    <div class="hoja">
+      <div class="hoja-asa"></div>
+      <div class="hoja-cabeza">{$t("pieza.opciones")}</div>
+      <p class="menu-titulo">{menuPieza.titulo}</p>
+      {#if renombrando}
+        <!-- svelte-ignore a11y_autofocus -->
+        <input class="yap-campo" type="text" bind:value={nuevoNombre} autofocus enterkeyhint="done"
+          onkeydown={(e) => e.key === "Enter" && guardarNombre()} placeholder={$t("pieza.renombrar_pista")} />
+        <button class="tecla-menu principal" use:presionable onclick={guardarNombre} disabled={!nuevoNombre.trim()}>
+          {$t("comun.guardar")}
+        </button>
+      {:else}
+        <button class="tecla-menu" use:presionable onclick={alternarFavorito}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill={menuPieza.favorito ? "var(--yap-dorado, #e8b41a)" : "none"} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 2.6l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2-5.6-3.2-5.6 3.2 1.3-6.2L3 9.1l6.3-.7z"/></svg>
+          {menuPieza.favorito ? $t("pieza.quitar_favorito") : $t("pieza.favorito")}
+        </button>
+        <button class="tecla-menu" use:presionable onclick={() => { renombrando = true; nuevoNombre = menuPieza?.titulo ?? ""; }}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+          {$t("pieza.renombrar")}
+        </button>
+        <button class="tecla-menu peligro" use:presionable onclick={borrarPieza}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+          {$t("cinta.borrar")}
+        </button>
+      {/if}
+    </div>
+  {/if}
 </main>
 
 <style>
@@ -664,6 +821,99 @@
     box-shadow: var(--yap-relieve);
     overflow: hidden;
   }
+  .estrella {
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    transform: rotate(10deg);
+    filter: drop-shadow(0 2px 3px rgba(64, 46, 12, 0.25));
+    z-index: 2;
+  }
+  .pieza.en-vuelo {
+    box-shadow: 0 18px 40px rgba(64, 46, 12, 0.3), var(--yap-relieve);
+  }
+
+  /* ── El menú de la pieza ── */
+  .velo {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(43, 36, 24, 0.35);
+  }
+  .hoja {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 51;
+    background: var(--yap-papel);
+    border-radius: 22px 22px 0 0;
+    box-shadow: 0 -12px 40px rgba(64, 46, 12, 0.28);
+    padding: 10px 18px calc(env(safe-area-inset-bottom) + 18px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    animation: hoja-sube 0.26s ease both;
+  }
+  @keyframes hoja-sube {
+    from { transform: translateY(30%); opacity: 0.4; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .hoja-asa {
+    width: 44px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--yap-borde);
+    margin: 2px auto 0;
+  }
+  .hoja-cabeza {
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave);
+    text-align: center;
+  }
+  .menu-titulo {
+    margin: 0;
+    font-weight: 800;
+    font-size: 16px;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .tecla-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 15px 16px;
+    border: 1px solid var(--yap-borde);
+    border-radius: 14px;
+    background: var(--yap-superficie);
+    color: var(--yap-tinta);
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: var(--yap-relieve);
+    cursor: pointer;
+  }
+  .tecla-menu.principal {
+    border: 0;
+    background: linear-gradient(180deg, var(--acento-voz-claro, #f4682e), var(--acento-voz, #e0502a));
+    color: #fff6ef;
+    justify-content: center;
+  }
+  .tecla-menu.peligro {
+    color: var(--yap-voz, #e0502a);
+    border-color: color-mix(in srgb, var(--yap-voz, #e0502a) 45%, var(--yap-borde));
+  }
+  .tecla-menu:disabled {
+    opacity: 0.55;
+  }
+
   .pieza.suena {
     border-color: color-mix(in srgb, var(--acento-voz, var(--yap-voz)) 55%, var(--yap-borde));
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--acento-voz, var(--yap-voz)) 16%, transparent), var(--yap-relieve);
@@ -686,6 +936,22 @@
     color: var(--yap-ultramar, #2f4bc4);
     flex-shrink: 0;
   }
+  /* El sello de cada tipo: un papelito de color con su propio giro. */
+  .sello {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    transform: rotate(-3deg);
+    box-shadow: var(--yap-relieve);
+  }
+  .sello-url { background: color-mix(in srgb, var(--yap-ultramar, #2f4bc4) 16%, var(--yap-superficie)); }
+  .sello-youtube { background: color-mix(in srgb, var(--yap-voz, #e0502a) 16%, var(--yap-superficie)); color: var(--yap-voz, #e0502a); }
+  .sello-texto { background: color-mix(in srgb, var(--yap-dorado, #e8b41a) 22%, var(--yap-superficie)); color: color-mix(in srgb, var(--yap-tinta) 70%, var(--yap-dorado)); }
+  .sello-archivo { background: color-mix(in srgb, #2e7d5b 15%, var(--yap-superficie)); color: #2e7d5b; }
+  .sello-audio { background: color-mix(in srgb, #8a4fbe 15%, var(--yap-superficie)); color: #8a4fbe; }
   .pieza-texto {
     display: flex;
     flex-direction: column;

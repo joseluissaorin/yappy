@@ -51,6 +51,10 @@ pub struct PlaybackSnapshot {
     /// El mando decide con esto si un salto puede ser instantáneo (dentro de
     /// lo sintetizado) o necesita resintetizar.
     pub parrafo_max_cocinado: usize,
+    /// Desde qué párrafo del documento arrancó la sesión. Los índices de
+    /// párrafo del snapshot son RELATIVOS a la sesión; sin esta base, el
+    /// cartel abierto a mitad de sesión pintaba desde el principio.
+    pub base_paragraph_index: usize,
     pub playing: bool,
     pub paused: bool,
     pub current_text: String,
@@ -81,6 +85,7 @@ enum Command {
         session_id: u64,
         titulo: String,
         doc_path: String,
+        base_paragraph_index: usize,
     },
     /// La síntesis murió antes del primer trozo: si seguimos en preparando
     /// de ESA sesión, volver a inactivo (sin esto el estado se queda
@@ -146,6 +151,7 @@ impl PlaybackController {
             doc_path: String::new(),
             chunks_cocinados: 0,
             parrafo_max_cocinado: 0,
+            base_paragraph_index: 0,
             playing: false,
             paused: false,
             current_text: String::new(),
@@ -218,11 +224,18 @@ impl PlaybackController {
 
     /// Declara la sesión en «preparando» (título + ruta) antes de que exista
     /// el primer trozo. La cocina se ve desde el primer milisegundo.
-    pub fn preparando(&self, session_id: u64, titulo: &str, doc_path: &str) {
+    pub fn preparando(
+        &self,
+        session_id: u64,
+        titulo: &str,
+        doc_path: &str,
+        base_paragraph_index: usize,
+    ) {
         let _ = self.cmd_tx.send(Command::Preparando {
             session_id,
             titulo: titulo.to_string(),
             doc_path: doc_path.to_string(),
+            base_paragraph_index,
         });
     }
     /// La síntesis murió antes del primer trozo de esta sesión.
@@ -472,6 +485,7 @@ fn run_audio_thread(
                     session_id,
                     titulo,
                     doc_path,
+                    base_paragraph_index,
                 } => {
                     if session_id != live_session_id.load(Ordering::SeqCst) {
                         continue;
@@ -481,6 +495,7 @@ fn run_audio_thread(
                         s.estado = "preparando".into();
                         s.titulo = titulo;
                         s.doc_path = doc_path;
+                        s.base_paragraph_index = base_paragraph_index;
                         s.chunks_cocinados = 0;
                         s.parrafo_max_cocinado = 0;
                     }

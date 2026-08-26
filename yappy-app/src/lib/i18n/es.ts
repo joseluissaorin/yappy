@@ -38,6 +38,11 @@ export default {
   "cinta.vacia_texto": "Desde Safari, el correo o donde sea: toca compartir y elige Yappy.",
   "cinta.ensename": "Enséñame",
   "cinta.borrar": "quitar de la cinta",
+  "pieza.opciones": "Esta pieza",
+  "pieza.favorito": "Favorito",
+  "pieza.quitar_favorito": "Quitar el favorito",
+  "pieza.renombrar": "Renombrar",
+  "pieza.renombrar_pista": "Un nombre nuevo",
   // la aguja (lo que suena, desde cualquier página)
   "aguja.preparando": "preparando la voz",
   "aguja.detener": "detener del todo",
@@ -160,11 +165,13 @@ export default {
   "ajustes.tema.papel": "Papel",
   "ajustes.tema.noche": "Noche",
   "ajustes.tema.sistema": "Como el sistema",
+  "ajustes.amor": "Hecho con amor por José Luis Saorín",
   // reproductor
   "player.reanudar": "Reanudar",
   "player.pausar": "Pausar",
   // genéricos
   "comun.cancelar": "Cancelar",
   "comun.hecho": "Hecho",
+  "comun.guardar": "Guardar",
   "comun.cerrar": "Cerrar",
 } as Record<string, string>;

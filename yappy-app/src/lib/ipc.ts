@@ -108,6 +108,9 @@ export interface PlaybackSnapshot {
   /// La cocina visible: trozos sintetizados y hasta qué párrafo hay audio.
   chunks_cocinados: number;
   parrafo_max_cocinado: number;
+  /// Desde qué párrafo del documento arrancó la sesión (los índices del
+  /// snapshot son relativos a la sesión).
+  base_paragraph_index: number;
   playing: boolean;
   paused: boolean;
   current_text: string;
@@ -340,6 +343,7 @@ export interface ItemCola {
   error: string | null;
   agregado_unix: number;
   chars: number | null;
+  favorito: boolean;
 }
 export const colaListar = (): Promise<ItemCola[]> => invoke("cola_listar_cmd");
 export const colaAgregarUrl = (url: string): Promise<ItemCola> =>
@@ -355,6 +359,12 @@ export const colaAgregarAudio = (ruta: string): Promise<ItemCola> =>
   invoke("cola_agregar_audio_cmd", { ruta });
 export const colaEliminar = (id: string): Promise<void> =>
   invoke("cola_eliminar_cmd", { id });
+export const colaFavorito = (id: string, favorito: boolean): Promise<void> =>
+  invoke("cola_favorito_cmd", { id, favorito });
+export const colaRenombrar = (id: string, titulo: string): Promise<void> =>
+  invoke("cola_renombrar_cmd", { id, titulo });
+export const colaReordenar = (id: string, indice: number): Promise<void> =>
+  invoke("cola_reordenar_cmd", { id, indice });
 export const colaReintentar = (id: string): Promise<void> =>
   invoke("cola_reintentar_cmd", { id });
 export function onColaActualizada(cb: () => void): Promise<UnlistenFn> {

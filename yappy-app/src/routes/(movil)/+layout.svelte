@@ -18,7 +18,7 @@
   import { startShareIntake, drainPending } from "$lib/shareIntake";
   import { arrancarEspejo, reconciliar, repro } from "$lib/reproduccion.svelte";
   import { listen } from "@tauri-apps/api/event";
-  import { readClipboard, colaAgregarArchivo, puenteVincular } from "$lib/ipc";
+  import { readClipboard, colaAgregarArchivo, puenteVincular, logToBackend } from "$lib/ipc";
   import { invoke } from "@tauri-apps/api/core";
   import { open as abrirDialogo } from "@tauri-apps/plugin-dialog";
 
@@ -37,6 +37,12 @@
 
   onMount(async () => {
     const plataforma = await ready;
+    window.addEventListener("error", (e) => {
+      logToBackend("error", "webview", `${e.message} @ ${e.filename}:${e.lineno}`);
+    });
+    window.addEventListener("unhandledrejection", (e) => {
+      logToBackend("error", "webview", `promesa sin capturar: ${e.reason}`);
+    });
     if (plataforma !== "ios" && plataforma !== "android") {
       goto("/", { replaceState: true });
       return;

@@ -2591,9 +2591,12 @@ async fn read_internal<R: Runtime>(
     *state.titulo_actual.lock().unwrap() = titulo_sesion.clone();
     // La cocina se ve desde el primer milisegundo: el snapshot pasa a
     // «preparando» con su título y su ruta ANTES de que exista audio.
-    state
-        .playback
-        .preparando(session_id, &titulo_sesion, &meta.doc_path);
+    state.playback.preparando(
+        session_id,
+        &titulo_sesion,
+        &meta.doc_path,
+        base_paragraph_index,
+    );
     let _ = app.emit(
         "playback_starting",
         serde_json::json!({
@@ -2670,10 +2673,22 @@ async fn read_internal<R: Runtime>(
         {
             let _barrera = state_for_thread.candado_motor.lock().unwrap();
         }
-        let res = match &guion_for_thread {
-            Some(g) => engine.synthesize_guion(g, &opts_local, al_chunk),
-            None => engine.synthesize_streaming(&text_for_thread, &opts_local, al_chunk),
-        };
+        // La síntesis va envuelta en catch_unwind: un PÁNICO en el motor (el
+        // guionizador con un texto raro, un modelo corrupto) se saltaba el
+        // Fallo y dejaba «preparando la voz» colgado para siempre.
+        let res =
+            std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| match &guion_for_thread {
+                Some(g) => engine.synthesize_guion(g, &opts_local, al_chunk),
+                None => engine.synthesize_streaming(&text_for_thread, &opts_local, al_chunk),
+            }))
+            .unwrap_or_else(|p| {
+                let msg = p
+                    .downcast_ref::<String>()
+                    .cloned()
+                    .or_else(|| p.downcast_ref::<&str>().map(|s| s.to_string()))
+                    .unwrap_or_else(|| "pánico del motor de síntesis".into());
+                Err(anyhow::anyhow!("pánico del motor: {msg}"))
+            });
 
         // A cancellation is an expected outcome, not an error worth surfacing.
         let cancelled = matches!(&res, Err(e) if e.to_string().contains("session cancelled"));

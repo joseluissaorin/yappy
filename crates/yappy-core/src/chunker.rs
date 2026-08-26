@@ -139,7 +139,17 @@ fn split_sentences(text: &str) -> Vec<String> {
     let mut sentences = Vec::new();
     let mut last_end = 0;
     for m in matches {
-        let before = &text[last_end..m.start() + 1]; // include the punctuation char
+        // Incluir el PRIMER signo de puntuación de la racha, midiendo su
+        // ancho real en bytes: «…» ocupa TRES, y el «+ 1» de antes caía en
+        // mitad del carácter y PANICABA con cualquier texto que tuviera
+        // puntos suspensivos antes de un espacio (el caso Borges: la
+        // síntesis moría y «preparando la voz» se quedaba colgado).
+        let tras_primer_signo = text[m.start()..]
+            .chars()
+            .next()
+            .map(|c| m.start() + c.len_utf8())
+            .unwrap_or(m.end());
+        let before = &text[last_end..tras_primer_signo];
         let before_trim = before.trim_start();
         let mut is_abbrev = false;
         for a in ABBREV {
@@ -212,6 +222,26 @@ fn split_too_long(s: &str, max_chars: usize) -> Vec<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn puntos_suspensivos_no_rompen_el_corte() {
+        // El caso Borges: «…» (tres bytes) delante de espacio hacía caer el
+        // corte en mitad del carácter y el motor entero pánicaba.
+        let texto = "Vaciló un momento… Después dijo unas palabras. “…y colgó el tubo.” Salió.";
+        let frases = split_sentences(texto);
+        assert!(frases.len() >= 3, "{frases:?}");
+        assert!(frases[0].contains('…'));
+        let pegado: String = frases.concat();
+        assert_eq!(pegado.trim(), texto.trim());
+    }
+
+    #[test]
+    fn signos_multibyte_al_inicio_de_racha() {
+        for t in ["Uno… dos. Tres.", "¿Sí…? Claro. Fin.", "Ah!… Bueno. Ya."] {
+            let frases = split_sentences(t);
+            assert!(!frases.is_empty(), "{t}");
+        }
+    }
 
     #[test]
     fn parte_por_frases_siempre() {

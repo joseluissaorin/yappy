@@ -34,7 +34,6 @@
     reanudar,
     saltarFrase,
     saltarParrafo,
-    onPlaybackStarting,
     listVoices,
     getSettings,
     saveProject,
@@ -70,7 +69,10 @@
   const nivel = $derived(repro.nivel);
   let arrastreX = $state(0);
   let anticipa = $state(0);
-  let baseIndex = $state(0);
+  // La base de la sesión viene del snapshot: es la verdad del motor, no un
+  // estado local que se pierde al entrar por la aguja a mitad de sesión
+  // (eso rompía karaoke, teleprompter y barra de progreso).
+  const baseIndex = $derived(playback?.base_paragraph_index ?? 0);
   let guionAbierto = $state(false);
   let tallerAbierto = $state(false);
   let tweakIndex = $state(-1);
@@ -291,9 +293,6 @@
     settings = await getSettings().catch(() => null);
     seedOverrides();
     await tryRestoreProject();
-    cleanups.push(await onPlaybackStarting((p: any) => {
-      if (typeof p?.base_paragraph_index === "number") baseIndex = p.base_paragraph_index;
-    }));
     cleanups.push(await onAudiobookRenderProgress((p) => (renderProgress = p)));
     puenteVinculado = !!(await puenteMovilEstado().catch(() => null))?.token;
     cleanups.push(await onPuenteProgreso((p) => {
@@ -376,7 +375,6 @@
 
   async function readFrom(index: number, opts: { enPausa?: boolean } = {}) {
     haptic("light");
-    baseIndex = index;
     await readDocumentParagraphs(
       paras,
       index,

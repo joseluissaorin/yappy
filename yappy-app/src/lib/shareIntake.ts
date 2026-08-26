@@ -139,7 +139,10 @@ async function vigilarAutoplay(): Promise<void> {
           reader.doc = doc;
           soltarLlegada(item.titulo);
           await goto("/read");
-          await readDocumentParagraphs(doc.paragraphs, 0);
+          await readDocumentParagraphs(doc.paragraphs, 0, undefined, undefined, undefined, {
+            docPath: item.ruta,
+            titulo: item.titulo,
+          });
           break;
         }
       }
@@ -167,12 +170,17 @@ async function handleOne(line: string): Promise<void> {
       if (text.length <= 280) {
         synthesizeText(text).catch(() => {});
       } else if (item.ruta) {
-        // Texto largo compartido: al lector, y sonando.
+        // Texto largo compartido: al lector, y sonando, con SU título (el
+        // nombre de fichero de la cola son números).
         try {
           const doc = await readDocument(item.ruta);
+          doc.filename = item.titulo;
           reader.doc = doc;
           await goto("/read");
-          await readDocumentParagraphs(doc.paragraphs, 0);
+          await readDocumentParagraphs(doc.paragraphs, 0, undefined, undefined, undefined, {
+            docPath: item.ruta,
+            titulo: item.titulo,
+          });
           return;
         } catch {}
       }
@@ -203,9 +211,16 @@ async function handleOne(line: string): Promise<void> {
       if (item.ruta) {
         try {
           const doc = await readDocument(item.ruta);
+          // El fichero copiado se llama por su id numérico: el título
+          // humano vive en la pieza de la cola. Sin esto, el lector y la
+          // pantalla de bloqueo enseñaban «1724…-0001».
+          doc.filename = item.titulo;
           reader.doc = doc;
           await goto("/read");
-          await readDocumentParagraphs(doc.paragraphs, 0);
+          await readDocumentParagraphs(doc.paragraphs, 0, undefined, undefined, undefined, {
+            docPath: item.ruta,
+            titulo: item.titulo,
+          });
           return;
         } catch (e) {
           console.error("[shareIntake] abrir archivo compartido:", e);
