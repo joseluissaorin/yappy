@@ -13,6 +13,9 @@ export interface Troquel {
   puntos: [number, number][];
   /// Ventana segura del texto, en porcentaje de la celda.
   ventana: { x: number; y: number; w: number; h: number };
+  /// Tope de líneas del título en reposo (las formas puntiagudas caben
+  /// menos renglones que las redondas).
+  lineas?: number;
 }
 
 // ── Utilidades geométricas ─────────────────────────────────────────────
@@ -166,9 +169,9 @@ function estrella(): [number, number][] {
 export const TROQUELES_BASE: Troquel[] = [
   { nombre: "circulo", puntos: redondear(circulo()), ventana: { x: 15, y: 24, w: 70, h: 50 } },
   { nombre: "nube", puntos: redondear(nube()), ventana: { x: 16, y: 26, w: 68, h: 46 } },
-  { nombre: "flor", puntos: redondear(flor()), ventana: { x: 24, y: 29, w: 52, h: 40 } },
+  { nombre: "flor", puntos: redondear(flor()), ventana: { x: 24, y: 29, w: 52, h: 40 }, lineas: 2 },
   { nombre: "sello", puntos: redondear(sello()), ventana: { x: 16, y: 24, w: 68, h: 50 } },
-  { nombre: "rombo", puntos: redondear(rombo()), ventana: { x: 26, y: 31, w: 48, h: 36 } },
+  { nombre: "rombo", puntos: redondear(rombo()), ventana: { x: 26, y: 31, w: 48, h: 36 }, lineas: 2 },
   { nombre: "hexagono", puntos: redondear(hexagono()), ventana: { x: 16, y: 24, w: 68, h: 50 } },
   { nombre: "escudo", puntos: redondear(escudo()), ventana: { x: 17, y: 16, w: 66, h: 46 } },
   { nombre: "etiqueta", puntos: redondear(etiqueta()), ventana: { x: 33, y: 16, w: 58, h: 66 } },
@@ -191,13 +194,15 @@ export const RECTO: Troquel = {
 export const CORAZON: Troquel = {
   nombre: "corazon",
   puntos: redondear(corazon()),
-  ventana: { x: 18, y: 22, w: 64, h: 40 },
+  ventana: { x: 18, y: 20, w: 64, h: 38 },
+  lineas: 2,
 };
 
 export const ESTRELLA: Troquel = {
   nombre: "estrella",
   puntos: redondear(estrella()),
   ventana: { x: 27, y: 33, w: 46, h: 28 },
+  lineas: 2,
 };
 
 // ── Render ─────────────────────────────────────────────────────────────

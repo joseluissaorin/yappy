@@ -8,6 +8,7 @@
   // llega algo, se asoma en los ratos muertos y DICE los títulos en alto.
   import { onMount, onDestroy } from "svelte";
   import { backOut, cubicOut } from "svelte/easing";
+  import { scale } from "svelte/transition";
   import { fly } from "svelte/transition";
   import { goto } from "$app/navigation";
   import { t, idiomaUI } from "$lib/i18n";
@@ -18,7 +19,7 @@
   import IconoTipo from "$lib/IconoTipo.svelte";
   import { reader } from "$lib/readerStore.svelte";
   import { progresoDe } from "$lib/progreso";
-  import { tintaVoz } from "$lib/voces";
+  import { tintaVoz, TINTAS_VOZ } from "$lib/voces";
   import { repro } from "$lib/reproduccion.svelte";
   import { empaquetar, type Baldosa } from "$lib/mosaico";
   import { cartel, VB_ALTO, VB_BASE } from "$lib/cartel";
@@ -213,10 +214,20 @@
       const pila = items.filter((i) => i.estado === "listo" && pctDe(i) === 0).length;
       if (Math.random() < (pila >= 3 ? 0.2 : 0.55)) return;
       const listos = items.filter((i) => i.estado === "listo");
-      if (!listos.length) return;
-      asomadoEn = listos[Math.floor(Math.random() * listos.length)].id;
-      setTimeout(() => (asomadoEn = null), 2600);
-    }, 32000);
+      if (Math.random() < 0.5 || !listos.length) {
+        // Desde un borde de la pantalla: medio cuerpo y a esconderse.
+        const lados = ["izq", "der", "abajo"] as const;
+        asomadoBorde = {
+          lado: lados[Math.floor(Math.random() * lados.length)],
+          pos: 16 + Math.floor(Math.random() * 52),
+          tinta: TINTAS_VOZ[Math.floor(Math.random() * TINTAS_VOZ.length)],
+        };
+        setTimeout(() => (asomadoBorde = null), 2800);
+      } else {
+        asomadoEn = listos[Math.floor(Math.random() * listos.length)].id;
+        setTimeout(() => (asomadoEn = null), 2600);
+      }
+    }, 26000);
     cleanups.push(() => clearInterval(fisgon));
   });
   onDestroy(() => {
@@ -367,9 +378,8 @@
   let seMovioEnVuelo = false;
   let vueloPrevio = { x: 0, y: 0, t: 0 };
   let asomadoEn = $state<string | null>(null);
+  let asomadoBorde = $state<null | { lado: "izq" | "der" | "abajo"; pos: number; tinta: string }>(null);
 
-  const BOCA_ID = "@boca";
-  const MARCA_ID = "@marca";
   const SELLO_BOCA = TROQUELES_BASE.find((t) => t.nombre === "sello") ?? TROQUELES_BASE[0];
 
   // Piezas ocultas: lanzadas o descartadas, a la espera del «deshacer».
@@ -436,25 +446,6 @@
     return m;
   });
 
-  // La regla nueve: en reposo se RECONOCE (si el título no cabe legible en
-  // la ventana, se enseñan sus primeras palabras con «…»); al elegir, la
-  // pieza crece y el título se LEE entero.
-  function tituloEnVentana(titulo: string, vw: number, vh: number, completo: boolean): string {
-    if (completo || titulo.length <= 18) return titulo;
-    const area = Math.max(1, vw * (vh + 12));
-    if (area / titulo.length >= 165) return titulo;
-    const tope = Math.max(16, Math.floor(area / 165));
-    const palabras = titulo.split(/\s+/);
-    let corto = "";
-    for (const p of palabras) {
-      const sig = corto ? `${corto} ${p}` : p;
-      if (sig.length > tope) break;
-      corto = sig;
-    }
-    // Jamás trocear a media palabra: la primera entra entera aunque pase.
-    if (!corto) corto = palabras[0];
-    return corto.length < titulo.length ? `${corto}…` : titulo;
-  }
 
   // Los pesos RENEGOCIADOS (Kalorica exagerado): con n grandes a la vez,
   // cada grande pesa max(3, 7−n): elegir una pieza la hace crecer ×6.
@@ -485,20 +476,14 @@
     }
   }
 
-  // El tablero ES la casa entera: no hay cabecera aparte. La primera fila
-  // son las piezas del SISTEMA (crema, para distinguirse de las vivas):
-  // la MARCA (el loro posado encima y el «yappy» de recortes de colores),
-  // la TRASTIENDA (el engranaje) y la BOCA de añadir (que abierta pesa 26
-  // y el FLIP la hace crecer hasta tragarse el tablero).
-  const piezasTablero = $derived([
-    { id: MARCA_ID, peso: 2.4, letras: 5 },
-    {
-      id: BOCA_ID,
-      peso: bocaAbierta ? 26 : visibles.length === 0 ? 2.4 : 1.0,
-      letras: 2,
-    },
-    ...visibles.map((i) => ({ id: i.id, peso: pesoDe(i), letras: Math.min(30, i.titulo.length) })),
-  ]);
+  // LA INTERFAZ DEFINITIVA (dictada): el mosaico es SOLO pegatinas. El
+  // loro jefe vive arriba a la izquierda; el «yappy» reactivo abajo a la
+  // izquierda; el botón de añadir, grande, abajo a la derecha; la
+  // trastienda sigue cortando el borde. La bandada asoma desde detrás de
+  // las pegatinas y desde los BORDES de la pantalla.
+  const piezasTablero = $derived(
+    visibles.map((i) => ({ id: i.id, peso: pesoDe(i), letras: Math.min(30, i.titulo.length) })),
+  );
   const tablero = $derived(empaquetar(piezasTablero, anchoTablero));
 
   // Los datos del membrete: el susurro mono bajo la marca.
@@ -572,9 +557,7 @@
   let pajaro = $state<{ x: number; y: number; girado: number } | null>(null);
   function volar(aId: string) {
     requestAnimationFrame(() => {
-      const desde = document
-        .querySelector(`[data-pieza="${CSS.escape(BOCA_ID)}"]`)
-        ?.getBoundingClientRect();
+      const desde = document.querySelector(".boca-fija")?.getBoundingClientRect();
       const hasta = document
         .querySelector(`[data-pieza="${CSS.escape(aId)}"]`)
         ?.getBoundingClientRect();
@@ -871,97 +854,7 @@
     <div class="mosaico" bind:clientWidth={anchoTablero} style="height: {tablero.alto}px">
       {#each piezasTablero as ficha, i (ficha.id)}
         {@const b = tablero.baldosas.get(ficha.id)}
-        {#if b && ficha.id === MARCA_ID}
-          <!-- LA MARCA: el loro vive posado sobre esta pieza, y el «yappy»
-               es un recorte de letras de colores (nota de rescate). -->
-          <article
-            data-pieza={MARCA_ID}
-            class="baldosa"
-            style="left: {b.x}px; top: {b.y}px; width: {b.ancho}px; height: {b.alto}px; z-index: 3;"
-          >
-            <span class="loro-percha" class:voltereta>
-              <Criatura
-                size={Math.min(64, b.alto * 0.78)}
-                mirando={-1}
-                estado={celebra ? "celebrando" : repro.snap?.estado === "sonando" ? "hablando" : repro.snap?.estado === "pausa" ? "pausa" : durmiendo ? "dormido" : "posado"}
-                apertura={repro.snap?.estado === "sonando" ? nivel : 0}
-                {mirada}
-                tinta={$tintaVoz}
-              />
-            </span>
-            <div class="baldosa-cuerpo marca-baldosa" style="border-radius: {radiosDe(MARCA_ID)}; transform: rotate({tiltDe(MARCA_ID)}deg);">
-              <button class="marca-toque" use:presionable={{ hap: "light" }} onclick={tocarMarca} aria-label="yappy">
-                <span class="marca-palabra" class:gelatina={marcaGelatina}>
-                  {#each "yappy".split("") as letra, k (k)}
-                    <i class="letra" style="animation-delay: {k * 45}ms; color: {PALETA[(k * 3 + 1) % PALETA.length]}; transform: rotate({k % 2 === 0 ? -3.5 : 3}deg) translateY({k % 2 === 0 ? -1 : 1.5}px)">{letra}</i>
-                  {/each}
-                </span>
-                <!-- El susurro del membrete: datos de verdad, en mono. -->
-                <span class="membrete-datos">{visibles.length} {$t("cinta.piezas")} · {minutosTotales} {$t("cinta.min")}</span>
-              </button>
-            </div>
-          </article>
-        {:else if b && ficha.id === BOCA_ID}
-          <!-- LA BOCA-BALDOSA: una pieza del mosaico que SE CONVIERTE en el
-               menú de añadir cuando la pulsas (su peso salta y el FLIP la
-               hace crecer hasta tragarse el tablero). -->
-          <article
-            data-pieza={BOCA_ID}
-            class="baldosa"
-            style="left: {b.x}px; top: {b.y}px; width: {b.ancho}px; height: {b.alto}px; z-index: {bocaAbierta ? 30 : 2};"
-          >
-            <div class="baldosa-cuerpo {bocaAbierta ? 'boca-baldosa abierta' : 'boca-suelta'}" style={bocaAbierta ? `border-radius: ${radiosDe(BOCA_ID)};` : ""}>
-              {#if !bocaAbierta}
-                <!-- EL BUZÓN: un sello de correos crema con la ranura y el
-                     ＋ garabateados a mano. Echar algo al correo del loro. -->
-                <span class="capa parche-sombra" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
-                <span class="capa boca-sello" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
-                <svg class="costura" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                  <polygon points={aPuntosSvg(SELLO_BOCA, 0.88)} />
-                </svg>
-                <button class="boca-toque" in:llega use:presionable={{ hap: "medium" }} onclick={() => (bocaAbierta = true)} aria-label={$t("escuchar.anadir")}>
-                  <svg class="buzon" viewBox="0 0 44 36" aria-hidden="true">
-                    <path d="M22 6 q0.7 5.2 -0.2 10.5 M16.2 11.4 q5.8 0.9 11.6 -0.3" />
-                    <path d="M8 26 q14 5.5 28 -1.2" />
-                  </svg>
-                  {#if b.alto > 100 || b.ancho > 150}
-                    <span class="boca-rotulo">{$t("cinta.pega_aqui")}</span>
-                  {/if}
-                </button>
-              {:else}
-                <div class="boca-dentro">
-                  <div class="asomado-boca" aria-hidden="true" in:llega><Criatura size={38} mirada={{ x: 0, y: 1 }} tinta={$tintaVoz} /></div>
-                  <button class="boca-cerrar cruz-gira" onclick={() => { haptic("light"); bocaAbierta = false; }} aria-label={$t("comun.cerrar")}>＋</button>
-                  <div in:llega={{ delay: 40 }}>
-                    <button class="tecla-gorda protagonista" use:presionable={{ hap: "medium" }} onclick={pegarPortapapeles} disabled={pegando}>
-                      <IconoTipo tipo="portapapeles" size={22} /> {$t("cinta.portapapeles")}
-                    </button>
-                  </div>
-                  <div class="enlace-fila" in:llega={{ delay: 90 }}>
-                    <!-- svelte-ignore a11y_autofocus -->
-                    <input
-                      class="yap-campo"
-                      type="url"
-                      bind:value={enlace}
-                      placeholder={$t("cinta.enlace_pista")}
-                      enterkeyhint="go"
-                      autocapitalize="off"
-                      autocorrect="off"
-                      spellcheck="false"
-                      onkeydown={(e) => e.key === "Enter" && pegarEnlace()}
-                    />
-                    <button class="yap-tecla" use:presionable onclick={pegarEnlace} disabled={!enlace.trim()}>{$t("cinta.a_la_cola")}</button>
-                  </div>
-                  <div in:llega={{ delay: 140 }}>
-                    <button class="tecla-gorda" use:presionable onclick={abrirArchivo}>
-                      <IconoTipo tipo="documento" size={22} /> {$t("cinta.archivo")}
-                    </button>
-                  </div>
-                </div>
-              {/if}
-            </div>
-          </article>
-        {:else if b}
+        {#if b}
           {@const item = visibles.find((v) => v.id === ficha.id)}
           {#if item}
             {@const pct = item.id === idQueSuena && repro.snap ? Math.min(100, Math.round((repro.snap.elapsed_secs / Math.max(1, repro.snap.duration_secs)) * 100)) : pctDe(item)}
@@ -977,7 +870,7 @@
             {@const vh = (b.alto * tq.ventana.h) / 100 - 20}
             {@const enMarcha = esLaQueSuena && trabajando}
             {@const grandota = elegida || b.peso >= 3}
-            {@const lineasCartel = enMarcha ? [] : cartel(tituloEnVentana(item.titulo, vw, vh, grandota), vw, Math.max(24, vh), $idiomaUI)}
+            {@const lineasCartel = enMarcha || !grandota ? [] : cartel(item.titulo, vw, Math.max(24, vh), $idiomaUI)}
             <article
               data-pieza={item.id}
               class="baldosa" class:en-vuelo={enVuelo}
@@ -1041,6 +934,14 @@
                         </svg>
                       {/each}
                     </div>
+                  {:else}
+                    <!-- LA REGLA NUEVE, de verdad: en reposo el título se
+                         LEE (texto plano, cuerpo firme, sin deformar). El
+                         cartel de feria queda para la pieza grande. -->
+                    <strong
+                      class="titulo-plano"
+                      style="font-size: {b.ancho < 150 ? 13.5 : b.alto > 160 ? 17 : 15}px; -webkit-line-clamp: {tq.lineas ?? (b.alto > 160 ? 4 : 3)}; line-clamp: {tq.lineas ?? (b.alto > 160 ? 4 : 3)};"
+                      lang={$idiomaUI}>{item.titulo}</strong>
                   {/if}
                   {#if esLaQueSuena}
                     <span class="pastilla" style="background: {honda}">
@@ -1123,6 +1024,82 @@
     {/if}
   </div>
 
+  <!-- EL LORO JEFE: arriba a la izquierda, vigilando la casa entera. -->
+  <div class="loro-jefe" class:voltereta aria-hidden="true">
+    <Criatura
+      size={58}
+      mirando={-1}
+      estado={celebra ? "celebrando" : repro.snap?.estado === "sonando" ? "hablando" : repro.snap?.estado === "pausa" ? "pausa" : durmiendo ? "dormido" : "posado"}
+      apertura={repro.snap?.estado === "sonando" ? nivel : 0}
+      {mirada}
+      tinta={$tintaVoz}
+    />
+  </div>
+
+  <!-- EL «yappy» REACTIVO: abajo a la izquierda, con su ola y sus datos. -->
+  <button class="marca-fija" onclick={tocarMarca} aria-label="yappy">
+    <span class="marca-palabra" class:gelatina={marcaGelatina}>
+      {#each "yappy".split("") as letra, k (k)}
+        <i class="letra" style="animation-delay: {k * 45}ms; color: {PALETA[(k * 3 + 1) % PALETA.length]}; transform: rotate({k % 2 === 0 ? -3.5 : 3}deg) translateY({k % 2 === 0 ? -1 : 1.5}px)">{letra}</i>
+      {/each}
+    </span>
+    <span class="membrete-datos">{visibles.length} {$t("cinta.piezas")} · {minutosTotales} {$t("cinta.min")}</span>
+  </button>
+
+  <!-- LA BOCA: el sello de añadir, GRANDE, abajo a la derecha. -->
+  <button class="boca-fija" use:presionable={{ hap: "medium" }} onclick={() => (bocaAbierta = true)} aria-label={$t("escuchar.anadir")}>
+    <span class="capa parche-sombra" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
+    <span class="capa boca-sello" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
+    <svg class="costura" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <polygon points={aPuntosSvg(SELLO_BOCA, 0.85)} />
+    </svg>
+    <svg class="buzon" viewBox="0 0 44 36" aria-hidden="true">
+      <path d="M22 4.6 q0.9 6.6 -0.2 13.2 M14.8 10.8 q7.2 1.1 14.4 -0.3" />
+      <path d="M7 27 q15 6 30 -1.4" />
+    </svg>
+  </button>
+
+  <!-- La boca abierta: la hoja brota del sello, esquina abajo-derecha. -->
+  {#if bocaAbierta}
+    <div class="velo" role="presentation" onclick={() => (bocaAbierta = false)}></div>
+    <div class="boca-hoja" transition:scale={{ duration: 300, start: 0.42, easing: backOut }}>
+      <div class="asomado-boca" aria-hidden="true"><Criatura size={40} mirada={{ x: 0, y: 1 }} tinta={$tintaVoz} /></div>
+      <button class="boca-cerrar cruz-gira" onclick={() => { haptic("light"); bocaAbierta = false; }} aria-label={$t("comun.cerrar")}>＋</button>
+      <button class="tecla-gorda protagonista" use:presionable={{ hap: "medium" }} onclick={pegarPortapapeles} disabled={pegando}>
+        <IconoTipo tipo="portapapeles" size={22} /> {$t("cinta.portapapeles")}
+      </button>
+      <div class="enlace-fila">
+        <!-- svelte-ignore a11y_autofocus -->
+        <input
+          class="yap-campo"
+          type="url"
+          bind:value={enlace}
+          placeholder={$t("cinta.enlace_pista")}
+          enterkeyhint="go"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          onkeydown={(e) => e.key === "Enter" && pegarEnlace()}
+        />
+        <button class="yap-tecla" use:presionable onclick={pegarEnlace} disabled={!enlace.trim()}>{$t("cinta.a_la_cola")}</button>
+      </div>
+      <button class="tecla-gorda" use:presionable onclick={abrirArchivo}>
+        <IconoTipo tipo="documento" size={22} /> {$t("cinta.archivo")}
+      </button>
+    </div>
+  {/if}
+
+  <!-- La bandada asoma también desde los BORDES de la pantalla. -->
+  {#if asomadoBorde}
+    <div
+      class="asomado-borde lado-{asomadoBorde.lado}"
+      style={asomadoBorde.lado === "abajo" ? `left: ${asomadoBorde.pos}%` : `top: ${asomadoBorde.pos}%`}
+      aria-hidden="true"
+    >
+      <Criatura size={46} mirando={asomadoBorde.lado === "der" ? 1 : -1} {mirada} tinta={asomadoBorde.tinta} />
+    </div>
+  {/if}
+
   <!-- LA TRASTIENDA: una etiqueta mono girada que corta el borde derecho
        de la página, como las etiquetas de los márgenes de un taller. -->
   <button
@@ -1198,9 +1175,31 @@
 
   /* ── Las piezas del SISTEMA: la marca, la trastienda y la boca viven
      DENTRO del mosaico, en crema, para distinguirse de las piezas vivas. ── */
-  .marca-baldosa {
-    background: var(--yap-superficie);
-    border: 1.5px solid var(--yap-borde);
+  /* ── Los tres fijos de la interfaz definitiva ── */
+  .loro-jefe {
+    position: fixed;
+    top: calc(env(safe-area-inset-top) + 6px);
+    left: 10px;
+    z-index: 31;
+    pointer-events: none;
+  }
+  .loro-jefe.voltereta {
+    animation: voltereta 0.85s cubic-bezier(0.34, 1.3, 0.5, 1);
+  }
+  .marca-fija {
+    position: fixed;
+    left: 14px;
+    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 14px);
+    z-index: 31;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: bottom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .membrete-datos {
     font-family: var(--yap-mono, ui-monospace, monospace);
@@ -1208,7 +1207,75 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--yap-tinta-suave, #82755a);
-    margin: 2px 2px 0 0;
+    margin-left: 3px;
+  }
+  .boca-fija {
+    position: fixed;
+    right: 12px;
+    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 12px);
+    z-index: 31;
+    width: 92px;
+    height: 92px;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: bottom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .boca-fija .buzon {
+    position: relative;
+    z-index: 5;
+    width: 52px;
+    height: 44px;
+    margin: 24px auto 0;
+    display: block;
+  }
+  /* La hoja que brota del sello, esquina abajo-derecha. */
+  .boca-hoja {
+    position: fixed;
+    right: 12px;
+    left: 12px;
+    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 12px);
+    z-index: 52;
+    transform-origin: 92% 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 14px 14px;
+    border: 1.5px solid var(--yap-tinta, #2b2418);
+    border-radius: 18px;
+    background: var(--yap-papel, #f4f1ea);
+    box-shadow: 4px 5px 0 #ded7c2;
+  }
+  /* La bandada asomando por los bordes. */
+  .asomado-borde {
+    position: fixed;
+    z-index: 25;
+    pointer-events: none;
+  }
+  .asomado-borde.lado-izq {
+    left: 0;
+    animation: asoma-izq 2.8s ease both;
+  }
+  .asomado-borde.lado-der {
+    right: 0;
+    animation: asoma-der 2.8s ease both;
+  }
+  .asomado-borde.lado-abajo {
+    bottom: 0;
+    animation: asoma-abajo 2.8s ease both;
+  }
+  @keyframes asoma-izq {
+    0%, 100% { transform: translateX(-52px); }
+    22%, 78% { transform: translateX(-8px) rotate(4deg); }
+  }
+  @keyframes asoma-der {
+    0%, 100% { transform: translateX(52px); }
+    22%, 78% { transform: translateX(8px) rotate(-4deg); }
+  }
+  @keyframes asoma-abajo {
+    0%, 100% { transform: translateY(56px); }
+    22%, 78% { transform: translateY(10px) rotate(-3deg); }
   }
   .loro-percha {
     position: absolute;
@@ -1226,24 +1293,11 @@
     55% { transform: rotate(-300deg) scale(1.15); }
     100% { transform: rotate(-360deg) scale(1); }
   }
-  .marca-toque {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
-    gap: 1px;
-    padding: 0 12px 6px 0;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-  }
   /* El «yappy» de recortes: cada letra con su color y su giro propios,
      como pegada de una revista distinta. */
   .marca-palabra {
     font-weight: 900;
-    font-size: 40px;
+    font-size: 46px;
     letter-spacing: -0.03em;
     display: inline-flex;
     line-height: 1;
@@ -1313,8 +1367,8 @@
     display: flex;
     flex-direction: column;
     gap: 13px;
-    /* Aire arriba para el loro, que asoma por encima de la primera fila. */
-    padding: 40px 5px calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 22px);
+    /* Aire para los fijos: el jefe arriba, la marca y el sello abajo. */
+    padding: 68px 5px calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 118px);
     scrollbar-width: none;
   }
   .lista::-webkit-scrollbar {
@@ -1447,12 +1501,25 @@
     pointer-events: none;
     display: flex;
     flex-direction: column;
-    padding-bottom: 20px;
+    padding-bottom: 13px;
   }
   /* Modo noche: todas duermen salvo la que suena. */
   :global(html[data-theme="dark"]) .parche:not(.suena) .parche-cuerpo,
   :global(html[data-theme="dark"]) .baldosa-cuerpo:not(.suena) {
     filter: brightness(0.52) saturate(0.6);
+  }
+
+  .titulo-plano {
+    margin: auto 0;
+    color: #f7f2e7;
+    font-weight: 800;
+    line-height: 1.16;
+    letter-spacing: -0.01em;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: anywhere;
   }
 
   /* EL CARTEL vive dentro de la ventana. */
@@ -1524,7 +1591,7 @@
   .pastilla {
     position: absolute;
     left: 50%;
-    bottom: 0;
+    bottom: -7px;
     transform: translateX(-50%);
     display: inline-flex;
     align-items: center;
@@ -1622,35 +1689,18 @@
   }
 
   /* ── La boca: el sello de correos con el buzón dibujado ── */
-  .boca-baldosa {
-    background: var(--yap-superficie);
-    border: 1.5px solid var(--yap-borde);
-    color: var(--yap-tinta-suave, #82755a);
-  }
-  .boca-suelta {
-    background: transparent;
-    border: 0;
-    color: var(--yap-tinta-suave, #82755a);
-    overflow: visible;
-  }
   .boca-sello {
     background: #f7f2e7;
   }
-  .boca-toque {
-    position: relative;
-    z-index: 5;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    border: 0;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-    padding: 0;
+  .boca-fija .boca-sello {
+    background: var(--vivo, var(--yap-voz, #e0502a));
+  }
+  .boca-fija .costura polygon {
+    stroke: rgba(247, 242, 231, 0.6);
+  }
+  .boca-fija .buzon path {
+    stroke: #f7f2e7;
+    animation: none;
   }
   .buzon {
     width: 44px;
@@ -1677,12 +1727,6 @@
     60% { stroke: #00a896; }
     80% { stroke: #ff8e3c; }
     100% { stroke: #ff6b6b; }
-  }
-  .boca-rotulo {
-    font-family: var(--yap-mono, ui-monospace, monospace);
-    font-size: 12px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
   }
   .boca-dentro {
     position: relative;
@@ -1974,7 +2018,8 @@
 
   /* ── El colofón: la página tiene final ── */
   .colofon {
-    margin: 16px 15px 4px;
+    margin: auto 15px 4px;
+    padding-top: 16px;
     display: flex;
     flex-direction: column;
     gap: 7px;
