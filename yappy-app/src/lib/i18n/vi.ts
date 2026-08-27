@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Từ Safari, hộp thư hay bất cứ đâu: chạm chia sẻ rồi chọn Yappy.",
   "cinta.ensename": "Chỉ mình với",
   "cinta.borrar": "gỡ khỏi băng",
+  "cinta.fuera": "ra khỏi băng",
   "pieza.opciones": "Mảnh này",
   "pieza.favorito": "Yêu thích",
   "pieza.quitar_favorito": "Bỏ yêu thích",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Hủy",
   "comun.hecho": "Xong",
   "comun.guardar": "Lưu",
+  "comun.deshacer": "Hoàn tác",
   "comun.cerrar": "Đóng",
 } as Record<string, string>;

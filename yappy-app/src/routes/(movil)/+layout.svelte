@@ -30,6 +30,9 @@
   const enCartel = $derived(page.url.pathname.startsWith("/read"));
   const agujaViva = $derived(!enCartel && !!repro.snap && repro.snap.estado !== "inactivo");
 
+  // (La sangre de color --vivo vive en el layout RAÍZ: /read queda fuera
+  // de este caparazón y la variable debe sobrevivir a la navegación.)
+
   // Reconciliación tras CADA navegación: lo primero es pintar la verdad.
   afterNavigate(() => {
     reconciliar();

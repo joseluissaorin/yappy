@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Safari से, ईमेल से, कहीं से भी: शेयर छूकर Yappy चुन लीजिए।",
   "cinta.ensename": "समझाओ",
   "cinta.borrar": "टेप से हटाएँ",
+  "cinta.fuera": "टेप से बाहर",
   "pieza.opciones": "यह टुकड़ा",
   "pieza.favorito": "पसंदीदा",
   "pieza.quitar_favorito": "पसंदीदा से हटाएँ",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "रद्द करें",
   "comun.hecho": "हो गया",
   "comun.guardar": "सहेजें",
+  "comun.deshacer": "पूर्ववत करें",
   "comun.cerrar": "बंद करें",
 } as Record<string, string>;

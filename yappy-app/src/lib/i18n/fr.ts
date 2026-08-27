@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Depuis Safari, tes mails ou n'importe où : touche partager et choisis Yappy.",
   "cinta.ensename": "Montre-moi",
   "cinta.borrar": "retirer de la bande",
+  "cinta.fuera": "hors de la bande",
   "pieza.opciones": "Cette pièce",
   "pieza.favorito": "Favori",
   "pieza.quitar_favorito": "Retirer le favori",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Annuler",
   "comun.hecho": "Terminé",
   "comun.guardar": "Enregistrer",
+  "comun.deshacer": "Annuler",
   "comun.cerrar": "Fermer",
 } as Record<string, string>;

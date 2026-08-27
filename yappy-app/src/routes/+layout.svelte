@@ -4,8 +4,24 @@
   import { goto, afterNavigate } from "$app/navigation";
   import { page } from "$app/stores";
   import { ready } from "$lib/platform";
+  import { repro } from "$lib/reproduccion.svelte";
+  import { colorDeArchivo } from "$lib/juguete";
 
   let { children } = $props();
+
+  // LA SANGRE DE COLOR (docs/EL-JUGUETE.md §8): cuando algo suena, --vivo
+  // toma el color de esa pieza y tiñe la aguja, el karaoke del cartel y
+  // los acentos. Vive AQUÍ, en la raíz, porque /read está fuera del
+  // caparazón móvil y este layout no se desmonta jamás.
+  $effect(() => {
+    if (typeof document === "undefined") return;
+    const s = repro.snap;
+    if (s && s.estado !== "inactivo" && s.doc_path) {
+      document.documentElement.style.setProperty("--vivo", colorDeArchivo(s.doc_path));
+    } else {
+      document.documentElement.style.removeProperty("--vivo");
+    }
+  });
 
   // El guard de rutas móviles tiene que vigilar CADA navegación, no solo
   // el primer montaje: un goto("/") posterior (o un enlace antiguo) caía

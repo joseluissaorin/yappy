@@ -32,6 +32,7 @@ export default {
   "cinta.vacia_texto": "Safari’den, e-postadan ya da herhangi bir yerden: Paylaş’a dokun ve Yappy’yi seç.",
   "cinta.ensename": "Bana göster",
   "cinta.borrar": "banttan çıkar",
+  "cinta.fuera": "banttan çıktı",
   "pieza.opciones": "Bu parça",
   "pieza.favorito": "Favori",
   "pieza.quitar_favorito": "Favoriden çıkar",
@@ -155,5 +156,6 @@ export default {
   "comun.cancelar": "Vazgeç",
   "comun.hecho": "Bitti",
   "comun.guardar": "Kaydet",
+  "comun.deshacer": "Geri al",
   "comun.cerrar": "Kapat",
 } as Record<string, string>;

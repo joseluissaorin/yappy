@@ -32,6 +32,7 @@ export default {
   "cinta.vacia_texto": "من Safari أو البريد أو أي مكان آخر: اضغط على «مشاركة» واختر Yappy.",
   "cinta.ensename": "أرني",
   "cinta.borrar": "إزالة من الشريط",
+  "cinta.fuera": "خارج الشريط",
   "pieza.opciones": "هذه القطعة",
   "pieza.favorito": "مفضلة",
   "pieza.quitar_favorito": "إزالة من المفضلة",
@@ -155,5 +156,6 @@ export default {
   "comun.cancelar": "إلغاء",
   "comun.hecho": "تم",
   "comun.guardar": "حفظ",
+  "comun.deshacer": "تراجع",
   "comun.cerrar": "إغلاق",
 } as Record<string, string>;

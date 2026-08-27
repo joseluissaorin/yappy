@@ -367,6 +367,9 @@ export const colaReordenar = (id: string, indice: number): Promise<void> =>
   invoke("cola_reordenar_cmd", { id, indice });
 export const colaReintentar = (id: string): Promise<void> =>
   invoke("cola_reintentar_cmd", { id });
+/// La interfaz se lee a sí misma: dice un texto corto por el canal de
+/// efectos (calla si algo suena o el motor está ocupado).
+export const decir = (texto: string): Promise<number> => invoke("decir_cmd", { texto });
 export function onColaActualizada(cb: () => void): Promise<UnlistenFn> {
   return listen("cola_actualizada", () => cb());
 }

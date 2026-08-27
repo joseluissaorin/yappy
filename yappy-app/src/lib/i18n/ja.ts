@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Safariでもメールでもどこからでも。共有をタップして、Yappyを選ぶだけ。",
   "cinta.ensename": "教えて",
   "cinta.borrar": "テープから外す",
+  "cinta.fuera": "テープから外れました",
   "pieza.opciones": "このピース",
   "pieza.favorito": "お気に入り",
   "pieza.quitar_favorito": "お気に入りを解除",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "キャンセル",
   "comun.hecho": "完了",
   "comun.guardar": "保存",
+  "comun.deshacer": "元に戻す",
   "comun.cerrar": "閉じる",
 } as Record<string, string>;

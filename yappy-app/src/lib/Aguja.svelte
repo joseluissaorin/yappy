@@ -169,7 +169,9 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    background: linear-gradient(180deg, var(--acento-voz-claro, #f4682e), var(--acento-voz, #e0502a));
+    /* La sangre de color: la aguja se tiñe del color de la pieza que
+       suena (--vivo, docs/EL-JUGUETE.md §8); plano, sin degradado. */
+    background: var(--vivo, var(--acento-voz, #e0502a));
     color: #fff6ef;
     border-radius: 20px;
     padding: 10px 10px 10px 12px;

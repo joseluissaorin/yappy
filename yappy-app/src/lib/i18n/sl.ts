@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Iz Safarija, pošte ali od kjer koli: tapni deljenje in izberi Yappy.",
   "cinta.ensename": "Pokaži mi",
   "cinta.borrar": "odstrani s traku",
+  "cinta.fuera": "s traku",
   "pieza.opciones": "Ta kos",
   "pieza.favorito": "Priljubljeno",
   "pieza.quitar_favorito": "Odstrani iz priljubljenih",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Prekliči",
   "comun.hecho": "Končano",
   "comun.guardar": "Shrani",
+  "comun.deshacer": "Razveljavi",
   "comun.cerrar": "Zapri",
 } as Record<string, string>;

@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "No Safari, pasta vai jebkurienes: pieskaries kopīgošanai un izvēlies Yappy.",
   "cinta.ensename": "Parādi man",
   "cinta.borrar": "noņemt no lentes",
+  "cinta.fuera": "noņemts no lentes",
   "pieza.opciones": "Šis gabals",
   "pieza.favorito": "Izlase",
   "pieza.quitar_favorito": "Izņemt no izlases",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Atcelt",
   "comun.hecho": "Gatavs",
   "comun.guardar": "Saglabāt",
+  "comun.deshacer": "Atsaukt",
   "comun.cerrar": "Aizvērt",
 } as Record<string, string>;

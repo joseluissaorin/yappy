@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Ze Safari, z pošty nebo odkudkoli: klepni na sdílení a vyber Yappy.",
   "cinta.ensename": "Ukaž mi",
   "cinta.borrar": "odebrat z pásky",
+  "cinta.fuera": "pryč z pásky",
   "pieza.opciones": "Tenhle kousek",
   "pieza.favorito": "Oblíbené",
   "pieza.quitar_favorito": "Odebrat z oblíbených",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Zrušit",
   "comun.hecho": "Hotovo",
   "comun.guardar": "Uložit",
+  "comun.deshacer": "Zpět",
   "comun.cerrar": "Zavřít",
 } as Record<string, string>;

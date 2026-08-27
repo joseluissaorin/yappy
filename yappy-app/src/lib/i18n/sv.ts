@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Från Safari, mejlen eller var som helst: tryck på dela och välj Yappy.",
   "cinta.ensename": "Visa mig",
   "cinta.borrar": "ta bort från bandet",
+  "cinta.fuera": "borta från bandet",
   "pieza.opciones": "Det här stycket",
   "pieza.favorito": "Favorit",
   "pieza.quitar_favorito": "Ta bort favorit",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Avbryt",
   "comun.hecho": "Klart",
   "comun.guardar": "Spara",
+  "comun.deshacer": "Ångra",
   "comun.cerrar": "Stäng",
 } as Record<string, string>;

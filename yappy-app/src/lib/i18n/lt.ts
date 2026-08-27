@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Iš Safari, pašto ar bet kur: bakstelėk „dalintis“ ir pasirink Yappy.",
   "cinta.ensename": "Parodyk",
   "cinta.borrar": "nuimti nuo juostos",
+  "cinta.fuera": "nuimta nuo juostos",
   "pieza.opciones": "Šis gabalas",
   "pieza.favorito": "Mėgstamiausias",
   "pieza.quitar_favorito": "Pašalinti iš mėgstamiausių",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Atšaukti",
   "comun.hecho": "Atlikta",
   "comun.guardar": "Išsaugoti",
+  "comun.deshacer": "Anuliuoti",
   "comun.cerrar": "Užverti",
 } as Record<string, string>;

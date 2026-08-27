@@ -1003,7 +1003,9 @@
      sigue los saltos de línea con box-decoration-break. El grosor de la
      tinta respira con el nivel REAL de la voz (sin remaquetar nada). */
   .frase .ya-dicha {
-    background-image: linear-gradient(color-mix(in srgb, var(--yap-dorado, #e8b41a) 50%, transparent), color-mix(in srgb, var(--yap-dorado, #e8b41a) 50%, transparent));
+    /* La sangre de color: el subrayado bebe de --vivo (el color de la
+       pieza que suena); sin nada sonando cae al dorado de la casa. */
+    background-image: linear-gradient(color-mix(in srgb, var(--vivo, var(--yap-dorado, #e8b41a)) 50%, transparent), color-mix(in srgb, var(--vivo, var(--yap-dorado, #e8b41a)) 50%, transparent));
     background-repeat: no-repeat;
     background-position: 0 88%;
     background-size: 100% var(--grosor-tinta, 0.3em);
@@ -1277,7 +1279,7 @@
     background: color-mix(in srgb, var(--yap-dorado, #e8b41a) 18%, transparent);
   }
   .guion-viva {
-    background: color-mix(in srgb, var(--yap-dorado, #e8b41a) 55%, transparent);
+    background: color-mix(in srgb, var(--vivo, var(--yap-dorado, #e8b41a)) 55%, transparent);
     color: inherit;
     border-radius: 4px;
     padding: 0 1px;

@@ -32,6 +32,7 @@ export default {
   "cinta.vacia_texto": "Из Safari, из почты или откуда угодно: нажми «Поделиться» и выбери Yappy.",
   "cinta.ensename": "Покажи мне",
   "cinta.borrar": "убрать с ленты",
+  "cinta.fuera": "снято с ленты",
   "pieza.opciones": "Этот кусочек",
   "pieza.favorito": "Избранное",
   "pieza.quitar_favorito": "Убрать из избранного",
@@ -155,5 +156,6 @@ export default {
   "comun.cancelar": "Отмена",
   "comun.hecho": "Готово",
   "comun.guardar": "Сохранить",
+  "comun.deshacer": "Отменить",
   "comun.cerrar": "Закрыть",
 } as Record<string, string>;

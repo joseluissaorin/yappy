@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "A Safariból, a levelekből vagy bárhonnan: koppints a megosztásra, és válaszd a Yappyt.",
   "cinta.ensename": "Mutasd meg",
   "cinta.borrar": "le a szalagról",
+  "cinta.fuera": "lekerült a szalagról",
   "pieza.opciones": "Ez a darab",
   "pieza.favorito": "Kedvenc",
   "pieza.quitar_favorito": "Kedvenc törlése",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Mégse",
   "comun.hecho": "Kész",
   "comun.guardar": "Mentés",
+  "comun.deshacer": "Visszavonás",
   "comun.cerrar": "Bezárás",
 } as Record<string, string>;

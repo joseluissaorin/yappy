@@ -573,6 +573,7 @@ pub fn run() {
             commands::open_transcribe_window,
             commands::request_macos_permissions,
             commands::sample_voice,
+            commands::decir_cmd,
             commands::capture_diagnostics,
             commands::get_history,
             commands::clear_history_cmd,

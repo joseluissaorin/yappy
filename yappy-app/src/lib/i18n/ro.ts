@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Din Safari, din e-mail sau de oriunde: atinge partajează și alege Yappy.",
   "cinta.ensename": "Arată-mi",
   "cinta.borrar": "scoate de pe bandă",
+  "cinta.fuera": "scoasă de pe bandă",
   "pieza.opciones": "Această piesă",
   "pieza.favorito": "Favorit",
   "pieza.quitar_favorito": "Scoate de la favorite",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Anulează",
   "comun.hecho": "Gata",
   "comun.guardar": "Salvează",
+  "comun.deshacer": "Anulează",
   "comun.cerrar": "Închide",
 } as Record<string, string>;

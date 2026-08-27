@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Aus Safari, der Mail oder von wo auch immer: Teilen antippen und Yappy wählen.",
   "cinta.ensename": "Zeig’s mir",
   "cinta.borrar": "vom Band nehmen",
+  "cinta.fuera": "vom Band genommen",
   "pieza.opciones": "Dieses Stück",
   "pieza.favorito": "Favorit",
   "pieza.quitar_favorito": "Favorit entfernen",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Abbrechen",
   "comun.hecho": "Fertig",
   "comun.guardar": "Speichern",
+  "comun.deshacer": "Rückgängig",
   "comun.cerrar": "Schließen",
 } as Record<string, string>;

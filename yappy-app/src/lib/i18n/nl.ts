@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Vanuit Safari, je mail of waar dan ook: tik op delen en kies Yappy.",
   "cinta.ensename": "Laat maar zien",
   "cinta.borrar": "van de band halen",
+  "cinta.fuera": "van de band af",
   "pieza.opciones": "Dit stuk",
   "pieza.favorito": "Favoriet",
   "pieza.quitar_favorito": "Favoriet verwijderen",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Annuleren",
   "comun.hecho": "Klaar",
   "comun.guardar": "Opslaan",
+  "comun.deshacer": "Ongedaan maken",
   "comun.cerrar": "Sluiten",
 } as Record<string, string>;

@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Από το Safari, το μέιλ ή από οπουδήποτε: πάτησε κοινοποίηση και διάλεξε το Yappy.",
   "cinta.ensename": "Δείξε μου",
   "cinta.borrar": "βγάλε το από την κασέτα",
+  "cinta.fuera": "εκτός ταινίας",
   "pieza.opciones": "Αυτό το κομμάτι",
   "pieza.favorito": "Αγαπημένο",
   "pieza.quitar_favorito": "Αφαίρεση αγαπημένου",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Άκυρο",
   "comun.hecho": "Έγινε",
   "comun.guardar": "Αποθήκευση",
+  "comun.deshacer": "Αναίρεση",
   "comun.cerrar": "Κλείσιμο",
 } as Record<string, string>;

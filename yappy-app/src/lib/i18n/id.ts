@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Dari Safari, surel, atau mana saja: ketuk bagikan, lalu pilih Yappy.",
   "cinta.ensename": "Ajari aku",
   "cinta.borrar": "keluarkan dari pita",
+  "cinta.fuera": "keluar dari pita",
   "pieza.opciones": "Potongan ini",
   "pieza.favorito": "Favorit",
   "pieza.quitar_favorito": "Hapus dari favorit",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Batal",
   "comun.hecho": "Selesai",
   "comun.guardar": "Simpan",
+  "comun.deshacer": "Urungkan",
   "comun.cerrar": "Tutup",
 } as Record<string, string>;

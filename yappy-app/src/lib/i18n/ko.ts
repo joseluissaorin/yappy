@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Safari에서든 메일에서든 어디서든: 공유를 누르고 Yappy를 고르면 돼요.",
   "cinta.ensename": "알려 줘",
   "cinta.borrar": "테이프에서 빼기",
+  "cinta.fuera": "테이프에서 빠졌어요",
   "pieza.opciones": "이 조각",
   "pieza.favorito": "즐겨찾기",
   "pieza.quitar_favorito": "즐겨찾기 해제",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "취소",
   "comun.hecho": "완료",
   "comun.guardar": "저장",
+  "comun.deshacer": "실행 취소",
   "comun.cerrar": "닫기",
 } as Record<string, string>;

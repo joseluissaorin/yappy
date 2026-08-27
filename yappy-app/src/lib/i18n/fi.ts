@@ -33,6 +33,7 @@ export default {
   "cinta.vacia_texto": "Safarista, sähköpostista tai mistä vain: napauta jakoa ja valitse Yappy.",
   "cinta.ensename": "Näytä",
   "cinta.borrar": "poista nauhalta",
+  "cinta.fuera": "pois nauhalta",
   "pieza.opciones": "Tämä pala",
   "pieza.favorito": "Suosikki",
   "pieza.quitar_favorito": "Poista suosikeista",
@@ -159,5 +160,6 @@ export default {
   "comun.cancelar": "Peruuta",
   "comun.hecho": "Valmis",
   "comun.guardar": "Tallenna",
+  "comun.deshacer": "Kumoa",
   "comun.cerrar": "Sulje",
 } as Record<string, string>;

@@ -2196,6 +2196,81 @@ pub async fn sample_voice(
     }
 }
 
+/// DECIR: la interfaz se lee a sí misma (docs/EL-JUGUETE.md §7). Sintetiza
+/// un texto corto (el título de una pieza) con la voz por defecto y lo suena
+/// por el canal de efectos, SIN tocar jamás la sesión de lectura. Si algo
+/// suena o el motor está ocupado, silencio y a otra cosa: el juguete nunca
+/// pisa una lectura. Devuelve la duración (0.0 si calló).
+#[tauri::command]
+pub async fn decir_cmd(
+    app: AppHandle,
+    state: State<'_, Arc<AppState>>,
+    texto: String,
+) -> Result<f64, String> {
+    #[cfg(target_os = "ios")]
+    {
+        if state.playback.snapshot().estado != "inactivo" {
+            return Ok(0.0);
+        }
+        let corto: String = texto.chars().take(90).collect();
+        if corto.trim().is_empty() {
+            return Ok(0.0);
+        }
+        let app2 = app.clone();
+        let st = state.inner().clone();
+        let dur = tauri::async_runtime::spawn_blocking(move || -> Result<f64, String> {
+            // Nunca dos síntesis a la vez: si el motor está ocupado, callar.
+            let _motor = st
+                .candado_motor
+                .try_lock()
+                .map_err(|_| "motor ocupado".to_string())?;
+            let root = model::model_root(&app2).map_err(|e| e.to_string())?;
+            let engine = st.engine_or_load(&root).map_err(|e| e.to_string())?;
+            let (voice, lang) = {
+                let s = st.settings.lock().unwrap();
+                (s.voice.clone(), s.default_lang.clone())
+            };
+            let lang = if lang == "na" || lang.is_empty() {
+                "en".into()
+            } else {
+                lang
+            };
+            let opts = SynthesisOptions {
+                voice,
+                speed: 1.0,
+                default_lang: lang,
+                total_steps: Quality::Fast.total_steps(),
+                seed: Some(7),
+                detectar_idioma: true,
+                pausa_entre_parrafos_s: 0.0,
+            };
+            let chunks = engine
+                .synthesize(&corto, &opts)
+                .map_err(|e| e.to_string())?;
+            let sr = chunks.first().map(|c| c.sample_rate).unwrap_or(44100) as u32;
+            let samples: Vec<f32> = chunks
+                .iter()
+                .flat_map(|c| c.samples.iter().copied())
+                .collect();
+            if samples.is_empty() {
+                return Ok(0.0);
+            }
+            let p = muestras_dir(&app2)?.join("dicho.wav");
+            crate::playback::write_wav_file(&p, &samples, sr).map_err(|e| e.to_string())?;
+            Ok(crate::mobile::efecto_play(&p.to_string_lossy()))
+        })
+        .await
+        .map_err(|e| e.to_string())?
+        .unwrap_or(0.0);
+        return Ok(dur);
+    }
+    #[cfg(not(target_os = "ios"))]
+    {
+        let _ = (app, state, texto);
+        Ok(0.0)
+    }
+}
+
 /// La presentación de cada voz, en el idioma preferido del usuario: los 31
 /// idiomas que Yappy habla. Formas sin marca de género donde la lengua lo
 /// pide (las voces son de ambos).
