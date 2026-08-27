@@ -512,15 +512,21 @@ pub fn resample_mono(input: &[f32], sr_in: u32, sr_out: u32) -> Result<Vec<f32>>
     if sr_in == sr_out {
         return Ok(input.to_vec());
     }
-    let chunk = 1024usize;
-    let mut resampler = FftFixedInOut::<f32>::new(sr_in as usize, sr_out as usize, chunk, 1)?;
+    // FftFixedInOut has a FIXED input block size that rubato derives from the
+    // sample-rate ratio — it is not the chunk size passed to `new` (e.g. for
+    // 44100 -> 48000 the real block is 1029 frames, not 1024). Feeding any other
+    // size makes `process` return InsufficientInputBufferSize, which previously
+    // killed the audio thread and silenced all playback. Query the real block
+    // size and zero-pad only the final partial block.
+    let mut resampler = FftFixedInOut::<f32>::new(sr_in as usize, sr_out as usize, 1024, 1)?;
+    let in_chunk = resampler.input_frames_next();
     let mut out: Vec<f32> = Vec::with_capacity(
         ((input.len() as f64) * (sr_out as f64) / (sr_in as f64)).ceil() as usize,
     );
     let mut pos = 0usize;
     while pos < input.len() {
-        let end = (pos + chunk).min(input.len());
-        let mut frame = vec![0.0f32; chunk];
+        let end = (pos + in_chunk).min(input.len());
+        let mut frame = vec![0.0f32; in_chunk];
         let slice = &input[pos..end];
         frame[..slice.len()].copy_from_slice(slice);
         let waves_in: [&[f32]; 1] = [&frame];

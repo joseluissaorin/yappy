@@ -75,8 +75,16 @@ mod imp {
     /// Stored SMTC instance — created on first metadata push, kept alive for
     /// the lifetime of the process so handler subscriptions stay valid.
     static SMTC: OnceLock<Mutex<Option<SystemMediaTransportControls>>> = OnceLock::new();
-    static TASKBAR: OnceLock<Mutex<Option<ITaskbarList3>>> = OnceLock::new();
-    static MAIN_HWND: OnceLock<Mutex<Option<HWND>>> = OnceLock::new();
+
+    /// Classic COM interfaces are `!Send` in the windows crate, but these
+    /// process-lifetime singletons are only ever accessed behind a Mutex and
+    /// used from the apartment we initialized on the main thread, so it is
+    /// safe to let them live in a static.
+    struct TaskbarListCom(ITaskbarList3);
+    unsafe impl Send for TaskbarListCom {}
+
+    static TASKBAR: OnceLock<Mutex<Option<TaskbarListCom>>> = OnceLock::new();
+    static MAIN_HWND: OnceLock<Mutex<Option<isize>>> = OnceLock::new();
 
     fn ensure_com_init() {
         // Idempotent — Tauri also calls CoInitializeEx; calling it again on
@@ -96,7 +104,7 @@ mod imp {
         }
         ensure_com_init();
         let hwnd_guard = MAIN_HWND.get()?.lock().ok()?;
-        let hwnd = (*hwnd_guard)?;
+        let hwnd = HWND((*hwnd_guard)? as *mut _);
         unsafe {
             let interop: ISystemMediaTransportControlsInterop = windows::core::factory::<
                 SystemMediaTransportControls,
@@ -162,7 +170,7 @@ mod imp {
         // Stash the HWND so smtc_get_or_create can wire it on first call.
         let cell = MAIN_HWND.get_or_init(|| Mutex::new(None));
         if let Ok(mut g) = cell.lock() {
-            *g = Some(HWND(hwnd_raw as _));
+            *g = Some(hwnd_raw);
         }
         let Some(smtc) = smtc_get_or_create() else { return };
 
@@ -198,13 +206,13 @@ mod imp {
         let cell = TASKBAR.get_or_init(|| Mutex::new(None));
         let mut guard = cell.lock().ok()?;
         if let Some(t) = guard.as_ref() {
-            return Some(t.clone());
+            return Some(t.0.clone());
         }
         ensure_com_init();
         unsafe {
             let tl: ITaskbarList3 = CoCreateInstance(&TaskbarList, None, CLSCTX_INPROC_SERVER).ok()?;
             tl.HrInit().ok()?;
-            *guard = Some(tl.clone());
+            *guard = Some(TaskbarListCom(tl.clone()));
             Some(tl)
         }
     }
@@ -213,7 +221,8 @@ mod imp {
         let Some(tb) = taskbar_get_or_create() else { return };
         let hwnd_guard = MAIN_HWND.get().and_then(|c| c.lock().ok());
         let Some(g) = hwnd_guard else { return };
-        let Some(hwnd) = *g else { return };
+        let Some(raw) = *g else { return };
+        let hwnd = HWND(raw as *mut _);
         unsafe {
             let _ = tb.SetProgressState(hwnd, TBPF_NORMAL);
             let _ = tb.SetProgressValue(hwnd, value, total);
@@ -224,7 +233,8 @@ mod imp {
         let Some(tb) = taskbar_get_or_create() else { return };
         let hwnd_guard = MAIN_HWND.get().and_then(|c| c.lock().ok());
         let Some(g) = hwnd_guard else { return };
-        let Some(hwnd) = *g else { return };
+        let Some(raw) = *g else { return };
+        let hwnd = HWND(raw as *mut _);
         unsafe {
             let _ = tb.SetProgressState(hwnd, TBPF_NOPROGRESS);
         }
@@ -253,7 +263,7 @@ mod imp {
             }
             let handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid).ok()?;
             let mut buf = [0u16; MAX_PATH as usize];
-            let len = GetModuleFileNameExW(Some(handle), None, &mut buf);
+            let len = GetModuleFileNameExW(handle, None, &mut buf);
             let _ = CloseHandle(handle);
             if len == 0 {
                 return None;
@@ -294,7 +304,7 @@ mod imp {
     // console window AND adds ~100-300ms latency. Native Win32 = zero
     // flash, sub-ms call cost.
 
-    use windows::Win32::Foundation::{HANDLE, HWND};
+    use windows::Win32::Foundation::HANDLE;
     use windows::Win32::System::DataExchange::{
         CloseClipboard, EmptyClipboard, GetClipboardData, GetClipboardSequenceNumber,
         OpenClipboard, SetClipboardData,
@@ -366,7 +376,7 @@ mod imp {
             }
             let _ = EmptyClipboard();
             // SetClipboardData takes ownership of hmem on success.
-            let ok = SetClipboardData(CF_UNICODETEXT.0 as u32, Some(HANDLE(hmem.0 as _))).is_ok();
+            let ok = SetClipboardData(CF_UNICODETEXT.0 as u32, HANDLE(hmem.0 as _)).is_ok();
             let _ = CloseClipboard();
             ok
         }
@@ -416,7 +426,7 @@ mod imp {
     use windows::Win32::Graphics::Gdi::{
         BitBlt, CreateCompatibleBitmap, CreateCompatibleDC, DeleteDC, DeleteObject,
         GetDC, GetDIBits, ReleaseDC, SelectObject, BITMAPINFO, BITMAPINFOHEADER,
-        BI_RGB, DIB_RGB_COLORS, SRCCOPY,
+        BI_RGB, DIB_RGB_COLORS, HGDIOBJ, SRCCOPY,
     };
     use windows::Win32::Foundation::RECT;
     use windows::Win32::UI::WindowsAndMessaging::{
@@ -455,7 +465,7 @@ mod imp {
             if screen_dc.is_invalid() {
                 anyhow::bail!("capture: GetDC(NULL) failed");
             }
-            let mem_dc = CreateCompatibleDC(Some(screen_dc));
+            let mem_dc = CreateCompatibleDC(screen_dc);
             if mem_dc.is_invalid() {
                 ReleaseDC(None, screen_dc);
                 anyhow::bail!("capture: CreateCompatibleDC failed");
@@ -466,11 +476,12 @@ mod imp {
                 ReleaseDC(None, screen_dc);
                 anyhow::bail!("capture: CreateCompatibleBitmap failed");
             }
-            let old = SelectObject(mem_dc, hbm.into());
-            let blt_ok = BitBlt(mem_dc, 0, 0, w, h, Some(screen_dc), x, y, SRCCOPY).is_ok();
+            let hbm_obj = HGDIOBJ(hbm.0);
+            let old = SelectObject(mem_dc, hbm_obj);
+            let blt_ok = BitBlt(mem_dc, 0, 0, w, h, screen_dc, x, y, SRCCOPY).is_ok();
             if !blt_ok {
                 let _ = SelectObject(mem_dc, old);
-                let _ = DeleteObject(hbm.into());
+                let _ = DeleteObject(hbm_obj);
                 let _ = DeleteDC(mem_dc);
                 ReleaseDC(None, screen_dc);
                 anyhow::bail!("capture: BitBlt failed");
@@ -499,7 +510,7 @@ mod imp {
             // 4) GDI cleanup before we get to the PNG encode (let go of all
             //    the kernel handles ASAP).
             let _ = SelectObject(mem_dc, old);
-            let _ = DeleteObject(hbm.into());
+            let _ = DeleteObject(hbm_obj);
             let _ = DeleteDC(mem_dc);
             ReleaseDC(None, screen_dc);
 
