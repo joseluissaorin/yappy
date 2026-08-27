@@ -158,7 +158,11 @@ pub fn run() {
 
         // ─ XNNPACK: optimized CPU kernels for ARM + x86. Cross-platform,
         //   small. Sits at the end of the list as a CPU acceleration above
-        //   ORT's default CPU EP.
+        //   ORT's default CPU EP. Not registered alongside DirectML on
+        //   Windows: ORT rejects combining DirectML with any non-CPU EP
+        //   ("DML EP can be used with only CPU EP"), which failed session
+        //   creation on every machine where DirectML is actually available.
+        #[cfg(not(target_os = "windows"))]
         {
             use ort::execution_providers::xnnpack::XNNPACKExecutionProvider;
             eps.push(XNNPACKExecutionProvider::default().build());
@@ -249,9 +253,17 @@ pub fn run() {
     // polls the configured release feed, downloads signed installers, and
     // (after user consent) installs in place. macOS users currently get
     // updates via DMG re-download; Windows users get this richer flow.
+    //
+    // The plugin requires a `plugins.updater` config (signing pubkey + release
+    // feed endpoints) and PANICS at startup when that config is missing, so it
+    // is only registered when explicitly enabled via YAPPY_UPDATER=1. Repo
+    // configs ship without an updater section, which would otherwise crash
+    // every Windows launch.
     #[cfg(target_os = "windows")]
     {
-        builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+        if std::env::var_os("YAPPY_UPDATER").is_some() {
+            builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+        }
     }
 
     // Windows: single-instance plugin. When the user double-clicks a .epub
