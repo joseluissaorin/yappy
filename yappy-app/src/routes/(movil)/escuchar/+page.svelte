@@ -74,6 +74,12 @@
   // El sistema nervioso: el nivel del espejo y la mirada del loro.
   const nivel = $derived(repro.nivel);
   const sonando = $derived(!!repro.snap && repro.snap.estado !== "inactivo");
+  // La voz está TRABAJANDO (sonando o cocinando). Una pausa abandonada NO
+  // cuenta: la pieza pausada vuelve a ser una pieza normal con su título
+  // (el pausa-zombi congelaba la frase y el tamaño gigante para siempre).
+  const trabajando = $derived(
+    repro.snap?.estado === "sonando" || repro.snap?.estado === "preparando",
+  );
   let mirada = $state({ x: 0, y: 0 });
   const durmiendo = $derived(
     typeof document !== "undefined" &&
@@ -377,11 +383,14 @@
   // cada grande pesa max(3, 7−n): elegir una pieza la hace crecer ×6.
   let seleccionada = $state<string | null>(null);
   function pesoDe(item: ItemCola): number {
+    const suenaGrande = idQueSuena && trabajando;
     const grandes =
-      (seleccionada ? 1 : 0) + (idQueSuena && idQueSuena !== seleccionada ? 1 : 0);
+      (seleccionada ? 1 : 0) + (suenaGrande && idQueSuena !== seleccionada ? 1 : 0);
     const pesoGrande = Math.max(3, 7 - grandes);
     if (item.id === seleccionada) return pesoGrande;
-    if (item.id === idQueSuena) return pesoGrande;
+    // Solo mientras la voz TRABAJA la pieza es gigante; en pausa se queda
+    // notable pero encogible (adiós al zombi expandido).
+    if (item.id === idQueSuena) return trabajando ? pesoGrande : 2.2;
     if (item.favorito) return 2.0;
     if (item.estado === "error") return 1.1;
     // Los minutos SE VEN: una pieza gorda abulta hasta el doble.
@@ -889,7 +898,8 @@
             {@const tinta = tintaDe(item)}
             {@const honda = tonoHondo(tinta)}
             {@const forma = formaDe(item.id)}
-            {@const lineasCartel = esLaQueSuena ? [] : cartel(item.titulo, b.ancho, b.alto, $idiomaUI)}
+            {@const enMarcha = esLaQueSuena && trabajando}
+            {@const lineasCartel = enMarcha ? [] : cartel(item.titulo, b.ancho, b.alto, $idiomaUI)}
             <article
               data-pieza={item.id}
               class="baldosa" class:en-vuelo={enVuelo}
@@ -926,8 +936,10 @@
                 {#if pct > 0 && (item.estado === "listo" || esLaQueSuena)}
                   <span class="marea" style="height: {pct}%; background: {honda}"></span>
                 {/if}
-                <!-- EL CARTEL: el titular llena ancho y alto deformándose. -->
-                {#if esLaQueSuena}
+                <!-- EL CARTEL: el titular llena ancho y alto deformándose.
+                     El teletipo solo existe mientras la voz TRABAJA; una
+                     pausa enseña el TÍTULO (con su pastilla «en pausa»). -->
+                {#if enMarcha}
                   <div class="teletipo" aria-hidden="true">
                     {#key repro.snap?.current_text}
                       <p in:fly={{ y: 22, duration: 340 }} out:fly={{ y: -22, duration: 220 }}>{repro.snap?.current_text || item.titulo}</p>
@@ -968,7 +980,7 @@
                 <!-- El sello: escuchada entera, huella de pata. -->
                 {#if pct >= 100 && !esLaQueSuena}
                   <span class="sello-pata" aria-hidden="true" in:llega>
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="#ffffff"><ellipse cx="7" cy="7.6" rx="2.1" ry="2.9" transform="rotate(-18 7 7.6)"/><ellipse cx="12" cy="5.8" rx="2.1" ry="3"/><ellipse cx="17" cy="7.6" rx="2.1" ry="2.9" transform="rotate(18 17 7.6)"/><path d="M12 10.2c3.4 0 6 2.5 6 5.2 0 2.2-1.7 3.6-3.4 3.2-1.1-0.2-1.8-0.7-2.6-0.7s-1.5 0.5-2.6 0.7C7.7 19 6 17.6 6 15.4c0-2.7 2.6-5.2 6-5.2z"/></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="#f7f2e7"><ellipse cx="7" cy="7.6" rx="2.1" ry="2.9" transform="rotate(-18 7 7.6)"/><ellipse cx="12" cy="5.8" rx="2.1" ry="3"/><ellipse cx="17" cy="7.6" rx="2.1" ry="2.9" transform="rotate(18 17 7.6)"/><path d="M12 10.2c3.4 0 6 2.5 6 5.2 0 2.2-1.7 3.6-3.4 3.2-1.1-0.2-1.8-0.7-2.6-0.7s-1.5 0.5-2.6 0.7C7.7 19 6 17.6 6 15.4c0-2.7 2.6-5.2 6-5.2z"/></svg>
                   </span>
                 {/if}
                 <button class="baldosa-toque" use:presionable onclick={() => alternarSeleccion(item)} aria-label={item.titulo}></button>
@@ -1242,7 +1254,7 @@
     width: 100%;
     height: 100%;
     border: 0;
-    color: #ffffff;
+    color: #f7f2e7;
     overflow: hidden;
     z-index: 1;
   }
@@ -1300,7 +1312,7 @@
     min-height: 0;
   }
   .cartel text {
-    fill: #ffffff;
+    fill: #f7f2e7;
     font-weight: 800;
     font-size: 100px;
     letter-spacing: -0.01em;
@@ -1330,7 +1342,7 @@
     grid-area: 1 / 1;
     margin: 0;
     align-self: center;
-    color: #ffffff;
+    color: #f7f2e7;
     font-weight: 800;
     font-size: 17px;
     line-height: 1.22;
@@ -1358,7 +1370,7 @@
     font-size: 10.5px;
     font-weight: 700;
     letter-spacing: 0.05em;
-    color: #ffffff;
+    color: #f7f2e7;
     white-space: nowrap;
     max-width: calc(100% - 12px);
     overflow: hidden;
@@ -1391,7 +1403,7 @@
     justify-content: center;
     gap: 7px;
     border: 0;
-    background: #ffffff;
+    background: #f7f2e7;
     border-radius: 12px;
     height: 38px;
     min-width: 38px;
@@ -1744,7 +1756,7 @@
   .mini-ondas i {
     width: 3px;
     border-radius: 2px;
-    background: #ffffff;
+    background: #f7f2e7;
     animation: onda-mini 0.9s ease-in-out infinite;
   }
   .mini-ondas i:nth-child(1) { height: 45%; }
