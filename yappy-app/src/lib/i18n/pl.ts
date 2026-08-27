@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Pokaż mi",
   "cinta.borrar": "zdejmij z taśmy",
   "cinta.fuera": "poza taśmą",
+  "cinta.piezas": "kawałki",
   "pieza.opciones": "Ten kawałek",
   "pieza.favorito": "Ulubione",
   "pieza.quitar_favorito": "Usuń z ulubionych",

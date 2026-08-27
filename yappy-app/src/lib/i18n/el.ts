@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Δείξε μου",
   "cinta.borrar": "βγάλε το από την κασέτα",
   "cinta.fuera": "εκτός ταινίας",
+  "cinta.piezas": "κομμάτια",
   "pieza.opciones": "Αυτό το κομμάτι",
   "pieza.favorito": "Αγαπημένο",
   "pieza.quitar_favorito": "Αφαίρεση αγαπημένου",

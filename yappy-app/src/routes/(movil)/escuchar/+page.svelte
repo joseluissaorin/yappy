@@ -28,10 +28,18 @@
     colorDe,
     indiceDe,
     tonoHondo,
-    formaDe,
     radiosDe,
     tiltDe,
   } from "$lib/juguete";
+  import {
+    TROQUELES_BASE,
+    CORAZON,
+    ESTRELLA,
+    troquelBase,
+    aPoligono,
+    aPuntosSvg,
+    type Troquel,
+  } from "$lib/troquel";
   import {
     logToBackend,
     colaListar,
@@ -152,6 +160,26 @@
     modeloListo = await isModelReady().catch(() => true);
     items = await colaListar().catch(() => []);
     for (const it of items) idsConocidos.add(it.id);
+    // EL MAESTRO DE CEREMONIAS (docs/EL-ALBUM.md §E10): si al volver a la
+    // percha hay una pieza recién COMPLETADA, el pájaro vuela hasta ella
+    // (que ya luce su troquel de estrella) y la casa dice «fin».
+    {
+      const g = globalThis as unknown as { __yappyCompletadas?: Set<string> };
+      const antes = g.__yappyCompletadas;
+      const ahora = new Set(items.filter((i) => pctDe(i) >= 100).map((i) => i.id));
+      if (antes) {
+        for (const id of ahora) {
+          if (!antes.has(id)) {
+            setTimeout(() => {
+              volar(id);
+              if (!sonando) decir(getStore(t)("cartel.fin")).catch(() => {});
+            }, 700);
+            break;
+          }
+        }
+      }
+      g.__yappyCompletadas = ahora;
+    }
     setTimeout(() => (cascada = false), 900);
     bobinas = ((await invoke("list_rendered_audiobooks_cmd").catch(() => [])) as Bobina[]) ?? [];
     cleanups.push(
@@ -181,7 +209,9 @@
     // Las asomadas: en ratos muertos, un pájaro curiosea tras una pieza.
     const fisgon = setInterval(() => {
       if (sonando || asomadoEn || document.hidden) return;
-      if (Math.random() < 0.55) return;
+      // Con una PILA de piezas sin estrenar, el fisgón sale más a mirar.
+      const pila = items.filter((i) => i.estado === "listo" && pctDe(i) === 0).length;
+      if (Math.random() < (pila >= 3 ? 0.2 : 0.55)) return;
       const listos = items.filter((i) => i.estado === "listo");
       if (!listos.length) return;
       asomadoEn = listos[Math.floor(Math.random() * listos.length)].id;
@@ -340,7 +370,7 @@
 
   const BOCA_ID = "@boca";
   const MARCA_ID = "@marca";
-  const TRAS_ID = "@trastienda";
+  const SELLO_BOCA = TROQUELES_BASE.find((t) => t.nombre === "sello") ?? TROQUELES_BASE[0];
 
   // Piezas ocultas: lanzadas o descartadas, a la espera del «deshacer».
   let ocultas = $state<Set<string>>(new Set());
@@ -379,6 +409,53 @@
     return coloresVivos.get(item.id) ?? colorDe(item.id);
   }
 
+  // LOS TROQUELES (docs/EL-ALBUM.md): la forma de cada pieza. Corazón y
+  // estrella están RESERVADAS (favorito y completada); el resto recibe su
+  // forma base determinista con anti-choque entre vecinas.
+  const troquelesVivos = $derived.by(() => {
+    const m = new Map<string, Troquel>();
+    let previo = "";
+    for (const it of visibles) {
+      if (it.favorito) {
+        m.set(it.id, CORAZON);
+        previo = CORAZON.nombre;
+        continue;
+      }
+      if (pctDe(it) >= 100) {
+        m.set(it.id, ESTRELLA);
+        previo = ESTRELLA.nombre;
+        continue;
+      }
+      let tq = troquelBase(it.id);
+      if (tq.nombre === previo) {
+        tq = TROQUELES_BASE[(TROQUELES_BASE.indexOf(tq) + 3) % TROQUELES_BASE.length];
+      }
+      m.set(it.id, tq);
+      previo = tq.nombre;
+    }
+    return m;
+  });
+
+  // La regla nueve: en reposo se RECONOCE (si el título no cabe legible en
+  // la ventana, se enseñan sus primeras palabras con «…»); al elegir, la
+  // pieza crece y el título se LEE entero.
+  function tituloEnVentana(titulo: string, vw: number, vh: number, completo: boolean): string {
+    if (completo || titulo.length <= 18) return titulo;
+    const area = Math.max(1, vw * (vh + 12));
+    if (area / titulo.length >= 165) return titulo;
+    const tope = Math.max(16, Math.floor(area / 165));
+    const palabras = titulo.split(/\s+/);
+    let corto = "";
+    for (const p of palabras) {
+      const sig = corto ? `${corto} ${p}` : p;
+      if (sig.length > tope) break;
+      corto = sig;
+    }
+    // Jamás trocear a media palabra: la primera entra entera aunque pase.
+    if (!corto) corto = palabras[0];
+    return corto.length < titulo.length ? `${corto}…` : titulo;
+  }
+
   // Los pesos RENEGOCIADOS (Kalorica exagerado): con n grandes a la vez,
   // cada grande pesa max(3, 7−n): elegir una pieza la hace crecer ×6.
   let seleccionada = $state<string | null>(null);
@@ -414,16 +491,18 @@
   // la TRASTIENDA (el engranaje) y la BOCA de añadir (que abierta pesa 26
   // y el FLIP la hace crecer hasta tragarse el tablero).
   const piezasTablero = $derived([
-    { id: MARCA_ID, peso: 2.1, letras: 5 },
-    { id: TRAS_ID, peso: 0.9, letras: 3 },
+    { id: MARCA_ID, peso: 2.4, letras: 5 },
     {
       id: BOCA_ID,
-      peso: bocaAbierta ? 26 : visibles.length === 0 ? 2.4 : 0.9,
+      peso: bocaAbierta ? 26 : visibles.length === 0 ? 2.4 : 1.0,
       letras: 2,
     },
     ...visibles.map((i) => ({ id: i.id, peso: pesoDe(i), letras: Math.min(30, i.titulo.length) })),
   ]);
   const tablero = $derived(empaquetar(piezasTablero, anchoTablero));
+
+  // Los datos del membrete: el susurro mono bajo la marca.
+  const minutosTotales = $derived(visibles.reduce((s, i) => s + minutosDe(i), 0));
 
   // FLIP con muelle DESDE EL RECT VIVO: la foto se toma en $effect.pre
   // (ANTES de que Svelte mueva el DOM), así que recoge dónde está cada
@@ -477,7 +556,9 @@
     const centro = ids.indexOf(desdeId);
     ids.forEach((id, i) => {
       if (id === desdeId) return;
-      const el = document.querySelector<HTMLElement>(`[data-pieza="${CSS.escape(id)}"] .baldosa-cuerpo`);
+      const el = document.querySelector<HTMLElement>(
+        `[data-pieza="${CSS.escape(id)}"] .parche, [data-pieza="${CSS.escape(id)}"] .baldosa-cuerpo`,
+      );
       if (!el) return;
       setTimeout(() => {
         el.classList.add("late");
@@ -637,6 +718,9 @@
         return;
       }
       haptic("success");
+      // El bibliotecario ASIENTE: la pieza queda en su sitio nuevo.
+      celebra = true;
+      setTimeout(() => (celebra = false), 430);
       const indice = items.findIndex((i) => i.id === id);
       if (indice >= 0) await colaReordenar(id, indice).catch(() => {});
       return;
@@ -812,29 +896,8 @@
                     <i class="letra" style="animation-delay: {k * 45}ms; color: {PALETA[(k * 3 + 1) % PALETA.length]}; transform: rotate({k % 2 === 0 ? -3.5 : 3}deg) translateY({k % 2 === 0 ? -1 : 1.5}px)">{letra}</i>
                   {/each}
                 </span>
-              </button>
-            </div>
-          </article>
-        {:else if b && ficha.id === TRAS_ID}
-          <!-- LA TRASTIENDA: su engranaje, pieza del mosaico. -->
-          <article
-            data-pieza={TRAS_ID}
-            class="baldosa"
-            style="left: {b.x}px; top: {b.y}px; width: {b.ancho}px; height: {b.alto}px; z-index: 2;"
-          >
-            <div class="baldosa-cuerpo trastienda-baldosa" style="border-radius: {radiosDe(TRAS_ID)}; transform: rotate({tiltDe(TRAS_ID)}deg);">
-              <button
-                class="trastienda-toque"
-                use:presionable={{ hap: "soft" }}
-                onclick={() => { engranajeGira = true; setTimeout(() => goto("/ajustes"), 240); }}
-                aria-label={$t("cinta.trastienda")}
-              >
-                <span class="engranaje" class:gira={engranajeGira}>
-                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.01a1.7 1.7 0 0 0 1.02-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.01a1.7 1.7 0 0 0 1.56 1.02H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.03Z"/></svg>
-                </span>
-                {#if b.ancho > 118}
-                  <span class="trastienda-rotulo">{$t("cinta.trastienda")}</span>
-                {/if}
+                <!-- El susurro del membrete: datos de verdad, en mono. -->
+                <span class="membrete-datos">{visibles.length} {$t("cinta.piezas")} · {minutosTotales} {$t("cinta.min")}</span>
               </button>
             </div>
           </article>
@@ -847,10 +910,20 @@
             class="baldosa"
             style="left: {b.x}px; top: {b.y}px; width: {b.ancho}px; height: {b.alto}px; z-index: {bocaAbierta ? 30 : 2};"
           >
-            <div class="baldosa-cuerpo boca-baldosa" class:abierta={bocaAbierta} style="border-radius: {radiosDe(BOCA_ID)};">
+            <div class="baldosa-cuerpo {bocaAbierta ? 'boca-baldosa abierta' : 'boca-suelta'}" style={bocaAbierta ? `border-radius: ${radiosDe(BOCA_ID)};` : ""}>
               {#if !bocaAbierta}
+                <!-- EL BUZÓN: un sello de correos crema con la ranura y el
+                     ＋ garabateados a mano. Echar algo al correo del loro. -->
+                <span class="capa parche-sombra" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
+                <span class="capa boca-sello" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
+                <svg class="costura" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <polygon points={aPuntosSvg(SELLO_BOCA, 0.88)} />
+                </svg>
                 <button class="boca-toque" in:llega use:presionable={{ hap: "medium" }} onclick={() => (bocaAbierta = true)} aria-label={$t("escuchar.anadir")}>
-                  <span class="boca-cruz" aria-hidden="true">＋</span>
+                  <svg class="buzon" viewBox="0 0 44 36" aria-hidden="true">
+                    <path d="M22 6 q0.7 5.2 -0.2 10.5 M16.2 11.4 q5.8 0.9 11.6 -0.3" />
+                    <path d="M8 26 q14 5.5 28 -1.2" />
+                  </svg>
                   {#if b.alto > 100 || b.ancho > 150}
                     <span class="boca-rotulo">{$t("cinta.pega_aqui")}</span>
                   {/if}
@@ -897,9 +970,14 @@
             {@const elegida = seleccionada === item.id}
             {@const tinta = tintaDe(item)}
             {@const honda = tonoHondo(tinta)}
-            {@const forma = formaDe(item.id)}
+            {@const tq = troquelesVivos.get(item.id) ?? troquelBase(item.id)}
+            {@const clipExt = aPoligono(tq)}
+            {@const clipInt = aPoligono(tq, 0.93)}
+            {@const vw = (b.ancho * tq.ventana.w) / 100}
+            {@const vh = (b.alto * tq.ventana.h) / 100 - 20}
             {@const enMarcha = esLaQueSuena && trabajando}
-            {@const lineasCartel = enMarcha ? [] : cartel(item.titulo, b.ancho, b.alto, $idiomaUI)}
+            {@const grandota = elegida || b.peso >= 3}
+            {@const lineasCartel = enMarcha ? [] : cartel(tituloEnVentana(item.titulo, vw, vh, grandota), vw, Math.max(24, vh), $idiomaUI)}
             <article
               data-pieza={item.id}
               class="baldosa" class:en-vuelo={enVuelo}
@@ -926,82 +1004,80 @@
                 </span>
               {/if}
               <div
-                class="baldosa-cuerpo estado-{item.estado}"
+                class="parche estado-{item.estado}"
                 class:sacude={sacudida === item.id}
                 class:suena={esLaQueSuena}
                 class:elegida
-                style="{item.estado === 'listo' || esLaQueSuena ? `background: ${tinta};` : ''} border-radius: {forma.radios}; {!esLaQueSuena && forma.clip ? `clip-path: ${forma.clip};` : ''} transform: translateX({arrastre?.id === item.id ? arrastre.dx : 0}px) rotate({arrastre?.id === item.id ? arrastre.dx / 26 : tiltDe(item.id)}deg); opacity: {arrastre?.id === item.id ? Math.max(0.25, 1 - Math.abs(arrastre.dx) / 340) : 1}; transition: {arrastre?.id === item.id ? 'none' : 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-radius 0.3s ease, background-color 0.45s ease'};"
+                style="transform: translateX({arrastre?.id === item.id ? arrastre.dx : 0}px) rotate({arrastre?.id === item.id ? arrastre.dx / 26 : tiltDe(item.id)}deg); opacity: {arrastre?.id === item.id ? Math.max(0.25, 1 - Math.abs(arrastre.dx) / 340) : 1}; transition: {arrastre?.id === item.id ? 'none' : 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'};"
               >
-                <!-- La línea de flotación: lo ya escuchado sube como marea. -->
-                {#if pct > 0 && (item.estado === "listo" || esLaQueSuena)}
-                  <span class="marea" style="height: {pct}%; background: {honda}"></span>
-                {/if}
-                <!-- EL CARTEL: el titular llena ancho y alto deformándose.
-                     El teletipo solo existe mientras la voz TRABAJA; una
-                     pausa enseña el TÍTULO (con su pastilla «en pausa»). -->
-                {#if enMarcha}
-                  <div class="teletipo" aria-hidden="true">
-                    {#key repro.snap?.current_text}
-                      <p in:fly={{ y: 22, duration: 340 }} out:fly={{ y: -22, duration: 220 }}>{repro.snap?.current_text || item.titulo}</p>
-                    {/key}
-                  </div>
-                {:else if lineasCartel.length > 0}
-                  <div class="cartel" aria-hidden="true">
-                    {#each lineasCartel as linea (linea.texto)}
-                      <svg viewBox="0 0 {linea.vb} {VB_ALTO}" preserveAspectRatio="none">
-                        <text x="0" y={VB_BASE} textLength={linea.vb} lengthAdjust="spacingAndGlyphs">{linea.texto}</text>
-                      </svg>
-                    {/each}
-                  </div>
-                {/if}
-                <!-- La etiqueta: una PASTILLA sólida (tinta honda), nunca
-                     texto suelto peleándose con el cartel. En reposo, solo
-                     los minutos; los estados hablan cuando toca. -->
-                {#if esLaQueSuena}
-                  <span class="pastilla" style="background: {honda}">
-                    <span class="mini-ondas" style="--nivel: {0.35 + nivel * 0.65}" aria-hidden="true"><i></i><i></i><i></i></span>
-                    {repro.snap?.estado === "pausa" ? $t("cinta.en_pausa") : $t("cinta.sonando")}
-                  </span>
-                {:else if item.estado === "listo"}
-                  <span class="pastilla" style="background: {honda}">
-                    <IconoTipo tipo={iconoDe(item.tipo)} size={11} />
-                    {minutosDe(item)}′
-                  </span>
-                {:else if item.estado === "error"}
-                  <span class="pastilla" style="background: #7a1712">{$t("cinta.error")}</span>
-                {:else}
-                  <span class="pastilla" style="background: #6f6757">{$t("cinta.preparando")}…</span>
-                {/if}
-                {#if item.favorito}
-                  <span class="estrella" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="21" height="21" fill="var(--yap-dorado, #e8b41a)" stroke="var(--yap-tinta)" stroke-width="1.4" stroke-linejoin="round"><path d="M12 2.6l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2-5.6-3.2-5.6 3.2 1.3-6.2L3 9.1l6.3-.7z"/></svg>
-                  </span>
-                {/if}
-                <!-- El sello: escuchada entera, huella de pata. -->
-                {#if pct >= 100 && !esLaQueSuena}
-                  <span class="sello-pata" aria-hidden="true" in:llega>
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="#f7f2e7"><ellipse cx="7" cy="7.6" rx="2.1" ry="2.9" transform="rotate(-18 7 7.6)"/><ellipse cx="12" cy="5.8" rx="2.1" ry="3"/><ellipse cx="17" cy="7.6" rx="2.1" ry="2.9" transform="rotate(18 17 7.6)"/><path d="M12 10.2c3.4 0 6 2.5 6 5.2 0 2.2-1.7 3.6-3.4 3.2-1.1-0.2-1.8-0.7-2.6-0.7s-1.5 0.5-2.6 0.7C7.7 19 6 17.6 6 15.4c0-2.7 2.6-5.2 6-5.2z"/></svg>
-                  </span>
-                {/if}
+                <!-- LA PEGATINA: sombra dura de contacto, borde de troquel
+                     crema (dorado si está completada), cuerpo de tinta y la
+                     costura de puntadas. Todas las capas comparten las 48
+                     anclas: marcar favorito FUNDE la forma en corazón. -->
+                <span class="capa parche-sombra" style="clip-path: {clipExt}"></span>
+                <span class="capa parche-borde" class:dorado={pct >= 100 && !esLaQueSuena} style="clip-path: {clipExt}"></span>
+                <span class="capa parche-cuerpo cuerpo-{item.estado}" style="clip-path: {clipInt}; {item.estado === 'listo' || esLaQueSuena ? `background: ${tinta};` : ''}">
+                  {#if pct > 0 && (item.estado === "listo" || esLaQueSuena)}
+                    <span class="marea" style="height: {pct}%; background: {honda}"></span>
+                  {/if}
+                </span>
+                <svg class="costura" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <polygon points={aPuntosSvg(tq, 0.87)} />
+                </svg>
+                <!-- LA VENTANA: la zona segura del troquel donde vive el
+                     titular (o el teletipo) y su pastilla. -->
+                <div class="ventana" style="left: {tq.ventana.x}%; top: {tq.ventana.y}%; width: {tq.ventana.w}%; height: {tq.ventana.h}%;">
+                  {#if enMarcha}
+                    <div class="teletipo" aria-hidden="true">
+                      {#key repro.snap?.current_text}
+                        <p in:fly={{ y: 22, duration: 340 }} out:fly={{ y: -22, duration: 220 }}>{repro.snap?.current_text || item.titulo}</p>
+                      {/key}
+                    </div>
+                  {:else if lineasCartel.length > 0}
+                    <div class="cartel" aria-hidden="true">
+                      {#each lineasCartel as linea (linea.texto)}
+                        <svg viewBox="0 0 {linea.vb} {VB_ALTO}" preserveAspectRatio="none">
+                          <text x="0" y={VB_BASE} textLength={linea.vb} lengthAdjust="spacingAndGlyphs">{linea.texto}</text>
+                        </svg>
+                      {/each}
+                    </div>
+                  {/if}
+                  {#if esLaQueSuena}
+                    <span class="pastilla" style="background: {honda}">
+                      <span class="mini-ondas" style="--nivel: {0.35 + nivel * 0.65}" aria-hidden="true"><i></i><i></i><i></i></span>
+                      {repro.snap?.estado === "pausa" ? $t("cinta.en_pausa") : $t("cinta.sonando")}
+                    </span>
+                  {:else if item.estado === "listo"}
+                    <span class="pastilla" style="background: {honda}">
+                      <IconoTipo tipo={iconoDe(item.tipo)} size={11} />
+                      {minutosDe(item)}′
+                    </span>
+                  {:else if item.estado === "error"}
+                    <span class="pastilla" style="background: #7a1712">{$t("cinta.error")}</span>
+                  {:else}
+                    <span class="pastilla" style="background: #6f6757">{$t("cinta.preparando")}…</span>
+                  {/if}
+                </div>
                 <button class="baldosa-toque" use:presionable onclick={() => alternarSeleccion(item)} aria-label={item.titulo}></button>
                 {#if elegida}
+                  <!-- Las acciones, con los iconos DIBUJADOS de la casa. -->
                   <div class="acciones" in:llega={{ delay: 60 }}>
                     <button class="accion principal" use:presionable={{ hap: "rigid" }} style="color: {tinta}"
                       onclick={(e) => { e.stopPropagation(); abrirItem(item); }}>
-                      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11.5 7.2c0.9 0.6 0.9 1.9 0 2.4L9.2 20.4C8.2 21 7 20.3 7 19.2z"/></svg>
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
                       {$t("cola.escuchar")}
                     </button>
                     <button class="accion" use:presionable={{ hap: "soft" }} style="color: {tinta}" aria-label={item.favorito ? $t("pieza.quitar_favorito") : $t("pieza.favorito")}
                       onclick={(e) => { e.stopPropagation(); favoritoDirecto(item.id); }}>
-                      <svg viewBox="0 0 24 24" width="19" height="19" fill={item.favorito ? "currentColor" : "none"} stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2.6l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2-5.6-3.2-5.6 3.2 1.3-6.2L3 9.1l6.3-.7z"/></svg>
+                      <svg viewBox="0 0 24 24" width="19" height="19" fill={item.favorito ? "currentColor" : "none"} stroke="currentColor" stroke-width="2.1" stroke-linejoin="round" aria-hidden="true"><path d="M12 19.4 Q5.4 14.8 4.7 10 Q4.5 6.6 7.5 5.8 Q10.1 5.3 12 8.1 Q13.9 5.2 16.6 5.8 Q19.5 6.7 19.2 10.1 Q18.5 15 12 19.4 Z"/></svg>
                     </button>
                     <button class="accion" use:presionable={{ hap: "soft" }} style="color: {tinta}" aria-label={$t("pieza.renombrar")}
                       onclick={(e) => { e.stopPropagation(); menuPieza = item; renombrando = true; nuevoNombre = item.titulo; }}>
-                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.6 3.6 q2.5 -1.5 3.9 0.3 q1.3 1.7 -0.7 3.5 L8.5 18.5 l-4.7 1.7 q-0.7 0.2 -0.5 -0.5 l1.6 -4.6 Z"/></svg>
                     </button>
                     <button class="accion" use:presionable={{ hap: "warning" }} style="color: {tinta}" aria-label={$t("cinta.borrar")}
                       onclick={(e) => { e.stopPropagation(); seleccionada = null; esconderYProgramar(item); }}>
-                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M3.6 6.2 q8.4 -1 16.8 0 M8.3 6 q-0.2 -2.6 1.2 -2.9 q2.5 -0.5 5 0 q1.4 0.3 1.2 2.9 M6 6.4 q0.2 7.6 0.8 12.4 q0.1 1.6 1.7 1.8 q3.5 0.5 7 0 q1.6 -0.2 1.7 -1.8 q0.6 -4.8 0.8 -12.4"/></svg>
                     </button>
                   </div>
                 {/if}
@@ -1011,6 +1087,14 @@
         {/if}
       {/each}
     </div>
+
+    <!-- EL COLOFÓN: la página tiene final, como lo impreso. -->
+    {#if visibles.length > 0}
+      <footer class="colofon" aria-hidden="true">
+        <svg viewBox="0 0 100 7" preserveAspectRatio="none" class="colofon-raya"><line x1="0" y1="6" x2="100" y2="1" /></svg>
+        <span>yappy · {$t("ajustes.amor").toLocaleLowerCase()}</span>
+      </footer>
+    {/if}
 
     {#if vacia}
       <section class="vacia">
@@ -1026,8 +1110,8 @@
       {#each bobinas as b (b.path)}
         <article class="tarjeta bobina" in:llega>
           <button class="pieza-cuerpo" use:presionable onclick={() => abrirBobina(b)}>
-            <span class="bobina-carrete" aria-hidden="true">
-              <svg viewBox="0 0 44 44" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="22" cy="22" r="17"/><circle cx="22" cy="22" r="5"/><path d="M22 5v6M22 33v6M5 22h6M33 22h6M10 10l4.4 4.4M29.6 29.6 34 34M34 10l-4.4 4.4M14.4 29.6 10 34"/></svg>
+            <span class="disco" aria-hidden="true" style="--tinta: {PALETA[b.name.length % PALETA.length]}">
+              <i class="disco-cuerpo"></i><i class="disco-agujero"></i>
             </span>
             <span class="pieza-texto">
               <strong>{b.name.replace(/\.m4b$/, "")}</strong>
@@ -1039,6 +1123,19 @@
     {/if}
   </div>
 
+  <!-- LA TRASTIENDA: una etiqueta mono girada que corta el borde derecho
+       de la página, como las etiquetas de los márgenes de un taller. -->
+  <button
+    class="etiqueta-trastienda"
+    use:presionable={{ hap: "soft" }}
+    onclick={() => { engranajeGira = true; setTimeout(() => goto("/ajustes"), 240); }}
+  >
+    <span class="engranaje" class:gira={engranajeGira} aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.4"/><path d="M12 2.8 l0.6 3.1 M12 21.2 l-0.5 -3 M21.2 12 l-3.1 0.5 M2.8 12 l3.1 -0.4 M18.5 5.6 l-2.2 2.1 M5.5 18.4 l2.2 -2 M18.4 18.5 l-2.1 -2.2 M5.6 5.5 l2.1 2.2"/></svg>
+    </span>
+    <span class="etiqueta-texto">{$t("cinta.trastienda")}</span>
+  </button>
+
   <!-- El pájaro en vuelo: de la boca a la pieza recién llegada, en arco. -->
   {#if pajaro}
     <span class="pajaro-vuelo" style="left: {pajaro.x}px; top: {pajaro.y}px; transform: translate(-50%, -50%) scaleX({pajaro.girado})" aria-hidden="true">
@@ -1049,6 +1146,7 @@
   <!-- El deshacer: cinco segundos de gracia tras lanzar una pieza. -->
   {#if deshacer}
     <div class="deshacer-aviso" in:fly={{ y: 26, duration: 260 }} out:fly={{ y: 26, duration: 200 }}>
+      <span class="deshacer-loro" aria-hidden="true"><Criatura size={34} mirando={-1} tinta={$tintaVoz} /></span>
       <span class="deshacer-texto">{$t("cinta.fuera")}</span>
       <button class="deshacer-tecla" use:presionable={{ hap: "medium" }} onclick={deshacerBorrado}>{$t("comun.deshacer")}</button>
     </div>
@@ -1059,6 +1157,9 @@
     <div class="hoja">
       <div class="hoja-asa"></div>
       <div class="hoja-cabeza">{$t("pieza.opciones")}</div>
+      <svg class="ficha-forma" viewBox="0 0 100 100" aria-hidden="true">
+        <polygon points={aPuntosSvg(troquelesVivos.get(menuPieza.id) ?? troquelBase(menuPieza.id))} fill={tintaDe(menuPieza)} />
+      </svg>
       <p class="menu-titulo">{menuPieza.titulo}</p>
       {#if renombrando}
         <!-- svelte-ignore a11y_autofocus -->
@@ -1069,15 +1170,15 @@
         </button>
       {:else}
         <button class="tecla-menu" use:presionable onclick={alternarFavorito}>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill={menuPieza.favorito ? "var(--yap-dorado, #e8b41a)" : "none"} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 2.6l2.7 5.8 6.3.7-4.7 4.3 1.3 6.2-5.6-3.2-5.6 3.2 1.3-6.2L3 9.1l6.3-.7z"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill={menuPieza.favorito ? "var(--yap-voz, #e0502a)" : "none"} stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 19.4 Q5.4 14.8 4.7 10 Q4.5 6.6 7.5 5.8 Q10.1 5.3 12 8.1 Q13.9 5.2 16.6 5.8 Q19.5 6.7 19.2 10.1 Q18.5 15 12 19.4 Z"/></svg>
           {menuPieza.favorito ? $t("pieza.quitar_favorito") : $t("pieza.favorito")}
         </button>
         <button class="tecla-menu" use:presionable onclick={() => { renombrando = true; nuevoNombre = menuPieza?.titulo ?? ""; }}>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.6 3.6 q2.5 -1.5 3.9 0.3 q1.3 1.7 -0.7 3.5 L8.5 18.5 l-4.7 1.7 q-0.7 0.2 -0.5 -0.5 l1.6 -4.6 Z"/></svg>
           {$t("pieza.renombrar")}
         </button>
         <button class="tecla-menu peligro" use:presionable onclick={borrarPieza}>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M3.6 6.2 q8.4 -1 16.8 0 M8.3 6 q-0.2 -2.6 1.2 -2.9 q2.5 -0.5 5 0 q1.4 0.3 1.2 2.9 M6 6.4 q0.2 7.6 0.8 12.4 q0.1 1.6 1.7 1.8 q3.5 0.5 7 0 q1.6 -0.2 1.7 -1.8 q0.6 -4.8 0.8 -12.4"/></svg>
           {$t("cinta.borrar")}
         </button>
       {/if}
@@ -1097,10 +1198,17 @@
 
   /* ── Las piezas del SISTEMA: la marca, la trastienda y la boca viven
      DENTRO del mosaico, en crema, para distinguirse de las piezas vivas. ── */
-  .marca-baldosa,
-  .trastienda-baldosa {
+  .marca-baldosa {
     background: var(--yap-superficie);
     border: 1.5px solid var(--yap-borde);
+  }
+  .membrete-datos {
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave, #82755a);
+    margin: 2px 2px 0 0;
   }
   .loro-percha {
     position: absolute;
@@ -1122,9 +1230,11 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
-    padding: 0 10px 4px 0;
+    gap: 1px;
+    padding: 0 12px 6px 0;
     border: 0;
     background: transparent;
     cursor: pointer;
@@ -1153,26 +1263,37 @@
     85% { transform: scale(0.97, 1.03); }
     100% { transform: scale(1, 1); }
   }
-  .trastienda-toque {
-    width: 100%;
-    height: 100%;
-    display: flex;
+  /* La etiqueta de la trastienda: mono girada, cortando el borde. */
+  .etiqueta-trastienda {
+    position: fixed;
+    right: 0;
+    top: 24%;
+    z-index: 30;
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 3px;
-    border: 0;
-    background: transparent;
+    gap: 7px;
+    width: 34px;
+    padding: 11px 0 12px;
+    border: 1.5px solid var(--yap-tinta, #2b2418);
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+    background: var(--yap-superficie);
     color: var(--yap-tinta);
+    box-shadow: -2.5px 3px 0 #ded7c2;
     cursor: pointer;
-    padding: 0;
   }
-  .trastienda-rotulo {
+  .etiqueta-trastienda .engranaje {
+    writing-mode: horizontal-tb;
+  }
+  .etiqueta-texto {
+    writing-mode: vertical-rl;
     font-family: var(--yap-mono, ui-monospace, monospace);
-    font-size: 10px;
-    letter-spacing: 0.14em;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--yap-tinta-suave);
+    line-height: 1;
   }
   .engranaje {
     display: inline-flex;
@@ -1258,47 +1379,92 @@
     overflow: hidden;
     z-index: 1;
   }
-  .baldosa.en-vuelo .baldosa-cuerpo {
+  .baldosa.en-vuelo .parche {
     filter: brightness(1.07);
   }
-  /* El material cede: al presionar, las esquinas se ablandan. (:global
-     porque .pulsado la pone el presionable en runtime y Svelte podaría
-     el selector al no verla en la plantilla.) */
-  :global(.baldosa-cuerpo:has(.pulsado)) {
-    border-radius: 30px 26px 32px 28px / 28px 32px 26px 30px !important;
+
+  /* ── LA PEGATINA: las capas del troquel ── */
+  .parche {
+    position: relative;
+    width: 100%;
+    height: 100%;
   }
-  /* La que suena RESPIRA: sus radios ondulan en bucle. */
-  .baldosa-cuerpo.suena {
-    animation: respira-fieltro 2.8s ease-in-out infinite;
+  .capa {
+    position: absolute;
+    inset: 0;
+    /* El MORPH: mismas 48 anclas en todas las formas, así que el clip
+       interpola solo (favorito funde a corazón, completada a estrella). */
+    transition:
+      clip-path 0.65s cubic-bezier(0.18, 1.5, 0.32, 1),
+      background-color 0.45s ease;
   }
-  @keyframes respira-fieltro {
-    0%, 100% { border-radius: 24px 30px 22px 30px / 30px 22px 30px 24px; }
-    50% { border-radius: 34px 22px 34px 24px / 24px 34px 22px 34px; }
+  .parche-sombra {
+    background: #ded7c2;
+    transform: translate(2.5px, 3.5px);
+  }
+  .parche-borde {
+    background: #f7f2e7;
+  }
+  .parche-borde.dorado {
+    background: var(--yap-dorado, #e8b41a);
+  }
+  .parche-cuerpo {
+    overflow: hidden;
+  }
+  /* El material cede al presionar. (:global porque .pulsado llega en
+     runtime y Svelte podaría el selector.) */
+  :global(.parche:has(.pulsado) .parche-cuerpo) {
+    transform: scale(0.965);
+    transition: transform 0.14s ease;
+  }
+  /* La que suena RESPIRA (pulso sutil del cuerpo dentro del troquel). */
+  .parche.suena .parche-cuerpo {
+    animation: respira-parche 2.8s ease-in-out infinite;
+  }
+  @keyframes respira-parche {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+  .costura {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .costura polygon {
+    fill: none;
+    stroke: rgba(43, 36, 24, 0.3);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 4;
+    vector-effect: non-scaling-stroke;
+  }
+  /* LA VENTANA: la zona segura del troquel. */
+  .ventana {
+    position: absolute;
+    z-index: 4;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
   }
   /* Modo noche: todas duermen salvo la que suena. */
+  :global(html[data-theme="dark"]) .parche:not(.suena) .parche-cuerpo,
   :global(html[data-theme="dark"]) .baldosa-cuerpo:not(.suena) {
     filter: brightness(0.52) saturate(0.6);
   }
 
-  /* EL CARTEL: pegado a los cantos laterales y al de arriba (5 px de
-     respiración para que las esquinas no muerdan letras) y con la FRANJA
-     de la pastilla reservada abajo: la última línea nunca muere debajo. */
+  /* EL CARTEL vive dentro de la ventana. */
   .cartel {
-    position: absolute;
-    left: 5px;
-    right: 5px;
-    top: 2px;
-    bottom: 30px;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    z-index: 3;
     pointer-events: none;
   }
-  .baldosa-cuerpo.elegida .cartel {
-    bottom: 56px;
-  }
   /* Elegir tiene su POP además del FLIP: el sí se siente. */
-  .baldosa-cuerpo.elegida {
+  .parche.elegida {
     animation: pop-elegida 0.5s cubic-bezier(0.24, 1.7, 0.44, 1);
   }
   @keyframes pop-elegida {
@@ -1331,9 +1497,8 @@
 
   /* El teletipo de la que suena: las palabras que se están diciendo. */
   .teletipo {
-    position: absolute;
-    inset: 6px 8px 26px;
-    z-index: 3;
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
     display: grid;
     pointer-events: none;
@@ -1355,16 +1520,16 @@
   }
 
   /* La pastilla: la etiqueta sólida (tinta honda) que no pelea jamás con
-     el cartel: es un objeto encima, no texto suelto. */
+     el cartel: es un objeto encima, al pie de la ventana del troquel. */
   .pastilla {
     position: absolute;
-    right: 8px;
-    bottom: 7px;
-    z-index: 4;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 4px 9px;
+    padding: 3px 9px;
     border-radius: 999px;
     font-family: var(--yap-mono, ui-monospace, monospace);
     font-size: 10.5px;
@@ -1372,7 +1537,7 @@
     letter-spacing: 0.05em;
     color: #f7f2e7;
     white-space: nowrap;
-    max-width: calc(100% - 12px);
+    max-width: 100%;
     overflow: hidden;
     pointer-events: none;
   }
@@ -1415,30 +1580,16 @@
   .accion.principal {
     flex: 1;
   }
-  /* El latido de la onda: las vecinas responden al toque. */
-  .baldosa-cuerpo.late {
+  /* El latido de la onda: las vecinas responden al toque. (:global porque
+     .late se añade en runtime.) */
+  :global(.parche.late),
+  :global(.baldosa-cuerpo.late) {
     animation: late 0.3s ease;
   }
   @keyframes late {
     35% { transform: scale(0.972); }
   }
 
-  .estrella {
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    transform: rotate(10deg);
-    z-index: 6;
-    pointer-events: none;
-  }
-  .sello-pata {
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    transform: rotate(14deg);
-    z-index: 4;
-    pointer-events: none;
-  }
   .asomado-pieza {
     position: absolute;
     top: -15px;
@@ -1448,8 +1599,8 @@
   }
 
   /* Los estados de cocina y error: rayas y rojo, planos. */
-  .baldosa-cuerpo.estado-pendiente,
-  .baldosa-cuerpo.estado-preparando {
+  .parche-cuerpo.cuerpo-pendiente,
+  .parche-cuerpo.cuerpo-preparando {
     background: repeating-linear-gradient(-45deg, #8e8574 0 12px, #7c7466 12px 22px);
     background-size: 200% 100%;
     animation: cocinando 2.4s linear infinite;
@@ -1457,7 +1608,7 @@
   @keyframes cocinando {
     to { background-position: -62px 0, 0 0; }
   }
-  .baldosa-cuerpo.estado-error {
+  .parche-cuerpo.cuerpo-error {
     background: #b3261e;
   }
   .sacude {
@@ -1470,47 +1621,62 @@
     80% { transform: translateX(-3px); }
   }
 
-  /* ── La boca-baldosa ── */
+  /* ── La boca: el sello de correos con el buzón dibujado ── */
   .boca-baldosa {
     background: var(--yap-superficie);
-    border: 2.5px dashed color-mix(in srgb, var(--yap-tinta-suave, #82755a) 55%, var(--yap-superficie));
+    border: 1.5px solid var(--yap-borde);
     color: var(--yap-tinta-suave, #82755a);
   }
+  .boca-suelta {
+    background: transparent;
+    border: 0;
+    color: var(--yap-tinta-suave, #82755a);
+    overflow: visible;
+  }
+  .boca-sello {
+    background: #f7f2e7;
+  }
   .boca-toque {
+    position: relative;
+    z-index: 5;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 2px;
     border: 0;
     background: transparent;
     color: inherit;
     cursor: pointer;
     padding: 0;
   }
-  .boca-cruz {
-    font-size: 26px;
-    font-weight: 700;
-    display: inline-block;
-    animation:
-      cruz-respira 5s ease-in-out infinite,
-      cruz-arcoiris 14s linear infinite;
+  .buzon {
+    width: 44px;
+    height: 36px;
+    animation: cruz-respira 5s ease-in-out infinite;
+  }
+  .buzon path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    animation: cruz-arcoiris 14s linear infinite;
   }
   @keyframes cruz-respira {
     0%, 86%, 100% { transform: scale(1) rotate(0deg); }
-    90% { transform: scale(1.28, 0.8) rotate(-6deg); }
-    95% { transform: scale(0.9, 1.14) rotate(3deg); }
+    90% { transform: scale(1.24, 0.82) rotate(-5deg); }
+    95% { transform: scale(0.92, 1.12) rotate(3deg); }
   }
-  /* El ＋ recorre la paleta: la invitación de color. */
+  /* El garabato recorre la paleta: la invitación de color. */
   @keyframes cruz-arcoiris {
-    0% { color: #ff6b6b; }
-    20% { color: #f94892; }
-    40% { color: #5d5fef; }
-    60% { color: #00a896; }
-    80% { color: #ff8e3c; }
-    100% { color: #ff6b6b; }
+    0% { stroke: #ff6b6b; }
+    20% { stroke: #f94892; }
+    40% { stroke: #5d5fef; }
+    60% { stroke: #00a896; }
+    80% { stroke: #ff8e3c; }
+    100% { stroke: #ff6b6b; }
   }
   .boca-rotulo {
     font-family: var(--yap-mono, ui-monospace, monospace);
@@ -1570,7 +1736,7 @@
     color: var(--yap-tinta);
     font-weight: 700;
     font-size: 16px;
-    box-shadow: var(--yap-relieve);
+    box-shadow: 2.5px 3px 0 #ded7c2;
     cursor: pointer;
   }
   .tecla-gorda.protagonista {
@@ -1601,22 +1767,32 @@
     justify-content: space-between;
     gap: 10px;
     padding: 12px 14px;
-    border-radius: 16px;
-    background: var(--yap-tinta, #2b2418);
-    color: #fff6ef;
+    border-radius: 14px;
+    border: 1.5px solid var(--yap-tinta, #2b2418);
+    background: var(--yap-papel, #f4f1ea);
+    color: var(--yap-tinta, #2b2418);
+    transform: rotate(-0.8deg);
+    box-shadow: 3px 4px 0 #ded7c2;
+  }
+  .deshacer-loro {
+    position: absolute;
+    top: -26px;
+    right: 22px;
+    pointer-events: none;
   }
   .deshacer-texto {
     font-weight: 700;
     font-size: 14px;
   }
   .deshacer-tecla {
-    border: 0;
-    background: #fff6ef;
-    color: var(--yap-tinta, #2b2418);
+    border: 1.5px solid var(--yap-tinta, #2b2418);
+    background: var(--vivo, var(--acento-voz, #e0502a));
+    color: #fff6ef;
     font-weight: 800;
     font-size: 14px;
     padding: 8px 14px;
     border-radius: 10px;
+    box-shadow: 2px 2.5px 0 #ded7c2;
     cursor: pointer;
   }
 
@@ -1661,6 +1837,12 @@
     color: var(--yap-tinta-suave);
     text-align: center;
   }
+  .ficha-forma {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+    transform: rotate(-4deg);
+  }
   .menu-titulo {
     margin: 0;
     font-weight: 800;
@@ -1684,7 +1866,7 @@
     color: var(--yap-tinta);
     font-weight: 700;
     font-size: 16px;
-    box-shadow: var(--yap-relieve);
+    box-shadow: 2.5px 3px 0 #ded7c2;
     cursor: pointer;
   }
   .tecla-menu.principal {
@@ -1704,9 +1886,32 @@
   /* ── Bobinas ── */
   .bobina {
     background: var(--yap-superficie);
-    border: 1px solid var(--yap-borde);
-    box-shadow: var(--yap-relieve);
+    border: 1.5px solid var(--yap-borde);
+    box-shadow: 3px 4px 0 #ded7c2;
     overflow: hidden;
+  }
+  .disco {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #f7f2e7;
+    box-shadow: 2px 2.5px 0 #ded7c2;
+    flex-shrink: 0;
+  }
+  .disco-cuerpo {
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--tinta, #5d5fef);
+    outline: 1.5px dashed rgba(43, 36, 24, 0.3);
+    outline-offset: -6px;
+  }
+  .disco-agujero {
+    position: absolute;
+    inset: 18px;
+    border-radius: 50%;
+    background: #f7f2e7;
   }
   .pieza-cuerpo {
     display: flex;
@@ -1767,6 +1972,33 @@
     50% { transform: scaleY(1); }
   }
 
+  /* ── El colofón: la página tiene final ── */
+  .colofon {
+    margin: 16px 15px 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .colofon-raya {
+    width: 62%;
+    height: 7px;
+  }
+  .colofon-raya line {
+    stroke: var(--yap-voz, #e0502a);
+    stroke-width: 1.6;
+    stroke-dasharray: 7 6;
+  }
+  .colofon span {
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave, #82755a);
+    text-align: center;
+  }
+
   .rotulo-tramo {
     margin: 10px 15px 0;
     font-family: var(--yap-mono, ui-monospace, monospace);
@@ -1775,11 +2007,7 @@
     text-transform: uppercase;
     color: var(--yap-tinta-suave);
   }
-  .bobina-carrete {
-    color: var(--yap-ultramar, #2f4bc4);
-    flex-shrink: 0;
-  }
-
+  
   /* ── El modelo ── */
   .modelo {
     padding: 16px;
@@ -1787,8 +2015,8 @@
     flex-direction: column;
     gap: 10px;
     background: var(--yap-superficie);
-    border: 1px solid var(--yap-borde);
-    box-shadow: var(--yap-relieve);
+    border: 1.5px solid var(--yap-borde);
+    box-shadow: 3px 4px 0 #ded7c2;
   }
   .comiendo {
     display: flex;

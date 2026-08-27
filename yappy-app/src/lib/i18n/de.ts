@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Zeig’s mir",
   "cinta.borrar": "vom Band nehmen",
   "cinta.fuera": "vom Band genommen",
+  "cinta.piezas": "Stücke",
   "pieza.opciones": "Dieses Stück",
   "pieza.favorito": "Favorit",
   "pieza.quitar_favorito": "Favorit entfernen",

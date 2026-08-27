@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Mutasd meg",
   "cinta.borrar": "le a szalagról",
   "cinta.fuera": "lekerült a szalagról",
+  "cinta.piezas": "darab",
   "pieza.opciones": "Ez a darab",
   "pieza.favorito": "Kedvenc",
   "pieza.quitar_favorito": "Kedvenc törlése",

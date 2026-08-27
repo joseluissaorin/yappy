@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Näita mulle",
   "cinta.borrar": "eemalda lindilt",
   "cinta.fuera": "lindilt maas",
+  "cinta.piezas": "tükki",
   "pieza.opciones": "See pala",
   "pieza.favorito": "Lemmik",
   "pieza.quitar_favorito": "Eemalda lemmikutest",

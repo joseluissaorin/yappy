@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "समझाओ",
   "cinta.borrar": "टेप से हटाएँ",
   "cinta.fuera": "टेप से बाहर",
+  "cinta.piezas": "टुकड़े",
   "pieza.opciones": "यह टुकड़ा",
   "pieza.favorito": "पसंदीदा",
   "pieza.quitar_favorito": "पसंदीदा से हटाएँ",

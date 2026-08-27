@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Arată-mi",
   "cinta.borrar": "scoate de pe bandă",
   "cinta.fuera": "scoasă de pe bandă",
+  "cinta.piezas": "piese",
   "pieza.opciones": "Această piesă",
   "pieza.favorito": "Favorit",
   "pieza.quitar_favorito": "Scoate de la favorite",

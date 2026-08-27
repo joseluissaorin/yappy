@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Parādi man",
   "cinta.borrar": "noņemt no lentes",
   "cinta.fuera": "noņemts no lentes",
+  "cinta.piezas": "gabali",
   "pieza.opciones": "Šis gabals",
   "pieza.favorito": "Izlase",
   "pieza.quitar_favorito": "Izņemt no izlases",

@@ -21,10 +21,10 @@ export interface Baldosa {
   peso: number;
 }
 
-const ALTO_BASE = 64;
-const ALTO_TECHO = 330;
-const HUECO_Y = 3;
-const ANCHO_MINIMO = 88;
+const ALTO_BASE = 78;
+const ALTO_TECHO = 340;
+const HUECO_Y = 8;
+const ANCHO_MINIMO = 96;
 
 /// Empaqueta las piezas en filas por peso y devuelve la baldosa de cada id
 /// más el alto total del tablero.

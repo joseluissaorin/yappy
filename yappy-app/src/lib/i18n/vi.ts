@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Chỉ mình với",
   "cinta.borrar": "gỡ khỏi băng",
   "cinta.fuera": "ra khỏi băng",
+  "cinta.piezas": "mảnh",
   "pieza.opciones": "Mảnh này",
   "pieza.favorito": "Yêu thích",
   "pieza.quitar_favorito": "Bỏ yêu thích",

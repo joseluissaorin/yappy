@@ -33,6 +33,7 @@ export default {
   "cinta.ensename": "أرني",
   "cinta.borrar": "إزالة من الشريط",
   "cinta.fuera": "خارج الشريط",
+  "cinta.piezas": "قطع",
   "pieza.opciones": "هذه القطعة",
   "pieza.favorito": "مفضلة",
   "pieza.quitar_favorito": "إزالة من المفضلة",

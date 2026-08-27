@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Näytä",
   "cinta.borrar": "poista nauhalta",
   "cinta.fuera": "pois nauhalta",
+  "cinta.piezas": "palaa",
   "pieza.opciones": "Tämä pala",
   "pieza.favorito": "Suosikki",
   "pieza.quitar_favorito": "Poista suosikeista",

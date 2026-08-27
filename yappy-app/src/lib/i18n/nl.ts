@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Laat maar zien",
   "cinta.borrar": "van de band halen",
   "cinta.fuera": "van de band af",
+  "cinta.piezas": "stukken",
   "pieza.opciones": "Dit stuk",
   "pieza.favorito": "Favoriet",
   "pieza.quitar_favorito": "Favoriet verwijderen",

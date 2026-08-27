@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "教えて",
   "cinta.borrar": "テープから外す",
   "cinta.fuera": "テープから外れました",
+  "cinta.piezas": "枚",
   "pieza.opciones": "このピース",
   "pieza.favorito": "お気に入り",
   "pieza.quitar_favorito": "お気に入りを解除",

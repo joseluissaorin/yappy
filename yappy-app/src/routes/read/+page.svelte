@@ -1104,7 +1104,8 @@
     box-shadow: 0 0 0 var(--yap-tinta), var(--yap-hundido);
   }
   .tecla-piano.seguir {
-    background: linear-gradient(180deg, var(--acento-voz-claro, #f4682e), var(--acento-voz, #e0502a));
+    /* Plano y con la sangre de la pieza (regla 4): nada de degradados. */
+    background: var(--vivo, var(--acento-voz, #e0502a));
     color: #fff6ef;
     border-color: color-mix(in srgb, var(--yap-tinta) 70%, #7a2810);
   }
@@ -1160,7 +1161,7 @@
     padding: 22px 34px;
     border-radius: 24px;
     border: 2px solid color-mix(in srgb, var(--yap-tinta) 70%, #7a2810);
-    background: linear-gradient(180deg, var(--acento-voz-claro, #f4682e), var(--acento-voz, #e0502a));
+    background: var(--vivo, var(--acento-voz, #e0502a));
     color: #fff6ef;
     font-weight: 800;
     font-size: 22px;

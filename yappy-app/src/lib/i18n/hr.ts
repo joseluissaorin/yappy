@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Pokaži mi",
   "cinta.borrar": "makni s trake",
   "cinta.fuera": "skinuto s vrpce",
+  "cinta.piezas": "komada",
   "pieza.opciones": "Ovaj komad",
   "pieza.favorito": "Favorit",
   "pieza.quitar_favorito": "Makni iz favorita",

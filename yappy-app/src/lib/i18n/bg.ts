@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Покажи ми",
   "cinta.borrar": "махни от лентата",
   "cinta.fuera": "извън лентата",
+  "cinta.piezas": "парчета",
   "pieza.opciones": "Това парче",
   "pieza.favorito": "Любимо",
   "pieza.quitar_favorito": "Премахни от любими",

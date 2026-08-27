@@ -39,6 +39,7 @@ export default {
   "cinta.ensename": "Enséñame",
   "cinta.borrar": "quitar de la cinta",
   "cinta.fuera": "fuera de la cinta",
+  "cinta.piezas": "piezas",
   "pieza.opciones": "Esta pieza",
   "pieza.favorito": "Favorito",
   "pieza.quitar_favorito": "Quitar el favorito",

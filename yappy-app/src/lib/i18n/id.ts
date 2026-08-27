@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Ajari aku",
   "cinta.borrar": "keluarkan dari pita",
   "cinta.fuera": "keluar dari pita",
+  "cinta.piezas": "potongan",
   "pieza.opciones": "Potongan ini",
   "pieza.favorito": "Favorit",
   "pieza.quitar_favorito": "Hapus dari favorit",

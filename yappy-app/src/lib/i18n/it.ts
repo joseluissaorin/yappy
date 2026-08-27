@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Fammi vedere",
   "cinta.borrar": "togli dal nastro",
   "cinta.fuera": "fuori dal nastro",
+  "cinta.piezas": "pezzi",
   "pieza.opciones": "Questo pezzo",
   "pieza.favorito": "Preferito",
   "pieza.quitar_favorito": "Togli dai preferiti",

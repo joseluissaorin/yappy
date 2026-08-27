@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Mostra-me",
   "cinta.borrar": "tirar da fita",
   "cinta.fuera": "fora da fita",
+  "cinta.piezas": "peças",
   "pieza.opciones": "Esta peça",
   "pieza.favorito": "Favorito",
   "pieza.quitar_favorito": "Tirar dos favoritos",

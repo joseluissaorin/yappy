@@ -33,6 +33,7 @@ export default {
   "cinta.ensename": "Bana göster",
   "cinta.borrar": "banttan çıkar",
   "cinta.fuera": "banttan çıktı",
+  "cinta.piezas": "parça",
   "pieza.opciones": "Bu parça",
   "pieza.favorito": "Favori",
   "pieza.quitar_favorito": "Favoriden çıkar",

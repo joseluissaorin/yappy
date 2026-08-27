@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Parodyk",
   "cinta.borrar": "nuimti nuo juostos",
   "cinta.fuera": "nuimta nuo juostos",
+  "cinta.piezas": "gabalai",
   "pieza.opciones": "Šis gabalas",
   "pieza.favorito": "Mėgstamiausias",
   "pieza.quitar_favorito": "Pašalinti iš mėgstamiausių",

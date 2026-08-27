@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "알려 줘",
   "cinta.borrar": "테이프에서 빼기",
   "cinta.fuera": "테이프에서 빠졌어요",
+  "cinta.piezas": "조각",
   "pieza.opciones": "이 조각",
   "pieza.favorito": "즐겨찾기",
   "pieza.quitar_favorito": "즐겨찾기 해제",

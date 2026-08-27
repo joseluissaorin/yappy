@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Show me",
   "cinta.borrar": "remove from the tape",
   "cinta.fuera": "off the tape",
+  "cinta.piezas": "pieces",
   "pieza.opciones": "This piece",
   "pieza.favorito": "Favorite",
   "pieza.quitar_favorito": "Remove favorite",

@@ -33,6 +33,7 @@ export default {
   "cinta.ensename": "Покажи мне",
   "cinta.borrar": "убрать с ленты",
   "cinta.fuera": "снято с ленты",
+  "cinta.piezas": "фрагментов",
   "pieza.opciones": "Этот кусочек",
   "pieza.favorito": "Избранное",
   "pieza.quitar_favorito": "Убрать из избранного",

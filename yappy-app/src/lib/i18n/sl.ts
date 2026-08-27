@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Pokaži mi",
   "cinta.borrar": "odstrani s traku",
   "cinta.fuera": "s traku",
+  "cinta.piezas": "kosov",
   "pieza.opciones": "Ta kos",
   "pieza.favorito": "Priljubljeno",
   "pieza.quitar_favorito": "Odstrani iz priljubljenih",

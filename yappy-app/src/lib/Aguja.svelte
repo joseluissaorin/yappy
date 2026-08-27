@@ -175,7 +175,7 @@
     color: #fff6ef;
     border-radius: 20px;
     padding: 10px 10px 10px 12px;
-    box-shadow: var(--yap-relieve-alto, 0 12px 26px rgba(64, 46, 12, 0.24));
+    box-shadow: 0 4px 0 rgba(43, 36, 24, 0.22);
     transition: transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1.15), opacity 0.2s ease;
     touch-action: pan-y;
   }
@@ -198,7 +198,7 @@
   .aguja-loro {
     flex-shrink: 0;
     display: inline-flex;
-    background: rgba(247, 242, 231, 0.22);
+    background: color-mix(in srgb, var(--vivo, var(--acento-voz, #e0502a)) 55%, #f7f2e7);
     border-radius: 13px;
     padding: 3px;
   }
@@ -257,7 +257,7 @@
     height: 52px;
     border-radius: 16px;
     border: 0;
-    background: rgba(247, 242, 231, 0.24);
+    background: color-mix(in srgb, var(--vivo, var(--acento-voz, #e0502a)) 45%, #f7f2e7);
     color: #fff6ef;
     display: inline-flex;
     align-items: center;

@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Ukaž mi",
   "cinta.borrar": "odebrat z pásky",
   "cinta.fuera": "pryč z pásky",
+  "cinta.piezas": "kousků",
   "pieza.opciones": "Tenhle kousek",
   "pieza.favorito": "Oblíbené",
   "pieza.quitar_favorito": "Odebrat z oblíbených",

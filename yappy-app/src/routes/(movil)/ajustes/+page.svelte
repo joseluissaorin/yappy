@@ -12,6 +12,7 @@
   import { presionable } from "$lib/presionable";
   import { openUrl } from "@tauri-apps/plugin-opener";
   import { TINTAS_VOZ, fijarTintaVoz } from "$lib/voces";
+  import { PALETA } from "$lib/juguete";
   import {
     getSettings,
     setAppTheme,
@@ -154,7 +155,7 @@
               probar(v);
             }}
           >
-            <Criatura size={84} tinta={TINTAS_VOZ[i % TINTAS_VOZ.length]} cantando={probando === v.name || cocinando === v.name} />
+            <span class="cromo-parche" style="background: {PALETA[i % PALETA.length]}"><Criatura size={72} tinta={TINTAS_VOZ[i % TINTAS_VOZ.length]} cantando={probando === v.name || cocinando === v.name} /></span>
             <strong>{v.name}</strong>
             <span class="cromo-desc">{cocinando === v.name ? $t("voces.cocinando") : v.description}</span>
           </button>
@@ -307,14 +308,39 @@
     border-radius: 14px;
   }
   .grupo {
+    position: relative;
     background: var(--yap-superficie);
-    border: 1px solid var(--yap-borde);
+    border: 1.5px solid var(--yap-borde);
     border-radius: 20px;
-    box-shadow: var(--yap-relieve);
-    padding: 18px 16px 16px;
+    box-shadow: 3px 4px 0 #ded7c2;
+    padding: 20px 16px 16px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    margin-top: 12px;
+  }
+  /* La etiqueta de la caja: pegada al canto superior, como en un taller. */
+  .grupo > :global(h2.yap-susurro) {
+    position: absolute;
+    top: -12px;
+    left: 12px;
+    margin: 0;
+    background: var(--yap-papel);
+    border: 1.5px solid var(--yap-borde);
+    border-radius: 8px;
+    padding: 3px 11px;
+    transform: rotate(-1.6deg);
+    box-shadow: 2px 2.5px 0 #ded7c2;
+  }
+  .cromo-parche {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    outline: 2px dashed rgba(43, 36, 24, 0.25);
+    outline-offset: -7px;
   }
 
   .voces-pista {

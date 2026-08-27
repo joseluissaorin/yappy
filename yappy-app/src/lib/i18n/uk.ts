@@ -33,6 +33,7 @@ export default {
   "cinta.ensename": "Покажи мені",
   "cinta.borrar": "прибрати зі стрічки",
   "cinta.fuera": "знято зі стрічки",
+  "cinta.piezas": "фрагментів",
   "pieza.opciones": "Цей шматок",
   "pieza.favorito": "Улюблене",
   "pieza.quitar_favorito": "Прибрати з улюбленого",

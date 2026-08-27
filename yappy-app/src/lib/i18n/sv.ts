@@ -34,6 +34,7 @@ export default {
   "cinta.ensename": "Visa mig",
   "cinta.borrar": "ta bort från bandet",
   "cinta.fuera": "borta från bandet",
+  "cinta.piezas": "stycken",
   "pieza.opciones": "Det här stycket",
   "pieza.favorito": "Favorit",
   "pieza.quitar_favorito": "Ta bort favorit",
