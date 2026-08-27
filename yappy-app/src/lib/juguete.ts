@@ -108,3 +108,10 @@ export function tiltDe(id: string): number {
   const h = hashDe(id);
   return (((h >> 3) % 49) - 24) / 10;
 }
+
+/// El DESCONTROL: cada pieza se descoloca un poco de su celda (nada de
+/// retícula perfecta: esto es una mesa, no una hoja de cálculo).
+export function jitterDe(id: string): { dx: number; dy: number } {
+  const h = hashDe(id);
+  return { dx: ((h >> 5) % 19) - 9, dy: (((h >> 9) % 23) - 11) };
+}

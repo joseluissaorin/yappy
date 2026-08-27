@@ -66,7 +66,11 @@ export function empaquetar(
     const medio = pesoTotal / f.length;
     // La fila de la grande es también más ALTA (Kalorica: base + media×12;
     // aquí, exagerado: base + media×26, con techo para la boca gigante).
-    const alto = Math.min(ALTO_TECHO, ALTO_BASE + medio * 26);
+    // Y con RUIDO determinista por fila: nada de retícula de reloj.
+    let semilla = 0;
+    for (const c of f[0].id) semilla = (semilla * 31 + c.charCodeAt(0)) >>> 0;
+    const ruido = 0.9 + ((semilla >> 4) % 21) / 100;
+    const alto = Math.min(ALTO_TECHO, (ALTO_BASE + medio * 26) * ruido);
     const anchoUtil = anchoTablero;
 
     // Anchos crudos por peso, con mínimo legible por longitud de título.

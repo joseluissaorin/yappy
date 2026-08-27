@@ -632,11 +632,11 @@
       <!-- Cromo mínimo, solo en pausa. -->
       <header class="pausa-arriba">
         <button class="p-icono" use:presionable onclick={back} aria-label={$t("lector.volver")}>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.2 12.1 q-7.1 -0.7 -14.2 0 M11.4 18.2 q-3.9 -3.2 -6.3 -6.2 q2.4 -3.1 6.3 -6.2"/></svg>
         </button>
         <span class="p-titulo">{title}</span>
         <button class="p-icono" use:presionable onclick={() => (guionAbierto = true)} aria-label={$t("cartel.guion")}>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4.2 7.2 q7.9 -0.8 15.7 0 M4.1 12.1 q7.9 0.7 15.8 0 M4.2 17 q5 -0.6 10 0"/></svg>
         </button>
         <button class="p-icono" use:presionable class:pendiente={customised} onclick={() => (tallerAbierto = true)} aria-label={$t("cartel.taller")}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17v3h3l5.5-5.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.1-2.1z"/></svg>
@@ -653,10 +653,10 @@
           onpointercancel={() => clearTimeout(pulsoLargo)}
           aria-label={$t("mando.atras")}
         >
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M18 6v12L9.5 12zM8 6H5.6v12H8z"/></svg>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M18.4 6.2 Q19.1 5.7 19 6.8 Q18.6 12 19 17.2 Q19.1 18.3 18.3 17.8 L10 12.6 Q9.2 12 10 11.4 Z"/><path d="M7.8 6.1 Q8.6 5.9 8.5 6.9 Q8.2 12 8.5 17.1 Q8.6 18.1 7.7 17.9 Q6.6 17.7 5.9 17.6 Q5.4 12 5.9 6.4 Q6.7 6.2 7.8 6.1 Z"/></svg>
         </button>
         <button class="tecla-piano seguir" use:presionable={{ hap: "rigid" }} onclick={sigue}>
-          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11.5 7.2c0.9 0.6 0.9 1.9 0 2.4L9.2 20.4C8.2 21 7 20.3 7 19.2z"/></svg>
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
           <span>{$t("mando.seguir")}</span>
         </button>
         <button
@@ -667,7 +667,7 @@
           onpointercancel={() => clearTimeout(pulsoLargo)}
           aria-label={$t("mando.adelante")}
         >
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M6 6v12l8.5-6zM16 6h2.4v12H16z"/></svg>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M5.6 6.2 Q4.9 5.7 5 6.8 Q5.4 12 5 17.2 Q4.9 18.3 5.7 17.8 L14 12.6 Q14.8 12 14 11.4 Z"/><path d="M16.2 6.1 Q15.4 5.9 15.5 6.9 Q15.8 12 15.5 17.1 Q15.4 18.1 16.3 17.9 Q17.4 17.7 18.1 17.6 Q18.6 12 18.1 6.4 Q17.3 6.2 16.2 6.1 Z"/></svg>
         </button>
       </nav>
     {/if}
@@ -685,11 +685,11 @@
     <section class="portada">
       <header class="pausa-arriba portada-arriba">
         <button class="p-icono" use:presionable onclick={back} aria-label={$t("lector.volver")}>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.2 12.1 q-7.1 -0.7 -14.2 0 M11.4 18.2 q-3.9 -3.2 -6.3 -6.2 q2.4 -3.1 6.3 -6.2"/></svg>
         </button>
         <span class="p-titulo"></span>
         <button class="p-icono" use:presionable onclick={() => (guionAbierto = true)} aria-label={$t("cartel.guion")}>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4.2 7.2 q7.9 -0.8 15.7 0 M4.1 12.1 q7.9 0.7 15.8 0 M4.2 17 q5 -0.6 10 0"/></svg>
         </button>
         <button class="p-icono" use:presionable onclick={() => (tallerAbierto = true)} aria-label={$t("cartel.taller")}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17v3h3l5.5-5.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.1-2.1z"/></svg>
@@ -699,13 +699,13 @@
       <p class="portada-meta">{paras.length} ¶</p>
       {#if progresoGuardado > 0}
         <button class="leer-gigante" use:presionable={{ hap: "rigid" }} onclick={() => readFrom(progresoGuardado)}>
-          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11.5 7.2c0.9 0.6 0.9 1.9 0 2.4L9.2 20.4C8.2 21 7 20.3 7 19.2z"/></svg>
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
           {$t("cartel.continuar")}
         </button>
         <button class="enlace-suave" use:presionable={{ hap: "soft" }} onclick={() => readFrom(0)}>{$t("cartel.desde_principio")}</button>
       {:else}
         <button class="leer-gigante" use:presionable={{ hap: "rigid" }} onclick={() => readFrom(0)}>
-          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M7 4.8c0-1.1 1.2-1.8 2.2-1.2l11.5 7.2c0.9 0.6 0.9 1.9 0 2.4L9.2 20.4C8.2 21 7 20.3 7 19.2z"/></svg>
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
           {$t("cartel.leer")}
         </button>
       {/if}
@@ -1090,7 +1090,7 @@
     justify-content: center;
     gap: 10px;
     min-height: 86px;
-    border-radius: 20px;
+    border-radius: 19px 24px 16px 26px / 24px 17px 26px 18px;
     border: 2px solid var(--yap-tinta);
     background: var(--yap-superficie);
     color: var(--yap-tinta);
@@ -1159,7 +1159,7 @@
     align-items: center;
     gap: 14px;
     padding: 22px 34px;
-    border-radius: 24px;
+    border-radius: 28px 18px 30px 20px / 20px 30px 18px 28px;
     border: 2px solid color-mix(in srgb, var(--yap-tinta) 70%, #7a2810);
     background: var(--vivo, var(--acento-voz, #e0502a));
     color: #fff6ef;

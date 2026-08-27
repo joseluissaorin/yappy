@@ -71,10 +71,68 @@ function trocear(palabra: string, n: number): string[] {
   return trozos;
 }
 
-/// El cartel de una baldosa: elige el número de líneas (1 a 4) que menos
-/// deforma en conjunto (la válvula de legibilidad: mejor otra línea que
-/// aplastar de más) y devuelve cada línea con su anchura natural.
-export function cartel(titulo: string, ancho: number, alto: number, idioma?: string): LineaCartel[] {
+export interface LimitesCartel {
+  /// Compresión mínima y estirón máximo tolerados por línea.
+  min: number;
+  max: number;
+  /// Alto mínimo LEGIBLE de cada franja de línea, en píxeles.
+  altoMinLinea?: number;
+  /// Tope de líneas (las formas puntiagudas caben menos renglones).
+  maxLineas?: number;
+}
+
+/// El cartel LIBRE de la pieza grande: deformación de feria casi sin freno.
+export const LIMITES_GRITO: LimitesCartel = { min: 0.5, max: 6, altoMinLinea: 22 };
+/// El cartel ACOTADO del reposo (la válvula dura de la regla nueve):
+/// se deforma, llena y SE LEE; antes de aplastar, se sueltan palabras.
+export const LIMITES_REPOSO: LimitesCartel = { min: 0.82, max: 1.35, altoMinLinea: 15, maxLineas: 4 };
+
+function componer(
+  palabras: string[],
+  ancho: number,
+  alto: number,
+  lim: LimitesCartel,
+): { lineas: string[]; nota: number; valido: boolean } {
+  const topeLineas = Math.max(
+    1,
+    Math.min(lim.maxLineas ?? 5, palabras.length, Math.floor(alto / (lim.altoMinLinea ?? 19))),
+  );
+  let mejor: string[] = [palabras.join(" ")];
+  let mejorNota = Infinity;
+  let mejorValido = false;
+  for (let n = 1; n <= topeLineas; n++) {
+    const lineas = partir(palabras, n);
+    const franja = alto / lineas.length;
+    let nota = 0;
+    let valido = true;
+    for (const l of lineas) {
+      const natural = medir(l) / VB_ALTO;
+      const estira = ancho / franja / natural;
+      if (estira < lim.min || estira > lim.max) valido = false;
+      nota += estira < 1 ? 2.2 * Math.abs(Math.log(estira)) : Math.abs(Math.log(estira));
+      if (estira < 0.5) nota += 6;
+    }
+    // Un reparto VÁLIDO gana siempre a uno inválido; a igualdad, la nota.
+    if ((valido && !mejorValido) || (valido === mejorValido && nota < mejorNota - 1e-6)) {
+      mejorNota = nota;
+      mejor = lineas;
+      mejorValido = valido;
+    }
+  }
+  return { lineas: mejor, nota: mejorNota, valido: mejorValido };
+}
+
+/// El cartel de una baldosa: tipografía que SE ESTIRA Y SE DEFORMA para
+/// llenar el ancho y el alto de su ventana, sin padding. Con límites
+/// acotados (reposo), si ningún reparto respeta la legibilidad se van
+/// soltando palabras («…») antes que aplastar: llenar Y leerse.
+export function cartel(
+  titulo: string,
+  ancho: number,
+  alto: number,
+  idioma?: string,
+  limites: LimitesCartel = LIMITES_GRITO,
+): LineaCartel[] {
   const limpio = titulo.trim();
   if (!limpio || ancho <= 0 || alto <= 0) return [];
   const mayus = limpio.toLocaleUpperCase(idioma || undefined);
@@ -82,26 +140,19 @@ export function cartel(titulo: string, ancho: number, alto: number, idioma?: str
   if (palabras.length === 1 && palabras[0].length > 12) {
     palabras = trocear(palabras[0], Math.min(3, Math.ceil(palabras[0].length / 10)));
   }
-  // La válvula: mejor OTRA línea que aplastar de más (la compresión por
-  // debajo de la mitad castiga fuerte; el estirón gordo apenas).
-  const maxLineas = Math.min(5, palabras.length, Math.max(1, Math.floor(alto / 19)));
-  let mejor: string[] = [mayus];
-  let mejorNota = Infinity;
-  for (let n = 1; n <= maxLineas; n++) {
-    const lineas = partir(palabras, n);
-    const franja = alto / lineas.length;
-    let nota = 0;
-    for (const l of lineas) {
-      const natural = medir(l) / VB_ALTO;
-      const pintada = ancho / franja;
-      const estira = pintada / natural;
-      nota += estira < 1 ? 2.2 * Math.abs(Math.log(estira)) : Math.abs(Math.log(estira));
-      if (estira < 0.5) nota += 6;
-    }
-    if (nota < mejorNota - 1e-6) {
-      mejorNota = nota;
-      mejor = lineas;
+  let intento = componer(palabras, ancho, alto, limites);
+  if (!intento.valido && palabras.length > 1) {
+    // La válvula dura: soltar palabras hasta que el cartel respete los
+    // límites de legibilidad (el título entero espera en la pieza grande).
+    for (let corte = palabras.length - 1; corte >= 1; corte--) {
+      const conElipsis = [...palabras.slice(0, corte)];
+      conElipsis[conElipsis.length - 1] = `${conElipsis[conElipsis.length - 1]}…`;
+      const prueba = componer(conElipsis, ancho, alto, limites);
+      if (prueba.valido) {
+        intento = prueba;
+        break;
+      }
     }
   }
-  return mejor.map((texto) => ({ texto, vb: medir(texto) }));
+  return intento.lineas.map((texto) => ({ texto, vb: medir(texto) }));
 }

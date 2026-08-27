@@ -167,8 +167,8 @@ function estrella(): [number, number][] {
 /// Las formas BASE (identidad de cada pieza). Corazón y estrella quedan
 /// fuera: son RESERVADAS (favorito y completada).
 export const TROQUELES_BASE: Troquel[] = [
-  { nombre: "circulo", puntos: redondear(circulo()), ventana: { x: 15, y: 24, w: 70, h: 50 } },
-  { nombre: "nube", puntos: redondear(nube()), ventana: { x: 16, y: 26, w: 68, h: 46 } },
+  { nombre: "circulo", puntos: redondear(circulo()), ventana: { x: 20, y: 27, w: 60, h: 46 } },
+  { nombre: "nube", puntos: redondear(nube()), ventana: { x: 19, y: 28, w: 62, h: 42 } },
   { nombre: "flor", puntos: redondear(flor()), ventana: { x: 24, y: 29, w: 52, h: 40 }, lineas: 2 },
   { nombre: "sello", puntos: redondear(sello()), ventana: { x: 16, y: 24, w: 68, h: 50 } },
   { nombre: "rombo", puntos: redondear(rombo()), ventana: { x: 26, y: 31, w: 48, h: 36 }, lineas: 2 },

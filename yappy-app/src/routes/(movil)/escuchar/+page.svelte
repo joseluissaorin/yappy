@@ -8,8 +8,7 @@
   // llega algo, se asoma en los ratos muertos y DICE los títulos en alto.
   import { onMount, onDestroy } from "svelte";
   import { backOut, cubicOut } from "svelte/easing";
-  import { scale } from "svelte/transition";
-  import { fly } from "svelte/transition";
+  import { scale, fade, fly } from "svelte/transition";
   import { goto } from "$app/navigation";
   import { t, idiomaUI } from "$lib/i18n";
   import { get as getStore } from "svelte/store";
@@ -22,7 +21,7 @@
   import { tintaVoz, TINTAS_VOZ } from "$lib/voces";
   import { repro } from "$lib/reproduccion.svelte";
   import { empaquetar, type Baldosa } from "$lib/mosaico";
-  import { cartel, VB_ALTO, VB_BASE } from "$lib/cartel";
+  import { cartel, LIMITES_REPOSO, VB_ALTO, VB_BASE } from "$lib/cartel";
   import {
     SERENO,
     PALETA,
@@ -31,6 +30,7 @@
     tonoHondo,
     radiosDe,
     tiltDe,
+    jitterDe,
   } from "$lib/juguete";
   import {
     TROQUELES_BASE,
@@ -126,6 +126,14 @@
   // Al salir: si la pieza fue LANZADA ya voló con su propio impulso y no
   // debe reaparecer; el resto se despide con su giro.
   let idLanzada: string | null = null;
+  function vuelveAlSello(_n: Element) {
+    return {
+      duration: 200,
+      easing: cubicOut,
+      css: (t: number, u: number) =>
+        `transform: translate(${u * 26}%, ${u * 18}%) scale(${1 - u * 0.55}); opacity: ${t}; transform-origin: 92% 100%;`,
+    };
+  }
   function seVa(n: Element) {
     const id = (n as HTMLElement).dataset?.pieza;
     if (id && id === idLanzada) return { duration: 0, css: () => "opacity: 0;" };
@@ -158,6 +166,9 @@
   }
 
   onMount(async () => {
+    try {
+      etiquetaTop = parseFloat(localStorage.getItem("yappy.etiqueta.top") ?? "") || 0;
+    } catch {}
     modeloListo = await isModelReady().catch(() => true);
     items = await colaListar().catch(() => []);
     for (const it of items) idsConocidos.add(it.id);
@@ -244,6 +255,16 @@
       setTimeout(() => (marcaGelatina = false), 950);
     }, 90000);
     cleanups.push(() => clearInterval(olaSola));
+    const pasitos = setInterval(() => {
+      if (sonando || document.hidden || jefePicotea) return;
+      jefePos = { x: Math.floor(Math.random() * 52) - 10, y: 0 };
+    }, 47000);
+    cleanups.push(() => clearInterval(pasitos));
+    const expedicion = setInterval(() => {
+      if (Math.random() < 0.45) elJefeReorganiza();
+      else pasea();
+    }, 75000);
+    cleanups.push(() => clearInterval(expedicion));
   });
   onDestroy(() => {
     cleanups.forEach((c) => c());
@@ -394,6 +415,104 @@
   let vueloPrevio = { x: 0, y: 0, t: 0 };
   let asomadoEn = $state<string | null>(null);
   let asomadoBorde = $state<null | { lado: "izq" | "der" | "abajo"; pos: number; tinta: string }>(null);
+  // El jefe se mueve: pasitos ociosos y expediciones de reorganización.
+  let jefePos = $state({ x: 0, y: 0 });
+  let jefePicotea = $state(false);
+  // El paseante: un loro que cruza la pantalla por DETRÁS de las
+  // pegatinas, asomando por los huecos.
+  let paseante = $state<null | { x: number; y: number; tinta: string; rumbo: 1 | -1 }>(null);
+
+  // La etiqueta de la trastienda se ARRASTRA arriba y abajo (y recuerda
+  // su sitio); el toque sin arrastre sigue abriendo la trastienda.
+  let etiquetaTop = $state(0);
+  let etqArr = $state<null | { y0: number; top0: number; movida: boolean }>(null);
+  function etqDown(e: PointerEvent) {
+    etqArr = { y0: e.clientY, top0: etiquetaTop || window.innerHeight * 0.24, movida: false };
+    haptic("tick");
+  }
+  function etqMove(e: PointerEvent) {
+    if (!etqArr) return;
+    const dy = e.clientY - etqArr.y0;
+    if (Math.abs(dy) > 7 && !etqArr.movida) {
+      etqArr.movida = true;
+      (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+    }
+    const min = window.innerHeight * 0.1;
+    const max = window.innerHeight * 0.72;
+    etiquetaTop = Math.min(max, Math.max(min, etqArr.top0 + dy));
+  }
+  function etqUp() {
+    if (!etqArr) return;
+    const fueArrastre = etqArr.movida;
+    etqArr = null;
+    if (fueArrastre) {
+      haptic("soft");
+      try {
+        localStorage.setItem("yappy.etiqueta.top", String(Math.round(etiquetaTop)));
+      } catch {}
+    } else {
+      haptic("soft");
+      engranajeGira = true;
+      setTimeout(() => goto("/ajustes"), 240);
+    }
+  }
+
+  /// El jefe vuela hasta una pieza al azar, la picotea y la INTERCAMBIA
+  /// con su vecina (reorganiza de verdad, con persistencia). Solo en
+  /// silencio y de tarde en tarde: es su trabajo, no un estorbo.
+  async function elJefeReorganiza() {
+    if (sonando || levantada || bocaAbierta || visibles.length < 3) return;
+    const i = Math.floor(Math.random() * (visibles.length - 1));
+    const pieza = visibles[i];
+    const el = document.querySelector<HTMLElement>(`[data-pieza="${CSS.escape(pieza.id)}"]`);
+    const jefeEl = document.querySelector<HTMLElement>(".loro-jefe");
+    if (!el || !jefeEl) return;
+    const r = el.getBoundingClientRect();
+    const j = jefeEl.getBoundingClientRect();
+    jefePos = { x: r.left + r.width / 2 - (j.left - jefePos.x) - 42, y: r.top - (j.top - jefePos.y) - 30 };
+    setTimeout(() => {
+      jefePicotea = true;
+      haptic("tick");
+      setTimeout(() => (jefePicotea = false), 520);
+      // El intercambio: la pieza y su vecina se cambian el sitio.
+      const idxA = items.findIndex((it) => it.id === pieza.id);
+      const vecina = visibles[i + 1];
+      const idxB = items.findIndex((it) => it.id === vecina?.id);
+      if (idxA >= 0 && idxB >= 0) {
+        const copia = [...items];
+        [copia[idxA], copia[idxB]] = [copia[idxB], copia[idxA]];
+        items = copia;
+        colaReordenar(pieza.id, idxB).catch(() => {});
+      }
+      setTimeout(() => (jefePos = { x: 0, y: 0 }), 700);
+    }, 950);
+  }
+
+  /// El paseo: cruza por un hueco entre filas, detrás de las pegatinas.
+  function pasea() {
+    if (sonando || paseante || document.hidden) return;
+    const filas = [...new Set([...tablero.baldosas.values()].map((bb) => bb.y))].sort((a, b) => a - b);
+    if (filas.length < 2) return;
+    const y = filas[1 + Math.floor(Math.random() * (filas.length - 1))] - 26;
+    const rumbo = Math.random() < 0.5 ? 1 : -1;
+    const tinta = TINTAS_VOZ[Math.floor(Math.random() * TINTAS_VOZ.length)];
+    const ancho = anchoTablero || 400;
+    let x = rumbo === 1 ? -60 : ancho + 60;
+    paseante = { x, y, tinta, rumbo };
+    const t0 = performance.now();
+    const dur = 8500;
+    const paso = (t: number) => {
+      const u = (t - t0) / dur;
+      if (u >= 1 || !paseante) {
+        paseante = null;
+        return;
+      }
+      x = rumbo === 1 ? -60 + u * (ancho + 120) : ancho + 60 - u * (ancho + 120);
+      paseante = { x, y, tinta, rumbo };
+      requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  }
 
   const SELLO_BOCA = TROQUELES_BASE.find((t) => t.nombre === "sello") ?? TROQUELES_BASE[0];
 
@@ -483,6 +602,13 @@
   function alternarSeleccion(item: ItemCola) {
     haptic("medium");
     onda(item.id);
+    // Un loro curiosea detrás de la pegatina pulsada.
+    if (asomadoEn !== item.id) {
+      asomadoEn = item.id;
+      setTimeout(() => {
+        if (asomadoEn === item.id) asomadoEn = null;
+      }, 1600);
+    }
     const eligiendo = seleccionada !== item.id;
     seleccionada = eligiendo ? item.id : null;
     // La voz dice el título en voz baja (solo con la casa en silencio).
@@ -537,8 +663,9 @@
       if (!antes) continue;
       const el = document.querySelector<HTMLElement>(`[data-pieza="${CSS.escape(id)}"]`);
       if (!el) continue;
-      const dx = antes.x - b.x;
-      const dy = antes.y - b.y;
+      const jit = jitterDe(id);
+      const dx = antes.x - (b.x + jit.dx);
+      const dy = antes.y - (b.y + jit.dy);
       const s = Math.sqrt(((antes.w / b.ancho) * antes.h) / b.alto);
       if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(s - 1) < 0.012) continue;
       el.style.transition = "none";
@@ -871,6 +998,11 @@
 
     <!-- EL MOSAICO: la percha. La boca-baldosa primera, las piezas después. -->
     <div class="mosaico" bind:clientWidth={anchoTablero} style="height: {tablero.alto}px">
+      {#if paseante}
+        <div class="paseante" style="left: {paseante.x}px; top: {paseante.y}px; transform: scaleX({paseante.rumbo === 1 ? -1 : 1})" aria-hidden="true">
+          <Criatura size={40} andando mirando={-1} tinta={paseante.tinta} />
+        </div>
+      {/if}
       {#each piezasTablero as ficha, i (ficha.id)}
         {@const b = tablero.baldosas.get(ficha.id)}
         {#if b}
@@ -880,6 +1012,7 @@
             {@const esLaQueSuena = item.id === idQueSuena}
             {@const enVuelo = levantada === item.id}
             {@const elegida = seleccionada === item.id}
+            {@const jit = jitterDe(item.id)}
             {@const tinta = tintaDe(item)}
             {@const honda = tonoHondo(tinta)}
             {@const tq = troquelesVivos.get(item.id) ?? troquelBase(item.id)}
@@ -889,13 +1022,14 @@
             {@const vh = (b.alto * tq.ventana.h) / 100 - 20}
             {@const enMarcha = esLaQueSuena && trabajando}
             {@const grandota = elegida || b.peso >= 3}
-            {@const lineasCartel = enMarcha || !grandota ? [] : cartel(item.titulo, vw, Math.max(24, vh), $idiomaUI)}
+            {@const limitesTq = grandota ? undefined : { ...LIMITES_REPOSO, maxLineas: tq.lineas ?? LIMITES_REPOSO.maxLineas }}
+            {@const lineasCartel = enMarcha ? [] : cartel(item.titulo, vw, Math.max(24, vh), $idiomaUI, limitesTq)}
             <article
               data-pieza={item.id}
               class="baldosa" class:en-vuelo={enVuelo}
               in:llega={{ delay: cascada ? Math.min(i * 40, 360) : 0 }}
               out:seVa
-              style="left: {b.x}px; top: {b.y}px; width: {b.ancho}px; height: {b.alto}px; z-index: {enVuelo ? 40 : elegida ? 10 : esLaQueSuena ? 8 : item.favorito ? 4 : 1}; {enVuelo ? `transition: ${recogida ? 'transform 0.18s cubic-bezier(0.3, 1.4, 0.6, 1)' : 'none'}; transform: translate(${vuelo.dx}px, ${vuelo.dy}px) scale(${1.09 * vuelo.estira}, ${1.09 * (2 - vuelo.estira)}) rotate(${vuelo.giro}deg);` : ''}"
+              style="left: {b.x + jit.dx}px; top: {b.y + jit.dy}px; width: {b.ancho}px; height: {b.alto}px; z-index: {enVuelo ? 40 : elegida ? 10 : esLaQueSuena ? 8 : item.favorito ? 4 : 1}; {enVuelo ? `transition: ${recogida ? 'transform 0.18s cubic-bezier(0.3, 1.4, 0.6, 1)' : 'none'}; transform: translate(${vuelo.dx}px, ${vuelo.dy}px) scale(${1.09 * vuelo.estira}, ${1.09 * (2 - vuelo.estira)}) rotate(${vuelo.giro}deg);` : ''}"
               onpointerdown={(e) => alTocar(e, item.id)}
               onpointermove={alMover}
               onpointerup={alSoltar}
@@ -954,9 +1088,6 @@
                       {/each}
                     </div>
                   {:else}
-                    <!-- LA REGLA NUEVE, de verdad: en reposo el título se
-                         LEE (texto plano, cuerpo firme, sin deformar). El
-                         cartel de feria queda para la pieza grande. -->
                     <strong
                       class="titulo-plano"
                       style="font-size: {b.ancho < 150 ? 13.5 : b.alto > 160 ? 17 : 15}px; -webkit-line-clamp: {tq.lineas ?? (b.alto > 160 ? 4 : 3)}; line-clamp: {tq.lineas ?? (b.alto > 160 ? 4 : 3)};"
@@ -1044,9 +1175,15 @@
   </div>
 
   <!-- EL LORO JEFE: arriba a la izquierda, vigilando la casa entera. -->
-  <div class="loro-jefe" class:voltereta aria-hidden="true">
+  <div
+    class="loro-jefe"
+    class:voltereta
+    class:picotea={jefePicotea}
+    style="transform: translate({jefePos.x}px, {jefePos.y}px)"
+    aria-hidden="true"
+  >
     <Criatura
-      size={58}
+      size={84}
       mirando={-1}
       estado={celebra ? "celebrando" : repro.snap?.estado === "sonando" ? "hablando" : repro.snap?.estado === "pausa" ? "pausa" : durmiendo ? "dormido" : "posado"}
       apertura={repro.snap?.estado === "sonando" ? nivel : 0}
@@ -1080,8 +1217,12 @@
 
   <!-- La boca abierta: la hoja brota del sello, esquina abajo-derecha. -->
   {#if bocaAbierta}
-    <div class="velo" role="presentation" onclick={() => (bocaAbierta = false)}></div>
-    <div class="boca-hoja" transition:scale={{ duration: 300, start: 0.42, easing: backOut }}>
+    <div class="velo" role="presentation" transition:fade={{ duration: 190 }} onclick={() => (bocaAbierta = false)}></div>
+    <div
+      class="boca-hoja"
+      in:scale={{ duration: 340, start: 0.42, easing: backOut }}
+      out:vuelveAlSello
+    >
       <div class="asomado-boca" aria-hidden="true"><Criatura size={40} mirada={{ x: 0, y: 1 }} tinta={$tintaVoz} /></div>
       <button class="boca-cerrar cruz-gira" onclick={() => { haptic("light"); bocaAbierta = false; }} aria-label={$t("comun.cerrar")}>＋</button>
       <button class="tecla-gorda protagonista" use:presionable={{ hap: "medium" }} onclick={pegarPortapapeles} disabled={pegando}>
@@ -1123,8 +1264,12 @@
        de la página, como las etiquetas de los márgenes de un taller. -->
   <button
     class="etiqueta-trastienda"
-    use:presionable={{ hap: "soft" }}
-    onclick={() => { engranajeGira = true; setTimeout(() => goto("/ajustes"), 240); }}
+    class:arrastrada={!!etqArr}
+    style={etiquetaTop ? `top: ${etiquetaTop}px` : ""}
+    onpointerdown={etqDown}
+    onpointermove={etqMove}
+    onpointerup={etqUp}
+    onpointercancel={() => (etqArr = null)}
   >
     <span class="engranaje" class:gira={engranajeGira} aria-hidden="true">
       <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.4"/><path d="M12 2.8 l0.6 3.1 M12 21.2 l-0.5 -3 M21.2 12 l-3.1 0.5 M2.8 12 l3.1 -0.4 M18.5 5.6 l-2.2 2.1 M5.5 18.4 l2.2 -2 M18.4 18.5 l-2.1 -2.2 M5.6 5.5 l2.1 2.2"/></svg>
@@ -1149,8 +1294,8 @@
   {/if}
 
   {#if menuPieza}
-    <div class="velo" role="presentation" onclick={() => { menuPieza = null; renombrando = false; }}></div>
-    <div class="hoja">
+    <div class="velo" role="presentation" transition:fade={{ duration: 180 }} onclick={() => { menuPieza = null; renombrando = false; }}></div>
+    <div class="hoja" in:fly={{ y: 260, duration: 340, easing: backOut }} out:fly={{ y: 260, duration: 220 }}>
       <div class="hoja-asa"></div>
       <div class="hoja-cabeza">{$t("pieza.opciones")}</div>
       <svg class="ficha-forma" viewBox="0 0 100 100" aria-hidden="true">
@@ -1197,9 +1342,24 @@
   /* ── Los tres fijos de la interfaz definitiva ── */
   .loro-jefe {
     position: fixed;
-    top: calc(env(safe-area-inset-top) + 6px);
+    top: calc(env(safe-area-inset-top) + 2px);
     left: 10px;
     z-index: 31;
+    pointer-events: none;
+    transition: transform 0.9s cubic-bezier(0.3, 1.25, 0.4, 1);
+  }
+  .loro-jefe.picotea {
+    animation: picoteo-jefe 0.5s ease;
+  }
+  @keyframes picoteo-jefe {
+    0%, 100% { rotate: 0deg; }
+    30% { rotate: 16deg; translate: 6px 10px; }
+    55% { rotate: 4deg; }
+    75% { rotate: 14deg; translate: 5px 9px; }
+  }
+  .paseante {
+    position: absolute;
+    z-index: 0;
     pointer-events: none;
   }
   .loro-jefe.voltereta {
@@ -1349,6 +1509,8 @@
     position: fixed;
     right: 0;
     top: 24%;
+    transition: top 0.35s cubic-bezier(0.3, 1.3, 0.5, 1);
+    touch-action: none;
     z-index: 30;
     display: inline-flex;
     flex-direction: column;
@@ -1363,6 +1525,9 @@
     color: var(--yap-tinta);
     box-shadow: -2.5px 3px 0 #ded7c2;
     cursor: pointer;
+  }
+  .etiqueta-trastienda.arrastrada {
+    transition: none;
   }
   .etiqueta-trastienda .engranaje {
     writing-mode: horizontal-tb;
@@ -1876,29 +2041,37 @@
   }
   .hoja {
     position: fixed;
-    left: 0;
-    right: 0;
+    left: 6px;
+    right: 6px;
     bottom: 0;
     z-index: 51;
     background: var(--yap-papel);
-    border-radius: 22px 22px 0 0;
-    box-shadow: 0 -12px 40px rgba(64, 46, 12, 0.28);
-    padding: 10px 18px calc(env(safe-area-inset-bottom) + 18px);
+    border: 1.5px solid var(--yap-tinta, #2b2418);
+    border-bottom: 0;
+    border-radius: 26px 16px 0 0;
+    box-shadow: 4px -3px 0 #ded7c2;
+    padding: 12px 18px calc(env(safe-area-inset-bottom) + 18px);
     display: flex;
     flex-direction: column;
     gap: 10px;
-    animation: hoja-sube 0.26s ease both;
-  }
-  @keyframes hoja-sube {
-    from { transform: translateY(30%); opacity: 0.4; }
-    to { transform: translateY(0); opacity: 1; }
   }
   .hoja-asa {
-    width: 44px;
-    height: 5px;
-    border-radius: 3px;
-    background: var(--yap-borde);
-    margin: 2px auto 0;
+    width: 52px;
+    height: 0;
+    border-top: 2.5px dashed var(--yap-borde);
+    margin: 2px auto 4px;
+  }
+  /* Renombrar: escribir sobre la línea de puntos de una ficha, no en una
+     caja de formulario de oficina. */
+  .hoja :global(.yap-campo) {
+    background: transparent;
+    border: 0;
+    border-bottom: 2.5px dashed var(--yap-borde);
+    border-radius: 0;
+    font-family: var(--yap-lectura, Georgia, serif);
+    font-size: 19px;
+    text-align: center;
+    padding: 8px 4px;
   }
   .hoja-cabeza {
     font-family: var(--yap-mono, ui-monospace, monospace);
