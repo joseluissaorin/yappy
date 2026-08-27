@@ -129,3 +129,40 @@ verificador en verde.
 Commit, salto a 0.2.0.9 (tauri.ios.conf.json + project.yml ×3 +
 xcodegen), build de dispositivo con los rituales, subida, VALID en
 App Store Connect, informe.
+
+### E13. La interfaz definitiva (dictada por José Luis, detallada y
+llevada un paso más lejos en cada elemento)
+
+- **El mosaico puro.** Solo pegatinas: ni marca, ni boca, ni engranaje
+  dentro del tablero. El álbum es el protagonista absoluto. Más lejos:
+  el colofón se ANCLA al pie de la página cuando el tablero no la llena
+  (margen compuesto, nunca vacío muerto).
+- **El loro jefe (arriba a la izquierda).** Fijo, fuera del flujo, con
+  su mirada siguiendo el dedo, sus celebraciones y su voltereta al doble
+  toque de la marca. Más lejos: el jefe MIRA A SU BANDADA: cuando un
+  pájaro asoma por un borde, la mirada del jefe se gira hacia ese borde
+  mientras dura la asomada.
+- **El «yappy» reactivo (abajo a la izquierda).** Más grande (46 px),
+  letras de recorte con la ola escalonada al tocarlo y el susurro de
+  datos reales debajo en mono. Más lejos: la ola también ocurre SOLA,
+  muy de tarde en tarde y solo en silencio: la marca respira aunque
+  nadie la toque (idle attract de juguete).
+- **El sello de añadir (abajo a la derecha).** Grande (92 px), con el
+  cuerpo en la TINTA VIVA de la sangre (--vivo), el buzón y el ＋
+  garabateados en crema y la costura clara; la hoja de añadir BROTA del
+  sello con muelle desde la esquina. Más lejos: cuando llega una pieza
+  nueva, el sello hace un POP (es la boca por la que entró: lo celebra)
+  justo cuando el pájaro cartero despega de él.
+- **La bandada por los bordes.** Asomadas desde izquierda, derecha y
+  abajo con tintas de voz al azar, repartidas con el fisgón de las
+  pegatinas; más frecuentes con pila sin estrenar. Más lejos: el jefe
+  las mira (arriba) y las hápticas no suenan: los pájaros de decorado
+  jamás interrumpen.
+- **La legibilidad de raíz (regla nueve, versión final).** En reposo el
+  título es texto PLANO firme (13.5 a 17 px por tamaño de pieza),
+  centrado, con tope de renglones POR FORMA (`Troquel.lineas`: corazón,
+  rombo, flor y estrella caben dos) y elipsis limpia sin perder letras
+  (overflow-wrap y sin guiones fantasma). El cartel de feria deformado
+  queda para la pieza GRANDE, donde luce y se lee. Más lejos: la
+  pastilla baja siete píxeles bajo la ventana para no rozar jamás la
+  última línea.

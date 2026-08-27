@@ -217,10 +217,16 @@
       if (Math.random() < 0.5 || !listos.length) {
         // Desde un borde de la pantalla: medio cuerpo y a esconderse.
         const lados = ["izq", "der", "abajo"] as const;
+        const lado = lados[Math.floor(Math.random() * lados.length)];
         asomadoBorde = {
-          lado: lados[Math.floor(Math.random() * lados.length)],
+          lado,
           pos: 16 + Math.floor(Math.random() * 52),
           tinta: TINTAS_VOZ[Math.floor(Math.random() * TINTAS_VOZ.length)],
+        };
+        // El jefe gira la mirada hacia su pájaro mientras dura la asomada.
+        mirada = {
+          x: lado === "izq" ? -0.9 : lado === "der" ? 0.9 : 0,
+          y: lado === "abajo" ? 0.9 : 0.15,
         };
         setTimeout(() => (asomadoBorde = null), 2800);
       } else {
@@ -229,6 +235,15 @@
       }
     }, 26000);
     cleanups.push(() => clearInterval(fisgon));
+    // La marca respira sola: la ola espontánea, de tarde en tarde y solo
+    // en silencio (sin háptica: nadie la ha tocado).
+    const olaSola = setInterval(() => {
+      if (sonando || marcaGelatina || document.hidden) return;
+      if (Math.random() < 0.5) return;
+      marcaGelatina = true;
+      setTimeout(() => (marcaGelatina = false), 950);
+    }, 90000);
+    cleanups.push(() => clearInterval(olaSola));
   });
   onDestroy(() => {
     cleanups.forEach((c) => c());
@@ -555,7 +570,11 @@
   // El vuelo del pájaro: cuando llega una pieza, sale de la boca y vuela
   // EN ARCO hasta la recién nacida, la picotea y la pieza late.
   let pajaro = $state<{ x: number; y: number; girado: number } | null>(null);
+  let selloPop = $state(false);
   function volar(aId: string) {
+    // El sello celebra: por esa boca entró la pieza.
+    selloPop = true;
+    setTimeout(() => (selloPop = false), 520);
     requestAnimationFrame(() => {
       const desde = document.querySelector(".boca-fija")?.getBoundingClientRect();
       const hasta = document
@@ -1047,7 +1066,7 @@
   </button>
 
   <!-- LA BOCA: el sello de añadir, GRANDE, abajo a la derecha. -->
-  <button class="boca-fija" use:presionable={{ hap: "medium" }} onclick={() => (bocaAbierta = true)} aria-label={$t("escuchar.anadir")}>
+  <button class="boca-fija" class:pop={selloPop} use:presionable={{ hap: "medium" }} onclick={() => (bocaAbierta = true)} aria-label={$t("escuchar.anadir")}>
     <span class="capa parche-sombra" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
     <span class="capa boca-sello" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
     <svg class="costura" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -1221,6 +1240,14 @@
     padding: 0;
     cursor: pointer;
     transition: bottom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .boca-fija.pop {
+    animation: pop-sello 0.5s cubic-bezier(0.24, 1.7, 0.44, 1);
+  }
+  @keyframes pop-sello {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.17) rotate(-4deg); }
+    100% { transform: scale(1); }
   }
   .boca-fija .buzon {
     position: relative;
