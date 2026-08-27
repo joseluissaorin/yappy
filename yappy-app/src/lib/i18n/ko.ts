@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "무대 뒤",
   "ajustes.voz": "목소리",
   "ajustes.voz_defecto": "기본 목소리",
+  "ajustes.voz_azar": "조각마다 무작위 목소리",
   "ajustes.velocidad": "속도",
   "ajustes.calidad": "목소리 품질",
   "ajustes.calidad.rapida": "빠름",

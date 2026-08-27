@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Tagatuba",
   "ajustes.voz": "Hääl",
   "ajustes.voz_defecto": "Vaikimisi hääl",
+  "ajustes.voz_azar": "Juhuslik hääl igale tükile",
   "ajustes.velocidad": "Kiirus",
   "ajustes.calidad": "Hääle kvaliteet",
   "ajustes.calidad.rapida": "Kiire",

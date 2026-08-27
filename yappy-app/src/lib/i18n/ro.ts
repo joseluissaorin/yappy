@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Camera din spate",
   "ajustes.voz": "Voce",
   "ajustes.voz_defecto": "Vocea implicită",
+  "ajustes.voz_azar": "O voce la întâmplare pentru fiecare piesă",
   "ajustes.velocidad": "Viteză",
   "ajustes.calidad": "Calitatea vocii",
   "ajustes.calidad.rapida": "Rapidă",

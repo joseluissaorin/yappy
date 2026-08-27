@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "L'arrière-boutique",
   "ajustes.voz": "Voix",
   "ajustes.voz_defecto": "Voix par défaut",
+  "ajustes.voz_azar": "Une voix au hasard pour chaque pièce",
   "ajustes.velocidad": "Vitesse",
   "ajustes.calidad": "Qualité de la voix",
   "ajustes.calidad.rapida": "Rapide",

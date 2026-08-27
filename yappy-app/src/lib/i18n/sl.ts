@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Zakulisje",
   "ajustes.voz": "Glas",
   "ajustes.voz_defecto": "Privzeti glas",
+  "ajustes.voz_azar": "Naključen glas za vsak kos",
   "ajustes.velocidad": "Hitrost",
   "ajustes.calidad": "Kakovost glasu",
   "ajustes.calidad.rapida": "Hitra",

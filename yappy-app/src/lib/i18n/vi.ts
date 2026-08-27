@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Hậu trường",
   "ajustes.voz": "Giọng đọc",
   "ajustes.voz_defecto": "Giọng mặc định",
+  "ajustes.voz_azar": "Giọng ngẫu nhiên cho mỗi mảnh",
   "ajustes.velocidad": "Tốc độ",
   "ajustes.calidad": "Chất lượng giọng",
   "ajustes.calidad.rapida": "Nhanh",

@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "परदे के पीछे",
   "ajustes.voz": "आवाज़",
   "ajustes.voz_defecto": "डिफ़ॉल्ट आवाज़",
+  "ajustes.voz_azar": "हर टुकड़े के लिए यादृच्छिक आवाज़",
   "ajustes.velocidad": "रफ़्तार",
   "ajustes.calidad": "आवाज़ की गुणवत्ता",
   "ajustes.calidad.rapida": "तेज़",

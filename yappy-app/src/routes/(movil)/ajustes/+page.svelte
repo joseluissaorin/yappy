@@ -19,6 +19,7 @@
     setVoice,
     setSpeed,
     setQuality,
+    setVozAlAzar,
     setDefaultLang,
     listVoices,
     sampleVoice,
@@ -123,6 +124,13 @@
     await setDefaultLang(l).catch(() => {});
   }
 
+  async function cambiarVozAlAzar() {
+    if (!settings) return;
+    haptic("medium");
+    settings.voz_al_azar = !settings.voz_al_azar;
+    await setVozAlAzar(settings.voz_al_azar).catch(() => {});
+  }
+
   function cambiarIdiomaUI(v: string) {
     haptic("light");
     idiomaPreferido = v as IdiomaUI | "auto";
@@ -199,6 +207,19 @@
           {/each}
         </select>
       </label>
+      <div class="fila">
+        <span>{$t("ajustes.voz_azar")}</span>
+        <button
+          class="yap-pestana dado"
+          class:es-activa={settings.voz_al_azar}
+          use:presionable={{ hap: "medium" }}
+          onclick={cambiarVozAlAzar}
+          aria-pressed={settings.voz_al_azar}
+          aria-label={$t("ajustes.voz_azar")}
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.6 5.4 q7.2 -1.6 14.6 -0.2 q1.6 7.2 0.2 14.2 q-7.3 1.5 -14.5 0.1 q-1.5 -7 -0.3 -14.1 Z"/><circle cx="9" cy="9.4" r="1.25" fill="currentColor"/><circle cx="15.2" cy="14.8" r="1.25" fill="currentColor"/></svg>
+        </button>
+      </div>
     </section>
 
     <section class="grupo">

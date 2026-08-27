@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Bakrummet",
   "ajustes.voz": "Röst",
   "ajustes.voz_defecto": "Standardröst",
+  "ajustes.voz_azar": "En slumpmässig röst för varje stycke",
   "ajustes.velocidad": "Hastighet",
   "ajustes.calidad": "Röstkvalitet",
   "ajustes.calidad.rapida": "Snabb",

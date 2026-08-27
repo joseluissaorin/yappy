@@ -57,6 +57,17 @@ pub fn set_speed_cmd(
 }
 
 #[tauri::command]
+pub fn set_voz_al_azar_cmd(
+    app: AppHandle,
+    state: State<'_, Arc<AppState>>,
+    valor: bool,
+) -> Result<(), String> {
+    settings::update(&app, state.inner(), |s| s.voz_al_azar = valor)
+        .map(|_| ())
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
 pub fn set_voice_cmd(
     app: AppHandle,
     state: State<'_, Arc<AppState>>,
@@ -2606,6 +2617,29 @@ async fn read_internal<R: Runtime>(
                 .cloned()
                 .unwrap_or(voice.clone()),
             None => voice.clone(),
+        };
+        // La voz al azar por pieza: el NOMBRE del documento (estable entre
+        // updates: los contenedores migran) elige el pájaro, siempre el
+        // mismo para la misma pieza.
+        let chosen_voice = if s.voz_al_azar {
+            let clave: String = if meta.doc_path.is_empty() {
+                text.chars().take(64).collect()
+            } else {
+                meta.doc_path
+                    .rsplit('/')
+                    .next()
+                    .unwrap_or(&meta.doc_path)
+                    .to_string()
+            };
+            let mut h: u64 = 0;
+            for b in clave.bytes() {
+                h = h.wrapping_mul(131).wrapping_add(b as u64);
+            }
+            yappy_core::VOICES[(h as usize) % yappy_core::VOICES.len()]
+                .name
+                .to_string()
+        } else {
+            chosen_voice
         };
         (
             SynthesisOptions {

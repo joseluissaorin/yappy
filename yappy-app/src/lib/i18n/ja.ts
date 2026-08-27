@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "楽屋",
   "ajustes.voz": "声",
   "ajustes.voz_defecto": "既定の声",
+  "ajustes.voz_azar": "作品ごとにランダムな声",
   "ajustes.velocidad": "速さ",
   "ajustes.calidad": "声の質",
   "ajustes.calidad.rapida": "はやい",

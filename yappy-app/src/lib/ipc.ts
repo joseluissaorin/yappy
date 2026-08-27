@@ -21,6 +21,7 @@ export type OcrEngine = "auto" | "applevision" | "paddle";
 export interface Settings {
   voice: string;
   voice_overrides: Record<string, string>;
+  voz_al_azar: boolean;
   speed: number;
   volume: number;
   silence_secs: number;
@@ -370,6 +371,9 @@ export const colaReintentar = (id: string): Promise<void> =>
 /// La interfaz se lee a sí misma: dice un texto corto por el canal de
 /// efectos (calla si algo suena o el motor está ocupado).
 export const decir = (texto: string): Promise<number> => invoke("decir_cmd", { texto });
+/// Una voz al azar (estable) para cada pieza.
+export const setVozAlAzar = (valor: boolean): Promise<void> =>
+  invoke("set_voz_al_azar_cmd", { valor });
 export function onColaActualizada(cb: () => void): Promise<UnlistenFn> {
   return listen("cola_actualizada", () => cb());
 }

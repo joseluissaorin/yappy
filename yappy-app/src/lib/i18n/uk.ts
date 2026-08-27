@@ -127,6 +127,7 @@ export default {
   "ajustes.titulo": "Підсобка",
   "ajustes.voz": "Голос",
   "ajustes.voz_defecto": "Типовий голос",
+  "ajustes.voz_azar": "Випадковий голос для кожного фрагмента",
   "ajustes.velocidad": "Швидкість",
   "ajustes.calidad": "Якість голосу",
   "ajustes.calidad.rapida": "Швидка",

@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Задната стаичка",
   "ajustes.voz": "Глас",
   "ajustes.voz_defecto": "Глас по подразбиране",
+  "ajustes.voz_azar": "Случаен глас за всяко парче",
   "ajustes.velocidad": "Скорост",
   "ajustes.calidad": "Качество на гласа",
   "ajustes.calidad.rapida": "Бърза",

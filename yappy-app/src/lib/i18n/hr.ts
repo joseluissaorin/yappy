@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Stražnja soba",
   "ajustes.voz": "Glas",
   "ajustes.voz_defecto": "Zadani glas",
+  "ajustes.voz_azar": "Nasumičan glas za svaki komad",
   "ajustes.velocidad": "Brzina",
   "ajustes.calidad": "Kvaliteta glasa",
   "ajustes.calidad.rapida": "Brza",

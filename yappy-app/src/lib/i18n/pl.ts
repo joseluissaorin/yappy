@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Zaplecze",
   "ajustes.voz": "Głos",
   "ajustes.voz_defecto": "Głos domyślny",
+  "ajustes.voz_azar": "Losowy głos dla każdego kawałka",
   "ajustes.velocidad": "Prędkość",
   "ajustes.calidad": "Jakość głosu",
   "ajustes.calidad.rapida": "Szybka",

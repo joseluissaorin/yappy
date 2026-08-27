@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Baglokalet",
   "ajustes.voz": "Stemme",
   "ajustes.voz_defecto": "Standardstemme",
+  "ajustes.voz_azar": "En tilfældig stemme til hvert stykke",
   "ajustes.velocidad": "Hastighed",
   "ajustes.calidad": "Stemmekvalitet",
   "ajustes.calidad.rapida": "Hurtig",

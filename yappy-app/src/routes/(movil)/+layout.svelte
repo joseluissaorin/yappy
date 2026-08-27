@@ -72,6 +72,22 @@
     await arrancarEspejo();
     startShareIntake();
 
+    // EL TECLADO EMPUJA: la altura del teclado vive en --teclado y las
+    // hojas con campos de texto suben con muelle para dejarle sitio.
+    const vv = window.visualViewport;
+    if (vv) {
+      const alTeclado = () => {
+        const alto = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+        document.documentElement.style.setProperty("--teclado", `${Math.round(alto)}px`);
+      };
+      vv.addEventListener("resize", alTeclado);
+      vv.addEventListener("scroll", alTeclado);
+      cleanups.push(() => {
+        vv.removeEventListener("resize", alTeclado);
+        vv.removeEventListener("scroll", alTeclado);
+      });
+    }
+
     // Acciones que llegan por deep link (widget, Spotlight, atajos).
     cleanups.push(
       await listen<{ tipo: string; path: string | null; datos?: string | null }>("yappy_accion", async (ev) => {

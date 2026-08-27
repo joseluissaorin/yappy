@@ -137,6 +137,14 @@
           <span class="ondas" aria-hidden="true" style="--nivel: {0.35 + repro.nivel * 0.65}"><i></i><i></i><i></i><i></i></span>
         {/if}
       </button>
+      <button
+        class="aguja-cerrar"
+        use:presionable={{ hap: "warning" }}
+        onclick={async (e) => { e.stopPropagation(); muriendo = true; haptic("heavy"); await stopPlayback().catch(() => {}); setTimeout(() => { muriendo = false; dx = 0; }, 300); }}
+        aria-label={$t("aguja.detener")}
+      >
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6.2 6.4 q5.8 5.4 11.6 11.2 M17.6 6.2 q-5.6 5.6 -11.2 11.4"/></svg>
+      </button>
       {#if estado !== "preparando"}
         <button
           class="aguja-mando"
@@ -250,6 +258,19 @@
   @keyframes onda-aguja {
     0%, 100% { transform: scaleY(0.5); }
     50% { transform: scaleY(1); }
+  }
+  .aguja-cerrar {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--vivo, var(--acento-voz, #e0502a)) 55%, #2b2418);
+    color: #f7f2e7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
   .aguja-mando {
     flex-shrink: 0;

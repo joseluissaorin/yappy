@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Užkulisiai",
   "ajustes.voz": "Balsas",
   "ajustes.voz_defecto": "Numatytasis balsas",
+  "ajustes.voz_azar": "Atsitiktinis balsas kiekvienam gabalui",
   "ajustes.velocidad": "Greitis",
   "ajustes.calidad": "Balso kokybė",
   "ajustes.calidad.rapida": "Greita",

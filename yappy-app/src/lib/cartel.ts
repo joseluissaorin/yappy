@@ -8,6 +8,10 @@ export interface LineaCartel {
   texto: string;
   /// Anchura natural de la línea a cuerpo 100 (el viewBox horizontal).
   vb: number;
+  /// Reposo: anchura FORZADA del texto dentro del viewBox (textLength).
+  tl?: number;
+  /// Reposo: arranque x para centrar las líneas cortas.
+  x?: number;
 }
 
 /// Alto del viewBox de cada línea a cuerpo 100: hueco arriba para las
@@ -120,6 +124,65 @@ function componer(
     }
   }
   return { lineas: mejor, nota: mejorNota, valido: mejorValido };
+}
+
+/// EL CARTEL DE REPOSO, repensado (la legibilidad manda): cuerpo de línea
+/// FIJO (nada de encoger con la celda), justificación suave por línea
+/// (0.9 a 1.15) y recorte limpio con «…» cuando no cabe. Estable ante
+/// cualquier reorganización: la pieza cambia de tamaño y el texto solo
+/// gana o pierde renglones, jamás legibilidad.
+export interface CartelReposo {
+  lineas: LineaCartel[];
+  /// Alto de cada renglón en píxeles (fijo).
+  altoLinea: number;
+}
+export function cartelReposo(
+  titulo: string,
+  ancho: number,
+  alto: number,
+  idioma?: string,
+  maxLineas = 3,
+  altoLinea = 19,
+): CartelReposo {
+  const limpio = titulo.trim();
+  if (!limpio || ancho <= 0 || alto <= 0) return { lineas: [], altoLinea };
+  const mayus = limpio.toLocaleUpperCase(idioma || undefined);
+  let palabras = mayus.split(/\s+/).filter(Boolean);
+  if (palabras.length === 1 && palabras[0].length > 13) {
+    palabras = trocear(palabras[0], Math.min(3, Math.ceil(palabras[0].length / 11)));
+  }
+  const n = Math.max(1, Math.min(maxLineas, Math.floor(alto / altoLinea), palabras.length));
+  // Anchura natural que cabe por renglón con compresión mínima 0.9:
+  // natural ≤ ancho·(VB_ALTO/altoLinea)/0.9.
+  const capacidad = ((ancho * VB_ALTO) / altoLinea) * (1 / 0.9);
+  const cabe = (ls: string[]) => ls.every((l) => medir(l) <= capacidad);
+  let lineas = partir(palabras, n);
+  if (!cabe(lineas)) {
+    // Soltar palabras hasta que TODOS los renglones respeten el cuerpo.
+    for (let corte = palabras.length - 1; corte >= 1; corte--) {
+      const menos = [...palabras.slice(0, corte)];
+      menos[menos.length - 1] = `${menos[menos.length - 1]}…`;
+      const prueba = partir(menos, Math.min(n, menos.length));
+      if (cabe(prueba)) {
+        lineas = prueba;
+        break;
+      }
+      if (corte === 1) lineas = prueba;
+    }
+  }
+  // La caja NO se deforma (viewBox con la proporción exacta del hueco);
+  // la única deformación es el textLength, acotado: comprimir hasta 0.9
+  // (garantizado por el recorte) y estirar hasta 1.15; las líneas cortas
+  // se centran en vez de estirarse de más.
+  const objetivo = (ancho * VB_ALTO) / altoLinea;
+  return {
+    lineas: lineas.map((texto) => {
+      const natural = medir(texto);
+      const tl = Math.min(objetivo, natural * 1.15);
+      return { texto, vb: objetivo, tl, x: Math.max(0, (objetivo - tl) / 2) };
+    }),
+    altoLinea,
+  };
 }
 
 /// El cartel de una baldosa: tipografía que SE ESTIRA Y SE DEFORMA para

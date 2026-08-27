@@ -1042,14 +1042,14 @@
   .p-icono {
     width: 46px;
     height: 46px;
-    border-radius: 14px;
+    border-radius: 13px 17px 12px 18px / 16px 12px 18px 13px;
     border: 1.5px solid var(--yap-tinta);
     background: var(--yap-superficie);
     color: var(--yap-tinta);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--yap-relieve);
+    box-shadow: 2px 2.5px 0 #ded7c2;
     flex-shrink: 0;
     cursor: pointer;
   }

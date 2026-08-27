@@ -74,6 +74,10 @@ pub struct Settings {
     // --- voice & synth ---
     pub voice: String,
     pub voice_overrides: HashMap<String, String>,
+    /// Una voz AL AZAR (estable) para cada pieza: el hash del documento
+    /// elige el pájaro, y siempre el mismo para la misma pieza.
+    #[serde(default)]
+    pub voz_al_azar: bool,
     pub speed: f32,
     pub volume: f32,
     pub silence_secs: f32,
@@ -145,6 +149,7 @@ impl Default for Settings {
         Self {
             voice: "Alex".into(),
             voice_overrides,
+            voz_al_azar: false,
             speed: 1.05,
             volume: 1.0,
             silence_secs: 0.35,

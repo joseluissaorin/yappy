@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Die Hinterstube",
   "ajustes.voz": "Stimme",
   "ajustes.voz_defecto": "Standardstimme",
+  "ajustes.voz_azar": "Eine zufällige Stimme für jedes Stück",
   "ajustes.velocidad": "Tempo",
   "ajustes.calidad": "Stimmqualität",
   "ajustes.calidad.rapida": "Schnell",

@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Il retrobottega",
   "ajustes.voz": "Voce",
   "ajustes.voz_defecto": "Voce predefinita",
+  "ajustes.voz_azar": "Una voce a caso per ogni pezzo",
   "ajustes.velocidad": "Velocità",
   "ajustes.calidad": "Qualità della voce",
   "ajustes.calidad.rapida": "Rapida",

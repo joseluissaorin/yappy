@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Het achterkamertje",
   "ajustes.voz": "Stem",
   "ajustes.voz_defecto": "Standaardstem",
+  "ajustes.voz_azar": "Een willekeurige stem per stuk",
   "ajustes.velocidad": "Snelheid",
   "ajustes.calidad": "Stemkwaliteit",
   "ajustes.calidad.rapida": "Snel",

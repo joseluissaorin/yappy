@@ -21,7 +21,7 @@
   import { tintaVoz, TINTAS_VOZ } from "$lib/voces";
   import { repro } from "$lib/reproduccion.svelte";
   import { empaquetar, type Baldosa } from "$lib/mosaico";
-  import { cartel, LIMITES_REPOSO, VB_ALTO, VB_BASE } from "$lib/cartel";
+  import { cartel, cartelReposo, VB_ALTO, VB_BASE } from "$lib/cartel";
   import {
     SERENO,
     PALETA,
@@ -418,6 +418,44 @@
   // El jefe se mueve: pasitos ociosos y expediciones de reorganización.
   let jefePos = $state({ x: 0, y: 0 });
   let jefePicotea = $state(false);
+  let jefeVolando = $state(false);
+  let jefeGiro = $state(1);
+
+  /// Tocar al jefe: DESPEGA, da una vuelta amplia por la pantalla con dos
+  /// puntos de control al azar, y aterriza en su percha.
+  function vuelaJefe() {
+    if (jefeVolando) return;
+    haptic("medium");
+    jefeVolando = true;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const c1 = { x: w * (0.3 + Math.random() * 0.5), y: h * (0.15 + Math.random() * 0.3) };
+    const c2 = { x: w * (0.1 + Math.random() * 0.7), y: h * (0.35 + Math.random() * 0.35) };
+    const t0 = performance.now();
+    const dur = 2400;
+    let xPrevio = 0;
+    const paso = (t: number) => {
+      const u = Math.min(1, (t - t0) / dur);
+      const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      const inv = 1 - e;
+      // Bézier cúbica que sale y VUELVE a la percha (0,0).
+      const x = 3 * inv * inv * e * c1.x + 3 * inv * e * e * c2.x;
+      const y = 3 * inv * inv * e * c1.y + 3 * inv * e * e * c2.y;
+      jefeGiro = x >= xPrevio ? -1 : 1;
+      xPrevio = x;
+      jefePos = { x, y };
+      if (u < 1) {
+        requestAnimationFrame(paso);
+      } else {
+        jefePos = { x: 0, y: 0 };
+        jefeGiro = 1;
+        jefeVolando = false;
+        haptic("soft");
+        brincoDeLoro();
+      }
+    };
+    requestAnimationFrame(paso);
+  }
   // El paseante: un loro que cruza la pantalla por DETRÁS de las
   // pegatinas, asomando por los huecos.
   let paseante = $state<null | { x: number; y: number; tinta: string; rumbo: 1 | -1 }>(null);
@@ -1022,8 +1060,8 @@
             {@const vh = (b.alto * tq.ventana.h) / 100 - 20}
             {@const enMarcha = esLaQueSuena && trabajando}
             {@const grandota = elegida || b.peso >= 3}
-            {@const limitesTq = grandota ? undefined : { ...LIMITES_REPOSO, maxLineas: tq.lineas ?? LIMITES_REPOSO.maxLineas }}
-            {@const lineasCartel = enMarcha ? [] : cartel(item.titulo, vw, Math.max(24, vh), $idiomaUI, limitesTq)}
+            {@const lineasCartel = enMarcha || !grandota ? [] : cartel(item.titulo, vw, Math.max(24, vh), $idiomaUI)}
+            {@const reposo = enMarcha || grandota ? null : cartelReposo(item.titulo, vw, Math.max(20, vh), $idiomaUI, tq.lineas ?? 3)}
             <article
               data-pieza={item.id}
               class="baldosa" class:en-vuelo={enVuelo}
@@ -1087,11 +1125,17 @@
                         </svg>
                       {/each}
                     </div>
-                  {:else}
-                    <strong
-                      class="titulo-plano"
-                      style="font-size: {b.ancho < 150 ? 13.5 : b.alto > 160 ? 17 : 15}px; -webkit-line-clamp: {tq.lineas ?? (b.alto > 160 ? 4 : 3)}; line-clamp: {tq.lineas ?? (b.alto > 160 ? 4 : 3)};"
-                      lang={$idiomaUI}>{item.titulo}</strong>
+                  {:else if reposo && reposo.lineas.length > 0}
+                    <!-- El reposo: renglones de cuerpo FIJO (19px), con
+                         justificación suave; la reorganización solo cambia
+                         cuántos renglones caben, jamás la legibilidad. -->
+                    <div class="cartel reposo" aria-hidden="true">
+                      {#each reposo.lineas as linea (linea.texto)}
+                        <svg viewBox="0 0 {linea.vb} {VB_ALTO}" preserveAspectRatio="none" style="height: {reposo.altoLinea}px; flex: none;">
+                          <text x={linea.x ?? 0} y={VB_BASE} textLength={linea.tl ?? linea.vb} lengthAdjust="spacingAndGlyphs">{linea.texto}</text>
+                        </svg>
+                      {/each}
+                    </div>
                   {/if}
                   {#if esLaQueSuena}
                     <span class="pastilla" style="background: {honda}">
@@ -1175,12 +1219,14 @@
   </div>
 
   <!-- EL LORO JEFE: arriba a la izquierda, vigilando la casa entera. -->
-  <div
+  <button
     class="loro-jefe"
     class:voltereta
     class:picotea={jefePicotea}
-    style="transform: translate({jefePos.x}px, {jefePos.y}px)"
-    aria-hidden="true"
+    class:volando={jefeVolando}
+    style="transform: translate({jefePos.x}px, {jefePos.y}px) scaleX({jefeGiro})"
+    onclick={vuelaJefe}
+    aria-label="yappy"
   >
     <Criatura
       size={84}
@@ -1190,7 +1236,7 @@
       {mirada}
       tinta={$tintaVoz}
     />
-  </div>
+  </button>
 
   <!-- EL «yappy» REACTIVO: abajo a la izquierda, con su ola y sus datos. -->
   <button class="marca-fija" onclick={tocarMarca} aria-label="yappy">
@@ -1345,8 +1391,14 @@
     top: calc(env(safe-area-inset-top) + 2px);
     left: 10px;
     z-index: 31;
-    pointer-events: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
     transition: transform 0.9s cubic-bezier(0.3, 1.25, 0.4, 1);
+  }
+  .loro-jefe.volando {
+    transition: none;
   }
   .loro-jefe.picotea {
     animation: picoteo-jefe 0.5s ease;
@@ -1422,7 +1474,8 @@
     position: fixed;
     right: 12px;
     left: 12px;
-    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 12px);
+    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 12px + var(--teclado, 0px));
+    transition: bottom 0.34s cubic-bezier(0.3, 1.2, 0.4, 1);
     z-index: 52;
     transform-origin: 92% 100%;
     display: flex;
@@ -1722,6 +1775,11 @@
     flex-direction: column;
     pointer-events: none;
   }
+  .cartel.reposo {
+    flex: none;
+    margin: auto 0;
+    justify-content: center;
+  }
   /* Elegir tiene su POP además del FLIP: el sí se siente. */
   .parche.elegida {
     animation: pop-elegida 0.5s cubic-bezier(0.24, 1.7, 0.44, 1);
@@ -1780,16 +1838,21 @@
 
   /* La pastilla: la etiqueta sólida (tinta honda) que no pelea jamás con
      el cartel: es un objeto encima, al pie de la ventana del troquel. */
+  /* La pestaña cosida: la etiqueta de tela que cuelga del troquel, con
+     su costura arriba y su sombra dura. Nada de píldoras digitales. */
   .pastilla {
     position: absolute;
     left: 50%;
-    bottom: -7px;
-    transform: translateX(-50%);
+    bottom: -11px;
+    transform: translateX(-50%) rotate(-1.4deg);
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 3px 9px;
-    border-radius: 999px;
+    padding: 4px 10px 3px;
+    border-radius: 2px 2px 8px 8px;
+    border: 1.3px solid rgba(247, 242, 231, 0.85);
+    border-top: 1.3px dashed rgba(247, 242, 231, 0.9);
+    box-shadow: 1.5px 2.5px 0 rgba(43, 36, 24, 0.22);
     font-family: var(--yap-mono, ui-monospace, monospace);
     font-size: 10.5px;
     font-weight: 700;
@@ -2043,7 +2106,8 @@
     position: fixed;
     left: 6px;
     right: 6px;
-    bottom: 0;
+    bottom: var(--teclado, 0px);
+    transition: bottom 0.34s cubic-bezier(0.3, 1.2, 0.4, 1);
     z-index: 51;
     background: var(--yap-papel);
     border: 1.5px solid var(--yap-tinta, #2b2418);

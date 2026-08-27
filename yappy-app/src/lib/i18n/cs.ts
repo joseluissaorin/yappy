@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Zákulisí",
   "ajustes.voz": "Hlas",
   "ajustes.voz_defecto": "Výchozí hlas",
+  "ajustes.voz_azar": "Náhodný hlas pro každý kousek",
   "ajustes.velocidad": "Rychlost",
   "ajustes.calidad": "Kvalita hlasu",
   "ajustes.calidad.rapida": "Rychlá",

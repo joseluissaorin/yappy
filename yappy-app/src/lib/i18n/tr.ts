@@ -127,6 +127,7 @@ export default {
   "ajustes.titulo": "Arka oda",
   "ajustes.voz": "Ses",
   "ajustes.voz_defecto": "Varsayılan ses",
+  "ajustes.voz_azar": "Her parça için rastgele bir ses",
   "ajustes.velocidad": "Hız",
   "ajustes.calidad": "Ses kalitesi",
   "ajustes.calidad.rapida": "Hızlı",

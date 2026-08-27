@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Τα παρασκήνια",
   "ajustes.voz": "Φωνή",
   "ajustes.voz_defecto": "Προεπιλεγμένη φωνή",
+  "ajustes.voz_azar": "Τυχαία φωνή για κάθε κομμάτι",
   "ajustes.velocidad": "Ταχύτητα",
   "ajustes.calidad": "Ποιότητα φωνής",
   "ajustes.calidad.rapida": "Γρήγορη",

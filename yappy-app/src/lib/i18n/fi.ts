@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Takahuone",
   "ajustes.voz": "Ääni",
   "ajustes.voz_defecto": "Oletusääni",
+  "ajustes.voz_azar": "Satunnainen ääni joka palalle",
   "ajustes.velocidad": "Nopeus",
   "ajustes.calidad": "Äänen laatu",
   "ajustes.calidad.rapida": "Nopea",

@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Ruang belakang",
   "ajustes.voz": "Suara",
   "ajustes.voz_defecto": "Suara bawaan",
+  "ajustes.voz_azar": "Suara acak untuk tiap potongan",
   "ajustes.velocidad": "Kecepatan",
   "ajustes.calidad": "Kualitas suara",
   "ajustes.calidad.rapida": "Cepat",

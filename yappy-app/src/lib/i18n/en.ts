@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "The back room",
   "ajustes.voz": "Voice",
   "ajustes.voz_defecto": "Default voice",
+  "ajustes.voz_azar": "A random voice for each piece",
   "ajustes.velocidad": "Speed",
   "ajustes.calidad": "Voice quality",
   "ajustes.calidad.rapida": "Fast",

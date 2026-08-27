@@ -141,6 +141,7 @@ export default {
   "ajustes.titulo": "La trastienda",
   "ajustes.voz": "Voz",
   "ajustes.voz_defecto": "Voz por defecto",
+  "ajustes.voz_azar": "Una voz al azar para cada pieza",
   "ajustes.velocidad": "Velocidad",
   "ajustes.calidad": "Calidad de la voz",
   "ajustes.calidad.rapida": "Rápida",

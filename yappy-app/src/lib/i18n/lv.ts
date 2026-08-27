@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Aizkulises",
   "ajustes.voz": "Balss",
   "ajustes.voz_defecto": "Noklusējuma balss",
+  "ajustes.voz_azar": "Nejauša balss katram gabalam",
   "ajustes.velocidad": "Ātrums",
   "ajustes.calidad": "Balss kvalitāte",
   "ajustes.calidad.rapida": "Ātra",

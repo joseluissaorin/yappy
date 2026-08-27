@@ -127,6 +127,7 @@ export default {
   "ajustes.titulo": "الغرفة الخلفية",
   "ajustes.voz": "الصوت",
   "ajustes.voz_defecto": "الصوت الافتراضي",
+  "ajustes.voz_azar": "صوت عشوائي لكل قطعة",
   "ajustes.velocidad": "السرعة",
   "ajustes.calidad": "جودة الصوت",
   "ajustes.calidad.rapida": "سريعة",

@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "A hátsó szoba",
   "ajustes.voz": "Hang",
   "ajustes.voz_defecto": "Alapértelmezett hang",
+  "ajustes.voz_azar": "Véletlen hang minden darabhoz",
   "ajustes.velocidad": "Sebesség",
   "ajustes.calidad": "A hang minősége",
   "ajustes.calidad.rapida": "Gyors",

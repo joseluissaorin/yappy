@@ -129,6 +129,7 @@ export default {
   "ajustes.titulo": "Os bastidores",
   "ajustes.voz": "Voz",
   "ajustes.voz_defecto": "Voz predefinida",
+  "ajustes.voz_azar": "Uma voz aleatória para cada peça",
   "ajustes.velocidad": "Velocidade",
   "ajustes.calidad": "Qualidade da voz",
   "ajustes.calidad.rapida": "Rápida",
