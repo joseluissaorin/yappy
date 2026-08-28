@@ -25,6 +25,9 @@
   import Criatura from "$lib/Criatura.svelte";
   import { tintaVoz } from "$lib/voces";
   import { repro, reconciliar } from "$lib/reproduccion.svelte";
+  import { troquelPara, aPoligono, aPuntosSvg } from "$lib/troquel";
+  import { colorDeArchivo, colorDe, tonoHondo, tiltDe } from "$lib/juguete";
+  import { cartel, VB_ALTO, VB_BASE } from "$lib/cartel";
   import {
     type Voice,
     type Settings,
@@ -88,7 +91,12 @@
   let puenteEtapa = $state<string | null>(null);
   let toast = $state<string | null>(null);
 
-  const estado = $derived(playback?.estado ?? "inactivo");
+  // El cerrojo de identidad: un snapshot de OTRO documento no puede
+  // pintar vivo ESTE cartel (la carrera del relevo queda sin dientes).
+  const esMia = $derived(
+    !playback?.doc_path || !doc?.path || playback.doc_path === doc.path,
+  );
+  const estado = $derived(esMia ? (playback?.estado ?? "inactivo") : "inactivo");
   const isPlaying = $derived(estado === "sonando");
   const isPaused = $derived(estado === "pausa");
   const preparando = $derived(estado === "preparando");
@@ -396,6 +404,16 @@
   async function sigue() { haptic("medium"); await reanudar().catch(() => {}); }
   function back() { goto(get(isMobile) ? "/escuchar" : "/"); }
 
+  // LA PEGATINA DE PORTADA: el documento ES su pegatina (mismo troquel,
+  // misma tinta que en el tablero), con la marea de lo ya oído dentro.
+  const nombreDoc = $derived((doc?.path ?? "").split("/").pop() || (doc?.filename ?? "yappy"));
+  const tqPortada = $derived(troquelPara(nombreDoc, title.length));
+  const tintaPortada = $derived(doc?.path ? colorDeArchivo(doc.path) : colorDe(title || "yappy"));
+  const hondaPortada = $derived(tonoHondo(tintaPortada));
+  const cartelPortada = $derived(
+    cartel(title, 290, 150, undefined, { min: 0.85, max: 1.5, altoMinLinea: 30, maxLineas: 4 }),
+  );
+
   // La portada sabe dónde ibas: seguir o empezar de cero.
   const progresoGuardado = $derived.by(() => {
     if (!doc?.path) return 0;
@@ -403,6 +421,11 @@
     if (!p || !p.total || p.parrafo <= 0) return 0;
     return Math.min(p.parrafo, Math.max(0, paras.length - 1));
   });
+  const pctPortada = $derived(
+    progresoGuardado > 0 && paras.length > 0
+      ? Math.min(96, Math.round((progresoGuardado / paras.length) * 100))
+      : 0,
+  );
 
   function setParaSpeed(i: number, v: number | null) { overrides[i].speed = v; scheduleSave(); }
   function setParaPause(i: number, v: number | null) { overrides[i].pauseBefore = v; scheduleSave(); }
@@ -672,13 +695,29 @@
       </nav>
     {/if}
   {:else if preparando}
-    <!-- LA COCINA VISIBLE: la voz se está preparando, y se ve. -->
+    <!-- LA COCINA: el loro TROQUELA tu pegatina mientras la voz llega. -->
     <section class="portada">
-      <div class="cocina-loro"><Criatura size={120} mirando={-1} cantando tinta={$tintaVoz} /></div>
-      <h1 class="portada-titulo chica">{title}</h1>
-      <p class="portada-meta">
-        {$t("aguja.preparando")}{#if (playback?.total ?? 0) > 0}&nbsp;· {playback?.chunks_cocinados}/{playback?.total}{/if}
-      </p>
+      <div class="pegatina-gigante cocinando-p" style="rotate: {tiltDe(nombreDoc)}deg">
+        <span class="capa pg-sombra" style="clip-path: {aPoligono(tqPortada)}"></span>
+        <span class="capa pg-borde" style="clip-path: {aPoligono(tqPortada, 0.986)}"></span>
+        <span class="capa pg-cuerpo" style="clip-path: {aPoligono(tqPortada, 0.93)}; background: {tintaPortada}"></span>
+        <svg class="pg-costura" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <polygon points={aPuntosSvg(tqPortada, 0.85)} />
+        </svg>
+        <div class="pg-ventana" style="left: {tqPortada.ventana.x}%; top: {tqPortada.ventana.y}%; width: {tqPortada.ventana.w}%; height: {tqPortada.ventana.h}%">
+          <div class="pg-cartel" aria-hidden="true">
+            {#each cartelPortada as linea (linea.texto)}
+              <svg viewBox="0 0 {linea.vb} {VB_ALTO}" preserveAspectRatio="none">
+                <text x="0" y={VB_BASE} textLength={linea.vb} lengthAdjust="spacingAndGlyphs">{linea.texto}</text>
+              </svg>
+            {/each}
+          </div>
+        </div>
+        <div class="pg-loro picotea-p"><Criatura size={96} mirando={-1} cantando tinta={$tintaVoz} /></div>
+        <span class="pg-pestana" style="background: {hondaPortada}">
+          {$t("aguja.preparando")}{#if (playback?.total ?? 0) > 0}&nbsp;· {playback?.chunks_cocinados}/{playback?.total}{/if}
+        </span>
+      </div>
     </section>
   {:else}
     <!-- LA PORTADA: aún no suena (o terminó). -->
@@ -695,17 +734,37 @@
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17v3h3l5.5-5.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.1-2.1z"/></svg>
         </button>
       </header>
-      <h1 class="portada-titulo">{title}</h1>
-      <p class="portada-meta">{paras.length} ¶</p>
+      <div class="pegatina-gigante" style="rotate: {tiltDe(nombreDoc)}deg">
+        <span class="capa pg-sombra" style="clip-path: {aPoligono(tqPortada)}"></span>
+        <span class="capa pg-borde" style="clip-path: {aPoligono(tqPortada, 0.986)}"></span>
+        <span class="capa pg-cuerpo" style="clip-path: {aPoligono(tqPortada, 0.93)}; background: {tintaPortada}"></span>
+        {#if pctPortada > 0}
+          <span class="pg-marea" style="clip-path: {aPoligono(tqPortada, 0.93)}; background: {hondaPortada}; --marea-p: {pctPortada}%"></span>
+        {/if}
+        <svg class="pg-costura" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <polygon points={aPuntosSvg(tqPortada, 0.85)} />
+        </svg>
+        <div class="pg-ventana" style="left: {tqPortada.ventana.x}%; top: {tqPortada.ventana.y}%; width: {tqPortada.ventana.w}%; height: {tqPortada.ventana.h}%">
+          <div class="pg-cartel" aria-hidden="true">
+            {#each cartelPortada as linea (linea.texto)}
+              <svg viewBox="0 0 {linea.vb} {VB_ALTO}" preserveAspectRatio="none">
+                <text x="0" y={VB_BASE} textLength={linea.vb} lengthAdjust="spacingAndGlyphs">{linea.texto}</text>
+              </svg>
+            {/each}
+          </div>
+        </div>
+        <div class="pg-loro"><Criatura size={84} mirando={-1} tinta={$tintaVoz} /></div>
+        <span class="pg-pestana" style="background: {hondaPortada}">{paras.length} ¶{#if pctPortada > 0}&nbsp;· {pctPortada}%{/if}</span>
+      </div>
       {#if progresoGuardado > 0}
-        <button class="leer-gigante" use:presionable={{ hap: "rigid" }} onclick={() => readFrom(progresoGuardado)}>
-          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
+        <button class="pestana-gorda" style="background: {tintaPortada}" use:presionable={{ hap: "rigid" }} onclick={() => readFrom(progresoGuardado)}>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
           {$t("cartel.continuar")}
         </button>
-        <button class="enlace-suave" use:presionable={{ hap: "soft" }} onclick={() => readFrom(0)}>{$t("cartel.desde_principio")}</button>
+        <button class="pestana-gorda secundaria" use:presionable={{ hap: "soft" }} onclick={() => readFrom(0)}>{$t("cartel.desde_principio")}</button>
       {:else}
-        <button class="leer-gigante" use:presionable={{ hap: "rigid" }} onclick={() => readFrom(0)}>
-          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
+        <button class="pestana-gorda" style="background: {tintaPortada}" use:presionable={{ hap: "rigid" }} onclick={() => readFrom(0)}>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
           {$t("cartel.leer")}
         </button>
       {/if}
@@ -1111,6 +1170,132 @@
   }
 
   /* ── La portada y la cocina ── */
+  /* ── La pegatina gigante de la portada y la cocina ── */
+  .pegatina-gigante {
+    position: relative;
+    width: min(86vw, 380px);
+    aspect-ratio: 1 / 0.92;
+    margin: 6px auto 10px;
+  }
+  .pegatina-gigante .capa {
+    position: absolute;
+    inset: 0;
+  }
+  .pg-sombra {
+    background: #ded7c2;
+    translate: 5px 7px;
+  }
+  .pg-borde {
+    background: #f7f2e7;
+  }
+  .pg-marea {
+    top: auto;
+    bottom: 0;
+    height: var(--marea-p, 0%);
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+  .pg-costura {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .pg-costura polygon {
+    fill: none;
+    stroke: rgba(247, 242, 231, 0.75);
+    stroke-width: 0.9;
+    stroke-dasharray: 2.6 2.2;
+    vector-effect: non-scaling-stroke;
+    stroke-width: 2.4px;
+  }
+  .pg-ventana {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+  }
+  .pg-cartel {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .pg-cartel svg {
+    display: block;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    max-height: 64px;
+  }
+  .pg-cartel text {
+    fill: #f7f2e7;
+    font-weight: 800;
+    font-size: 100px;
+    letter-spacing: -0.01em;
+  }
+  .pg-loro {
+    position: absolute;
+    top: -44px;
+    right: 8%;
+    pointer-events: none;
+  }
+  .picotea-p {
+    animation: picoteo-portada 1.1s ease-in-out infinite;
+    transform-origin: 70% 90%;
+  }
+  @keyframes picoteo-portada {
+    0%, 100% { rotate: 0deg; }
+    18% { rotate: 14deg; translate: 4px 8px; }
+    30% { rotate: 2deg; }
+    46% { rotate: 12deg; translate: 3px 7px; }
+    60% { rotate: 0deg; }
+  }
+  .pg-pestana {
+    position: absolute;
+    left: 50%;
+    bottom: -9px;
+    transform: translateX(-50%) rotate(-1.2deg);
+    padding: 5px 13px 4px;
+    border-radius: 2px 2px 9px 9px;
+    border: 1.4px solid rgba(247, 242, 231, 0.85);
+    border-top: 1.4px dashed rgba(247, 242, 231, 0.9);
+    box-shadow: 1.5px 2.5px 0 rgba(43, 36, 24, 0.22);
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #f7f2e7;
+    white-space: nowrap;
+  }
+  .pestana-gorda {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: min(86vw, 380px);
+    margin: 0 auto;
+    padding: 16px 18px;
+    border: 1.5px solid var(--yap-tinta, #2b2418);
+    border-radius: 20px 14px 22px 15px / 15px 22px 14px 20px;
+    box-shadow: 3px 4px 0 #ded7c2;
+    color: #f7f2e7;
+    font-weight: 800;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .pestana-gorda.secundaria {
+    background: var(--yap-superficie);
+    color: var(--yap-tinta);
+    font-weight: 700;
+    font-size: 15px;
+    margin-top: 10px;
+    padding: 12px 16px;
+  }
+
   .portada {
     position: absolute;
     inset: 0;

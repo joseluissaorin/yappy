@@ -177,6 +177,40 @@ export const TROQUELES_BASE: Troquel[] = [
   { nombre: "etiqueta", puntos: redondear(etiqueta()), ventana: { x: 33, y: 16, w: 58, h: 66 } },
 ];
 
+/// LA FICHA: la forma-despliegue de la pieza elegida: ancha, de ventana
+/// enorme; cualquier troquel morfea a ella al elegirse (48 anclas) y
+/// vuelve a plegarse al soltar. La pegatina se abre como un mapa.
+export const FICHA: Troquel = {
+  nombre: "ficha",
+  puntos: redondear(
+    poligonal([
+      [4, 6],
+      [96, 3],
+      [98, 94],
+      [2, 97],
+    ]),
+  ),
+  ventana: { x: 6, y: 8, w: 88, h: 60 },
+  lineas: 4,
+};
+
+/// EL TROQUEL A MEDIDA: la forma sirve al título, jamás al revés. Las
+/// puntiagudas (flor, rombo) quedan para títulos cortos; los largos
+/// reciben ventana generosa. Determinista por id dentro de su pool.
+export function troquelPara(id: string, letras: number): Troquel {
+  let h = 0;
+  for (const c of id) h = (h * 33 + c.charCodeAt(0)) >>> 0;
+  const por = (nombres: string[]) => {
+    const pool = TROQUELES_BASE.filter((t) => nombres.includes(t.nombre));
+    return pool[h % pool.length];
+  };
+  if (letras <= 14) return TROQUELES_BASE[h % TROQUELES_BASE.length];
+  if (letras <= 26) return por(["circulo", "nube", "sello", "hexagono", "escudo"]);
+  // Los muy largos exigen las ventanas más anchas (la etiqueta, con su
+  // punta de atar, queda fuera: su ventana es la más estrecha).
+  return por(["nube", "escudo", "hexagono"]);
+}
+
 /// El folio sin troquelar (para el rito de la llegada: de recto a forma).
 export const RECTO: Troquel = {
   nombre: "recto",
@@ -202,6 +236,26 @@ export const ESTRELLA: Troquel = {
   nombre: "estrella",
   puntos: redondear(estrella()),
   ventana: { x: 27, y: 33, w: 46, h: 28 },
+  lineas: 2,
+};
+
+function achatar(t: Troquel, nombre: string, fy: number): Troquel {
+  return {
+    nombre,
+    puntos: t.puntos.map(([x, y]) => [x, Math.round((50 + (y - 50) * fy) * 10) / 10]),
+    ventana: t.ventana,
+    lineas: t.lineas,
+  };
+}
+/// Las reservadas, APAISADAS, para títulos largos: el morph sigue intacto.
+export const CORAZON_ANCHO: Troquel = {
+  ...achatar(CORAZON, "corazon-ancho", 0.86),
+  ventana: { x: 14, y: 18, w: 72, h: 36 },
+  lineas: 2,
+};
+export const ESTRELLA_ANCHA: Troquel = {
+  ...achatar(ESTRELLA, "estrella-ancha", 0.9),
+  ventana: { x: 22, y: 30, w: 56, h: 30 },
   lineas: 2,
 };
 

@@ -37,6 +37,10 @@
     CORAZON,
     ESTRELLA,
     troquelBase,
+    troquelPara,
+    FICHA,
+    CORAZON_ANCHO,
+    ESTRELLA_ANCHA,
     aPoligono,
     aPuntosSvg,
     type Troquel,
@@ -53,6 +57,7 @@
     colaReordenar,
     colaReintentar,
     onColaActualizada,
+    stopPlayback,
     readDocument,
     readDocumentParagraphs,
     isModelReady,
@@ -293,6 +298,11 @@
     if (item.estado !== "listo" || !item.ruta) return;
     haptic("light");
     try {
+      // Abrir una pieza DISTINTA de la que suena MATA la sesión anterior
+      // (guardando su marea): una sola verdad sonando, jamás dos.
+      if (repro.snap && repro.snap.estado !== "inactivo" && repro.snap.doc_path && repro.snap.doc_path !== item.ruta) {
+        await stopPlayback().catch(() => {});
+      }
       const doc = await readDocument(item.ruta);
       doc.filename = item.titulo;
       reader.doc = doc;
@@ -420,6 +430,9 @@
   let jefePicotea = $state(false);
   let jefeVolando = $state(false);
   let jefeGiro = $state(1);
+  let jefeAngulo = $state(0);
+  let jefeAterriza = $state(false);
+  let plumas = $state<{ x: number; y: number }[]>([]);
 
   /// Tocar al jefe: DESPEGA, da una vuelta amplia por la pantalla con dos
   /// puntos de control al azar, y aterriza en su percha.
@@ -432,8 +445,12 @@
     const c1 = { x: w * (0.3 + Math.random() * 0.5), y: h * (0.15 + Math.random() * 0.3) };
     const c2 = { x: w * (0.1 + Math.random() * 0.7), y: h * (0.35 + Math.random() * 0.35) };
     const t0 = performance.now();
-    const dur = 2400;
+    const dur = 2600;
     let xPrevio = 0;
+    let yPrevio = 0;
+    const sacudidasVuelo = new Map<string, number>();
+    const jefeEl = document.querySelector<HTMLElement>(".loro-jefe");
+    const base = jefeEl?.getBoundingClientRect();
     const paso = (t: number) => {
       const u = Math.min(1, (t - t0) / dur);
       const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
@@ -441,15 +458,54 @@
       // Bézier cúbica que sale y VUELVE a la percha (0,0).
       const x = 3 * inv * inv * e * c1.x + 3 * inv * e * e * c2.x;
       const y = 3 * inv * inv * e * c1.y + 3 * inv * e * e * c2.y;
-      jefeGiro = x >= xPrevio ? -1 : 1;
+      const dx = x - xPrevio;
+      const dy = y - yPrevio;
+      jefeGiro = dx >= 0 ? -1 : 1;
+      // La INCLINACIÓN sigue la tangente: pica en los descensos.
+      const ang = Math.atan2(dy, Math.abs(dx) + 0.001) * (180 / Math.PI);
+      jefeAngulo = Math.max(-26, Math.min(26, ang * 0.55)) * (jefeGiro === -1 ? 1 : -1);
       xPrevio = x;
+      yPrevio = y;
       jefePos = { x, y };
+      // LA ESTELA: las pegatinas bajo su paso se sacuden con háptica.
+      if (base) {
+        const px = base.left + 42 + x;
+        const py = base.top + 42 + y;
+        const ahora = performance.now();
+        for (const it of visibles) {
+          const ultimo = sacudidasVuelo.get(it.id) ?? 0;
+          if (ahora - ultimo < 900) continue;
+          const el = document.querySelector<HTMLElement>(`[data-pieza="${CSS.escape(it.id)}"]`);
+          if (!el) continue;
+          const r = el.getBoundingClientRect();
+          const cx = r.left + r.width / 2;
+          const cy = r.top + r.height / 2;
+          if (Math.hypot(px - cx, py - cy) < Math.max(80, r.width * 0.45)) {
+            sacudidasVuelo.set(it.id, ahora);
+            haptic("tick");
+            const cuerpo = el.querySelector<HTMLElement>(".baldosa-cuerpo");
+            cuerpo?.classList.add("late");
+            setTimeout(() => cuerpo?.classList.remove("late"), 300);
+          }
+        }
+      }
       if (u < 1) {
         requestAnimationFrame(paso);
       } else {
         jefePos = { x: 0, y: 0 };
         jefeGiro = 1;
+        jefeAngulo = 0;
         jefeVolando = false;
+        // EL ATERRIZAJE: squash, plumitas que caen, y el brinco.
+        jefeAterriza = true;
+        plumas = [
+          { x: 18 + Math.random() * 20, y: 30 },
+          { x: 45 + Math.random() * 18, y: 26 },
+        ];
+        setTimeout(() => {
+          jefeAterriza = false;
+          plumas = [];
+        }, 780);
         haptic("soft");
         brincoDeLoro();
       }
@@ -577,7 +633,9 @@
         // Ni la vecina de la izquierda ni la de ENCIMA (filas de ~3):
         // el collage no repite color pegado a color.
         const choca = () =>
-          usados[usados.length - 1] === idx || usados[usados.length - 3] === idx;
+          usados[usados.length - 1] === idx ||
+          usados[usados.length - 2] === idx ||
+          usados[usados.length - 3] === idx;
         for (let intentos = 0; choca() && intentos < 4; intentos++) {
           idx = (idx + 3) % PALETA.length;
         }
@@ -598,19 +656,28 @@
     const m = new Map<string, Troquel>();
     let previo = "";
     for (const it of visibles) {
+      const largo = it.titulo.length > 16;
       if (it.favorito) {
-        m.set(it.id, CORAZON);
-        previo = CORAZON.nombre;
+        const c = largo ? CORAZON_ANCHO : CORAZON;
+        m.set(it.id, c);
+        previo = "corazon";
         continue;
       }
       if (pctDe(it) >= 100) {
-        m.set(it.id, ESTRELLA);
-        previo = ESTRELLA.nombre;
+        const e = largo ? ESTRELLA_ANCHA : ESTRELLA;
+        m.set(it.id, e);
+        previo = "estrella";
         continue;
       }
-      let tq = troquelBase(it.id);
+      // EL TROQUEL A MEDIDA: la forma sirve al título.
+      let tq = troquelPara(it.id, it.titulo.length);
       if (tq.nombre === previo) {
-        tq = TROQUELES_BASE[(TROQUELES_BASE.indexOf(tq) + 3) % TROQUELES_BASE.length];
+        const pool = TROQUELES_BASE.filter((t) =>
+          it.titulo.length > 26
+            ? ["nube", "escudo", "etiqueta"].includes(t.nombre)
+            : t.nombre !== previo,
+        );
+        tq = pool[(pool.findIndex((t) => t.nombre === tq.nombre) + 1 + pool.length) % pool.length] ?? tq;
       }
       m.set(it.id, tq);
       previo = tq.nombre;
@@ -663,7 +730,16 @@
   const piezasTablero = $derived(
     visibles.map((i) => ({ id: i.id, peso: pesoDe(i), letras: Math.min(30, i.titulo.length) })),
   );
-  const tablero = $derived(empaquetar(piezasTablero, anchoTablero));
+  // El alto útil del pliego: la lista menos el colofón y los aires.
+  let altoLista = $state(0);
+  const tablero = $derived(
+    empaquetar(piezasTablero, anchoTablero, Math.max(0, altoLista - 250)),
+  );
+  // Factor de dispositivo (el Pro Max respira más) y factor del pliego.
+  const fDispositivo = $derived(Math.min(1.18, Math.max(1, anchoTablero / 402)));
+  const cuerpoReposo = $derived(
+    Math.round(19 * fDispositivo * Math.min(1.3, Math.sqrt(tablero.factor))),
+  );
 
   // Los datos del membrete: el susurro mono bajo la marca.
   const minutosTotales = $derived(visibles.reduce((s, i) => s + minutosDe(i), 0));
@@ -1015,7 +1091,7 @@
 <main class="cinta" data-tauri-drag-region onpointermove={seguirDedo} onpointerdown={seguirDedo}>
   <!-- LA LISTA: el único scroller. NO hay cabecera: la marca, la
        trastienda y la boca son PIEZAS del propio mosaico. -->
-  <div class="lista" ontouchmove={(e) => { if (levantada) e.preventDefault(); }}>
+  <div class="lista" bind:clientHeight={altoLista} ontouchmove={(e) => { if (levantada) e.preventDefault(); }}>
     {#if !modeloListo}
       <section class="tarjeta modelo">
         {#if descargando}
@@ -1053,15 +1129,16 @@
             {@const jit = jitterDe(item.id)}
             {@const tinta = tintaDe(item)}
             {@const honda = tonoHondo(tinta)}
-            {@const tq = troquelesVivos.get(item.id) ?? troquelBase(item.id)}
+            {@const tqBase = troquelesVivos.get(item.id) ?? troquelBase(item.id)}
+            {@const tq = elegida ? FICHA : tqBase}
             {@const clipExt = aPoligono(tq)}
             {@const clipInt = aPoligono(tq, 0.93)}
             {@const vw = (b.ancho * tq.ventana.w) / 100}
             {@const vh = (b.alto * tq.ventana.h) / 100 - 20}
             {@const enMarcha = esLaQueSuena && trabajando}
-            {@const grandota = elegida || b.peso >= 3}
+            {@const grandota = elegida}
             {@const lineasCartel = enMarcha || !grandota ? [] : cartel(item.titulo, vw, Math.max(24, vh), $idiomaUI)}
-            {@const reposo = enMarcha || grandota ? null : cartelReposo(item.titulo, vw, Math.max(20, vh), $idiomaUI, tq.lineas ?? 3)}
+            {@const reposo = enMarcha || grandota ? null : cartelReposo(item.titulo, vw, Math.max(20, vh), $idiomaUI, tq.lineas ?? 3, cuerpoReposo)}
             <article
               data-pieza={item.id}
               class="baldosa" class:en-vuelo={enVuelo}
@@ -1224,14 +1301,18 @@
     class:voltereta
     class:picotea={jefePicotea}
     class:volando={jefeVolando}
-    style="transform: translate({jefePos.x}px, {jefePos.y}px) scaleX({jefeGiro})"
+    class:aterriza={jefeAterriza}
+    style="transform: translate({jefePos.x}px, {jefePos.y}px) scaleX({jefeGiro}) rotate({jefeAngulo}deg)"
     onclick={vuelaJefe}
     aria-label="yappy"
   >
+    {#each plumas as pl, k (k)}
+      <span class="pluma" style="left: {pl.x}px; top: {pl.y}px; animation-delay: {k * 120}ms" aria-hidden="true"></span>
+    {/each}
     <Criatura
       size={84}
       mirando={-1}
-      estado={celebra ? "celebrando" : repro.snap?.estado === "sonando" ? "hablando" : repro.snap?.estado === "pausa" ? "pausa" : durmiendo ? "dormido" : "posado"}
+      estado={jefeVolando || celebra ? "celebrando" : repro.snap?.estado === "sonando" ? "hablando" : repro.snap?.estado === "pausa" ? "pausa" : durmiendo ? "dormido" : "posado"}
       apertura={repro.snap?.estado === "sonando" ? nivel : 0}
       {mirada}
       tinta={$tintaVoz}
@@ -1399,6 +1480,29 @@
   }
   .loro-jefe.volando {
     transition: none;
+  }
+  .loro-jefe.aterriza {
+    animation: aterrizaje 0.5s cubic-bezier(0.24, 1.7, 0.44, 1);
+  }
+  @keyframes aterrizaje {
+    0% { scale: 1 0.78; translate: 0 6px; }
+    55% { scale: 0.94 1.1; translate: 0 -3px; }
+    100% { scale: 1 1; translate: 0 0; }
+  }
+  /* Las plumitas del aterrizaje: dos trazos crema que caen meciéndose. */
+  .pluma {
+    position: absolute;
+    width: 10px;
+    height: 4px;
+    border-radius: 60% 40% 55% 45%;
+    background: #f7f2e7;
+    border: 1px solid #d8d2c4;
+    animation: pluma-cae 0.75s ease-in both;
+    pointer-events: none;
+  }
+  @keyframes pluma-cae {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(34px) rotate(140deg); opacity: 0; }
   }
   .loro-jefe.picotea {
     animation: picoteo-jefe 0.5s ease;

@@ -184,7 +184,10 @@
     border-radius: 20px;
     padding: 10px 10px 10px 12px;
     box-shadow: 0 4px 0 rgba(43, 36, 24, 0.22);
-    transition: transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1.15), opacity 0.2s ease;
+    transition:
+      transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1.15),
+      opacity 0.2s ease,
+      background-color 0.5s ease;
     touch-action: pan-y;
   }
   .aguja.muere {

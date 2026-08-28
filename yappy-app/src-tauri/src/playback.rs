@@ -833,7 +833,14 @@ fn run_audio_thread(
                 s.current_origen_ini = oi;
                 s.current_origen_fin = of;
             }
-            let ended = s.playing && buf_empty && !paused_state;
+            // FIN solo si la COCINA terminó: si el consumo alcanza a la
+            // síntesis (velocidad alta, primer trozo corto), el buffer se
+            // vacía un instante pero la sesión sigue VIVA: declarar
+            // «inactivo» aquí mandaba al usuario a la portada con el audio
+            // sonando detrás (el bug del iPhone a 1,70×). En ese hueco la
+            // sesión se queda «sonando» y el siguiente trozo la rellena.
+            let cocina_terminada = s.total > 0 && s.chunks_cocinados >= s.total;
+            let ended = s.playing && buf_empty && !paused_state && cocina_terminada;
             if ended {
                 s.playing = false;
                 s.estado = "inactivo".into();

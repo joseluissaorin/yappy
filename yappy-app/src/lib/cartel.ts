@@ -151,37 +151,53 @@ export function cartelReposo(
   if (palabras.length === 1 && palabras[0].length > 13) {
     palabras = trocear(palabras[0], Math.min(3, Math.ceil(palabras[0].length / 11)));
   }
-  const n = Math.max(1, Math.min(maxLineas, Math.floor(alto / altoLinea), palabras.length));
-  // Anchura natural que cabe por renglón con compresión mínima 0.9:
-  // natural ≤ ancho·(VB_ALTO/altoLinea)/0.9.
-  const capacidad = ((ancho * VB_ALTO) / altoLinea) * (1 / 0.9);
-  const cabe = (ls: string[]) => ls.every((l) => medir(l) <= capacidad);
-  let lineas = partir(palabras, n);
-  if (!cabe(lineas)) {
-    // Soltar palabras hasta que TODOS los renglones respeten el cuerpo.
+  // EL CUERPO SE NEGOCIA POR PIEZA: antes de recortar UNA sola palabra,
+  // el cuerpo baja punto a punto (hasta 15). Recortar es la última
+  // defensa, no la primera.
+  const capacidadCon = (c: number) => ((ancho * VB_ALTO) / c) * (1 / 0.9);
+  let cuerpo = altoLinea;
+  let lineas: string[] = [];
+  let compuesto = false;
+  for (let c = altoLinea; c >= 13; c -= 2) {
+    const nc = Math.max(1, Math.min(Math.max(maxLineas, Math.min(5, Math.floor(alto / c))), Math.floor(alto / c), palabras.length));
+    const cap = capacidadCon(c);
+    const prueba = partir(palabras, nc);
+    if (prueba.every((l) => medir(l) <= cap)) {
+      cuerpo = c;
+      lineas = prueba;
+      compuesto = true;
+      break;
+    }
+  }
+  if (!compuesto) {
+    cuerpo = 13;
+    const nc = Math.max(1, Math.min(Math.min(5, Math.floor(alto / cuerpo)), palabras.length));
+    const cap = capacidadCon(cuerpo);
+    lineas = partir(palabras, nc);
     for (let corte = palabras.length - 1; corte >= 1; corte--) {
       const menos = [...palabras.slice(0, corte)];
       menos[menos.length - 1] = `${menos[menos.length - 1]}…`;
-      const prueba = partir(menos, Math.min(n, menos.length));
-      if (cabe(prueba)) {
+      const prueba = partir(menos, Math.min(nc, menos.length));
+      if (prueba.every((l) => medir(l) <= cap)) {
         lineas = prueba;
         break;
       }
       if (corte === 1) lineas = prueba;
     }
   }
+  const altoLineaFinal = cuerpo;
   // La caja NO se deforma (viewBox con la proporción exacta del hueco);
   // la única deformación es el textLength, acotado: comprimir hasta 0.9
   // (garantizado por el recorte) y estirar hasta 1.15; las líneas cortas
   // se centran en vez de estirarse de más.
-  const objetivo = (ancho * VB_ALTO) / altoLinea;
+  const objetivo = (ancho * VB_ALTO) / altoLineaFinal;
   return {
     lineas: lineas.map((texto) => {
       const natural = medir(texto);
       const tl = Math.min(objetivo, natural * 1.15);
       return { texto, vb: objetivo, tl, x: Math.max(0, (objetivo - tl) / 2) };
     }),
-    altoLinea,
+    altoLinea: altoLineaFinal,
   };
 }
 

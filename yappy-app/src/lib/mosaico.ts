@@ -31,16 +31,19 @@ const ANCHO_MINIMO = 96;
 export function empaquetar(
   piezas: PiezaMosaico[],
   anchoTablero: number,
-): { baldosas: Map<string, Baldosa>; alto: number } {
+  altoUtil = 0,
+): { baldosas: Map<string, Baldosa>; alto: number; factor: number } {
   const baldosas = new Map<string, Baldosa>();
   if (piezas.length === 0 || anchoTablero <= 0) {
-    return { baldosas, alto: 0 };
+    return { baldosas, alto: 0, factor: 1 };
   }
 
   // Peso objetivo por fila (Kalorica: 2,5 de base, tope de 4 tarjetas).
   const pesoMedio = piezas.reduce((s, p) => s + p.peso, 0) / piezas.length;
   const PESO_FILA = Math.max(2.5, pesoMedio * 2.5);
-  const MAX_POR_FILA = 4;
+  // MODO PÓSTER: con pocas piezas, columnas gordas (la página se compone
+  // entera, jamás queda medio vacía).
+  const MAX_POR_FILA = piezas.length <= 2 ? 1 : piezas.length <= 4 ? 2 : 4;
 
   const filas: PiezaMosaico[][] = [];
   let fila: PiezaMosaico[] = [];
@@ -107,5 +110,40 @@ export function empaquetar(
     y += alto + HUECO_Y;
   }
 
-  return { baldosas, alto: Math.max(0, y - HUECO_Y) };
+  let altoTotal = Math.max(0, y - HUECO_Y);
+
+  // LA LEY DEL PLIEGO: si la composición no llena el alto útil, TODA la
+  // página se estira (los altos de fila escalan; las ventanas, que son
+  // porcentuales, escalan solas). La pantalla siempre está compuesta.
+  let factor = 1;
+  if (altoUtil > 0 && altoTotal > 0 && altoTotal < altoUtil * 0.78) {
+    const huecos = HUECO_Y * Math.max(0, filas.length - 1);
+    factor = Math.min(2.6, (altoUtil * 0.92 - huecos) / (altoTotal - huecos));
+    if (factor > 1.01) {
+      const escaladas = new Map<string, Baldosa>();
+      let yAcum = 0;
+      let filaY = -1;
+      let filaAlto = 0;
+      const porFila: Baldosa[][] = [];
+      for (const b of baldosas.values()) {
+        if (b.y !== filaY) {
+          filaY = b.y;
+          porFila.push([]);
+        }
+        porFila[porFila.length - 1].push(b);
+      }
+      let idx = 0;
+      const ids = [...baldosas.keys()];
+      for (const fila of porFila) {
+        filaAlto = fila[0].alto * factor;
+        for (const b of fila) {
+          escaladas.set(ids[idx], { ...b, y: yAcum, alto: filaAlto });
+          idx += 1;
+        }
+        yAcum += filaAlto + HUECO_Y;
+      }
+      return { baldosas: escaladas, alto: Math.max(0, yAcum - HUECO_Y), factor };
+    }
+  }
+  return { baldosas, alto: altoTotal, factor };
 }
