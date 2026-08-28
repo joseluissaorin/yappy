@@ -21,10 +21,79 @@ export interface Baldosa {
   peso: number;
 }
 
-const ALTO_BASE = 78;
-const ALTO_TECHO = 340;
-const HUECO_Y = 8;
+const ALTO_BASE = 88;
+const ALTO_TECHO = 360;
+// El cuaderno: las filas se PISAN un pelín (solape negativo), como
+// pegatinas pegadas una tras otra sin dejar ver el papel.
+const HUECO_Y = -6;
 const ANCHO_MINIMO = 96;
+// EL ZIGZAG de los iPhone de una columna: cada pegatina ocupa como una
+// columna y media (≈2/3 del ancho), más CUADRADA, y se alternan pegadas
+// al margen izquierdo y al derecho; al no chocar de lleno, se montan más.
+const ALTO_BASE_ZIG = 148;
+const SOLAPE_ZIG = -34;
+// El sangrado: las pegatinas se meten un pelín por los márgenes, como
+// pegadas sin miramientos (el patrón llena el papel de verdad).
+const SANGRADO_ZIG = 7;
+
+function empaquetarZigzag(
+  piezas: PiezaMosaico[],
+  anchoTablero: number,
+  altoUtil: number,
+  dos: boolean,
+): { baldosas: Map<string, Baldosa>; alto: number; factor: number } {
+  const baldosas = new Map<string, Baldosa>();
+  // En pantalla grande el zigzag se vuelve TRESBOLILLO: piezas algo más
+  // estrechas y cada una avanza solo medio alto, quedando escalonadas
+  // lado a lado (columna izquierda y derecha alternadas, como un panal).
+  const anchoBase = dos ? 0.58 : 0.7;
+  const anchoGorda = dos ? 0.74 : 0.86;
+  const altoBase = dos ? 132 : ALTO_BASE_ZIG;
+  const avanceDe = (alto: number) => (dos ? alto * 0.54 : alto + SOLAPE_ZIG);
+  const colocar = (factor: number) => {
+    let y = 0;
+    let fondo = 0;
+    piezas.forEach((p, i) => {
+      let semilla = 0;
+      for (const c of p.id) semilla = (semilla * 31 + c.charCodeAt(0)) >>> 0;
+      const ruido = 0.92 + ((semilla >> 4) % 17) / 100;
+      const gorda = p.peso >= 5;
+      const ancho = Math.min(
+        anchoTablero,
+        Math.max(anchoTablero * (gorda ? anchoGorda : anchoBase), 26 + p.letras * 3.1),
+      );
+      const crudo = Math.min(ALTO_TECHO, (altoBase + p.peso * 18) * ruido);
+      // La ELEGIDA (peso gordo) no se deja aplastar: la ficha desplegada
+      // necesita su cuerpo; las demás absorben el apretón (con un suelo
+      // digno: las formas puntiagudas chafadas daban pena).
+      const suelo = p.peso >= 5 ? crudo * 0.82 : 106;
+      const alto = Math.max(suelo, Math.min(crudo * factor, ancho * 1.12));
+      const x = i % 2 === 0 ? -SANGRADO_ZIG : anchoTablero - ancho + SANGRADO_ZIG;
+      baldosas.set(p.id, { x, y, ancho, alto, peso: p.peso });
+      fondo = Math.max(fondo, y + alto);
+      y += avanceDe(alto);
+    });
+    return fondo;
+  };
+
+  // La ley del pliego en AMBOS sentidos: si sobra papel las pegatinas
+  // crecen (techo CUADRADO: alto ≤ 1.12×ancho); si el cuaderno se pasa
+  // del alto útil, se aprietan (suelo de legibilidad), para que el
+  // colofón nunca choque con los fijos.
+  let factor = 1;
+  let altoTotal = colocar(1);
+  if (altoUtil > 0 && altoTotal > 0) {
+    if (altoTotal < altoUtil * 0.9) {
+      factor = Math.min(2.2, (altoUtil * 0.97) / altoTotal);
+    } else if (altoTotal > altoUtil) {
+      factor = Math.max(0.62, (altoUtil * 0.99) / altoTotal);
+    }
+    if (factor > 1.01 || factor < 0.99) {
+      altoTotal = colocar(factor);
+    }
+  }
+  return { baldosas, alto: altoTotal, factor };
+}
 
 /// Empaqueta las piezas en filas por peso y devuelve la baldosa de cada id
 /// más el alto total del tablero.
@@ -41,9 +110,17 @@ export function empaquetar(
   // Peso objetivo por fila (Kalorica: 2,5 de base, tope de 4 tarjetas).
   const pesoMedio = piezas.reduce((s, p) => s + p.peso, 0) / piezas.length;
   const PESO_FILA = Math.max(2.5, pesoMedio * 2.5);
-  // MODO PÓSTER: con pocas piezas, columnas gordas (la página se compone
-  // entera, jamás queda medio vacía).
-  const MAX_POR_FILA = piezas.length <= 2 ? 1 : piezas.length <= 4 ? 2 : 4;
+  // MODO PÓSTER: con pocas piezas, columnas gordas. Y LA REGLA DE LAS
+  // COLUMNAS: dos solo en los iPhone grandes (≥415pt); en los pequeños,
+  // UNA (las pegatinas estiradas a lo alto eran un espanto).
+  const dosColumnas = anchoTablero >= 415;
+  // EL CUADERNO para todos: zigzag en una columna, tresbolillo en los
+  // grandes (salvo la pieza única, que es un póster a todo lo ancho).
+  if (piezas.length >= 2) {
+    return empaquetarZigzag(piezas, anchoTablero, altoUtil, dosColumnas);
+  }
+  const MAX_POR_FILA =
+    piezas.length <= 2 ? 1 : piezas.length <= 6 ? (dosColumnas ? 2 : 1) : dosColumnas ? 4 : 2;
 
   const filas: PiezaMosaico[][] = [];
   let fila: PiezaMosaico[] = [];
@@ -118,7 +195,7 @@ export function empaquetar(
   let factor = 1;
   if (altoUtil > 0 && altoTotal > 0 && altoTotal < altoUtil * 0.78) {
     const huecos = HUECO_Y * Math.max(0, filas.length - 1);
-    factor = Math.min(2.6, (altoUtil * 0.92 - huecos) / (altoTotal - huecos));
+    factor = Math.min(2.6, (altoUtil * 0.97 - huecos) / (altoTotal - huecos));
     if (factor > 1.01) {
       const escaladas = new Map<string, Baldosa>();
       let yAcum = 0;
@@ -135,7 +212,10 @@ export function empaquetar(
       let idx = 0;
       const ids = [...baldosas.keys()];
       for (const fila of porFila) {
-        filaAlto = fila[0].alto * factor;
+        // El techo de proporción: una pegatina jamás es más alta que
+        // 1.2 veces el ancho medio de su fila (nada de chicles).
+        const anchoMedio = fila.reduce((s2, b) => s2 + b.ancho, 0) / fila.length;
+        filaAlto = Math.min(fila[0].alto * factor, anchoMedio * 1.35);
         for (const b of fila) {
           escaladas.set(ids[idx], { ...b, y: yAcum, alto: filaAlto });
           idx += 1;

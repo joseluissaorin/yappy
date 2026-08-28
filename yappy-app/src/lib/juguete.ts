@@ -103,15 +103,18 @@ export function radiosDe(id: string): string {
   return formaDe(id).radios;
 }
 
-/// La inclinación de collage: cada pieza pegada a mano, ±2.4 grados.
+/// La inclinación de collage: cada pieza pegada a mano, ±4.5 grados
+/// (una rotación que SE VEA: el patrón del cuaderno la pide).
 export function tiltDe(id: string): number {
   const h = hashDe(id);
-  return (((h >> 3) % 49) - 24) / 10;
+  return (((h >> 3) % 91) - 45) / 10;
 }
 
 /// El DESCONTROL: cada pieza se descoloca un poco de su celda (nada de
 /// retícula perfecta: esto es una mesa, no una hoja de cálculo).
 export function jitterDe(id: string): { dx: number; dy: number } {
   const h = hashDe(id);
-  return { dx: ((h >> 5) % 19) - 9, dy: (((h >> 9) % 23) - 11) };
+  // Descoloque de cuaderno: vivo en x, contenido en y (las pegatinas van
+  // PEGADAS entre sí; el desorden no puede separarlas).
+  return { dx: ((h >> 5) % 19) - 9, dy: ((h >> 9) % 11) - 5 };
 }

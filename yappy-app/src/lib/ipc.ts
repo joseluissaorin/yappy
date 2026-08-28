@@ -349,6 +349,11 @@ export interface ItemCola {
 export const colaListar = (): Promise<ItemCola[]> => invoke("cola_listar_cmd");
 export const colaAgregarUrl = (url: string): Promise<ItemCola> =>
   invoke("cola_agregar_url_cmd", { url });
+
+/// Una página compartida desde Safari con su DOM vivo (fichero .html con
+/// la URL en cabecera): la vía sin muros.
+export const colaAgregarWeb = (ruta: string): Promise<ItemCola> =>
+  invoke("cola_agregar_web_cmd", { ruta });
 export const colaAgregarTexto = (texto: string, titulo?: string): Promise<ItemCola> =>
   invoke("cola_agregar_texto_cmd", { texto, titulo: titulo ?? null });
 export const colaAgregarArchivo = (ruta: string): Promise<ItemCola> =>
@@ -370,7 +375,11 @@ export const colaReintentar = (id: string): Promise<void> =>
   invoke("cola_reintentar_cmd", { id });
 /// La interfaz se lee a sí misma: dice un texto corto por el canal de
 /// efectos (calla si algo suena o el motor está ocupado).
-export const decir = (texto: string): Promise<number> => invoke("decir_cmd", { texto });
+/// El progreso duradero del backend (clave por nombre de fichero).
+export const progresoTodo = (): Promise<Record<string, { parrafo: number; total: number }>> =>
+  invoke("progreso_todo_cmd");
+export const decir = (texto: string, clave?: string): Promise<number> =>
+  invoke("decir_cmd", { texto, clave: clave ?? null });
 /// Una voz al azar (estable) para cada pieza.
 export const setVozAlAzar = (valor: boolean): Promise<void> =>
   invoke("set_voz_al_azar_cmd", { valor });

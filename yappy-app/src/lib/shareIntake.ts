@@ -23,6 +23,7 @@ import {
   readTextAsDocument,
   readDocumentParagraphs,
   colaAgregarUrl,
+  colaAgregarWeb,
   colaAgregarTexto,
   colaAgregarArchivo,
   colaAgregarAudio,
@@ -158,6 +159,16 @@ async function handleOne(line: string): Promise<void> {
     const url = line.slice(4).trim();
     if (url) {
       const item = await colaAgregarUrl(url);
+      reproducirAlLlegar.add(item.id);
+      await vigilarAutoplay();
+      encolado = true;
+    }
+  } else if (line.startsWith("web:")) {
+    // Página viva de Safari: el HTML con la sesión del usuario ya está en
+    // el App Group; Rust extrae sin descargar (los muros no existen).
+    const ruta = line.slice(4).trim();
+    if (ruta) {
+      const item = await colaAgregarWeb(ruta);
       reproducirAlLlegar.add(item.id);
       await vigilarAutoplay();
       encolado = true;

@@ -27,6 +27,7 @@
     andando = false,
     cantando = false,
     mirando = 1,
+    volando = false,
   }: {
     size?: number;
     estado?: "posado" | "hablando" | "pausa" | "comiendo" | "dormido" | "avergonzado" | "celebrando";
@@ -37,6 +38,7 @@
     andando?: boolean;
     cantando?: boolean;
     mirando?: 1 | -1;
+    volando?: boolean;
   } = $props();
 
   // ── Compatibilidad: cantando sin apertura = aleteo interno del pico ───
@@ -124,6 +126,7 @@
 
 <span
   class="criatura"
+  class:vuela={volando}
   class:anda={andando || estado === "celebrando"}
   class:habla={boca > 0.04}
   class:duerme={estado === "dormido"}
@@ -283,6 +286,22 @@
   /* Celebrar: el ala aletea y la cola se sacude. */
   .celebra .ala {
     animation: aletea 0.32s ease-in-out infinite alternate;
+  }
+  /* VOLAR de verdad: el ala se abre del todo y bate rápido; el cuerpo
+     se estira en la zancada del aire. */
+  .vuela .ala {
+    animation: aletea-vuelo 0.2s ease-in-out infinite alternate !important;
+  }
+  .vuela .cuerpo-vivo {
+    animation: none;
+    transform: scaleY(0.95);
+  }
+  .vuela .cola {
+    animation: colea 0.24s ease-in-out infinite alternate;
+  }
+  @keyframes aletea-vuelo {
+    from { transform: rotate(6deg) translateY(0.5px); }
+    to { transform: rotate(-78deg) translateY(-4.5px) scaleY(1.15); }
   }
   .celebra .cola {
     animation: colea 0.4s ease-in-out infinite alternate;

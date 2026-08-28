@@ -62,8 +62,60 @@ class ShareViewController: UIViewController {
                 }
             }
         }
+        // LA VÍA CON SESIÓN: si el share viene de Safari, el preprocesado
+        // JS (YappyPreprocess.js) entrega el DOM que el usuario VEÍA, con
+        // su suscripción y sin muro. Llega como property-list.
+        for item in items {
+            for provider in (item.attachments ?? []) {
+                if provider.hasItemConformingToTypeIdentifier("com.apple.property-list") {
+                    loadWebPage(provider, fallback: items)
+                    return
+                }
+            }
+        }
         // Sin audio ni ficheros: el camino clásico de texto/URL.
         handleTextOrUrl(items)
+    }
+
+    // MARK: - Página web viva (preprocesado JS de Safari)
+
+    private func loadWebPage(_ provider: NSItemProvider, fallback items: [NSExtensionItem]) {
+        provider.loadItem(forTypeIdentifier: "com.apple.property-list", options: nil) { [weak self] data, _ in
+            guard let self else { return }
+            var payload: String?
+            if let dict = data as? NSDictionary,
+               let results = dict[NSExtensionJavaScriptPreprocessingResultsKey] as? NSDictionary {
+                let url = (results["url"] as? String) ?? ""
+                let html = (results["html"] as? String) ?? ""
+                let titulo = ((results["titulo"] as? String) ?? "")
+                    .replacingOccurrences(of: "-->", with: " ")
+                if !html.isEmpty, !url.isEmpty,
+                   let container = FileManager.default
+                       .containerURL(forSecurityApplicationGroupIdentifier: APP_GROUP) {
+                    let dir = container.appendingPathComponent("shared-files", isDirectory: true)
+                    try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+                    let dest = dir.appendingPathComponent("pagina-\(UUID().uuidString.prefix(8)).html")
+                    // La URL y el título van en la cabecera del propio
+                    // fichero: el payload queda en una sola línea.
+                    let cuerpo = "<!-- yappy-url: \(url.replacingOccurrences(of: "-->", with: "")) -->\n"
+                        + "<!-- yappy-titulo: \(titulo) -->\n" + html
+                    if (try? cuerpo.write(to: dest, atomically: true, encoding: .utf8)) != nil {
+                        payload = "web:\(dest.path)"
+                        NSLog("[yappy/share] página viva capturada (\(html.count) chars): \(url.prefix(60))")
+                    }
+                }
+            }
+            DispatchQueue.main.async {
+                if let payload {
+                    self.persistPayload(payload)
+                    self.openMainAppAndClose()
+                } else {
+                    // Sin resultados del JS: el camino clásico de URL.
+                    NSLog("[yappy/share] property-list sin resultados JS; voy por la URL")
+                    self.handleTextOrUrl(items)
+                }
+            }
+        }
     }
 
     // MARK: - Documento → copiar al App Group y encolar

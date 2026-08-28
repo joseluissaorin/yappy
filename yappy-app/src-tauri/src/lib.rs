@@ -425,6 +425,37 @@ pub fn run() {
                 // sintetizan una vez en segundo plano y quedan en caché para
                 // que tocar un cromo suene al instante.
                 commands::precocinar_muestras(app.handle().clone(), state.clone());
+                commands::precocinar_titulos(app.handle().clone(), state.clone());
+                // El progreso duradero: el motor escribe por dónde vas
+                // (throttled) aunque la app muera sonando.
+                {
+                    let handle = app.handle().clone();
+                    let ultimo = std::sync::Mutex::new((
+                        std::time::Instant::now() - std::time::Duration::from_secs(10),
+                        usize::MAX,
+                        String::new(),
+                    ));
+                    state.playback.subscribe(move |snap| {
+                        if snap.doc_path.is_empty() || snap.total_paragraphs == 0 {
+                            return;
+                        }
+                        let parrafo = snap.base_paragraph_index + snap.current_paragraph_index;
+                        let total = snap.base_paragraph_index + snap.total_paragraphs;
+                        let flush = snap.estado == "pausa";
+                        let mut u = ultimo.lock().unwrap();
+                        let mismo = u.1 == parrafo && u.2 == snap.doc_path;
+                        if mismo && !flush {
+                            return;
+                        }
+                        if !flush && u.0.elapsed() < std::time::Duration::from_secs(2) {
+                            return;
+                        }
+                        u.0 = std::time::Instant::now();
+                        u.1 = parrafo;
+                        u.2 = snap.doc_path.clone();
+                        commands::guardar_progreso_disco(&handle, &snap.doc_path, parrafo, total);
+                    });
+                }
 
                 // Subscribe to playback snapshots — whenever play state /
                 // position changes, refresh the Now Playing metadata so the
@@ -524,6 +555,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             cola::cola_listar_cmd,
             cola::cola_agregar_url_cmd,
+            cola::cola_agregar_web_cmd,
             cola::cola_agregar_texto_cmd,
             cola::cola_agregar_portapapeles_cmd,
             cola::cola_agregar_archivo_cmd,
@@ -575,6 +607,7 @@ pub fn run() {
             commands::sample_voice,
             commands::decir_cmd,
             commands::set_voz_al_azar_cmd,
+            commands::progreso_todo_cmd,
             commands::capture_diagnostics,
             commands::get_history,
             commands::clear_history_cmd,

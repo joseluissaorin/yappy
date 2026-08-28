@@ -19,6 +19,7 @@
 		43B7E8BEEB5DA997B66FFFD5 /* YappyWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 11D8807FE02A0A9A28B2AC44 /* YappyWidgets.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		450331386243A28C0C5EF0C9 /* AudioFilePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07B5C0EC4CB481A9F8969C /* AudioFilePlayer.swift */; };
 		450EF73371F034EB0BC204E5 /* libapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5A9A58DA5F7712C4E9EF3F /* libapp.a */; };
+		47174ECD30E68DA2CB827F64 /* YappyPreprocess.js in Resources */ = {isa = PBXBuildFile; fileRef = 503DC22B3CF3FCF5C2BA89C4 /* YappyPreprocess.js */; };
 		53336429DF0E473712A4EF0C /* YappyWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BACA884836A2C3FBE6980A8B /* YappyWidgetsBundle.swift */; };
 		5401E6FD8EA5634E1BE7FF0D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88594DFE20DA9B69DC2A4E99 /* WidgetKit.framework */; };
 		54B42924FD2BD435948E4ACE /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF68D4C8B5EBC48614AC97F /* SwiftUI.framework */; };
@@ -111,6 +112,7 @@
 		3A7DD34A3CA870707D62BD0F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43793F4F8BD751B2AFA0ECEC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4B810A445B1E97783FB5D77F /* state.rs */ = {isa = PBXFileReference; path = state.rs; sourceTree = "<group>"; };
+		503DC22B3CF3FCF5C2BA89C4 /* YappyPreprocess.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = YappyPreprocess.js; sourceTree = "<group>"; };
 		50B543A4705E743A0E69F32F /* YappyShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YappyShareExtension.entitlements; sourceTree = "<group>"; };
 		51DBB793CEF93A73DECABF69 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		55CDEF6E4F70C998F01DA069 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 			children = (
 				70021004515EA8DD472525B2 /* Info.plist */,
 				A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */,
+				503DC22B3CF3FCF5C2BA89C4 /* YappyPreprocess.js */,
 				50B543A4705E743A0E69F32F /* YappyShareExtension.entitlements */,
 			);
 			path = YappyShareExtension;
@@ -431,6 +434,7 @@
 			buildConfigurationList = B2E361128BB10F1EEA57B261 /* Build configuration list for PBXNativeTarget "YappyShareExtension" */;
 			buildPhases = (
 				1F6A31A73574288841057C0B /* Sources */,
+				032B1443279B5FE4960AD1AD /* Resources */,
 				6FBDEF6E4BB995F75B46DE3B /* Frameworks */,
 			);
 			buildRules = (
@@ -493,6 +497,14 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		032B1443279B5FE4960AD1AD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47174ECD30E68DA2CB827F64 /* YappyPreprocess.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CDEC2766D5D874A2D08DFB51 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;

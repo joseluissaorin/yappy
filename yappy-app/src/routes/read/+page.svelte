@@ -111,8 +111,22 @@
   const oIni = $derived(Math.min(playback?.current_origen_ini ?? 0, letrasParrafo.length));
   const oFin = $derived(Math.min(Math.max(playback?.current_origen_fin ?? 0, oIni), letrasParrafo.length));
   const hayOrigen = $derived(oFin > oIni);
+  // La interfaz PRECEDE a la voz: si el snapshot aún no trae el corte del
+  // párrafo nuevo, cortamos NOSOTROS la primera frase (mismo criterio que
+  // el guionizador: puntuación fuerte). Nada de enseñar el párrafo entero
+  // unos segundos y luego «encogerlo»: fluidez.
+  const finPrimeraFrase = $derived.by(() => {
+    if (hayOrigen || letrasParrafo.length === 0) return 0;
+    const texto = letrasParrafo.join("");
+    const m = texto.match(/[.!?…]["»”')\]]?(?=\s|$)/);
+    if (!m || m.index === undefined) return letrasParrafo.length;
+    return Array.from(texto.slice(0, m.index + m[0].length)).length;
+  });
   const frase = $derived(
-    (oFin > oIni ? letrasParrafo.slice(oIni, oFin).join("") : letrasParrafo.join("")).trim(),
+    (hayOrigen
+      ? letrasParrafo.slice(oIni, oFin).join("")
+      : letrasParrafo.slice(0, finPrimeraFrase).join("")
+    ).trim(),
   );
   const esTitulo = $derived((kinds[currentPara] ?? "").startsWith("heading"));
 
@@ -131,6 +145,7 @@
   const dichas = $derived.by(() => {
     if (currentPara < 0) return "";
     let previo = hayOrigen ? letrasParrafo.slice(0, oIni).join("").trim() : "";
+    // Sin origen aún: lo anterior al corte propio no se ha dicho: vacío.
     if (previo.length < 90 && currentPara > 0) {
       previo = cose((paras[currentPara - 1] ?? "").trim(), previo);
     }
@@ -138,7 +153,12 @@
   });
   const porVenir = $derived.by(() => {
     if (currentPara < 0) return "";
-    let resto = hayOrigen ? letrasParrafo.slice(oFin).join("").trim() : "";
+    let resto = (hayOrigen
+      ? letrasParrafo.slice(oFin)
+      : letrasParrafo.slice(finPrimeraFrase)
+    )
+      .join("")
+      .trim();
     let i = currentPara + 1;
     while (resto.length < 180 && i < paras.length) {
       resto = cose(resto, (paras[i] ?? "").trim());
@@ -157,14 +177,24 @@
   let barrido = $state(0);
   let rafId = 0;
   let claveFrase = $state("");
+  // El CERROJO DEL FANTASMA: el barrido de una frase queda ARMADO al
+  // llegar la frase y solo NACE cuando la voz suena de verdad (nivel de
+  // audio real). Nada de subrayados avanzando en silencio y volviendo a
+  // empezar cuando arranca el sonido.
+  let barriendo = false;
   function arrancarBarrido() {
     cancelAnimationFrame(rafId);
+    barriendo = true;
     const dur = Math.max(0.9, (frase.length * 0.062) / effectiveSpeedForPlay());
     const ya = barrido;
     const t0 = performance.now() - ya * dur * 1000;
     const paso = (ahora: number) => {
       barrido = Math.min(1, (ahora - t0) / (dur * 1000));
-      if (barrido < 1 && isPlaying) rafId = requestAnimationFrame(paso);
+      if (barrido < 1 && isPlaying) {
+        rafId = requestAnimationFrame(paso);
+      } else {
+        barriendo = false;
+      }
     };
     rafId = requestAnimationFrame(paso);
   }
@@ -174,14 +204,18 @@
       const primera = claveFrase === "";
       claveFrase = clave;
       barrido = 0;
+      barriendo = false;
       cancelAnimationFrame(rafId);
-      if (isPlaying && frase) {
-        if (!primera) haptic("tick");
-        arrancarBarrido();
-      }
-    } else if (!isPlaying) {
+      if (!primera && isPlaying && frase) haptic("tick");
+    }
+  });
+  $effect(() => {
+    if (!isPlaying) {
       cancelAnimationFrame(rafId);
-    } else if (isPlaying && frase && barrido < 1) {
+      barriendo = false;
+      return;
+    }
+    if (frase && nivel > 0.02 && barrido < 1 && !barriendo) {
       arrancarBarrido();
     }
   });
@@ -209,6 +243,23 @@
         cuando_unix: Math.floor(Date.now() / 1000),
       });
     }
+  });
+  // EL FIN NATURAL corona la pieza: al apagarse la voz en el último
+  // párrafo se guarda parrafo == total, y solo eso pone la estrella
+  // dorada en la cinta (nada de dorar a medio leer).
+  let sonabaAntes = false;
+  $effect(() => {
+    const ahora = isPlaying;
+    if (sonabaAntes && !ahora && doc?.path && paras.length > 0 && currentPara >= paras.length - 1) {
+      guardarProgreso({
+        ruta: doc.path,
+        titulo: title,
+        parrafo: paras.length,
+        total_parrafos: paras.length,
+        cuando_unix: Math.floor(Date.now() / 1000),
+      });
+    }
+    sonabaAntes = ahora;
   });
 
   const customised = $derived(

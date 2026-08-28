@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>0.2.0</string>
 	<key>CFBundleVersion</key>
-	<string>0.2.0.13</string>
+	<string>0.2.0.15</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -30,6 +30,7 @@
     ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.audio"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.text"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
+    OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.property-list"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.adobe.pdf"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.idpf.epub-container"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.openxmlformats.wordprocessingml.document"
@@ -37,6 +38,8 @@
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.oasis-open.opendocument.text"
   ).@count &gt; 0
 ).@count &gt; 0</string>
+			<key>NSExtensionJavaScriptPreprocessingFile</key>
+			<string>YappyPreprocess</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>

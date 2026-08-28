@@ -13,8 +13,10 @@
   import { t, idiomaUI } from "$lib/i18n";
   import { get as getStore } from "svelte/store";
   import { haptic } from "$lib/haptic";
+  import { plop, pop, tick as foleyTick, rasga, boing, vuelo as foleyVuelo } from "$lib/foley";
   import { presionable } from "$lib/presionable";
   import Criatura from "$lib/Criatura.svelte";
+  import Trastienda from "$lib/Trastienda.svelte";
   import IconoTipo from "$lib/IconoTipo.svelte";
   import { reader } from "$lib/readerStore.svelte";
   import { progresoDe } from "$lib/progreso";
@@ -152,7 +154,39 @@
     celebra = true;
     setTimeout(() => (celebra = false), 750);
   }
+  // EL GIVE de la pegatina-marca: si alguien tira de ella, cede un poco
+  // con resistencia y vuelve con muelle, plop incluido.
+  let marcaTira = $state<{ x0: number; y0: number; dx: number; dy: number } | null>(null);
+  let marcaFueTiron = false;
+  function marcaDown(e: PointerEvent) {
+    marcaTira = { x0: e.clientX, y0: e.clientY, dx: 0, dy: 0 };
+    marcaFueTiron = false;
+  }
+  function marcaMove(e: PointerEvent) {
+    if (!marcaTira) return;
+    const dx = (e.clientX - marcaTira.x0) * 0.32;
+    const dy = (e.clientY - marcaTira.y0) * 0.32;
+    marcaTira = {
+      ...marcaTira,
+      dx: Math.max(-16, Math.min(16, dx)),
+      dy: Math.max(-14, Math.min(14, dy)),
+    };
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+      if (!marcaFueTiron) haptic("tick");
+      marcaFueTiron = true;
+    }
+  }
+  function marcaUp() {
+    if (!marcaTira) return;
+    const fue = marcaFueTiron;
+    marcaTira = null;
+    if (fue) {
+      haptic("soft");
+      plop();
+    }
+  }
   function tocarMarca() {
+    if (marcaFueTiron) return;
     const ahora = performance.now();
     if (ahora - ultimoTapMarca < 360) {
       // Doble pulsación: la voltereta entera del loro.
@@ -162,6 +196,7 @@
     }
     ultimoTapMarca = ahora;
     haptic("success");
+    boing();
     celebra = true;
     marcaGelatina = true;
     setTimeout(() => {
@@ -198,6 +233,7 @@
       g.__yappyCompletadas = ahora;
     }
     setTimeout(() => (cascada = false), 900);
+    setTimeout(() => (trastiendaLista = true), 2600);
     bobinas = ((await invoke("list_rendered_audiobooks_cmd").catch(() => [])) as Bobina[]) ?? [];
     cleanups.push(
       await onColaActualizada(async () => {
@@ -254,11 +290,12 @@
     // La marca respira sola: la ola espontánea, de tarde en tarde y solo
     // en silencio (sin háptica: nadie la ha tocado).
     const olaSola = setInterval(() => {
-      if (sonando || marcaGelatina || document.hidden) return;
-      if (Math.random() < 0.5) return;
-      marcaGelatina = true;
-      setTimeout(() => (marcaGelatina = false), 950);
-    }, 90000);
+      if (document.hidden || marcaGelatina) return;
+      if (Math.random() < 0.6) {
+        marcaGelatina = true;
+        setTimeout(() => (marcaGelatina = false), 980);
+      }
+    }, 34000);
     cleanups.push(() => clearInterval(olaSola));
     const pasitos = setInterval(() => {
       if (sonando || document.hidden || jefePicotea) return;
@@ -284,7 +321,10 @@
     if (!item.ruta) return 0;
     const p = progresoDe(item.ruta);
     if (!p || !p.total) return 0;
-    return Math.min(100, Math.round(((p.parrafo + 1) / p.total) * 100));
+    // SIN inflar: el 100% (la estrella dorada) es solo para lo terminado
+    // de verdad (parrafo == total, que se escribe al fin natural). El «+1»
+    // doraba media cinta con solo abrir un documento.
+    return Math.min(100, Math.round((p.parrafo / p.total) * 100));
   }
 
   // ── Abrir / reproducir (tocar una pieza ES el gesto de escuchar) ──────
@@ -363,9 +403,18 @@
   async function abrirArchivo() {
     bocaAbierta = false;
     // SIN filtros: el selector de iOS no casaba las extensiones y dejaba
-    // TODO gris. El backend ya sabe decir «no puedo con esto».
-    const ruta = await abrirDialogo({ multiple: false }).catch(() => null);
-    if (typeof ruta === "string") await colaAgregarArchivo(ruta).catch(() => {});
+    // TODO gris. El backend ya sabe decir «no puedo con esto». Y el error
+    // REAL al log: un fallo silencioso aquí escondió el bug una ronda.
+    try {
+      const ruta = await abrirDialogo({ multiple: false });
+      logToBackend("info", "picker", `elegido: ${JSON.stringify(ruta)}`);
+      if (typeof ruta === "string" && ruta) {
+        await colaAgregarArchivo(ruta);
+        logToBackend("info", "picker", "encolado");
+      }
+    } catch (e) {
+      logToBackend("error", "picker", `fallo del selector: ${e}`);
+    }
   }
 
   // ── Enséñame: el loro lee su propio manual ────────────────────────────
@@ -419,6 +468,7 @@
   let holdTimer: ReturnType<typeof setTimeout> | undefined;
   let anchoTablero = $state(0);
   let levantada = $state<string | null>(null);
+  let aterrizando: string | null = null;
   let recogida = $state(false);
   let vuelo = $state({ dx: 0, dy: 0, estira: 1, giro: 0, vx: 0, vy: 0 });
   let seMovioEnVuelo = false;
@@ -442,32 +492,126 @@
     jefeVolando = true;
     const w = window.innerWidth;
     const h = window.innerHeight;
-    const c1 = { x: w * (0.3 + Math.random() * 0.5), y: h * (0.15 + Math.random() * 0.3) };
-    const c2 = { x: w * (0.1 + Math.random() * 0.7), y: h * (0.35 + Math.random() * 0.35) };
+    // CADA VUELO ES OTRO: cinco formas (picado de caza, rasante, doble
+    // valle, tirabuzón, gaviota) con parámetros al azar: nunca repite.
+    const variante = Math.floor(Math.random() * 5);
+    const fondo = {
+      x: w * (0.45 + Math.random() * 0.42),
+      y: h - 160 - Math.random() * 120,
+    };
+    const cielo = { x: w * (0.14 + Math.random() * 0.2), y: -40 + Math.random() * 30 };
+    const fondo2 = {
+      x: w * (0.14 + Math.random() * 0.3),
+      y: h - 200 - Math.random() * 140,
+    };
     const t0 = performance.now();
-    const dur = 2600;
+    const dur =
+      variante === 2 ? 2600 : variante === 3 ? 2400 : variante === 4 ? 2900 : 2050;
+    foleyVuelo(dur);
     let xPrevio = 0;
     let yPrevio = 0;
     const sacudidasVuelo = new Map<string, number>();
     const jefeEl = document.querySelector<HTMLElement>(".loro-jefe");
     const base = jefeEl?.getBoundingClientRect();
+    const bez = (a: { x: number; y: number }, c: { x: number; y: number }, b: { x: number; y: number }, e: number) => {
+      const inv = 1 - e;
+      return {
+        x: inv * inv * a.x + 2 * inv * e * c.x + e * e * b.x,
+        y: inv * inv * a.y + 2 * inv * e * c.y + e * e * b.y,
+      };
+    };
+    const origen = { x: 0, y: 0 };
+    const punto = (u: number) => {
+      if (variante === 1) {
+        // RASANTE: baja rápido a media altura y cruza la pantalla a ras,
+        // rozando la fila de pegatinas, y vuelve en arco alto.
+        const ras = { x: w - 90, y: h * (0.42 + Math.random() * 0.001) + fondo.y * 0.12 };
+        if (u < 0.5) {
+          const v = u / 0.5;
+          const e = v * v;
+          return bez(origen, { x: w * 0.1, y: ras.y + 60 }, ras, e);
+        }
+        const v = (u - 0.5) / 0.5;
+        const e = 1 - Math.pow(1 - v, 2.2);
+        return bez(ras, { x: w * 0.5, y: -60 }, origen, e);
+      }
+      if (variante === 2) {
+        // DOBLE VALLE: dos picados encadenados antes de volver.
+        if (u < 0.4) {
+          const v = u / 0.4;
+          const e = v * v * v;
+          return bez(origen, cielo, fondo, e);
+        }
+        if (u < 0.7) {
+          const v = (u - 0.4) / 0.3;
+          const e = v < 0.5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2;
+          return bez(fondo, { x: (fondo.x + fondo2.x) / 2, y: h * 0.3 }, fondo2, e);
+        }
+        const v = (u - 0.7) / 0.3;
+        const e = 1 - Math.pow(1 - v, 2.4);
+        return bez(fondo2, { x: w * 0.06, y: h * 0.25 }, origen, e);
+      }
+      if (variante === 3) {
+        // TIRABUZÓN: sube, hace un RIZO completo en el aire y baja.
+        const centro = { x: w * (0.4 + Math.random() * 0.2), y: h * 0.34 };
+        const radio = 70 + Math.random() * 40;
+        if (u < 0.3) {
+          const v = u / 0.3;
+          const e = v * v;
+          return bez(origen, { x: w * 0.1, y: h * 0.1 }, { x: centro.x, y: centro.y - radio }, e);
+        }
+        if (u < 0.72) {
+          const v = (u - 0.3) / 0.42;
+          const th = -Math.PI / 2 + v * Math.PI * 2;
+          return { x: centro.x + radio * Math.cos(th), y: centro.y + radio * Math.sin(th) };
+        }
+        const v = (u - 0.72) / 0.28;
+        const e = 1 - Math.pow(1 - v, 2.2);
+        return bez({ x: centro.x, y: centro.y - radio }, { x: w * 0.08, y: h * 0.12 }, origen, e);
+      }
+      if (variante === 4) {
+        // GAVIOTA: planeo en ese amplio, sin picado: puro vaivén.
+        const lado = { x: w - 80, y: h * (0.3 + Math.random() * 0.15) };
+        const bajo = { x: w * (0.2 + Math.random() * 0.2), y: h * (0.62 + Math.random() * 0.12) };
+        if (u < 0.38) {
+          const v = u / 0.38;
+          const e = v < 0.5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2;
+          return bez(origen, { x: w * 0.55, y: h * 0.05 }, lado, e);
+        }
+        if (u < 0.72) {
+          const v = (u - 0.38) / 0.34;
+          const e = v < 0.5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2;
+          return bez(lado, { x: w * 0.75, y: h * 0.66 }, bajo, e);
+        }
+        const v = (u - 0.72) / 0.28;
+        const e = 1 - Math.pow(1 - v, 2);
+        return bez(bajo, { x: -30, y: h * 0.3 }, origen, e);
+      }
+      // PICADO DE CAZA clásico.
+      if (u < 0.55) {
+        const v = u / 0.55;
+        const e = v * v * v;
+        return bez(origen, cielo, fondo, e);
+      }
+      const v = (u - 0.55) / 0.45;
+      const e = 1 - Math.pow(1 - v, 2.4);
+      return bez(fondo, { x: w * 0.9, y: h * 0.3 }, origen, e);
+    };
     const paso = (t: number) => {
       const u = Math.min(1, (t - t0) / dur);
-      const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
-      const inv = 1 - e;
-      // Bézier cúbica que sale y VUELVE a la percha (0,0).
-      const x = 3 * inv * inv * e * c1.x + 3 * inv * e * e * c2.x;
-      const y = 3 * inv * inv * e * c1.y + 3 * inv * e * e * c2.y;
+      const { x, y } = punto(u);
       const dx = x - xPrevio;
       const dy = y - yPrevio;
-      jefeGiro = dx >= 0 ? -1 : 1;
-      // La INCLINACIÓN sigue la tangente: pica en los descensos.
+      // El giro HONESTO: hacia la derecha se mira a la derecha (el dibujo
+      // base con mirando=-1 ya mira derecha con scaleX(1)).
+      if (Math.abs(dx) > 0.6) jefeGiro = dx >= 0 ? 1 : -1;
+      // La INCLINACIÓN sigue la tangente DE VERDAD: en el picado el
+      // cuerpo se pone casi vertical.
       const ang = Math.atan2(dy, Math.abs(dx) + 0.001) * (180 / Math.PI);
-      jefeAngulo = Math.max(-26, Math.min(26, ang * 0.55)) * (jefeGiro === -1 ? 1 : -1);
+      jefeAngulo = Math.max(-64, Math.min(64, ang)) * (jefeGiro === 1 ? 1 : -1);
       xPrevio = x;
       yPrevio = y;
       jefePos = { x, y };
-      // LA ESTELA: las pegatinas bajo su paso se sacuden con háptica.
       if (base) {
         const px = base.left + 42 + x;
         const py = base.top + 42 + y;
@@ -480,7 +624,7 @@
           const r = el.getBoundingClientRect();
           const cx = r.left + r.width / 2;
           const cy = r.top + r.height / 2;
-          if (Math.hypot(px - cx, py - cy) < Math.max(80, r.width * 0.45)) {
+          if (Math.hypot(px - cx, py - cy) < Math.max(90, r.width * 0.45)) {
             sacudidasVuelo.set(it.id, ahora);
             haptic("tick");
             const cuerpo = el.querySelector<HTMLElement>(".baldosa-cuerpo");
@@ -496,7 +640,6 @@
         jefeGiro = 1;
         jefeAngulo = 0;
         jefeVolando = false;
-        // EL ATERRIZAJE: squash, plumitas que caen, y el brinco.
         jefeAterriza = true;
         plumas = [
           { x: 18 + Math.random() * 20, y: 30 },
@@ -524,6 +667,7 @@
     etqArr = { y0: e.clientY, top0: etiquetaTop || window.innerHeight * 0.24, movida: false };
     haptic("tick");
   }
+  let ultimoDetent = 0;
   function etqMove(e: PointerEvent) {
     if (!etqArr) return;
     const dy = e.clientY - etqArr.y0;
@@ -534,6 +678,29 @@
     const min = window.innerHeight * 0.1;
     const max = window.innerHeight * 0.72;
     etiquetaTop = Math.min(max, Math.max(min, etqArr.top0 + dy));
+    // La CORONA: un detent háptico cada 14px de recorrido, como la
+    // corona del reloj: se SIENTE cuánto has girado.
+    const detent = Math.round(etiquetaTop / 14);
+    if (detent !== ultimoDetent) {
+      ultimoDetent = detent;
+      haptic("tick");
+      foleyTick();
+    }
+  }
+  // El click sintético (accesibilidad, automatización) llega DESPUÉS del
+  // pointerup: esta marca evita el doble toggle por ambos caminos.
+  let toggleReciente = 0;
+  function etqToggle() {
+    haptic("soft");
+    rasga();
+    engranajeGira = !trastiendaAbierta;
+    trastiendaAbierta = !trastiendaAbierta;
+    trastiendaLista = true;
+    toggleReciente = performance.now();
+  }
+  function etqClick() {
+    if (performance.now() - toggleReciente < 500) return;
+    etqToggle();
   }
   function etqUp() {
     if (!etqArr) return;
@@ -545,11 +712,11 @@
         localStorage.setItem("yappy.etiqueta.top", String(Math.round(etiquetaTop)));
       } catch {}
     } else {
-      haptic("soft");
-      engranajeGira = true;
-      setTimeout(() => goto("/ajustes"), 240);
+      etqToggle();
     }
   }
+  let trastiendaAbierta = $state(false);
+  let trastiendaLista = $state(false);
 
   /// El jefe vuela hasta una pieza al azar, la picotea y la INTERCAMBIA
   /// con su vecina (reorganiza de verdad, con persistencia). Solo en
@@ -716,9 +883,18 @@
     }
     const eligiendo = seleccionada !== item.id;
     seleccionada = eligiendo ? item.id : null;
+    // La FICHA desplegada siempre a la vista: el reparto del cuaderno
+    // puede haberla movido, así que se la persigue con el scroll.
+    if (eligiendo) {
+      setTimeout(() => {
+        document
+          .querySelector(`[data-pieza="${CSS.escape(item.id)}"]`)
+          ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 380);
+    }
     // La voz dice el título en voz baja (solo con la casa en silencio).
     if (eligiendo && !sonando && item.estado === "listo") {
-      decir(item.titulo).catch(() => {});
+      decir(item.titulo, item.ruta ?? item.id).catch(() => {});
     }
   }
 
@@ -772,7 +948,7 @@
     const foto = fotoPrevia;
     if (foto.size === 0) return;
     for (const [id, b] of nuevas) {
-      if (id === levantada) continue;
+      if (id === levantada || id === aterrizando) continue;
       const antes = foto.get(id);
       if (!antes) continue;
       const el = document.querySelector<HTMLElement>(`[data-pieza="${CSS.escape(id)}"]`);
@@ -961,6 +1137,7 @@
         return;
       }
       haptic("success");
+      plop();
       // El bibliotecario ASIENTE: la pieza queda en su sitio nuevo.
       celebra = true;
       setTimeout(() => (celebra = false), 430);
@@ -1144,7 +1321,7 @@
               class="baldosa" class:en-vuelo={enVuelo}
               in:llega={{ delay: cascada ? Math.min(i * 40, 360) : 0 }}
               out:seVa
-              style="left: {b.x + jit.dx}px; top: {b.y + jit.dy}px; width: {b.ancho}px; height: {b.alto}px; z-index: {enVuelo ? 40 : elegida ? 10 : esLaQueSuena ? 8 : item.favorito ? 4 : 1}; {enVuelo ? `transition: ${recogida ? 'transform 0.18s cubic-bezier(0.3, 1.4, 0.6, 1)' : 'none'}; transform: translate(${vuelo.dx}px, ${vuelo.dy}px) scale(${1.09 * vuelo.estira}, ${1.09 * (2 - vuelo.estira)}) rotate(${vuelo.giro}deg);` : ''}"
+              style="left: {b.x + jit.dx}px; top: {b.y + jit.dy}px; width: {b.ancho}px; height: {b.alto}px; z-index: {enVuelo ? 40 : elegida ? 10 : esLaQueSuena ? 8 : item.favorito ? 4 : 1}; {enVuelo || aterrizando === item.id ? `transition: ${recogida ? 'transform 0.18s cubic-bezier(0.3, 1.4, 0.6, 1)' : 'none'}; transform: translate(${vuelo.dx}px, ${vuelo.dy}px) scale(${1.09 * vuelo.estira}, ${1.09 * (2 - vuelo.estira)}) rotate(${vuelo.giro}deg);` : ''}"
               onpointerdown={(e) => alTocar(e, item.id)}
               onpointermove={alMover}
               onpointerup={alSoltar}
@@ -1313,6 +1490,7 @@
       size={84}
       mirando={-1}
       estado={jefeVolando || celebra ? "celebrando" : repro.snap?.estado === "sonando" ? "hablando" : repro.snap?.estado === "pausa" ? "pausa" : durmiendo ? "dormido" : "posado"}
+      volando={jefeVolando}
       apertura={repro.snap?.estado === "sonando" ? nivel : 0}
       {mirada}
       tinta={$tintaVoz}
@@ -1320,7 +1498,16 @@
   </button>
 
   <!-- EL «yappy» REACTIVO: abajo a la izquierda, con su ola y sus datos. -->
-  <button class="marca-fija" onclick={tocarMarca} aria-label="yappy">
+  <button
+    class="marca-fija"
+    onclick={tocarMarca}
+    onpointerdown={marcaDown}
+    onpointermove={marcaMove}
+    onpointerup={marcaUp}
+    onpointercancel={() => (marcaTira = null)}
+    style="transform: translate({marcaTira?.dx ?? 0}px, {marcaTira?.dy ?? 0}px) rotate({-2 + (marcaTira?.dx ?? 0) * 0.14}deg); transition: {marcaTira ? 'none' : 'transform 0.5s cubic-bezier(0.24, 1.7, 0.44, 1)'};"
+    aria-label="yappy"
+  >
     <span class="marca-palabra" class:gelatina={marcaGelatina}>
       {#each "yappy".split("") as letra, k (k)}
         <i class="letra" style="animation-delay: {k * 45}ms; color: {PALETA[(k * 3 + 1) % PALETA.length]}; transform: rotate({k % 2 === 0 ? -3.5 : 3}deg) translateY({k % 2 === 0 ? -1 : 1.5}px)">{letra}</i>
@@ -1330,7 +1517,7 @@
   </button>
 
   <!-- LA BOCA: el sello de añadir, GRANDE, abajo a la derecha. -->
-  <button class="boca-fija" class:pop={selloPop} use:presionable={{ hap: "medium" }} onclick={() => (bocaAbierta = true)} aria-label={$t("escuchar.anadir")}>
+  <button class="boca-fija" class:pop={selloPop} use:presionable={{ hap: "medium" }} onclick={() => { pop(); bocaAbierta = true; }} aria-label={$t("escuchar.anadir")}>
     <span class="capa parche-sombra" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
     <span class="capa boca-sello" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
     <svg class="costura" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -1389,10 +1576,30 @@
 
   <!-- LA TRASTIENDA: una etiqueta mono girada que corta el borde derecho
        de la página, como las etiquetas de los márgenes de un taller. -->
-  <button
+<!-- EL CAJÓN DE LA TRASTIENDA: siempre renderizado fuera del
+       viewport, con su pestaña pegada al borde. Pulsar la pestaña lo
+       desliza SOBRE la pantalla principal; volver lo devuelve. -->
+  {#if !trastiendaAbierta}
+    <!-- El TOQUE de la etiqueta vive FUERA del cajón desplazado: un botón
+         invisible con su misma geometría (el hit-testing de un hijo cuyo
+         padre está fuera de pantalla es traicionero). -->
+    <button
+      class="etiqueta-toque"
+      style={etiquetaTop ? `top: ${etiquetaTop}px` : ""}
+      onclick={etqClick}
+      onpointerdown={etqDown}
+      onpointermove={etqMove}
+      onpointerup={etqUp}
+      onpointercancel={() => (etqArr = null)}
+      aria-label={$t("cinta.trastienda")}
+    ></button>
+  {/if}
+  <div class="cajon-trastienda" class:abierto={trastiendaAbierta}>
+      <button
     class="etiqueta-trastienda"
     class:arrastrada={!!etqArr}
     style={etiquetaTop ? `top: ${etiquetaTop}px` : ""}
+    onclick={etqClick}
     onpointerdown={etqDown}
     onpointermove={etqMove}
     onpointerup={etqUp}
@@ -1403,6 +1610,12 @@
     </span>
     <span class="etiqueta-texto">{$t("cinta.trastienda")}</span>
   </button>
+    <div class="cajon-cuerpo">
+      {#if trastiendaLista}
+        <Trastienda alVolver={() => (trastiendaAbierta = false)} />
+      {/if}
+    </div>
+  </div>
 
   <!-- El pájaro en vuelo: de la boca a la pieza recién llegada, en arco. -->
   {#if pajaro}
@@ -1523,18 +1736,30 @@
   }
   .marca-fija {
     position: fixed;
-    left: 14px;
-    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 14px);
+    left: 18px;
+    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 6px);
     z-index: 31;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
-    border: 0;
-    background: transparent;
-    padding: 0;
+    /* UNA PEGATINA de verdad: la palabra y los datos comparten parche
+       crema con canto irregular, sombra dura y su costura. */
+    border: 1.5px solid #8a765a;
+    border-radius: 15px 19px 14px 21px / 18px 14px 20px 15px;
+    background: var(--yap-superficie, #fdf9ee);
+    padding: 8px 13px 8px 11px;
+    box-shadow: 2.5px 3px 0 #ded7c2;
     cursor: pointer;
     transition: bottom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .marca-fija::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 1.5px dashed color-mix(in srgb, var(--yap-tinta, #2b2418) 36%, transparent);
+    border-radius: 12px 15px 11px 17px / 14px 11px 16px 12px;
+    pointer-events: none;
   }
   .membrete-datos {
     font-family: var(--yap-mono, ui-monospace, monospace);
@@ -1641,7 +1866,7 @@
      como pegada de una revista distinta. */
   .marca-palabra {
     font-weight: 900;
-    font-size: 46px;
+    font-size: 42px;
     letter-spacing: -0.03em;
     display: inline-flex;
     line-height: 1;
@@ -1662,10 +1887,46 @@
     100% { transform: scale(1, 1); }
   }
   /* La etiqueta de la trastienda: mono girada, cortando el borde. */
-  .etiqueta-trastienda {
+  .etiqueta-toque {
     position: fixed;
     right: 0;
     top: 24%;
+    z-index: 48;
+    width: 44px;
+    height: 172px;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    touch-action: none;
+    cursor: pointer;
+  }
+  .cajon-trastienda {
+    position: fixed;
+    inset: 0;
+    z-index: 47;
+    transform: translateX(100%);
+    transition: transform 0.5s cubic-bezier(0.28, 1.2, 0.36, 1);
+    pointer-events: none;
+  }
+  .cajon-trastienda.abierto {
+    transform: translateX(0);
+  }
+  .cajon-cuerpo {
+    position: absolute;
+    inset: 0;
+    background: var(--yap-papel, #f4f1ea);
+    box-shadow: -5px 0 0 #ded7c2;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    pointer-events: auto;
+  }
+  .etiqueta-trastienda {
+    position: absolute;
+    /* Su ancho exacto: el canto derecho TOCA el margen de la pantalla
+       (estaba a 13px del borde y se veía flotando). */
+    left: -34px;
+    top: 24%;
+    pointer-events: auto;
     transition: top 0.35s cubic-bezier(0.3, 1.3, 0.5, 1);
     touch-action: none;
     z-index: 30;
@@ -1767,6 +2028,9 @@
     position: relative;
     width: 100%;
     flex-shrink: 0;
+    /* El colofón viaja FLUIDO cuando el cuaderno cambia de alto (antes
+       saltaba de golpe al desplegarse la última pegatina). */
+    transition: height 0.6s cubic-bezier(0.18, 1.5, 0.32, 1);
   }
   .baldosa {
     position: absolute;

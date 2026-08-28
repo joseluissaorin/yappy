@@ -2207,6 +2207,196 @@ pub async fn sample_voice(
     }
 }
 
+/// EL PROGRESO DURADERO: el motor escribe por dónde vas a disco
+/// (progreso.json, clave por NOMBRE de fichero) mientras suena. Sobrevive
+/// a cierres bruscos, al jetsam y a las migraciones del contenedor.
+#[derive(serde::Serialize, serde::Deserialize, Clone)]
+pub struct ProgresoDoc {
+    pub parrafo: usize,
+    pub total: usize,
+}
+
+fn progreso_path<R: Runtime>(app: &AppHandle<R>) -> Option<std::path::PathBuf> {
+    app.path()
+        .app_data_dir()
+        .ok()
+        .map(|d| d.join("progreso.json"))
+}
+
+// (Los llamadores viven tras cfg(mobile): en desktop quedan sin uso.)
+#[cfg_attr(desktop, allow(dead_code))]
+pub fn guardar_progreso_disco<R: Runtime>(
+    app: &AppHandle<R>,
+    doc_path: &str,
+    parrafo: usize,
+    total: usize,
+) {
+    let Some(p) = progreso_path(app) else { return };
+    let nombre = doc_path.rsplit('/').next().unwrap_or(doc_path).to_string();
+    if nombre.is_empty() {
+        return;
+    }
+    let mut mapa: std::collections::HashMap<String, ProgresoDoc> = std::fs::read_to_string(&p)
+        .ok()
+        .and_then(|s| serde_json::from_str(&s).ok())
+        .unwrap_or_default();
+    // El TOTAL es monótono: los primeros snapshots traen el total de la
+    // cocina incremental (1, 2, 5…), no el del documento; encogerlo
+    // inflaba el porcentaje y doraba piezas a medio leer.
+    let total = mapa
+        .get(&nombre)
+        .map(|v| v.total.max(total))
+        .unwrap_or(total);
+    mapa.insert(nombre, ProgresoDoc { parrafo, total });
+    if let Ok(json) = serde_json::to_string(&mapa) {
+        let _ = std::fs::write(&p, json);
+    }
+}
+
+/// Todo el progreso guardado (para sembrar la caché del frontend al abrir).
+#[tauri::command]
+pub fn progreso_todo_cmd(app: AppHandle) -> std::collections::HashMap<String, ProgresoDoc> {
+    progreso_path(&app)
+        .and_then(|p| std::fs::read_to_string(p).ok())
+        .and_then(|s| serde_json::from_str(&s).ok())
+        .unwrap_or_default()
+}
+
+/// La voz con que se dice/lee una pieza: la del ajuste, o la del dado
+/// (al azar estable por NOMBRE de documento) si está activo.
+#[cfg_attr(desktop, allow(dead_code))]
+fn voz_para(state: &Arc<AppState>, clave: &str) -> String {
+    let s = state.settings.lock().unwrap();
+    if !s.voz_al_azar || clave.is_empty() {
+        return s.voice.clone();
+    }
+    let nombre = clave.rsplit('/').next().unwrap_or(clave);
+    let mut h: u64 = 0;
+    for b in nombre.bytes() {
+        h = h.wrapping_mul(131).wrapping_add(b as u64);
+    }
+    yappy_core::VOICES[(h as usize) % yappy_core::VOICES.len()]
+        .name
+        .to_string()
+}
+
+/// La caché de títulos DICHOS: un wav por (voz, texto), instantáneo.
+#[cfg_attr(desktop, allow(dead_code))]
+fn dicho_path(
+    app: &AppHandle,
+    voice: &str,
+    texto: &str,
+) -> std::result::Result<std::path::PathBuf, String> {
+    let mut h: u64 = 0;
+    for b in voice.bytes().chain(texto.bytes()) {
+        h = h.wrapping_mul(131).wrapping_add(b as u64);
+    }
+    let dir = muestras_dir(app)?.join("titulos");
+    std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+    Ok(dir.join(format!("{h:016x}.wav")))
+}
+
+#[cfg(target_os = "ios")]
+fn cocinar_dicho_blocking(
+    app: &AppHandle,
+    state: &Arc<AppState>,
+    texto: &str,
+    voice: &str,
+) -> std::result::Result<std::path::PathBuf, String> {
+    let p = dicho_path(app, voice, texto)?;
+    if p.exists() {
+        return Ok(p);
+    }
+    let _motor = state
+        .candado_motor
+        .try_lock()
+        .map_err(|_| "motor ocupado".to_string())?;
+    let root = model::model_root(app).map_err(|e| e.to_string())?;
+    let engine = state.engine_or_load(&root).map_err(|e| e.to_string())?;
+    let lang = {
+        let s = state.settings.lock().unwrap();
+        let l = s.default_lang.clone();
+        if l == "na" || l.is_empty() {
+            "en".to_string()
+        } else {
+            l
+        }
+    };
+    let opts = SynthesisOptions {
+        voice: voice.to_string(),
+        speed: 1.0,
+        default_lang: lang,
+        total_steps: Quality::Fast.total_steps(),
+        seed: Some(7),
+        detectar_idioma: true,
+        pausa_entre_parrafos_s: 0.0,
+    };
+    let chunks = engine.synthesize(texto, &opts).map_err(|e| e.to_string())?;
+    let sr = chunks.first().map(|c| c.sample_rate).unwrap_or(44100) as u32;
+    let samples: Vec<f32> = chunks
+        .iter()
+        .flat_map(|c| c.samples.iter().copied())
+        .collect();
+    if samples.is_empty() {
+        return Err("síntesis vacía".into());
+    }
+    crate::playback::write_wav_file(&p, &samples, sr).map_err(|e| e.to_string())?;
+    Ok(p)
+}
+
+/// La cocina de TÍTULOS: presintetiza el decir de cada pieza de la cola
+/// (con su voz efectiva) para que al elegirla hable AL INSTANTE. Corre en
+/// su hilo, solo con el modelo listo y la casa en silencio.
+#[allow(dead_code)]
+pub fn precocinar_titulos(app: AppHandle, state: Arc<AppState>) {
+    #[cfg(target_os = "ios")]
+    std::thread::Builder::new()
+        .name("yappy-titulos".into())
+        .spawn(move || {
+            std::thread::sleep(std::time::Duration::from_secs(20));
+            loop {
+                if !model::is_model_ready(&app).unwrap_or(false)
+                    || state.playback.snapshot().estado != "inactivo"
+                {
+                    std::thread::sleep(std::time::Duration::from_secs(30));
+                    continue;
+                }
+                let piezas = crate::cola::listar(&app).unwrap_or_default();
+                let mut hechos = 0;
+                for it in piezas.iter().take(40) {
+                    if it.titulo.trim().is_empty() {
+                        continue;
+                    }
+                    let clave = it.ruta.clone().unwrap_or_else(|| it.id.clone());
+                    let voz = voz_para(&state, &clave);
+                    let corto: String = it.titulo.chars().take(90).collect();
+                    if dicho_path(&app, &voz, &corto)
+                        .map(|p| p.exists())
+                        .unwrap_or(true)
+                    {
+                        continue;
+                    }
+                    if state.playback.snapshot().estado != "inactivo" {
+                        break;
+                    }
+                    match cocinar_dicho_blocking(&app, &state, &corto, &voz) {
+                        Ok(_) => hechos += 1,
+                        Err(_) => break,
+                    }
+                }
+                if hechos > 0 {
+                    tracing::info!("títulos precocinados: {hechos}");
+                }
+                std::thread::sleep(std::time::Duration::from_secs(45));
+            }
+        })
+        .ok();
+    #[cfg(not(target_os = "ios"))]
+    {
+        let _ = (app, state);
+    }
+}
+
 /// DECIR: la interfaz se lee a sí misma (docs/EL-JUGUETE.md §7). Sintetiza
 /// un texto corto (el título de una pieza) con la voz por defecto y lo suena
 /// por el canal de efectos, SIN tocar jamás la sesión de lectura. Si algo

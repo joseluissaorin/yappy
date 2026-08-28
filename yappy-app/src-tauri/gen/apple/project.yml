@@ -76,7 +76,7 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         CFBundleShortVersionString: 0.2.0
-        CFBundleVersion: "0.2.0.13"
+        CFBundleVersion: "0.2.0.15"
         # Export compliance: Yappy uses only exempt encryption (HTTPS for model
         # downloads + Apple's standard system crypto; no proprietary algorithms),
         # so it's exempt. Declaring this here skips the "Missing Compliance"
@@ -250,7 +250,7 @@ targets:
       properties:
         CFBundleDisplayName: YappyWidgets
         CFBundleShortVersionString: 0.2.0
-        CFBundleVersion: "0.2.0.13"
+        CFBundleVersion: "0.2.0.15"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     entitlements:
@@ -286,6 +286,12 @@ targets:
     platform: iOS
     sources:
       - path: YappyShareExtension
+        excludes:
+          - "YappyPreprocess.js"
+      # El preprocesado JS de Safari va como RECURSO del bundle (iOS lo
+      # ejecuta dentro de la página y entrega el DOM con la sesión viva).
+      - path: YappyShareExtension/YappyPreprocess.js
+        buildPhase: resources
       # Shared CoreML transcription engine — the extension transcribes audio
       # in-place using the same code as the main app.
       - path: Sources/yappy-app/Transcriber.swift
@@ -294,13 +300,17 @@ targets:
       properties:
         CFBundleDisplayName: Yappy
         CFBundleShortVersionString: 0.2.0
-        CFBundleVersion: "0.2.0.13"
+        CFBundleVersion: "0.2.0.15"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
           NSExtensionAttributes:
-            # Acepta audio (notas de voz), texto, URL y DOCUMENTOS (PDF,
-            # EPUB, Word, ODT, RTF). Predicado, no diccionario: es la única
+            # El preprocesado que corre en Safari DENTRO de la página y
+            # entrega el DOM vivo (con la sesión del usuario: sin muros).
+            NSExtensionJavaScriptPreprocessingFile: YappyPreprocess
+            # Acepta audio (notas de voz), texto, URL, páginas web vivas
+            # (property-list del preprocesado) y DOCUMENTOS (PDF, EPUB,
+            # Word, ODT, RTF). Predicado, no diccionario: es la única
             # forma de mezclar audio y ficheros sin aparecer en el share de
             # cada foto.
             NSExtensionActivationRule: >-
@@ -309,6 +319,7 @@ targets:
                   ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.audio"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.text"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
+                  OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.property-list"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.adobe.pdf"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.idpf.epub-container"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.openxmlformats.wordprocessingml.document"

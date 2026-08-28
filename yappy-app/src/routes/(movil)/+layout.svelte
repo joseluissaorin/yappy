@@ -17,6 +17,8 @@
   import { aplicarTintaVoz, tintaVoz } from "$lib/voces";
   import { RECTO, TROQUELES_BASE, aPoligono } from "$lib/troquel";
   import { startShareIntake, drainPending } from "$lib/shareIntake";
+  import { sembrarProgreso } from "$lib/progreso";
+  import { progresoTodo } from "$lib/ipc";
   import { arrancarEspejo, reconciliar, repro } from "$lib/reproduccion.svelte";
   import { listen } from "@tauri-apps/api/event";
   import { readClipboard, colaAgregarArchivo, puenteVincular, logToBackend } from "$lib/ipc";
@@ -71,6 +73,10 @@
     aplicarTintaVoz();
     await arrancarEspejo();
     startShareIntake();
+    // La verdad duradera del progreso pisa la caché local al abrir.
+    progresoTodo()
+      .then((todo) => sembrarProgreso(todo))
+      .catch(() => {});
 
     // EL TECLADO EMPUJA: la altura del teclado vive en --teclado y las
     // hojas con campos de texto suben con muelle para dejarle sitio.
@@ -111,16 +117,19 @@
             await readClipboard().catch(() => {});
             break;
           case "open": {
-            const ruta = await abrirDialogo({
-              multiple: false,
-              filters: [
-                {
-                  name: "Documentos",
-                  extensions: ["txt", "md", "markdown", "rtf", "docx", "doc", "odt", "pdf", "epub", "html", "htm"],
-                },
-              ],
-            }).catch(() => null);
-            if (typeof ruta === "string") await colaAgregarArchivo(ruta).catch(() => {});
+            // Sin filtros (el selector de iOS los casaba mal y dejaba todo
+            // gris) y con el error REAL en el log: un fallo silencioso aquí
+            // costó una ronda entera de diagnóstico.
+            try {
+              const ruta = await abrirDialogo({ multiple: false });
+              logToBackend("info", "picker", `elegido: ${JSON.stringify(ruta)}`);
+              if (typeof ruta === "string" && ruta) {
+                await colaAgregarArchivo(ruta);
+                logToBackend("info", "picker", "encolado");
+              }
+            } catch (e) {
+              logToBackend("error", "picker", `fallo del selector: ${e}`);
+            }
             break;
           }
           case "library":
