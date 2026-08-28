@@ -116,6 +116,7 @@ export default {
   "estado.listo": "pripravené na počúvanie",
   "estado.error": "toto sa mi nepodarilo",
   "cola.reintentar": "Skúsiť znova",
+  "pieza.del_archivo": "Z archívu",
   "cola.borrar": "Vymazať",
   "cola.escuchar": "Vypočuť",
   "biblioteca.buscar": "Hľadať v knižnici",

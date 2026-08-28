@@ -116,6 +116,7 @@ export default {
   "estado.listo": "paruošta klausytis",
   "estado.error": "šito neįveikiau",
   "cola.reintentar": "Bandyti dar kartą",
+  "pieza.del_archivo": "Iš archyvo",
   "cola.borrar": "Ištrinti",
   "cola.escuchar": "Klausytis",
   "biblioteca.buscar": "Ieškoti bibliotekoje",

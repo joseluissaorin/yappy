@@ -116,6 +116,7 @@ export default {
   "estado.listo": "kuulamiseks valmis",
   "estado.error": "sellega ma hakkama ei saanud",
   "cola.reintentar": "Proovi uuesti",
+  "pieza.del_archivo": "Arhiivist",
   "cola.borrar": "Kustuta",
   "cola.escuchar": "Kuula",
   "biblioteca.buscar": "Otsi raamatukogust",

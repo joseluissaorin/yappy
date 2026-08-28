@@ -523,7 +523,8 @@ async fn preparar_articulo<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> R
         .build()?;
 
     // Los sitios con extractor PROPIO (no hay artículo que raspar: hay una
-    // API mejor): Hacker News (el hilo como conversación) y X/Twitter.
+    // API mejor): Hacker News, X/Twitter, Reddit, Bluesky, Mastodon,
+    // Archive.org y los Google Docs públicos.
     let host = host_de(&item.origen);
     if host == "news.ycombinator.com" && item.origen.contains("item?id=") {
         let (titulo, markdown) = extraer_hn(&cliente, &item.origen).await?;
@@ -535,28 +536,231 @@ async fn preparar_articulo<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> R
         let (titulo, markdown) = extraer_tweet(&cliente, &item.origen).await?;
         return terminar_con_markdown(app, &item.id, titulo, markdown);
     }
+    if host.ends_with("reddit.com") && item.origen.contains("/comments/") {
+        let (titulo, markdown) = extraer_reddit(&cliente, &item.origen).await?;
+        return terminar_con_markdown(app, &item.id, titulo, markdown);
+    }
+    if host == "bsky.app" && item.origen.contains("/post/") {
+        let (titulo, markdown) = extraer_bluesky(&cliente, &item.origen).await?;
+        return terminar_con_markdown(app, &item.id, titulo, markdown);
+    }
+    if es_url_mastodon(&item.origen) {
+        if let Ok((titulo, markdown)) = extraer_mastodon(&cliente, &item.origen).await {
+            return terminar_con_markdown(app, &item.id, titulo, markdown);
+        }
+        // Si la instancia no habla la API, se sigue por el camino normal.
+    }
+    if host == "archive.org" && item.origen.contains("/details/") {
+        let (titulo, markdown) = extraer_archive(&cliente, &item.origen).await?;
+        return terminar_con_markdown(app, &item.id, titulo, markdown);
+    }
+    if host == "docs.google.com" && item.origen.contains("/document/d/") {
+        let (titulo, markdown) = extraer_gdoc(&cliente, &item.origen).await?;
+        return terminar_con_markdown(app, &item.id, titulo, markdown);
+    }
 
     // LA VÍA CON SESIÓN: si el compartir trajo el HTML que el usuario VEÍA
     // (Safari + preprocesado JS: con su suscripción, sin muro), está en
     // cola/{id}.html y no hay nada que descargar.
     let ruta_html = dir_cola(app)?.join(format!("{}.html", item.id));
+    // EL RESCATE MANUAL: si la ficha pidió «recuperar del archivo», el
+    // marcador manda la descarga por la Wayback Machine.
+    let ruta_wayback = dir_cola(app)?.join(format!("{}.wayback", item.id));
     let html = if ruta_html.exists() {
         fs::read_to_string(&ruta_html)?
     } else {
-        cliente
-            .get(&item.origen)
-            .send()
-            .await?
-            .error_for_status()?
-            .text()
-            .await?
+        let url_efectiva = if ruta_wayback.exists() {
+            format!("https://web.archive.org/web/2/{}", item.origen)
+        } else {
+            item.origen.clone()
+        };
+        let (bytes, content_type) = descargar_crudo(&cliente, &url_efectiva).await?;
+        // Un enlace DIRECTO a un documento (PDF, EPUB, Word…): al
+        // contenedor y por el camino de archivos, no hay HTML que raspar.
+        if let Some(ext) = extension_de_documento(&bytes, &content_type, &item.origen) {
+            return terminar_con_archivo(app, item, &bytes, ext);
+        }
+        decodificar_html(&bytes, &content_type)
     };
 
     let html_podado = podar_html(&html, &item.origen);
-    let (titulo, markdown) = extraer_articulo(&html_podado, &item.origen)?;
-    // El HTML compartido ya sirvió; no ocupa sitio en la cinta.
+    let mut resultado = extraer_articulo(&html_podado, &item.origen);
+    // EL RESCATE AMP: si la página declara su versión AMP y lo extraído
+    // quedó corto (o murió), la variante suele venir limpia y sin muro.
+    let corto = match &resultado {
+        Ok((_, md)) => md.chars().count() < 900,
+        Err(_) => true,
+    };
+    if corto && !ruta_html.exists() {
+        if let Some(url_amp) = enlace_amp(&html, &item.origen) {
+            if let Ok((bytes, ct)) = descargar_crudo(&cliente, &url_amp).await {
+                let html_amp = decodificar_html(&bytes, &ct);
+                let podado_amp = podar_html(&html_amp, &item.origen);
+                if let Ok((t, md)) = extraer_articulo(&podado_amp, &item.origen) {
+                    let mejor = match &resultado {
+                        Ok((_, md_previo)) => md.chars().count() > md_previo.chars().count(),
+                        Err(_) => true,
+                    };
+                    if mejor {
+                        resultado = Ok((t, md));
+                    }
+                }
+            }
+        }
+    }
+    let (titulo, markdown) = resultado?;
+    // El HTML compartido y el marcador ya sirvieron.
     let _ = fs::remove_file(&ruta_html);
+    let _ = fs::remove_file(&ruta_wayback);
     terminar_con_markdown(app, &item.id, titulo, markdown)
+}
+
+/// Descarga cruda: bytes + content-type (con un reintento suave, que las
+/// redes de móvil parpadean).
+async fn descargar_crudo(cliente: &reqwest::Client, url: &str) -> Result<(Vec<u8>, String)> {
+    let mut ultimo_error = None;
+    for intento in 0..2 {
+        if intento > 0 {
+            tokio::time::sleep(std::time::Duration::from_millis(700)).await;
+        }
+        match cliente.get(url).send().await {
+            Ok(resp) => match resp.error_for_status() {
+                Ok(resp) => {
+                    let ct = resp
+                        .headers()
+                        .get("content-type")
+                        .and_then(|v| v.to_str().ok())
+                        .unwrap_or("")
+                        .to_lowercase();
+                    let bytes = resp.bytes().await?.to_vec();
+                    return Ok((bytes, ct));
+                }
+                Err(e) => return Err(e.into()),
+            },
+            Err(e) => ultimo_error = Some(e),
+        }
+    }
+    Err(ultimo_error
+        .map(Into::into)
+        .unwrap_or_else(|| anyhow!("sin conexión")))
+}
+
+/// ¿La URL apunta a un DOCUMENTO y no a una página? Se decide por firma
+/// de bytes, content-type o extensión de la URL. Devuelve la extensión.
+fn extension_de_documento(bytes: &[u8], content_type: &str, url: &str) -> Option<&'static str> {
+    if bytes.starts_with(b"%PDF") {
+        return Some("pdf");
+    }
+    let ct = content_type.split(';').next().unwrap_or("").trim();
+    match ct {
+        "application/pdf" => return Some("pdf"),
+        "application/epub+zip" => return Some("epub"),
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => {
+            return Some("docx")
+        }
+        "application/msword" => return Some("doc"),
+        "application/rtf" | "text/rtf" => return Some("rtf"),
+        "application/vnd.oasis.opendocument.text" => return Some("odt"),
+        _ => {}
+    }
+    // Un ZIP (PK) con la extensión delatora en la URL.
+    let ruta = url.split(['?', '#']).next().unwrap_or(url).to_lowercase();
+    if bytes.starts_with(b"PK") {
+        if ruta.ends_with(".epub") {
+            return Some("epub");
+        }
+        if ruta.ends_with(".docx") {
+            return Some("docx");
+        }
+        if ruta.ends_with(".odt") {
+            return Some("odt");
+        }
+    }
+    if ct == "text/plain" && (ruta.ends_with(".txt") || ruta.ends_with(".text")) {
+        return Some("txt");
+    }
+    None
+}
+
+/// El documento remoto queda en el contenedor y la pieza pasa a ser un
+/// ARCHIVO listo (el lector ya sabe abrir pdf/epub/docx/…).
+fn terminar_con_archivo<R: Runtime>(
+    app: &AppHandle<R>,
+    item: &ItemCola,
+    bytes: &[u8],
+    ext: &'static str,
+) -> Result<()> {
+    let destino = dir_cola(app)?.join(format!("{}.{ext}", item.id));
+    fs::write(&destino, bytes)?;
+    // El título, del nombre del fichero en la URL (si dice algo).
+    let nombre_url = item
+        .origen
+        .split(['?', '#'])
+        .next()
+        .unwrap_or("")
+        .rsplit('/')
+        .next()
+        .unwrap_or("")
+        .to_string();
+    let nombre = percent_decode(&nombre_url);
+    let sin_ext = nombre.rsplit_once('.').map(|(n, _)| n).unwrap_or(&nombre);
+    let legible = sin_ext.replace(['-', '_'], " ").trim().to_string();
+    let titulo = if legible.chars().filter(|c| c.is_alphabetic()).count() >= 4 {
+        titulo_de_nombre(&legible)
+    } else {
+        format!("Documento {}", ext.to_uppercase())
+    };
+    actualizar_item(app, &item.id, |it| {
+        it.tipo = TipoItem::Archivo;
+        it.estado = EstadoItem::Listo;
+        it.ruta = Some(destino.to_string_lossy().to_string());
+        it.titulo = titulo;
+    })?;
+    Ok(())
+}
+
+/// Decodifica el HTML honrando el charset: primero el del content-type,
+/// después el del <meta>, y por defecto UTF-8. Las webs viejas en
+/// ISO-8859-1 llegaban con las tildes rotas.
+fn decodificar_html(bytes: &[u8], content_type: &str) -> String {
+    let charset_de = |s: &str| -> Option<String> {
+        let i = s.find("charset=")?;
+        let resto = &s[i + 8..];
+        let fin = resto
+            .find([';', '"', '\'', ' ', '>', '/'])
+            .unwrap_or(resto.len());
+        Some(resto[..fin].trim_matches(['"', '\'']).to_string())
+    };
+    let mut etiqueta = charset_de(content_type);
+    if etiqueta.is_none() {
+        // Olfatear el <meta charset> en la cabecera del documento.
+        let cabeza = String::from_utf8_lossy(&bytes[..bytes.len().min(4096)]).to_lowercase();
+        etiqueta = charset_de(&cabeza);
+    }
+    if let Some(e) = etiqueta {
+        if let Some(enc) = encoding_rs::Encoding::for_label(e.as_bytes()) {
+            let (texto, _, _) = enc.decode(bytes);
+            return texto.into_owned();
+        }
+    }
+    String::from_utf8_lossy(bytes).into_owned()
+}
+
+/// El enlace AMP que la propia página declara en su <head>.
+fn enlace_amp(html: &str, url_base: &str) -> Option<String> {
+    let doc = dom_query::Document::from(html);
+    let href = doc
+        .select(r#"link[rel="amphtml"]"#)
+        .attr("href")
+        .map(|h| h.to_string())?;
+    if href.starts_with("http") {
+        Some(href)
+    } else if let Some(resto) = href.strip_prefix('/') {
+        let raiz = url_base.split('/').take(3).collect::<Vec<_>>().join("/");
+        Some(format!("{raiz}/{resto}"))
+    } else {
+        None
+    }
 }
 
 /// El host de una URL, sin «www.»: para decidir extractores por sitio.
@@ -735,6 +939,322 @@ fn recortar_gutenberg(html: &str) -> Option<String> {
         "<html><head><title>{titulo}</title></head><body>{}</body></html>",
         &html[fin_marcador..b]
     ))
+}
+
+/// REDDIT como conversación: el hilo entero vive en la versión .json de
+/// la misma URL (post + comentarios anidados), sin raspar nada.
+async fn extraer_reddit(cliente: &reqwest::Client, url: &str) -> Result<(Option<String>, String)> {
+    let limpia = url
+        .split(['?', '#'])
+        .next()
+        .unwrap_or(url)
+        .trim_end_matches('/');
+    // Reddit exige un User-Agent de APP (el de navegador se bloquea) y
+    // aun así capa algunas redes: el error se cuenta claro.
+    let resp = cliente
+        .get(format!("{limpia}.json?raw_json=1&limit=80"))
+        .header(
+            "User-Agent",
+            "ios:com.joseluissaorin.yappy:v0.2 (lector en voz alta)",
+        )
+        .header("Accept", "application/json")
+        .send()
+        .await?;
+    if resp.status().as_u16() == 403 || resp.status().as_u16() == 429 {
+        return Err(anyhow!(
+            "Reddit bloqueó la petición desde esta red (prueba a compartirlo desde Safari)"
+        ));
+    }
+    let v: serde_json::Value = resp.error_for_status()?.json().await?;
+    let post = &v[0]["data"]["children"][0]["data"];
+    let titulo = post["title"]
+        .as_str()
+        .unwrap_or("Hilo de Reddit")
+        .to_string();
+    let mut md = format!("# {titulo}\n\n");
+    if let Some(cuerpo) = post["selftext"].as_str() {
+        if !cuerpo.trim().is_empty() {
+            let autor = post["author"].as_str().unwrap_or("alguien");
+            md.push_str(&format!("{autor} escribe: {}\n\n", cuerpo.trim()));
+        }
+    }
+    fn caminar(nodos: &serde_json::Value, nivel: usize, md: &mut String, cuantos: &mut usize) {
+        if *cuantos >= 60 || nivel > 2 {
+            return;
+        }
+        let Some(hijos) = nodos["data"]["children"].as_array() else {
+            return;
+        };
+        for h in hijos {
+            if h["kind"].as_str() != Some("t1") {
+                continue;
+            }
+            let d = &h["data"];
+            let (Some(autor), Some(texto)) = (d["author"].as_str(), d["body"].as_str()) else {
+                continue;
+            };
+            let verbo = if nivel == 0 { "dice" } else { "responde" };
+            md.push_str(&format!("{autor} {verbo}: {}\n\n", texto.trim()));
+            *cuantos += 1;
+            if d["replies"].is_object() {
+                caminar(&d["replies"], nivel + 1, md, cuantos);
+            }
+            if *cuantos >= 60 {
+                return;
+            }
+        }
+    }
+    let mut cuantos = 0usize;
+    caminar(&v[1], 0, &mut md, &mut cuantos);
+    let markdown = limpiar_markdown_hablado(&md);
+    if markdown.chars().count() < 80 {
+        return Err(anyhow!("el hilo está vacío"));
+    }
+    Ok((Some(titulo), markdown))
+}
+
+/// BLUESKY: el hilo por la API pública (sin cuenta ninguna).
+async fn extraer_bluesky(cliente: &reqwest::Client, url: &str) -> Result<(Option<String>, String)> {
+    let tras = url
+        .split("/profile/")
+        .nth(1)
+        .ok_or_else(|| anyhow!("enlace de Bluesky sin perfil"))?;
+    let mut partes = tras.split('/');
+    let actor = partes.next().unwrap_or("");
+    let rkey = tras
+        .split("/post/")
+        .nth(1)
+        .and_then(|s| s.split(['?', '#', '/']).next())
+        .ok_or_else(|| anyhow!("enlace de Bluesky sin post"))?;
+    let did = if actor.starts_with("did:") {
+        actor.to_string()
+    } else {
+        let v: serde_json::Value = cliente
+            .get(format!(
+                "https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle?handle={actor}"
+            ))
+            .send()
+            .await?
+            .error_for_status()?
+            .json()
+            .await?;
+        v["did"]
+            .as_str()
+            .ok_or_else(|| anyhow!("no se pudo resolver el usuario de Bluesky"))?
+            .to_string()
+    };
+    let v: serde_json::Value = cliente
+        .get(format!(
+            "https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at://{did}/app.bsky.feed.post/{rkey}&depth=6"
+        ))
+        .send()
+        .await?
+        .error_for_status()?
+        .json()
+        .await?;
+    let hilo = &v["thread"];
+    let nombre_de = |post: &serde_json::Value| -> String {
+        post["author"]["displayName"]
+            .as_str()
+            .filter(|s| !s.trim().is_empty())
+            .or_else(|| post["author"]["handle"].as_str())
+            .unwrap_or("Alguien")
+            .to_string()
+    };
+    let autor = nombre_de(&hilo["post"]);
+    let texto = hilo["post"]["record"]["text"]
+        .as_str()
+        .ok_or_else(|| anyhow!("el post de Bluesky no se puede leer"))?;
+    let mut md = format!("# {autor} en Bluesky\n\n{texto}\n\n");
+    fn caminar(
+        nodo: &serde_json::Value,
+        nivel: usize,
+        md: &mut String,
+        cuantos: &mut usize,
+        nombre_de: &dyn Fn(&serde_json::Value) -> String,
+    ) {
+        if *cuantos >= 40 || nivel > 3 {
+            return;
+        }
+        let Some(respuestas) = nodo["replies"].as_array() else {
+            return;
+        };
+        for r in respuestas {
+            let Some(texto) = r["post"]["record"]["text"].as_str() else {
+                continue;
+            };
+            let quien = nombre_de(&r["post"]);
+            let verbo = if nivel == 0 { "responde" } else { "añade" };
+            md.push_str(&format!("{quien} {verbo}: {}\n\n", texto.trim()));
+            *cuantos += 1;
+            caminar(r, nivel + 1, md, cuantos, nombre_de);
+            if *cuantos >= 40 {
+                return;
+            }
+        }
+    }
+    let mut cuantos = 0usize;
+    caminar(hilo, 0, &mut md, &mut cuantos, &nombre_de);
+    Ok((
+        Some(format!("{autor} en Bluesky")),
+        limpiar_markdown_hablado(&md),
+    ))
+}
+
+/// ¿Huele a URL de Mastodon? Cualquier instancia con /@usuario/ID-largo.
+fn es_url_mastodon(url: &str) -> bool {
+    let ruta = url.split("://").nth(1).unwrap_or("");
+    let mut seg = ruta.split('/').skip(1);
+    let (Some(usuario), Some(id)) = (seg.next(), seg.next()) else {
+        return false;
+    };
+    usuario.starts_with('@')
+        && id.len() >= 10
+        && id.chars().all(|c| c.is_ascii_digit())
+        && seg.next().is_none()
+}
+
+/// MASTODON: el estado y sus respuestas por la API pública de la instancia.
+async fn extraer_mastodon(
+    cliente: &reqwest::Client,
+    url: &str,
+) -> Result<(Option<String>, String)> {
+    let host = host_de(url);
+    let id = url
+        .trim_end_matches('/')
+        .rsplit('/')
+        .next()
+        .unwrap_or("")
+        .to_string();
+    let v: serde_json::Value = cliente
+        .get(format!("https://{host}/api/v1/statuses/{id}"))
+        .send()
+        .await?
+        .error_for_status()?
+        .json()
+        .await?;
+    let nombre_de = |s: &serde_json::Value| -> String {
+        s["account"]["display_name"]
+            .as_str()
+            .filter(|n| !n.trim().is_empty())
+            .or_else(|| s["account"]["acct"].as_str())
+            .unwrap_or("Alguien")
+            .to_string()
+    };
+    let autor = nombre_de(&v);
+    let texto = texto_de_fragmento_html(v["content"].as_str().unwrap_or(""));
+    if texto.trim().is_empty() {
+        return Err(anyhow!("la publicación está vacía"));
+    }
+    let mut md = format!("# {autor} en Mastodon\n\n{texto}\n\n");
+    if let Ok(ctx) = cliente
+        .get(format!("https://{host}/api/v1/statuses/{id}/context"))
+        .send()
+        .await
+    {
+        if let Ok(ctx) = ctx.error_for_status() {
+            if let Ok(ctx) = ctx.json::<serde_json::Value>().await {
+                if let Some(desc) = ctx["descendants"].as_array() {
+                    for (i, d) in desc.iter().take(40).enumerate() {
+                        let cuerpo = texto_de_fragmento_html(d["content"].as_str().unwrap_or(""));
+                        if cuerpo.trim().is_empty() {
+                            continue;
+                        }
+                        let verbo = if i == 0 { "responde" } else { "añade" };
+                        md.push_str(&format!("{} {verbo}: {}\n\n", nombre_de(d), cuerpo.trim()));
+                    }
+                }
+            }
+        }
+    }
+    Ok((
+        Some(format!("{autor} en Mastodon")),
+        limpiar_markdown_hablado(&md),
+    ))
+}
+
+/// ARCHIVE.ORG de verdad: el texto completo del libro (el _djvu.txt que
+/// acompaña a cada escaneo), no la ficha.
+async fn extraer_archive(cliente: &reqwest::Client, url: &str) -> Result<(Option<String>, String)> {
+    let id = url
+        .split("/details/")
+        .nth(1)
+        .and_then(|s| s.split(['/', '?', '#']).next())
+        .ok_or_else(|| anyhow!("enlace de archive.org sin identificador"))?;
+    let meta: serde_json::Value = cliente
+        .get(format!("https://archive.org/metadata/{id}"))
+        .send()
+        .await?
+        .error_for_status()?
+        .json()
+        .await?;
+    let titulo = meta["metadata"]["title"].as_str().map(|t| t.to_string());
+    let fichero = meta["files"]
+        .as_array()
+        .and_then(|fs| {
+            fs.iter()
+                .find_map(|f| f["name"].as_str().filter(|n| n.ends_with("_djvu.txt")))
+        })
+        .ok_or_else(|| anyhow!("este objeto de archive.org no tiene texto completo"))?;
+    let texto = cliente
+        .get(format!("https://archive.org/download/{id}/{fichero}"))
+        .send()
+        .await?
+        .error_for_status()?
+        .text()
+        .await?;
+    // Los escaneos pueden ser descomunales: se corta con cabeza.
+    let recortado: String = texto.chars().take(2_000_000).collect();
+    let cuerpo = limpiar_markdown_hablado(&recortado);
+    if cuerpo.chars().count() < 200 {
+        return Err(anyhow!("el texto del escaneo está vacío"));
+    }
+    let markdown = match &titulo {
+        Some(t) => format!("# {t}\n\n{cuerpo}"),
+        None => cuerpo,
+    };
+    Ok((titulo, markdown))
+}
+
+/// GOOGLE DOCS públicos: el propio documento exporta a texto plano.
+async fn extraer_gdoc(cliente: &reqwest::Client, url: &str) -> Result<(Option<String>, String)> {
+    let id = url
+        .split("/document/d/")
+        .nth(1)
+        .and_then(|s| s.split(['/', '?', '#']).next())
+        .ok_or_else(|| anyhow!("enlace de Google Docs sin identificador"))?;
+    let resp = cliente
+        .get(format!(
+            "https://docs.google.com/document/d/{id}/export?format=txt"
+        ))
+        .send()
+        .await?;
+    let resp = resp
+        .error_for_status()
+        .map_err(|_| anyhow!("el documento no es público (pide iniciar sesión)"))?;
+    let ct = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("")
+        .to_lowercase();
+    if !ct.contains("text/plain") {
+        return Err(anyhow!("el documento no es público (pide iniciar sesión)"));
+    }
+    let texto = resp
+        .text()
+        .await?
+        .replace("\r\n", "\n")
+        .replace('\u{feff}', "");
+    let cuerpo = limpiar_markdown_hablado(&texto);
+    if cuerpo.chars().count() < 40 {
+        return Err(anyhow!("el documento está vacío"));
+    }
+    let titulo = cuerpo
+        .lines()
+        .find(|l| !l.trim().is_empty())
+        .map(|l| l.trim().chars().take(70).collect::<String>());
+    Ok((titulo, cuerpo))
 }
 
 /// LA PODA: antes de Readability, se cae del DOM todo lo que jamás debe
@@ -1005,6 +1525,28 @@ pub fn podar_html(html: &str, url: &str) -> String {
             "referências",
             "ver também",
             "ligações externas",
+            "примечания",
+            "ссылки",
+            "литература",
+            "см. также",
+            "источники",
+            "библиография",
+            "脚注",
+            "出典",
+            "参考文献",
+            "関連項目",
+            "外部リンク",
+            "注釈",
+            "参考资料",
+            "外部链接",
+            "参见",
+            "注释",
+            "مراجع",
+            "انظر أيضا",
+            "انظر أيضًا",
+            "وصلات خارجية",
+            "ملاحظات",
+            "مصادر",
         ];
         // «Redirigido desde…» y demás avisos de redirección.
         doc.select(".mw-redirectedfrom, #contentSub, .mw-indicators")
@@ -1078,9 +1620,23 @@ pub fn limpiar_markdown_hablado(md: &str) -> String {
     ];
     let mut out: Vec<String> = Vec::new();
     let mut contador_lista: usize = 0;
+    let mut en_codigo = false;
     for linea in md.lines() {
         let l = linea.trim_end();
         let compacta = l.trim();
+        // LOS BLOQUES DE CÓDIGO no se leen en voz alta: se anuncian una
+        // vez («hay un ejemplo de código») y se saltan enteros.
+        if compacta.starts_with("```") || compacta.starts_with("~~~") {
+            if !en_codigo {
+                out.push("(Hay un ejemplo de código.)".to_string());
+                out.push(String::new());
+            }
+            en_codigo = !en_codigo;
+            continue;
+        }
+        if en_codigo {
+            continue;
+        }
         // Líneas que jamás se leen: tablas markdown y flechas de cita.
         if compacta.starts_with('|') && compacta.matches('|').count() >= 2 {
             continue;
@@ -1096,6 +1652,8 @@ pub fn limpiar_markdown_hablado(md: &str) -> String {
         limpia = aplanar_enlaces(&limpia);
         limpia = silenciar_enfasis(&limpia);
         limpia = despegar_palabras(&limpia);
+        limpia = quitar_emojis(&limpia);
+        limpia = normalizar_hablado(&limpia);
         let plana = limpia.trim().trim_start_matches("- ").trim().to_lowercase();
         if botones.contains(&plana.as_str()) {
             continue;
@@ -1128,6 +1686,9 @@ pub fn limpiar_markdown_hablado(md: &str) -> String {
         }
         out.push(limpia);
     }
+    // El código SANGRADO (cuatro espacios, estilo markdown clásico):
+    // tres líneas seguidas con pinta de código se anuncian y se callan.
+    colapsar_codigo_sangrado(&mut out);
     // EL MURO DE CIERRE: si en el último tramo aparece la invitación a
     // suscribirse («Suscríbete para seguir leyendo», «Lee sin límites»),
     // de ahí al final ya no hay artículo: se corta.
@@ -1154,6 +1715,341 @@ pub fn limpiar_markdown_hablado(md: &str) -> String {
         texto = texto.replace("\n\n\n", "\n\n");
     }
     texto.trim().to_string()
+}
+
+/// ¿Esta línea parece CÓDIGO? Sangría de 4+ espacios y densidad alta
+/// de símbolos de programa.
+fn parece_codigo(l: &str) -> bool {
+    if !l.starts_with("    ") || l.trim().is_empty() {
+        return false;
+    }
+    let t = l.trim();
+    let simbolos = t
+        .chars()
+        .filter(|c| "{}()[];=<>|&$#\\/_→+".contains(*c))
+        .count();
+    if simbolos * 3 >= t.chars().count() {
+        return true;
+    }
+    [
+        "//",
+        "def ",
+        "fn ",
+        "var ",
+        "let ",
+        "const ",
+        "import ",
+        "from ",
+        "function ",
+        "return ",
+        "for ",
+        "while ",
+        "if ",
+        "else",
+        "elif ",
+        "class ",
+        "print",
+        "console.",
+        "#include",
+        "public ",
+        "private ",
+        "void ",
+        "int ",
+        "match ",
+        "use ",
+    ]
+    .iter()
+    .any(|p| t.starts_with(p))
+}
+
+/// Runs de ≥3 líneas de código sangrado: se anuncian una vez y se callan.
+fn colapsar_codigo_sangrado(out: &mut Vec<String>) {
+    let mut i = 0;
+    while i < out.len() {
+        if parece_codigo(&out[i]) {
+            let mut j = i;
+            // El run admite líneas vacías INTERIORES entre código.
+            let mut ultimas_codigo = i;
+            while j < out.len() && (parece_codigo(&out[j]) || out[j].trim().is_empty()) {
+                if parece_codigo(&out[j]) {
+                    ultimas_codigo = j;
+                }
+                j += 1;
+            }
+            let lineas_codigo = out[i..=ultimas_codigo]
+                .iter()
+                .filter(|l| parece_codigo(l))
+                .count();
+            if lineas_codigo >= 3 {
+                out.splice(
+                    i..=ultimas_codigo,
+                    ["(Hay un ejemplo de código.)".to_string()],
+                );
+                i += 1;
+                continue;
+            }
+            i = j;
+        } else {
+            i += 1;
+        }
+    }
+}
+
+/// Los emojis no se pronuncian: fuera del texto hablado.
+fn quitar_emojis(linea: &str) -> String {
+    linea
+        .chars()
+        .filter(|c| {
+            let u = *c as u32;
+            !((0x1F000..=0x1FAFF).contains(&u)
+                || (0x2600..=0x27BF).contains(&u)
+                || (0x2B00..=0x2BFF).contains(&u)
+                || (0xFE00..=0xFE0F).contains(&u)
+                || u == 0x200D
+                || (0x1F1E6..=0x1F1FF).contains(&u))
+        })
+        .collect()
+}
+
+/// NORMALIZACIÓN HABLADA conservadora: solo transformaciones inequívocas
+/// (lo dudoso se deja tal cual, que la voz ya se defiende).
+fn normalizar_hablado(linea: &str) -> String {
+    let mut t = linea.to_string();
+    // El ampersand entre palabras.
+    t = t.replace(" & ", " y ");
+    // Abreviaturas españolas de siempre (la tabla exige límite de palabra
+    // por delante y el punto por detrás; «D.» se queda: es inicial).
+    // Las que pueden cerrar la frase (el punto es suyo Y del final)
+    // recuperan el punto si lo siguiente es mayúscula o el fin.
+    for (abrev, entero) in [
+        ("EE. UU.", "Estados Unidos"),
+        ("EE.UU.", "Estados Unidos"),
+        ("a. C.", "antes de Cristo"),
+        ("a.C.", "antes de Cristo"),
+        ("d. C.", "después de Cristo"),
+        ("d.C.", "después de Cristo"),
+    ] {
+        t = reemplazar_cierre_posible(&t, abrev, entero);
+    }
+    let tabla: &[(&str, &str)] = &[
+        ("Sr.", "señor"),
+        ("Sra.", "señora"),
+        ("Sres.", "señores"),
+        ("Dr.", "doctor"),
+        ("Dra.", "doctora"),
+        ("Dña.", "doña"),
+        ("Ud.", "usted"),
+        ("Vd.", "usted"),
+        ("Uds.", "ustedes"),
+        ("núm.", "número"),
+        ("pág.", "página"),
+        ("págs.", "páginas"),
+        ("art.", "artículo"),
+        ("cap.", "capítulo"),
+        ("vol.", "volumen"),
+    ];
+    for (abrev, entero) in tabla {
+        t = reemplazar_abreviatura(&t, abrev, entero);
+    }
+    // «etc.» conserva el punto si cerraba la frase.
+    t = reemplazar_etc(&t);
+    // Porcentajes: «3,5 %» y «3.5%» se dicen «por ciento».
+    t = reemplazar_sufijo_numerico(&t, "%", "por ciento", "por ciento");
+    // Monedas tras el número (el uso español).
+    t = reemplazar_sufijo_numerico(&t, "€", "euro", "euros");
+    t = reemplazar_sufijo_numerico(&t, "£", "libra", "libras");
+    // El dólar delante del número (el uso inglés): $5 → 5 dólares.
+    t = reemplazar_moneda_prefija(&t, '$', "dólar", "dólares");
+    // Rangos de años: «1936-1939» → «1936 a 1939».
+    t = reemplazar_rango_de_anos(&t);
+    t
+}
+
+/// Reemplaza una abreviatura con límite de palabra por delante.
+fn reemplazar_abreviatura(texto: &str, abrev: &str, entero: &str) -> String {
+    let mut out = String::with_capacity(texto.len());
+    let mut resto = texto;
+    while let Some(pos) = resto.find(abrev) {
+        let antes_ok = pos == 0
+            || resto[..pos]
+                .chars()
+                .last()
+                .map(|c| !c.is_alphanumeric())
+                .unwrap_or(true);
+        let tras = &resto[pos + abrev.len()..];
+        let despues_ok = tras.is_empty() || tras.starts_with([' ', '\u{a0}']);
+        out.push_str(&resto[..pos]);
+        if antes_ok && despues_ok {
+            out.push_str(entero);
+        } else {
+            out.push_str(abrev);
+        }
+        resto = tras;
+    }
+    out.push_str(resto);
+    out
+}
+
+/// Abreviatura cuyo punto puede SER el punto final de la frase (EE. UU.,
+/// a. C.): si lo siguiente es mayúscula o el fin, se repone el punto.
+fn reemplazar_cierre_posible(texto: &str, abrev: &str, entero: &str) -> String {
+    let mut out = String::with_capacity(texto.len());
+    let mut resto = texto;
+    while let Some(pos) = resto.find(abrev) {
+        let antes_ok = pos == 0
+            || resto[..pos]
+                .chars()
+                .last()
+                .map(|c| !c.is_alphanumeric())
+                .unwrap_or(true);
+        let tras = &resto[pos + abrev.len()..];
+        out.push_str(&resto[..pos]);
+        if antes_ok {
+            let cierra = tras
+                .trim_start()
+                .chars()
+                .next()
+                .map(|c| c.is_uppercase())
+                .unwrap_or(true);
+            out.push_str(entero);
+            if cierra {
+                out.push('.');
+            }
+        } else {
+            out.push_str(abrev);
+        }
+        resto = tras;
+    }
+    out.push_str(resto);
+    out
+}
+
+/// «etc.» → «etcétera», conservando el punto cuando cerraba la frase
+/// (lo delata la mayúscula siguiente o el fin de línea).
+fn reemplazar_etc(texto: &str) -> String {
+    let mut out = String::with_capacity(texto.len());
+    let mut resto = texto;
+    while let Some(pos) = resto.find("etc.") {
+        let antes_ok = pos == 0
+            || resto[..pos]
+                .chars()
+                .last()
+                .map(|c| !c.is_alphanumeric())
+                .unwrap_or(true);
+        let tras = &resto[pos + 4..];
+        out.push_str(&resto[..pos]);
+        if antes_ok {
+            let cierra_frase = tras
+                .trim_start()
+                .chars()
+                .next()
+                .map(|c| c.is_uppercase())
+                .unwrap_or(true);
+            out.push_str(if cierra_frase {
+                "etcétera."
+            } else {
+                "etcétera"
+            });
+        } else {
+            out.push_str("etc.");
+        }
+        resto = tras;
+    }
+    out.push_str(resto);
+    out
+}
+
+/// «12,50 €» → «12,50 euros» (y «1 €» → «1 euro»): el símbolo que sigue a
+/// un número, con o sin espacio.
+fn reemplazar_sufijo_numerico(texto: &str, simbolo: &str, singular: &str, plural: &str) -> String {
+    let cs: Vec<char> = texto.chars().collect();
+    let sim: Vec<char> = simbolo.chars().collect();
+    let mut out = String::with_capacity(texto.len() + 8);
+    let mut i = 0;
+    while i < cs.len() {
+        if cs[i..].starts_with(&sim[..]) && i > 0 {
+            // Hacia atrás: espacio opcional y el número.
+            let mut j = i;
+            if j > 0 && cs[j - 1] == ' ' {
+                j -= 1;
+            }
+            let fin_num = j;
+            while j > 0 && (cs[j - 1].is_ascii_digit() || cs[j - 1] == ',' || cs[j - 1] == '.') {
+                j -= 1;
+            }
+            let numero: String = cs[j..fin_num].iter().collect();
+            if !numero.is_empty() && numero.chars().any(|c| c.is_ascii_digit()) {
+                let palabra = if numero == "1" { singular } else { plural };
+                // Lo ya emitido incluye el número: garantizar el espacio.
+                if !out.ends_with(' ') {
+                    out.push(' ');
+                }
+                out.push_str(palabra);
+                i += sim.len();
+                continue;
+            }
+        }
+        out.push(cs[i]);
+        i += 1;
+    }
+    out
+}
+
+/// «$3,2 millones» → «3,2 dólares millones» NO: solo «$N» pelado → «N dólares».
+fn reemplazar_moneda_prefija(texto: &str, simbolo: char, singular: &str, plural: &str) -> String {
+    let cs: Vec<char> = texto.chars().collect();
+    let mut out = String::with_capacity(texto.len() + 8);
+    let mut i = 0;
+    while i < cs.len() {
+        if cs[i] == simbolo && i + 1 < cs.len() && cs[i + 1].is_ascii_digit() {
+            let mut j = i + 1;
+            while j < cs.len() && (cs[j].is_ascii_digit() || cs[j] == ',' || cs[j] == '.') {
+                j += 1;
+            }
+            // Si después viene una PALABRA de cantidad (millones…), no se
+            // toca: «$3,2 millones» leído «3,2 dólares millones» es peor.
+            let cola: String = cs[j..].iter().take(12).collect();
+            let cantidad = ["millon", "millón", "billion", "million", "mil "]
+                .iter()
+                .any(|m| cola.trim_start().to_lowercase().starts_with(m));
+            if !cantidad {
+                let numero: String = cs[i + 1..j].iter().collect();
+                let palabra = if numero == "1" { singular } else { plural };
+                out.push_str(&numero);
+                out.push(' ');
+                out.push_str(palabra);
+                i = j;
+                continue;
+            }
+        }
+        out.push(cs[i]);
+        i += 1;
+    }
+    out
+}
+
+/// «1936-1939» → «1936 a 1939» (solo año-año: cuatro y cuatro cifras).
+fn reemplazar_rango_de_anos(texto: &str) -> String {
+    let cs: Vec<char> = texto.chars().collect();
+    let mut out = String::with_capacity(texto.len() + 4);
+    let mut i = 0;
+    while i < cs.len() {
+        if (cs[i] == '-' || cs[i] == '–' || cs[i] == '—')
+            && i >= 4
+            && i + 4 < cs.len()
+            && cs[i - 4..i].iter().all(|c| c.is_ascii_digit())
+            && cs[i + 1..i + 5].iter().all(|c| c.is_ascii_digit())
+            && (i < 5 || !cs[i - 5].is_ascii_digit())
+            && (i + 5 >= cs.len() || !cs[i + 5].is_ascii_digit())
+        {
+            out.push_str(" a ");
+            i += 1;
+            continue;
+        }
+        out.push(cs[i]);
+        i += 1;
+    }
+    out
 }
 
 /// APLANAR ENLACES: «[texto](url "título")» queda en «texto» (el ancla es
@@ -1682,6 +2578,23 @@ pub fn cola_agregar_web_cmd(app: AppHandle, ruta: String) -> Result<ItemCola, St
     agregar_web(&app, ruta).map_err(|e| e.to_string())
 }
 
+/// EL RESCATE DEL ARCHIVO: reintenta una pieza muerta descargándola de la
+/// Wayback Machine (deja el marcador y reprocesa).
+#[tauri::command]
+pub fn cola_reintentar_archivo_cmd(app: AppHandle, id: String) -> Result<(), String> {
+    let marcador = dir_cola(&app)
+        .map_err(|e| e.to_string())?
+        .join(format!("{id}.wayback"));
+    fs::write(marcador, b"1").map_err(|e| e.to_string())?;
+    actualizar_item(&app, &id, |it| {
+        it.estado = EstadoItem::Pendiente;
+        it.error = None;
+    })
+    .map_err(|e| e.to_string())?;
+    procesar_en_segundo_plano(app.clone(), id);
+    Ok(())
+}
+
 #[tauri::command]
 pub fn cola_agregar_texto_cmd(
     app: AppHandle,
@@ -1854,6 +2767,211 @@ mod tests {
             .user_agent("Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1")
             .build()
             .unwrap()
+    }
+
+    #[test]
+    fn el_codigo_no_se_lee_en_voz_alta() {
+        let md =
+            "Antes.\n\n```rust\nfn main() { println!(\"hola\"); }\nlet x = 1;\n```\n\nDespués.";
+        let out = limpiar_markdown_hablado(md);
+        assert!(out.contains("(Hay un ejemplo de código.)"));
+        assert!(!out.contains("println"));
+        assert!(out.contains("Después."));
+        // Y el sangrado clásico de cuatro espacios.
+        let md2 = "Prosa.\n\n    let a = 1;\n    let b = 2;\n    return a + b;\n\nMás prosa.";
+        let out2 = limpiar_markdown_hablado(md2);
+        assert!(out2.contains("(Hay un ejemplo de código.)"), "{out2}");
+        assert!(!out2.contains("return a"));
+    }
+
+    #[test]
+    fn los_emojis_no_se_pronuncian() {
+        let out = limpiar_markdown_hablado("Qué gran día 🎉🚀 para leer ☀️.");
+        assert_eq!(out, "Qué gran día  para leer .");
+    }
+
+    #[test]
+    fn la_normalizacion_hablada_es_conservadora() {
+        assert_eq!(
+            normalizar_hablado("La guerra de 1936-1939 marcó al Sr. García."),
+            "La guerra de 1936 a 1939 marcó al señor García."
+        );
+        assert_eq!(
+            normalizar_hablado("Subió un 3,5 % este año."),
+            "Subió un 3,5 por ciento este año."
+        );
+        assert_eq!(
+            normalizar_hablado("Cuesta 12,50 € en EE. UU."),
+            "Cuesta 12,50 euros en Estados Unidos."
+        );
+        assert_eq!(
+            normalizar_hablado("Pagó $5 por el libro."),
+            "Pagó 5 dólares por el libro."
+        );
+        // Lo dudoso NO se toca.
+        assert_eq!(
+            normalizar_hablado("El ISBN 84-376-0494-7 sigue igual."),
+            "El ISBN 84-376-0494-7 sigue igual."
+        );
+        assert_eq!(
+            normalizar_hablado("Recaudó $3,2 millones."),
+            "Recaudó $3,2 millones."
+        );
+        assert_eq!(
+            normalizar_hablado("D. Quijote no cambia."),
+            "D. Quijote no cambia."
+        );
+        assert_eq!(
+            normalizar_hablado("Fruta, pan, etc. Luego volvió."),
+            "Fruta, pan, etcétera. Luego volvió."
+        );
+        assert_eq!(
+            normalizar_hablado("compró pág. 12 y art. 4"),
+            "compró página 12 y artículo 4"
+        );
+    }
+
+    #[test]
+    fn el_charset_viejo_no_rompe_tildes() {
+        // «Año de canción» en ISO-8859-1, con el charset SOLO en el meta.
+        let mut bytes: Vec<u8> = Vec::new();
+        bytes.extend_from_slice(b"<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"></head><body>");
+        bytes.extend_from_slice(&[
+            b'A', 0xF1, b'o', b' ', b'd', b'e', b' ', b'c', b'a', b'n', b'c', b'i', 0xF3, b'n',
+        ]);
+        bytes.extend_from_slice(b"</body></html>");
+        let html = decodificar_html(&bytes, "text/html");
+        assert!(html.contains("Año de canción"), "{html}");
+        // Y con el charset en el content-type manda el header.
+        let html2 = decodificar_html(&bytes, "text/html; charset=iso-8859-1");
+        assert!(html2.contains("Año de canción"));
+    }
+
+    #[test]
+    fn los_documentos_remotos_se_reconocen() {
+        assert_eq!(
+            extension_de_documento(b"%PDF-1.7 x", "text/html", "https://x.com/a"),
+            Some("pdf")
+        );
+        assert_eq!(
+            extension_de_documento(b"<html>", "application/pdf", "https://x.com/a"),
+            Some("pdf")
+        );
+        assert_eq!(
+            extension_de_documento(
+                b"PK\x03\x04",
+                "application/octet-stream",
+                "https://x.com/libro.epub"
+            ),
+            Some("epub")
+        );
+        assert_eq!(
+            extension_de_documento(
+                b"PK\x03\x04",
+                "application/octet-stream",
+                "https://x.com/doc.docx"
+            ),
+            Some("docx")
+        );
+        assert_eq!(
+            extension_de_documento(b"<html>", "text/html; charset=utf-8", "https://x.com/a"),
+            None
+        );
+        assert_eq!(
+            extension_de_documento(b"hola", "text/plain", "https://x.com/notas.txt"),
+            Some("txt")
+        );
+    }
+
+    #[test]
+    fn mastodon_se_reconoce_por_la_forma() {
+        assert!(es_url_mastodon(
+            "https://mastodon.social/@Gargron/109381219708671001"
+        ));
+        assert!(!es_url_mastodon("https://mastodon.social/@Gargron"));
+        assert!(!es_url_mastodon("https://elpais.com/@autor/seccion"));
+        assert!(!es_url_mastodon("https://x.com/elonmusk/status/123"));
+    }
+
+    #[test]
+    fn el_enlace_amp_se_encuentra() {
+        let html = r#"<html><head><link rel="amphtml" href="https://ejemplo.com/amp/articulo"></head><body></body></html>"#;
+        assert_eq!(
+            enlace_amp(html, "https://ejemplo.com/articulo"),
+            Some("https://ejemplo.com/amp/articulo".into())
+        );
+        let rel = r#"<html><head><link rel="amphtml" href="/amp/art"></head></html>"#;
+        assert_eq!(
+            enlace_amp(rel, "https://ejemplo.com/art"),
+            Some("https://ejemplo.com/amp/art".into())
+        );
+        assert_eq!(enlace_amp("<html></html>", "https://x.com"), None);
+    }
+
+    #[test]
+    #[ignore = "red real: un hilo de Reddit como conversación"]
+    fn hilo_de_reddit_real() {
+        let cliente = cliente_de_prueba();
+        let (titulo, md) = tauri::async_runtime::block_on(extraer_reddit(
+            &cliente,
+            "https://www.reddit.com/r/rust/comments/1cdqdsi/announcing_rust_178/",
+        ))
+        .unwrap();
+        println!("TÍTULO: {titulo:?}\n{}", &md[..md.len().min(700)]);
+        assert!(md.contains(" dice: ") || md.contains(" responde: "));
+    }
+
+    #[test]
+    #[ignore = "red real: un hilo de Bluesky por la API pública"]
+    fn hilo_de_bluesky_real() {
+        let cliente = cliente_de_prueba();
+        let (titulo, md) = tauri::async_runtime::block_on(extraer_bluesky(
+            &cliente,
+            "https://bsky.app/profile/bsky.app/post/3l6oveex3ii2l",
+        ))
+        .unwrap();
+        println!("TÍTULO: {titulo:?}\n{}", &md[..md.len().min(700)]);
+        assert!(titulo.unwrap().contains("Bluesky"));
+        assert!(md.chars().count() > 40);
+    }
+
+    #[test]
+    #[ignore = "red real: un estado de Mastodon con sus respuestas"]
+    fn estado_de_mastodon_real() {
+        let cliente = cliente_de_prueba();
+        let (titulo, md) = tauri::async_runtime::block_on(extraer_mastodon(
+            &cliente,
+            "https://mastodon.social/@Mastodon/117156549508722805",
+        ))
+        .unwrap();
+        println!("TÍTULO: {titulo:?}\n{}", &md[..md.len().min(700)]);
+        assert!(md.chars().count() > 40);
+    }
+
+    #[test]
+    #[ignore = "red real: el texto completo de un libro de archive.org"]
+    fn libro_de_archive_real() {
+        let cliente = cliente_de_prueba();
+        let (titulo, md) = tauri::async_runtime::block_on(extraer_archive(
+            &cliente,
+            "https://archive.org/details/elingeniosohidal01cerv",
+        ))
+        .unwrap();
+        println!("TÍTULO: {titulo:?} · {} chars", md.chars().count());
+        assert!(md.chars().count() > 5000);
+    }
+
+    #[test]
+    #[ignore = "red real: un PDF remoto se clasifica como documento"]
+    fn pdf_remoto_se_clasifica() {
+        let cliente = cliente_de_prueba();
+        let (bytes, ct) = tauri::async_runtime::block_on(descargar_crudo(
+            &cliente,
+            "https://www.boe.es/buscar/pdf/1978/BOE-A-1978-31229-consolidado.pdf",
+        ))
+        .unwrap();
+        println!("{} bytes, content-type {ct}", bytes.len());
+        assert_eq!(extension_de_documento(&bytes, &ct, "x.pdf"), Some("pdf"));
     }
 
     #[test]

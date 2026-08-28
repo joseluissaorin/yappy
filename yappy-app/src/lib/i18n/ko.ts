@@ -116,6 +116,7 @@ export default {
   "estado.listo": "들을 준비 완료",
   "estado.error": "이건 해내지 못했어요",
   "cola.reintentar": "다시 시도",
+  "pieza.del_archivo": "아카이브에서",
   "cola.borrar": "삭제",
   "cola.escuchar": "듣기",
   "biblioteca.buscar": "서재에서 찾기",

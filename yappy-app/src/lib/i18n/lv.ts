@@ -116,6 +116,7 @@ export default {
   "estado.listo": "gatavs klausīšanai",
   "estado.error": "ar šo netiku galā",
   "cola.reintentar": "Mēģināt vēlreiz",
+  "pieza.del_archivo": "No arhīva",
   "cola.borrar": "Dzēst",
   "cola.escuchar": "Klausīties",
   "biblioteca.buscar": "Meklēt bibliotēkā",

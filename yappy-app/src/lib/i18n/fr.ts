@@ -116,6 +116,7 @@ export default {
   "estado.listo": "prêt à écouter",
   "estado.error": "je n'y suis pas arrivé",
   "cola.reintentar": "Réessayer",
+  "pieza.del_archivo": "Depuis l’archive",
   "cola.borrar": "Supprimer",
   "cola.escuchar": "Écouter",
   "biblioteca.buscar": "Chercher dans la bibliothèque",

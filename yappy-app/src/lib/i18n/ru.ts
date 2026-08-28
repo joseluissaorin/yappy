@@ -115,6 +115,7 @@ export default {
   "estado.listo": "готово к прослушиванию",
   "estado.error": "это мне не по клюву",
   "cola.reintentar": "Повторить",
+  "pieza.del_archivo": "Из архива",
   "cola.borrar": "Удалить",
   "cola.escuchar": "Слушать",
   "biblioteca.buscar": "Поиск по библиотеке",

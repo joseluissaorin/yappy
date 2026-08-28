@@ -115,6 +115,7 @@ export default {
   "estado.listo": "dinlemeye hazır",
   "estado.error": "bununla başa çıkamadım",
   "cola.reintentar": "Yeniden dene",
+  "pieza.del_archivo": "Arşivden",
   "cola.borrar": "Sil",
   "cola.escuchar": "Dinle",
   "biblioteca.buscar": "Kitaplıkta ara",

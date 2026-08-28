@@ -58,6 +58,7 @@
     colaRenombrar,
     colaReordenar,
     colaReintentar,
+    colaReintentarArchivo,
     onColaActualizada,
     stopPlayback,
     readDocument,
@@ -1414,8 +1415,16 @@
                     <button class="accion principal" use:presionable={{ hap: "rigid" }} style="color: {tinta}"
                       onclick={(e) => { e.stopPropagation(); abrirItem(item); }}>
                       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
-                      {$t("cola.escuchar")}
+                      {item.estado === "error" ? $t("cola.reintentar") : $t("cola.escuchar")}
                     </button>
+                    {#if item.estado === "error" && item.tipo === "url"}
+                      <!-- El RESCATE: reintentar por la copia de la Wayback
+                           Machine (la pieza avisa de que es la archivada). -->
+                      <button class="accion" use:presionable={{ hap: "soft" }} style="color: {tinta}" aria-label={$t("pieza.del_archivo")}
+                        onclick={(e) => { e.stopPropagation(); seleccionada = null; colaReintentarArchivo(item.id).catch(() => {}); }}>
+                        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7.2 Q12 3.8 19.5 7.2 M5.2 7.5 L5.6 18.2 Q12 20.6 18.4 18.2 L18.8 7.5 M9.6 11.2 Q12 12.4 14.4 11.2"/></svg>
+                      </button>
+                    {/if}
                     <button class="accion" use:presionable={{ hap: "soft" }} style="color: {tinta}" aria-label={item.favorito ? $t("pieza.quitar_favorito") : $t("pieza.favorito")}
                       onclick={(e) => { e.stopPropagation(); favoritoDirecto(item.id); }}>
                       <svg viewBox="0 0 24 24" width="19" height="19" fill={item.favorito ? "currentColor" : "none"} stroke="currentColor" stroke-width="2.1" stroke-linejoin="round" aria-hidden="true"><path d="M12 19.4 Q5.4 14.8 4.7 10 Q4.5 6.6 7.5 5.8 Q10.1 5.3 12 8.1 Q13.9 5.2 16.6 5.8 Q19.5 6.7 19.2 10.1 Q18.5 15 12 19.4 Z"/></svg>

@@ -116,6 +116,7 @@ export default {
   "estado.listo": "sẵn sàng để nghe",
   "estado.error": "cái này mình chịu thua",
   "cola.reintentar": "Thử lại",
+  "pieza.del_archivo": "Từ kho lưu trữ",
   "cola.borrar": "Xóa",
   "cola.escuchar": "Nghe",
   "biblioteca.buscar": "Tìm trong thư viện",

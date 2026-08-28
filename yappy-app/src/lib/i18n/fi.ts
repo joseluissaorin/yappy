@@ -116,6 +116,7 @@ export default {
   "estado.listo": "valmis kuunneltavaksi",
   "estado.error": "en selvinnyt tästä",
   "cola.reintentar": "Yritä uudelleen",
+  "pieza.del_archivo": "Arkistosta",
   "cola.borrar": "Poista",
   "cola.escuchar": "Kuuntele",
   "biblioteca.buscar": "Etsi kirjastosta",

@@ -116,6 +116,7 @@ export default {
   "estado.listo": "hallgatásra kész",
   "estado.error": "ezzel nem boldogultam",
   "cola.reintentar": "Újra",
+  "pieza.del_archivo": "Az archívumból",
   "cola.borrar": "Törlés",
   "cola.escuchar": "Meghallgatás",
   "biblioteca.buscar": "Keresés a könyvtárban",

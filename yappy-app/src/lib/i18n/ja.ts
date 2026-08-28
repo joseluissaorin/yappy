@@ -116,6 +116,7 @@ export default {
   "estado.listo": "聴く準備ができました",
   "estado.error": "これはうまく読めませんでした",
   "cola.reintentar": "もう一度",
+  "pieza.del_archivo": "アーカイブから",
   "cola.borrar": "削除",
   "cola.escuchar": "聴く",
   "biblioteca.buscar": "ライブラリを検索",

@@ -354,6 +354,10 @@ export const colaAgregarUrl = (url: string): Promise<ItemCola> =>
 /// la URL en cabecera): la vía sin muros.
 export const colaAgregarWeb = (ruta: string): Promise<ItemCola> =>
   invoke("cola_agregar_web_cmd", { ruta });
+
+/// Reintenta una pieza muerta recuperándola de la Wayback Machine.
+export const colaReintentarArchivo = (id: string): Promise<void> =>
+  invoke("cola_reintentar_archivo_cmd", { id });
 export const colaAgregarTexto = (texto: string, titulo?: string): Promise<ItemCola> =>
   invoke("cola_agregar_texto_cmd", { texto, titulo: titulo ?? null });
 export const colaAgregarArchivo = (ruta: string): Promise<ItemCola> =>

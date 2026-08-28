@@ -116,6 +116,7 @@ export default {
   "estado.listo": "pripravljeno za poslušanje",
   "estado.error": "to mi ni uspelo",
   "cola.reintentar": "Poskusi znova",
+  "pieza.del_archivo": "Iz arhiva",
   "cola.borrar": "Izbriši",
   "cola.escuchar": "Poslušaj",
   "biblioteca.buscar": "Išči po knjižnici",

@@ -116,6 +116,7 @@ export default {
   "estado.listo": "gotowe do słuchania",
   "estado.error": "to mnie przerosło",
   "cola.reintentar": "Spróbuj znowu",
+  "pieza.del_archivo": "Z archiwum",
   "cola.borrar": "Usuń",
   "cola.escuchar": "Słuchaj",
   "biblioteca.buscar": "Szukaj w bibliotece",

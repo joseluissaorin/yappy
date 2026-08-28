@@ -116,6 +116,7 @@ export default {
   "estado.listo": "klaar om te beluisteren",
   "estado.error": "dit kreeg ik niet voor elkaar",
   "cola.reintentar": "Opnieuw",
+  "pieza.del_archivo": "Uit het archief",
   "cola.borrar": "Verwijderen",
   "cola.escuchar": "Luisteren",
   "biblioteca.buscar": "Zoeken in de bibliotheek",

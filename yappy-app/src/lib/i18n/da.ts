@@ -116,6 +116,7 @@ export default {
   "estado.listo": "klar til at lytte",
   "estado.error": "det kunne jeg ikke klare",
   "cola.reintentar": "Prøv igen",
+  "pieza.del_archivo": "Fra arkivet",
   "cola.borrar": "Slet",
   "cola.escuchar": "Lyt",
   "biblioteca.buscar": "Søg i biblioteket",

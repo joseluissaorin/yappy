@@ -116,6 +116,7 @@ export default {
   "estado.listo": "připraveno k poslechu",
   "estado.error": "tohle se mi nepovedlo",
   "cola.reintentar": "Zkusit znovu",
+  "pieza.del_archivo": "Z archivu",
   "cola.borrar": "Smazat",
   "cola.escuchar": "Poslechnout",
   "biblioteca.buscar": "Hledat v knihovně",

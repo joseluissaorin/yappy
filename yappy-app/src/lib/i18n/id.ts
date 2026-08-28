@@ -116,6 +116,7 @@ export default {
   "estado.listo": "siap didengarkan",
   "estado.error": "yang ini aku belum sanggup",
   "cola.reintentar": "Coba lagi",
+  "pieza.del_archivo": "Dari arsip",
   "cola.borrar": "Hapus",
   "cola.escuchar": "Dengarkan",
   "biblioteca.buscar": "Cari di pustaka",

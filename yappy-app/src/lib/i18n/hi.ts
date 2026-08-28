@@ -116,6 +116,7 @@ export default {
   "estado.listo": "सुनने के लिए तैयार",
   "estado.error": "मुझसे यह नहीं हो पाया",
   "cola.reintentar": "फिर कोशिश करें",
+  "pieza.del_archivo": "संग्रह से",
   "cola.borrar": "हटाएँ",
   "cola.escuchar": "सुनें",
   "biblioteca.buscar": "लाइब्रेरी में खोजें",

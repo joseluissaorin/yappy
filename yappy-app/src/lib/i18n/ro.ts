@@ -116,6 +116,7 @@ export default {
   "estado.listo": "gata de ascultat",
   "estado.error": "n-am putut cu asta",
   "cola.reintentar": "Încearcă din nou",
+  "pieza.del_archivo": "Din arhivă",
   "cola.borrar": "Șterge",
   "cola.escuchar": "Ascultă",
   "biblioteca.buscar": "Caută în bibliotecă",

@@ -116,6 +116,7 @@ export default {
   "estado.listo": "redo att lyssnas på",
   "estado.error": "det här gick inte",
   "cola.reintentar": "Försök igen",
+  "pieza.del_archivo": "Från arkivet",
   "cola.borrar": "Ta bort",
   "cola.escuchar": "Lyssna",
   "biblioteca.buscar": "Sök i biblioteket",

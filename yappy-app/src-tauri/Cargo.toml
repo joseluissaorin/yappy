@@ -81,7 +81,7 @@ mp4 = "0.14"
 byteorder = "1"
 
 # Async / channels
-tokio = { version = "1", features = ["sync", "rt-multi-thread", "macros", "io-util", "fs"] }
+tokio = { version = "1", features = ["sync", "rt-multi-thread", "macros", "io-util", "fs", "time"] }
 futures = "0.3"
 crossbeam-channel = "0.5"
 

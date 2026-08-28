@@ -556,6 +556,7 @@ pub fn run() {
             cola::cola_listar_cmd,
             cola::cola_agregar_url_cmd,
             cola::cola_agregar_web_cmd,
+            cola::cola_reintentar_archivo_cmd,
             cola::cola_agregar_texto_cmd,
             cola::cola_agregar_portapapeles_cmd,
             cola::cola_agregar_archivo_cmd,

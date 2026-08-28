@@ -116,6 +116,7 @@ export default {
   "estado.listo": "έτοιμο για ακρόαση",
   "estado.error": "δεν τα κατάφερα με αυτό",
   "cola.reintentar": "Δοκίμασε ξανά",
+  "pieza.del_archivo": "Από το αρχείο",
   "cola.borrar": "Διαγραφή",
   "cola.escuchar": "Άκουσέ το",
   "biblioteca.buscar": "Αναζήτηση στη βιβλιοθήκη",

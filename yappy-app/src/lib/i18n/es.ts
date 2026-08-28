@@ -126,6 +126,7 @@ export default {
   "estado.listo": "listo para escuchar",
   "estado.error": "no pude con esto",
   "cola.reintentar": "Reintentar",
+  "pieza.del_archivo": "Del archivo",
   "cola.borrar": "Borrar",
   "cola.escuchar": "Escuchar",
   // biblioteca
