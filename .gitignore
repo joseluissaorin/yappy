@@ -50,3 +50,6 @@ yappy-devid.key*
 # (pdfium binaries, paddleocr ONNX models, defuddle.js)
 # These ARE committed — yappy-app/resources/{pdfium,paddleocr,extension}/* —
 # so users can clone+build without separately fetching them.
+
+# Libs nativas Android: las trae scripts/fetch-ort-android.sh
+yappy-app/src-tauri/gen/android/app/src/main/jniLibs/
