@@ -370,7 +370,7 @@ pub fn run() {
         builder = builder
             .plugin(tauri_plugin_autostart::init(
                 tauri_plugin_autostart::MacosLauncher::LaunchAgent,
-                Some(vec![]),
+                Some(vec!["--autostart"]),
             ))
             .plugin(tauri_plugin_global_shortcut::Builder::new().build());
     }
@@ -452,6 +452,18 @@ pub fn run() {
             // registered its listener yet on a cold launch, so the shared item is
             // lost. Instead the frontend pulls pending payloads via
             // `drain_shared_payloads_cmd` once it's ready (see shareIntake.ts).
+            // Un arranque HUMANO (doble clic, Launchpad) enseña la ventana:
+            // la casa es tray-first, pero «abrir la app y que no pase nada»
+            // no es una bienvenida. El arranque de login (--autostart) sí se
+            // queda calladito en la barra de menús.
+            #[cfg(desktop)]
+            if !std::env::args().any(|a| a == "--autostart") {
+                if let Some(w) = app.get_webview_window("main") {
+                    let _ = w.show();
+                    let _ = w.set_focus();
+                }
+            }
+
             // EL ESPEJO HACIA LA INTERFAZ, registrado UNA VEZ y desde el
             // arranque: cada snapshot (síntesis O libro vivo) viaja como
             // evento. Antes vivía dentro de read_internal: solo existía
@@ -763,6 +775,17 @@ pub fn run() {
             commands::clear_transcripts_cmd,
             commands::delete_transcript_cmd,
         ])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .build(tauri::generate_context!())
+        .expect("error while building tauri application")
+        .run(|_app, _event| {
+            // macOS: doble clic en el .app (o clic en el Dock) con la app ya
+            // corriendo emite Reopen: la ventana principal vuelve a la vista.
+            #[cfg(target_os = "macos")]
+            if let tauri::RunEvent::Reopen { .. } = _event {
+                if let Some(w) = _app.get_webview_window("main") {
+                    let _ = w.show();
+                    let _ = w.set_focus();
+                }
+            }
+        });
 }
