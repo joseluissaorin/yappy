@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Teksta valoda",
   "lector.idioma_auto": "Noteikt automātiski",
   "trastienda.biblioteca": "tipogrāfija un tavas audiogrāmatas",
+  "cinta.abrir_imprenta": "atvērt tipogrāfiju",
+  "cinta.a_la_imprenta": "aiznest uz tipogrāfiju",
   "imprenta.titulo": "tipogrāfija",
   "imprenta.en_cola": "rindā",
   "imprenta.sintetizando": "balss strādā",

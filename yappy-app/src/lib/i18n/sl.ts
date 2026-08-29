@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Jezik besedila",
   "lector.idioma_auto": "Zaznaj samodejno",
   "trastienda.biblioteca": "tiskarna in tvoje zvočne knjige",
+  "cinta.abrir_imprenta": "odpri tiskarno",
+  "cinta.a_la_imprenta": "odnesi v tiskarno",
   "imprenta.titulo": "tiskarna",
   "imprenta.en_cola": "v vrsti",
   "imprenta.sintetizando": "glas dela",

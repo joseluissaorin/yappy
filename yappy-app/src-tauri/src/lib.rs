@@ -14,6 +14,7 @@ mod enlaces;
 mod history;
 mod hotkey;
 pub mod imprenta;
+pub mod libro;
 
 /// Sube la prioridad del hilo ACTUAL (la síntesis de una lectura en vivo):
 /// en Apple, QoS user-initiated. En el resto de plataformas, no-op.
@@ -451,6 +452,19 @@ pub fn run() {
             // registered its listener yet on a cold launch, so the shared item is
             // lost. Instead the frontend pulls pending payloads via
             // `drain_shared_payloads_cmd` once it's ready (see shareIntake.ts).
+            // EL ESPEJO HACIA LA INTERFAZ, registrado UNA VEZ y desde el
+            // arranque: cada snapshot (síntesis O libro vivo) viaja como
+            // evento. Antes vivía dentro de read_internal: solo existía
+            // tras la primera lectura TTS (y se duplicaba con cada una),
+            // así que un audiolibro abierto en frío sonaba con la interfaz
+            // ciega (la portada quieta encima del audio).
+            {
+                let app_for_listener = app.handle().clone();
+                state.playback.subscribe(move |snap| {
+                    let _ = tauri::Emitter::emit(&app_for_listener, "playback_state", snap);
+                });
+            }
+
             // LA IMPRENTA despierta: encargos huérfanos a pausado, y el
             // runner en marcha (procesa la cola en orden).
             imprenta::arrancar(app.handle().clone());
@@ -655,6 +669,7 @@ pub fn run() {
             commands::set_settings,
             commands::trigger_read_now_cmd,
             commands::stop_playback_cmd,
+            commands::library_abrir_cmd,
             commands::toggle_pause_cmd,
             commands::saltar_frase_cmd,
             commands::saltar_parrafo_cmd,

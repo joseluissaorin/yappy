@@ -63,6 +63,7 @@
     getSettings,
     libraryImportYappy,
     imprentaListar,
+    imprentaEncargar,
     onImprentaActualizada,
     type Encargo,
     onColaActualizada,
@@ -348,7 +349,52 @@
   }
 
   // ── Abrir / reproducir (tocar una pieza ES el gesto de escuchar) ──────
+  // Un LIBRO se abre en el lector con su audio ya impreso: el backend
+  // espeja el reproductor de fichero como sesión (karaoke, aguja, bloqueo).
+  // El ENCARGO EXPRÉS: de la pegatina a la imprenta sin pasar por el
+  // taller. Lee el documento y lo deja encargado; el chip da la noticia.
+  async function encargarDesdeCinta(item: ItemCola) {
+    if (!item.ruta) return;
+    haptic("medium");
+    seleccionada = null;
+    try {
+      const doc = await readDocument(item.ruta);
+      await imprentaEncargar(item.titulo, (doc.paragraphs ?? []).join("\n\n"), {});
+    } catch (e) {
+      logToBackend("error", "imprenta", `encargo exprés: ${e}`);
+    }
+  }
+
+  async function borrarLibro(item: ItemCola) {
+    if (!item.ruta) return;
+    if (!confirm($t("biblioteca.confirmar_borrado").replace("{nombre}", item.titulo))) return;
+    try {
+      await invoke("library_delete_cmd", { path: item.ruta });
+      bobinas = ((await invoke("list_rendered_audiobooks_cmd").catch(() => [])) as Bobina[]) ?? [];
+    } catch (e) {
+      logToBackend("error", "libro", String(e));
+    }
+  }
+
+  async function abrirLibro(item: ItemCola) {
+    if (!item.ruta) return;
+    haptic("light");
+    try {
+      const doc = (await invoke("library_abrir_cmd", { path: item.ruta, fromStart: false })) as typeof reader.doc;
+      reader.doc = doc;
+      seleccionada = null;
+      await goto("/read");
+    } catch (e) {
+      logToBackend("error", "libro", `abrir: ${e}`);
+      logToBackend("error", "libro", String(e));
+    }
+  }
+
   async function abrirItem(item: ItemCola) {
+    if (esLibro(item)) {
+      await abrirLibro(item);
+      return;
+    }
     logToBackend("info", "cinta", `abrirItem ${item.id} estado=${item.estado}`);
     if (item.estado === "error") {
       haptic("light");
@@ -389,12 +435,6 @@
       brincoDeLoro();
       setTimeout(() => (sacudida = null), 450);
     }
-  }
-
-  async function abrirBobina(b: Bobina) {
-    haptic("light");
-    await invoke("library_play_cmd", { path: b.path, fromStart: false }).catch(() => {});
-    goto("/biblioteca/audiolibros");
   }
 
   // ── La boca-baldosa: AÑADIR vive DENTRO del mosaico ───────────────────
@@ -806,7 +846,28 @@
 
   // Piezas ocultas: lanzadas o descartadas, a la espera del «deshacer».
   let ocultas = $state<Set<string>>(new Set());
-  const visibles = $derived(items.filter((i) => !ocultas.has(i.id)));
+  // LOS AUDIOLIBROS SON PEGATINAS: cada .yappy/.m4b de la biblioteca entra
+  // al mosaico como una pieza más (con su muesca de etiqueta), al final de
+  // la cinta. Nada de implementaciones separadas.
+  function bobinaComoItem(b: Bobina): ItemCola {
+    return {
+      id: "lib:" + b.path,
+      tipo: "archivo",
+      titulo: b.name.replace(/\.(m4b|yappy)$/i, ""),
+      origen: "biblioteca",
+      ruta: b.path,
+      estado: "listo",
+      error: null,
+      agregado_unix: 0,
+      chars: Math.max(1, Math.round(((b.duration_secs ?? 60) / 60) * 1000)),
+      favorito: false,
+    };
+  }
+  const esLibro = (item: ItemCola) => item.id.startsWith("lib:");
+  const visibles = $derived([
+    ...items.filter((i) => !ocultas.has(i.id)),
+    ...bobinas.filter((b) => !ocultas.has("lib:" + b.path)).map(bobinaComoItem),
+  ]);
 
   // La pieza que SUENA (por ruta del snapshot). Su color es la sangre.
   const idQueSuena = $derived(
@@ -916,7 +977,7 @@
       setTimeout(() => {
         document
           .querySelector(`[data-pieza="${CSS.escape(item.id)}"]`)
-          ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          ?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 380);
     }
     // La voz dice el título en voz baja (solo con la casa en silencio).
@@ -1425,7 +1486,11 @@
                     </span>
                   {:else if item.estado === "listo"}
                     <span class="pastilla" style="background: {honda}">
-                      <IconoTipo tipo={iconoDe(item.tipo)} size={11} />
+                      {#if esLibro(item)}
+                        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4.5 13.2 Q4.2 6.4 12 6.2 Q19.8 6.4 19.5 13.2 M4.8 13 v4.6 M19.2 13 v4.6"/></svg>
+                      {:else}
+                        <IconoTipo tipo={iconoDe(item.tipo)} size={11} />
+                      {/if}
                       {minutosDe(item)}′
                     </span>
                   {:else if item.estado === "error"}
@@ -1434,7 +1499,22 @@
                     <span class="pastilla" style="background: #6f6757">{$t("cinta.preparando")}…</span>
                   {/if}
                 </div>
+                {#if esLibro(item)}
+                  <!-- LA MUESCA: el agujerito de etiqueta que dice «este ya
+                       está impreso» (un audiolibro, no un texto por leer). -->
+                  <span class="perforacion" aria-hidden="true"></span>
+                {/if}
                 <button class="baldosa-toque" use:presionable onclick={() => alternarSeleccion(item)} aria-label={item.titulo}></button>
+                {#if elegida && !esLibro(item) && item.estado === "listo"}
+                  <!-- La SEGUNDA FILA: el encargo exprés a la imprenta. -->
+                  <div class="acciones fila-imprenta" in:llega={{ delay: 100 }}>
+                    <button class="accion" use:presionable={{ hap: "rigid" }} style="color: {tinta}"
+                      onclick={(e) => { e.stopPropagation(); encargarDesdeCinta(item); }}>
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8 V4.8 q0 -0.8 0.8 -0.8 h10.4 q0.8 0 0.8 0.8 V8 M4.5 8 h15 q1 0 1 1 v5.5 q0 1 -1 1 h-15 q-1 0 -1 -1 V9 q0 -1 1 -1 Z M7 15.5 h10 V19 q0 1 -1 1 H8 q-1 0 -1 -1 Z"/></svg>
+                      {$t("cinta.a_la_imprenta")}
+                    </button>
+                  </div>
+                {/if}
                 {#if elegida}
                   <!-- Las acciones, con los iconos DIBUJADOS de la casa. -->
                   <div class="acciones" in:llega={{ delay: 60 }}>
@@ -1443,7 +1523,7 @@
                       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8.2 5.2 Q9 4.4 10.1 5.1 L18.7 11 Q19.7 12 18.6 12.9 L10.2 18.9 Q9 19.6 8.5 18.4 Q7.5 12 8.2 5.2 Z"/></svg>
                       {item.estado === "error" ? $t("cola.reintentar") : $t("cola.escuchar")}
                     </button>
-                    {#if item.estado === "error" && item.tipo === "url"}
+                    {#if !esLibro(item) && item.estado === "error" && item.tipo === "url"}
                       <!-- El RESCATE: reintentar por la copia de la Wayback
                            Machine (la pieza avisa de que es la archivada). -->
                       <button class="accion" use:presionable={{ hap: "soft" }} style="color: {tinta}" aria-label={$t("pieza.del_archivo")}
@@ -1451,6 +1531,7 @@
                         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7.2 Q12 3.8 19.5 7.2 M5.2 7.5 L5.6 18.2 Q12 20.6 18.4 18.2 L18.8 7.5 M9.6 11.2 Q12 12.4 14.4 11.2"/></svg>
                       </button>
                     {/if}
+                    {#if !esLibro(item)}
                     <button class="accion" use:presionable={{ hap: "soft" }} style="color: {tinta}" aria-label={item.favorito ? $t("pieza.quitar_favorito") : $t("pieza.favorito")}
                       onclick={(e) => { e.stopPropagation(); favoritoDirecto(item.id); }}>
                       <svg viewBox="0 0 24 24" width="19" height="19" fill={item.favorito ? "currentColor" : "none"} stroke="currentColor" stroke-width="2.1" stroke-linejoin="round" aria-hidden="true"><path d="M12 19.4 Q5.4 14.8 4.7 10 Q4.5 6.6 7.5 5.8 Q10.1 5.3 12 8.1 Q13.9 5.2 16.6 5.8 Q19.5 6.7 19.2 10.1 Q18.5 15 12 19.4 Z"/></svg>
@@ -1459,8 +1540,9 @@
                       onclick={(e) => { e.stopPropagation(); menuPieza = item; renombrando = true; nuevoNombre = item.titulo; }}>
                       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.6 3.6 q2.5 -1.5 3.9 0.3 q1.3 1.7 -0.7 3.5 L8.5 18.5 l-4.7 1.7 q-0.7 0.2 -0.5 -0.5 l1.6 -4.6 Z"/></svg>
                     </button>
+                    {/if}
                     <button class="accion" use:presionable={{ hap: "warning" }} style="color: {tinta}" aria-label={$t("cinta.borrar")}
-                      onclick={(e) => { e.stopPropagation(); seleccionada = null; esconderYProgramar(item); }}>
+                      onclick={(e) => { e.stopPropagation(); seleccionada = null; if (esLibro(item)) { borrarLibro(item); } else { esconderYProgramar(item); } }}>
                       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M3.6 6.2 q8.4 -1 16.8 0 M8.3 6 q-0.2 -2.6 1.2 -2.9 q2.5 -0.5 5 0 q1.4 0.3 1.2 2.9 M6 6.4 q0.2 7.6 0.8 12.4 q0.1 1.6 1.7 1.8 q3.5 0.5 7 0 q1.6 -0.2 1.7 -1.8 q0.6 -4.8 0.8 -12.4"/></svg>
                     </button>
                   </div>
@@ -1474,9 +1556,12 @@
 
     <!-- EL COLOFÓN: la página tiene final, como lo impreso. -->
     {#if visibles.length > 0}
-      <footer class="colofon" aria-hidden="true">
-        <svg viewBox="0 0 100 7" preserveAspectRatio="none" class="colofon-raya"><line x1="0" y1="6" x2="100" y2="1" /></svg>
-        <span>yappy · {$t("ajustes.amor").toLocaleLowerCase()}</span>
+      <footer class="colofon">
+        <svg viewBox="0 0 100 7" preserveAspectRatio="none" class="colofon-raya" aria-hidden="true"><line x1="0" y1="6" x2="100" y2="1" /></svg>
+        <span aria-hidden="true">yappy · {$t("ajustes.amor").toLocaleLowerCase()}</span>
+        <button class="colofon-puerta" use:presionable={{ hap: "soft" }} onclick={() => goto("/biblioteca/audiolibros")}>
+          {$t("cinta.abrir_imprenta")}
+        </button>
       </footer>
     {/if}
 
@@ -1489,25 +1574,6 @@
       </section>
     {/if}
 
-    {#if bobinas.length > 0}
-      <button class="rotulo-tramo rotulo-puerta" use:presionable={{ hap: "soft" }} onclick={() => goto("/biblioteca/audiolibros")}>
-        {$t("cinta.bobinas")}
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </button>
-      {#each bobinas as b (b.path)}
-        <article class="tarjeta bobina" in:llega>
-          <button class="pieza-cuerpo" use:presionable onclick={() => abrirBobina(b)}>
-            <span class="disco" aria-hidden="true" style="--tinta: {PALETA[b.name.length % PALETA.length]}">
-              <i class="disco-cuerpo"></i><i class="disco-agujero"></i>
-            </span>
-            <span class="pieza-texto">
-              <strong>{b.name.replace(/\.m4b$/, "")}</strong>
-              <span class="pieza-meta">{b.duration_secs ? Math.round(b.duration_secs / 60) + " " + $t("cinta.min") + " · " : ""}{b.chapter_count} cap.</span>
-            </span>
-          </button>
-        </article>
-      {/each}
-    {/if}
   </div>
 
   <!-- EL LORO JEFE: arriba a la izquierda, vigilando la casa entera. -->
@@ -2318,6 +2384,35 @@
     pointer-events: none;
   }
 
+  .colofon-puerta {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave, #82755a);
+    padding: 8px 10px;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+  }
+  .acciones.fila-imprenta {
+    margin-bottom: 4px;
+  }
+  .perforacion {
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--yap-papel, #f3eee1);
+    box-shadow: inset 0 1px 2px rgba(43, 36, 24, 0.35);
+    pointer-events: none;
+    z-index: 3;
+  }
   .baldosa-toque {
     position: absolute;
     inset: 0;

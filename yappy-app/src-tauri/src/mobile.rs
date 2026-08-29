@@ -201,16 +201,34 @@ use std::sync::OnceLock;
 static PLAYBACK: OnceLock<std::sync::Arc<crate::playback::PlaybackController>> = OnceLock::new();
 
 extern "C" fn cb_play() {
+    // Con un LIBRO vivo, la pantalla de bloqueo manda al reproductor de
+    // fichero; el ticker del espejo publica el estado nuevo en ≤300 ms.
+    if crate::libro::activo() {
+        audiofile_resume();
+        return;
+    }
     if let Some(p) = PLAYBACK.get() {
         p.resume();
     }
 }
 extern "C" fn cb_pause() {
+    if crate::libro::activo() {
+        audiofile_pause();
+        return;
+    }
     if let Some(p) = PLAYBACK.get() {
         p.pause();
     }
 }
 extern "C" fn cb_toggle() {
+    if crate::libro::activo() {
+        if audiofile_is_playing() {
+            audiofile_pause();
+        } else {
+            audiofile_resume();
+        }
+        return;
+    }
     if let Some(p) = PLAYBACK.get() {
         let s = p.snapshot();
         // OJO: `playing` sigue en true durante la pausa (compat escritorio).
@@ -224,12 +242,20 @@ extern "C" fn cb_toggle() {
     }
 }
 extern "C" fn cb_skip_forward() {
+    if crate::libro::activo() {
+        audiofile_seek((audiofile_position() + 15.0).max(0.0));
+        return;
+    }
     // La MISMA semántica que dentro de la app: una frase, no 15 segundos.
     if let Some(p) = PLAYBACK.get() {
         p.saltar_chunk(1);
     }
 }
 extern "C" fn cb_skip_backward() {
+    if crate::libro::activo() {
+        audiofile_seek((audiofile_position() - 15.0).max(0.0));
+        return;
+    }
     if let Some(p) = PLAYBACK.get() {
         p.saltar_chunk(-1);
     }
@@ -251,6 +277,12 @@ extern "C" fn cb_interrupcion(terminada_y_reanudar: bool) {
     }
 }
 extern "C" fn cb_seek(absolute_secs: f64) {
+    // Con un LIBRO vivo, el scrubber manda directo al reproductor de
+    // fichero (el ticker publica la posición nueva en ≤300 ms).
+    if crate::libro::activo() {
+        audiofile_seek(absolute_secs.max(0.0));
+        return;
+    }
     // The lock-screen scrubber hands us an ABSOLUTE position; PlaybackController
     // seeks by a delta, so convert against the current elapsed time.
     if let Some(p) = PLAYBACK.get() {

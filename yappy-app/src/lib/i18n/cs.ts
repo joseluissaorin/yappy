@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Jazyk textu",
   "lector.idioma_auto": "Rozpoznat automaticky",
   "trastienda.biblioteca": "tiskárna a tvé audioknihy",
+  "cinta.abrir_imprenta": "otevřít tiskárnu",
+  "cinta.a_la_imprenta": "odnést do tiskárny",
   "imprenta.titulo": "tiskárna",
   "imprenta.en_cola": "ve frontě",
   "imprenta.sintetizando": "hlas pracuje",

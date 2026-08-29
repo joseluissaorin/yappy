@@ -19,6 +19,7 @@
   import { guardarProgreso, progresoDe } from "$lib/progreso";
   import { t, IDIOMAS_UI, NOMBRE_IDIOMA, idiomaUI } from "$lib/i18n";
   import { get } from "svelte/store";
+  import { invoke } from "@tauri-apps/api/core";
   import { isMobile } from "$lib/platform";
   import { haptic } from "$lib/haptic";
   import { presionable } from "$lib/presionable";
@@ -96,6 +97,10 @@
   const isPaused = $derived(estado === "pausa");
   const preparando = $derived(estado === "preparando");
   const activo = $derived(isPlaying || isPaused);
+  // MODO LIBRO: el documento es un .yappy con su audio ya impreso. El
+  // escenario, el karaoke y los mandos funcionan por el espejo del backend;
+  // lo que NO aplica aquí es re-sintetizar (dial de ritmo, re-encargo).
+  const esLibroDoc = $derived(doc?.extension === "yappy");
   const currentPara = $derived(
     activo && playback ? baseIndex + (playback.current_paragraph_index ?? 0) : -1,
   );
@@ -226,9 +231,34 @@
       barriendo = false;
       return;
     }
+    if (esLibroDoc) return; // el libro barre con sus tiempos reales (abajo)
     if (frase && nivel > 0.02 && barrido < 1 && !barriendo) {
       arrancarBarrido();
     }
+  });
+
+  // ── MODO LIBRO: el barrido no se estima, SE SABE. La ventana temporal
+  // real de la frase viaja en el snapshot (frase_ini_s/fin_s) y el reloj
+  // se ancla al último elapsed publicado (+300 ms de tick como mucho),
+  // interpolando en local para que el subrayado fluya sin saltos.
+  $effect(() => {
+    if (!esLibroDoc || !isPlaying) {
+      return;
+    }
+    const ini = playback?.frase_ini_s ?? 0;
+    const fin = playback?.frase_fin_s ?? 0;
+    const elapsedBase = playback?.elapsed_secs ?? 0;
+    if (fin <= ini) return;
+    const t0 = performance.now();
+    cancelAnimationFrame(rafId);
+    barriendo = true;
+    const paso = (ahora: number) => {
+      const el = elapsedBase + (ahora - t0) / 1000;
+      barrido = Math.max(0, Math.min(1, (el - ini) / (fin - ini)));
+      rafId = requestAnimationFrame(paso);
+    };
+    rafId = requestAnimationFrame(paso);
+    return () => cancelAnimationFrame(rafId);
   });
 
   // El corte de palabra: la palabra que se está diciendo cuenta como dicha.
@@ -429,6 +459,20 @@
 
   async function readFrom(index: number, opts: { enPausa?: boolean } = {}) {
     haptic("light");
+    if (esLibroDoc && doc?.path) {
+      // EL LIBRO YA ESTÁ IMPRESO: su audio se reanuda (o se recoloca),
+      // jamás se vuelve a sintetizar desde la portada o el guion.
+      try {
+        await invoke("library_abrir_cmd", {
+          path: doc.path,
+          fromStart: index === 0,
+          desdeParrafo: index > 0 ? index : null,
+        });
+      } catch (e) {
+        flashToast(String(e));
+      }
+      return;
+    }
     await readDocumentParagraphs(
       paras,
       index,
@@ -567,7 +611,7 @@
       x: e.clientX,
       y: e.clientY,
       t: performance.now(),
-      borde: e.clientX > ancho - 60 && activo,
+      borde: e.clientX > ancho - 60 && activo && !esLibroDoc,
       bordeIzq: e.clientX < 26,
       velocidadInicial: effectiveSpeedForPlay(),
     };
@@ -902,6 +946,7 @@
         </select>
       </label>
 
+      {#if !esLibroDoc}
       <button class="tecla-exportar" use:presionable onclick={() => { hojaEncargo = !hojaEncargo; }}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17H20v5H6.5a2.5 2.5 0 0 1 0-5z"/></svg>
         {$t("lector.guardar_m4b")}
@@ -921,6 +966,7 @@
       {/if}
       {#if encargado}
         <div class="exporte-hecho"><span>{$t("imprenta.encargado")}</span></div>
+      {/if}
       {/if}
       {#if customised}
         <button class="tecla-reiniciar" onclick={resetAll}>{$t("lector.reiniciar_todo")}</button>

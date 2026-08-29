@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Lingua del testo",
   "lector.idioma_auto": "Rileva da solo",
   "trastienda.biblioteca": "la stamperia e i tuoi audiolibri",
+  "cinta.abrir_imprenta": "apri la stamperia",
+  "cinta.a_la_imprenta": "porta in stamperia",
   "imprenta.titulo": "la stamperia",
   "imprenta.en_cola": "in coda",
   "imprenta.sintetizando": "la voce lavora",

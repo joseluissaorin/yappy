@@ -120,6 +120,8 @@ export default {
   "lector.idioma_texto": "Metnin dili",
   "lector.idioma_auto": "Otomatik algıla",
   "trastienda.biblioteca": "matbaa ve sesli kitapların",
+  "cinta.abrir_imprenta": "matbaayı aç",
+  "cinta.a_la_imprenta": "matbaaya götür",
   "imprenta.titulo": "matbaa",
   "imprenta.en_cola": "sırada",
   "imprenta.sintetizando": "ses çalışıyor",

@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "A szöveg nyelve",
   "lector.idioma_auto": "Automatikus felismerés",
   "trastienda.biblioteca": "a nyomda és a hangoskönyveid",
+  "cinta.abrir_imprenta": "a nyomda megnyitása",
+  "cinta.a_la_imprenta": "nyomdába küldés",
   "imprenta.titulo": "a nyomda",
   "imprenta.en_cola": "sorban",
   "imprenta.sintetizando": "a hang dolgozik",

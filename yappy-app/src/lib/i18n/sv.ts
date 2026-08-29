@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Textens språk",
   "lector.idioma_auto": "Upptäck automatiskt",
   "trastienda.biblioteca": "tryckeriet och dina ljudböcker",
+  "cinta.abrir_imprenta": "öppna tryckeriet",
+  "cinta.a_la_imprenta": "skicka till tryckeriet",
   "imprenta.titulo": "tryckeriet",
   "imprenta.en_cola": "i kö",
   "imprenta.sintetizando": "rösten arbetar",

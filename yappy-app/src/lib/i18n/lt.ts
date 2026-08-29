@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Teksto kalba",
   "lector.idioma_auto": "Aptikti automatiškai",
   "trastienda.biblioteca": "spaustuvė ir tavo audioknygos",
+  "cinta.abrir_imprenta": "atidaryti spaustuvę",
+  "cinta.a_la_imprenta": "nunešti į spaustuvę",
   "imprenta.titulo": "spaustuvė",
   "imprenta.en_cola": "eilėje",
   "imprenta.sintetizando": "balsas dirba",

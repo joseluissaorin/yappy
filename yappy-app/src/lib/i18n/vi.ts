@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Ngôn ngữ văn bản",
   "lector.idioma_auto": "Tự phát hiện",
   "trastienda.biblioteca": "xưởng in và sách nói của bạn",
+  "cinta.abrir_imprenta": "mở xưởng in",
+  "cinta.a_la_imprenta": "đưa đến xưởng in",
   "imprenta.titulo": "xưởng in",
   "imprenta.en_cola": "trong hàng đợi",
   "imprenta.sintetizando": "giọng đang làm việc",

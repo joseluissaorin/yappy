@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Taal van de tekst",
   "lector.idioma_auto": "Automatisch herkennen",
   "trastienda.biblioteca": "de drukkerij en je luisterboeken",
+  "cinta.abrir_imprenta": "open de drukkerij",
+  "cinta.a_la_imprenta": "naar de drukkerij",
   "imprenta.titulo": "de drukkerij",
   "imprenta.en_cola": "in de wachtrij",
   "imprenta.sintetizando": "de stem werkt",

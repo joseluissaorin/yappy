@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "텍스트 언어",
   "lector.idioma_auto": "자동 감지",
   "trastienda.biblioteca": "인쇄소와 오디오북",
+  "cinta.abrir_imprenta": "인쇄소 열기",
+  "cinta.a_la_imprenta": "인쇄소로 보내기",
   "imprenta.titulo": "인쇄소",
   "imprenta.en_cola": "대기 중",
   "imprenta.sintetizando": "음성 작업 중",

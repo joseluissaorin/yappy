@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Idioma do texto",
   "lector.idioma_auto": "Detetar sozinho",
   "trastienda.biblioteca": "a tipografia e os teus audiolivros",
+  "cinta.abrir_imprenta": "abrir a tipografia",
+  "cinta.a_la_imprenta": "levar à tipografia",
   "imprenta.titulo": "a tipografia",
   "imprenta.en_cola": "na fila",
   "imprenta.sintetizando": "a voz trabalha",

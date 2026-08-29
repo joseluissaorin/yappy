@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Sprache des Textes",
   "lector.idioma_auto": "Automatisch erkennen",
   "trastienda.biblioteca": "die Druckerei und deine Hörbücher",
+  "cinta.abrir_imprenta": "die Druckerei öffnen",
+  "cinta.a_la_imprenta": "in die Druckerei geben",
   "imprenta.titulo": "die Druckerei",
   "imprenta.en_cola": "in der Warteschlange",
   "imprenta.sintetizando": "die Stimme arbeitet",

@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Język tekstu",
   "lector.idioma_auto": "Wykryj automatycznie",
   "trastienda.biblioteca": "drukarnia i twoje audiobooki",
+  "cinta.abrir_imprenta": "otwórz drukarnię",
+  "cinta.a_la_imprenta": "zanieś do drukarni",
   "imprenta.titulo": "drukarnia",
   "imprenta.en_cola": "w kolejce",
   "imprenta.sintetizando": "głos pracuje",

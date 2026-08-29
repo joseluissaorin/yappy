@@ -120,6 +120,8 @@ export default {
   "lector.idioma_texto": "Язык текста",
   "lector.idioma_auto": "Определять самому",
   "trastienda.biblioteca": "печатня и твои аудиокниги",
+  "cinta.abrir_imprenta": "открыть печатню",
+  "cinta.a_la_imprenta": "отнести в печатню",
   "imprenta.titulo": "печатня",
   "imprenta.en_cola": "в очереди",
   "imprenta.sintetizando": "голос работает",

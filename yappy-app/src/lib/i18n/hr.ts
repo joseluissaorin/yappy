@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Jezik teksta",
   "lector.idioma_auto": "Prepoznaj sam",
   "trastienda.biblioteca": "tiskara i tvoje audioknjige",
+  "cinta.abrir_imprenta": "otvori tiskaru",
+  "cinta.a_la_imprenta": "odnesi u tiskaru",
   "imprenta.titulo": "tiskara",
   "imprenta.en_cola": "u redu",
   "imprenta.sintetizando": "glas radi",

@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "पाठ की भाषा",
   "lector.idioma_auto": "स्वतः पहचानें",
   "trastienda.biblioteca": "प्रेस और आपकी ऑडियोबुक",
+  "cinta.abrir_imprenta": "प्रेस खोलें",
+  "cinta.a_la_imprenta": "प्रेस भेजें",
   "imprenta.titulo": "प्रेस",
   "imprenta.en_cola": "कतार में",
   "imprenta.sintetizando": "आवाज़ काम कर रही है",

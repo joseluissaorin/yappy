@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Text language",
   "lector.idioma_auto": "Detect automatically",
   "trastienda.biblioteca": "the press and your audiobooks",
+  "cinta.abrir_imprenta": "open the press",
+  "cinta.a_la_imprenta": "send to the press",
   "imprenta.titulo": "the press",
   "imprenta.en_cola": "queued",
   "imprenta.sintetizando": "the voice is working",

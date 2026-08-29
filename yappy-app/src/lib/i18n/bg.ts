@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Език на текста",
   "lector.idioma_auto": "Автоматично",
   "trastienda.biblioteca": "печатницата и твоите аудиокниги",
+  "cinta.abrir_imprenta": "отвори печатницата",
+  "cinta.a_la_imprenta": "занеси в печатницата",
   "imprenta.titulo": "печатницата",
   "imprenta.en_cola": "на опашка",
   "imprenta.sintetizando": "гласът работи",

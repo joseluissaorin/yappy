@@ -1599,19 +1599,33 @@ pub async fn leer_parrafos(
 }
 
 #[tauri::command]
-pub fn stop_playback_cmd(state: State<'_, Arc<AppState>>) {
+pub fn stop_playback_cmd(app: AppHandle, state: State<'_, Arc<AppState>>) {
+    if crate::libro::activo() {
+        crate::libro::parar(&app, &state);
+        return;
+    }
     state.playback.stop();
 }
 
 /// Salto por FRASE dentro de lo ya sintetizado: instantáneo, sin resíntesis.
 #[tauri::command]
 pub fn saltar_frase_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
+    #[cfg(target_os = "ios")]
+    if crate::libro::activo() {
+        crate::libro::saltar_frase(&state, delta);
+        return;
+    }
     state.playback.saltar_chunk(delta);
 }
 
 /// Salto por PÁRRAFO dentro de lo ya sintetizado.
 #[tauri::command]
 pub fn saltar_parrafo_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
+    #[cfg(target_os = "ios")]
+    if crate::libro::activo() {
+        crate::libro::saltar_parrafo(&state, delta);
+        return;
+    }
     state.playback.saltar_parrafo(delta);
 }
 
@@ -1619,12 +1633,22 @@ pub fn saltar_parrafo_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
 /// quieren. Instantánea a nivel de mezclador.
 #[tauri::command]
 pub fn pausar_cmd(state: State<'_, Arc<AppState>>) {
+    #[cfg(target_os = "ios")]
+    if crate::libro::activo() {
+        crate::libro::pausa(&state);
+        return;
+    }
     state.playback.pause();
 }
 
 /// Reanudación directa (no toggle).
 #[tauri::command]
 pub fn reanudar_cmd(state: State<'_, Arc<AppState>>) {
+    #[cfg(target_os = "ios")]
+    if crate::libro::activo() {
+        crate::libro::reanuda(&state);
+        return;
+    }
     state.playback.resume();
 }
 
@@ -1633,6 +1657,11 @@ pub async fn toggle_pause_cmd(
     app: AppHandle,
     state: State<'_, Arc<AppState>>,
 ) -> Result<(), String> {
+    #[cfg(target_os = "ios")]
+    if crate::libro::activo() {
+        crate::libro::toggle(&state);
+        return Ok(());
+    }
     toggle_pause(app, state.inner().clone())
         .await
         .map_err(|e| e.to_string())
@@ -1761,6 +1790,50 @@ fn library_resume_map_path(app: &AppHandle) -> Result<std::path::PathBuf, String
     let dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
     std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
     Ok(dir.join("library_resume.json"))
+}
+
+/// Guarda la posición del audiolibro EN CURSO (si lo hay) en el mapa de
+/// reanudación. Factorizado para que el libro vivo lo use al ceder la voz.
+#[cfg(target_os = "ios")]
+pub fn persistir_resume_libro<R: tauri::Runtime>(app: &AppHandle<R>) {
+    if let Some(p) = crate::mobile::audiofile_current_path() {
+        let pos = crate::mobile::audiofile_position();
+        if pos > 5.0 {
+            let mut map = read_resume_map_generico(app);
+            map.insert(p, pos);
+            let _ = write_resume_map_generico(app, &map);
+        }
+    }
+}
+
+#[cfg(target_os = "ios")]
+fn ruta_resume_generico<R: tauri::Runtime>(app: &AppHandle<R>) -> Option<std::path::PathBuf> {
+    // El MISMO fichero que usa la biblioteca (library_resume_map_path):
+    // un solo mapa de posiciones, lo abra quien lo abra.
+    use tauri::Manager;
+    let dir = app.path().app_config_dir().ok()?;
+    std::fs::create_dir_all(&dir).ok()?;
+    Some(dir.join("library_resume.json"))
+}
+
+#[cfg(target_os = "ios")]
+fn read_resume_map_generico<R: tauri::Runtime>(
+    app: &AppHandle<R>,
+) -> std::collections::HashMap<String, f64> {
+    ruta_resume_generico(app)
+        .and_then(|p| std::fs::read(p).ok())
+        .and_then(|b| serde_json::from_slice(&b).ok())
+        .unwrap_or_default()
+}
+
+#[cfg(target_os = "ios")]
+fn write_resume_map_generico<R: tauri::Runtime>(
+    app: &AppHandle<R>,
+    map: &std::collections::HashMap<String, f64>,
+) -> Result<(), String> {
+    let p = ruta_resume_generico(app).ok_or("sin app_data")?;
+    std::fs::write(p, serde_json::to_vec(map).map_err(|e| e.to_string())?)
+        .map_err(|e| e.to_string())
 }
 
 fn read_resume_map(app: &AppHandle) -> std::collections::HashMap<String, f64> {
@@ -1967,6 +2040,12 @@ pub fn library_play_cmd(
             .to_string();
         let duration = crate::mobile::audiofile_duration();
         crate::mobile::now_playing_set(&title, "Yappy", "", duration, start_at, true);
+        // El ESPEJO: cualquier .yappy sonando se refleja como sesión de
+        // reproducción (aguja, chip, karaoke del lector). Los .m4b sin
+        // tiempos no tienen espejo (no hay frases que pintar).
+        if ok && path.to_lowercase().ends_with(".yappy") {
+            crate::libro::espejar(&_app, &path);
+        }
         return Ok(ok);
     }
     #[cfg(not(target_os = "ios"))]
@@ -2034,6 +2113,8 @@ pub fn library_stop_cmd(app: AppHandle) {
         crate::mobile::audiofile_stop();
         // Clear the Now Playing — lock screen drops Yappy.
         crate::mobile::now_playing_set("", "", "", 0.0, 0.0, false);
+        // Y el espejo del libro (si lo había) vuelve a «inactivo».
+        crate::libro::apagar_espejo(&app);
     }
     #[cfg(not(target_os = "ios"))]
     let _ = app;
@@ -2201,6 +2282,39 @@ pub fn is_model_ready(app: AppHandle) -> Result<bool, String> {
 /// La foto actual de la reproducción, bajo demanda. Las páginas que montan
 /// DESPUÉS de que algo suene (la cinta, el cartel) la necesitan para pintar
 /// la aguja o el estado de pausa sin esperar a la siguiente emisión.
+/// Abre un .yappy como LIBRO VIVO: documento para el lector + audio del
+/// reproductor de fichero + espejo de sesión (karaoke, aguja, bloqueo).
+#[tauri::command]
+pub async fn library_abrir_cmd(
+    app: AppHandle,
+    state: State<'_, Arc<AppState>>,
+    path: String,
+    from_start: Option<bool>,
+    desde_parrafo: Option<usize>,
+) -> Result<crate::state::CurrentDocument, String> {
+    #[cfg(target_os = "ios")]
+    {
+        let state = state.inner().clone();
+        tauri::async_runtime::spawn_blocking(move || {
+            crate::libro::abrir(
+                &app,
+                &state,
+                &path,
+                from_start.unwrap_or(false),
+                desde_parrafo,
+            )
+            .map_err(|e| e.to_string())
+        })
+        .await
+        .map_err(|e| e.to_string())?
+    }
+    #[cfg(not(target_os = "ios"))]
+    {
+        let _ = (app, state, path, from_start, desde_parrafo);
+        Err("solo iOS".into())
+    }
+}
+
 #[tauri::command]
 pub fn playback_snapshot_cmd(
     state: tauri::State<'_, AppState>,
@@ -3079,6 +3193,9 @@ async fn read_internal<R: Runtime>(
     }
     let root = model::model_root(app)?;
     let engine = state.engine_or_load(&root)?;
+    // Si un audiolibro estaba sonando, se cierra con su posición guardada:
+    // una sola voz en la casa.
+    crate::libro::parar(app, state.as_ref());
     state.playback.stop();
     // Claim a fresh id AFTER the stop bump so this synth task has a unique session.
     // Any older synth task that's still spinning will see `current_session()` change
@@ -3406,11 +3523,6 @@ async fn read_internal<R: Runtime>(
                 let _ = app_for_thread.emit("first_read", true);
             }
         }
-    });
-
-    let app_for_listener = app.clone();
-    state.playback.subscribe(move |snap| {
-        let _ = app_for_listener.emit("playback_state", snap);
     });
 
     Ok(())

@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Γλώσσα κειμένου",
   "lector.idioma_auto": "Αυτόματη ανίχνευση",
   "trastienda.biblioteca": "το τυπογραφείο και τα ηχητικά βιβλία σου",
+  "cinta.abrir_imprenta": "άνοιξε το τυπογραφείο",
+  "cinta.a_la_imprenta": "στείλε στο τυπογραφείο",
   "imprenta.titulo": "το τυπογραφείο",
   "imprenta.en_cola": "σε αναμονή",
   "imprenta.sintetizando": "η φωνή δουλεύει",

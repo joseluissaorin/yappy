@@ -74,6 +74,13 @@ pub struct PlaybackSnapshot {
     pub duration_secs: f32,
     pub volume: f32,
     pub output_sample_rate: u32,
+    /// MODO LIBRO: ventana temporal REAL de la frase en curso (segundos
+    /// absolutos del audio impreso). El karaoke por palabras del lector
+    /// barre con esto en vez de estimar; 0/0 fuera del modo libro.
+    #[serde(default)]
+    pub frase_ini_s: f32,
+    #[serde(default)]
+    pub frase_fin_s: f32,
 }
 
 #[derive(Debug)]
@@ -139,6 +146,11 @@ pub struct PlaybackController {
     /// que respira, latido de la aguja).
     #[allow(dead_code)] // lo consume el arranque móvil (cfg(mobile) en lib.rs)
     nivel_listeners: OyentesNivel,
+    /// MODO LIBRO: un audiolibro suena por el reproductor de fichero y su
+    /// estado se ESPEJA en este snapshot (crate::libro). Mientras esté
+    /// alto, el hilo de audio no toca el snapshot (ni tick ni oído): la
+    /// verdad la publica el espejo del libro.
+    modo_libro: Arc<std::sync::atomic::AtomicBool>,
 }
 
 impl PlaybackController {
@@ -165,6 +177,8 @@ impl PlaybackController {
             duration_secs: 0.0,
             volume: 1.0,
             output_sample_rate: 44100,
+            frase_ini_s: 0.0,
+            frase_fin_s: 0.0,
         }));
         let listeners: Oyentes = Arc::new(Mutex::new(Vec::new()));
         let session_samples: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
@@ -183,6 +197,8 @@ impl PlaybackController {
         let session_for_thread = session_samples.clone();
         let session_id_for_thread = session_id.clone();
         let nivel_for_thread = nivel_listeners.clone();
+        let modo_libro = Arc::new(std::sync::atomic::AtomicBool::new(false));
+        let modo_libro_thread = modo_libro.clone();
         std::thread::Builder::new()
             .name("yappy-audio".into())
             .spawn(move || {
@@ -193,6 +209,7 @@ impl PlaybackController {
                     session_for_thread,
                     session_id_for_thread,
                     nivel_for_thread,
+                    modo_libro_thread,
                 ) {
                     tracing::error!("audio thread exited: {e:?}");
                 }
@@ -206,6 +223,27 @@ impl PlaybackController {
             listeners,
             session_id,
             nivel_listeners,
+            modo_libro,
+        }
+    }
+
+    /// Enciende o apaga el MODO LIBRO (ver el campo homónimo).
+    pub fn modo_libro(&self, activo: bool) {
+        self.modo_libro.store(activo, Ordering::SeqCst);
+    }
+
+    /// Publica un snapshot EXTERNO (el espejo del audiolibro) con el mismo
+    /// contador de revisiones: la interfaz no distingue motores y la
+    /// monotonicidad que mata eventos rezagados sigue intacta.
+    pub fn publicar_libro(&self, f: impl FnOnce(&mut PlaybackSnapshot)) {
+        let snap = {
+            let mut s = self.snapshot.lock().unwrap();
+            f(&mut s);
+            s.revision += 1;
+            s.clone()
+        };
+        for l in self.listeners.lock().unwrap().iter() {
+            l(&snap);
         }
     }
 
@@ -303,6 +341,7 @@ fn run_audio_thread(
     session_samples: Arc<Mutex<Vec<f32>>>,
     live_session_id: Arc<AtomicU64>,
     nivel_listeners: OyentesNivel,
+    modo_libro: Arc<std::sync::atomic::AtomicBool>,
 ) -> Result<()> {
     // Android: cpal (AAudio) necesita el contexto NDK que Tauri inicializa
     // en su arranque; este hilo puede llegar antes. Esperar a que exista en
@@ -567,6 +606,9 @@ fn run_audio_thread(
                     emit(&snapshot, &listeners);
                 }
                 Command::Pause => {
+                    if modo_libro.load(Ordering::SeqCst) {
+                        continue;
+                    }
                     *paused.lock().unwrap() = true;
                     paused_state = true;
                     {
@@ -579,6 +621,9 @@ fn run_audio_thread(
                     emit(&snapshot, &listeners);
                 }
                 Command::Resume => {
+                    if modo_libro.load(Ordering::SeqCst) {
+                        continue;
+                    }
                     *paused.lock().unwrap() = false;
                     paused_state = false;
                     {
@@ -592,6 +637,25 @@ fn run_audio_thread(
                     emit(&snapshot, &listeners);
                 }
                 Command::Stop => {
+                    if modo_libro.load(Ordering::SeqCst) {
+                        // El Stop rezagado de una sesión de síntesis que el
+                        // LIBRO acaba de relevar: limpiar los buffers, pero
+                        // el snapshot es del libro y no se toca (pisar aquí
+                        // dejaba el lector en la portada con el audio
+                        // sonando de fondo).
+                        *buffer.lock().unwrap() = Vec::new();
+                        *session_samples.lock().unwrap() = Vec::new();
+                        *played_samples.lock().unwrap() = 0;
+                        session_duration_samples = 0;
+                        session_total = 0;
+                        total_paragraphs = 0;
+                        current_text.clear();
+                        chunk_boundaries.clear();
+                        chunk_texts.clear();
+                        chunk_paragraph_idx.clear();
+                        chunk_origen.clear();
+                        continue;
+                    }
                     #[cfg(target_os = "ios")]
                     crate::mobile::audio_session_lectura(false);
                     *buffer.lock().unwrap() = Vec::new();
@@ -749,6 +813,13 @@ fn run_audio_thread(
                     f(nivel);
                 }
             }
+        }
+
+        // MODO LIBRO: la verdad del snapshot la publica el espejo del
+        // audiolibro; este hilo se limita a atender comandos.
+        if modo_libro.load(Ordering::SeqCst) {
+            std::thread::sleep(std::time::Duration::from_millis(50));
+            continue;
         }
 
         // Tick: update elapsed AND re-derive which chunk is currently being heard.

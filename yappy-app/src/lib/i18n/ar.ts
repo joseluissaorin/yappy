@@ -120,6 +120,8 @@ export default {
   "lector.idioma_texto": "لغة النص",
   "lector.idioma_auto": "اكتشاف تلقائي",
   "trastienda.biblioteca": "المطبعة وكتبك الصوتية",
+  "cinta.abrir_imprenta": "افتح المطبعة",
+  "cinta.a_la_imprenta": "أرسل إلى المطبعة",
   "imprenta.titulo": "المطبعة",
   "imprenta.en_cola": "في الانتظار",
   "imprenta.sintetizando": "الصوت يعمل",

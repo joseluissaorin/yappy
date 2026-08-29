@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Teksti keel",
   "lector.idioma_auto": "Tuvasta ise",
   "trastienda.biblioteca": "trükikoda ja sinu audioraamatud",
+  "cinta.abrir_imprenta": "ava trükikoda",
+  "cinta.a_la_imprenta": "saada trükikotta",
   "imprenta.titulo": "trükikoda",
   "imprenta.en_cola": "järjekorras",
   "imprenta.sintetizando": "hääl töötab",

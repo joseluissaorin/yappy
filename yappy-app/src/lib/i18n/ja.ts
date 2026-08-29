@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "テキストの言語",
   "lector.idioma_auto": "自動検出",
   "trastienda.biblioteca": "印刷所とオーディオブック",
+  "cinta.abrir_imprenta": "印刷所を開く",
+  "cinta.a_la_imprenta": "印刷所へ送る",
   "imprenta.titulo": "印刷所",
   "imprenta.en_cola": "待機中",
   "imprenta.sintetizando": "音声を合成中",

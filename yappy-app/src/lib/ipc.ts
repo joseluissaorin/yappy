@@ -130,6 +130,9 @@ export interface PlaybackSnapshot {
   duration_secs: number;
   volume: number;
   output_sample_rate: number;
+  /// Modo libro: ventana temporal real de la frase en curso (0/0 si no).
+  frase_ini_s?: number;
+  frase_fin_s?: number;
 }
 
 export interface CaptureDiagnostics {

@@ -121,6 +121,8 @@ export default {
   "lector.idioma_texto": "Limba textului",
   "lector.idioma_auto": "Detectează automat",
   "trastienda.biblioteca": "tipografia și audiobook-urile tale",
+  "cinta.abrir_imprenta": "deschide tipografia",
+  "cinta.a_la_imprenta": "du la tipografie",
   "imprenta.titulo": "tipografia",
   "imprenta.en_cola": "în coadă",
   "imprenta.sintetizando": "vocea lucrează",
