@@ -317,7 +317,7 @@ export const readDocumentParagraphs = (
   guion?: GuionEnriquecido,
   // Metadatos de sesión: ruta y título (la aguja, la pantalla de bloqueo)
   // y arranque en pausa (reposicionar sin sonar).
-  meta?: { docPath?: string; titulo?: string; startPaused?: boolean },
+  meta?: { docPath?: string; titulo?: string; startPaused?: boolean; docLang?: string | null },
 ): Promise<void> =>
   invoke("read_document_paragraphs_cmd", {
     paragraphs,
@@ -331,6 +331,7 @@ export const readDocumentParagraphs = (
     docPath: meta?.docPath ?? null,
     titulo: meta?.titulo ?? null,
     startPaused: meta?.startPaused ?? null,
+    docLang: meta?.docLang ?? null,
   });
 // ── La cola (la puerta de entrada del móvil) ────────────────────────────
 export type TipoItemCola = "url" | "youtube" | "archivo" | "texto" | "audio";

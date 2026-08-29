@@ -775,6 +775,69 @@ fn host_de(url: &str) -> String {
         .to_lowercase()
 }
 
+/// Los conectores de la conversación hablada, en el idioma del hilo.
+struct Conectores {
+    dice: &'static str,
+    responde: &'static str,
+    anade: &'static str,
+    escribe: &'static str,
+    en_red: &'static str,
+    cita_de: &'static str,
+}
+
+fn conectores(idioma: &str) -> Conectores {
+    match idioma {
+        "es" => Conectores {
+            dice: "dice",
+            responde: "responde",
+            anade: "añade",
+            escribe: "escribe",
+            en_red: "en",
+            cita_de: "Cita de",
+        },
+        "fr" => Conectores {
+            dice: "dit",
+            responde: "répond",
+            anade: "ajoute",
+            escribe: "écrit",
+            en_red: "sur",
+            cita_de: "Citation de",
+        },
+        "de" => Conectores {
+            dice: "sagt",
+            responde: "antwortet",
+            anade: "ergänzt",
+            escribe: "schreibt",
+            en_red: "auf",
+            cita_de: "Zitat von",
+        },
+        "it" => Conectores {
+            dice: "dice",
+            responde: "risponde",
+            anade: "aggiunge",
+            escribe: "scrive",
+            en_red: "su",
+            cita_de: "Citazione di",
+        },
+        "pt" => Conectores {
+            dice: "diz",
+            responde: "responde",
+            anade: "acrescenta",
+            escribe: "escreve",
+            en_red: "no",
+            cita_de: "Citação de",
+        },
+        _ => Conectores {
+            dice: "says",
+            responde: "replies",
+            anade: "adds",
+            escribe: "writes",
+            en_red: "on",
+            cita_de: "Quoting",
+        },
+    }
+}
+
 /// HACKER NEWS como conversación: la API pública de Algolia da el hilo
 /// entero en un JSON; se leen el título, el texto del post y los
 /// comentarios con su autor («Fulano dice: …»), nada de raspar la tabla.
@@ -796,6 +859,16 @@ async fn extraer_hn(cliente: &reqwest::Client, url: &str) -> Result<(Option<Stri
         .as_str()
         .unwrap_or("Hilo de Hacker News")
         .to_string();
+    // El idioma del hilo decide los conectores («dice»/«says»).
+    let muestra = format!(
+        "{titulo} {} {}",
+        v["text"].as_str().unwrap_or(""),
+        v["children"][0]["text"].as_str().unwrap_or("")
+    );
+    let con = conectores(&yappy_core::lang_detect::detect_document_lang(
+        &texto_de_fragmento_html(&muestra),
+        "en",
+    ));
     let mut md = format!("# {titulo}\n\n");
     if let Some(texto) = v["text"].as_str() {
         md.push_str(&texto_de_fragmento_html(texto));
@@ -804,7 +877,13 @@ async fn extraer_hn(cliente: &reqwest::Client, url: &str) -> Result<(Option<Stri
     // Los comentarios, en orden y con jerarquía hablada: primer nivel
     // «dice», respuestas «responde». Tope generoso para no leer mil.
     let mut cuantos = 0usize;
-    fn caminar(nodo: &serde_json::Value, nivel: usize, md: &mut String, cuantos: &mut usize) {
+    fn caminar(
+        nodo: &serde_json::Value,
+        nivel: usize,
+        md: &mut String,
+        cuantos: &mut usize,
+        con: &Conectores,
+    ) {
         if *cuantos >= 60 || nivel > 2 {
             return;
         }
@@ -813,20 +892,20 @@ async fn extraer_hn(cliente: &reqwest::Client, url: &str) -> Result<(Option<Stri
                 let (Some(autor), Some(texto)) = (h["author"].as_str(), h["text"].as_str()) else {
                     continue;
                 };
-                let verbo = if nivel == 0 { "dice" } else { "responde" };
+                let verbo = if nivel == 0 { con.dice } else { con.responde };
                 md.push_str(&format!(
                     "{autor} {verbo}: {}\n\n",
                     texto_de_fragmento_html(texto)
                 ));
                 *cuantos += 1;
-                caminar(h, nivel + 1, md, cuantos);
+                caminar(h, nivel + 1, md, cuantos, con);
                 if *cuantos >= 60 {
                     return;
                 }
             }
         }
     }
-    caminar(&v, 0, &mut md, &mut cuantos);
+    caminar(&v, 0, &mut md, &mut cuantos, &con);
     let markdown = limpiar_markdown_hablado(&md);
     if markdown.chars().count() < 80 {
         return Err(anyhow!("el hilo está vacío"));
@@ -877,17 +956,18 @@ async fn extraer_tweet(cliente: &reqwest::Client, url: &str) -> Result<(Option<S
         .as_str()
         .or_else(|| v["text"].as_str())
         .ok_or_else(|| anyhow!("el tuit no se puede leer (¿borrado o privado?)"))?;
-    let mut md = format!("# {autor} en X\n\n{texto}\n");
+    let con = conectores(&yappy_core::lang_detect::detect_document_lang(texto, "en"));
+    let mut md = format!("# {autor} {} X\n\n{texto}\n", con.en_red);
     if let Some(cita) = v["quoted_tweet"].as_object() {
         if let (Some(qn), Some(qt)) = (
             cita.get("user").and_then(|u| u["name"].as_str()),
             cita.get("text").and_then(|t| t.as_str()),
         ) {
-            md.push_str(&format!("\nCita de {qn}: {qt}\n"));
+            md.push_str(&format!("\n{} {qn}: {qt}\n", con.cita_de));
         }
     }
     let markdown = limpiar_markdown_hablado(&md);
-    Ok((Some(format!("{autor} en X")), markdown))
+    Ok((Some(format!("{autor} {} X", con.en_red)), markdown))
 }
 
 /// UN ARTÍCULO DE X entero: el cuerpo vive en bloques draft-js que la
@@ -920,7 +1000,25 @@ async fn extraer_articulo_de_x(
                         .filter(|t| !t.is_empty())
                         .unwrap_or(titulo_previo.clone());
                     let quien = fx["tweet"]["author"]["name"].as_str().unwrap_or(autor);
-                    let mut md = format!("# {titulo}\n\nPor {quien}, en X.\n\n");
+                    let texto_muestra: String = bloques
+                        .iter()
+                        .filter_map(|b| b["text"].as_str())
+                        .take(6)
+                        .collect::<Vec<_>>()
+                        .join(" ");
+                    let con = conectores(&yappy_core::lang_detect::detect_document_lang(
+                        &texto_muestra,
+                        "en",
+                    ));
+                    let firma = match con.en_red {
+                        "en" => format!("Por {quien}, en X."),
+                        "sur" => format!("Par {quien}, sur X."),
+                        "auf" => format!("Von {quien}, auf X."),
+                        "su" => format!("Di {quien}, su X."),
+                        "no" => format!("Por {quien}, no X."),
+                        _ => format!("By {quien}, on X."),
+                    };
+                    let mut md = format!("# {titulo}\n\n{firma}\n\n");
                     for b in bloques {
                         let Some(texto) = b["text"].as_str() else {
                             continue;
@@ -1052,13 +1150,23 @@ async fn extraer_reddit(cliente: &reqwest::Client, url: &str) -> Result<(Option<
         .unwrap_or("Hilo de Reddit")
         .to_string();
     let mut md = format!("# {titulo}\n\n");
+    let con = conectores(&yappy_core::lang_detect::detect_document_lang(
+        &format!("{titulo} {}", post["selftext"].as_str().unwrap_or("")),
+        "en",
+    ));
     if let Some(cuerpo) = post["selftext"].as_str() {
         if !cuerpo.trim().is_empty() {
             let autor = post["author"].as_str().unwrap_or("alguien");
-            md.push_str(&format!("{autor} escribe: {}\n\n", cuerpo.trim()));
+            md.push_str(&format!("{autor} {}: {}\n\n", con.escribe, cuerpo.trim()));
         }
     }
-    fn caminar(nodos: &serde_json::Value, nivel: usize, md: &mut String, cuantos: &mut usize) {
+    fn caminar(
+        nodos: &serde_json::Value,
+        nivel: usize,
+        md: &mut String,
+        cuantos: &mut usize,
+        con: &Conectores,
+    ) {
         if *cuantos >= 60 || nivel > 2 {
             return;
         }
@@ -1073,11 +1181,11 @@ async fn extraer_reddit(cliente: &reqwest::Client, url: &str) -> Result<(Option<
             let (Some(autor), Some(texto)) = (d["author"].as_str(), d["body"].as_str()) else {
                 continue;
             };
-            let verbo = if nivel == 0 { "dice" } else { "responde" };
+            let verbo = if nivel == 0 { con.dice } else { con.responde };
             md.push_str(&format!("{autor} {verbo}: {}\n\n", texto.trim()));
             *cuantos += 1;
             if d["replies"].is_object() {
-                caminar(&d["replies"], nivel + 1, md, cuantos);
+                caminar(&d["replies"], nivel + 1, md, cuantos, con);
             }
             if *cuantos >= 60 {
                 return;
@@ -1085,7 +1193,7 @@ async fn extraer_reddit(cliente: &reqwest::Client, url: &str) -> Result<(Option<
         }
     }
     let mut cuantos = 0usize;
-    caminar(&v[1], 0, &mut md, &mut cuantos);
+    caminar(&v[1], 0, &mut md, &mut cuantos, &con);
     let markdown = limpiar_markdown_hablado(&md);
     if markdown.chars().count() < 80 {
         return Err(anyhow!("el hilo está vacío"));
@@ -1145,13 +1253,15 @@ async fn extraer_bluesky(cliente: &reqwest::Client, url: &str) -> Result<(Option
     let texto = hilo["post"]["record"]["text"]
         .as_str()
         .ok_or_else(|| anyhow!("el post de Bluesky no se puede leer"))?;
-    let mut md = format!("# {autor} en Bluesky\n\n{texto}\n\n");
+    let con = conectores(&yappy_core::lang_detect::detect_document_lang(texto, "en"));
+    let mut md = format!("# {autor} {} Bluesky\n\n{texto}\n\n", con.en_red);
     fn caminar(
         nodo: &serde_json::Value,
         nivel: usize,
         md: &mut String,
         cuantos: &mut usize,
         nombre_de: &dyn Fn(&serde_json::Value) -> String,
+        con: &Conectores,
     ) {
         if *cuantos >= 40 || nivel > 3 {
             return;
@@ -1164,19 +1274,19 @@ async fn extraer_bluesky(cliente: &reqwest::Client, url: &str) -> Result<(Option
                 continue;
             };
             let quien = nombre_de(&r["post"]);
-            let verbo = if nivel == 0 { "responde" } else { "añade" };
+            let verbo = if nivel == 0 { con.responde } else { con.anade };
             md.push_str(&format!("{quien} {verbo}: {}\n\n", texto.trim()));
             *cuantos += 1;
-            caminar(r, nivel + 1, md, cuantos, nombre_de);
+            caminar(r, nivel + 1, md, cuantos, nombre_de, con);
             if *cuantos >= 40 {
                 return;
             }
         }
     }
     let mut cuantos = 0usize;
-    caminar(hilo, 0, &mut md, &mut cuantos, &nombre_de);
+    caminar(hilo, 0, &mut md, &mut cuantos, &nombre_de, &con);
     Ok((
-        Some(format!("{autor} en Bluesky")),
+        Some(format!("{autor} {} Bluesky", con.en_red)),
         limpiar_markdown_hablado(&md),
     ))
 }
@@ -1226,7 +1336,8 @@ async fn extraer_mastodon(
     if texto.trim().is_empty() {
         return Err(anyhow!("la publicación está vacía"));
     }
-    let mut md = format!("# {autor} en Mastodon\n\n{texto}\n\n");
+    let con = conectores(&yappy_core::lang_detect::detect_document_lang(&texto, "en"));
+    let mut md = format!("# {autor} {} Mastodon\n\n{texto}\n\n", con.en_red);
     if let Ok(ctx) = cliente
         .get(format!("https://{host}/api/v1/statuses/{id}/context"))
         .send()
@@ -1240,7 +1351,7 @@ async fn extraer_mastodon(
                         if cuerpo.trim().is_empty() {
                             continue;
                         }
-                        let verbo = if i == 0 { "responde" } else { "añade" };
+                        let verbo = if i == 0 { con.responde } else { con.anade };
                         md.push_str(&format!("{} {verbo}: {}\n\n", nombre_de(d), cuerpo.trim()));
                     }
                 }
@@ -1248,7 +1359,7 @@ async fn extraer_mastodon(
         }
     }
     Ok((
-        Some(format!("{autor} en Mastodon")),
+        Some(format!("{autor} {} Mastodon", con.en_red)),
         limpiar_markdown_hablado(&md),
     ))
 }
@@ -1712,6 +1823,25 @@ fn preservar_versos(doc: &dom_query::Document) {
 /// restos de [editar], líneas de tabla y flechas de referencia. Vale para
 /// TODO origen (también documentos y pegados).
 pub fn limpiar_markdown_hablado(md: &str) -> String {
+    // EL IDIOMA DEL TEXTO manda en las adaptaciones habladas: el marcador
+    // de código, las abreviaturas y las monedas se dicen en su lengua.
+    let idioma = yappy_core::lang_detect::detect_document_lang(md, "es");
+    limpiar_markdown_hablado_en(md, &idioma)
+}
+
+/// El marcador hablado de un bloque de código, en el idioma del texto.
+fn marcador_codigo(idioma: &str) -> &'static str {
+    match idioma {
+        "es" => "(Hay un ejemplo de código.)",
+        "fr" => "(Il y a un exemple de code.)",
+        "de" => "(Hier steht ein Codebeispiel.)",
+        "it" => "(C'è un esempio di codice.)",
+        "pt" => "(Há um exemplo de código.)",
+        _ => "(There is a code example.)",
+    }
+}
+
+pub fn limpiar_markdown_hablado_en(md: &str, idioma: &str) -> String {
     // Las líneas-botón que ninguna voz debe pronunciar.
     let botones = [
         "anterior",
@@ -1740,7 +1870,7 @@ pub fn limpiar_markdown_hablado(md: &str) -> String {
         // vez («hay un ejemplo de código») y se saltan enteros.
         if compacta.starts_with("```") || compacta.starts_with("~~~") {
             if !en_codigo {
-                out.push("(Hay un ejemplo de código.)".to_string());
+                out.push(marcador_codigo(idioma).to_string());
                 out.push(String::new());
             }
             en_codigo = !en_codigo;
@@ -1765,7 +1895,7 @@ pub fn limpiar_markdown_hablado(md: &str) -> String {
         limpia = silenciar_enfasis(&limpia);
         limpia = despegar_palabras(&limpia);
         limpia = quitar_emojis(&limpia);
-        limpia = normalizar_hablado(&limpia);
+        limpia = normalizar_hablado_en(&limpia, idioma);
         let plana = limpia.trim().trim_start_matches("- ").trim().to_lowercase();
         if botones.contains(&plana.as_str()) {
             continue;
@@ -1800,7 +1930,7 @@ pub fn limpiar_markdown_hablado(md: &str) -> String {
     }
     // El código SANGRADO (cuatro espacios, estilo markdown clásico):
     // tres líneas seguidas con pinta de código se anuncian y se callan.
-    colapsar_codigo_sangrado(&mut out);
+    colapsar_codigo_sangrado(&mut out, idioma);
     // LAS ESTROFAS: tres o más «párrafos» seguidos de una línea corta sin
     // punto final son VERSOS que la extracción separó de más; se re-unen
     // con salto simple (una estrofa = una pieza, pausa de verso, no de
@@ -1932,7 +2062,7 @@ fn parece_codigo(l: &str) -> bool {
 }
 
 /// Runs de ≥3 líneas de código sangrado: se anuncian una vez y se callan.
-fn colapsar_codigo_sangrado(out: &mut Vec<String>) {
+fn colapsar_codigo_sangrado(out: &mut Vec<String>, idioma: &str) {
     let mut i = 0;
     while i < out.len() {
         if parece_codigo(&out[i]) {
@@ -1950,10 +2080,7 @@ fn colapsar_codigo_sangrado(out: &mut Vec<String>) {
                 .filter(|l| parece_codigo(l))
                 .count();
             if lineas_codigo >= 3 {
-                out.splice(
-                    i..=ultimas_codigo,
-                    ["(Hay un ejemplo de código.)".to_string()],
-                );
+                out.splice(i..=ultimas_codigo, [marcador_codigo(idioma).to_string()]);
                 i += 1;
                 continue;
             }
@@ -1980,9 +2107,32 @@ fn quitar_emojis(linea: &str) -> String {
         .collect()
 }
 
-/// NORMALIZACIÓN HABLADA conservadora: solo transformaciones inequívocas
-/// (lo dudoso se deja tal cual, que la voz ya se defiende).
-fn normalizar_hablado(linea: &str) -> String {
+/// NORMALIZACIÓN HABLADA conservadora, en el idioma del texto: en
+/// español y en inglés se habla su lengua; en el resto solo lo
+/// inequívoco y universal (nada de meter palabras de otro idioma).
+fn normalizar_hablado_en(linea: &str, idioma: &str) -> String {
+    match idioma {
+        "es" => normalizar_hablado_es(linea),
+        "en" => normalizar_hablado_ingles(linea),
+        _ => linea.to_string(),
+    }
+}
+
+/// La versión inglesa: percent, monedas, rangos con «to».
+fn normalizar_hablado_ingles(linea: &str) -> String {
+    let mut t = linea.to_string();
+    t = t.replace(" & ", " and ");
+    t = reemplazar_sufijo_numerico(&t, "%", "percent", "percent");
+    t = reemplazar_sufijo_numerico(&t, "€", "euro", "euros");
+    t = reemplazar_sufijo_numerico(&t, "£", "pound", "pounds");
+    t = reemplazar_moneda_prefija(&t, '$', "dollar", "dollars");
+    t = reemplazar_rango_de_anos_con(&t, " to ");
+    t
+}
+
+/// NORMALIZACIÓN HABLADA conservadora en ESPAÑOL: solo transformaciones
+/// inequívocas (lo dudoso se deja tal cual, que la voz ya se defiende).
+fn normalizar_hablado_es(linea: &str) -> String {
     let mut t = linea.to_string();
     // El ampersand entre palabras.
     t = t.replace(" & ", " y ");
@@ -2030,7 +2180,7 @@ fn normalizar_hablado(linea: &str) -> String {
     // El dólar delante del número (el uso inglés): $5 → 5 dólares.
     t = reemplazar_moneda_prefija(&t, '$', "dólar", "dólares");
     // Rangos de años: «1936-1939» → «1936 a 1939».
-    t = reemplazar_rango_de_anos(&t);
+    t = reemplazar_rango_de_anos_con(&t, " a ");
     t
 }
 
@@ -2198,7 +2348,7 @@ fn reemplazar_moneda_prefija(texto: &str, simbolo: char, singular: &str, plural:
 }
 
 /// «1936-1939» → «1936 a 1939» (solo año-año: cuatro y cuatro cifras).
-fn reemplazar_rango_de_anos(texto: &str) -> String {
+fn reemplazar_rango_de_anos_con(texto: &str, conector: &str) -> String {
     let cs: Vec<char> = texto.chars().collect();
     let mut out = String::with_capacity(texto.len() + 4);
     let mut i = 0;
@@ -2211,7 +2361,7 @@ fn reemplazar_rango_de_anos(texto: &str) -> String {
             && (i < 5 || !cs[i - 5].is_ascii_digit())
             && (i + 5 >= cs.len() || !cs[i + 5].is_ascii_digit())
         {
-            out.push_str(" a ");
+            out.push_str(conector);
             i += 1;
             continue;
         }
@@ -2962,40 +3112,40 @@ mod tests {
     #[test]
     fn la_normalizacion_hablada_es_conservadora() {
         assert_eq!(
-            normalizar_hablado("La guerra de 1936-1939 marcó al Sr. García."),
+            normalizar_hablado_es("La guerra de 1936-1939 marcó al Sr. García."),
             "La guerra de 1936 a 1939 marcó al señor García."
         );
         assert_eq!(
-            normalizar_hablado("Subió un 3,5 % este año."),
+            normalizar_hablado_es("Subió un 3,5 % este año."),
             "Subió un 3,5 por ciento este año."
         );
         assert_eq!(
-            normalizar_hablado("Cuesta 12,50 € en EE. UU."),
+            normalizar_hablado_es("Cuesta 12,50 € en EE. UU."),
             "Cuesta 12,50 euros en Estados Unidos."
         );
         assert_eq!(
-            normalizar_hablado("Pagó $5 por el libro."),
+            normalizar_hablado_es("Pagó $5 por el libro."),
             "Pagó 5 dólares por el libro."
         );
         // Lo dudoso NO se toca.
         assert_eq!(
-            normalizar_hablado("El ISBN 84-376-0494-7 sigue igual."),
+            normalizar_hablado_es("El ISBN 84-376-0494-7 sigue igual."),
             "El ISBN 84-376-0494-7 sigue igual."
         );
         assert_eq!(
-            normalizar_hablado("Recaudó $3,2 millones."),
+            normalizar_hablado_es("Recaudó $3,2 millones."),
             "Recaudó $3,2 millones."
         );
         assert_eq!(
-            normalizar_hablado("D. Quijote no cambia."),
+            normalizar_hablado_es("D. Quijote no cambia."),
             "D. Quijote no cambia."
         );
         assert_eq!(
-            normalizar_hablado("Fruta, pan, etc. Luego volvió."),
+            normalizar_hablado_es("Fruta, pan, etc. Luego volvió."),
             "Fruta, pan, etcétera. Luego volvió."
         );
         assert_eq!(
-            normalizar_hablado("compró pág. 12 y art. 4"),
+            normalizar_hablado_es("compró pág. 12 y art. 4"),
             "compró página 12 y artículo 4"
         );
     }
@@ -3078,6 +3228,30 @@ mod tests {
     }
 
     #[test]
+    fn las_adaptaciones_hablan_el_idioma_del_texto() {
+        // En inglés: marcador inglés y normalización inglesa.
+        let en = limpiar_markdown_hablado(
+            "The war of 1936-1939 changed everything, and the price rose by 3% before the market settled down for good.\n\n```rust\nlet x = 1;\nlet y = 2;\nlet z = 3;\n```\n\nMore prose follows here.",
+        );
+        assert!(en.contains("1936 to 1939"), "{en}");
+        assert!(en.contains("3 percent"), "{en}");
+        assert!(en.contains("(There is a code example.)"), "{en}");
+        assert!(!en.contains("ejemplo de código"));
+        // En español: lo de siempre.
+        let es = limpiar_markdown_hablado(
+            "La guerra de 1936-1939 lo cambió todo, y el precio subió un 3 % antes de que el mercado se calmara del todo para siempre.",
+        );
+        assert!(es.contains("1936 a 1939"), "{es}");
+        assert!(es.contains("3 por ciento"), "{es}");
+        // En francés: conservador, nada de palabras metidas.
+        let fr = limpiar_markdown_hablado(
+            "La guerre de 1936-1939 a tout changé, et les prix ont augmenté de 3 % avant que le marché ne se calme durablement pour de bon.",
+        );
+        assert!(fr.contains("1936-1939"), "{fr}");
+        assert!(fr.contains("3 %"), "{fr}");
+    }
+
+    #[test]
     #[ignore = "red real: un ARTÍCULO de X entero (el caso reportado)"]
     fn articulo_de_x_real() {
         let cliente = cliente_de_prueba();
@@ -3115,7 +3289,10 @@ y el cuarto que cierra</div><p>Prosa normal aparte para que el artículo pese lo
         ))
         .unwrap();
         println!("TÍTULO: {titulo:?}\n{}", &md[..md.len().min(700)]);
-        assert!(md.contains(" dice: ") || md.contains(" responde: "));
+        assert!(
+            md.contains(" says: ") || md.contains(" replies: ") || md.contains(" dice: "),
+            "conectores ausentes"
+        );
     }
 
     #[test]
@@ -3182,7 +3359,10 @@ y el cuarto que cierra</div><p>Prosa normal aparte para que el artículo pese lo
         .unwrap();
         println!("TÍTULO: {titulo:?}\n{}", &md[..md.len().min(900)]);
         assert!(titulo.is_some());
-        assert!(md.contains(" dice: ") || md.contains(" responde: "));
+        assert!(
+            md.contains(" says: ") || md.contains(" replies: ") || md.contains(" dice: "),
+            "conectores ausentes"
+        );
         assert!(!md.contains("<p>"));
     }
 

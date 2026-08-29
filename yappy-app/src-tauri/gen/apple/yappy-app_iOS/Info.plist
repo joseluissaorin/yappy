@@ -34,16 +34,18 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.yappy.app</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>yappy</string>
 			</array>
-			<key>CFBundleURLName</key>
-			<string>yappy</string>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0.2.0.17</string>
+	<string>0.2.0.18</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>

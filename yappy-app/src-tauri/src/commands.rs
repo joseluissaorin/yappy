@@ -1450,6 +1450,7 @@ pub async fn read_document_paragraphs_cmd(
     doc_path: Option<String>,
     titulo: Option<String>,
     start_paused: Option<bool>,
+    doc_lang: Option<String>,
 ) -> Result<(), String> {
     // La voz de verdad manda: el dicho del título se calla al instante.
     #[cfg(target_os = "ios")]
@@ -1460,6 +1461,7 @@ pub async fn read_document_paragraphs_cmd(
         pausas,
         velocidades,
         voces,
+        doc_lang: doc_lang.filter(|l| !l.is_empty() && l != "auto"),
         doc_path: doc_path.unwrap_or_default(),
         titulo: titulo.unwrap_or_default(),
     };
@@ -1494,6 +1496,7 @@ pub async fn leer_parrafos(
         pausas,
         velocidades,
         voces,
+        doc_lang,
         doc_path,
         titulo,
     } = receta;
@@ -1525,9 +1528,14 @@ pub async fn leer_parrafos(
     // Construye el Guion con lo que sabe el editor. Cada pieza pasa por el
     // guionizador (idioma + verbalización con spans) y luego recibe sus
     // anulaciones.
-    let idioma_base = {
-        let pref = state.settings.lock().unwrap().default_lang.clone();
-        yappy_core::lang_detect::detect_document_lang(&joined, &pref)
+    // EL IDIOMA DEL TEXTO: el fijado en el taller manda; si no, se
+    // DETECTA sobre el documento entero (whatlang, 31 idiomas).
+    let idioma_base = match &doc_lang {
+        Some(l) => l.clone(),
+        None => {
+            let pref = state.settings.lock().unwrap().default_lang.clone();
+            yappy_core::lang_detect::detect_document_lang(&joined, &pref)
+        }
     };
     let guion = {
         use yappy_core::guion::{construir_pieza, ClasePieza, Guion};
@@ -1567,7 +1575,7 @@ pub async fn leer_parrafos(
         joined,
         Some(guion),
         voice,
-        None,
+        doc_lang.clone(),
         "document".into(),
         ReadMode::Document {
             base_paragraph_index: from_index,
@@ -3108,7 +3116,7 @@ async fn read_internal<R: Runtime>(
                     .unwrap_or_else(|| s.default_lang.clone()),
                 total_steps: s.quality.total_steps(),
                 seed: None,
-                detectar_idioma: s.auto_lang_detect,
+                detectar_idioma: s.auto_lang_detect && forced_lang.is_none(),
                 pausa_entre_parrafos_s: s.silence_secs.clamp(0.0, 5.0),
             },
             s.voice_overrides.clone(),

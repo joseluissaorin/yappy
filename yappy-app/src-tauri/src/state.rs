@@ -42,6 +42,8 @@ pub struct RecetaLectura {
     pub pausas: Option<Vec<f32>>,
     pub velocidades: Option<Vec<f32>>,
     pub voces: Option<Vec<Option<String>>>,
+    /// El IDIOMA del texto fijado a mano en el taller (None = detectar).
+    pub doc_lang: Option<String>,
     pub doc_path: String,
     pub titulo: String,
 }

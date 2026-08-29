@@ -17,7 +17,7 @@
   import { goto } from "$app/navigation";
   import { reader } from "$lib/readerStore.svelte";
   import { guardarProgreso, progresoDe } from "$lib/progreso";
-  import { t, idiomaUI } from "$lib/i18n";
+  import { t, IDIOMAS_UI, NOMBRE_IDIOMA, idiomaUI } from "$lib/i18n";
   import { get } from "svelte/store";
   import { isMobile } from "$lib/platform";
   import { haptic } from "$lib/haptic";
@@ -65,6 +65,9 @@
   let overrides = $state<ParaState[]>([]);
   let rhythmMult = $state(1.0);
   let docVoice = $state<string | null>(null);
+  // El IDIOMA del texto: «auto» detecta; un código lo fija (y las
+  // adaptaciones del guion lo siguen).
+  let docLang = $state<string>("auto");
   let voices = $state<Voice[]>([]);
   let settings = $state<Settings | null>(null);
 
@@ -423,6 +426,7 @@
           })),
           rhythm_mult: rhythmMult,
           doc_voice: docVoice,
+          doc_lang: docLang,
           saved_at: new Date().toISOString(),
         };
         await saveProject(doc!.path, JSON.stringify(snap));
@@ -445,6 +449,7 @@
       }
       if (typeof parsed?.rhythm_mult === "number") rhythmMult = parsed.rhythm_mult;
       if (typeof parsed?.doc_voice === "string" || parsed?.doc_voice === null) docVoice = parsed.doc_voice;
+      if (typeof parsed?.doc_lang === "string" && parsed.doc_lang) docLang = parsed.doc_lang;
     } catch { /* proyecto viejo o ilegible: se ignora */ }
   }
 
@@ -464,7 +469,7 @@
         }),
         voces: overrides.map((o) => o.voice ?? null),
       },
-      { docPath: doc?.path ?? "", titulo: title, startPaused: opts.enPausa ?? false },
+      { docPath: doc?.path ?? "", titulo: title, startPaused: opts.enPausa ?? false, docLang: docLang === "auto" ? null : docLang },
     );
   }
   async function pausa() { haptic("medium"); await pausar().catch(() => {}); }
@@ -497,6 +502,15 @@
   function setParaSpeed(i: number, v: number | null) { overrides[i].speed = v; scheduleSave(); }
   function setParaPause(i: number, v: number | null) { overrides[i].pauseBefore = v; scheduleSave(); }
   function setParaVoice(i: number, v: string | null) { overrides[i].voice = v; voicePickerFor = null; scheduleSave(); }
+  function setDocLang(l: string) {
+    docLang = l;
+    scheduleSave();
+    if (isPlaying || playback?.estado === "pausa") {
+      const desde = Math.max(0, currentPara);
+      readFrom(desde, { enPausa: playback?.estado === "pausa" }).catch(() => {});
+    }
+  }
+
   function setDocVoice(v: string | null) {
     docVoice = v;
     voicePickerFor = null;
@@ -931,6 +945,23 @@
           {/each}
         </div>
       {/if}
+
+      <!-- EL IDIOMA DEL TEXTO: detectado solo, o fijado a mano (la voz,
+           la pronunciación y las adaptaciones del guion lo siguen). -->
+      <label class="ctl-fila" for="idioma-texto">
+        <span class="ctl-rotulo">{$t("lector.idioma_texto")}</span>
+        <select
+          id="idioma-texto"
+          class="ctl-select-idioma"
+          value={docLang}
+          onchange={(e) => setDocLang(e.currentTarget.value)}
+        >
+          <option value="auto">{$t("lector.idioma_auto")}</option>
+          {#each IDIOMAS_UI as cod (cod)}
+            <option value={cod}>{NOMBRE_IDIOMA[cod]}</option>
+          {/each}
+        </select>
+      </label>
 
       <button class="tecla-exportar" use:presionable onclick={exportAudiobook} disabled={rendering}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17H20v5H6.5a2.5 2.5 0 0 1 0-5z"/></svg>
@@ -1607,6 +1638,16 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+  }
+  .ctl-select-idioma {
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--yap-tinta, #2b2418);
+    background: var(--yap-superficie, #fdf9ee);
+    border: 1.5px solid var(--yap-borde, #d8d0bd);
+    border-radius: 10px;
+    padding: 7px 10px;
+    max-width: 55%;
   }
   .ctl-rotulo {
     font-family: var(--yap-mono, ui-monospace, monospace);
