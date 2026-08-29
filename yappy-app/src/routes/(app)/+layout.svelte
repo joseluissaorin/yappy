@@ -10,7 +10,8 @@
   import Onboarding from "$lib/Onboarding.svelte";
   import Confetti from "$lib/Confetti.svelte";
   import { goPage, sectionForPath } from "$lib/nav";
-  import { isIOS, ready as platformReady, platformLocale, langCodeFromLocale } from "$lib/platform";
+  import { isIOS, isMobile, ready as platformReady, platformLocale, langCodeFromLocale } from "$lib/platform";
+  import { fijarIdiomaDesdeLocale } from "$lib/i18n";
   import { startShareIntake } from "$lib/shareIntake";
   import {
     type Settings,
@@ -65,6 +66,9 @@
       onboardingOpen = true;
       await platformReady;
       const locale = getStore(platformLocale);
+      // El idioma de la interfaz (las vistas compartidas ya están
+      // localizadas; el resto del shell de escritorio, aún no).
+      fijarIdiomaDesdeLocale(locale);
       const detectedLang = langCodeFromLocale(locale);
       if (detectedLang && detectedLang !== settings.default_lang) {
         settings = { ...settings, default_lang: detectedLang };
@@ -142,9 +146,7 @@
       <button class:active={current === "home"} onclick={() => goPage("home")} aria-current={current === "home" ? "page" : undefined}>home</button>
       <button class:active={current === "voices"} onclick={() => goPage("voices")} aria-current={current === "voices" ? "page" : undefined}>voices</button>
       <button class:active={current === "transcribe"} onclick={() => goPage("transcribe")} aria-current={current === "transcribe" ? "page" : undefined}>transcribe</button>
-      {#if $isIOS}
-        <button class:active={current === "library"} onclick={() => goPage("library")} aria-current={current === "library" ? "page" : undefined}>library</button>
-      {/if}
+      <button class:active={current === "library"} onclick={() => goPage("library")} aria-current={current === "library" ? "page" : undefined}>library</button>
       <button class:active={current === "preferences"} onclick={() => goPage("preferences")} aria-current={current === "preferences" ? "page" : undefined}>preferences</button>
       <button class:active={current === "history"} onclick={() => goPage("history")} aria-current={current === "history" ? "page" : undefined}>history</button>
       <button class:active={current === "diagnostics"} onclick={() => goPage("diagnostics")} aria-current={current === "diagnostics" ? "page" : undefined}>diagnostics</button>
@@ -185,7 +187,7 @@
 
 <!-- iOS mini-player: compact bottom bar (Spotify / Apple Music style). Desktop
      uses the separate floating player window instead. -->
-{#if $isIOS && mpActive && playback}
+{#if $isMobile && mpActive && playback}
   <div class="miniplayer">
     <div class="mp-progress" style="width: {mpPct}%"></div>
     <button class="mp-play" onclick={() => togglePause()} aria-label={playback.paused ? "resume" : "pause"}>

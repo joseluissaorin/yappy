@@ -182,10 +182,26 @@
   // audio real). Nada de subrayados avanzando en silencio y volviendo a
   // empezar cuando arranca el sonido.
   let barriendo = false;
+  // La ESTIMACIÓN DE RITMO por caracteres, con oído: un dígito se dice
+  // como sus palabras («1936» son cuatro caracteres pero casi un segundo
+  // de voz) y la puntuación respira (la coma retrasa, el punto más).
+  function durEstimada(frase: string): number {
+    let unidades = 0;
+    for (const c of frase) {
+      if (c >= "0" && c <= "9") unidades += 4.5;
+      else if (c === "," || c === ";" || c === ":") unidades += 2.6;
+      else if (c === "." || c === "!" || c === "?" || c === "…") unidades += 3.4;
+      else if (c === "—" || c === "(" || c === ")" || c === "«" || c === "»") unidades += 1.8;
+      else if (c === "%") unidades += 9;
+      else unidades += 1;
+    }
+    return Math.max(0.9, (unidades * 0.062) / effectiveSpeedForPlay());
+  }
+
   function arrancarBarrido() {
     cancelAnimationFrame(rafId);
     barriendo = true;
-    const dur = Math.max(0.9, (frase.length * 0.062) / effectiveSpeedForPlay());
+    const dur = durEstimada(frase);
     const ya = barrido;
     const t0 = performance.now() - ya * dur * 1000;
     const paso = (ahora: number) => {
@@ -481,7 +497,17 @@
   function setParaSpeed(i: number, v: number | null) { overrides[i].speed = v; scheduleSave(); }
   function setParaPause(i: number, v: number | null) { overrides[i].pauseBefore = v; scheduleSave(); }
   function setParaVoice(i: number, v: string | null) { overrides[i].voice = v; voicePickerFor = null; scheduleSave(); }
-  function setDocVoice(v: string | null) { docVoice = v; voicePickerFor = null; scheduleSave(); }
+  function setDocVoice(v: string | null) {
+    docVoice = v;
+    voicePickerFor = null;
+    scheduleSave();
+    // EN CALIENTE: si la lectura está viva, se relanza desde el párrafo
+    // actual con la voz nueva (conservando la pausa), sin cortar nada.
+    if (isPlaying || playback?.estado === "pausa") {
+      const desde = Math.max(0, currentPara);
+      readFrom(desde, { enPausa: playback?.estado === "pausa" }).catch(() => {});
+    }
+  }
   function resetAll() {
     haptic("warning");
     seedOverrides();
@@ -553,6 +579,9 @@
           voice: overrides[i]?.voice ?? docVoice ?? null,
           speed: overrides[i]?.speed ?? null,
           pause_before: (overrides[i]?.pauseBefore ?? defaultPause(i)) * rhythmMult,
+          // Los títulos del guion son los CAPÍTULOS del audiolibro (el
+          // export móvil salía con un solo capítulo «Chapter 1»).
+          chapter_title: (kinds[i] ?? "").startsWith("heading") ? text.slice(0, 80) : null,
         })),
         out,
         { title },

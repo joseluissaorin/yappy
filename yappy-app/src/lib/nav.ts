@@ -6,7 +6,7 @@
 
 import { get } from "svelte/store";
 import { goto } from "$app/navigation";
-import { isIOS } from "$lib/platform";
+import { isIOS, isMobile } from "$lib/platform";
 import { openTranscribeWindow } from "$lib/ipc";
 
 export type Section =
@@ -42,7 +42,7 @@ const RUTAS_MOVIL: Record<Section, string> = {
 
 /// Navigate to a section. `opts.path` hands an audio file to transcription.
 export async function goPage(section: Section, opts?: { path?: string }) {
-  if (get(isIOS)) {
+  if (get(isMobile)) {
     await goto(RUTAS_MOVIL[section]);
     return;
   }

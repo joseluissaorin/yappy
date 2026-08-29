@@ -867,7 +867,12 @@ async fn extraer_tweet(cliente: &reqwest::Client, url: &str) -> Result<(Option<S
         .json()
         .await?;
     let autor = v["user"]["name"].as_str().unwrap_or("Alguien").to_string();
-    // Los tuits largos («artículos») llegan enteros en note_tweet.
+    // Los ARTÍCULOS de X (título + cuerpo largo) no viajan por la
+    // sindicación (solo la vista previa): el cuerpo entero se pide aparte.
+    if v.get("article").is_some() {
+        return extraer_articulo_de_x(cliente, id, &autor, &v).await;
+    }
+    // Los tuits largos («notas») llegan enteros en note_tweet.
     let texto = v["note_tweet"]["text"]
         .as_str()
         .or_else(|| v["text"].as_str())
@@ -883,6 +888,81 @@ async fn extraer_tweet(cliente: &reqwest::Client, url: &str) -> Result<(Option<S
     }
     let markdown = limpiar_markdown_hablado(&md);
     Ok((Some(format!("{autor} en X")), markdown))
+}
+
+/// UN ARTÍCULO DE X entero: el cuerpo vive en bloques draft-js que la
+/// API de fxtwitter sí sirve; si ese espejo falla, al menos el título y
+/// la vista previa de la sindicación, avisando de que es un adelanto.
+async fn extraer_articulo_de_x(
+    cliente: &reqwest::Client,
+    id: u64,
+    autor: &str,
+    sindicacion: &serde_json::Value,
+) -> Result<(Option<String>, String)> {
+    let titulo_previo = sindicacion["article"]["title"]
+        .as_str()
+        .unwrap_or("Artículo en X")
+        .trim()
+        .to_string();
+    // El espejo con el cuerpo completo.
+    if let Ok(resp) = cliente
+        .get(format!("https://api.fxtwitter.com/status/{id}"))
+        .send()
+        .await
+    {
+        if let Ok(resp) = resp.error_for_status() {
+            if let Ok(fx) = resp.json::<serde_json::Value>().await {
+                let art = &fx["tweet"]["article"];
+                if let Some(bloques) = art["content"]["blocks"].as_array() {
+                    let titulo = art["title"]
+                        .as_str()
+                        .map(|t| t.trim().to_string())
+                        .filter(|t| !t.is_empty())
+                        .unwrap_or(titulo_previo.clone());
+                    let quien = fx["tweet"]["author"]["name"].as_str().unwrap_or(autor);
+                    let mut md = format!("# {titulo}\n\nPor {quien}, en X.\n\n");
+                    for b in bloques {
+                        let Some(texto) = b["text"].as_str() else {
+                            continue;
+                        };
+                        let texto = texto.trim();
+                        if texto.is_empty() {
+                            continue;
+                        }
+                        match b["type"].as_str().unwrap_or("unstyled") {
+                            "header-one" => md.push_str(&format!("# {texto}\n\n")),
+                            "header-two" => md.push_str(&format!("## {texto}\n\n")),
+                            "header-three" | "header-four" => {
+                                md.push_str(&format!("### {texto}\n\n"))
+                            }
+                            "unordered-list-item" => md.push_str(&format!("- {texto}\n\n")),
+                            "ordered-list-item" => md.push_str(&format!("1. {texto}\n\n")),
+                            "blockquote" => md.push_str(&format!("{texto}\n\n")),
+                            "atomic" | "code-block" => {}
+                            _ => md.push_str(&format!("{texto}\n\n")),
+                        }
+                    }
+                    let markdown = limpiar_markdown_hablado(&md);
+                    if markdown.chars().count() > 300 {
+                        return Ok((Some(titulo), markdown));
+                    }
+                }
+            }
+        }
+    }
+    // Sin espejo: la vista previa honesta.
+    let preview = sindicacion["article"]["preview_text"]
+        .as_str()
+        .unwrap_or("");
+    if preview.trim().is_empty() {
+        return Err(anyhow!(
+            "X no deja leer este artículo sin cuenta (prueba a compartirlo desde Safari con tu sesión abierta)"
+        ));
+    }
+    let md = format!(
+        "# {titulo_previo}\n\nPor {autor}, en X.\n\n{preview}\n\n(Esto es solo el comienzo: X no deja leer el artículo completo sin cuenta.)"
+    );
+    Ok((Some(titulo_previo), limpiar_markdown_hablado(&md)))
 }
 
 /// El token de la API de sindicación: ((id/1e15)·π) en base 36, sin ceros
@@ -1593,7 +1673,39 @@ pub fn podar_html(html: &str, url: &str) -> String {
             }
         }
     }
+    preservar_versos(&doc);
     doc.html().to_string()
+}
+
+/// LOS VERSOS SOBREVIVEN: Readability colapsa los saltos de línea
+/// LITERALES (white-space: pre-wrap) y convertía cualquier poema en una
+/// masa sin puntos. Aquí, todo bloque hoja cuyo texto tenga pinta de
+/// verso (tres o más líneas cortas) cambia sus \n por <br>, que el
+/// extractor SÍ respeta (comprobado empíricamente).
+fn preservar_versos(doc: &dom_query::Document) {
+    for sel in doc.select("p, div, blockquote, li, td, pre").iter() {
+        // Solo HOJAS de texto: si dentro hay más bloques, ya se visitarán.
+        if sel
+            .select("p, div, ul, ol, table, blockquote, h1, h2, h3, pre")
+            .exists()
+        {
+            continue;
+        }
+        let interior = sel.html().to_string();
+        if !interior.contains('\n') || interior.contains("<br") {
+            continue;
+        }
+        let texto = sel.text().to_string();
+        let lineas: Vec<&str> = texto.lines().filter(|l| !l.trim().is_empty()).collect();
+        if lineas.len() < 3 {
+            continue;
+        }
+        let media = lineas.iter().map(|l| l.chars().count()).sum::<usize>() / lineas.len();
+        if media > 60 {
+            continue;
+        }
+        sel.set_html(interior.replace('\n', "<br>"));
+    }
 }
 
 /// La limpieza HABLADA del markdown final: marcas de cita [1] [nota 2],
@@ -1689,6 +1801,11 @@ pub fn limpiar_markdown_hablado(md: &str) -> String {
     // El código SANGRADO (cuatro espacios, estilo markdown clásico):
     // tres líneas seguidas con pinta de código se anuncian y se callan.
     colapsar_codigo_sangrado(&mut out);
+    // LAS ESTROFAS: tres o más «párrafos» seguidos de una línea corta sin
+    // punto final son VERSOS que la extracción separó de más; se re-unen
+    // con salto simple (una estrofa = una pieza, pausa de verso, no de
+    // párrafo).
+    reunir_estrofas(&mut out);
     // EL MURO DE CIERRE: si en el último tramo aparece la invitación a
     // suscribirse («Suscríbete para seguir leyendo», «Lee sin límites»),
     // de ahí al final ya no hay artículo: se corta.
@@ -1715,6 +1832,58 @@ pub fn limpiar_markdown_hablado(md: &str) -> String {
         texto = texto.replace("\n\n\n", "\n\n");
     }
     texto.trim().to_string()
+}
+
+/// ¿Esta línea es un VERSO suelto? Corta, con letras, sin cierre de
+/// frase (los títulos # no cuentan).
+fn parece_verso_suelto(l: &str) -> bool {
+    let t = l.trim();
+    if t.is_empty() || t.starts_with('#') {
+        return false;
+    }
+    let n = t.chars().count();
+    (2..=60).contains(&n)
+        && t.chars().any(|c| c.is_alphabetic())
+        && !t.ends_with(['.', '!', '?', ':', ';'])
+}
+
+/// Re-une en estrofas los versos que quedaron como párrafos sueltos:
+/// runs de ≥3 versos separados por UNA línea en blanco cada uno.
+fn reunir_estrofas(out: &mut Vec<String>) {
+    let mut i = 0;
+    while i < out.len() {
+        if !parece_verso_suelto(&out[i]) {
+            i += 1;
+            continue;
+        }
+        // Medir el run: verso, blanco, verso, blanco, verso…
+        let mut j = i;
+        let mut versos = 1usize;
+        loop {
+            let mut k = j + 1;
+            let mut blancos = 0;
+            while k < out.len() && out[k].trim().is_empty() {
+                blancos += 1;
+                k += 1;
+            }
+            if blancos == 1 && k < out.len() && parece_verso_suelto(&out[k]) {
+                versos += 1;
+                j = k;
+            } else {
+                break;
+            }
+        }
+        if versos >= 3 {
+            // Sustituir el tramo [i..=j] por la estrofa con saltos simples.
+            let estrofa: Vec<String> = out[i..=j]
+                .iter()
+                .filter(|l| !l.trim().is_empty())
+                .map(|l| l.trim().to_string())
+                .collect();
+            out.splice(i..=j, [estrofa.join("\n")]);
+        }
+        i += 1;
+    }
 }
 
 /// ¿Esta línea parece CÓDIGO? Sangría de 4+ espacios y densidad alta
@@ -2906,6 +3075,34 @@ mod tests {
             Some("https://ejemplo.com/amp/art".into())
         );
         assert_eq!(enlace_amp("<html></html>", "https://x.com"), None);
+    }
+
+    #[test]
+    #[ignore = "red real: un ARTÍCULO de X entero (el caso reportado)"]
+    fn articulo_de_x_real() {
+        let cliente = cliente_de_prueba();
+        let (titulo, md) = tauri::async_runtime::block_on(extraer_tweet(
+            &cliente,
+            "https://x.com/fi56622380/status/2093040177711329673?s=46",
+        ))
+        .unwrap();
+        println!("TÍTULO: {titulo:?} · {} chars", md.chars().count());
+        println!("{}", &md[..md.len().min(500)]);
+        assert!(md.chars().count() > 1000, "esperaba el artículo entero");
+    }
+
+    #[test]
+    #[ignore = "experimento: qué hace Readability con versos"]
+    fn experimento_versos() {
+        let con_saltos = r#"<html><body><article><h1>Poema</h1><div class="body">Primer verso del poema
+segundo verso que sigue
+tercer verso sin puntos
+y el cuarto que cierra</div><p>Prosa normal aparte para que el artículo pese lo suficiente y Readability lo tome en serio como cuerpo del documento con contenido de verdad.</p></article></body></html>"#;
+        let (_, md) = extraer_articulo(con_saltos, "https://x.test/poema").unwrap();
+        println!("── \n literales:\n{md}\n");
+        let con_br = con_saltos.replace("\n", "<br>");
+        let (_, md2) = extraer_articulo(&con_br, "https://x.test/poema").unwrap();
+        println!("── con <br>:\n{md2}");
     }
 
     #[test]

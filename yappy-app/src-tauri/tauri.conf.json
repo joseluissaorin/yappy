@@ -5,9 +5,18 @@
   "identifier": "com.yappy.app",
   "plugins": {
     "deep-link": {
-      "mobile": [{ "scheme": ["yappy"], "appLink": false }],
+      "mobile": [
+        {
+          "scheme": [
+            "yappy"
+          ],
+          "appLink": false
+        }
+      ],
       "desktop": {
-        "schemes": ["yappy"]
+        "schemes": [
+          "yappy"
+        ]
       }
     }
   },
@@ -62,7 +71,14 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": [
+          "$DOCUMENT/**",
+          "$APPDATA/**"
+        ]
+      }
     }
   },
   "bundle": {
@@ -70,7 +86,15 @@
     "category": "Productivity",
     "shortDescription": "Local TTS that reads anything on your screen.",
     "longDescription": "Yappy reads selected text, the active document, or whatever's on your screen, out loud — locally, with Supertonic 3.",
-    "targets": ["dmg", "app", "deb", "appimage", "rpm", "msi", "nsis"],
+    "targets": [
+      "dmg",
+      "app",
+      "deb",
+      "appimage",
+      "rpm",
+      "msi",
+      "nsis"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

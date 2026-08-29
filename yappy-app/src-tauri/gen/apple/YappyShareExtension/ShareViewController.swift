@@ -34,6 +34,7 @@ class ShareViewController: UIViewController {
     /// tal cual, sin cargarlos en memoria: el límite de ~120 MB de las
     /// extensiones no perdona). El DOCX no tiene constante estática.
     private static let documentUTIs: [String] = [
+        "com.joseluissaorin.yappy.pack",
         UTType.pdf.identifier,
         UTType.epub.identifier,
         "org.openxmlformats.wordprocessingml.document",

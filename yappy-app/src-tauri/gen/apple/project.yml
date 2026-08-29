@@ -76,7 +76,7 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         CFBundleShortVersionString: 0.2.0
-        CFBundleVersion: "0.2.0.16"
+        CFBundleVersion: "0.2.0.17"
         # Export compliance: Yappy uses only exempt encryption (HTTPS for model
         # downloads + Apple's standard system crypto; no proprietary algorithms),
         # so it's exempt. Declaring this here skips the "Missing Compliance"
@@ -133,6 +133,19 @@ targets:
               url: yappy://action/open
         # User-facing display name (separate from CFBundleName).
         CFBundleDisplayName: Yappy
+        # EL FORMATO DE LA CASA: .yappy (audiolibro con karaoke). Declarado
+        # como UTI propio conformando a zip, para que Files/AirDrop y el
+        # share sheet ofrezcan «Abrir en Yappy».
+        UTExportedTypeDeclarations:
+          - UTTypeIdentifier: com.joseluissaorin.yappy.pack
+            UTTypeDescription: Audiolibro de Yappy
+            UTTypeConformsTo: [com.pkware.zip-archive, public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [yappy]
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Audiolibro de Yappy
+            LSHandlerRank: Owner
+            LSItemContentTypes: [com.joseluissaorin.yappy.pack]
         # Required reason API declarations — Apple needs these for file
         # timestamp access, hashing, etc. that ORT / pdf parsing touch.
         NSPrivacyAccessedAPITypes:
@@ -250,7 +263,7 @@ targets:
       properties:
         CFBundleDisplayName: YappyWidgets
         CFBundleShortVersionString: 0.2.0
-        CFBundleVersion: "0.2.0.16"
+        CFBundleVersion: "0.2.0.17"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     entitlements:
@@ -300,7 +313,7 @@ targets:
       properties:
         CFBundleDisplayName: Yappy
         CFBundleShortVersionString: 0.2.0
-        CFBundleVersion: "0.2.0.16"
+        CFBundleVersion: "0.2.0.17"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
@@ -320,6 +333,7 @@ targets:
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.text"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.property-list"
+                  OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.joseluissaorin.yappy.pack"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.adobe.pdf"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.idpf.epub-container"
                   OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.openxmlformats.wordprocessingml.document"

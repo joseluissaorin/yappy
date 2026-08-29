@@ -17,7 +17,7 @@ tauri-build = { version = "2", features = [] }
 # ── Tauri core + plugins available on every platform (macOS, Linux, Windows, iOS).
 # `tray-icon` and `macos-private-api` are gated to applicable platforms inside
 # Tauri itself, so listing them here is safe for iOS.
-tauri = { version = "2", features = ["tray-icon", "image-png", "macos-private-api", "devtools"] }
+tauri = { version = "2", features = ["protocol-asset", "tray-icon", "image-png", "macos-private-api", "devtools"] }
 tauri-plugin-opener = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"

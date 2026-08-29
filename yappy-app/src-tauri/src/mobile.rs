@@ -359,6 +359,7 @@ pub fn audiofile_current_path() -> Option<String> {
 // lectura (el documento en pausa sigue en pausa) ni el Now Playing.
 extern "C" {
     fn yappy_efecto_play(path: *const std::os::raw::c_char) -> f64;
+    fn yappy_efecto_stop();
 }
 
 /// Reproduce un fichero de audio corto por el canal de efectos. Devuelve su
@@ -369,6 +370,11 @@ pub fn efecto_play(path: &str) -> f64 {
         Ok(c) => unsafe { yappy_efecto_play(c.as_ptr()) },
         Err(_) => 0.0,
     }
+}
+
+/// Calla el canal de efectos (el dicho del título): la voz de verdad manda.
+pub fn efecto_stop() {
+    unsafe { yappy_efecto_stop() };
 }
 
 // ─── Spotlight indexing ────────────────────────────────────────────────

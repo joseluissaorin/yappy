@@ -847,11 +847,12 @@
     // Default to .m4b — produces a real audiobook with embedded chapter
     // markers that Apple Books / Audiobookshelf / VLC navigate. The "WAV"
     // filter is still offered for users who want raw uncompressed audio.
-    const defaultFilename = `${base} (audiobook).m4b`;
+    const defaultFilename = `${base} (audiobook).yappy`;
     try {
       const path = await dialogSave({
         defaultPath: defaultFilename,
         filters: [
+          { name: "Yappy audiobook (audio + karaoke)", extensions: ["yappy"] },
           { name: "M4B audiobook (AAC + chapters)", extensions: ["m4b"] },
           { name: "WAV audio (uncompressed)", extensions: ["wav"] },
         ],

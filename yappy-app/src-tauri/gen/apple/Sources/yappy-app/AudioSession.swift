@@ -193,6 +193,14 @@ public func yappy_efecto_play(_ pathPtr: UnsafePointer<CChar>?) -> Double {
     }
 }
 
+// La VOZ DE VERDAD manda: cuando arranca la lectura de un documento, el
+// dicho del título (o cualquier efecto) se calla al instante.
+@_cdecl("yappy_efecto_stop")
+public func yappy_efecto_stop() {
+    efectoPlayer?.stop()
+    efectoPlayer = nil
+}
+
 @_cdecl("yappy_background_audio_begin")
 public func yappy_background_audio_begin() {
     Task {

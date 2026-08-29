@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>0.2.0</string>
 	<key>CFBundleVersion</key>
-	<string>0.2.0.16</string>
+	<string>0.2.0.17</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -31,6 +31,7 @@
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.text"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.property-list"
+    OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.joseluissaorin.yappy.pack"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.adobe.pdf"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.idpf.epub-container"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.openxmlformats.wordprocessingml.document"

@@ -13,6 +13,7 @@
   import { t, idiomaUI } from "$lib/i18n";
   import { get as getStore } from "svelte/store";
   import { haptic } from "$lib/haptic";
+  import { pref } from "$lib/pref.svelte";
   import { plop, pop, tick as foleyTick, rasga, boing, vuelo as foleyVuelo } from "$lib/foley";
   import { presionable } from "$lib/presionable";
   import Criatura from "$lib/Criatura.svelte";
@@ -59,6 +60,8 @@
     colaReordenar,
     colaReintentar,
     colaReintentarArchivo,
+    getSettings,
+    libraryImportYappy,
     onColaActualizada,
     stopPlayback,
     readDocument,
@@ -207,6 +210,9 @@
   }
 
   onMount(async () => {
+    getSettings()
+      .then((s) => (pref.dosColumnas = s.dos_columnas))
+      .catch(() => {});
     try {
       etiquetaTop = parseFloat(localStorage.getItem("yappy.etiqueta.top") ?? "") || 0;
     } catch {}
@@ -410,8 +416,15 @@
       const ruta = await abrirDialogo({ multiple: false });
       logToBackend("info", "picker", `elegido: ${JSON.stringify(ruta)}`);
       if (typeof ruta === "string" && ruta) {
-        await colaAgregarArchivo(ruta);
-        logToBackend("info", "picker", "encolado");
+        if (ruta.toLowerCase().endsWith(".yappy")) {
+          // Un audiolibro de la casa: directo a la biblioteca.
+          await libraryImportYappy(ruta);
+          logToBackend("info", "picker", "yappy importado");
+          bobinas = ((await invoke("list_rendered_audiobooks_cmd").catch(() => [])) as Bobina[]) ?? [];
+        } else {
+          await colaAgregarArchivo(ruta);
+          logToBackend("info", "picker", "encolado");
+        }
       }
     } catch (e) {
       logToBackend("error", "picker", `fallo del selector: ${e}`);
@@ -910,7 +923,7 @@
   // El alto útil del pliego: la lista menos el colofón y los aires.
   let altoLista = $state(0);
   const tablero = $derived(
-    empaquetar(piezasTablero, anchoTablero, Math.max(0, altoLista - 250)),
+    empaquetar(piezasTablero, anchoTablero, Math.max(0, altoLista - 250), pref.dosColumnas),
   );
   // Factor de dispositivo (el Pro Max respira más) y factor del pliego.
   const fDispositivo = $derived(Math.min(1.18, Math.max(1, anchoTablero / 402)));

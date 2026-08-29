@@ -11,6 +11,7 @@
   let { alVolver = () => goto("/escuchar") }: { alVolver?: () => void } = $props();
   import { t, IDIOMAS_UI, NOMBRE_IDIOMA, fijarPreferenciaIdioma, preferenciaIdioma, type IdiomaUI } from "$lib/i18n";
   import { haptic } from "$lib/haptic";
+  import { pref } from "$lib/pref.svelte";
   import Criatura from "$lib/Criatura.svelte";
   import Deslizador from "$lib/Deslizador.svelte";
   import { presionable } from "$lib/presionable";
@@ -19,6 +20,7 @@
   import { PALETA } from "$lib/juguete";
   import {
     getSettings,
+    setSettings,
     setAppTheme,
     setVoice,
     setSpeed,
@@ -67,6 +69,7 @@
 
   onMount(async () => {
     settings = await getSettings().catch(() => null);
+    if (settings) pref.dosColumnas = settings.dos_columnas;
     velocidad = settings?.speed ?? 1.05;
     voices = await listVoices().catch(() => []);
     ttsListo = await isModelReady().catch(() => false);
@@ -74,6 +77,14 @@
     puente = await puenteMovilEstado().catch(() => null);
     idiomaPreferido = preferenciaIdioma();
   });
+
+  async function cambiarColumnas(dos: boolean) {
+    if (!settings) return;
+    haptic("light");
+    settings.dos_columnas = dos;
+    pref.dosColumnas = dos;
+    await setSettings($state.snapshot(settings)).catch(() => {});
+  }
 
   async function cambiarTema(tema: "cream" | "dark" | "system") {
     if (!settings) return;
@@ -232,6 +243,10 @@
         <button class="yap-pestana" use:presionable class:es-activa={settings.app_theme === "cream"} onclick={() => cambiarTema("cream")}>{$t("ajustes.tema.papel")}</button>
         <button class="yap-pestana" use:presionable class:es-activa={settings.app_theme === "dark"} onclick={() => cambiarTema("dark")}>{$t("ajustes.tema.noche")}</button>
         <button class="yap-pestana" use:presionable class:es-activa={settings.app_theme === "system"} onclick={() => cambiarTema("system")}>{$t("ajustes.tema.sistema")}</button>
+      </div>
+      <div class="yap-pestanas tema">
+        <button class="yap-pestana" use:presionable class:es-activa={!settings.dos_columnas} onclick={() => cambiarColumnas(false)}>{$t("ajustes.una_columna")}</button>
+        <button class="yap-pestana" use:presionable class:es-activa={settings.dos_columnas} onclick={() => cambiarColumnas(true)}>{$t("ajustes.dos_columnas")}</button>
       </div>
       <label class="fila" for="idioma-ui">
         <span>{$t("ajustes.idioma_ui")}</span>

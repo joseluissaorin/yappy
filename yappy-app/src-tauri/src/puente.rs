@@ -32,7 +32,14 @@ use tauri::{AppHandle, Emitter, Manager, Runtime};
 const ALPN: &[u8] = b"yappy/puente/1";
 
 /// Muestras, frecuencia y capítulos (t, título) de una síntesis del puente.
-type SintesisPuente = (Vec<f32>, u32, Vec<(f64, String)>);
+type SintesisPuente = (
+    Vec<f32>,
+    u32,
+    Vec<(f64, String)>,
+    Vec<crate::yappy_pack::TiempoFrase>,
+    String,
+    String,
+);
 const B64: base64::engine::general_purpose::GeneralPurpose =
     base64::engine::general_purpose::URL_SAFE_NO_PAD;
 
@@ -120,6 +127,14 @@ struct Peticion {
     steps: Option<usize>,
 }
 
+/// La voz pedida, o la del ajuste si la petición no traía.
+fn peticion_voz_o(pedida: &Option<String>, ajuste: &str) -> String {
+    pedida
+        .clone()
+        .filter(|v| !v.is_empty())
+        .unwrap_or_else(|| ajuste.to_string())
+}
+
 /// Arranca el endpoint iroh y el bucle de aceptación. Solo escritorio.
 pub fn iniciar_servidor(app: AppHandle) {
     tauri::async_runtime::spawn(async move {
@@ -202,10 +217,12 @@ async fn atender(app: AppHandle, conn: iroh::endpoint::Connection) -> Result<()>
     let estado = app.state::<Arc<crate::state::AppState>>();
     let root = crate::model::model_root(&app).map_err(|e| anyhow!(e))?;
     let engine = estado.engine_or_load(&root)?;
+    let peticion_voz = peticion.voz.clone();
+    let peticion_velocidad = peticion.velocidad;
     let (voz, velocidad, steps) = {
         let s = estado.settings.lock().unwrap();
         (
-            peticion.voz.unwrap_or_else(|| s.voice.clone()),
+            peticion_voz_o(&peticion_voz, &s.voice),
             peticion.velocidad.unwrap_or(s.speed),
             peticion.steps.unwrap_or_else(|| s.quality.total_steps()),
         )
@@ -227,6 +244,9 @@ async fn atender(app: AppHandle, conn: iroh::endpoint::Connection) -> Result<()>
         let mut samples: Vec<f32> = Vec::new();
         let mut sample_rate = 44_100u32;
         let mut capitulos: Vec<(f64, String)> = Vec::new();
+        // EL KARAOKE del render remoto: los tiempos por frase viajan
+        // dentro del .yappy de vuelta.
+        let mut tiempos: Vec<crate::yappy_pack::TiempoFrase> = Vec::new();
         let mut pieza_previa = usize::MAX;
         engine.synthesize_guion(&guion, &opts, |chunk| {
             sample_rate = chunk.sample_rate as u32;
@@ -243,11 +263,36 @@ async fn atender(app: AppHandle, conn: iroh::endpoint::Connection) -> Result<()>
                     }
                 }
             }
+            let ini = samples.len();
             samples.extend_from_slice(&chunk.samples);
+            if !chunk.es_pausa && !chunk.text.trim().is_empty() {
+                tiempos.push(crate::yappy_pack::TiempoFrase {
+                    ini_s: ini as f32 / sample_rate as f32,
+                    fin_s: samples.len() as f32 / sample_rate as f32,
+                    parrafo: chunk.paragraph_index,
+                    origen_ini: chunk.origen_ini,
+                    origen_fin: chunk.origen_fin,
+                    texto: chunk.text.clone(),
+                });
+            }
             let _ = progreso_tx.send((chunk.index + 1, chunk.total));
             Ok(())
         })?;
-        Ok((samples, sample_rate, capitulos))
+        let texto_guion = guion
+            .piezas
+            .iter()
+            .map(|p| p.texto.clone())
+            .collect::<Vec<_>>()
+            .join("\n\n");
+        let idioma = guion.idioma_base.clone();
+        Ok((
+            samples,
+            sample_rate,
+            capitulos,
+            tiempos,
+            texto_guion,
+            idioma,
+        ))
     });
 
     // Reenviar el progreso mientras sintetiza.
@@ -270,43 +315,139 @@ async fn atender(app: AppHandle, conn: iroh::endpoint::Connection) -> Result<()>
         }
     }
 
-    let (samples, sample_rate, capitulos) = sintesis.await??;
+    let (samples, sample_rate, capitulos, tiempos, texto_guion, idioma_guion) = sintesis.await??;
     enviar_json(&mut tx, &serde_json::json!({"tipo":"codificando"})).await?;
 
-    // Codificar el .m4b a un temporal y mandarlo entero.
-    let tmp = std::env::temp_dir().join(format!("yappy-puente-{}.m4b", std::process::id()));
-    {
-        let chapters: Vec<crate::audiobook::Chapter> = if capitulos.is_empty() {
-            vec![crate::audiobook::Chapter {
-                start_secs: 0.0,
-                title: peticion.titulo.clone(),
-            }]
-        } else {
-            capitulos
-                .into_iter()
-                .map(|(s, t)| crate::audiobook::Chapter {
-                    start_secs: s,
-                    title: t,
-                })
-                .collect()
+    // Codificar el .m4b a un temporal ÚNICO (dos trabajos a la vez ya no
+    // se pisan el fichero) y empaquetar el .yappy con su karaoke.
+    let unico = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.subsec_nanos())
+        .unwrap_or(0);
+    let tmp = std::env::temp_dir().join(format!("yappy-puente-{}-{unico}.m4b", std::process::id()));
+    let duracion_secs = samples.len() as f32 / sample_rate.max(1) as f32;
+    // El título DICHO, sintetizado aparte (cortito): la pieza llega al
+    // móvil sonando al instante al tocarla.
+    let titulo_wav = {
+        let engine2 = estado.engine_or_load(&root)?;
+        let titulo2 = peticion.titulo.clone();
+        let voz2 = {
+            let s = estado.settings.lock().unwrap();
+            peticion_voz_o(&peticion_voz, &s.voice)
         };
+        tokio::task::spawn_blocking(move || -> Option<std::path::PathBuf> {
+            let opts = yappy_core::engine::SynthesisOptions {
+                voice: voz2,
+                speed: 1.0,
+                default_lang: "es".into(),
+                total_steps: 8,
+                seed: None,
+                detectar_idioma: true,
+                pausa_entre_parrafos_s: 0.0,
+            };
+            let mut muestras: Vec<f32> = Vec::new();
+            let mut sr = 44_100u32;
+            engine2
+                .synthesize_streaming(&titulo2, &opts, |chunk| {
+                    sr = chunk.sample_rate as u32;
+                    muestras.extend_from_slice(&chunk.samples);
+                    Ok(())
+                })
+                .ok()?;
+            if muestras.is_empty() {
+                return None;
+            }
+            let ruta = std::env::temp_dir().join(format!(
+                "yappy-puente-titulo-{}-{unico}.wav",
+                std::process::id()
+            ));
+            crate::playback::write_wav_file(ruta.to_string_lossy().as_ref(), &muestras, sr).ok()?;
+            Some(ruta)
+        })
+        .await
+        .ok()
+        .flatten()
+    };
+    let chapters: Vec<crate::audiobook::Chapter> = if capitulos.is_empty() {
+        vec![crate::audiobook::Chapter {
+            start_secs: 0.0,
+            title: peticion.titulo.clone(),
+        }]
+    } else {
+        capitulos
+            .into_iter()
+            .map(|(s, t)| crate::audiobook::Chapter {
+                start_secs: s,
+                title: t,
+            })
+            .collect()
+    };
+    let capitulos_pack: Vec<crate::yappy_pack::CapituloPack> = chapters
+        .iter()
+        .map(|c| crate::yappy_pack::CapituloPack {
+            titulo: c.title.clone(),
+            inicio_s: c.start_secs as f32,
+        })
+        .collect();
+    {
         let meta = crate::audiobook::M4bMetadata {
             title: peticion.titulo.clone(),
             author: "Yappy".into(),
             album: peticion.titulo.clone(),
         };
         let tmp2 = tmp.clone();
+        let chapters2 = chapters.clone();
         tokio::task::spawn_blocking(move || {
-            crate::audiobook::encode_m4b(&samples, sample_rate, &chapters, &meta, &tmp2)
+            crate::audiobook::encode_m4b(&samples, sample_rate, &chapters2, &meta, &tmp2)
         })
         .await??;
     }
 
-    let bytes = tokio::fs::read(&tmp).await?;
+    // El .yappy: manifiesto + m4b + tiempos + texto + título dicho.
+    let pack =
+        std::env::temp_dir().join(format!("yappy-puente-{}-{unico}.yappy", std::process::id()));
+    {
+        let (voz_m, velocidad_m) = {
+            let s = estado.settings.lock().unwrap();
+            (
+                peticion_voz_o(&peticion_voz, &s.voice),
+                peticion_velocidad.unwrap_or(s.speed),
+            )
+        };
+        let manifiesto = crate::yappy_pack::ManifiestoPack {
+            version: crate::yappy_pack::VERSION,
+            titulo: peticion.titulo.clone(),
+            autor: String::new(),
+            voz: voz_m,
+            velocidad: velocidad_m,
+            idioma: idioma_guion.clone(),
+            duracion_secs,
+            capitulos: capitulos_pack,
+            creado_unix: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_secs())
+                .unwrap_or(0),
+            app_version: env!("CARGO_PKG_VERSION").to_string(),
+        };
+        crate::yappy_pack::escribir(
+            &pack,
+            &manifiesto,
+            &tmp,
+            &tiempos,
+            &texto_guion,
+            titulo_wav.as_deref(),
+        )?;
+    }
     let _ = tokio::fs::remove_file(&tmp).await;
+    if let Some(w) = &titulo_wav {
+        let _ = tokio::fs::remove_file(w).await;
+    }
+
+    let bytes = tokio::fs::read(&pack).await?;
+    let _ = tokio::fs::remove_file(&pack).await;
     enviar_json(
         &mut tx,
-        &serde_json::json!({"tipo":"listo","bytes": bytes.len()}),
+        &serde_json::json!({"tipo":"listo","bytes": bytes.len(), "formato": "yappy"}),
     )
     .await?;
     tx.write_all(&bytes).await?;
@@ -342,10 +483,11 @@ async fn convertir(app: AppHandle, titulo: String, texto: String) -> Result<Stri
         .map_err(|e| anyhow!("no llego al ordenador ({e}); ¿está Yappy abierto allí?"))?;
     let (mut tx, mut rx) = conn.open_bi().await?;
 
-    let (voz, velocidad) = {
+    let (voz, velocidad, steps) = {
         let estado = app.state::<Arc<crate::state::AppState>>();
         let s = estado.settings.lock().unwrap();
-        (s.voice.clone(), s.speed)
+        // La CALIDAD del teléfono manda también en el render remoto.
+        (s.voice.clone(), s.speed, s.quality.total_steps())
     };
     let peticion = serde_json::json!({
         "token": token,
@@ -353,12 +495,14 @@ async fn convertir(app: AppHandle, titulo: String, texto: String) -> Result<Stri
         "texto": texto,
         "voz": voz,
         "velocidad": velocidad,
-        "steps": 12,
+        "steps": steps,
     });
     tx.write_all(format!("{peticion}\n").as_bytes()).await?;
 
     // Progreso + resultado.
     let total_bytes: usize;
+    #[allow(unused_assignments)]
+    let mut formato = String::from("m4b");
     loop {
         let linea = leer_linea(&mut rx, 1024 * 1024).await?;
         let v: serde_json::Value = serde_json::from_str(&linea).context("respuesta ilegible")?;
@@ -380,6 +524,7 @@ async fn convertir(app: AppHandle, titulo: String, texto: String) -> Result<Stri
             }
             "listo" => {
                 total_bytes = v["bytes"].as_u64().unwrap_or(0) as usize;
+                formato = v["formato"].as_str().unwrap_or("m4b").to_string();
                 break;
             }
             "error" => {
@@ -413,8 +558,22 @@ async fn convertir(app: AppHandle, titulo: String, texto: String) -> Result<Stri
         })
         .take(60)
         .collect();
-    let destino = dir.join(format!("{}.m4b", nombre_limpio.trim()));
+    let ext = if formato == "yappy" {
+        crate::yappy_pack::EXTENSION
+    } else {
+        "m4b"
+    };
+    let destino = dir.join(format!("{}.{ext}", nombre_limpio.trim()));
     tokio::fs::write(&destino, &cuerpo).await?;
+    // El título DICHO que viaja dentro del .yappy, a la caché de dichos:
+    // la pieza recién llegada suena al instante al tocarla.
+    if formato == "yappy" {
+        if let Ok(mani) = crate::yappy_pack::leer_manifiesto(&destino) {
+            if let Ok(wav) = crate::commands::dicho_path(&app, &mani.voz, &mani.titulo) {
+                let _ = crate::yappy_pack::extraer_titulo_wav(&destino, &wav);
+            }
+        }
+    }
     let _ = app.emit(
         "puente_progreso",
         serde_json::json!({"etapa":"hecho","ruta": destino.to_string_lossy()}),

@@ -101,6 +101,7 @@ export function empaquetar(
   piezas: PiezaMosaico[],
   anchoTablero: number,
   altoUtil = 0,
+  permitirDos = false,
 ): { baldosas: Map<string, Baldosa>; alto: number; factor: number } {
   const baldosas = new Map<string, Baldosa>();
   if (piezas.length === 0 || anchoTablero <= 0) {
@@ -113,7 +114,8 @@ export function empaquetar(
   // MODO PÓSTER: con pocas piezas, columnas gordas. Y LA REGLA DE LAS
   // COLUMNAS: dos solo en los iPhone grandes (≥415pt); en los pequeños,
   // UNA (las pegatinas estiradas a lo alto eran un espanto).
-  const dosColumnas = anchoTablero >= 415;
+  // DOS columnas solo si el usuario las pidió Y la pantalla da de sí.
+  const dosColumnas = permitirDos && anchoTablero >= 415;
   // EL CUADERNO para todos: zigzag en una columna, tresbolillo en los
   // grandes (salvo la pieza única, que es un póster a todo lo ancho).
   if (piezas.length >= 2) {

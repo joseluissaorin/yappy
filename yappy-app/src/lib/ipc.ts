@@ -22,6 +22,7 @@ export interface Settings {
   voice: string;
   voice_overrides: Record<string, string>;
   voz_al_azar: boolean;
+  dos_columnas: boolean;
   speed: number;
   volume: number;
   silence_secs: number;
@@ -474,8 +475,16 @@ export function onAudiobookRenderDone(cb: (p: { path: string; samples: number; s
 }
 /// iOS: where to write an exported audiobook (app Documents dir → shows in the
 /// Library + can be shared). `name` is a human title; backend sanitises it.
-export const audiobookExportPath = (name: string): Promise<string> =>
-  invoke("audiobook_export_path_cmd", { name });
+export const audiobookExportPath = (name: string, extension?: string): Promise<string> =>
+  invoke("audiobook_export_path_cmd", { name, extension: extension ?? null });
+/// Los tiempos de karaoke de un .yappy de la biblioteca.
+export interface TiempoFrase { ini_s: number; fin_s: number; parrafo: number; origen_ini: number; origen_fin: number; texto: string; }
+export const libraryTiempos = (path: string): Promise<TiempoFrase[]> =>
+  invoke("library_tiempos_cmd", { path });
+export const libraryAudioSrc = (path: string): Promise<string> =>
+  invoke("library_audio_src_cmd", { path });
+export const libraryImportYappy = (ruta: string): Promise<string> =>
+  invoke("library_import_yappy_cmd", { ruta });
 /// iOS: present the system share sheet for a file (AirDrop, Books, Files, …).
 export const shareFile = (path: string): Promise<void> =>
   invoke("share_file_cmd", { path });

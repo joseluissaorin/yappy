@@ -78,6 +78,10 @@ pub struct Settings {
     /// elige el pájaro, y siempre el mismo para la misma pieza.
     #[serde(default)]
     pub voz_al_azar: bool,
+    /// El cuaderno a DOS columnas en pantallas anchas (por defecto, UNA
+    /// incluso en los Pro Max: se elige en la trastienda).
+    #[serde(default)]
+    pub dos_columnas: bool,
     pub speed: f32,
     pub volume: f32,
     pub silence_secs: f32,
@@ -150,6 +154,7 @@ impl Default for Settings {
             voice: "Alex".into(),
             voice_overrides,
             voz_al_azar: false,
+            dos_columnas: false,
             speed: 1.05,
             volume: 1.0,
             silence_secs: 0.35,

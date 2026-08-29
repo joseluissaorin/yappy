@@ -33,8 +33,23 @@ pub struct CurrentDocument {
     pub paragraph_kinds: Vec<String>,
 }
 
+/// La RECETA de la última sesión de lectura por párrafos: lo justo para
+/// relanzarla (cambio de voz en caliente) desde cualquier punto.
+#[derive(Debug, Clone)]
+pub struct RecetaLectura {
+    pub paragraphs: Vec<String>,
+    pub kinds: Option<Vec<String>>,
+    pub pausas: Option<Vec<f32>>,
+    pub velocidades: Option<Vec<f32>>,
+    pub voces: Option<Vec<Option<String>>>,
+    pub doc_path: String,
+    pub titulo: String,
+}
+
 pub struct AppState {
     pub settings: Mutex<Settings>,
+    /// La receta de la sesión que suena (o la última): ver RecetaLectura.
+    pub receta_sesion: Mutex<Option<RecetaLectura>>,
     /// Serializes settings-save calls so concurrent updates don't race the disk write.
     pub save_lock: Mutex<()>,
     pub engine: Mutex<Option<Arc<TtsEngine>>>,
@@ -58,6 +73,7 @@ impl AppState {
     pub fn new() -> Self {
         Self {
             settings: Mutex::new(Settings::default()),
+            receta_sesion: Mutex::new(None),
             save_lock: Mutex::new(()),
             engine: Mutex::new(None),
             playback: Arc::new(PlaybackController::new()),

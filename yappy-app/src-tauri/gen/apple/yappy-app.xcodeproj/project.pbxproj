@@ -160,6 +160,7 @@
 		DDA57A7E25A38F68EA38AA00 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		DDF68D4C8B5EBC48614AC97F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		E05E1F95C8EE8920F16508E2 /* ocr.rs */ = {isa = PBXFileReference; path = ocr.rs; sourceTree = "<group>"; };
+		E4B2EF940E2037204C8CC34D /* yappy_pack.rs */ = {isa = PBXFileReference; path = yappy_pack.rs; sourceTree = "<group>"; };
 		E59D7E849AA6DCC8B6821280 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E6940CDB472F0C4510CFD72A /* asr_decode.rs */ = {isa = PBXFileReference; path = asr_decode.rs; sourceTree = "<group>"; };
 		E89394FA1041CC34292F2D82 /* CoreML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreML.framework; path = System/Library/Frameworks/CoreML.framework; sourceTree = SDKROOT; };
@@ -361,6 +362,7 @@
 				785C5DE7E55F390A2CD4E417 /* transcripts.rs */,
 				0D80D67051A0BA4644EE31BD /* tray.rs */,
 				EA797AB2EDD7200335B9F936 /* windows.rs */,
+				E4B2EF940E2037204C8CC34D /* yappy_pack.rs */,
 				84EC2296E653219BD3584DFE /* capture */,
 			);
 			name = src;

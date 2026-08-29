@@ -216,6 +216,13 @@ async function handleOne(line: string): Promise<void> {
     // PDF, EPUB, DOCX…: la extensión los copió al App Group. Un archivo
     // queda «listo» al instante, así que suena directamente.
     const path = line.slice("file:".length).trim();
+    if (path && path.toLowerCase().endsWith(".yappy")) {
+      // Un audiolibro .yappy compartido: a la biblioteca y a escucharlo.
+      const { libraryImportYappy } = await import("$lib/ipc");
+      await libraryImportYappy(path);
+      goto("/escuchar").catch(() => {});
+      return;
+    }
     if (path) {
       const item = await colaAgregarArchivo(path);
       encolado = true;

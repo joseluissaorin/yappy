@@ -73,9 +73,41 @@ pub fn set_voice_cmd(
     state: State<'_, Arc<AppState>>,
     voice: String,
 ) -> Result<(), String> {
-    settings::update(&app, state.inner(), |s| s.voice = voice)
-        .map(|_| ())
-        .map_err(|e| e.to_string())
+    settings::update(&app, state.inner(), |s| s.voice = voice.clone())
+        .map_err(|e| e.to_string())?;
+    // EL CAMBIO EN CALIENTE: si algo suena, la sesión se relanza desde el
+    // párrafo actual con la voz nueva (conservando la pausa): nada de
+    // cortar el reproductor y volver a darle.
+    relanzar_con_voz(&app, state.inner(), voice);
+    // Y los títulos DICHOS se recocinan con la voz nueva (la caché es por
+    // voz: sin esto, tocar una pieza sonaba con la voz vieja).
+    #[cfg(target_os = "ios")]
+    precocinar_titulos(app.clone(), state.inner().clone());
+    Ok(())
+}
+
+/// Relanza la sesión viva (si la hay) con otra voz, desde el párrafo en
+/// curso y conservando el estado de pausa.
+fn relanzar_con_voz(app: &AppHandle, state: &Arc<AppState>, voz: String) {
+    let snap = state.playback.snapshot();
+    if snap.estado == "inactivo" || snap.doc_path.is_empty() {
+        return;
+    }
+    let Some(receta) = state.receta_sesion.lock().unwrap().clone() else {
+        return;
+    };
+    if receta.doc_path != snap.doc_path {
+        return;
+    }
+    let desde = snap.base_paragraph_index + snap.current_paragraph_index;
+    let pausada = snap.estado == "pausa";
+    let app = app.clone();
+    let state = state.clone();
+    tauri::async_runtime::spawn(async move {
+        if let Err(e) = leer_parrafos(app, state, receta, desde, Some(voz), None, pausada).await {
+            tracing::warn!("relanzar con voz nueva: {e}");
+        }
+    });
 }
 
 #[tauri::command]
@@ -1108,6 +1140,17 @@ pub async fn render_audiobook_cmd(
         .and_then(|e| e.to_str())
         .map(|e| e.eq_ignore_ascii_case("m4b") || e.eq_ignore_ascii_case("m4a"))
         .unwrap_or(false);
+    // El FORMATO DE LA CASA: audio + karaoke + texto en un solo fichero.
+    let want_yappy = std::path::Path::new(&output_path)
+        .extension()
+        .and_then(|e| e.to_str())
+        .map(|e| e.eq_ignore_ascii_case(crate::yappy_pack::EXTENSION))
+        .unwrap_or(false);
+    let texto_fuente: String = paragraphs
+        .iter()
+        .map(|p| p.text.clone())
+        .collect::<Vec<_>>()
+        .join("\n\n");
 
     #[allow(unused_variables)] // solo lo usa el brazo iOS del cierre
     let activity_title = std::path::Path::new(&output_path)
@@ -1145,6 +1188,9 @@ pub async fn render_audiobook_cmd(
         let mut sample_rate: u32 = 0;
         // Sample-offset → chapter title, collected as we go. Used only for m4b.
         let mut chapters: Vec<(usize, String)> = Vec::new();
+        // EL KARAOKE DEL RENDER: los tiempos por frase que el playback en
+        // vivo calcula y que aquí antes se tiraban a la basura.
+        let mut tiempos: Vec<crate::yappy_pack::TiempoFrase> = Vec::new();
 
         for (i, p) in paragraphs.iter().enumerate() {
             #[cfg(target_os = "ios")]
@@ -1185,21 +1231,27 @@ pub async fn render_audiobook_cmd(
             pausa_entre_parrafos_s: 0.0,
             };
 
-            let captured: std::sync::Mutex<Vec<(u32, Vec<f32>)>> = std::sync::Mutex::new(Vec::new());
+            type ChunkCapturado = (u32, Vec<f32>, String, usize, usize, bool);
+            let captured: std::sync::Mutex<Vec<ChunkCapturado>> = std::sync::Mutex::new(Vec::new());
             engine
                 .synthesize_streaming(&p.text, &opts, |chunk| {
-                    captured
-                        .lock()
-                        .unwrap()
-                        .push((chunk.sample_rate as u32, chunk.samples.clone()));
+                    captured.lock().unwrap().push((
+                        chunk.sample_rate as u32,
+                        chunk.samples.clone(),
+                        chunk.text.clone(),
+                        chunk.origen_ini,
+                        chunk.origen_fin,
+                        chunk.es_pausa,
+                    ));
                     Ok(())
                 })
                 .map_err(|e| format!("synth failed on paragraph {}: {e:?}", i + 1))?;
 
-            for (sr, samples) in captured.lock().unwrap().iter() {
+            for (sr, samples, texto_frase, oi, of, es_pausa) in captured.lock().unwrap().iter() {
                 if sample_rate == 0 {
                     sample_rate = *sr;
                 }
+                let ini = combined.len();
                 // For audiobook export we resample mismatched paragraphs to the FIRST
                 // paragraph's sample rate. In practice supertonic emits a fixed SR,
                 // so this is a defensive path.
@@ -1209,6 +1261,16 @@ pub async fn render_audiobook_cmd(
                     combined.extend(resampled);
                 } else {
                     combined.extend(samples.iter().copied());
+                }
+                if !es_pausa && !texto_frase.trim().is_empty() && sample_rate > 0 {
+                    tiempos.push(crate::yappy_pack::TiempoFrase {
+                        ini_s: ini as f32 / sample_rate as f32,
+                        fin_s: combined.len() as f32 / sample_rate as f32,
+                        parrafo: i,
+                        origen_ini: *oi,
+                        origen_fin: *of,
+                        texto: texto_frase.clone(),
+                    });
                 }
             }
         }
@@ -1222,7 +1284,7 @@ pub async fn render_audiobook_cmd(
 
         let final_sr = sample_rate.max(44100);
 
-        if want_m4b {
+        if want_yappy || want_m4b {
             // Convert sample offsets → seconds.
             let chapter_objs: Vec<crate::audiobook::Chapter> = chapters
                 .into_iter()
@@ -1251,14 +1313,65 @@ pub async fn render_audiobook_cmd(
                 album: metadata.as_ref().and_then(|m| m.album.clone()).unwrap_or_default(),
             };
 
-            crate::audiobook::encode_m4b(
-                &combined,
-                final_sr,
-                &chapter_objs,
-                &meta,
-                std::path::Path::new(&output_path),
-            )
-            .map_err(|e| format!("m4b encode failed: {e:?}"))?;
+            if want_yappy {
+                // Codificar el m4b a un temporal ÚNICO y empaquetarlo con el
+                // karaoke y el texto en el .yappy final.
+                let tmp = std::env::temp_dir().join(format!(
+                    "yappy-render-{}-{}.m4b",
+                    std::process::id(),
+                    combined.len()
+                ));
+                crate::audiobook::encode_m4b(&combined, final_sr, &chapter_objs, &meta, &tmp)
+                    .map_err(|e| format!("m4b encode failed: {e:?}"))?;
+                let manifiesto = crate::yappy_pack::ManifiestoPack {
+                    version: crate::yappy_pack::VERSION,
+                    titulo: if meta.title.is_empty() {
+                        activity_title.clone()
+                    } else {
+                        meta.title.clone()
+                    },
+                    autor: meta.author.clone(),
+                    voz: default_voice.clone(),
+                    velocidad: default_speed,
+                    idioma: default_lang.clone(),
+                    duracion_secs: combined.len() as f32 / final_sr as f32,
+                    capitulos: chapter_objs
+                        .iter()
+                        .map(|c| crate::yappy_pack::CapituloPack {
+                            titulo: c.title.clone(),
+                            inicio_s: c.start_secs as f32,
+                        })
+                        .collect(),
+                    creado_unix: std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .map(|d| d.as_secs())
+                        .unwrap_or(0),
+                    app_version: env!("CARGO_PKG_VERSION").to_string(),
+                };
+                // El título DICHO, si la caché lo tiene: suena al instante.
+                let titulo_dicho = dicho_path(&app_for_thread, &default_voice, &manifiesto.titulo)
+                    .ok()
+                    .filter(|p| p.exists());
+                crate::yappy_pack::escribir(
+                    std::path::Path::new(&output_path),
+                    &manifiesto,
+                    &tmp,
+                    &tiempos,
+                    &texto_fuente,
+                    titulo_dicho.as_deref(),
+                )
+                .map_err(|e| format!("no se pudo escribir el .yappy: {e:?}"))?;
+                let _ = std::fs::remove_file(&tmp);
+            } else {
+                crate::audiobook::encode_m4b(
+                    &combined,
+                    final_sr,
+                    &chapter_objs,
+                    &meta,
+                    std::path::Path::new(&output_path),
+                )
+                .map_err(|e| format!("m4b encode failed: {e:?}"))?;
+            }
         } else {
             crate::playback::write_wav_file(&output_path, &combined, final_sr)
                 .map_err(|e| format!("write wav failed: {e:?}"))?;
@@ -1338,6 +1451,52 @@ pub async fn read_document_paragraphs_cmd(
     titulo: Option<String>,
     start_paused: Option<bool>,
 ) -> Result<(), String> {
+    // La voz de verdad manda: el dicho del título se calla al instante.
+    #[cfg(target_os = "ios")]
+    crate::mobile::efecto_stop();
+    let receta = crate::state::RecetaLectura {
+        paragraphs,
+        kinds,
+        pausas,
+        velocidades,
+        voces,
+        doc_path: doc_path.unwrap_or_default(),
+        titulo: titulo.unwrap_or_default(),
+    };
+    *state.receta_sesion.lock().unwrap() = Some(receta.clone());
+    leer_parrafos(
+        app,
+        state.inner().clone(),
+        receta,
+        from_index,
+        voice_override,
+        speed_override,
+        start_paused.unwrap_or(false),
+    )
+    .await
+}
+
+/// El cuerpo REAL de una sesión de lectura por párrafos. Vive fuera del
+/// comando para poder RELANZARLA (cambio de voz en caliente) con la misma
+/// receta desde cualquier punto.
+pub async fn leer_parrafos(
+    app: AppHandle,
+    state: Arc<AppState>,
+    receta: crate::state::RecetaLectura,
+    from_index: usize,
+    voice_override: Option<String>,
+    speed_override: Option<f32>,
+    start_paused: bool,
+) -> Result<(), String> {
+    let crate::state::RecetaLectura {
+        paragraphs,
+        kinds,
+        pausas,
+        velocidades,
+        voces,
+        doc_path,
+        titulo,
+    } = receta;
     let joined = paragraphs
         .iter()
         .skip(from_index)
@@ -1351,6 +1510,7 @@ pub async fn read_document_paragraphs_cmd(
         Some(v) if !v.is_empty() => v,
         _ => state.settings.lock().unwrap().voice.clone(),
     };
+    let state_ref = &state;
     // Optional one-shot speed override. We temporarily mutate settings
     // in-memory to feed the engine; the disk-persisted value isn't touched.
     let original_speed = if let Some(s) = speed_override {
@@ -1403,7 +1563,7 @@ pub async fn read_document_paragraphs_cmd(
 
     let result = read_internal(
         &app,
-        state.inner().clone(),
+        state_ref.clone(),
         joined,
         Some(guion),
         voice,
@@ -1413,9 +1573,9 @@ pub async fn read_document_paragraphs_cmd(
             base_paragraph_index: from_index,
         },
         SessionMeta {
-            doc_path: doc_path.unwrap_or_default(),
-            titulo: titulo.unwrap_or_default(),
-            start_paused: start_paused.unwrap_or(false),
+            doc_path,
+            titulo,
+            start_paused,
         },
     )
     .await
@@ -1526,7 +1686,11 @@ pub fn share_file_cmd(path: String) -> Result<(), String> {
 /// human title (e.g. the document filename); we sanitise it into a safe
 /// filename and always use the `.m4b` extension.
 #[tauri::command]
-pub fn audiobook_export_path_cmd(app: AppHandle, name: String) -> Result<String, String> {
+pub fn audiobook_export_path_cmd(
+    app: AppHandle,
+    name: String,
+    extension: Option<String>,
+) -> Result<String, String> {
     use tauri::Manager;
     let dir = app.path().document_dir().map_err(|e| e.to_string())?;
     std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
@@ -1549,11 +1713,13 @@ pub fn audiobook_export_path_cmd(app: AppHandle, name: String) -> Result<String,
             cleaned
         }
     };
-    let mut path = dir.join(format!("{stem}.m4b"));
+    // El formato de la casa por defecto: .yappy (audio + karaoke + texto).
+    let ext = extension.unwrap_or_else(|| crate::yappy_pack::EXTENSION.to_string());
+    let mut path = dir.join(format!("{stem}.{ext}"));
     // Avoid clobbering an existing export: append " (2)", " (3)", …
     let mut n = 2;
     while path.exists() {
-        path = dir.join(format!("{stem} ({n}).m4b"));
+        path = dir.join(format!("{stem} ({n}).{ext}"));
         n += 1;
     }
     Ok(path.to_string_lossy().into_owned())
@@ -1606,6 +1772,79 @@ fn write_resume_map(
     std::fs::write(p, s).map_err(|e| e.to_string())
 }
 
+/// La ruta del audio REPRODUCIBLE de una pieza de biblioteca: para un
+/// .yappy, su m4b interno extraído a la caché; para el resto, ella misma.
+fn ruta_audio_de(app: &AppHandle, path: &str) -> Result<std::path::PathBuf, String> {
+    let p = std::path::Path::new(path);
+    if crate::yappy_pack::es_yappy(p) {
+        let cache = app
+            .path()
+            .app_data_dir()
+            .map_err(|e| e.to_string())?
+            .join("biblioteca-cache");
+        crate::yappy_pack::extraer_audio(p, &cache).map_err(|e| e.to_string())
+    } else {
+        Ok(p.to_path_buf())
+    }
+}
+
+/// El audio listo para el reproductor del ESCRITORIO (el webview lo toca
+/// con un <audio> vía asset protocol). Devuelve la ruta absoluta.
+#[tauri::command]
+pub fn library_audio_src_cmd(app: AppHandle, path: String) -> Result<String, String> {
+    ruta_audio_de(&app, &path).map(|p| p.to_string_lossy().to_string())
+}
+
+/// Los TIEMPOS de karaoke de un .yappy (vacío para m4b sueltos).
+#[tauri::command]
+pub fn library_tiempos_cmd(path: String) -> Vec<crate::yappy_pack::TiempoFrase> {
+    let p = std::path::Path::new(&path);
+    if !crate::yappy_pack::es_yappy(p) {
+        return Vec::new();
+    }
+    crate::yappy_pack::leer(p)
+        .map(|c| c.tiempos)
+        .unwrap_or_default()
+}
+
+/// IMPORTAR un .yappy: a la biblioteca (document_dir) con el nombre de su
+/// título, y su título DICHO a la caché de dichos (suena al instante).
+#[tauri::command]
+pub fn library_import_yappy_cmd(app: AppHandle, ruta: String) -> Result<String, String> {
+    let origen = std::path::Path::new(&ruta);
+    if !crate::yappy_pack::es_yappy(origen) {
+        return Err("no es un archivo .yappy".into());
+    }
+    let mani = crate::yappy_pack::leer_manifiesto(origen).map_err(|e| e.to_string())?;
+    let dir = app.path().document_dir().map_err(|e| e.to_string())?;
+    let base: String = mani
+        .titulo
+        .chars()
+        .map(|c| if "/\\:*?\"<>|".contains(c) { ' ' } else { c })
+        .collect::<String>()
+        .trim()
+        .chars()
+        .take(80)
+        .collect();
+    let base = if base.is_empty() {
+        "Audiolibro".to_string()
+    } else {
+        base
+    };
+    let mut destino = dir.join(format!("{base}.yappy"));
+    let mut i = 2;
+    while destino.exists() {
+        destino = dir.join(format!("{base} ({i}).yappy"));
+        i += 1;
+    }
+    std::fs::copy(origen, &destino).map_err(|e| e.to_string())?;
+    // El título dicho, a la caché de dichos de SU voz.
+    if let Ok(wav) = dicho_path(&app, &mani.voz, &mani.titulo) {
+        let _ = crate::yappy_pack::extraer_titulo_wav(&destino, &wav);
+    }
+    Ok(destino.to_string_lossy().to_string())
+}
+
 #[tauri::command]
 pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryItem>, String> {
     use tauri::Manager;
@@ -1621,7 +1860,7 @@ pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryI
             .map(|s| s.to_lowercase());
         if !matches!(
             ext.as_deref(),
-            Some("m4b") | Some("wav") | Some("mp3") | Some("m4a")
+            Some("m4b") | Some("wav") | Some("mp3") | Some("m4a") | Some("yappy")
         ) {
             continue;
         }
@@ -1629,11 +1868,18 @@ pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryI
             Ok(m) => m,
             Err(_) => continue,
         };
-        let name = path
+        let mut name = path
             .file_name()
             .and_then(|s| s.to_str())
             .map(|s| s.to_string())
             .unwrap_or_default();
+        if ext.as_deref() == Some("yappy") {
+            if let Ok(m) = crate::yappy_pack::leer_manifiesto(&path) {
+                if !m.titulo.trim().is_empty() {
+                    name = m.titulo;
+                }
+            }
+        }
         let mtime_ms = meta
             .modified()
             .ok()
@@ -1641,20 +1887,29 @@ pub async fn list_rendered_audiobooks_cmd(app: AppHandle) -> Result<Vec<LibraryI
             .map(|d| d.as_millis() as i64)
             .unwrap_or(0);
         // Extract m4b metadata for richer library rows.
-        let (duration_secs, chapter_count, first_chapter_title) =
-            if matches!(ext.as_deref(), Some("m4b") | Some("m4a")) {
-                if let Some(info) = crate::audiobook::read_m4b_info(&path) {
-                    (
-                        Some(info.duration_secs),
-                        info.chapter_count,
-                        info.first_chapter_title,
-                    )
-                } else {
-                    (None, 0, None)
-                }
+        let (duration_secs, chapter_count, first_chapter_title) = if ext.as_deref() == Some("yappy")
+        {
+            match crate::yappy_pack::leer_manifiesto(&path) {
+                Ok(m) => (
+                    Some(m.duracion_secs as f64),
+                    m.capitulos.len(),
+                    m.capitulos.first().map(|c| c.titulo.clone()),
+                ),
+                Err(_) => (None, 0, None),
+            }
+        } else if matches!(ext.as_deref(), Some("m4b") | Some("m4a")) {
+            if let Some(info) = crate::audiobook::read_m4b_info(&path) {
+                (
+                    Some(info.duration_secs),
+                    info.chapter_count,
+                    info.first_chapter_title,
+                )
             } else {
                 (None, 0, None)
-            };
+            }
+        } else {
+            (None, 0, None)
+        };
         let path_str = path.to_string_lossy().to_string();
         let resume_secs = resume_map.get(&path_str).copied().unwrap_or(0.0);
         items.push(LibraryItem {
@@ -1693,7 +1948,8 @@ pub fn library_play_cmd(
     };
     #[cfg(target_os = "ios")]
     {
-        let ok = crate::mobile::audiofile_play(&path, start_at);
+        let reproducible = ruta_audio_de(&_app, &path)?;
+        let ok = crate::mobile::audiofile_play(&reproducible.to_string_lossy(), start_at);
         // Push Now Playing metadata so the lock screen / Control Center
         // show what's playing. Pull title from filename.
         let title = std::path::Path::new(&path)
@@ -1821,6 +2077,20 @@ pub struct ChapterEntry {
 
 #[tauri::command]
 pub fn library_chapters_cmd(path: String) -> Vec<ChapterEntry> {
+    let p = std::path::Path::new(&path);
+    if crate::yappy_pack::es_yappy(p) {
+        return crate::yappy_pack::leer_manifiesto(p)
+            .map(|m| {
+                m.capitulos
+                    .into_iter()
+                    .map(|c| ChapterEntry {
+                        title: c.titulo,
+                        start_secs: c.inicio_s as f64,
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+    }
     crate::audiobook::read_chpl_chapters(std::path::Path::new(&path))
         .unwrap_or_default()
         .into_iter()
@@ -2223,8 +2493,6 @@ fn progreso_path<R: Runtime>(app: &AppHandle<R>) -> Option<std::path::PathBuf> {
         .map(|d| d.join("progreso.json"))
 }
 
-// (Los llamadores viven tras cfg(mobile): en desktop quedan sin uso.)
-#[cfg_attr(desktop, allow(dead_code))]
 pub fn guardar_progreso_disco<R: Runtime>(
     app: &AppHandle<R>,
     doc_path: &str,
@@ -2282,7 +2550,7 @@ fn voz_para(state: &Arc<AppState>, clave: &str) -> String {
 
 /// La caché de títulos DICHOS: un wav por (voz, texto), instantáneo.
 #[cfg_attr(desktop, allow(dead_code))]
-fn dicho_path(
+pub(crate) fn dicho_path(
     app: &AppHandle,
     voice: &str,
     texto: &str,

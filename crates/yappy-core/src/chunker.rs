@@ -55,7 +55,11 @@ pub fn chunk_paragraphs(text: &str, max_chars: usize) -> Vec<Chunk> {
         // granularidad (karaoke frase a frase, primer audio antes). Las
         // frases minúsculas (<25 caracteres) se pegan a la anterior para no
         // trocear el fraseo en migas.
-        let sentences = split_sentences(para);
+        let sentences = if parece_verso(para) {
+            split_versos(para)
+        } else {
+            split_sentences(para)
+        };
         let mut current = String::new();
         let mut current_start = para_start;
         let mut running_offset = para_start;
@@ -129,6 +133,39 @@ fn find_offset(haystack: &str, start: usize, needle: &str) -> usize {
         .find(needle)
         .map(|i| start + i)
         .unwrap_or(start)
+}
+
+/// ¿Este párrafo es VERSO? Varios saltos de línea internos con líneas
+/// cortas: poesía, letras de canciones, texto experimental. Partirlo por
+/// frases no sirve (apenas hay puntos): el verso ES la unidad de dicción.
+fn parece_verso(text: &str) -> bool {
+    let lineas: Vec<&str> = text.lines().filter(|l| !l.trim().is_empty()).collect();
+    if lineas.len() < 3 {
+        return false;
+    }
+    let media = lineas.iter().map(|l| l.chars().count()).sum::<usize>() / lineas.len();
+    media <= 60
+}
+
+/// Cada verso, una «frase»: substrings consecutivos que cubren el párrafo
+/// entero (los offsets del karaoke dependen de esa continuidad). Los
+/// versos minúsculos se pegan después, como las migas de siempre.
+fn split_versos(text: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    let mut last = 0usize;
+    for (i, b) in text.bytes().enumerate() {
+        if b == b'\n' {
+            out.push(text[last..=i].to_string());
+            last = i + 1;
+        }
+    }
+    if last < text.len() {
+        out.push(text[last..].to_string());
+    }
+    if out.is_empty() {
+        out.push(text.to_string());
+    }
+    out
 }
 
 fn split_sentences(text: &str) -> Vec<String> {
@@ -221,6 +258,26 @@ fn split_too_long(s: &str, max_chars: usize) -> Vec<String> {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn el_verso_es_la_unidad_de_diccion() {
+        let poema = "En la cumbre del cerro\nse pelearon dos vientos\nuno del norte helado\ny otro que venía ardiendo\nse agarraron con furia\ncomo dos perros hambrientos";
+        let chunks = super::chunk_paragraphs(poema, 220);
+        // Sin el corte por versos esto era UNA masa de 160 caracteres.
+        assert!(
+            chunks.len() >= 3,
+            "esperaba versos, hay {} trozos",
+            chunks.len()
+        );
+        // Los offsets siguen siendo exactos sobre el original.
+        for c in &chunks {
+            assert_eq!(poema[c.start..c.end].trim(), c.text, "offset roto en {c:?}");
+        }
+        // La prosa normal sigue partiendo por frases, no por líneas.
+        let prosa = "Una frase normal. Otra frase que sigue. Y una tercera que cierra el párrafo con calma.";
+        let normales = super::chunk_paragraphs(prosa, 220);
+        assert!(normales.len() <= 2, "la prosa no debe trocearse por líneas");
+    }
+
     use super::*;
 
     #[test]
