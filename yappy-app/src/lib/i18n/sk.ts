@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Jeden stĺpec",
   "lector.idioma_texto": "Jazyk textu",
   "lector.idioma_auto": "Rozpoznať automaticky",
+  "trastienda.biblioteca": "tlačiareň a tvoje audioknihy",
   "imprenta.titulo": "tlačiareň",
   "imprenta.en_cola": "vo fronte",
   "imprenta.sintetizando": "hlas pracuje",

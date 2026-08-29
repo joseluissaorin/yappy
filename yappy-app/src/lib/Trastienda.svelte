@@ -259,6 +259,11 @@
       </label>
     </section>
 
+    <button class="grupo puerta-biblioteca" use:presionable onclick={() => goto("/biblioteca/audiolibros")}>
+      <span>{$t("trastienda.biblioteca")}</span>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+
     <section class="grupo">
       <h2 class="yap-susurro">{$t("ajustes.ordenador")}</h2>
       {#if puente?.token}
@@ -346,6 +351,18 @@
     align-items: center;
     justify-content: center;
     border-radius: 14px;
+  }
+  .grupo.puerta-biblioteca {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--yap-tinta);
+    padding: 16px;
+    text-align: left;
   }
   .grupo {
     position: relative;

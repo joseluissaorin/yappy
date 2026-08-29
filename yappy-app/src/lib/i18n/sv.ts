@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "En spalt",
   "lector.idioma_texto": "Textens språk",
   "lector.idioma_auto": "Upptäck automatiskt",
+  "trastienda.biblioteca": "tryckeriet och dina ljudböcker",
   "imprenta.titulo": "tryckeriet",
   "imprenta.en_cola": "i kö",
   "imprenta.sintetizando": "rösten arbetar",

@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "1段組",
   "lector.idioma_texto": "テキストの言語",
   "lector.idioma_auto": "自動検出",
+  "trastienda.biblioteca": "印刷所とオーディオブック",
   "imprenta.titulo": "印刷所",
   "imprenta.en_cola": "待機中",
   "imprenta.sintetizando": "音声を合成中",

@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "One column",
   "lector.idioma_texto": "Text language",
   "lector.idioma_auto": "Detect automatically",
+  "trastienda.biblioteca": "the press and your audiobooks",
   "imprenta.titulo": "the press",
   "imprenta.en_cola": "queued",
   "imprenta.sintetizando": "the voice is working",

@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "एक कॉलम",
   "lector.idioma_texto": "पाठ की भाषा",
   "lector.idioma_auto": "स्वतः पहचानें",
+  "trastienda.biblioteca": "प्रेस और आपकी ऑडियोबुक",
   "imprenta.titulo": "प्रेस",
   "imprenta.en_cola": "कतार में",
   "imprenta.sintetizando": "आवाज़ काम कर रही है",

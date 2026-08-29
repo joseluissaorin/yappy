@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Uma coluna",
   "lector.idioma_texto": "Idioma do texto",
   "lector.idioma_auto": "Detetar sozinho",
+  "trastienda.biblioteca": "a tipografia e os teus audiolivros",
   "imprenta.titulo": "a tipografia",
   "imprenta.en_cola": "na fila",
   "imprenta.sintetizando": "a voz trabalha",

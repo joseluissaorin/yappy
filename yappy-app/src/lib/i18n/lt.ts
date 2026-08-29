@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Vienas stulpelis",
   "lector.idioma_texto": "Teksto kalba",
   "lector.idioma_auto": "Aptikti automatiškai",
+  "trastienda.biblioteca": "spaustuvė ir tavo audioknygos",
   "imprenta.titulo": "spaustuvė",
   "imprenta.en_cola": "eilėje",
   "imprenta.sintetizando": "balsas dirba",

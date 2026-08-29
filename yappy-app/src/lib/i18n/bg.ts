@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Една колона",
   "lector.idioma_texto": "Език на текста",
   "lector.idioma_auto": "Автоматично",
+  "trastienda.biblioteca": "печатницата и твоите аудиокниги",
   "imprenta.titulo": "печатницата",
   "imprenta.en_cola": "на опашка",
   "imprenta.sintetizando": "гласът работи",

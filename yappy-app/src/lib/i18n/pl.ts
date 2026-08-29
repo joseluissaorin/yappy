@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Jedna kolumna",
   "lector.idioma_texto": "Język tekstu",
   "lector.idioma_auto": "Wykryj automatycznie",
+  "trastienda.biblioteca": "drukarnia i twoje audiobooki",
   "imprenta.titulo": "drukarnia",
   "imprenta.en_cola": "w kolejce",
   "imprenta.sintetizando": "głos pracuje",

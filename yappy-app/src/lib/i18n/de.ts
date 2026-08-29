@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Eine Spalte",
   "lector.idioma_texto": "Sprache des Textes",
   "lector.idioma_auto": "Automatisch erkennen",
+  "trastienda.biblioteca": "die Druckerei und deine Hörbücher",
   "imprenta.titulo": "die Druckerei",
   "imprenta.en_cola": "in der Warteschlange",
   "imprenta.sintetizando": "die Stimme arbeitet",

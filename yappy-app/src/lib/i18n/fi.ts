@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Yksi palsta",
   "lector.idioma_texto": "Tekstin kieli",
   "lector.idioma_auto": "Tunnista itse",
+  "trastienda.biblioteca": "kirjapaino ja äänikirjasi",
   "imprenta.titulo": "kirjapaino",
   "imprenta.en_cola": "jonossa",
   "imprenta.sintetizando": "ääni työskentelee",

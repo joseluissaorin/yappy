@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Une colonne",
   "lector.idioma_texto": "Langue du texte",
   "lector.idioma_auto": "Détecter automatiquement",
+  "trastienda.biblioteca": "l’imprimerie et vos livres audio",
   "imprenta.titulo": "l’imprimerie",
   "imprenta.en_cola": "en attente",
   "imprenta.sintetizando": "la voix travaille",

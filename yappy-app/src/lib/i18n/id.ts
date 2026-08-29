@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Satu kolom",
   "lector.idioma_texto": "Bahasa teks",
   "lector.idioma_auto": "Deteksi otomatis",
+  "trastienda.biblioteca": "percetakan dan buku audio Anda",
   "imprenta.titulo": "percetakan",
   "imprenta.en_cola": "antre",
   "imprenta.sintetizando": "suara bekerja",

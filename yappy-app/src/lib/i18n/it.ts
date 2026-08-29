@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Una colonna",
   "lector.idioma_texto": "Lingua del testo",
   "lector.idioma_auto": "Rileva da solo",
+  "trastienda.biblioteca": "la stamperia e i tuoi audiolibri",
   "imprenta.titulo": "la stamperia",
   "imprenta.en_cola": "in coda",
   "imprenta.sintetizando": "la voce lavora",

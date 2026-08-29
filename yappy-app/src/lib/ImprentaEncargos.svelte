@@ -26,7 +26,7 @@
     encargos.filter((e) => !["hecho", "cancelado"].includes(e.estado)),
   );
   const recientes = $derived(
-    encargos.filter((e) => e.estado === "hecho").slice(-3).reverse(),
+    encargos.filter((e) => e.estado === "hecho").slice(-2).reverse(),
   );
 
   onMount(async () => {
@@ -146,7 +146,7 @@
             <span class="ficha-titulo">{e.titulo}</span>
             <span class="ficha-motor">{$t("imprenta.hecho")}</span>
           </div>
-          <div class="mandos">
+          <div class="mandos hechos">
             <button class="mando" onclick={() => compartirYappy(e)} title=".yappy" aria-label={$t("lector.compartir") + " .yappy"}>
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15.5 V5 M8.6 8.2 L12 4.8 L15.4 8.2 M5.5 12.5 v6 q0 1.4 1.4 1.4 h10.2 q1.4 0 1.4 -1.4 v-6"/></svg>
               <span class="mando-texto">.yappy</span>
@@ -179,19 +179,19 @@
   }
   .ficha {
     background: var(--yap-superficie, #fdf9ee);
-    border: 1.5px solid var(--yap-borde, #d8d0bd);
+    border: 1.5px dashed color-mix(in srgb, var(--yap-tinta, #2b2418) 32%, transparent);
     border-radius: 14px 17px 13px 18px / 16px 13px 18px 14px;
     padding: 11px 13px;
     box-shadow: 2px 2.5px 0 #ded7c2;
+    min-width: 0;
   }
   .ficha.con-error {
     border-color: #9a4a3a;
   }
   .ficha.hecha {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    flex-direction: column;
+    gap: 7px;
     opacity: 0.92;
   }
   .ficha-toque {
@@ -217,6 +217,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex: 1;
+    min-width: 0;
   }
   .ficha-motor {
     font-family: var(--yap-mono, ui-monospace, monospace);
@@ -262,7 +264,7 @@
     margin-top: 8px;
     flex-wrap: wrap;
   }
-  .ficha.hecha .mandos {
+  .mandos.hechos {
     margin-top: 0;
   }
   .mando {

@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "En stolpec",
   "lector.idioma_texto": "Jezik besedila",
   "lector.idioma_auto": "Zaznaj samodejno",
+  "trastienda.biblioteca": "tiskarna in tvoje zvočne knjige",
   "imprenta.titulo": "tiskarna",
   "imprenta.en_cola": "v vrsti",
   "imprenta.sintetizando": "glas dela",

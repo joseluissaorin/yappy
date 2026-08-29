@@ -130,6 +130,7 @@ export default {
   "ajustes.una_columna": "Una columna",
   "lector.idioma_texto": "Idioma del texto",
   "lector.idioma_auto": "Detectarlo solo",
+  "trastienda.biblioteca": "la imprenta y los audiolibros",
   "imprenta.titulo": "la imprenta",
   "imprenta.en_cola": "en cola",
   "imprenta.sintetizando": "la voz trabaja",

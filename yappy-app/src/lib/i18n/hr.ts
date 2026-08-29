@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Jedan stupac",
   "lector.idioma_texto": "Jezik teksta",
   "lector.idioma_auto": "Prepoznaj sam",
+  "trastienda.biblioteca": "tiskara i tvoje audioknjige",
   "imprenta.titulo": "tiskara",
   "imprenta.en_cola": "u redu",
   "imprenta.sintetizando": "glas radi",

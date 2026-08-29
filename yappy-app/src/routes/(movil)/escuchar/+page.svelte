@@ -1490,7 +1490,10 @@
     {/if}
 
     {#if bobinas.length > 0}
-      <p class="rotulo-tramo">{$t("cinta.bobinas")}</p>
+      <button class="rotulo-tramo rotulo-puerta" use:presionable={{ hap: "soft" }} onclick={() => goto("/biblioteca/audiolibros")}>
+        {$t("cinta.bobinas")}
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
       {#each bobinas as b (b.path)}
         <article class="tarjeta bobina" in:llega>
           <button class="pieza-cuerpo" use:presionable onclick={() => abrirBobina(b)}>
@@ -2759,6 +2762,15 @@
     text-align: center;
   }
 
+  .rotulo-puerta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+  }
   .rotulo-tramo {
     margin: 10px 15px 0;
     font-family: var(--yap-mono, ui-monospace, monospace);

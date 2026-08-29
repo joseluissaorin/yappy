@@ -119,6 +119,7 @@ export default {
   "ajustes.una_columna": "عمود واحد",
   "lector.idioma_texto": "لغة النص",
   "lector.idioma_auto": "اكتشاف تلقائي",
+  "trastienda.biblioteca": "المطبعة وكتبك الصوتية",
   "imprenta.titulo": "المطبعة",
   "imprenta.en_cola": "في الانتظار",
   "imprenta.sintetizando": "الصوت يعمل",

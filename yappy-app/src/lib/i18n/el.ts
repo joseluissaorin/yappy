@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Μία στήλη",
   "lector.idioma_texto": "Γλώσσα κειμένου",
   "lector.idioma_auto": "Αυτόματη ανίχνευση",
+  "trastienda.biblioteca": "το τυπογραφείο και τα ηχητικά βιβλία σου",
   "imprenta.titulo": "το τυπογραφείο",
   "imprenta.en_cola": "σε αναμονή",
   "imprenta.sintetizando": "η φωνή δουλεύει",

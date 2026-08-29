@@ -119,6 +119,7 @@ export default {
   "ajustes.una_columna": "Tek sütun",
   "lector.idioma_texto": "Metnin dili",
   "lector.idioma_auto": "Otomatik algıla",
+  "trastienda.biblioteca": "matbaa ve sesli kitapların",
   "imprenta.titulo": "matbaa",
   "imprenta.en_cola": "sırada",
   "imprenta.sintetizando": "ses çalışıyor",

@@ -119,6 +119,7 @@ export default {
   "ajustes.una_columna": "Одна колонка",
   "lector.idioma_texto": "Мова тексту",
   "lector.idioma_auto": "Визначати самостійно",
+  "trastienda.biblioteca": "друкарня і твої аудіокниги",
   "imprenta.titulo": "друкарня",
   "imprenta.en_cola": "у черзі",
   "imprenta.sintetizando": "голос працює",

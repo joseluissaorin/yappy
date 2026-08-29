@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "O coloană",
   "lector.idioma_texto": "Limba textului",
   "lector.idioma_auto": "Detectează automat",
+  "trastienda.biblioteca": "tipografia și audiobook-urile tale",
   "imprenta.titulo": "tipografia",
   "imprenta.en_cola": "în coadă",
   "imprenta.sintetizando": "vocea lucrează",

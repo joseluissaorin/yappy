@@ -14,6 +14,10 @@
   import ImprentaEncargos from "$lib/ImprentaEncargos.svelte";
   import { onImprentaActualizada } from "$lib/ipc";
 
+  // La página móvil trae su propia cabecera (safe area + volver): silencia
+  // la del shell de escritorio con esta prop.
+  let { conCabecera = true }: { conCabecera?: boolean } = $props();
+
   type LibraryItem = {
     name: string;
     path: string;
@@ -207,10 +211,14 @@
 ></audio>
 
 <section class="lib-wrap">
-  <header class="section-head">
-    <h2>{$t("biblioteca.titulo")}</h2>
-    <p>{$t("biblioteca.subtitulo")}</p>
-  </header>
+  {#if conCabecera}
+    <header class="section-head">
+      <h2>{$t("biblioteca.titulo")}</h2>
+      <p>{$t("biblioteca.subtitulo")}</p>
+    </header>
+  {:else}
+    <p class="lib-pista">{$t("biblioteca.subtitulo")}</p>
+  {/if}
   <!-- LA IMPRENTA: los encargos en marcha, encima de los libros hechos. -->
   <ImprentaEncargos />
   {#if libraryStatus.current_path && libraryStatus.duration_secs > 0}
@@ -350,6 +358,11 @@
 </section>
 
 <style>
+  .lib-pista {
+    margin: 0 0 2px;
+    font-size: 13px;
+    color: var(--yap-tinta-suave, #82755a);
+  }
   .lnp-karaoke {
     font-family: var(--yap-lectura, Georgia, serif);
     font-size: 15px;

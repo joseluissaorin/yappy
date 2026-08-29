@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Eén kolom",
   "lector.idioma_texto": "Taal van de tekst",
   "lector.idioma_auto": "Automatisch herkennen",
+  "trastienda.biblioteca": "de drukkerij en je luisterboeken",
   "imprenta.titulo": "de drukkerij",
   "imprenta.en_cola": "in de wachtrij",
   "imprenta.sintetizando": "de stem werkt",

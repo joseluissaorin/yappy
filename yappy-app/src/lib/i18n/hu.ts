@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Egy hasáb",
   "lector.idioma_texto": "A szöveg nyelve",
   "lector.idioma_auto": "Automatikus felismerés",
+  "trastienda.biblioteca": "a nyomda és a hangoskönyveid",
   "imprenta.titulo": "a nyomda",
   "imprenta.en_cola": "sorban",
   "imprenta.sintetizando": "a hang dolgozik",

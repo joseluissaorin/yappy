@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Một cột",
   "lector.idioma_texto": "Ngôn ngữ văn bản",
   "lector.idioma_auto": "Tự phát hiện",
+  "trastienda.biblioteca": "xưởng in và sách nói của bạn",
   "imprenta.titulo": "xưởng in",
   "imprenta.en_cola": "trong hàng đợi",
   "imprenta.sintetizando": "giọng đang làm việc",

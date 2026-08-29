@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Üks veerg",
   "lector.idioma_texto": "Teksti keel",
   "lector.idioma_auto": "Tuvasta ise",
+  "trastienda.biblioteca": "trükikoda ja sinu audioraamatud",
   "imprenta.titulo": "trükikoda",
   "imprenta.en_cola": "järjekorras",
   "imprenta.sintetizando": "hääl töötab",

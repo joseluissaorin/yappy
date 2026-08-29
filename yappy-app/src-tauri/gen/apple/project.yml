@@ -76,7 +76,7 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         CFBundleShortVersionString: 0.3.0
-        CFBundleVersion: "0.3.0.1"
+        CFBundleVersion: "0.3.0.2"
         # Export compliance: Yappy uses only exempt encryption (HTTPS for model
         # downloads + Apple's standard system crypto; no proprietary algorithms),
         # so it's exempt. Declaring this here skips the "Missing Compliance"
@@ -263,7 +263,7 @@ targets:
       properties:
         CFBundleDisplayName: YappyWidgets
         CFBundleShortVersionString: 0.3.0
-        CFBundleVersion: "0.3.0.1"
+        CFBundleVersion: "0.3.0.2"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     entitlements:
@@ -313,7 +313,7 @@ targets:
       properties:
         CFBundleDisplayName: Yappy
         CFBundleShortVersionString: 0.3.0
-        CFBundleVersion: "0.3.0.1"
+        CFBundleVersion: "0.3.0.2"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController

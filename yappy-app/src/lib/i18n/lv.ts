@@ -120,6 +120,7 @@ export default {
   "ajustes.una_columna": "Viena sleja",
   "lector.idioma_texto": "Teksta valoda",
   "lector.idioma_auto": "Noteikt automātiski",
+  "trastienda.biblioteca": "tipogrāfija un tavas audiogrāmatas",
   "imprenta.titulo": "tipogrāfija",
   "imprenta.en_cola": "rindā",
   "imprenta.sintetizando": "balss strādā",
