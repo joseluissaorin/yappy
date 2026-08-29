@@ -442,6 +442,16 @@ pub fn arrancar(app: AppHandle) {
                     .await;
                 continue;
             };
+            // La voz del que ESCUCHA manda: mientras haya una lectura en
+            // vivo sintetizando, la imprenta no arranca ninguna pieza (y si
+            // estaba en medio de una, la habrá cedido con su checkpoint).
+            {
+                let estado = app.state::<Arc<AppState>>();
+                if estado.lectores.load(Ordering::SeqCst) > 0 {
+                    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+                    continue;
+                }
+            }
             let id = encargo.id.clone();
             let control = Arc::new(Control::default());
             {
@@ -466,6 +476,11 @@ pub fn arrancar(app: AppHandle) {
                 Ok(Desenlace::Pausado) => {
                     mutar_encargo(&app, &id, |e| e.estado = EstadoEncargo::Pausado);
                 }
+                Ok(Desenlace::Cedido) => {
+                    // El lector pidió el motor: el encargo vuelve a la cola
+                    // con su checkpoint y el runner esperará al silencio.
+                    mutar_encargo(&app, &id, |e| e.estado = EstadoEncargo::EnCola);
+                }
                 Ok(Desenlace::Cancelado) => {
                     if let Ok(d) = dir_encargo(&app, &id) {
                         let _ = fs::remove_dir_all(d);
@@ -487,6 +502,8 @@ pub fn arrancar(app: AppHandle) {
 enum Desenlace {
     Hecho,
     Pausado,
+    /// El motor se cedió a una lectura en vivo: retomar cuando calle.
+    Cedido,
     Cancelado,
 }
 
@@ -616,7 +633,10 @@ async fn procesar_local(
         #[cfg(target_os = "ios")]
         let total_act = total_piezas as i32;
         let estado_arc = app.state::<Arc<AppState>>().inner().clone();
+        let estado_lectores = estado_arc.clone();
         tokio::task::spawn_blocking(move || -> Result<&'static str> {
+            // Trabajo de fondo: por debajo de la lectura viva en CPU.
+            crate::bajar_prioridad_de_hilo();
             // Una sola síntesis en el proceso (compartido con la lectura).
             let _motor = estado_arc.candado_motor.lock().unwrap();
             let mut pieza_actual: usize = 0; // índice en el subguion
@@ -652,6 +672,12 @@ async fn procesar_local(
             let r = engine2.synthesize_guion(&subguion, &opts, |chunk| {
                 if control2.cancelar.load(Ordering::SeqCst) {
                     return Err(anyhow!("__cancelado__"));
+                }
+                // Un LECTOR acaba de pedir el motor: soltar ya. La pieza a
+                // medias se pierde (se repite al retomar); el que escucha
+                // no espera ni un segundo más de lo inevitable.
+                if estado_lectores.lectores.load(Ordering::SeqCst) > 0 {
+                    return Err(anyhow!("__cedido__"));
                 }
                 if chunk.paragraph_index != pieza_actual {
                     // La pieza anterior está completa: checkpoint.
@@ -697,6 +723,7 @@ async fn procesar_local(
                     Ok("hecho")
                 }
                 Err(e) if e.to_string().contains("__pausado__") => Ok("pausado"),
+                Err(e) if e.to_string().contains("__cedido__") => Ok("cedido"),
                 Err(e) if e.to_string().contains("__cancelado__") => Ok("cancelado"),
                 Err(e) => Err(e),
             }
@@ -711,6 +738,7 @@ async fn procesar_local(
 
     match resultado_sintesis? {
         "pausado" => return Ok(Desenlace::Pausado),
+        "cedido" => return Ok(Desenlace::Cedido),
         "cancelado" => return Ok(Desenlace::Cancelado),
         _ => {}
     }

@@ -2392,6 +2392,8 @@ pub fn precocinar_muestras(app: AppHandle, state: Arc<AppState>) {
     std::thread::Builder::new()
         .name("yappy-muestras".into())
         .spawn(move || {
+            // Trabajo de fondo: por debajo de cualquier lectura viva.
+            crate::bajar_prioridad_de_hilo();
             // Dejar que la app arranque tranquila antes de gastar CPU.
             std::thread::sleep(std::time::Duration::from_secs(12));
             loop {
@@ -3035,6 +3037,15 @@ pub struct SessionMeta {
     pub start_paused: bool,
 }
 
+/// ¿Ya hay colchón para ESTRENAR la sesión? Dos frases con texto (la que
+/// suena y una entera por delante), o suficiente audio acumulado, o el final
+/// del guion. Mientras no, los trozos se retienen y el estado sigue en
+/// «preparando»: arrancar un pelín más tarde con margen suena mágico;
+/// arrancar al instante y quedarse sin aire a mitad de frase, no.
+pub fn colchon_listo(frases_con_texto: usize, segundos: f32, es_ultimo: bool) -> bool {
+    es_ultimo || frases_con_texto >= 2 || segundos >= 4.0
+}
+
 /// El camino común de toda lectura. Si llega un Guion ya construido (el
 /// editor de documentos, con sus clases de pieza y sus anulaciones por
 /// párrafo), se sintetiza tal cual; si no, el texto plano pasa por el
@@ -3190,72 +3201,123 @@ async fn read_internal<R: Runtime>(
 
     let arranque_pausado = meta.start_paused;
     tauri::async_runtime::spawn_blocking(move || {
-        let mut first_emitted = false;
-        let mut detected_lang = String::new();
+        // La voz del que escucha MANDA: mientras este contador esté alto, la
+        // imprenta vuelca su checkpoint y cede el motor, y las muestras
+        // esperan. El guard garantiza el decremento pase lo que pase.
+        struct Lector(Arc<AppState>);
+        impl Drop for Lector {
+            fn drop(&mut self) {
+                self.0
+                    .lectores
+                    .fetch_sub(1, std::sync::atomic::Ordering::SeqCst);
+            }
+        }
+        state_for_thread
+            .lectores
+            .fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+        let _lector = Lector(state_for_thread.clone());
+        // La lectura corre con la CPU por delante de los trabajos de fondo.
+        crate::subir_prioridad_de_hilo();
+
+        use std::cell::{Cell, RefCell};
+        let first_emitted = Cell::new(false);
+        // EL COLCHÓN: no se empieza a sonar con una sola frase. Se retienen
+        // los primeros trozos hasta tener dos frases con texto (o suficiente
+        // audio, o el final del guion) y se estrena la sesión con TODO ese
+        // material de golpe: aunque el móvil vaya lento y la síntesis sea
+        // una a una, siempre hay margen mientras suena la primera frase.
+        let pendientes: RefCell<Vec<AudioChunk>> = RefCell::new(Vec::new());
+        let frases_colchon = Cell::new(0usize);
+        let segundos_colchon = Cell::new(0f32);
+        let detected_lang: RefCell<String> = RefCell::new(String::new());
         let opts_local = opts.clone();
         let my_session = session_id;
-        let al_chunk = |chunk: yappy_core::engine::AudioChunk| {
-            // Cooperative cancel: if Stop fired (or a new read started), the controller
-            // has bumped its session id. Bail out *before* spending more time on this chunk's
-            // downstream work — the engine respects an Err return by halting the loop.
-            if state_for_thread.playback.current_session() != my_session {
-                return Err(anyhow::anyhow!("session cancelled"));
-            }
-            detected_lang = chunk.lang.clone();
-            let ac = AudioChunk {
-                index: chunk.index,
-                paragraph_index: chunk.paragraph_index,
-                total: chunk.total,
-                total_paragraphs: chunk.total_paragraphs,
-                text: chunk.text.clone(),
-                origen_ini: chunk.origen_ini,
-                origen_fin: chunk.origen_fin,
-                samples: chunk.samples.clone(),
-                source_sample_rate: chunk.sample_rate as u32,
-            };
-            if !first_emitted {
-                state_for_thread
-                    .playback
-                    .new_session(my_session, vec![ac], arranque_pausado);
-                first_emitted = true;
-            } else {
-                state_for_thread.playback.enqueue(my_session, ac);
-            }
-            // Skip the UI event too if the session was just cancelled (very tight race window).
-            if state_for_thread.playback.current_session() != my_session {
-                return Err(anyhow::anyhow!("session cancelled"));
-            }
-            let _ = app_for_thread.emit(
-                "chunk_synthesized",
-                serde_json::json!({
-                    "index": chunk.index,
-                    "total": chunk.total,
-                    "text": chunk.text,
-                    "lang": chunk.lang,
-                }),
-            );
-            tracing::debug!(
-                "chunk {}/{} lang={} chars={}",
-                chunk.index + 1,
-                chunk.total,
-                chunk.lang,
-                chunk.text.chars().count()
-            );
-            let _ = &voice_overrides;
-            Ok(())
-        };
 
-        {
-            let _barrera = state_for_thread.candado_motor.lock().unwrap();
-        }
+        // El candado se RETIENE durante toda la síntesis: nada de fondo
+        // sintetiza a la vez robando la mitad de la CPU. (La imprenta lo
+        // suelta en cuanto ve el contador de lectores; ver imprenta.rs.)
+        let _motor = state_for_thread.candado_motor.lock().unwrap();
+
         // La síntesis va envuelta en catch_unwind: un PÁNICO en el motor (el
         // guionizador con un texto raro, un modelo corrupto) se saltaba el
-        // Fallo y dejaba «preparando la voz» colgado para siempre.
-        let res =
-            std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| match &guion_for_thread {
-                Some(g) => engine.synthesize_guion(g, &opts_local, al_chunk),
-                None => engine.synthesize_streaming(&text_for_thread, &opts_local, al_chunk),
-            }))
+        // Fallo y dejaba «preparando la voz» colgado para siempre. Y un fallo
+        // ANTES del primer sonido se reintenta una vez: los tropiezos
+        // transitorios no merecen un silencio.
+        let mut res: Result<(), anyhow::Error> = Ok(());
+        for intento in 0..2 {
+            let al_chunk = |chunk: yappy_core::engine::AudioChunk| {
+                // Cooperative cancel: if Stop fired (or a new read started), the
+                // controller has bumped its session id. Bail out *before* spending
+                // more time on this chunk's downstream work.
+                if state_for_thread.playback.current_session() != my_session {
+                    return Err(anyhow::anyhow!("session cancelled"));
+                }
+                *detected_lang.borrow_mut() = chunk.lang.clone();
+                let sr = (chunk.sample_rate as u32).max(1);
+                let ac = AudioChunk {
+                    index: chunk.index,
+                    paragraph_index: chunk.paragraph_index,
+                    total: chunk.total,
+                    total_paragraphs: chunk.total_paragraphs,
+                    text: chunk.text.clone(),
+                    origen_ini: chunk.origen_ini,
+                    origen_fin: chunk.origen_fin,
+                    samples: chunk.samples,
+                    source_sample_rate: sr,
+                };
+                if !first_emitted.get() {
+                    if !ac.text.trim().is_empty() {
+                        frases_colchon.set(frases_colchon.get() + 1);
+                    }
+                    segundos_colchon
+                        .set(segundos_colchon.get() + ac.samples.len() as f32 / sr as f32);
+                    pendientes.borrow_mut().push(ac);
+                    let es_ultimo = chunk.index + 1 >= chunk.total;
+                    if colchon_listo(frases_colchon.get(), segundos_colchon.get(), es_ultimo) {
+                        let listos = std::mem::take(&mut *pendientes.borrow_mut());
+                        tracing::info!(
+                            "colchón: estreno con {} trozos ({:.1}s de margen)",
+                            listos.len(),
+                            segundos_colchon.get()
+                        );
+                        state_for_thread
+                            .playback
+                            .new_session(my_session, listos, arranque_pausado);
+                        first_emitted.set(true);
+                    }
+                } else {
+                    state_for_thread.playback.enqueue(my_session, ac);
+                }
+                // Skip the UI event too if the session was just cancelled.
+                if state_for_thread.playback.current_session() != my_session {
+                    return Err(anyhow::anyhow!("session cancelled"));
+                }
+                let _ = app_for_thread.emit(
+                    "chunk_synthesized",
+                    serde_json::json!({
+                        "index": chunk.index,
+                        "total": chunk.total,
+                        "text": chunk.text,
+                        "lang": chunk.lang,
+                    }),
+                );
+                tracing::debug!(
+                    "chunk {}/{} lang={} chars={}",
+                    chunk.index + 1,
+                    chunk.total,
+                    chunk.lang,
+                    chunk.text.chars().count()
+                );
+                let _ = &voice_overrides;
+                Ok(())
+            };
+
+            res = std::panic::catch_unwind(std::panic::AssertUnwindSafe(
+                || match &guion_for_thread {
+                    Some(g) => engine.synthesize_guion(g, &opts_local, al_chunk),
+                    None => engine.synthesize_streaming(&text_for_thread, &opts_local, al_chunk),
+                },
+            ))
             .unwrap_or_else(|p| {
                 let msg = p
                     .downcast_ref::<String>()
@@ -3265,6 +3327,19 @@ async fn read_internal<R: Runtime>(
                 Err(anyhow::anyhow!("pánico del motor: {msg}"))
             });
 
+            let cancelado = matches!(&res, Err(e) if e.to_string().contains("session cancelled"));
+            let sono_algo = first_emitted.get() || !pendientes.borrow().is_empty();
+            if res.is_ok() || cancelado || sono_algo || intento == 1 {
+                break;
+            }
+            tracing::warn!(
+                "síntesis falló antes del primer sonido; reintentando una vez: {:?}",
+                res.as_ref().err()
+            );
+            std::thread::sleep(std::time::Duration::from_millis(400));
+        }
+        let detected_lang = detected_lang.into_inner();
+
         // A cancellation is an expected outcome, not an error worth surfacing.
         let cancelled = matches!(&res, Err(e) if e.to_string().contains("session cancelled"));
         if let Err(e) = &res {
@@ -3273,10 +3348,30 @@ async fn read_internal<R: Runtime>(
             } else {
                 tracing::error!("synthesize_streaming: {e:?}");
                 let _ = app_for_thread.emit("synth_error", e.to_string());
-                // Si murió antes del primer trozo, el snapshot sigue en
-                // «preparando»: devolverlo a inactivo para no dejar a la
-                // interfaz esperando una cocina que ya no existe.
-                state_for_thread.playback.fallo(my_session);
+                // Si el colchón guardaba material, que SUENE lo que se pudo
+                // cocinar antes del tropiezo; si no había nada, devolver el
+                // snapshot de «preparando» a inactivo.
+                let restos = std::mem::take(&mut *pendientes.borrow_mut());
+                if !first_emitted.get() && !restos.is_empty() {
+                    state_for_thread
+                        .playback
+                        .new_session(my_session, restos, arranque_pausado);
+                    first_emitted.set(true);
+                } else if !first_emitted.get() {
+                    state_for_thread.playback.fallo(my_session);
+                }
+            }
+        }
+        // El guion entero cupo en el colchón sin disparar el estreno (no
+        // debería pasar: el último trozo lo fuerza), o la síntesis terminó
+        // limpia con material retenido: estrenar con lo que haya.
+        if res.is_ok() && !first_emitted.get() {
+            let restos = std::mem::take(&mut *pendientes.borrow_mut());
+            if !restos.is_empty() {
+                state_for_thread
+                    .playback
+                    .new_session(my_session, restos, arranque_pausado);
+                first_emitted.set(true);
             }
         }
 
@@ -3628,4 +3723,24 @@ pub fn clear_transcripts_cmd(app: AppHandle) -> Result<(), String> {
 #[tauri::command]
 pub fn delete_transcript_cmd(app: AppHandle, id: String) -> Result<(), String> {
     transcripts::delete(&app, &id).map_err(|e| e.to_string())
+}
+
+#[cfg(test)]
+mod tests_colchon {
+    use super::colchon_listo;
+
+    #[test]
+    fn el_colchon_espera_dos_frases_pero_no_para_siempre() {
+        // Una sola frase corta: aún no.
+        assert!(!colchon_listo(1, 2.1, false));
+        // Dos frases con texto: a sonar.
+        assert!(colchon_listo(2, 3.0, false));
+        // Una frase larguísima ya da margen de sobra.
+        assert!(colchon_listo(1, 4.5, false));
+        // El final del guion estrena con lo que haya (texto de una frase).
+        assert!(colchon_listo(1, 0.8, true));
+        assert!(colchon_listo(0, 0.0, true));
+        // Solo silencios de párrafo acumulados: seguir esperando.
+        assert!(!colchon_listo(0, 1.5, false));
+    }
 }

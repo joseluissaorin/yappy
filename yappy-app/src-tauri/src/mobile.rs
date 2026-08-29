@@ -418,6 +418,7 @@ pub fn install_now_playing_handlers(playback: std::sync::Arc<crate::playback::Pl
 
 extern "C" {
     fn yappy_audio_session_activate();
+    fn yappy_audio_session_lectura(viva: bool);
     fn yappy_background_audio_begin();
     fn yappy_background_audio_end();
     // ─── Live Activity (ActivityKit) — see LiveActivityBridge.swift ───
@@ -436,6 +437,13 @@ extern "C" {
 /// from `PlaybackController::new` before the cpal stream is built.
 pub fn audio_session_activate() {
     unsafe { yappy_audio_session_activate() };
+}
+
+/// Declara en Swift si hay una lectura VIVA (sonando o en pausa reanudable).
+/// El keepalive de fondo consulta esto antes de desactivar la AVAudioSession:
+/// desactivarla bajo una lectura dejaba a cpal mudo para siempre.
+pub fn audio_session_lectura(viva: bool) {
+    unsafe { yappy_audio_session_lectura(viva) };
 }
 
 /// Start a Live Activity for an audiobook render. The widget shows progress

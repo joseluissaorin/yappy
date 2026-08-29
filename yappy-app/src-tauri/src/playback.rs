@@ -322,86 +322,21 @@ fn run_audio_thread(
             std::thread::sleep(std::time::Duration::from_millis(100));
         }
     }
-    let host = cpal::default_host();
-    let device = host
-        .default_output_device()
-        .ok_or_else(|| anyhow!("no default audio output"))?;
-    let supported = device.default_output_config()?;
-    let out_sr = supported.sample_rate().0;
-    let channels = supported.channels() as usize;
-    let sample_format = supported.sample_format();
+    // Shared state for the audio callback.
+    let buffer: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
+    let paused = Arc::new(Mutex::new(false));
+    let played_samples = Arc::new(Mutex::new(0u64));
+    let volume = Arc::new(Mutex::new(1.0f32));
+
+    // El stream vive en una variable RECONSTRUIBLE: si el oído detecta que
+    // la salida murió (sesión desactivada, interrupción, cambio de ruta),
+    // se tira este y se construye otro con el dispositivo actual.
+    let (mut stream, mut out_sr) = construir_stream(&buffer, &paused, &played_samples, &volume)?;
+    let _ = &stream; // el stream SUENA mientras viva; solo lo sujetamos.
     {
         let mut s = snapshot.lock().unwrap();
         s.output_sample_rate = out_sr;
     }
-
-    // Shared state for the audio callback.
-    let buffer: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
-    let buffer_cb = buffer.clone();
-    let paused = Arc::new(Mutex::new(false));
-    let paused_cb = paused.clone();
-    let played_samples = Arc::new(Mutex::new(0u64));
-    let played_cb = played_samples.clone();
-    let volume = Arc::new(Mutex::new(1.0f32));
-    let volume_cb = volume.clone();
-
-    let mut config = supported.config();
-    config.buffer_size = cpal::BufferSize::Default;
-
-    let err_fn = |e| tracing::error!("cpal stream error: {e}");
-
-    let stream = match sample_format {
-        cpal::SampleFormat::F32 => device.build_output_stream(
-            &config,
-            move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
-                fill::<f32>(
-                    data,
-                    channels,
-                    &buffer_cb,
-                    &paused_cb,
-                    &played_cb,
-                    &volume_cb,
-                    |v| v,
-                );
-            },
-            err_fn,
-            None,
-        )?,
-        cpal::SampleFormat::I16 => device.build_output_stream(
-            &config,
-            move |data: &mut [i16], _: &cpal::OutputCallbackInfo| {
-                fill::<i16>(
-                    data,
-                    channels,
-                    &buffer_cb,
-                    &paused_cb,
-                    &played_cb,
-                    &volume_cb,
-                    |v| (v.clamp(-1.0, 1.0) * 32767.0) as i16,
-                );
-            },
-            err_fn,
-            None,
-        )?,
-        cpal::SampleFormat::U16 => device.build_output_stream(
-            &config,
-            move |data: &mut [u16], _: &cpal::OutputCallbackInfo| {
-                fill::<u16>(
-                    data,
-                    channels,
-                    &buffer_cb,
-                    &paused_cb,
-                    &played_cb,
-                    &volume_cb,
-                    |v| ((v.clamp(-1.0, 1.0) * 32767.0) + 32768.0) as u16,
-                );
-            },
-            err_fn,
-            None,
-        )?,
-        _ => return Err(anyhow!("unsupported sample format {:?}", sample_format)),
-    };
-    stream.play()?;
 
     let mut session_total = 0usize;
     let mut current_index = 0usize;
@@ -423,6 +358,17 @@ fn run_audio_thread(
     let mut current_paragraph_index: usize = 0;
     let mut total_paragraphs: usize = 0;
     let mut nivel_anterior: f32 = 0.0;
+
+    // ─── EL OÍDO: el vigilante de que el audio AVANZA de verdad ─────────
+    // Si el estado dice «sonando», no hay pausa y hay material en el buffer
+    // pero el reloj de muestras no se mueve, el motor de salida está muerto
+    // (sesión de audio desactivada por debajo, interrupción no recuperada,
+    // ruta cambiada). Se reconstruye el stream con backoff. Esto convierte
+    // el «se abre el documento y nunca suena» en un tropiezo de un segundo.
+    let mut oido_ultimo_played: u64 = u64::MAX;
+    let mut oido_ticks_estancado: u32 = 0;
+    let mut oido_umbral_ticks: u32 = 24; // 24 ticks × 50 ms = 1,2 s
+    let mut oido_reconstrucciones: u32 = 0;
 
     let emit = |snapshot: &Arc<Mutex<PlaybackSnapshot>>, listeners: &Oyentes| {
         // La revisión crece en CADA emisión: la interfaz descarta lo viejo.
@@ -529,7 +475,12 @@ fn run_audio_thread(
                     // cpal's RemoteIO output unit produces nothing if the session
                     // isn't active — so re-assert it here, not just at startup.
                     #[cfg(target_os = "ios")]
-                    crate::mobile::audio_session_activate();
+                    {
+                        crate::mobile::audio_session_activate();
+                        // El keepalive de fondo NO desactivará la sesión
+                        // mientras esta lectura viva (sonando o en pausa).
+                        crate::mobile::audio_session_lectura(true);
+                    }
                     *buffer.lock().unwrap() = Vec::new();
                     *session_samples.lock().unwrap() = Vec::new();
                     session_total = chunks.first().map(|c| c.total).unwrap_or(0);
@@ -544,7 +495,7 @@ fn run_audio_thread(
                         let resampled = if chunk.source_sample_rate != out_sr {
                             resample_mono(&chunk.samples, chunk.source_sample_rate, out_sr)?
                         } else {
-                            chunk.samples.clone()
+                            chunk.samples
                         };
                         session_duration_samples += resampled.len() as u64;
                         buffer.lock().unwrap().extend(resampled.iter().copied());
@@ -590,7 +541,7 @@ fn run_audio_thread(
                     let resampled = if chunk.source_sample_rate != out_sr {
                         resample_mono(&chunk.samples, chunk.source_sample_rate, out_sr)?
                     } else {
-                        chunk.samples.clone()
+                        chunk.samples
                     };
                     session_duration_samples += resampled.len() as u64;
                     buffer.lock().unwrap().extend(resampled.iter().copied());
@@ -641,6 +592,8 @@ fn run_audio_thread(
                     emit(&snapshot, &listeners);
                 }
                 Command::Stop => {
+                    #[cfg(target_os = "ios")]
+                    crate::mobile::audio_session_lectura(false);
                     *buffer.lock().unwrap() = Vec::new();
                     *paused.lock().unwrap() = false;
                     paused_state = false;
@@ -846,15 +799,200 @@ fn run_audio_thread(
                 s.estado = "inactivo".into();
                 s.titulo.clear();
                 s.doc_path.clear();
+                #[cfg(target_os = "ios")]
+                crate::mobile::audio_session_lectura(false);
             }
+            let sonando_de_verdad = s.estado == "sonando";
             if chunk_changed || ended {
                 drop(s);
                 emit(&snapshot, &listeners);
+            } else {
+                drop(s);
             }
+
+            // ─── EL OÍDO ────────────────────────────────────────────────
+            // Solo diagnostica con MATERIAL pendiente: buffer vacío con la
+            // cocina en marcha es un hueco de síntesis, no un stream muerto.
+            if sonando_de_verdad && !paused_state && !buf_empty {
+                if played == oido_ultimo_played {
+                    oido_ticks_estancado += 1;
+                    if oido_ticks_estancado >= oido_umbral_ticks && oido_reconstrucciones < 6 {
+                        oido_reconstrucciones += 1;
+                        tracing::warn!(
+                            "oído: la salida no avanza ({} ms con material); reconstruyendo el stream (intento {})",
+                            u64::from(oido_ticks_estancado) * 50,
+                            oido_reconstrucciones
+                        );
+                        #[cfg(target_os = "ios")]
+                        {
+                            crate::mobile::audio_session_activate();
+                            crate::mobile::audio_session_lectura(true);
+                        }
+                        match construir_stream(&buffer, &paused, &played_samples, &volume) {
+                            Ok((nuevo_stream, nuevo_sr)) => {
+                                stream = nuevo_stream;
+                                let _ = &stream;
+                                if nuevo_sr != out_sr {
+                                    // El dispositivo nuevo habla a otra
+                                    // velocidad: migrar TODO el estado.
+                                    if let Err(e) = migrar_sample_rate(
+                                        out_sr,
+                                        nuevo_sr,
+                                        &buffer,
+                                        &session_samples,
+                                        &played_samples,
+                                        &mut chunk_boundaries,
+                                        &mut session_duration_samples,
+                                    ) {
+                                        tracing::error!(
+                                            "oído: migración de sample rate falló: {e:?}"
+                                        );
+                                    } else {
+                                        out_sr = nuevo_sr;
+                                        snapshot.lock().unwrap().output_sample_rate = nuevo_sr;
+                                    }
+                                }
+                            }
+                            Err(e) => tracing::error!("oído: reconstrucción falló: {e:?}"),
+                        }
+                        oido_ticks_estancado = 0;
+                        // Backoff: si tampoco esta reconstrucción arranca,
+                        // esperar más antes de la siguiente (hasta 10 s).
+                        oido_umbral_ticks = (oido_umbral_ticks * 2).min(200);
+                    }
+                } else {
+                    oido_ticks_estancado = 0;
+                    if oido_reconstrucciones > 0 || oido_umbral_ticks != 24 {
+                        // Avanza de nuevo: el presupuesto de rescates se
+                        // repone para la próxima tormenta.
+                        oido_reconstrucciones = 0;
+                        oido_umbral_ticks = 24;
+                    }
+                }
+            } else {
+                oido_ticks_estancado = 0;
+            }
+            oido_ultimo_played = played;
         }
 
         std::thread::sleep(std::time::Duration::from_millis(50));
     }
+}
+
+/// Construye (o RECONSTRUYE) el stream de salida con el dispositivo por
+/// defecto de AHORA MISMO y lo arranca. Devuelve el stream vivo y su
+/// sample rate. Los Arcs compartidos siguen siendo los mismos: el callback
+/// nuevo tira del mismo buffer donde la síntesis encola.
+fn construir_stream(
+    buffer: &Arc<Mutex<Vec<f32>>>,
+    paused: &Arc<Mutex<bool>>,
+    played: &Arc<Mutex<u64>>,
+    volume: &Arc<Mutex<f32>>,
+) -> Result<(cpal::Stream, u32)> {
+    let host = cpal::default_host();
+    let device = host
+        .default_output_device()
+        .ok_or_else(|| anyhow!("no default audio output"))?;
+    let supported = device.default_output_config()?;
+    let out_sr = supported.sample_rate().0;
+    let channels = supported.channels() as usize;
+    let sample_format = supported.sample_format();
+    let mut config = supported.config();
+    config.buffer_size = cpal::BufferSize::Default;
+    let err_fn = |e| tracing::error!("cpal stream error: {e}");
+    let stream = match sample_format {
+        cpal::SampleFormat::F32 => {
+            let (b, p, pl, v) = (
+                buffer.clone(),
+                paused.clone(),
+                played.clone(),
+                volume.clone(),
+            );
+            device.build_output_stream(
+                &config,
+                move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
+                    fill::<f32>(data, channels, &b, &p, &pl, &v, |x| x);
+                },
+                err_fn,
+                None,
+            )?
+        }
+        cpal::SampleFormat::I16 => {
+            let (b, p, pl, v) = (
+                buffer.clone(),
+                paused.clone(),
+                played.clone(),
+                volume.clone(),
+            );
+            device.build_output_stream(
+                &config,
+                move |data: &mut [i16], _: &cpal::OutputCallbackInfo| {
+                    fill::<i16>(data, channels, &b, &p, &pl, &v, |x| {
+                        (x.clamp(-1.0, 1.0) * 32767.0) as i16
+                    });
+                },
+                err_fn,
+                None,
+            )?
+        }
+        cpal::SampleFormat::U16 => {
+            let (b, p, pl, v) = (
+                buffer.clone(),
+                paused.clone(),
+                played.clone(),
+                volume.clone(),
+            );
+            device.build_output_stream(
+                &config,
+                move |data: &mut [u16], _: &cpal::OutputCallbackInfo| {
+                    fill::<u16>(data, channels, &b, &p, &pl, &v, |x| {
+                        ((x.clamp(-1.0, 1.0) * 32767.0) + 32768.0) as u16
+                    });
+                },
+                err_fn,
+                None,
+            )?
+        }
+        _ => return Err(anyhow!("unsupported sample format {:?}", sample_format)),
+    };
+    stream.play()?;
+    Ok((stream, out_sr))
+}
+
+/// El dispositivo de salida nuevo habla a otro sample rate: re-muestrea la
+/// sesión entera, reescala el reloj y las fronteras de chunk, y regenera el
+/// buffer pendiente como sufijo de la sesión (que es su invariante).
+#[allow(clippy::too_many_arguments)]
+fn migrar_sample_rate(
+    viejo: u32,
+    nuevo: u32,
+    buffer: &Arc<Mutex<Vec<f32>>>,
+    session_samples: &Arc<Mutex<Vec<f32>>>,
+    played_samples: &Arc<Mutex<u64>>,
+    chunk_boundaries: &mut [u64],
+    session_duration_samples: &mut u64,
+) -> Result<()> {
+    let escala = |x: u64| -> u64 { ((x as u128) * (nuevo as u128) / (viejo as u128)) as u64 };
+    let sesion_nueva = {
+        let sesion = session_samples.lock().unwrap();
+        resample_mono(&sesion, viejo, nuevo)?
+    };
+    let played_nuevo = {
+        let mut p = played_samples.lock().unwrap();
+        *p = escala(*p).min(sesion_nueva.len() as u64);
+        *p as usize
+    };
+    for b in chunk_boundaries.iter_mut() {
+        *b = escala(*b);
+    }
+    *session_duration_samples = escala(*session_duration_samples);
+    {
+        let mut buf = buffer.lock().unwrap();
+        buf.clear();
+        buf.extend_from_slice(&sesion_nueva[played_nuevo.min(sesion_nueva.len())..]);
+    }
+    *session_samples.lock().unwrap() = sesion_nueva;
+    Ok(())
 }
 
 fn fill<S: Copy + Default>(

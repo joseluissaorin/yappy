@@ -69,8 +69,15 @@ pub struct AppState {
     pub titulo_actual: Mutex<String>,
     /// Candado del motor de síntesis: dos síntesis simultáneas (la cocina de
     /// muestras y una lectura) tumbaron el simulador entero por CPU/memoria.
-    /// La cocina lo sostiene por muestra; la lectura lo usa de barrera.
+    /// La cocina lo sostiene por muestra; la LECTURA lo retiene durante toda
+    /// su síntesis (la voz del que escucha manda sobre los trabajos de fondo).
     pub candado_motor: Mutex<()>,
+    /// Cuántas LECTURAS EN VIVO están sintetizando (o a punto). La imprenta
+    /// y las muestras consultan esto para CEDER el motor de inmediato: un
+    /// encargo en marcha vuelca su checkpoint y espera a que el lector
+    /// termine. Sin esto, compartir algo con la imprenta trabajando dejaba
+    /// «preparando la voz» esperando minutos.
+    pub lectores: std::sync::atomic::AtomicUsize,
 }
 
 impl AppState {
@@ -85,6 +92,7 @@ impl AppState {
             bridge: Bridge::default(),
             documents: Mutex::new(HashMap::new()),
             candado_motor: Mutex::new(()),
+            lectores: std::sync::atomic::AtomicUsize::new(0),
             titulo_actual: Mutex::new(String::new()),
         }
     }

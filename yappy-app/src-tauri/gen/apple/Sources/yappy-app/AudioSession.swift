@@ -16,6 +16,26 @@ import Foundation
 import AVFoundation
 import UIKit
 
+// ¿Hay una LECTURA sonando (o en pausa reanudable) ahora mismo? Lo fija Rust
+// al abrir/cerrar sesión de reproducción. El keepalive de fondo consulta esto
+// antes de desactivar la AVAudioSession: desactivarla con una lectura viva
+// dejaba a cpal mudo para siempre (el «se abre el documento y nunca suena»).
+private let lecturaVivaLock = NSLock()
+private var lecturaVivaFlag = false
+
+private func lecturaViva() -> Bool {
+    lecturaVivaLock.lock()
+    defer { lecturaVivaLock.unlock() }
+    return lecturaVivaFlag
+}
+
+@_cdecl("yappy_audio_session_lectura")
+public func yappy_audio_session_lectura(_ viva: Bool) {
+    lecturaVivaLock.lock()
+    lecturaVivaFlag = viva
+    lecturaVivaLock.unlock()
+}
+
 private actor SilentAudioKeepalive {
     static let shared = SilentAudioKeepalive()
 
@@ -71,6 +91,12 @@ private actor SilentAudioKeepalive {
         engine = nil
         player = nil
         silentBuffer = nil
+        // JAMÁS desactivar la sesión con una lectura viva: cpal (RemoteIO)
+        // se queda mudo sin volver, con el estado diciendo «sonando».
+        if lecturaViva() {
+            NSLog("[yappy/audio] silent keepalive released (sesión intacta: lectura viva)")
+            return
+        }
         do {
             try AVAudioSession.sharedInstance().setActive(false, options: [.notifyOthersOnDeactivation])
         } catch {

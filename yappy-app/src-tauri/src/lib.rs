@@ -14,6 +14,32 @@ mod enlaces;
 mod history;
 mod hotkey;
 pub mod imprenta;
+
+/// Sube la prioridad del hilo ACTUAL (la síntesis de una lectura en vivo):
+/// en Apple, QoS user-initiated. En el resto de plataformas, no-op.
+pub fn subir_prioridad_de_hilo() {
+    #[cfg(target_vendor = "apple")]
+    {
+        extern "C" {
+            fn pthread_set_qos_class_self_np(class: u32, priority: i32) -> i32;
+        }
+        const QOS_CLASS_USER_INITIATED: u32 = 0x19;
+        unsafe { pthread_set_qos_class_self_np(QOS_CLASS_USER_INITIATED, 0) };
+    }
+}
+
+/// Baja la prioridad del hilo ACTUAL (los trabajos de fondo: imprenta,
+/// muestras): en Apple, QoS utility — que la lectura viva respire.
+pub fn bajar_prioridad_de_hilo() {
+    #[cfg(target_vendor = "apple")]
+    {
+        extern "C" {
+            fn pthread_set_qos_class_self_np(class: u32, priority: i32) -> i32;
+        }
+        const QOS_CLASS_UTILITY: u32 = 0x11;
+        unsafe { pthread_set_qos_class_self_np(QOS_CLASS_UTILITY, 0) };
+    }
+}
 mod model;
 pub mod yappy_pack;
 // Speech-to-text (ASR): Parakeet TDT model manager + transcript history. Audio
@@ -463,6 +489,33 @@ pub fn run() {
             #[cfg(mobile)]
             {
                 mobile::install_now_playing_handlers(state.playback.clone());
+
+                // La PRECARGA del motor: cargar el modelo en frío tarda
+                // segundos, y el primer compartir no debe pagarlos. A los
+                // dos segundos del arranque, si el modelo está en disco, se
+                // carga en silencio y la primera lectura sale al vuelo.
+                {
+                    let app2 = app.handle().clone();
+                    let state2 = state.clone();
+                    std::thread::Builder::new()
+                        .name("yappy-precarga".into())
+                        .spawn(move || {
+                            bajar_prioridad_de_hilo();
+                            std::thread::sleep(std::time::Duration::from_secs(2));
+                            if model::is_model_ready(&app2).unwrap_or(false) {
+                                if let Ok(root) = model::model_root(&app2) {
+                                    let t0 = std::time::Instant::now();
+                                    if state2.engine_or_load(&root).is_ok() {
+                                        tracing::info!(
+                                            "precarga: motor listo en {:.1}s",
+                                            t0.elapsed().as_secs_f32()
+                                        );
+                                    }
+                                }
+                            }
+                        })
+                        .ok();
+                }
 
                 // La cocina de muestras: las presentaciones de las voces se
                 // sintetizan una vez en segundo plano y quedan en caché para
