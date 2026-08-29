@@ -62,6 +62,9 @@
     colaReintentarArchivo,
     getSettings,
     libraryImportYappy,
+    imprentaListar,
+    onImprentaActualizada,
+    type Encargo,
     onColaActualizada,
     stopPlayback,
     readDocument,
@@ -86,6 +89,12 @@
   let items = $state<ItemCola[]>([]);
   let bobinas = $state<Bobina[]>([]);
   let bocaAbierta = $state(false);
+  // EL CHIP DE LA IMPRENTA: encargos vivos, a la vista desde la cinta.
+  let encargosVivos = $state<Encargo[]>([]);
+  const encargoActivo = $derived(
+    encargosVivos.find((e) => ["sintetizando", "codificando", "empaquetando", "descargando"].includes(e.estado)) ??
+      encargosVivos.find((e) => ["en_cola", "pausado", "error"].includes(e.estado)) ?? null,
+  );
   let enlace = $state("");
   let modeloListo = $state(true);
   let descargando = $state<DownloadProgress | null>(null);
@@ -213,6 +222,10 @@
     getSettings()
       .then((s) => (pref.dosColumnas = s.dos_columnas))
       .catch(() => {});
+    imprentaListar()
+      .then((l) => (encargosVivos = l))
+      .catch(() => {});
+    onImprentaActualizada((l) => (encargosVivos = l)).then((off) => cleanups.push(off));
     try {
       etiquetaTop = parseFloat(localStorage.getItem("yappy.etiqueta.top") ?? "") || 0;
     } catch {}
@@ -1538,6 +1551,14 @@
     <span class="membrete-datos">{visibles.length} {$t("cinta.piezas")} · {minutosTotales} {$t("cinta.min")}</span>
   </button>
 
+  {#if encargoActivo}
+    <!-- EL CHIP DE LA IMPRENTA: el encargo vivo, con su barra. -->
+    <button class="chip-imprenta" onclick={() => goto("/biblioteca/audiolibros")} aria-label={$t("imprenta.titulo")}>
+      <span class="chip-titulo">{encargoActivo.titulo}</span>
+      <span class="chip-barra"><span class="chip-llena" style="width: {encargoActivo.piezas_total > 0 ? Math.round((encargoActivo.piezas_hechas / encargoActivo.piezas_total) * 100) : 4}%"></span></span>
+    </button>
+  {/if}
+
   <!-- LA BOCA: el sello de añadir, GRANDE, abajo a la derecha. -->
   <button class="boca-fija" class:pop={selloPop} use:presionable={{ hap: "medium" }} onclick={() => { pop(); bocaAbierta = true; }} aria-label={$t("escuchar.anadir")}>
     <span class="capa parche-sombra" style="clip-path: {aPoligono(SELLO_BOCA)}"></span>
@@ -1755,6 +1776,46 @@
   }
   .loro-jefe.voltereta {
     animation: voltereta 0.85s cubic-bezier(0.34, 1.3, 0.5, 1);
+  }
+  .chip-imprenta {
+    position: fixed;
+    left: 18px;
+    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 84px);
+    z-index: 31;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 46vw;
+    border: 1.5px solid #8a765a;
+    border-radius: 11px;
+    background: var(--yap-superficie, #fdf9ee);
+    padding: 6px 10px;
+    box-shadow: 2px 2.5px 0 #ded7c2;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+  }
+  .chip-titulo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--yap-tinta, #2b2418);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .chip-barra {
+    display: block;
+    height: 5px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--yap-borde, #d8d0bd) 55%, transparent);
+    overflow: hidden;
+  }
+  .chip-llena {
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+    background: var(--vivo, #e4572e);
+    transition: width 0.5s ease;
   }
   .marca-fija {
     position: fixed;

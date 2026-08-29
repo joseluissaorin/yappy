@@ -13,6 +13,7 @@ mod credits;
 mod enlaces;
 mod history;
 mod hotkey;
+pub mod imprenta;
 mod model;
 pub mod yappy_pack;
 // Speech-to-text (ASR): Parakeet TDT model manager + transcript history. Audio
@@ -346,7 +347,7 @@ pub fn run() {
             ))
             .plugin(tauri_plugin_global_shortcut::Builder::new().build());
     }
-    builder
+    let builder = builder
         .plugin(tauri_plugin_deep_link::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
@@ -356,8 +357,14 @@ pub fn run() {
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_process::init())
-        .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_process::init());
+    // El plugin de notificaciones SOLO en escritorio: en iOS instala su
+    // propio delegate de UNUserNotificationCenter y su willPresent hace
+    // assertionFailure con notificaciones que no creó él (las nuestras van
+    // por yappy_notify). Cinco crashes seguidos en el sim lo delataron.
+    #[cfg(desktop)]
+    let builder = builder.plugin(tauri_plugin_notification::init());
+    builder
         .manage(state.clone())
         .setup(move |app| {
             if let Err(e) = settings::SettingsStore::ensure(app.handle(), &state) {
@@ -418,6 +425,10 @@ pub fn run() {
             // registered its listener yet on a cold launch, so the shared item is
             // lost. Instead the frontend pulls pending payloads via
             // `drain_shared_payloads_cmd` once it's ready (see shareIntake.ts).
+            // LA IMPRENTA despierta: encargos huérfanos a pausado, y el
+            // runner en marcha (procesa la cola en orden).
+            imprenta::arrancar(app.handle().clone());
+
             // EL PROGRESO DURADERO, en TODAS las plataformas: el motor
             // escribe por dónde vas (throttled) aunque la app muera sonando.
             {
@@ -559,6 +570,15 @@ pub fn run() {
             cola::cola_agregar_url_cmd,
             cola::cola_agregar_web_cmd,
             cola::cola_reintentar_archivo_cmd,
+            imprenta::imprenta_encargar_cmd,
+            imprenta::imprenta_listar_cmd,
+            imprenta::imprenta_pausar_cmd,
+            imprenta::imprenta_reanudar_cmd,
+            imprenta::imprenta_cancelar_cmd,
+            imprenta::imprenta_quitar_cmd,
+            imprenta::imprenta_editar_cmd,
+            imprenta::imprenta_reordenar_cmd,
+            imprenta::imprenta_m4b_cmd,
             cola::cola_agregar_texto_cmd,
             cola::cola_agregar_portapapeles_cmd,
             cola::cola_agregar_archivo_cmd,

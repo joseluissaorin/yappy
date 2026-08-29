@@ -63,6 +63,30 @@
   let bridgeToastText: string | null = $state(null);
   let creditsOpen = $state(false);
   let puente = $state<EstadoPuente | null>(null);
+  // El vínculo SALIENTE: este ordenador convierte EN OTRO (Mac↔Mac).
+  let vinculoSaliente: { nombre?: string | null; addr?: string | null } | null = $state(null);
+  let enlacePegado = $state("");
+  let vinculoError = $state("");
+  async function cargarVinculoSaliente() {
+    const { puenteMovilEstado } = await import("$lib/ipc");
+    vinculoSaliente = await puenteMovilEstado().catch(() => null);
+  }
+  async function vincularSaliente() {
+    vinculoError = "";
+    try {
+      const { puenteVincular } = await import("$lib/ipc");
+      await puenteVincular(enlacePegado.trim());
+      enlacePegado = "";
+      await cargarVinculoSaliente();
+    } catch (e) {
+      vinculoError = String(e);
+    }
+  }
+  async function desvincularSaliente() {
+    const { puenteDesvincular } = await import("$lib/ipc");
+    await puenteDesvincular().catch(() => {});
+    await cargarVinculoSaliente();
+  }
   let puenteQR = $state<{ enlace: string; qr_svg: string } | null>(null);
 
   async function refrescarPuente() {
@@ -82,6 +106,7 @@
   let cleanups: (() => void)[] = [];
 
   onMount(async () => {
+    cargarVinculoSaliente();
     settings = await getSettings();
     voices = await listVoices();
     modelReady = await isModelReady();
@@ -631,6 +656,35 @@
             <button class="btn-outline" onclick={async () => { try { await navigator.clipboard.writeText(puenteQR!.enlace); bridgeToast("link copied"); } catch {} }}>copy pairing link</button>
           </div>
         </div>
+      {/if}
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">render on another computer</div>
+          <div class="pref-sub">
+            paste a pairing link from the other computer's «pair a phone»
+            QR — then the editor can render audiobooks over there
+            (computer to computer works the same as phone to computer).
+          </div>
+        </div>
+      </div>
+      {#if vinculoSaliente?.addr}
+        <div class="pref-row puente-token">
+          <code>{vinculoSaliente.nombre ?? "paired computer"}</code>
+          <button class="btn-outline danger" onclick={desvincularSaliente}>unlink</button>
+        </div>
+      {:else}
+        <div class="pref-row">
+          <input
+            class="pref-input"
+            style="flex: 1"
+            placeholder="yappy://pair?d=…"
+            bind:value={enlacePegado}
+          />
+          <button class="btn-outline" onclick={vincularSaliente} disabled={!enlacePegado.trim()}>link</button>
+        </div>
+        {#if vinculoError}
+          <div class="pref-sub" style="color: #9a4a3a">{vinculoError}</div>
+        {/if}
       {/if}
       {#if puente && puente.tokens.length > 0}
         <div class="pref-row">

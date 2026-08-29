@@ -11,6 +11,8 @@
   import { t } from "$lib/i18n";
   import { notifyError } from "$lib/ui";
   import { libraryTiempos, libraryAudioSrc, type TiempoFrase } from "$lib/ipc";
+  import ImprentaEncargos from "$lib/ImprentaEncargos.svelte";
+  import { onImprentaActualizada } from "$lib/ipc";
 
   type LibraryItem = {
     name: string;
@@ -182,10 +184,16 @@
     return libraryItems.find((i) => i.path === p)?.name ?? p.split("/").pop() ?? "";
   });
 
-  onMount(refreshLibrary);
+  let limpiarImprenta: (() => void) | null = null;
+  onMount(async () => {
+    refreshLibrary();
+    // Cuando la imprenta termina un encargo, el libro nuevo aparece.
+    limpiarImprenta = await onImprentaActualizada(() => refreshLibrary());
+  });
   onDestroy(() => {
     stopLibraryPolling();
     audioEl?.pause();
+    limpiarImprenta?.();
   });
 </script>
 
@@ -203,6 +211,8 @@
     <h2>{$t("biblioteca.titulo")}</h2>
     <p>{$t("biblioteca.subtitulo")}</p>
   </header>
+  <!-- LA IMPRENTA: los encargos en marcha, encima de los libros hechos. -->
+  <ImprentaEncargos />
   {#if libraryStatus.current_path && libraryStatus.duration_secs > 0}
     <div class="card lib-now-playing">
       <div class="lnp-title">{nombreQueSuena}</div>

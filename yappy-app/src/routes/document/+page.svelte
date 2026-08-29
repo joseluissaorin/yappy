@@ -26,6 +26,8 @@
     getCurrentDocument,
     documentWindowReady,
     renderAudiobook,
+    puenteConvertir,
+    puenteMovilEstado,
     revealLogFile,
     tailLog,
     logToBackend,
@@ -79,6 +81,25 @@
   // Audiobook export state.
   let rendering = $state(false);
   let renderProgress: { index: number; total: number; stage: string } | null = $state(null);
+  // El puente SALIENTE: si hay otro ordenador vinculado (preferences →
+  // render on another computer), el libro se puede renderizar allí y el
+  // .yappy cae en la biblioteca de ESTE.
+  let ordenadorVinculado = $state(false);
+  let renderRemoto = $state(false);
+  async function renderEnOrdenador() {
+    if (!doc || renderRemoto) return;
+    renderRemoto = true;
+    flashToast("rendering on the paired computer…");
+    try {
+      const texto = paragraphs.map((p) => p.text).join("\n\n");
+      const ruta = await puenteConvertir(doc.filename.replace(/\.[^.]+$/, ""), texto);
+      flashToast(`done — in your library: ${ruta.split("/").pop()}`);
+    } catch (e) {
+      flashToast(`remote render failed: ${e}`);
+    } finally {
+      renderRemoto = false;
+    }
+  }
   let lastRenderedPath: string | null = $state(null);
   async function shareLastRendered() {
     if (!lastRenderedPath) return;
@@ -276,6 +297,9 @@
 
   // ── lifecycle ──────────────────────────────────────────────────────────────
   onMount(async () => {
+    puenteMovilEstado()
+      .then((v) => (ordenadorVinculado = !!v?.addr))
+      .catch(() => {});
     // Every step is logged to BOTH the JS console (for DevTools) and the backend
     // tracing pipe (so yappy.log shows the full sequence even without DevTools).
     const log = (msg: string) => { console.log("[doc] " + msg); logToBackend("info", "doc/onMount", msg); };
@@ -1075,6 +1099,11 @@
         <button class="btn" onclick={downloadCurrent} title="save current playback as .wav">
           ↓ session.wav
         </button>
+        {#if ordenadorVinculado}
+          <button class="btn" onclick={renderEnOrdenador} disabled={renderRemoto} title="render this document on the paired computer (arrives in your library as .yappy)">
+            {renderRemoto ? "rendering remotely…" : "render on paired computer"}
+          </button>
+        {/if}
         <button class="btn audiobook" onclick={renderToWav} disabled={rendering} title="render the whole document as an .m4b audiobook with embedded chapters (or .wav)">
           {#if rendering}
             rendering {renderProgress?.index ?? 0}/{renderProgress?.total ?? 0}…

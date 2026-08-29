@@ -41,14 +41,8 @@
     getSettings,
     saveProject,
     loadProject,
-    renderAudiobook,
-    audiobookExportPath,
-    shareFile,
-    onAudiobookRenderProgress,
-    onAudiobookRenderDone,
     puenteMovilEstado,
-    puenteConvertir,
-    onPuenteProgreso,
+    imprentaEncargar,
   } from "$lib/ipc";
 
   const doc = $derived(reader.doc);
@@ -85,13 +79,11 @@
   let voicePickerFor = $state<"doc" | "para" | null>(null);
   let cleanups: (() => void)[] = [];
 
-  // Exportación y puente.
-  let rendering = $state(false);
-  let renderProgress = $state<{ index: number; total: number; stage: string } | null>(null);
-  let exportDone = $state<{ path: string } | null>(null);
+  // LA HOJA DE ENCARGAR (v0.3.0): motor + estimación → a la imprenta.
+  let hojaEncargo = $state(false);
+  let motorEncargo = $state<"local" | "ordenador">("local");
+  let encargado = $state(false);
   let puenteVinculado = $state(false);
-  let puenteOcupado = $state(false);
-  let puenteEtapa = $state<string | null>(null);
   let toast = $state<string | null>(null);
 
   // El cerrojo de identidad: un snapshot de OTRO documento no puede
@@ -371,25 +363,7 @@
     settings = await getSettings().catch(() => null);
     seedOverrides();
     await tryRestoreProject();
-    cleanups.push(await onAudiobookRenderProgress((p) => (renderProgress = p)));
     puenteVinculado = !!(await puenteMovilEstado().catch(() => null))?.token;
-    cleanups.push(await onPuenteProgreso((p) => {
-      if (p.etapa === "sintetizando" && p.total) {
-        puenteEtapa = `${p.hecho}/${p.total}`;
-      } else if (p.etapa === "codificando") {
-        puenteEtapa = "…";
-      } else if (p.etapa === "hecho") {
-        puenteEtapa = null;
-        puenteOcupado = false;
-        flashToast(get(t)("lector.t_vuelto"));
-      }
-    }));
-    cleanups.push(await onAudiobookRenderDone((p) => {
-      rendering = false;
-      renderProgress = null;
-      exportDone = { path: p.path };
-      flashToast(get(t)("lector.t_guardado"));
-    }));
   });
   onDestroy(() => {
     cancelAnimationFrame(rafId);
@@ -563,51 +537,22 @@
   }
 
   // ── El puente y la exportación ────────────────────────────────────────
-  async function convertirEnOrdenador() {
-    if (puenteOcupado || !doc) return;
-    tallerAbierto = false;
+  async function encargarALaImprenta() {
+    if (!doc) return;
     haptic("medium");
-    puenteOcupado = true;
-    puenteEtapa = "0";
-    flashToast(get(t)("lector.t_enviado"));
     try {
-      await puenteConvertir(title, paras.join("\n\n"));
+      await imprentaEncargar(title, paras.join("\n\n"), {
+        voz: docVoice ?? undefined,
+        idioma: docLang === "auto" ? undefined : docLang,
+        motor: motorEncargo,
+      });
+      hojaEncargo = false;
+      encargado = true;
+      setTimeout(() => (encargado = false), 3200);
+      flashToast(get(t)("imprenta.encargado"));
     } catch (e) {
-      puenteOcupado = false;
-      puenteEtapa = null;
       flashToast(String(e));
     }
-  }
-  async function exportAudiobook() {
-    if (rendering || !doc) return;
-    haptic("medium");
-    rendering = true;
-    exportDone = null;
-    try {
-      const out = await audiobookExportPath(title);
-      // OJO: la firma es (párrafos, ruta, metadatos). La versión anterior
-      // pasaba el título como primer argumento y el export moría siempre.
-      await renderAudiobook(
-        paras.map((text, i) => ({
-          text,
-          voice: overrides[i]?.voice ?? docVoice ?? null,
-          speed: overrides[i]?.speed ?? null,
-          pause_before: (overrides[i]?.pauseBefore ?? defaultPause(i)) * rhythmMult,
-          // Los títulos del guion son los CAPÍTULOS del audiolibro (el
-          // export móvil salía con un solo capítulo «Chapter 1»).
-          chapter_title: (kinds[i] ?? "").startsWith("heading") ? text.slice(0, 80) : null,
-        })),
-        out,
-        { title },
-      );
-    } catch (e) {
-      rendering = false;
-      flashToast(get(t)("lector.t_fallo_export") + String(e));
-    }
-  }
-  async function shareExport() {
-    if (!exportDone) return;
-    try { await shareFile(exportDone.path); } catch (e) { flashToast(String(e)); }
   }
 
   // ── Gestos del escenario: tocar PAUSA, deslizar salta, el dial ────────
@@ -874,12 +819,6 @@
     </div>
   {/if}
 
-  {#if rendering && renderProgress}
-    <div class="tira-render">
-      <div class="tira-barra"><div style="width: {renderProgress.total ? (renderProgress.index / renderProgress.total) * 100 : 0}%"></div></div>
-      <span>{$t("lector.creando")} · {renderProgress.index}/{renderProgress.total}</span>
-    </div>
-  {/if}
   {#if toast}<div class="brindis">{toast}</div>{/if}
 
   <!-- ── EL GUION: el mapa del documento, siguiendo la lectura ── -->
@@ -963,23 +902,25 @@
         </select>
       </label>
 
-      <button class="tecla-exportar" use:presionable onclick={exportAudiobook} disabled={rendering}>
+      <button class="tecla-exportar" use:presionable onclick={() => { hojaEncargo = !hojaEncargo; }}>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17H20v5H6.5a2.5 2.5 0 0 1 0-5z"/></svg>
-        {rendering ? $t("lector.creando_corto") : $t("lector.guardar_m4b")}
+        {$t("lector.guardar_m4b")}
       </button>
-      {#if puenteVinculado}
-        <button class="tecla-exportar puente" use:presionable onclick={convertirEnOrdenador} disabled={puenteOcupado}>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          {puenteOcupado ? `${$t("lector.convirtiendo")} ${puenteEtapa ?? ""}` : $t("lector.convertir")}
-        </button>
-      {/if}
-      {#if exportDone}
-        <div class="exporte-hecho">
-          <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px"><path d="M20 6 9 17l-5-5"/></svg> {$t("lector.guardado")}</span>
-          <div class="exporte-acciones">
-            <button onclick={shareExport}>{$t("lector.compartir")}</button>
+      {#if hojaEncargo}
+        <!-- LA HOJA DE ENCARGAR: motor + estimación → la imprenta. -->
+        <div class="hoja-encargo">
+          <div class="encargo-motores">
+            <button class="yap-pestana" class:es-activa={motorEncargo === "local"} use:presionable onclick={() => (motorEncargo = "local")}>{$t("imprenta.motor_aqui")}</button>
+            <button class="yap-pestana" class:es-activa={motorEncargo === "ordenador"} use:presionable disabled={!puenteVinculado} onclick={() => (motorEncargo = "ordenador")}>{$t("imprenta.motor_ordenador")}</button>
           </div>
+          <p class="encargo-nota">{paras.length} {$t(paras.length === 1 ? "imprenta.pieza" : "imprenta.piezas")} · {$t("imprenta.nota_fondo")}</p>
+          <button class="tecla-exportar" use:presionable onclick={encargarALaImprenta}>
+            {$t("imprenta.encargar")}
+          </button>
         </div>
+      {/if}
+      {#if encargado}
+        <div class="exporte-hecho"><span>{$t("imprenta.encargado")}</span></div>
       {/if}
       {#if customised}
         <button class="tecla-reiniciar" onclick={resetAll}>{$t("lector.reiniciar_todo")}</button>
@@ -1709,6 +1650,24 @@
     text-transform: uppercase;
     color: var(--yap-tinta-suave);
   }
+  .hoja-encargo {
+    border: 1.5px solid var(--yap-borde, #d8d0bd);
+    border-radius: 13px;
+    padding: 10px;
+    margin: 4px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .encargo-motores {
+    display: flex;
+    gap: 6px;
+  }
+  .encargo-nota {
+    margin: 0;
+    font-size: 12px;
+    color: var(--yap-tinta-suave, #82755a);
+  }
   .tecla-exportar {
     display: inline-flex;
     align-items: center;
@@ -1723,9 +1682,6 @@
     font-size: 15px;
     box-shadow: var(--yap-relieve);
     cursor: pointer;
-  }
-  .tecla-exportar.puente {
-    background: var(--yap-ultramar, #2f4bc4);
   }
   .tecla-exportar:disabled {
     opacity: 0.6;
@@ -1750,13 +1706,6 @@
     padding: 10px 14px;
     font-weight: 700;
   }
-  .exporte-acciones button {
-    border: 0;
-    background: transparent;
-    color: var(--yap-ultramar, #2f4bc4);
-    font-weight: 800;
-    cursor: pointer;
-  }
   .tweak-vista {
     font-family: var(--yap-lectura, Georgia, serif);
     font-size: 14px;
@@ -1773,33 +1722,6 @@
     align-items: center;
   }
 
-  .tira-render {
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: calc(env(safe-area-inset-bottom) + 110px);
-    z-index: 7;
-    background: var(--yap-superficie);
-    border: 1px solid var(--yap-borde);
-    border-radius: 12px;
-    padding: 10px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--yap-tinta-suave);
-    box-shadow: var(--yap-relieve);
-  }
-  .tira-barra {
-    height: 8px;
-    border-radius: 5px;
-    background: var(--yap-superficie-2);
-    overflow: hidden;
-  }
-  .tira-barra div {
-    height: 100%;
-    background: var(--yap-dorado, #e8b41a);
-  }
   .brindis {
     position: absolute;
     left: 50%;

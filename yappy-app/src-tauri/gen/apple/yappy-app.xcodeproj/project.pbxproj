@@ -145,6 +145,7 @@
 		AFBA15D588B3157A3A10AC2E /* AudioSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSession.swift; sourceTree = "<group>"; };
 		B80CC66E3EA95DEABCEA0221 /* YappyShareExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = YappyShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8CE0A30A6D2701B251FEBBF /* settings.rs */ = {isa = PBXFileReference; path = settings.rs; sourceTree = "<group>"; };
+		BAA2ED883A5768E3156D9E94 /* imprenta.rs */ = {isa = PBXFileReference; path = imprenta.rs; sourceTree = "<group>"; };
 		BACA884836A2C3FBE6980A8B /* YappyWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YappyWidgetsBundle.swift; sourceTree = "<group>"; };
 		BD85DC09DEB935DC077C48F6 /* mod.rs */ = {isa = PBXFileReference; path = mod.rs; sourceTree = "<group>"; };
 		C4A0E693883D414F1113A2E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -349,6 +350,7 @@
 				D25CC1AA66F68A09DCBEC7BC /* enlaces.rs */,
 				87FF4F4AB17B27812D7D989D /* history.rs */,
 				0D542726C924ABFFAB9E4802 /* hotkey.rs */,
+				BAA2ED883A5768E3156D9E94 /* imprenta.rs */,
 				D0D44C315F8CBC76E4D04319 /* lib.rs */,
 				96AEBF7E16B41A1D15A49708 /* main.rs */,
 				98AA74B59D6D936A419DBEF8 /* mobile_android.rs */,

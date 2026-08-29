@@ -357,6 +357,73 @@ export const colaAgregarUrl = (url: string): Promise<ItemCola> =>
 export const colaAgregarWeb = (ruta: string): Promise<ItemCola> =>
   invoke("cola_agregar_web_cmd", { ruta });
 
+// ── LA IMPRENTA (v0.3.0): encargos de audiolibros ───────────────────────
+export type MotorEncargo = "local" | "ordenador";
+export type EstadoEncargo =
+  | "en_cola" | "sintetizando" | "codificando" | "empaquetando"
+  | "descargando" | "pausado" | "hecho" | "error" | "cancelado";
+export interface Encargo {
+  id: string;
+  titulo: string;
+  voz: string;
+  velocidad: number;
+  steps: number;
+  idioma: string | null;
+  motor: MotorEncargo;
+  estado: EstadoEncargo;
+  error: string | null;
+  creado_unix: number;
+  orden: number;
+  piezas_hechas: number;
+  piezas_total: number;
+  segundos_audio: number;
+  segundos_por_pieza: number;
+  frase_actual: string;
+  bytes_hechos: number;
+  bytes_total: number;
+  artefacto: string | null;
+  origen: string;
+  espejo: boolean;
+}
+export const imprentaEncargar = (
+  titulo: string,
+  texto: string,
+  opts?: { voz?: string; velocidad?: number; steps?: number; idioma?: string; motor?: MotorEncargo },
+): Promise<Encargo> =>
+  invoke("imprenta_encargar_cmd", {
+    titulo,
+    texto,
+    voz: opts?.voz ?? null,
+    velocidad: opts?.velocidad ?? null,
+    steps: opts?.steps ?? null,
+    idioma: opts?.idioma ?? null,
+    motor: opts?.motor ?? null,
+  });
+export const imprentaListar = (): Promise<Encargo[]> => invoke("imprenta_listar_cmd");
+export const imprentaPausar = (id: string): Promise<void> => invoke("imprenta_pausar_cmd", { id });
+export const imprentaReanudar = (id: string): Promise<void> => invoke("imprenta_reanudar_cmd", { id });
+export const imprentaCancelar = (id: string): Promise<void> => invoke("imprenta_cancelar_cmd", { id });
+export const imprentaQuitar = (id: string): Promise<void> => invoke("imprenta_quitar_cmd", { id });
+export const imprentaReordenar = (id: string, delta: number): Promise<void> =>
+  invoke("imprenta_reordenar_cmd", { id, delta });
+export const imprentaEditar = (
+  id: string,
+  cambios: { voz?: string; velocidad?: number; steps?: number; idioma?: string; motor?: MotorEncargo; rehacer?: boolean },
+): Promise<void> =>
+  invoke("imprenta_editar_cmd", {
+    id,
+    voz: cambios.voz ?? null,
+    velocidad: cambios.velocidad ?? null,
+    steps: cambios.steps ?? null,
+    idioma: cambios.idioma ?? null,
+    motor: cambios.motor ?? null,
+    rehacer: cambios.rehacer ?? null,
+  });
+export const imprentaM4b = (nombre: string): Promise<string> =>
+  invoke("imprenta_m4b_cmd", { nombre });
+export const onImprentaActualizada = (cb: (encargos: Encargo[]) => void): Promise<UnlistenFn> =>
+  listen<Encargo[]>("imprenta_actualizada", (ev) => cb(ev.payload));
+
 /// Reintenta una pieza muerta recuperándola de la Wayback Machine.
 export const colaReintentarArchivo = (id: string): Promise<void> =>
   invoke("cola_reintentar_archivo_cmd", { id });

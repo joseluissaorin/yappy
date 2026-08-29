@@ -13,7 +13,7 @@
   },
   "bundle": {
     "iOS": {
-      "bundleVersion": "0.2.0.18"
+      "bundleVersion": "0.3.0.1"
     },
     "resources": [
       "../resources/paddleocr/*",

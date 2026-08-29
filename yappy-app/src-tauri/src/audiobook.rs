@@ -176,6 +176,11 @@ pub fn encode_m4b(
         tracing::info!("audiobook: injected {} chapters", chapters.len());
     }
 
+    // ── 4) iTunes metadata (título/autor/álbum), con el fichero ya
+    //       CERRADO por el muxer: inyectarlo antes dejaba el moov en el
+    //       buffer del writer y el post-proceso no lo encontraba. ─────
+    inject_itunes_metadata(out_path, metadata)?;
+
     Ok(())
 }
 
@@ -253,7 +258,7 @@ fn aac_encode_mono(samples: &[f32], sample_rate: u32, bit_rate: u32) -> Result<V
 fn mux_aac_to_mp4(
     aac_frames: &[Vec<u8>],
     sample_rate: u32,
-    metadata: &M4bMetadata,
+    _metadata: &M4bMetadata,
     out_path: &Path,
 ) -> Result<()> {
     use mp4::{
@@ -317,12 +322,6 @@ fn mux_aac_to_mp4(
     writer
         .write_end()
         .map_err(|e| anyhow!("mp4 write_end: {e:?}"))?;
-
-    // Append iTunes-style udta metadata for title/author/album.
-    // The mp4 crate doesn't write these directly, so we'll post-process.
-    if !metadata.title.is_empty() || !metadata.author.is_empty() || !metadata.album.is_empty() {
-        inject_itunes_metadata(out_path, metadata)?;
-    }
     Ok(())
 }
 
@@ -413,8 +412,12 @@ fn wrap_atom(four_cc: &[u8; 4], body: &[u8]) -> Vec<u8> {
 ///    writer produced, `stco`/`co64` offsets that point into `mdat` remain
 ///    correct — we only mutate bytes after them.
 fn inject_chpl_atom(path: &Path, chapters: &[Chapter]) -> Result<()> {
-    let chpl = build_chpl_atom(chapters);
+    inject_udta_child(path, &build_chpl_atom(chapters))
+}
 
+/// Inyecta CUALQUIER átomo hijo dentro de moov/udta (creando udta si no
+/// existe): chpl usa esto, y los metadatos iTunes también.
+fn inject_udta_child(path: &Path, chpl: &[u8]) -> Result<()> {
     let mut file = OpenOptions::new()
         .read(true)
         .write(true)
@@ -443,7 +446,7 @@ fn inject_chpl_atom(path: &Path, chapters: &[Chapter]) -> Result<()> {
             // Everything up to end of udta body
             new_buf.extend_from_slice(&buf[..udta_end]);
             // Append chpl
-            new_buf.extend_from_slice(&chpl);
+            new_buf.extend_from_slice(chpl);
             // Rest of moov + everything after
             new_buf.extend_from_slice(&buf[udta_end..]);
 
@@ -456,7 +459,7 @@ fn inject_chpl_atom(path: &Path, chapters: &[Chapter]) -> Result<()> {
         }
         None => {
             // Create a fresh udta containing chpl. Place it at the END of moov.
-            let new_udta = wrap_atom(b"udta", &chpl);
+            let new_udta = wrap_atom(b"udta", chpl);
             new_buf.extend_from_slice(&buf[..body_end]);
             new_buf.extend_from_slice(&new_udta);
             new_buf.extend_from_slice(&buf[body_end..]);
@@ -473,15 +476,52 @@ fn inject_chpl_atom(path: &Path, chapters: &[Chapter]) -> Result<()> {
     Ok(())
 }
 
-/// iTunes-style metadata via the `udta/meta/ilst` tree. Smaller, optional —
-/// adds title/author/album so the file shows up nicely in Apple Books.
+/// iTunes-style metadata via the `udta/meta/ilst` tree: título, autor y
+/// álbum de verdad, para que Apple Books y compañía enseñen el libro con
+/// su nombre y no con el del fichero.
 fn inject_itunes_metadata(path: &Path, metadata: &M4bMetadata) -> Result<()> {
-    // For now this is a no-op stub — chpl handles the user-visible chapter
-    // metadata. Title/author/album are nice-to-have and can be added in a
-    // follow-up. (Apple Books happily plays an m4b without these and shows
-    // the filename as the title.)
-    let _ = (path, metadata);
-    Ok(())
+    if metadata.title.is_empty() && metadata.author.is_empty() && metadata.album.is_empty() {
+        return Ok(());
+    }
+    // data box: version(0) + flags(1 = texto UTF-8) + locale(0) + bytes.
+    fn atomo_data(valor: &str) -> Vec<u8> {
+        let mut cuerpo = Vec::with_capacity(8 + valor.len());
+        cuerpo.extend_from_slice(&[0, 0, 0, 1]);
+        cuerpo.extend_from_slice(&[0, 0, 0, 0]);
+        cuerpo.extend_from_slice(valor.as_bytes());
+        wrap_atom(b"data", &cuerpo)
+    }
+    fn item(tipo: &[u8; 4], valor: &str) -> Vec<u8> {
+        wrap_atom(tipo, &atomo_data(valor))
+    }
+    let mut ilst_body = Vec::new();
+    if !metadata.title.is_empty() {
+        ilst_body.extend_from_slice(&item(&[0xA9, b'n', b'a', b'm'], &metadata.title));
+    }
+    if !metadata.author.is_empty() {
+        ilst_body.extend_from_slice(&item(&[0xA9, b'A', b'R', b'T'], &metadata.author));
+    }
+    if !metadata.album.is_empty() {
+        ilst_body.extend_from_slice(&item(&[0xA9, b'a', b'l', b'b'], &metadata.album));
+    }
+    let ilst = wrap_atom(b"ilst", &ilst_body);
+
+    // hdlr del meta: fullbox + pre_defined + 'mdir' + 'appl' + reservas.
+    let mut hdlr_body = Vec::new();
+    hdlr_body.extend_from_slice(&[0, 0, 0, 0]); // version + flags
+    hdlr_body.extend_from_slice(&[0, 0, 0, 0]); // pre_defined
+    hdlr_body.extend_from_slice(b"mdir");
+    hdlr_body.extend_from_slice(b"appl");
+    hdlr_body.extend_from_slice(&[0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    let hdlr = wrap_atom(b"hdlr", &hdlr_body);
+
+    // meta es una FULL box: 4 bytes de version/flags antes de sus hijos.
+    let mut meta_body = vec![0, 0, 0, 0];
+    meta_body.extend_from_slice(&hdlr);
+    meta_body.extend_from_slice(&ilst);
+    let meta = wrap_atom(b"meta", &meta_body);
+
+    inject_udta_child(path, &meta)
 }
 
 // ────────────────────────────────────────────────────────────────────────

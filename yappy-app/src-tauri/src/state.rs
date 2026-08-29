@@ -52,6 +52,8 @@ pub struct AppState {
     pub settings: Mutex<Settings>,
     /// La receta de la sesión que suena (o la última): ver RecetaLectura.
     pub receta_sesion: Mutex<Option<RecetaLectura>>,
+    /// La IMPRENTA: el gestor de encargos de audiolibros (v0.3.0).
+    pub imprenta: crate::imprenta::Imprenta,
     /// Serializes settings-save calls so concurrent updates don't race the disk write.
     pub save_lock: Mutex<()>,
     pub engine: Mutex<Option<Arc<TtsEngine>>>,
@@ -76,6 +78,7 @@ impl AppState {
         Self {
             settings: Mutex::new(Settings::default()),
             receta_sesion: Mutex::new(None),
+            imprenta: crate::imprenta::Imprenta::default(),
             save_lock: Mutex::new(()),
             engine: Mutex::new(None),
             playback: Arc::new(PlaybackController::new()),
