@@ -168,6 +168,12 @@ impl Default for Settings {
 
 pub struct SettingsStore;
 
+fn json_values_equal(expected: &[u8], written: &[u8]) -> Result<bool> {
+    let expected: serde_json::Value = serde_json::from_slice(expected)?;
+    let written: serde_json::Value = serde_json::from_slice(written)?;
+    Ok(expected == written)
+}
+
 impl SettingsStore {
     pub fn path(handle: &tauri::AppHandle<impl tauri::Runtime>) -> Result<PathBuf> {
         let mut p = handle.path().app_config_dir()?;
@@ -206,8 +212,9 @@ impl SettingsStore {
         // 1) write to tmp.
         std::fs::write(&tmp, &json)?;
         // 2) verify tmp parses to the same struct (catches disk-full / partial-write).
-        let verified: Settings = serde_json::from_slice(&std::fs::read(&tmp)?)?;
-        if serde_json::to_vec(&verified)? != serde_json::to_vec(settings)? {
+        let written = std::fs::read(&tmp)?;
+        let _: Settings = serde_json::from_slice(&written)?;
+        if !json_values_equal(&json, &written)? {
             return Err(anyhow::anyhow!("settings round-trip verification failed"));
         }
         // 3) move current main to .bak (best effort).
@@ -285,4 +292,25 @@ where
 pub fn is_first_launch(handle: &tauri::AppHandle<impl tauri::Runtime>) -> Result<bool> {
     let s = SettingsStore::load(handle)?;
     Ok(!s.first_launch_done)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::json_values_equal;
+
+    #[test]
+    fn settings_round_trip_ignores_object_key_order() {
+        let expected = br#"{"voice":"Alex","voice_overrides":{"en":"Alex","es":"Daniel"}}"#;
+        let written = br#"{"voice_overrides":{"es":"Daniel","en":"Alex"},"voice":"Alex"}"#;
+
+        assert!(json_values_equal(expected, written).unwrap());
+    }
+
+    #[test]
+    fn settings_round_trip_rejects_different_values() {
+        let expected = br#"{"voice":"Alex"}"#;
+        let written = br#"{"voice":"Sam"}"#;
+
+        assert!(!json_values_equal(expected, written).unwrap());
+    }
 }
