@@ -1,0 +1,1 @@
+tts,epub,hangoskönyv,szövegfelolvasó,felolvasó,hang,cikk,diszlexia,dokumentum,könyv,beszéd,offline

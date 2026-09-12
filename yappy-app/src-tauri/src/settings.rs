@@ -68,6 +68,36 @@ impl Quality {
     }
 }
 
+/// LA LIBRETA DEL PASEO: lo que el usuario contestó y hizo en el paseo del
+/// loro (el onboarding), y qué avisos contextuales ya se dieron. Sirve para
+/// el resumen, los consejos posteriores y para no repetir nada.
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(default)]
+pub struct Paseo {
+    /// El paseo del primer día está terminado (o saltado del todo).
+    pub hecho: bool,
+    /// Último paso alcanzado (para reanudar si la app se cierra a medias).
+    pub paso: u8,
+    /// «¿Qué me vas a dar?»: articulos, libros, apuntes, notas, videos, correos.
+    pub que: Vec<String>,
+    /// «¿Cuándo me escuchas?»: cocinando, paseando, cama, estudiando.
+    pub cuando: String,
+    /// «¿Cuánto tienes por leer?»: poco, pila, montana.
+    pub cuanto: String,
+    /// Gestos aprendidos en el cartel: pausar, seguir, saltar.
+    pub gestos: Vec<String>,
+    /// Ya compartió algo desde otra app.
+    pub compartido: bool,
+    /// Segundos escuchados durante el paseo (para el resumen).
+    pub segundos_escuchados: f32,
+    /// Avisos contextuales ya dados (no se repiten).
+    pub avisos: Vec<String>,
+    /// Aperturas de la app (para los avisos del segundo y tercer día).
+    pub aperturas: u32,
+    /// Estadísticas anónimas (Cloudflare propio): se pueden apagar.
+    pub estadisticas: bool,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
 pub struct Settings {
@@ -114,6 +144,10 @@ pub struct Settings {
     // --- model ---
     pub model_ready: bool,
     pub first_launch_done: bool,
+
+    // --- el paseo del loro (onboarding móvil) ---
+    #[serde(default)]
+    pub paseo: Paseo,
 
     // --- main app appearance ---
     pub app_theme: AppTheme,
@@ -175,6 +209,10 @@ impl Default for Settings {
             ocr_languages: vec!["en".into()],
             model_ready: false,
             first_launch_done: false,
+            paseo: Paseo {
+                estadisticas: true,
+                ..Paseo::default()
+            },
             app_theme: AppTheme::Cream,
             karaoke_in_player: true,
             player_position_preset: PlayerPositionPreset::BottomRight,

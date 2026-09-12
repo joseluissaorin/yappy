@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "ohne\nCloud",
+    "idiomas": "31\nSprachen",
+    "compartir": "tippe\nTeilen",
+    "capitulos": "mit\nKapiteln",
+    "ritmo": "dein\nTempo",
+    "hola": "hallo!",
+    "gratis": "gratis",
+    "offline": "offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Jeder Text, laut gelesen.",
+      "subtitle": "Teile einen Artikel, ein PDF oder ein Buch, und ein Papagei liest es dir vor."
+    },
+    {
+      "slot": 2,
+      "title": "Die Stimme folgt dem Text.",
+      "subtitle": "Jeder Satz leuchtet auf, während er erklingt. Tippen zum Anhalten."
+    },
+    {
+      "slot": 3,
+      "title": "Zehn Vögel, 31 Sprachen.",
+      "subtitle": "Alle mehrsprachig: Sie wechseln die Sprache von selbst, Absatz für Absatz."
+    },
+    {
+      "slot": 4,
+      "title": "Bleibt auf deinem iPhone.",
+      "subtitle": "Keine Cloud, kein Konto, keine Gebühr pro Zeichen. Funktioniert offline."
+    },
+    {
+      "slot": 5,
+      "title": "Aus jeder App.",
+      "subtitle": "Safari, Dateien, YouTube, Mail: Tippe auf Teilen und wähle Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Liest wie ein Mensch.",
+      "subtitle": "„1492“ wird „vierzehnhundertzweiundneunzig“ gelesen, nach den Regeln jeder Sprache."
+    },
+    {
+      "slot": 7,
+      "title": "Ganze Bücher als Hörbuch.",
+      "subtitle": "Mit Kapiteln. Abends liegen lassen, morgens steht es in deiner Bibliothek."
+    },
+    {
+      "slot": 8,
+      "title": "Auch bei Nacht.",
+      "subtitle": "Stimme, Tempo und Thema, ganz nach dir, in der Hinterstube."
+    },
+    {
+      "slot": 9,
+      "title": "Ein Papagei vom Fach.",
+      "subtitle": "Er begleitet dich vom ersten Tag an, mit einem Rundgang von drei Minuten."
+    },
+    {
+      "slot": 10,
+      "title": "Zieh den Papagei auf.",
+      "subtitle": "Gratis mit drei auf der Stange. Yappy Parlanchín: Stange ohne Boden, für immer."
+    }
+  ]
+}

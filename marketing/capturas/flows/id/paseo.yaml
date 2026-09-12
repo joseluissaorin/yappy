@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Hai, aku beomu"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/id/01-paseo-hola
+- tapOn:
+    text: "Pilihkan aku suara"
+- extendedWaitUntil:
+    visible:
+      text: "Semuanya terjadi di ponselmu"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/id/02-paseo-idiomas
+- tapOn:
+    text: "Lanjut"
+- extendedWaitUntil:
+    visible:
+      text: "Pilih burungmu"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/id/03-paseo-pajaro
+- tapOn:
+    text: "Aku pilih James"
+- extendedWaitUntil:
+    visible:
+      text: "Kamu mau kasih aku apa\\?"
+    timeout: 10000
+- tapOn:
+    text: "Artikel"
+- tapOn:
+    text: "Buku"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/id/04-paseo-que
+- tapOn:
+    text: "Lanjut"
+- extendedWaitUntil:
+    visible:
+      text: "Kapan kamu mendengarkanku\\?"
+    timeout: 10000
+- tapOn:
+    text: "Sambil masak"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/id/05-paseo-cuando
+- tapOn:
+    text: "Lanjut"
+- extendedWaitUntil:
+    visible:
+      text: "Secepat apa\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/id/06-paseo-velocidad
+- tapOn:
+    text: "Lanjut"
+- extendedWaitUntil:
+    visible:
+      text: "Berapa banyak yang menumpuk untuk dibaca\\?"
+    timeout: 10000
+- tapOn:
+    text: "Segunung"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/id/07-paseo-cuanto
+- tapOn:
+    text: "Lanjut"
+- extendedWaitUntil:
+    visible:
+      text: "Punyamu sendiri, atau sebuah cerita"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/id/08-paseo-escucha
+- tapOn:
+    text: "(?i)Nanti"
+- extendedWaitUntil:
+    visible:
+      text: "Layarnya adalah tombolnya"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Nanti"
+- extendedWaitUntil:
+    visible:
+      text: "Berbagi adalah segalanya"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/id/09-paseo-compartir
+- tapOn:
+    text: "(?i)Nanti"
+- extendedWaitUntil:
+    visible:
+      text: "Dan kamu membawanya ke mana saja"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/id/10-paseo-exportar
+- tapOn:
+    text: "(?i)Nanti"
+- extendedWaitUntil:
+    visible:
+      text: "Sematkan aku di favoritmu"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/id/11-paseo-favoritos
+- tapOn:
+    text: "Selesai"
+- extendedWaitUntil:
+    visible:
+      text: "Beomu"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/id/12-paseo-resumen
+- tapOn:
+    text: "Lanjut"
+- extendedWaitUntil:
+    visible:
+      text: "Tiga sekaligus"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/id/13-paseo-percha
+- tapOn:
+    text: "Lanjut"
+- extendedWaitUntil:
+    visible:
+      text: "Pilih putaranmu"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/id/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Mulai dengan tiga di tenggeran"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots/id/15-paseo-cuerda-pie
+- tapOn:
+    text: "Mulai dengan tiga di tenggeran"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Oke"
+    optional: true
+- takeScreenshot: marketing/screenshots/id/17-cinta-vacia

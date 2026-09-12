@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Szia, én vagyok a papagájod"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/hu/01-paseo-hola
+- tapOn:
+    text: "Válassz nekem hangot"
+- extendedWaitUntil:
+    visible:
+      text: "Minden a telefonodon történik"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/hu/02-paseo-idiomas
+- tapOn:
+    text: "Tovább"
+- extendedWaitUntil:
+    visible:
+      text: "Válaszd ki a madaradat"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/hu/03-paseo-pajaro
+- tapOn:
+    text: "Ezt választom: James"
+- extendedWaitUntil:
+    visible:
+      text: "Mit adsz nekem\\?"
+    timeout: 10000
+- tapOn:
+    text: "Cikkek"
+- tapOn:
+    text: "Könyvek"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hu/04-paseo-que
+- tapOn:
+    text: "Tovább"
+- extendedWaitUntil:
+    visible:
+      text: "Mikor hallgatsz engem\\?"
+    timeout: 10000
+- tapOn:
+    text: "Főzés"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hu/05-paseo-cuando
+- tapOn:
+    text: "Tovább"
+- extendedWaitUntil:
+    visible:
+      text: "Milyen sebességgel\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hu/06-paseo-velocidad
+- tapOn:
+    text: "Tovább"
+- extendedWaitUntil:
+    visible:
+      text: "Mennyi olvasnivalód van\\?"
+    timeout: 10000
+- tapOn:
+    text: "Egy egész hegy"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hu/07-paseo-cuanto
+- tapOn:
+    text: "Tovább"
+- extendedWaitUntil:
+    visible:
+      text: "A tiéd, vagy egy mese"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hu/08-paseo-escucha
+- tapOn:
+    text: "(?i)Később"
+- extendedWaitUntil:
+    visible:
+      text: "A képernyő a gomb"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Később"
+- extendedWaitUntil:
+    visible:
+      text: "A megosztás minden"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/hu/09-paseo-compartir
+- tapOn:
+    text: "(?i)Később"
+- extendedWaitUntil:
+    visible:
+      text: "És magaddal viszed"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hu/10-paseo-exportar
+- tapOn:
+    text: "(?i)Később"
+- extendedWaitUntil:
+    visible:
+      text: "Tűzz ki a kedvenceid közé"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hu/11-paseo-favoritos
+- tapOn:
+    text: "Kész"
+- extendedWaitUntil:
+    visible:
+      text: "A papagájod"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hu/12-paseo-resumen
+- tapOn:
+    text: "Tovább"
+- extendedWaitUntil:
+    visible:
+      text: "Három egyszerre"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hu/13-paseo-percha
+- tapOn:
+    text: "Tovább"
+- extendedWaitUntil:
+    visible:
+      text: "Válassz rugót"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/hu/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Kezdés hárommal az ülőrúdon"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots/hu/15-paseo-cuerda-pie
+- tapOn:
+    text: "Kezdés hárommal az ülőrúdon"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Rendben"
+    optional: true
+- takeScreenshot: marketing/screenshots/hu/17-cinta-vacia

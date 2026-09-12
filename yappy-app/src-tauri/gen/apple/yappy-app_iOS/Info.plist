@@ -2,6 +2,23 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BAEssentialMaxInstallSize</key>
+	<integer>320000000</integer>
+	<key>BAInitialDownloadRestrictions</key>
+	<dict>
+		<key>BADownloadAllowance</key>
+		<integer>640000000</integer>
+		<key>BADownloadDomainAllowList</key>
+		<array>
+			<string>modelos.yappy.joseluissaorin.com</string>
+		</array>
+		<key>BAEssentialDownloadAllowance</key>
+		<integer>320000000</integer>
+	</dict>
+	<key>BAManifestURL</key>
+	<string>https://modelos.yappy.joseluissaorin.com/supertonic-3/manifiesto-ios.json</string>
+	<key>BAMaxInstallSize</key>
+	<integer>640000000</integer>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -30,7 +47,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.3.0</string>
+	<string>1.0.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -45,7 +62,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0.3.0.3</string>
+	<string>1.0.0.5</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>

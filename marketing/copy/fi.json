@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "ei\npilveä",
+    "idiomas": "31\nkieltä",
+    "compartir": "napauta\njaa",
+    "capitulos": "luvut\nmukana",
+    "ritmo": "omaan\ntahtiin",
+    "hola": "hei!",
+    "gratis": "ilmainen",
+    "offline": "offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Kaikki teksti, ääneen.",
+      "subtitle": "Jaa artikkeli, PDF tai kirja, ja papukaija lukee sen sinulle."
+    },
+    {
+      "slot": 2,
+      "title": "Ääni seuraa tekstiä.",
+      "subtitle": "Jokainen lause syttyy, kun se kuuluu. Napauta pysäyttääksesi."
+    },
+    {
+      "slot": 3,
+      "title": "Kymmenen lintua, 31 kieltä.",
+      "subtitle": "Kaikki polyglotteja: ne vaihtavat kieltä itse, kappale kappaleelta."
+    },
+    {
+      "slot": 4,
+      "title": "Mikään ei lähde iPhonesta.",
+      "subtitle": "Ei pilveä, ei tiliä, ei merkkikohtaista maksua. Toimii ilman verkkoa."
+    },
+    {
+      "slot": 5,
+      "title": "Mistä sovelluksesta vain.",
+      "subtitle": "Safari, Tiedostot, YouTube, sähköposti: napauta Jaa ja valitse Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Lukee kuin ihminen.",
+      "subtitle": "”1492” sanotaan ”tuhat neljäsataa yhdeksänkymmentäkaksi”, kunkin kielen säännöillä."
+    },
+    {
+      "slot": 7,
+      "title": "Koko kirja, äänikirjana.",
+      "subtitle": "Luvuittain. Jätä yöksi, aamulla se odottaa kirjastossasi."
+    },
+    {
+      "slot": 8,
+      "title": "Myös yöllä.",
+      "subtitle": "Ääni, nopeus ja teema, oman maun mukaan, takahuoneessa."
+    },
+    {
+      "slot": 9,
+      "title": "Työnsä osaava papukaija.",
+      "subtitle": "Se kulkee rinnallasi ensimmäisestä päivästä kolmen minuutin kävelyllä."
+    },
+    {
+      "slot": 10,
+      "title": "Vedä papukaija käyntiin.",
+      "subtitle": "Ilmaiseksi kolmella orrella. Yappy Parlanchín: pohjaton orsi, ikuisesti."
+    }
+  ]
+}

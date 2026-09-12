@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "tanpa\ncloud",
+    "idiomas": "31\nbahasa",
+    "compartir": "ketuk\nbagikan",
+    "capitulos": "ada\nbab",
+    "ritmo": "sesuai\nritmemu",
+    "hola": "halo!",
+    "gratis": "gratis",
+    "offline": "offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Teks apa pun, dibacakan.",
+      "subtitle": "Bagikan artikel, PDF, atau buku, dan seekor burung beo membacakannya untukmu."
+    },
+    {
+      "slot": 2,
+      "title": "Suara mengikuti teks.",
+      "subtitle": "Setiap kalimat menyala saat dibaca. Ketuk untuk jeda."
+    },
+    {
+      "slot": 3,
+      "title": "Sepuluh burung, 31 bahasa.",
+      "subtitle": "Semuanya poliglot: ganti bahasa sendiri, paragraf demi paragraf."
+    },
+    {
+      "slot": 4,
+      "title": "Semua tetap di iPhone-mu.",
+      "subtitle": "Tanpa cloud, tanpa akun, tanpa biaya per karakter. Bisa offline."
+    },
+    {
+      "slot": 5,
+      "title": "Dari aplikasi mana pun.",
+      "subtitle": "Safari, File, YouTube, email: ketuk Bagikan lalu pilih Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Membaca seperti manusia.",
+      "subtitle": "“1492” dibaca “seribu empat ratus sembilan puluh dua”, sesuai aturan tiap bahasa."
+    },
+    {
+      "slot": 7,
+      "title": "Buku utuh, jadi buku audio.",
+      "subtitle": "Ada bab. Tinggalkan semalaman, paginya sudah ada di perpustakaanmu."
+    },
+    {
+      "slot": 8,
+      "title": "Malam hari juga.",
+      "subtitle": "Suara, kecepatan, dan tema, sesukamu, di ruang belakang."
+    },
+    {
+      "slot": 9,
+      "title": "Beo yang tahu kerjanya.",
+      "subtitle": "Menemanimu sejak hari pertama dengan jalan-jalan tiga menit."
+    },
+    {
+      "slot": 10,
+      "title": "Putar kunci si beo.",
+      "subtitle": "Gratis dengan tiga di tenggeran. Yappy Parlanchín: tenggeran tanpa dasar, selamanya."
+    }
+  ]
+}

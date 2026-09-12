@@ -81,6 +81,11 @@ pub struct PlaybackSnapshot {
     pub frase_ini_s: f32,
     #[serde(default)]
     pub frase_fin_s: f32,
+    /// Saltos de frase hacia delante que el oyente pidió cuando la cocina
+    /// aún no había servido la frase siguiente: se consumen en cuanto
+    /// llega cada trozo nuevo. La interfaz enseña «+1…» mientras espera.
+    #[serde(default)]
+    pub salto_pendiente: i32,
 }
 
 #[derive(Debug)]
@@ -179,6 +184,7 @@ impl PlaybackController {
             output_sample_rate: 44100,
             frase_ini_s: 0.0,
             frase_fin_s: 0.0,
+            salto_pendiente: 0,
         }));
         let listeners: Oyentes = Arc::new(Mutex::new(Vec::new()));
         let session_samples: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
@@ -397,6 +403,8 @@ fn run_audio_thread(
     let mut current_paragraph_index: usize = 0;
     let mut total_paragraphs: usize = 0;
     let mut nivel_anterior: f32 = 0.0;
+    // Saltos de frase pedidos por delante de la cocina (ver el snapshot).
+    let mut salto_pendiente: i32 = 0;
 
     // ─── EL OÍDO: el vigilante de que el audio AVANZA de verdad ─────────
     // Si el estado dice «sonando», no hay pausa y hay material en el buffer
@@ -451,6 +459,7 @@ fn run_audio_thread(
         let texto = chunk_texts.get(destino).cloned().unwrap_or_default();
         let parrafo = chunk_paragraph_idx.get(destino).copied().unwrap_or(0);
         let (oi, of) = chunk_origen.get(destino).copied().unwrap_or((0, 0));
+        let (ini_s, fin_s) = ventana_de_chunk(destino, chunk_boundaries, out_sr);
         {
             let mut s = snapshot.lock().unwrap();
             s.current_index = destino;
@@ -459,6 +468,8 @@ fn run_audio_thread(
             s.current_origen_ini = oi;
             s.current_origen_fin = of;
             s.elapsed_secs = inicio as f32 / out_sr as f32;
+            s.frase_ini_s = ini_s;
+            s.frase_fin_s = fin_s;
         }
         (destino, texto, parrafo)
     };
@@ -483,7 +494,19 @@ fn run_audio_thread(
                         s.base_paragraph_index = base_paragraph_index;
                         s.chunks_cocinados = 0;
                         s.parrafo_max_cocinado = 0;
+                        // La posición de la sesión MUERTA no puede seguir
+                        // pintada: el cartel enseña el párrafo al que se va
+                        // (base + 0) mientras la voz llega.
+                        s.current_index = 0;
+                        s.current_paragraph_index = 0;
+                        s.current_origen_ini = 0;
+                        s.current_origen_fin = 0;
+                        s.elapsed_secs = 0.0;
+                        s.frase_ini_s = 0.0;
+                        s.frase_fin_s = 0.0;
+                        s.salto_pendiente = 0;
                     }
+                    salto_pendiente = 0;
                     emit(&snapshot, &listeners);
                 }
                 Command::Fallo { session_id } => {
@@ -568,7 +591,12 @@ fn run_audio_thread(
                         s.total_paragraphs = total_paragraphs;
                         s.elapsed_secs = 0.0;
                         s.duration_secs = session_duration_samples as f32 / out_sr as f32;
+                        let (ini_s, fin_s) = ventana_de_chunk(0, &chunk_boundaries, out_sr);
+                        s.frase_ini_s = ini_s;
+                        s.frase_fin_s = fin_s;
+                        s.salto_pendiente = 0;
                     }
+                    salto_pendiente = 0;
                     emit(&snapshot, &listeners);
                 }
                 Command::Enqueue { session_id, chunk } => {
@@ -602,6 +630,43 @@ fn run_audio_thread(
                             .parrafo_max_cocinado
                             .max(chunk_paragraph_idx.last().copied().unwrap_or(0));
                         s.duration_secs = session_duration_samples as f32 / out_sr as f32;
+                    }
+                    // Un salto pedido POR DELANTE de la cocina se cobra aquí:
+                    // el trozo recién servido es a donde quería ir el oyente.
+                    if salto_pendiente > 0
+                        && !chunk_texts
+                            .last()
+                            .map(|t| t.trim().is_empty())
+                            .unwrap_or(true)
+                    {
+                        salto_pendiente -= 1;
+                        let destino = chunk_boundaries.len() - 1;
+                        let (nuevo, _, parrafo) = reposicionar(
+                            destino,
+                            &chunk_boundaries,
+                            &chunk_texts,
+                            &chunk_paragraph_idx,
+                            &chunk_origen,
+                            &session_samples,
+                            &buffer,
+                            &played_samples,
+                            &snapshot,
+                            out_sr,
+                        );
+                        current_index = nuevo;
+                        current_paragraph_index = parrafo;
+                        if let Some(t) = chunk_texts.get(nuevo) {
+                            current_text = t.clone();
+                        }
+                        snapshot.lock().unwrap().salto_pendiente = salto_pendiente;
+                    }
+                    // Cocina terminada: lo que quede pendiente ya no llegará.
+                    if session_total > 0
+                        && chunk_boundaries.len() >= session_total
+                        && salto_pendiente > 0
+                    {
+                        salto_pendiente = 0;
+                        snapshot.lock().unwrap().salto_pendiente = 0;
                     }
                     emit(&snapshot, &listeners);
                 }
@@ -689,7 +754,11 @@ fn run_audio_thread(
                         s.total_paragraphs = 0;
                         s.elapsed_secs = 0.0;
                         s.duration_secs = 0.0;
+                        s.frase_ini_s = 0.0;
+                        s.frase_fin_s = 0.0;
+                        s.salto_pendiente = 0;
                     }
+                    salto_pendiente = 0;
                     emit(&snapshot, &listeners);
                 }
                 Command::SaltarChunk { delta } => {
@@ -710,6 +779,25 @@ fn run_audio_thread(
                     let saltable: Vec<bool> =
                         chunk_texts.iter().map(|t| !t.trim().is_empty()).collect();
                     let destino = destino_salto_frase(actual, segs_en_frase, delta, &saltable);
+                    // Al BORDE de la cocina (no hay frase siguiente todavía)
+                    // el salto no se pierde: queda pendiente y se cobra con
+                    // el próximo trozo. Con la cocina terminada, no hay a
+                    // dónde ir y no se apunta nada.
+                    let cocina_terminada = {
+                        let s = snapshot.lock().unwrap();
+                        s.total > 0 && s.chunks_cocinados >= s.total
+                    };
+                    if queda_pendiente(actual, destino, delta, cocina_terminada) {
+                        salto_pendiente = (salto_pendiente + 1).min(3);
+                        snapshot.lock().unwrap().salto_pendiente = salto_pendiente;
+                        emit(&snapshot, &listeners);
+                        continue;
+                    }
+                    // Un salto hacia atrás cancela lo que se debía.
+                    if delta < 0 && salto_pendiente > 0 {
+                        salto_pendiente = 0;
+                        snapshot.lock().unwrap().salto_pendiente = 0;
+                    }
                     let (nuevo, _, parrafo) = reposicionar(
                         destino,
                         &chunk_boundaries,
@@ -732,6 +820,11 @@ fn run_audio_thread(
                 Command::SaltarParrafo { delta } => {
                     if chunk_boundaries.is_empty() {
                         continue;
+                    }
+                    // Un salto de párrafo pisa cualquier frase pendiente.
+                    if salto_pendiente > 0 {
+                        salto_pendiente = 0;
+                        snapshot.lock().unwrap().salto_pendiente = 0;
                     }
                     let played = *played_samples.lock().unwrap();
                     let actual = chunk_boundaries
@@ -768,6 +861,10 @@ fn run_audio_thread(
                     emit(&snapshot, &listeners);
                 }
                 Command::SeekSecs(delta) => {
+                    if salto_pendiente > 0 {
+                        salto_pendiente = 0;
+                        snapshot.lock().unwrap().salto_pendiente = 0;
+                    }
                     // delta < 0 means rewind. Implemented by re-staging samples from session.
                     let session = session_samples.lock().unwrap().clone();
                     let played = *played_samples.lock().unwrap() as i64;
@@ -856,6 +953,9 @@ fn run_audio_thread(
                 let (oi, of) = chunk_origen.get(current_index).copied().unwrap_or((0, 0));
                 s.current_origen_ini = oi;
                 s.current_origen_fin = of;
+                let (ini_s, fin_s) = ventana_de_chunk(current_index, &chunk_boundaries, out_sr);
+                s.frase_ini_s = ini_s;
+                s.frase_fin_s = fin_s;
             }
             // FIN solo si la COCINA terminó: si el consumo alcanza a la
             // síntesis (velocidad alta, primer trozo corto), el buffer se
@@ -868,6 +968,8 @@ fn run_audio_thread(
             if ended {
                 s.playing = false;
                 s.estado = "inactivo".into();
+                s.salto_pendiente = 0;
+                salto_pendiente = 0;
                 s.titulo.clear();
                 s.doc_path.clear();
                 #[cfg(target_os = "ios")]
@@ -1106,6 +1208,28 @@ fn fill<S: Copy + Default>(
 /// chunk i tiene texto real (los silencios entre párrafos no cuentan como
 /// frases). Convención musical: yendo atrás con más de 1,2 s dentro de la
 /// frase actual, el destino es el principio de la frase actual.
+/// La ventana temporal REAL (segundos de sesión) del chunk `idx`: el
+/// karaoke barre con esto en vez de estimar por caracteres.
+pub fn ventana_de_chunk(idx: usize, boundaries: &[u64], out_sr: u32) -> (f32, f32) {
+    if boundaries.is_empty() || out_sr == 0 {
+        return (0.0, 0.0);
+    }
+    let idx = idx.min(boundaries.len() - 1);
+    let ini = if idx == 0 { 0 } else { boundaries[idx - 1] };
+    (
+        ini as f32 / out_sr as f32,
+        boundaries[idx] as f32 / out_sr as f32,
+    )
+}
+
+/// ¿Un salto de frase hacia delante se quedó sin destino porque la cocina
+/// aún no ha servido la frase siguiente? Entonces queda PENDIENTE (se
+/// cobra con el próximo trozo). Con la cocina terminada no hay nada que
+/// esperar: el salto simplemente no ocurre.
+pub fn queda_pendiente(actual: usize, destino: usize, delta: i32, cocina_terminada: bool) -> bool {
+    delta > 0 && destino == actual && !cocina_terminada
+}
+
 pub fn destino_salto_frase(
     actual: usize,
     segs_en_frase: f32,
@@ -1265,6 +1389,27 @@ mod tests {
         assert_eq!(destino_salto_parrafo(4, 1, &p, &s), 5);
         assert_eq!(destino_salto_parrafo(5, -1, &p, &s), 3);
         assert_eq!(destino_salto_parrafo(5, -2, &p, &s), 0);
+    }
+
+    #[test]
+    fn salto_pendiente_solo_al_borde_de_la_cocina() {
+        // Hay frase siguiente: no queda nada pendiente.
+        assert!(!queda_pendiente(1, 2, 1, false));
+        // Sin frase siguiente y la cocina en marcha: pendiente.
+        assert!(queda_pendiente(2, 2, 1, false));
+        // Sin frase siguiente y la cocina terminada: fin del texto, nada.
+        assert!(!queda_pendiente(2, 2, 1, true));
+        // Hacia atrás nunca queda pendiente (siempre hay a dónde ir).
+        assert!(!queda_pendiente(0, 0, -1, false));
+    }
+
+    #[test]
+    fn ventana_de_chunk_es_la_real() {
+        let b = [44_100u64, 88_200, 132_300];
+        assert_eq!(ventana_de_chunk(0, &b, 44_100), (0.0, 1.0));
+        assert_eq!(ventana_de_chunk(1, &b, 44_100), (1.0, 2.0));
+        assert_eq!(ventana_de_chunk(7, &b, 44_100), (2.0, 3.0));
+        assert_eq!(ventana_de_chunk(0, &[], 44_100), (0.0, 0.0));
     }
 
     #[test]

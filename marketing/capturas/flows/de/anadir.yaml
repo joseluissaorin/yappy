@@ -1,0 +1,31 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- tapOn:
+    point: "30%,3%"
+- tapOn:
+    text: "Okay"
+    optional: true
+# Abrir la boca solo si no está ya abierta (un fallo anterior la deja abierta).
+- runFlow:
+    when:
+      notVisible:
+        text: "Kopiertes einfügen"
+    commands:
+      - tapOn:
+          point: "86%,91%"
+- extendedWaitUntil:
+    visible:
+      text: "Kopiertes einfügen"
+    timeout: 8000
+- waitForAnimationToEnd:
+    timeout: 1500
+- takeScreenshot: marketing/screenshots/de/16-boca
+- tapOn:
+    text: "Kopiertes einfügen"
+- tapOn:
+    text: "Permitir pegar|Allow Paste"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 4000

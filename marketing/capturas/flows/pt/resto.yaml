@@ -1,0 +1,117 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- tapOn:
+    point: "30%,3%"
+- tapOn:
+    text: "Está bem"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/pt/20-cinta
+- tapOn:
+    text: "(?i)Pão caseiro"
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: "Ouvir"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/pt/21-lector-a
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: marketing/screenshots/pt/22-lector-b
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: marketing/screenshots/pt/23-lector-c
+# Un toque pausa y descubre la cabecera; luego la flecha de volver.
+- tapOn:
+    point: "50%,50%"
+- waitForAnimationToEnd:
+    timeout: 1500
+- tapOn:
+    text: "(?i)voltar"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 1500
+- runFlow:
+    when:
+      notVisible:
+        text: "yappy"
+    commands:
+      - tapOn:
+          point: "8%,10%"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/pt/24-cinta-sonando
+- tapOn:
+    text: "os bastidores"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+- runFlow:
+    when:
+      notVisible:
+        text: "Velocidade"
+    commands:
+      - tapOn:
+          point: "96%,33%"
+- extendedWaitUntil:
+    visible:
+      text: "Velocidade"
+    timeout: 8000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/pt/25-trastienda
+- tapOn:
+    text: "Noite"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/pt/26-trastienda-noche
+- tapOn:
+    text: "Papel"
+    optional: true
+- scrollUntilVisible:
+    element:
+      text: "Dar corda ao papagaio|Gerir a subscrição"
+    direction: DOWN
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/pt/27-trastienda-cuerda
+- tapOn:
+    text: "Dar corda ao papagaio"
+- extendedWaitUntil:
+    visible:
+      text: "Escolhe a tua corda"
+    timeout: 12000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/pt/28-paywall
+- tapOn:
+    text: "(?i)Fechar"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- tapOn:
+    point: "90%,11%"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- swipe:
+    start: "50%,25%"
+    end: "50%,85%"
+    duration: 400
+- waitForAnimationToEnd:
+    timeout: 2500
+- tapOn:
+    text: "Está bem"
+    optional: true
+- tapOn:
+    text: "(?i)abrir a tipografia"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/pt/29-imprenta

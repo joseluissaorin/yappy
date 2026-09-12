@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Labas, aš tavo papūga"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/lt/01-paseo-hola
+- tapOn:
+    text: "Išrink man balsą"
+- extendedWaitUntil:
+    visible:
+      text: "Viskas vyksta tavo telefone"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/lt/02-paseo-idiomas
+- tapOn:
+    text: "Toliau"
+- extendedWaitUntil:
+    visible:
+      text: "Išsirink savo paukštį"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/lt/03-paseo-pajaro
+- tapOn:
+    text: "Renkuosi James"
+- extendedWaitUntil:
+    visible:
+      text: "Ką man duosi\\?"
+    timeout: 10000
+- tapOn:
+    text: "Straipsniai"
+- tapOn:
+    text: "Knygos"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/lt/04-paseo-que
+- tapOn:
+    text: "Toliau"
+- extendedWaitUntil:
+    visible:
+      text: "Kada mane klausai\\?"
+    timeout: 10000
+- tapOn:
+    text: "Gamindamas valgyti"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/lt/05-paseo-cuando
+- tapOn:
+    text: "Toliau"
+- extendedWaitUntil:
+    visible:
+      text: "Kokiu greičiu\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/lt/06-paseo-velocidad
+- tapOn:
+    text: "Toliau"
+- extendedWaitUntil:
+    visible:
+      text: "Kiek turi ką paskaityti\\?"
+    timeout: 10000
+- tapOn:
+    text: "Visą kalną"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/lt/07-paseo-cuanto
+- tapOn:
+    text: "Toliau"
+- extendedWaitUntil:
+    visible:
+      text: "Kas nors tavo, arba istorija"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/lt/08-paseo-escucha
+- tapOn:
+    text: "(?i)Vėliau"
+- extendedWaitUntil:
+    visible:
+      text: "Ekranas ir yra mygtukas"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Vėliau"
+- extendedWaitUntil:
+    visible:
+      text: "Dalijimasis yra viskas"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/lt/09-paseo-compartir
+- tapOn:
+    text: "(?i)Vėliau"
+- extendedWaitUntil:
+    visible:
+      text: "Ir pasiimi tai su savimi"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/lt/10-paseo-exportar
+- tapOn:
+    text: "(?i)Vėliau"
+- extendedWaitUntil:
+    visible:
+      text: "Prisek mane prie savo mėgstamiausių"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/lt/11-paseo-favoritos
+- tapOn:
+    text: "Padaryta"
+- extendedWaitUntil:
+    visible:
+      text: "Tavo papūga"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/lt/12-paseo-resumen
+- tapOn:
+    text: "Toliau"
+- extendedWaitUntil:
+    visible:
+      text: "Trys iš karto"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/lt/13-paseo-percha
+- tapOn:
+    text: "Toliau"
+- extendedWaitUntil:
+    visible:
+      text: "Pasirink savo spyruoklę"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/lt/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Pradėk su trimis ant laktos"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots/lt/15-paseo-cuerda-pie
+- tapOn:
+    text: "Pradėk su trimis ant laktos"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Gerai"
+    optional: true
+- takeScreenshot: marketing/screenshots/lt/17-cinta-vacia

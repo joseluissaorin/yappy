@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "geen\ncloud",
+    "idiomas": "31\ntalen",
+    "compartir": "tik op\ndelen",
+    "capitulos": "met\nhoofdstukken",
+    "ritmo": "jouw\ntempo",
+    "hola": "hoi!",
+    "gratis": "gratis",
+    "offline": "werkt offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Elke tekst, hardop.",
+      "subtitle": "Deel een artikel, een pdf of een boek, en een papegaai leest het je voor."
+    },
+    {
+      "slot": 2,
+      "title": "De stem volgt de tekst.",
+      "subtitle": "Elke zin licht op terwijl hij klinkt. Tik om te pauzeren."
+    },
+    {
+      "slot": 3,
+      "title": "Tien vogels, 31 talen.",
+      "subtitle": "Allemaal polyglot: ze wisselen vanzelf van taal, alinea na alinea."
+    },
+    {
+      "slot": 4,
+      "title": "Niets verlaat je iPhone.",
+      "subtitle": "Geen cloud, geen account, geen tarief per teken. Werkt offline."
+    },
+    {
+      "slot": 5,
+      "title": "Vanuit elke app.",
+      "subtitle": "Safari, Bestanden, YouTube, Mail: tik op Delen en kies Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Leest als een mens.",
+      "subtitle": "„1492” wordt „veertienhonderdtweeënnegentig”, volgens de regels van elke taal."
+    },
+    {
+      "slot": 7,
+      "title": "Hele boeken als audio.",
+      "subtitle": "Met hoofdstukken. 's Avonds laten staan, 's ochtends staat het in je bibliotheek."
+    },
+    {
+      "slot": 8,
+      "title": "Ook 's nachts.",
+      "subtitle": "Stem, snelheid en thema, zoals jij wilt, in de achterkamer."
+    },
+    {
+      "slot": 9,
+      "title": "Een vakkundige papegaai.",
+      "subtitle": "Hij loopt de eerste dag met je mee, in een wandeling van drie minuten."
+    },
+    {
+      "slot": 10,
+      "title": "Wind de papegaai op.",
+      "subtitle": "Gratis met drie op de stok. Yappy Parlanchín: een stok zonder bodem, voor altijd."
+    }
+  ]
+}

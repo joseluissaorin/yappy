@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "uden\nsky",
+    "idiomas": "31\nsprog",
+    "compartir": "tryk\ndel",
+    "capitulos": "med\nkapitler",
+    "ritmo": "i dit\ntempo",
+    "hola": "hej!",
+    "gratis": "gratis",
+    "offline": "offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Al tekst, læst højt.",
+      "subtitle": "Del en artikel, en PDF eller en bog, og en papegøje læser den for dig."
+    },
+    {
+      "slot": 2,
+      "title": "Stemmen følger teksten.",
+      "subtitle": "Hver sætning lyser op, mens den lyder. Tryk for at holde pause."
+    },
+    {
+      "slot": 3,
+      "title": "Ti fugle, 31 sprog.",
+      "subtitle": "Alle polyglotter: de skifter sprog af sig selv, afsnit for afsnit."
+    },
+    {
+      "slot": 4,
+      "title": "Intet forlader din iPhone.",
+      "subtitle": "Ingen sky, ingen konto, ingen pris pr. tegn. Virker offline."
+    },
+    {
+      "slot": 5,
+      "title": "Fra enhver app.",
+      "subtitle": "Safari, Filer, YouTube, mailen: tryk på Del og vælg Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Læser som et menneske.",
+      "subtitle": "”1492” siges ”fjortenhundrede og tooghalvfems”, efter hvert sprogs regler."
+    },
+    {
+      "slot": 7,
+      "title": "Hele bøger, som lydbog.",
+      "subtitle": "Med kapitler. Lad den stå natten over, om morgenen ligger den i dit bibliotek."
+    },
+    {
+      "slot": 8,
+      "title": "Også om natten.",
+      "subtitle": "Stemme, tempo og tema, som du vil, i baglokalet."
+    },
+    {
+      "slot": 9,
+      "title": "En papegøje med håndværk.",
+      "subtitle": "Den følger dig fra første dag med en tre minutters gåtur."
+    },
+    {
+      "slot": 10,
+      "title": "Træk papegøjen op.",
+      "subtitle": "Gratis med tre på pinden. Yappy Parlanchín: en pind uden bund, for altid."
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- tapOn:
+    point: "30%,3%"
+- tapOn:
+    text: "Okay"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/en/20-cinta
+- tapOn:
+    text: "the back room"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+- runFlow:
+    when:
+      notVisible:
+        text: "Speed"
+    commands:
+      - tapOn:
+          point: "97%,30%"
+- extendedWaitUntil:
+    visible:
+      text: "Speed"
+    timeout: 8000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/en/25-trastienda
+- tapOn:
+    text: "Night"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/en/26-trastienda-noche
+- tapOn:
+    text: "Paper"
+    optional: true
+- scrollUntilVisible:
+    element:
+      text: "Wind up the parrot|Manage subscription"
+    direction: DOWN
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/en/27-trastienda-cuerda
+- tapOn:
+    text: "Wind up the parrot"
+- extendedWaitUntil:
+    visible:
+      text: "Pick your winding"
+    timeout: 12000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/en/28-paywall
+# Relanzar en vez de volver atrás: la cinta se conserva y no hay flecha que acertar.
+- launchApp:
+    stopApp: true
+    arguments:
+      AppleLanguages: "(en)"
+      AppleLocale: "en_EN"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Okay"
+    optional: true
+- tapOn:
+    text: "(?i)open the press"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/en/29-imprenta
+- launchApp:
+    stopApp: true
+    arguments:
+      AppleLanguages: "(en)"
+      AppleLocale: "en_EN"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Okay"
+    optional: true
+- tapOn:
+    text: "(?i)Village bread"
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: "Listen"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/en/21-lector-a
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: marketing/screenshots-ipad/en/22-lector-b
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: marketing/screenshots-ipad/en/23-lector-c
+- takeScreenshot: marketing/screenshots-ipad/en/24-cinta-sonando

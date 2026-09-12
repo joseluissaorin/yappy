@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "こんにちは、わたしはあなたのオウムです"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/ja/01-paseo-hola
+- tapOn:
+    text: "声を選んでください"
+- extendedWaitUntil:
+    visible:
+      text: "すべてはあなたのスマホの中で"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/ja/02-paseo-idiomas
+- tapOn:
+    text: "つぎへ"
+- extendedWaitUntil:
+    visible:
+      text: "あなたの鳥を選んでください"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/ja/03-paseo-pajaro
+- tapOn:
+    text: "Jamesにします"
+- extendedWaitUntil:
+    visible:
+      text: "わたしに何をくれますか？"
+    timeout: 10000
+- tapOn:
+    text: "記事"
+- tapOn:
+    text: "本"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ja/04-paseo-que
+- tapOn:
+    text: "つぎへ"
+- extendedWaitUntil:
+    visible:
+      text: "いつわたしを聴きますか？"
+    timeout: 10000
+- tapOn:
+    text: "料理をしているとき"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ja/05-paseo-cuando
+- tapOn:
+    text: "つぎへ"
+- extendedWaitUntil:
+    visible:
+      text: "どのくらいの速さで？"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ja/06-paseo-velocidad
+- tapOn:
+    text: "つぎへ"
+- extendedWaitUntil:
+    visible:
+      text: "読むものはどれくらいたまっていますか？"
+    timeout: 10000
+- tapOn:
+    text: "山ほど"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ja/07-paseo-cuanto
+- tapOn:
+    text: "つぎへ"
+- extendedWaitUntil:
+    visible:
+      text: "あなたのもの、それともお話"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ja/08-paseo-escucha
+- tapOn:
+    text: "(?i)あとで"
+- extendedWaitUntil:
+    visible:
+      text: "画面そのものがボタンです"
+    timeout: 10000
+- tapOn:
+    text: "(?i)あとで"
+- extendedWaitUntil:
+    visible:
+      text: "シェアがすべてです"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/ja/09-paseo-compartir
+- tapOn:
+    text: "(?i)あとで"
+- extendedWaitUntil:
+    visible:
+      text: "そして、どこへでも持ち歩けます"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ja/10-paseo-exportar
+- tapOn:
+    text: "(?i)あとで"
+- extendedWaitUntil:
+    visible:
+      text: "わたしをお気に入りに固定してください"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ja/11-paseo-favoritos
+- tapOn:
+    text: "完了"
+- extendedWaitUntil:
+    visible:
+      text: "あなたのオウム"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ja/12-paseo-resumen
+- tapOn:
+    text: "つぎへ"
+- extendedWaitUntil:
+    visible:
+      text: "同時に3つ"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ja/13-paseo-percha
+- tapOn:
+    text: "つぎへ"
+- extendedWaitUntil:
+    visible:
+      text: "ぜんまいを選ぶ"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/ja/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "止まり木に3つで始める"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/ja/15-paseo-cuerda-pie
+- tapOn:
+    text: "止まり木に3つで始める"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "わかりました"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/ja/17-cinta-vacia

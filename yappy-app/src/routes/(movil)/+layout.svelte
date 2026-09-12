@@ -12,6 +12,9 @@
   import { fijarIdiomaDesdeLocale } from "$lib/i18n";
   import Criatura from "$lib/Criatura.svelte";
   import Aguja from "$lib/Aguja.svelte";
+  import Paywall from "$lib/Paywall.svelte";
+  import { arrancarCompras, abrirPaywall, esErrorParlanchin } from "$lib/compras.svelte";
+  import { cargarPaseo, paseo } from "$lib/paseo.svelte";
   import { haptic } from "$lib/haptic";
   import { llegada } from "$lib/llegada.svelte";
   import { aplicarTintaVoz, tintaVoz } from "$lib/voces";
@@ -72,6 +75,14 @@
     fijarIdiomaDesdeLocale(idiomaForzado ?? getStore(platformLocale));
     aplicarTintaVoz();
     await arrancarEspejo();
+    // La cuerda del loro: estado de compras, cuota y el paywall global.
+    void arrancarCompras();
+    // EL PASEO DEL LORO: en la primera apertura, la cinta espera; el loro
+    // se presenta primero. (También enciende las estadísticas anónimas.)
+    const enPaseo = await cargarPaseo();
+    if (enPaseo && !window.location.pathname.startsWith("/paseo")) {
+      goto("/paseo", { replaceState: true });
+    }
     startShareIntake();
     // La verdad duradera del progreso pisa la caché local al abrir.
     progresoTodo()
@@ -128,6 +139,10 @@
                 logToBackend("info", "picker", "encolado");
               }
             } catch (e) {
+              if (esErrorParlanchin(e)) {
+                abrirPaywall("percha");
+                break;
+              }
               logToBackend("error", "picker", `fallo del selector: ${e}`);
             }
             break;
@@ -153,6 +168,9 @@
   {#if !enCartel}
     <Aguja />
   {/if}
+
+  <!-- El paywall del loro: vive en el caparazón, sobre cualquier página. -->
+  <Paywall />
 
   {#if llegada.titulo}
     <!-- La llegada: el papel cae, el loro lo atrapa, y empieza a hablar. -->

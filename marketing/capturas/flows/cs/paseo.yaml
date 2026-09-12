@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Ahoj, jsem tvůj papoušek"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/cs/01-paseo-hola
+- tapOn:
+    text: "Vyber mi hlas"
+- extendedWaitUntil:
+    visible:
+      text: "Všechno se děje v tvém telefonu"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/cs/02-paseo-idiomas
+- tapOn:
+    text: "Dále"
+- extendedWaitUntil:
+    visible:
+      text: "Vyber si svého ptáka"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/cs/03-paseo-pajaro
+- tapOn:
+    text: "Zůstávám u James"
+- extendedWaitUntil:
+    visible:
+      text: "Co mi dáš\\?"
+    timeout: 10000
+- tapOn:
+    text: "Články"
+- tapOn:
+    text: "Knihy"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/cs/04-paseo-que
+- tapOn:
+    text: "Dále"
+- extendedWaitUntil:
+    visible:
+      text: "Kdy mě posloucháš\\?"
+    timeout: 10000
+- tapOn:
+    text: "Vaření"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/cs/05-paseo-cuando
+- tapOn:
+    text: "Dále"
+- extendedWaitUntil:
+    visible:
+      text: "Jakou rychlostí\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/cs/06-paseo-velocidad
+- tapOn:
+    text: "Dále"
+- extendedWaitUntil:
+    visible:
+      text: "Kolik toho máš k přečtení\\?"
+    timeout: 10000
+- tapOn:
+    text: "Celá hora"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/cs/07-paseo-cuanto
+- tapOn:
+    text: "Dále"
+- extendedWaitUntil:
+    visible:
+      text: "Tvoje, nebo příběh"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/cs/08-paseo-escucha
+- tapOn:
+    text: "(?i)Později"
+- extendedWaitUntil:
+    visible:
+      text: "Obrazovka je tlačítko"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Později"
+- extendedWaitUntil:
+    visible:
+      text: "Sdílení je všechno"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/cs/09-paseo-compartir
+- tapOn:
+    text: "(?i)Později"
+- extendedWaitUntil:
+    visible:
+      text: "A vezmeš si ho s sebou"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/cs/10-paseo-exportar
+- tapOn:
+    text: "(?i)Později"
+- extendedWaitUntil:
+    visible:
+      text: "Připni mě mezi oblíbené"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/cs/11-paseo-favoritos
+- tapOn:
+    text: "Hotovo"
+- extendedWaitUntil:
+    visible:
+      text: "Tvůj papoušek"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/cs/12-paseo-resumen
+- tapOn:
+    text: "Dále"
+- extendedWaitUntil:
+    visible:
+      text: "Tři najednou"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/cs/13-paseo-percha
+- tapOn:
+    text: "Dále"
+- extendedWaitUntil:
+    visible:
+      text: "Vyber si svou pružinu"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/cs/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Začít se třemi na bidýlku"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots/cs/15-paseo-cuerda-pie
+- tapOn:
+    text: "Začít se třemi na bidýlku"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Dobře"
+    optional: true
+- takeScreenshot: marketing/screenshots/cs/17-cinta-vacia

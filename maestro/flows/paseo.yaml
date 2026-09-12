@@ -1,0 +1,164 @@
+# EL PASEO DEL LORO: el onboarding entero en el simulador, con la tienda
+# simulada (SIMCTL_CHILD_YAPPY_TIENDA=sim) y la app recién instalada
+# (first_launch_done = false). Captura cada paso en /tmp/paseo.
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+# Al arrancar en frío la app baja las voces y cocina las muestras: la
+# pantalla tarda en quedarse quieta y el lector de jerarquía se atraganta.
+- extendedWaitUntil:
+    visible:
+      text: "Hola, soy tu loro|Hi, I'm your parrot"
+    timeout: 90000
+- takeScreenshot: /tmp/paseo/01-hola
+- tapOn:
+    text: "Elígeme una voz|Pick me a voice"
+- extendedWaitUntil:
+    visible:
+      text: ".*en tu teléfono.*|.*on your phone.*"
+    timeout: 8000
+- tapOn:
+    text: "Français"
+- takeScreenshot: /tmp/paseo/02-idiomas
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    text: "Sigue|Next"
+- extendedWaitUntil:
+    visible:
+      text: "Elige tu pájaro|Pick your bird"
+    timeout: 8000
+- tapOn:
+    text: "James"
+- takeScreenshot: /tmp/paseo/03-pajaro
+- tapOn:
+    text: ".*Me quedo con.*|.*I'll take.*"
+- extendedWaitUntil:
+    visible:
+      text: ".*me vas a dar.*|.*will you give me.*"
+    timeout: 8000
+- tapOn:
+    text: "Artículos|Articles"
+- tapOn:
+    text: "Libros|Books"
+- takeScreenshot: /tmp/paseo/04-que
+- tapOn:
+    text: "Sigue|Next"
+- extendedWaitUntil:
+    visible:
+      text: ".*Cuándo me escuchas.*|.*When do you listen.*"
+    timeout: 8000
+- tapOn:
+    text: "Cocinando|Cooking"
+- takeScreenshot: /tmp/paseo/05-cuando
+- tapOn:
+    text: "Sigue|Next"
+- extendedWaitUntil:
+    visible:
+      text: ".*qué velocidad.*|How fast.*"
+    timeout: 8000
+- takeScreenshot: /tmp/paseo/06-velocidad
+- tapOn:
+    text: "Sigue|Next"
+- extendedWaitUntil:
+    visible:
+      text: ".*Cuánto tienes por leer.*|.*How much do you have.*"
+    timeout: 8000
+- tapOn:
+    text: "Una montaña|A mountain"
+- takeScreenshot: /tmp/paseo/07-cuanto
+- tapOn:
+    text: "Sigue|Next"
+- extendedWaitUntil:
+    visible:
+      text: "Lo tuyo, o un cuento|Something of yours, or a story"
+    timeout: 8000
+- takeScreenshot: /tmp/paseo/08-escucha
+# El cuento: primer toque dice la primera frase; el segundo lo lee entero.
+- tapOn:
+    text: ".*A la deriva.*|.*Story of an Hour.*"
+- tapOn:
+    text: ".*A la deriva.*|.*Story of an Hour.*"
+- extendedWaitUntil:
+    visible:
+      text: ".*para pausar.*|.*to pause.*"
+    timeout: 15000
+- takeScreenshot: /tmp/paseo/09-gestos
+# La pantalla solo PAUSA lo que ya suena: hay que esperar a que la voz
+# arranque de verdad (la cocina tarda unos segundos) antes de los gestos.
+- waitForAnimationToEnd:
+    timeout: 9000
+# Los gestos: tocar (pausa), la tecla grande (seguir), deslizar (saltar).
+- tapOn:
+    point: "50%,55%"
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: "seguir|resume"
+    optional: true
+- swipe:
+    start: "85%,60%"
+    end: "12%,60%"
+    duration: 300
+- extendedWaitUntil:
+    visible:
+      text: ".*seguir el paseo.*|.*continue the walk.*"
+    timeout: 8000
+- takeScreenshot: /tmp/paseo/10-gestos-hechos
+- tapOn:
+    text: ".*seguir el paseo.*|.*continue the walk.*"
+- extendedWaitUntil:
+    visible:
+      text: "Compartir es todo|Sharing is everything"
+    timeout: 8000
+- takeScreenshot: /tmp/paseo/11-compartir
+- tapOn:
+    text: "Luego|Later"
+# EXPORTAR: lo escuchado se queda como audiolibro.
+- extendedWaitUntil:
+    visible:
+      text: ".*llevas puesto.*|.*take it with you.*"
+    timeout: 8000
+- takeScreenshot: /tmp/paseo/11b-exportar
+- tapOn:
+    text: "Sigue|Next"
+- extendedWaitUntil:
+    visible:
+      text: ".*favoritos.*|.*favourites.*"
+    timeout: 8000
+- takeScreenshot: /tmp/paseo/12-favoritos
+- tapOn:
+    text: "Hecho|Done"
+- extendedWaitUntil:
+    visible:
+      text: "Tu loro|Your parrot"
+    timeout: 8000
+- takeScreenshot: /tmp/paseo/13-resumen
+- tapOn:
+    text: "Sigue|Next"
+- extendedWaitUntil:
+    visible:
+      text: "Tres a la vez|Three at a time"
+    timeout: 8000
+- takeScreenshot: /tmp/paseo/14-percha
+- tapOn:
+    text: "Sigue|Next"
+- extendedWaitUntil:
+    visible:
+      text: "Elige tu cuerda|Pick your winding"
+    timeout: 10000
+- takeScreenshot: /tmp/paseo/15-cuerda
+- scrollUntilVisible:
+    element:
+      text: ".*tres en la percha.*|.*three on the perch.*"
+    direction: DOWN
+    timeout: 12000
+- takeScreenshot: /tmp/paseo/15b-cuerda-pie
+- tapOn:
+    text: ".*tres en la percha.*|.*three on the perch.*"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 10000
+- takeScreenshot: /tmp/paseo/16-cinta

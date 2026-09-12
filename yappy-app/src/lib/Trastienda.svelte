@@ -8,7 +8,10 @@
 
   // El cajón y la página comparten este componente: «volver» significa
   // cerrar el cajón o navegar, según quién lo monte.
-  let { alVolver = () => goto("/escuchar") }: { alVolver?: () => void } = $props();
+  let {
+    alVolver = () => goto("/escuchar"),
+    alImprenta = () => goto("/escuchar?imprenta=1"),
+  }: { alVolver?: () => void; alImprenta?: () => void } = $props();
   import { t, IDIOMAS_UI, NOMBRE_IDIOMA, fijarPreferenciaIdioma, preferenciaIdioma, type IdiomaUI } from "$lib/i18n";
   import { haptic } from "$lib/haptic";
   import { pref } from "$lib/pref.svelte";
@@ -16,8 +19,12 @@
   import Deslizador from "$lib/Deslizador.svelte";
   import { presionable } from "$lib/presionable";
   import { openUrl } from "@tauri-apps/plugin-opener";
-  import { TINTAS_VOZ, fijarTintaVoz } from "$lib/voces";
+  import { TINTAS_VOZ, fijarTintaVoz, tintaVoz } from "$lib/voces";
   import { PALETA } from "$lib/juguete";
+  import { compras, abrirPaywall, refrescarCompras, cargarCliente } from "$lib/compras.svelte";
+  import { paseo, repetirPaseo, fijarEstadisticasPaseo } from "$lib/paseo.svelte";
+  import { TROQUELES_BASE, aPoligono, aPuntosSvg } from "$lib/troquel";
+  import { comprasGestionar } from "$lib/ipc";
   import {
     getSettings,
     setSettings,
@@ -36,6 +43,7 @@
     puenteMovilEstado,
     puenteVincular,
     puenteDesvincular,
+    puenteProbar,
     type ConfigPuenteMovil,
     LANGUAGES,
     type Settings,
@@ -56,12 +64,28 @@
   let velocidad = $state(1.05);
   let probarTimer: ReturnType<typeof setTimeout> | undefined;
 
+  // LA SONDA: al vincular (o a mano) el teléfono llama al ordenador y
+  // enseña si contesta. Emparejar sin probar era emparejar a ciegas.
+  let sonda = $state<{ estado: "nada" | "probando" | "ok" | "fallo"; nombre?: string; ms?: number; error?: string }>({ estado: "nada" });
+  async function probarPuente() {
+    if (sonda.estado === "probando") return;
+    sonda = { estado: "probando" };
+    try {
+      const r = await puenteProbar();
+      sonda = { estado: "ok", nombre: r.nombre, ms: r.ms };
+      haptic("success");
+    } catch (e) {
+      sonda = { estado: "fallo", error: String(e) };
+      haptic("error");
+    }
+  }
   async function vincular() {
     puenteError = null;
     try {
       puente = await puenteVincular(codigoPegado.trim());
       codigoPegado = "";
       haptic("success");
+      void probarPuente();
     } catch (e) {
       puenteError = String(e);
     }
@@ -75,8 +99,26 @@
     ttsListo = await isModelReady().catch(() => false);
     asrListo = await isAsrModelReady().catch(() => false);
     puente = await puenteMovilEstado().catch(() => null);
+    if (puente?.token) void probarPuente();
     idiomaPreferido = preferenciaIdioma();
+    await refrescarCompras();
+    if (compras.pro) void cargarCliente();
   });
+
+  // «parlanchín desde marzo de 2026»: la fecha, en el idioma de la casa.
+  function fechaDesde(iso: string | null | undefined): string {
+    if (!iso) return "";
+    try {
+      return new Intl.DateTimeFormat(idiomaPreferido === "auto" ? undefined : idiomaPreferido, { month: "long", year: "numeric" }).format(new Date(iso));
+    } catch {
+      return iso.slice(0, 10);
+    }
+  }
+  function conHuecos(clave: string, vars: Record<string, string | number>): string {
+    let out = $t(clave);
+    for (const [k, v] of Object.entries(vars)) out = out.replaceAll(`{${k}}`, String(v));
+    return out;
+  }
 
   async function cambiarColumnas(dos: boolean) {
     if (!settings) return;
@@ -259,7 +301,49 @@
       </label>
     </section>
 
-    <button class="grupo puerta-biblioteca" use:presionable onclick={() => goto("/biblioteca/audiolibros")}>
+    {#if compras.disponible}
+      <!-- LA CUERDA DEL LORO: quién eres para la tienda, y cuánta voz llevas hoy. -->
+      <section class="grupo cuerda-caja" class:es-pro={compras.pro}>
+        <h2 class="yap-susurro">{$t("pro.nombre")}</h2>
+        <div class="cuerda-fila">
+          <span class="cuerda-loro" aria-hidden="true">
+            <Criatura size={64} tinta={$tintaVoz} estado={compras.pro ? "posado" : compras.cuota.agotada ? "avergonzado" : "posado"} cantando={compras.pro} />
+            <svg class="cuerda-llave" viewBox="0 0 64 64"><g stroke="#2b2418" stroke-width="1.6" stroke-linejoin="round"><rect x="44" y="34.4" width="12" height="3.2" rx="1.4" fill="#e8b41a" /><path d="M56 36 c0 -4 4 -6 6 -3 c1.4 2 0 4 -2 4 c2 0 3.4 2 2 4 c-2 3 -6 1 -6 -3 Z" fill="#e8b41a" /></g></svg>
+          </span>
+          <div class="cuerda-texto">
+            {#if compras.pro}
+              <span class="yap-pildora es-ok">{$t("pro.estado_pro")}</span>
+              {#if compras.cliente?.desde}
+                <p class="pie-puente">{conHuecos("pro.desde", { fecha: fechaDesde(compras.cliente.desde) })}</p>
+              {/if}
+            {:else}
+              <span class="yap-pildora">{$t("pro.estado_gratis")}</span>
+              <p class="pie-puente mono-hoy">{conHuecos("pro.gratis_usados", { usado: Math.min(compras.cuota.usados, compras.cuota.limite), limite: compras.cuota.limite })}</p>
+              <!-- Los huecos de la percha: una pegatina por documento, el hueco libre en línea de puntos. -->
+              <div class="percha-huecos" aria-hidden="true">
+                {#each Array.from({ length: compras.cuota.limite }, (_, i) => i) as i (i)}
+                  {@const forma = TROQUELES_BASE[(i * 3) % TROQUELES_BASE.length]}
+                  {@const lleno = i < compras.cuota.usados}
+                  <span class="hueco" class:lleno style="--giro:{(i % 2 ? 1 : -1) * (3 + i)}deg">
+                    <span class="hueco-pega" style="background: {PALETA[(i * 4 + 4) % PALETA.length]}; clip-path: {aPoligono(forma)}"></span>
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points={aPuntosSvg(forma, lleno ? 0.8 : 0.96)} fill="none" stroke={lleno ? "#fffdf7" : "var(--yap-tinta-suave)"} stroke-width="1.6" stroke-dasharray="4 3" vector-effect="non-scaling-stroke" /></svg>
+                  </span>
+                {/each}
+              </div>
+            {/if}
+          </div>
+        </div>
+        {#if compras.pro}
+          {#if compras.cliente?.expira}
+            <button class="yap-boton" use:presionable onclick={() => { haptic("light"); comprasGestionar().catch(() => {}); }}>{$t("pro.gestionar")}</button>
+          {/if}
+        {:else}
+          <button class="yap-tecla chica tecla-cuerda" use:presionable={{ hap: "rigid" }} onclick={() => abrirPaywall("trastienda")}>{$t("pro.comprar")}</button>
+        {/if}
+      </section>
+    {/if}
+
+    <button class="grupo puerta-biblioteca" use:presionable onclick={alImprenta}>
       <span>{$t("trastienda.biblioteca")}</span>
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </button>
@@ -272,9 +356,20 @@
           <span class="yap-pildora es-ok">{$t("ajustes.vinculado")}</span>
         </div>
         <p class="pie-puente">{$t("ajustes.ordenador_texto_si")}</p>
-        <button class="yap-boton" use:presionable onclick={async () => { await puenteDesvincular().catch(() => {}); puente = null; }}>
-          {$t("ajustes.desvincular")}
-        </button>
+        {#if sonda.estado === "probando"}
+          <p class="pie-puente sonda-linea"><span class="sonda-punto"></span>{$t("ajustes.probando")}</p>
+        {:else if sonda.estado === "ok"}
+          <p class="pie-puente sonda-linea es-ok">{conHuecos("ajustes.puente_ok", { nombre: sonda.nombre ?? puente.nombre ?? "ordenador", ms: sonda.ms ?? 0 })}</p>
+        {:else if sonda.estado === "fallo"}
+          <p class="pie-puente sonda-linea es-fallo">{$t("ajustes.puente_fallo")}</p>
+          {#if sonda.error}<p class="pie-puente sonda-detalle">{sonda.error}</p>{/if}
+        {/if}
+        <div class="fila-teclas">
+          <button class="yap-tecla chica" use:presionable onclick={probarPuente} disabled={sonda.estado === "probando"}>{$t("ajustes.probar")}</button>
+          <button class="yap-boton" use:presionable onclick={async () => { await puenteDesvincular().catch(() => {}); puente = null; sonda = { estado: "nada" }; }}>
+            {$t("ajustes.desvincular")}
+          </button>
+        </div>
       {:else}
         <p class="pie-puente">{$t("ajustes.ordenador_texto_no")}</p>
         <input
@@ -309,6 +404,23 @@
           <button class="yap-tecla chica" use:presionable onclick={() => downloadAsrModel()}>{$t("ajustes.descargar")}</button>
         {/if}
       </div>
+    </section>
+
+    <section class="grupo">
+      <h2 class="yap-susurro">{$t("trastienda.paseo")}</h2>
+      <p class="pie-puente">{$t("trastienda.paseo_texto")}</p>
+      <button class="yap-boton" use:presionable onclick={() => { haptic("medium"); void repetirPaseo(); }}>{$t("trastienda.paseo_tecla")}</button>
+      <div class="fila">
+        <span>{$t("trastienda.estadisticas")}</span>
+        <button
+          class="yap-pestana"
+          class:es-activa={paseo.libreta.estadisticas !== false}
+          use:presionable={{ hap: "light" }}
+          onclick={() => void fijarEstadisticasPaseo(paseo.libreta.estadisticas === false)}
+          aria-pressed={paseo.libreta.estadisticas !== false}
+        >{paseo.libreta.estadisticas !== false ? "✓" : "·"}</button>
+      </div>
+      <p class="pie-puente">{$t("trastienda.estadisticas_texto")}</p>
     </section>
 
     <!-- El pie: quién hay detrás, con el loro paseando. -->
@@ -519,5 +631,28 @@
   }
 
   .pie-puente { margin: 0; font-size: 0.85rem; color: var(--yap-tinta-suave); }
+  .sonda-linea { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+  .sonda-linea.es-ok { color: var(--yap-ok, #2f7a4a); }
+  .sonda-linea.es-fallo { color: var(--yap-peligro, #9a4a3a); }
+  .sonda-detalle { font-size: 0.75rem; opacity: 0.8; }
+  .sonda-punto { width: 9px; height: 9px; border-radius: 50%; background: currentColor; animation: sonda-late 0.9s ease-in-out infinite alternate; }
+  @keyframes sonda-late { from { opacity: 0.3; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+  .fila-teclas { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+  /* ── La cuerda del loro ── */
+  .cuerda-fila { display: flex; align-items: center; gap: 12px; }
+  .cuerda-loro { position: relative; display: inline-block; width: 72px; height: 64px; flex: 0 0 auto; }
+  .cuerda-llave { position: absolute; left: 0; top: 0; width: 64px; height: 64px; pointer-events: none; transform-origin: 60px 36px; }
+  .es-pro .cuerda-llave { animation: cuerda-gira 3.6s linear infinite; }
+  @keyframes cuerda-gira { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  .cuerda-texto { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; flex: 1; }
+  .mono-hoy { font-family: var(--yap-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+  .percha-huecos { display: flex; gap: 8px; padding-top: 2px; }
+  .hueco { position: relative; width: 34px; height: 34px; transform: rotate(var(--giro)); }
+  .hueco-pega { position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s ease, transform 0.42s cubic-bezier(0.24, 1.7, 0.44, 1); transform: scale(0.6); }
+  .hueco.lleno .hueco-pega { opacity: 1; transform: scale(1); }
+  .hueco svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .tecla-cuerda { background: var(--vivo, var(--voz-tinta, var(--yap-voz))); color: #fffdf7; box-shadow: 2px 3px 0 #2b2418; transform: rotate(-0.6deg); }
+  @media (prefers-reduced-motion: reduce) { .es-pro .cuerda-llave { animation: none; } }
   .chica { align-self: flex-start; padding: 10px 16px; font-size: 0.9rem; min-height: 44px; }
 </style>

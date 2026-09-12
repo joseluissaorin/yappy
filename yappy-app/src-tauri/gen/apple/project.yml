@@ -13,6 +13,11 @@ packages:
   FluidAudio:
     url: https://github.com/FluidInference/FluidAudio.git
     from: 0.12.4
+  # RevenueCat (Yappy Parlanchín): el espejo «spm» es el paquete ligero que
+  # RevenueCat recomienda para SwiftPM. Se usa desde Compras.swift.
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios-spm.git
+    from: 5.88.0
 configs:
   debug: debug
   release: release
@@ -75,8 +80,8 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        CFBundleShortVersionString: 0.3.0
-        CFBundleVersion: "0.3.0.3"
+        CFBundleShortVersionString: 1.0.0
+        CFBundleVersion: "1.0.0.5"
         # Export compliance: Yappy uses only exempt encryption (HTTPS for model
         # downloads + Apple's standard system crypto; no proprietary algorithms),
         # so it's exempt. Declaring this here skips the "Missing Compliance"
@@ -146,6 +151,18 @@ targets:
           - CFBundleTypeName: Audiolibro de Yappy
             LSHandlerRank: Owner
             LSItemContentTypes: [com.joseluissaorin.yappy.pack]
+        # BACKGROUND ASSETS: las voces (~200 MB en fp16) llegan DURANTE la
+        # instalación desde nuestro espejo, como descargas esenciales, y las
+        # coloca la extensión YappyRecursos en el App Group. El manifiesto
+        # lo lee la App Store en cada instalación y actualización.
+        BAManifestURL: https://modelos.yappy.joseluissaorin.com/supertonic-3/manifiesto-ios.json
+        BAEssentialMaxInstallSize: 320000000
+        BAMaxInstallSize: 640000000
+        BAInitialDownloadRestrictions:
+          BADownloadAllowance: 640000000
+          BAEssentialDownloadAllowance: 320000000
+          BADownloadDomainAllowList:
+            - modelos.yappy.joseluissaorin.com
         # Required reason API declarations — Apple needs these for file
         # timestamp access, hashing, etc. that ORT / pdf parsing touch.
         NSPrivacyAccessedAPITypes:
@@ -185,6 +202,10 @@ targets:
         embed: false
       # On-device speech-to-text (CoreML Parakeet). Used by Transcriber.swift.
       - package: FluidAudio
+      # Compras (RevenueCat) — Compras.swift.
+      - package: RevenueCat
+        product: RevenueCat
+      - sdk: StoreKit.framework
       # YappyWidgets Live Activity extension — embedded as an app extension.
       - target: YappyWidgets
         embed: true
@@ -193,6 +214,13 @@ targets:
       - target: YappyShareExtension
         embed: true
         codeSign: true
+      # YappyRecursos — las voces llegan con la instalación (Background Assets).
+      - target: YappyRecursos
+        embed: true
+        codeSign: true
+      # BackgroundAssets también en la app: reanuda y observa las descargas
+      # de la instalación si el usuario abre Yappy antes de que acaben.
+      - sdk: BackgroundAssets.framework
       - sdk: CoreGraphics.framework
       - sdk: Metal.framework
       - sdk: MetalKit.framework
@@ -262,8 +290,8 @@ targets:
       path: YappyWidgets/Info.plist
       properties:
         CFBundleDisplayName: YappyWidgets
-        CFBundleShortVersionString: 0.3.0
-        CFBundleVersion: "0.3.0.3"
+        CFBundleShortVersionString: 1.0.0
+        CFBundleVersion: "1.0.0.5"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     entitlements:
@@ -290,6 +318,46 @@ targets:
       - sdk: SwiftUI.framework
       - sdk: ActivityKit.framework
 
+  # ─── Background Assets Extension ──────────────────────────────────────
+  # La App Store la lanza al instalar y al actualizar: descarga las voces
+  # desde modelos.yappy.joseluissaorin.com como recursos esenciales y las
+  # coloca en el App Group (models/supertonic-3). Es una extensión de
+  # ExtensionKit (va en Extensions/, no en PlugIns/).
+  YappyRecursos:
+    type: extensionkit-extension
+    platform: iOS
+    sources:
+      - path: YappyRecursos
+    info:
+      path: YappyRecursos/Info.plist
+      properties:
+        CFBundleDisplayName: YappyRecursos
+        CFBundleShortVersionString: 1.0.0
+        CFBundleVersion: "1.0.0.5"
+        EXAppExtensionAttributes:
+          EXExtensionPointIdentifier: com.apple.background-asset-downloader-extension
+    entitlements:
+      path: YappyRecursos/YappyRecursos.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.joseluissaorin.yappy
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.joseluissaorin.yappy.Recursos
+        PRODUCT_NAME: YappyRecursos
+        DEVELOPMENT_TEAM: 9LYNY2477X
+        CODE_SIGN_STYLE: Automatic
+        IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+        SWIFT_VERSION: "5.0"
+        SKIP_INSTALL: YES
+        ENABLE_BITCODE: false
+        ARCHS: [arm64]
+        VALID_ARCHS: arm64
+        EXCLUDED_ARCHS[sdk=iphoneos*]: x86_64
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: false
+    dependencies:
+      - sdk: BackgroundAssets.framework
+
   # ─── Share Sheet Extension ────────────────────────────────────────────
   # Accepts URLs and text from "Share to → Yappy" in any iOS app, writes
   # the payload into the App Group container, and the main app reads it
@@ -312,8 +380,8 @@ targets:
       path: YappyShareExtension/Info.plist
       properties:
         CFBundleDisplayName: Yappy
-        CFBundleShortVersionString: 0.3.0
-        CFBundleVersion: "0.3.0.3"
+        CFBundleShortVersionString: 1.0.0
+        CFBundleVersion: "1.0.0.5"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController

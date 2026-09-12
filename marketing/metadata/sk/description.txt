@@ -1,0 +1,28 @@
+Zdieľajte s Yappy článok, PDF, EPUB, Word alebo video a papagáj vám ho prečíta nahlas prirodzeným hlasom. Kým varíte, kým kráčate alebo so zatvorenými očami. Všetko sa deje vo vnútri vášho iPhonu: nič z neho neodchádza, nikdy.
+
+BEZ CLOUDU, BEZ ÚČTOV, BEZ POPLATKU ZA ZNAK
+Hlas sa syntetizuje vo vašom zariadení otvoreným modelom s približne 66 miliónmi parametrov. Netreba sa registrovať ani zadávať e-mail. Funguje bez pripojenia, navždy.
+
+31 JAZYKOV A DESAŤ HLASOV, VŠETKY POLYGLOTNÉ
+Slovenčina, angličtina, španielčina, francúzština, nemčina, taliančina, portugalčina, holandčina, poľština, rumunčina, švédčina, dánčina, fínčina, estónčina, litovčina, lotyština, chorvátčina, slovinčina, čeština, maďarčina, gréčtina, bulharčina, ukrajinčina, ruština, turečtina, arabčina, hindčina, indonézština, vietnamčina, kórejčina a japončina. Texty s citátmi v inom jazyku menia jazyk samy, odsek po odseku.
+
+ZDIEĽANIE JE DVERE
+Zo Safari, Mailu, Súborov alebo akejkoľvek aplikácie: ťuknite na Zdieľať a vyberte Yappy. Stránka sa sama vyčistí (preč s menu, bannermi a pätičkami) a ostane próza so svojimi nadpismi a svojím rytmom. Videá z YouTube sa počúvajú ako články. PDF a EPUB prichádzajú s kapitolami. Hlasové poznámky sa prepisujú v zariadení.
+
+SCENÁRISTA: OD NAPÍSANÉHO K POVEDANÉMU
+Čítať nahlas nie je hláskovať. „1492“ sa číta „tisícštyristodeväťdesiatdva“; „Henrich VIII.“ sa číta „Henrich Ôsmy“, ale „Louis XIV.“ je po francúzsky „Louis quatorze“. Yappy premení každý text na čítací scenár podľa pravidiel daného jazyka a hlas ho sleduje vetu po vete, kým sa text rozsvecuje na obrazovke.
+
+OBRAZOVKA JE TLAČIDLO
+Ťuknite kamkoľvek na pozastavenie, potiahnite na preskočenie odseku, pri okraji zvýšte alebo znížte rýchlosť. A zo zamknutej obrazovky alebo zo slúchadiel, ako pri každom prehrávači.
+
+TLAČIAREŇ: CELÉ KNIHY AKO AUDIOKNIHY
+Nechajte knihu renderovať, keď idete spať, a po prebudení máte v knižnici audioknihu s kapitolami. S mostom ju za vás môže previesť váš Mac alebo PC a sám vám ju poslať späť.
+
+NAOZAJ ZADARMO, A PAPAGÁJ NA KĽÚČIK
+Yappy je open source (licencia MIT). Bezplatný papagáj nosí na svojom bidielku tri dokumenty naraz; odoberte jeden a zmestí sa ďalší, bez časového limitu. Ak chcete bidielko bez dna, tlačiareň audiokníh a most s počítačom, natiahnite ho s Yappy Parlanchín: mesačné alebo ročné predplatné, alebo jedna doživotná platba. Zrušíte, kedy chcete.
+
+Predplatné sa automaticky obnovuje na konci každého obdobia, pokiaľ ho nezrušíte vo svojom účte Apple aspoň 24 hodín vopred.
+Podmienky používania: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Súkromie: https://yappy.joseluissaorin.com/en/privacy
+
+S láskou vytvoril José Luis Saorín. Filológ, ktorý chcel počúvať to, čo číta, a šesťročný chlapec, ktorý sa chcel hrať s papagájom.

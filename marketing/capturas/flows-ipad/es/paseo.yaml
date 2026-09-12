@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Hola, soy tu loro"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/es/01-paseo-hola
+- tapOn:
+    text: "Elígeme una voz"
+- extendedWaitUntil:
+    visible:
+      text: "Todo pasa en tu teléfono"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/es/02-paseo-idiomas
+- tapOn:
+    text: "Sigue"
+- extendedWaitUntil:
+    visible:
+      text: "Elige tu pájaro"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/es/03-paseo-pajaro
+- tapOn:
+    text: "Me quedo con James"
+- extendedWaitUntil:
+    visible:
+      text: "¿Qué me vas a dar\\?"
+    timeout: 10000
+- tapOn:
+    text: "Artículos"
+- tapOn:
+    text: "Libros"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/es/04-paseo-que
+- tapOn:
+    text: "Sigue"
+- extendedWaitUntil:
+    visible:
+      text: "¿Cuándo me escuchas\\?"
+    timeout: 10000
+- tapOn:
+    text: "Cocinando"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/es/05-paseo-cuando
+- tapOn:
+    text: "Sigue"
+- extendedWaitUntil:
+    visible:
+      text: "¿A qué velocidad\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/es/06-paseo-velocidad
+- tapOn:
+    text: "Sigue"
+- extendedWaitUntil:
+    visible:
+      text: "¿Cuánto tienes por leer\\?"
+    timeout: 10000
+- tapOn:
+    text: "Una montaña"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/es/07-paseo-cuanto
+- tapOn:
+    text: "Sigue"
+- extendedWaitUntil:
+    visible:
+      text: "Lo tuyo, o un cuento"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/es/08-paseo-escucha
+- tapOn:
+    text: "(?i)Luego"
+- extendedWaitUntil:
+    visible:
+      text: "La pantalla es el botón"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Luego"
+- extendedWaitUntil:
+    visible:
+      text: "Compartir es todo"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/es/09-paseo-compartir
+- tapOn:
+    text: "(?i)Luego"
+- extendedWaitUntil:
+    visible:
+      text: "Y te lo llevas puesto"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/es/10-paseo-exportar
+- tapOn:
+    text: "(?i)Luego"
+- extendedWaitUntil:
+    visible:
+      text: "Fíjame en tus favoritos"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/es/11-paseo-favoritos
+- tapOn:
+    text: "Hecho"
+- extendedWaitUntil:
+    visible:
+      text: "Tu loro"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/es/12-paseo-resumen
+- tapOn:
+    text: "Sigue"
+- extendedWaitUntil:
+    visible:
+      text: "Tres a la vez"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/es/13-paseo-percha
+- tapOn:
+    text: "Sigue"
+- extendedWaitUntil:
+    visible:
+      text: "Elige tu cuerda"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/es/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Empezar con tres en la percha"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/es/15-paseo-cuerda-pie
+- tapOn:
+    text: "Empezar con tres en la percha"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Vale"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/es/17-cinta-vacia

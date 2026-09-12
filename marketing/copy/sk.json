@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "bez\ncloudu",
+    "idiomas": "31\njazykov",
+    "compartir": "ťukni\nzdieľať",
+    "capitulos": "s\nkapitolami",
+    "ritmo": "tvojím\ntempom",
+    "hola": "ahoj!",
+    "gratis": "zadarmo",
+    "offline": "offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Akýkoľvek text, nahlas.",
+      "subtitle": "Zdieľaj článok, PDF alebo knihu a papagáj ti ho prečíta."
+    },
+    {
+      "slot": 2,
+      "title": "Hlas sleduje text.",
+      "subtitle": "Každá veta sa rozsvieti, keď znie. Ťukni a pozastavíš."
+    },
+    {
+      "slot": 3,
+      "title": "Desať vtákov, 31 jazykov.",
+      "subtitle": "Všetci polygloti: jazyk menia sami, odsek po odseku."
+    },
+    {
+      "slot": 4,
+      "title": "Nič neopustí tvoj iPhone.",
+      "subtitle": "Bez cloudu, bez účtu, bez poplatku za znak. Funguje offline."
+    },
+    {
+      "slot": 5,
+      "title": "Z každej aplikácie.",
+      "subtitle": "Safari, Súbory, YouTube, pošta: ťukni na Zdieľať a vyber Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Číta ako človek.",
+      "subtitle": "„1492“ sa povie „tisícštyristodeväťdesiatdva“, podľa pravidiel každého jazyka."
+    },
+    {
+      "slot": 7,
+      "title": "Celé knihy ako audiokniha.",
+      "subtitle": "S kapitolami. Necháš to na noc a ráno ju máš v knižnici."
+    },
+    {
+      "slot": 8,
+      "title": "Aj v noci.",
+      "subtitle": "Hlas, rýchlosť a téma, podľa chuti, v zázemí."
+    },
+    {
+      "slot": 9,
+      "title": "Papagáj s remeslom.",
+      "subtitle": "Sprevádza ťa od prvého dňa trojminútovou prechádzkou."
+    },
+    {
+      "slot": 10,
+      "title": "Natiahni papagája.",
+      "subtitle": "Zadarmo s tromi na bidle. Yappy Parlanchín: bidlo bez dna, navždy."
+    }
+  ]
+}

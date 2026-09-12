@@ -222,8 +222,20 @@ pub fn trocear(pieza: &Pieza) -> Vec<Trozo> {
             ini = Some(i);
             break;
         }
-        let Some(ini) = ini else { continue };
-        let fin = ini + t_chars.len();
+        // NUNCA se descarta un trozo: si no se localiza (un troceador que
+        // reescribiera el texto, un span raro), se coloca a continuación de
+        // lo anterior con su origen aproximado. Perder un trozo aquí es
+        // perder VOZ, y en silencio: es el bug que dejaba los párrafos
+        // largos a medio leer.
+        let (ini, fin) = match ini {
+            Some(i) => (i, i + t_chars.len()),
+            None => {
+                // (Sin traza: este módulo lo comparte el crate WASM de la
+                // web, que no enlaza `tracing`.)
+                let i = cursor.min(hab_chars.len());
+                (i, (i + t_chars.len()).min(hab_chars.len()))
+            }
+        };
         cursor = fin;
         resultado.push(Trozo {
             texto: t,
@@ -336,6 +348,81 @@ mod tests {
         assert_eq!(
             g.piezas[0].texto_hablado(),
             "En mil cuatrocientos noventa y dos, Colón."
+        );
+    }
+}
+
+#[cfg(test)]
+mod tests_voz_entera {
+    use super::*;
+
+    /// El camino REAL de la voz: guion → trocear. Cada palabra del hablado
+    /// tiene que salir en algún trozo, o esa voz no suena y nadie se entera.
+    fn toda_la_voz_suena(texto: &str, idioma: &str) {
+        let guion = construir_desde_texto(texto, idioma);
+        for pieza in &guion.piezas {
+            let hablado = pieza.texto_hablado();
+            if hablado.trim().is_empty() {
+                continue;
+            }
+            let trozos = trocear(pieza);
+            let dichas: Vec<String> = trozos
+                .iter()
+                .flat_map(|t| t.texto.split_whitespace().map(|w| w.to_string()))
+                .collect();
+            let esperadas: Vec<String> =
+                hablado.split_whitespace().map(|w| w.to_string()).collect();
+            assert_eq!(
+                dichas.len(),
+                esperadas.len(),
+                "se perdió voz: se dicen {} palabras de {}\nhablado: {hablado:?}\ntrozos: {:?}",
+                dichas.len(),
+                esperadas.len(),
+                trozos.iter().map(|t| &t.texto).collect::<Vec<_>>()
+            );
+            assert_eq!(dichas, esperadas, "cambió el orden de lo dicho");
+        }
+    }
+
+    #[test]
+    fn la_frase_con_muchas_subordinadas_suena_entera() {
+        toda_la_voz_suena(
+            "Cuando el hombre llegó al recodo del río, que a esa hora bajaba turbio y lento, \
+             con esa lentitud que engaña a quien no lo conoce, se dio cuenta, aunque tarde, de \
+             que la canoa, atada con un nudo que él mismo había hecho la noche anterior, ya no \
+             estaba donde la había dejado, y que la corriente, paciente como todas las cosas \
+             del monte, se la había llevado sin ruido.",
+            "es",
+        );
+    }
+
+    #[test]
+    fn el_parrafo_larguisimo_suena_entero() {
+        let mut parrafo = String::new();
+        for i in 1..=14 {
+            parrafo.push_str(&format!(
+                "Esta es la frase {i}, con su inciso, su subordinada y su punto final. "
+            ));
+        }
+        toda_la_voz_suena(parrafo.trim(), "es");
+    }
+
+    #[test]
+    fn el_parrafo_sin_puntos_suena_entero() {
+        // Sin puntuación fuerte: una sola frase kilométrica.
+        let parrafo = "y entonces siguió andando ".repeat(40);
+        toda_la_voz_suena(parrafo.trim(), "es");
+    }
+
+    #[test]
+    fn el_ingles_largo_tambien() {
+        toda_la_voz_suena(
+            "She was young, with a fair, calm face, whose lines bespoke repression and even a \
+             certain strength, and she sat quite motionless, except when a sob came up into her \
+             throat and shook her, as a child who has cried itself to sleep continues to sob in \
+             its dreams, while the tops of trees outside were all aquiver with the new spring \
+             life that filled the very air she breathed.",
+            "en",
         );
     }
 }

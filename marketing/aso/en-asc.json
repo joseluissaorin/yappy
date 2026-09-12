@@ -1,0 +1,162 @@
+{
+ "en-US": {
+  "name": "Yappy: Text to Speech Reader",
+  "subtitle": "Voice Reader for PDF & EPUB",
+  "keywords": "tts,read,aloud,document,accessibility,dyslexia,audio,audiobook,listen,book,screen,article,me"
+ },
+ "en-GB": {
+  "name": "Yappy: Text to Speech Reader",
+  "subtitle": "Read Aloud PDF, EPUB & Docs",
+  "keywords": "tts,voice,narrator,natural,document,dyslexia,accessibility,audiobook,study,listen,book,news,story"
+ },
+ "en-AU": {
+  "name": "Yappy: Text to Speech Reader",
+  "subtitle": "Text to Audio: Read Out Loud",
+  "keywords": "tts,voice,pdf,epub,document,dyslexia,accessibility,audiobook,listen,book,screen,ebook,narrator"
+ },
+ "en-CA": {
+  "name": "Yappy: Text to Speech Reader",
+  "subtitle": "Read Out Loud: PDF, EPUB, Docs",
+  "keywords": "tts,voice,audio,document,dyslexia,accessibility,audiobook,listen,book,narrator,ebook,article,aloud"
+ },
+ "es-ES": {
+  "name": "Yappy: lector de textos",
+  "subtitle": "Texto a voz para PDF y EPUB",
+  "keywords": "tts,leer,narrador,audiolibro,libro,documento,artículo,dislexia,escuchar,noticia,estudiar,apunte"
+ },
+ "es-MX": {
+  "name": "Yappy: lector de textos",
+  "subtitle": "Texto a voz para PDF y EPUB",
+  "keywords": "tts,leer,narrador,audiolibro,libro,documento,artículo,dislexia,escuchar,noticia,estudiar,apunte"
+ },
+ "de-DE": {
+  "name": "Yappy: Text vorlesen App",
+  "subtitle": "Text to Speech für PDF & EPUB",
+  "keywords": "tts,vorlese,sprache,sprachausgabe,vorleser,stimme,hörbuch,artikel,legasthenie,buch,ebook,lesen"
+ },
+ "fr-FR": {
+  "name": "Yappy : lecteur de texte",
+  "subtitle": "Text to Speech, PDF et EPUB",
+  "keywords": "tts,synthèse,vocale,voix,lecture,livre,audio,lire,haute,dyslexie,article,document,narrateur,écouter"
+ },
+ "fr-CA": {
+  "name": "Yappy : lecteur de texte",
+  "subtitle": "Text to Speech, PDF et EPUB",
+  "keywords": "tts,synthèse,vocale,voix,lecture,livre,audio,lire,haute,dyslexie,article,document,narrateur,écouter"
+ },
+ "it": {
+  "name": "Yappy: Text to Speech, lettore",
+  "subtitle": "Legge testi, PDF ed EPUB",
+  "keywords": "tts,voce,sintesi,vocale,lettura,audiolibro,libro,dislessia,articolo,documento,ascoltare,studiare"
+ },
+ "pt-PT": {
+  "name": "Yappy: leitor Text to Speech",
+  "subtitle": "Ouve texto, PDF, EPUB e livros",
+  "keywords": "tts,audiobook,voz,leitura,ler,alta,narrador,artigo,documento,dislexia,audiolivro,estudar,offline"
+ },
+ "pt-BR": {
+  "name": "Yappy: ler texto em voz alta",
+  "subtitle": "Leitor de livros, PDF e EPUB",
+  "keywords": "tts,narrador,artigo,dislexia,audiobook,audiolivro,text,speech,documento,notícia,estudo,ouvir"
+ },
+ "nl-NL": {
+  "name": "Yappy: Text to Speech (TTS)",
+  "subtitle": "Voorlezen van tekst, PDF, EPUB",
+  "keywords": "voorleesapp,spraak,stem,luisterboek,artikel,dyslexie,document,boek,lezen,lezer,naar"
+ },
+ "pl": {
+  "name": "Yappy: Text to Speech i lektor",
+  "subtitle": "TTS: czyta na głos PDF i EPUB",
+  "keywords": "czytnik,tekstu,syntezator,mowy,audiobook,ebook,książka,artykuł,dysleksja,dokument,czytanie"
+ },
+ "ro": {
+  "name": "Yappy: Text to Speech, cititor",
+  "subtitle": "Citește cu voce tare PDF, EPUB",
+  "keywords": "tts,audiobook,carte,audio,articol,document,dislexie,vorbire,sinteza,vocala,lectura,offline"
+ },
+ "sv": {
+  "name": "Yappy: Text to Speech & röst",
+  "subtitle": "Läser upp text, PDF och EPUB",
+  "keywords": "tts,uppläsning,talsyntes,ljudbok,artikel,dyslexi,dokument,bok,läsare,till,tal,offline"
+ },
+ "da": {
+  "name": "Yappy: Text to Speech, læs op",
+  "subtitle": "Oplæsning af tekst, PDF, EPUB",
+  "keywords": "tts,oplæser,talesyntese,lydbog,artikel,ordblind,dokument,bog,stemme,tale,til,offline"
+ },
+ "fi": {
+  "name": "Yappy: Text to Speech, lukija",
+  "subtitle": "Lukee tekstit ja PDF:t ääneen",
+  "keywords": "tts,epub,puhesynteesi,äänikirjat,artikkeli,lukihäiriö,dokumentti,kirja,ääni,puheeksi,teksti,offline"
+ },
+ "hr": {
+  "name": "Yappy: Text to Speech, čitač",
+  "subtitle": "Čita naglas tekst, PDF i EPUB",
+  "keywords": "tts,audioknjiga,govor,glas,članak,disleksija,dokument,knjiga,čitanje,offline"
+ },
+ "sk": {
+  "name": "Yappy: Text to Speech, čítačka",
+  "subtitle": "Číta nahlas text, PDF a EPUB",
+  "keywords": "tts,audiokniha,reč,hlas,článok,dyslexia,dokument,kniha,predčítanie,offline"
+ },
+ "cs": {
+  "name": "Yappy: Text to Speech, čtečka",
+  "subtitle": "Čte nahlas text, PDF a EPUB",
+  "keywords": "tts,audiokniha,řeč,hlas,článek,dyslexie,dokument,kniha,předčítání,syntéza,offline"
+ },
+ "hu": {
+  "name": "Yappy: Text to Speech, olvasó",
+  "subtitle": "Szöveg és PDF felolvasása",
+  "keywords": "tts,epub,hangoskönyv,szövegfelolvasó,felolvasó,hang,cikk,diszlexia,dokumentum,könyv,beszéd,offline"
+ },
+ "el": {
+  "name": "Yappy: Text to Speech & φωνή",
+  "subtitle": "Διαβάζει δυνατά PDF και EPUB",
+  "keywords": "tts,reader,ανάγνωση,κείμενο,ομιλία,audiobook,άρθρο,δυσλεξία,έγγραφο,βιβλίο,αφήγηση,offline"
+ },
+ "uk": {
+  "name": "Yappy: читалка, Text to Speech",
+  "subtitle": "Читає вголос текст, PDF, EPUB",
+  "keywords": "tts,читання,озвучка,аудіокнига,стаття,дислексія,документ,книга,голос,мовлення"
+ },
+ "ru": {
+  "name": "Yappy: текст в речь, читалка",
+  "subtitle": "Text to Speech: читает вслух",
+  "keywords": "tts,pdf,epub,озвучка,голос,статьи,чтение,аудиокнига,дислексия,документ,книга,синтез"
+ },
+ "tr": {
+  "name": "Yappy: Text to Speech, okuyucu",
+  "subtitle": "Kitap, PDF, metin sesli okuma",
+  "keywords": "tts,epub,seslendirme,ses,makale,disleksi,belge,dinle,yazı"
+ },
+ "ar-SA": {
+  "name": "Yappy: قارئ Text to Speech",
+  "subtitle": "يقرأ لك النصوص وملفات PDF",
+  "keywords": "tts,epub,صوت,كتاب,صوتي,مقالات,عسر,القراءة,تحويل,كلام,بصوت,عال"
+ },
+ "hi": {
+  "name": "Yappy: Text to Speech Reader",
+  "subtitle": "PDF और लेख ज़ोर से सुनाए",
+  "keywords": "tts,voice,epub,audiobook,read,aloud,hindi,आवाज़,ऑडियोबुक,पढ़कर,dyslexia"
+ },
+ "id": {
+  "name": "Yappy: Text to Speech, pembaca",
+  "subtitle": "Baca buku, PDF & teks bersuara",
+  "keywords": "tts,epub,ebook,suara,audiobook,artikel,disleksia,dokumen,audio,berita"
+ },
+ "vi": {
+  "name": "Yappy: Text to Speech, đọc báo",
+  "subtitle": "Đọc truyện, sách, PDF ra tiếng",
+  "keywords": "tts,epub,ebook,nói,audio,giọng,văn,bản,bài,viết,việt"
+ },
+ "ko": {
+  "name": "Yappy: TTS 텍스트 음성 변환",
+  "subtitle": "책, 기사, PDF 소리 내어 읽기",
+  "keywords": "오디오북,독서,전자책,읽어주기,낭독,epub,리더,난독증,음성합성,문서,소설"
+ },
+ "ja": {
+  "name": "Yappy: 音声読み上げアプリ・TTS",
+  "subtitle": "テキスト読み上げ、PDFや小説を朗読・音読",
+  "keywords": "text,speech,オーディオブック,読書,音声合成,音声変換,文字,文章,電子書籍,epub,記事,リーダー"
+ }
+}

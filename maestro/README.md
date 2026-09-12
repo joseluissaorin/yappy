@@ -34,6 +34,7 @@ maestro --device E08E324E-5C95-433C-88D6-F63B652DE9E8 \
 
 | File | What it does |
 |---|---|
+| `paywall-captura.yaml`, `paywall-compra.yaml`, `paywall-percha.yaml` | La cuerda del loro: trastienda → paywall → compra ensayada → percha llena. Lanzar la app antes con `SIMCTL_CHILD_YAPPY_TIENDA=sim` (y `SIMCTL_CHILD_YAPPY_TIENDA_MOTIVO=percha` para la percha); capturas en /tmp/paywall. |
 | `smoke.yaml` | Full first-launch journey: onboarding iOS-aware copy + "get started" → install-voices card → Settings iOS-gating (hotkey/autostart/browser-extension absent). One flow, 13s, exercises every iOS-specific UI path. |
 
 Recommended invocation:

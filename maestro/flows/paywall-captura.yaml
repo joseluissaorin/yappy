@@ -1,0 +1,33 @@
+# La cuerda del loro: abre la trastienda, mira la caja «Yappy Parlanchín» y
+# abre el paywall. Sirve para las capturas de revisión de ASC (con la
+# tienda simulada: SIMCTL_CHILD_YAPPY_TIENDA=sim al lanzar la app).
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: "yappy"
+    timeout: 15000
+# El tap de sacrificio: el primero de cada flow se pierde.
+- tapOn:
+    point: "50%,50%"
+- tapOn:
+    text: "la trastienda|the back room|.*trastienda.*"
+- extendedWaitUntil:
+    visible:
+      text: "Velocidad|Speed"
+    timeout: 8000
+# La caja de la cuerda vive más abajo: bajar hasta verla.
+- scrollUntilVisible:
+    element:
+      text: "Dar cuerda al loro|Wind up the parrot|Gestionar la suscripción|Manage subscription"
+    direction: DOWN
+    timeout: 20000
+- takeScreenshot: /tmp/paywall/01-trastienda
+- tapOn:
+    text: "Dar cuerda al loro|Wind up the parrot"
+- extendedWaitUntil:
+    visible:
+      text: "Elige tu cuerda|Pick your winding"
+    timeout: 8000
+- takeScreenshot: /tmp/paywall/02-paywall

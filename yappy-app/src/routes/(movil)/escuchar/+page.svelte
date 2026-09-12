@@ -18,8 +18,13 @@
   import { presionable } from "$lib/presionable";
   import Criatura from "$lib/Criatura.svelte";
   import Trastienda from "$lib/Trastienda.svelte";
+  import HojaEncargo from "$lib/HojaEncargo.svelte";
+  import ImprentaHoja from "$lib/ImprentaHoja.svelte";
   import IconoTipo from "$lib/IconoTipo.svelte";
   import { reader } from "$lib/readerStore.svelte";
+  import { abrirPaywall, esErrorParlanchin } from "$lib/compras.svelte";
+  import { paseo, cerrarAviso, avisoImprenta } from "$lib/paseo.svelte";
+  import { openUrl } from "@tauri-apps/plugin-opener";
   import { progresoDe } from "$lib/progreso";
   import { tintaVoz, TINTAS_VOZ } from "$lib/voces";
   import { repro } from "$lib/reproduccion.svelte";
@@ -63,7 +68,8 @@
     getSettings,
     libraryImportYappy,
     imprentaListar,
-    imprentaEncargar,
+    imprentaM4b,
+    imprentaCancelar,
     onImprentaActualizada,
     type Encargo,
     onColaActualizada,
@@ -73,6 +79,7 @@
     isModelReady,
     downloadModel,
     onModelDownload,
+    onModelReady,
     decir,
     type ItemCola,
     type DownloadProgress,
@@ -96,6 +103,54 @@
     encargosVivos.find((e) => ["sintetizando", "codificando", "empaquetando", "descargando"].includes(e.estado)) ??
       encargosVivos.find((e) => ["en_cola", "pausado", "error"].includes(e.estado)) ?? null,
   );
+  // LA IMPRENTA SOBRE LA PERCHA: la hoja de encargo de una pieza, la hoja
+  // de la cola, y el brindis al encargar.
+  let encargoPieza = $state<ItemCola | null>(null);
+  let imprentaAbierta = $state(false);
+  let brindisImprenta = $state<string | null>(null);
+  let brindisTimer: ReturnType<typeof setTimeout> | undefined;
+  // El encargo vivo de cada pieza (por título): la pieza enseña que está
+  // en la imprenta y el loro come encima mientras se imprime.
+  const encargoPorTitulo = $derived.by(() => {
+    const m = new Map<string, Encargo>();
+    for (const e of encargosVivos) {
+      if (["hecho", "cancelado"].includes(e.estado)) continue;
+      const base = e.titulo.split(" · ")[0];
+      if (!m.has(base) || ["sintetizando", "codificando", "empaquetando", "descargando"].includes(e.estado)) m.set(base, e);
+    }
+    return m;
+  });
+  function pctEncargo(e: Encargo): number {
+    if (e.estado === "descargando" && e.bytes_total > 0) return Math.round((e.bytes_hechos / e.bytes_total) * 100);
+    return e.piezas_total > 0 ? Math.round((e.piezas_hechas / e.piezas_total) * 100) : 0;
+  }
+  function abrirEncargo(item: ItemCola) {
+    if (!item.ruta || esLibro(item) || item.estado !== "listo") return;
+    haptic("medium");
+    menuPieza = null;
+    seleccionada = null;
+    bocaAbierta = false;
+    encargoPieza = item;
+  }
+  function encargado(cuantos: number) {
+    encargoPieza = null;
+    brincoDeLoro();
+    haptic("success");
+    brindisImprenta = getStore(t)("imprenta.encargado") + (cuantos > 1 ? ` · ${cuantos}` : "");
+    clearTimeout(brindisTimer);
+    brindisTimer = setTimeout(() => (brindisImprenta = null), 3600);
+  }
+  async function compartirLibro(item: ItemCola, formato: "yappy" | "m4b") {
+    if (!item.ruta) return;
+    haptic("light");
+    menuPieza = null;
+    try {
+      const ruta = formato === "yappy" ? item.ruta : await imprentaM4b(item.ruta.split("/").pop() ?? item.ruta);
+      await invoke("share_file_cmd", { path: ruta });
+    } catch (e) {
+      logToBackend("error", "libro", `compartir ${formato}: ${e}`);
+    }
+  }
   let enlace = $state("");
   let modeloListo = $state(true);
   let descargando = $state<DownloadProgress | null>(null);
@@ -226,7 +281,25 @@
     imprentaListar()
       .then((l) => (encargosVivos = l))
       .catch(() => {});
-    onImprentaActualizada((l) => (encargosVivos = l)).then((off) => cleanups.push(off));
+    onImprentaActualizada(async (l) => {
+      // Un encargo que acaba de terminar: el audiolibro LLEGA a la percha
+      // como cualquier pieza (cae, plop, y el pájaro vuela hasta él).
+      const antesHechos = new Set(encargosVivos.filter((e) => e.estado === "hecho").map((e) => e.id));
+      const nuevosHechos = l.filter((e) => e.estado === "hecho" && !antesHechos.has(e.id));
+      encargosVivos = l;
+      if (nuevosHechos.length > 0 && encargosVivos.length > 0) {
+        const antesLibros = new Set(bobinas.map((b) => "lib:" + b.path));
+        bobinas = ((await invoke("list_rendered_audiobooks_cmd").catch(() => [])) as Bobina[]) ?? [];
+        const recien = bobinas.map((b) => "lib:" + b.path).find((id) => !antesLibros.has(id));
+        if (recien && !cascada) {
+          brincoDeLoro();
+          setTimeout(() => volar(recien), 500);
+        }
+      }
+    }).then((off) => cleanups.push(off));
+    try {
+      if (new URLSearchParams(window.location.search).get("imprenta")) imprentaAbierta = true;
+    } catch {}
     try {
       etiquetaTop = parseFloat(localStorage.getItem("yappy.etiqueta.top") ?? "") || 0;
     } catch {}
@@ -269,6 +342,7 @@
           }
         }
         items = nuevos;
+        if (nuevos.some((i) => (i.chars ?? 0) > 60000)) avisoImprenta();
       }),
     );
     cleanups.push(
@@ -278,6 +352,12 @@
           descargando = null;
           modeloListo = true;
         }
+      }),
+    );
+    cleanups.push(
+      await onModelReady(() => {
+        descargando = null;
+        modeloListo = true;
       }),
     );
     // Las asomadas: en ratos muertos, un pájaro curiosea tras una pieza.
@@ -332,6 +412,7 @@
   onDestroy(() => {
     cleanups.forEach((c) => c());
     clearTimeout(timerBorrado);
+    clearTimeout(brindisTimer);
   });
 
   // ── Grosor y progreso ─────────────────────────────────────────────────
@@ -351,19 +432,8 @@
   // ── Abrir / reproducir (tocar una pieza ES el gesto de escuchar) ──────
   // Un LIBRO se abre en el lector con su audio ya impreso: el backend
   // espeja el reproductor de fichero como sesión (karaoke, aguja, bloqueo).
-  // El ENCARGO EXPRÉS: de la pegatina a la imprenta sin pasar por el
-  // taller. Lee el documento y lo deja encargado; el chip da la noticia.
-  async function encargarDesdeCinta(item: ItemCola) {
-    if (!item.ruta) return;
-    haptic("medium");
-    seleccionada = null;
-    try {
-      const doc = await readDocument(item.ruta);
-      await imprentaEncargar(item.titulo, (doc.paragraphs ?? []).join("\n\n"), {});
-    } catch (e) {
-      logToBackend("error", "imprenta", `encargo exprés: ${e}`);
-    }
-  }
+  // A LA IMPRENTA: de la pegatina a la hoja de encargo, aquí mismo.
+  const aLaImprenta = (item: ItemCola) => abrirEncargo(item);
 
   async function borrarLibro(item: ItemCola) {
     if (!item.ruta) return;
@@ -446,6 +516,11 @@
       await colaAgregarPortapapeles();
       bocaAbierta = false;
     } catch (e) {
+      if (esErrorParlanchin(e)) {
+        bocaAbierta = false;
+        abrirPaywall("percha");
+        return;
+      }
       console.error("pegar:", e);
       haptic("error");
     } finally {
@@ -458,7 +533,10 @@
     haptic("medium");
     enlace = "";
     bocaAbierta = false;
-    await colaAgregarUrl(url.startsWith("http") ? url : `https://${url}`).catch((e) => console.error(e));
+    await colaAgregarUrl(url.startsWith("http") ? url : `https://${url}`).catch((e) => {
+      if (esErrorParlanchin(e)) abrirPaywall("percha");
+      else console.error(e);
+    });
   }
   async function abrirArchivo() {
     bocaAbierta = false;
@@ -480,6 +558,10 @@
         }
       }
     } catch (e) {
+      if (esErrorParlanchin(e)) {
+        abrirPaywall("percha");
+        return;
+      }
       logToBackend("error", "picker", `fallo del selector: ${e}`);
     }
   }
@@ -1357,6 +1439,25 @@
   <!-- LA LISTA: el único scroller. NO hay cabecera: la marca, la
        trastienda y la boca son PIEZAS del propio mosaico. -->
   <div class="lista" bind:clientHeight={altoLista} ontouchmove={(e) => { if (levantada) e.preventDefault(); }}>
+    {#if paseo.aviso}
+      <!-- EL AVISO DEL LORO: el paseo que sigue, una pegatina que se cierra
+           con un toque y no vuelve. -->
+      <section class="tarjeta aviso" in:fly={{ y: -12, duration: 320, easing: backOut }} out:fade={{ duration: 160 }}>
+        <div class="aviso-loro"><Criatura size={52} tinta={$tintaVoz} mirada={{ x: 0.6, y: 0.2 }} /></div>
+        <div class="aviso-texto">
+          <h3>{$t(`aviso.${paseo.aviso}.titulo`)}</h3>
+          <p>{$t(`aviso.${paseo.aviso}.texto`)}</p>
+          <div class="aviso-teclas">
+            {#if paseo.aviso === "compartir"}
+              <button class="yap-tecla" use:presionable onclick={() => { haptic("light"); openUrl(getStore(idiomaUI) === "es" ? "https://yappy.joseluissaorin.com/cuentos/" : "https://yappy.joseluissaorin.com/en/stories/").catch(() => {}); void cerrarAviso("compartir"); }}>{$t("aviso.compartir.tecla")}</button>
+            {:else if paseo.aviso === "imprenta"}
+              <button class="yap-tecla" use:presionable onclick={() => { const a = paseo.aviso; void cerrarAviso(a ?? "imprenta"); const larga = [...items].filter((i) => i.estado === "listo" && !!i.ruta).sort((x, y) => (y.chars ?? 0) - (x.chars ?? 0))[0]; if (larga) abrirEncargo(larga); else imprentaAbierta = true; }}>{$t("aviso.imprenta.tecla")}</button>
+            {/if}
+            <button class="yap-boton" use:presionable={{ hap: "soft" }} onclick={() => { const a = paseo.aviso; if (a) void cerrarAviso(a); }}>{$t("aviso.cerrar")}</button>
+          </div>
+        </div>
+      </section>
+    {/if}
     {#if !modeloListo}
       <section class="tarjeta modelo">
         {#if descargando}
@@ -1484,6 +1585,12 @@
                       <span class="mini-ondas" style="--nivel: {0.35 + nivel * 0.65}" aria-hidden="true"><i></i><i></i><i></i></span>
                       {repro.snap?.estado === "pausa" ? $t("cinta.en_pausa") : $t("cinta.sonando")}
                     </span>
+                  {:else if item.estado === "listo" && encargoPorTitulo.has(item.titulo)}
+                    {@const enc = encargoPorTitulo.get(item.titulo)!}
+                    <span class="pastilla" style="background: {honda}">
+                      <span class="mini-ondas" style="--nivel: 0.7" aria-hidden="true"><i></i><i></i><i></i></span>
+                      {$t("cinta.en_imprenta")} · {pctEncargo(enc)}%
+                    </span>
                   {:else if item.estado === "listo"}
                     <span class="pastilla" style="background: {honda}">
                       {#if esLibro(item)}
@@ -1504,12 +1611,35 @@
                        está impreso» (un audiolibro, no un texto por leer). -->
                   <span class="perforacion" aria-hidden="true"></span>
                 {/if}
+                {#if item.estado === "listo" && encargoPorTitulo.has(item.titulo)}
+                  <!-- EL LORO IMPRESOR: come encima de la pieza mientras se
+                       imprime, con la barriga creciendo con el porcentaje. -->
+                  {@const enc = encargoPorTitulo.get(item.titulo)!}
+                  <div class="loro-impresor" class:dormido={enc.estado === "pausado" || enc.estado === "error"} aria-hidden="true" in:scale={{ duration: 320, start: 0.5, easing: backOut }}>
+                    <Criatura size={46} tinta={$tintaVoz} mirando={-1} estado={enc.estado === "pausado" ? "dormido" : enc.estado === "error" ? "avergonzado" : enc.estado === "en_cola" ? "posado" : "comiendo"} barriga={pctEncargo(enc) / 100} />
+                  </div>
+                {/if}
                 <button class="baldosa-toque" use:presionable onclick={() => alternarSeleccion(item)} aria-label={item.titulo}></button>
-                {#if elegida && !esLibro(item) && item.estado === "listo"}
+                {#if elegida && !esLibro(item) && item.estado === "listo" && encargoPorTitulo.has(item.titulo)}
+                  {@const enc = encargoPorTitulo.get(item.titulo)!}
+                  <!-- La SEGUNDA FILA mientras se imprime: revisar o sacar de la imprenta. -->
+                  <div class="acciones fila-imprenta" in:llega={{ delay: 100 }}>
+                    <button class="accion" use:presionable={{ hap: "soft" }} style="color: {tinta}"
+                      onclick={(e) => { e.stopPropagation(); seleccionada = null; imprentaAbierta = true; }}>
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4.2 7.2 q7.9 -0.8 15.7 0 M4.1 12.1 q7.9 0.7 15.8 0 M4.2 17 q5 -0.6 10 0"/></svg>
+                      {$t("cinta.en_imprenta")} · {pctEncargo(enc)}%
+                    </button>
+                    <button class="accion" use:presionable={{ hap: "warning" }} style="color: {tinta}" aria-label={$t("cinta.sacar_imprenta")}
+                      onclick={(e) => { e.stopPropagation(); seleccionada = null; imprentaCancelar(enc.id).catch(() => {}); }}>
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18"/></svg>
+                      {$t("cinta.sacar_imprenta")}
+                    </button>
+                  </div>
+                {:else if elegida && !esLibro(item) && item.estado === "listo"}
                   <!-- La SEGUNDA FILA: el encargo exprés a la imprenta. -->
                   <div class="acciones fila-imprenta" in:llega={{ delay: 100 }}>
                     <button class="accion" use:presionable={{ hap: "rigid" }} style="color: {tinta}"
-                      onclick={(e) => { e.stopPropagation(); encargarDesdeCinta(item); }}>
+                      onclick={(e) => { e.stopPropagation(); aLaImprenta(item); }}>
                       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8 V4.8 q0 -0.8 0.8 -0.8 h10.4 q0.8 0 0.8 0.8 V8 M4.5 8 h15 q1 0 1 1 v5.5 q0 1 -1 1 h-15 q-1 0 -1 -1 V9 q0 -1 1 -1 Z M7 15.5 h10 V19 q0 1 -1 1 H8 q-1 0 -1 -1 Z"/></svg>
                       {$t("cinta.a_la_imprenta")}
                     </button>
@@ -1559,7 +1689,7 @@
       <footer class="colofon">
         <svg viewBox="0 0 100 7" preserveAspectRatio="none" class="colofon-raya" aria-hidden="true"><line x1="0" y1="6" x2="100" y2="1" /></svg>
         <span aria-hidden="true">yappy · {$t("ajustes.amor").toLocaleLowerCase()}</span>
-        <button class="colofon-puerta" use:presionable={{ hap: "soft" }} onclick={() => goto("/biblioteca/audiolibros")}>
+        <button class="colofon-puerta" use:presionable={{ hap: "soft" }} onclick={() => (imprentaAbierta = true)}>
           {$t("cinta.abrir_imprenta")}
         </button>
       </footer>
@@ -1601,7 +1731,19 @@
     />
   </button>
 
-  <!-- EL «yappy» REACTIVO: abajo a la izquierda, con su ola y sus datos. -->
+  <!-- EL «yappy» REACTIVO: abajo a la izquierda, con su ola y sus datos.
+       Con la imprenta en marcha, una pestaña asoma por encima del membrete
+       con el hilo del progreso; tocarla abre la cola. -->
+  <div class="marca-pila">
+  {#if encargoActivo}
+    <button class="marca-imprenta" in:fly={{ y: 10, duration: 260, easing: backOut }} out:fade={{ duration: 160 }} onclick={() => { haptic("light"); imprentaAbierta = true; }} aria-label={$t("imprenta.titulo")}>
+      <span class="membrete-imprenta-linea">
+        <span class="mini-ondas" style="--nivel: 0.7" aria-hidden="true"><i></i><i></i><i></i></span>
+        {$t("cinta.imprimiendo")} · {pctEncargo(encargoActivo)}%{#if encargosVivos.filter((e) => !["hecho", "cancelado"].includes(e.estado)).length > 1}&nbsp;· +{encargosVivos.filter((e) => !["hecho", "cancelado"].includes(e.estado)).length - 1}{/if}
+      </span>
+      <span class="membrete-hilo"><span class="membrete-hilo-lleno" style="width: {Math.max(4, pctEncargo(encargoActivo))}%"></span></span>
+    </button>
+  {/if}
   <button
     class="marca-fija"
     onclick={tocarMarca}
@@ -1619,14 +1761,7 @@
     </span>
     <span class="membrete-datos">{visibles.length} {$t("cinta.piezas")} · {minutosTotales} {$t("cinta.min")}</span>
   </button>
-
-  {#if encargoActivo}
-    <!-- EL CHIP DE LA IMPRENTA: el encargo vivo, con su barra. -->
-    <button class="chip-imprenta" onclick={() => goto("/biblioteca/audiolibros")} aria-label={$t("imprenta.titulo")}>
-      <span class="chip-titulo">{encargoActivo.titulo}</span>
-      <span class="chip-barra"><span class="chip-llena" style="width: {encargoActivo.piezas_total > 0 ? Math.round((encargoActivo.piezas_hechas / encargoActivo.piezas_total) * 100) : 4}%"></span></span>
-    </button>
-  {/if}
+  </div>
 
   <!-- LA BOCA: el sello de añadir, GRANDE, abajo a la derecha. -->
   <button class="boca-fija" class:pop={selloPop} use:presionable={{ hap: "medium" }} onclick={() => { pop(); bocaAbierta = true; }} aria-label={$t("escuchar.anadir")}>
@@ -1724,7 +1859,7 @@
   </button>
     <div class="cajon-cuerpo">
       {#if trastiendaLista}
-        <Trastienda alVolver={() => (trastiendaAbierta = false)} />
+        <Trastienda alVolver={() => (trastiendaAbierta = false)} alImprenta={() => { trastiendaAbierta = false; engranajeGira = false; imprentaAbierta = true; }} />
       {/if}
     </div>
   </div>
@@ -1762,20 +1897,48 @@
           {$t("comun.guardar")}
         </button>
       {:else}
+        {#if !esLibro(menuPieza)}
         <button class="tecla-menu" use:presionable onclick={alternarFavorito}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill={menuPieza.favorito ? "var(--yap-voz, #e0502a)" : "none"} stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 19.4 Q5.4 14.8 4.7 10 Q4.5 6.6 7.5 5.8 Q10.1 5.3 12 8.1 Q13.9 5.2 16.6 5.8 Q19.5 6.7 19.2 10.1 Q18.5 15 12 19.4 Z"/></svg>
           {menuPieza.favorito ? $t("pieza.quitar_favorito") : $t("pieza.favorito")}
         </button>
+        {#if esLibro(menuPieza)}
+          <button class="tecla-menu" use:presionable onclick={() => { if (menuPieza) compartirLibro(menuPieza, "yappy"); }}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15.5 V5 M8.6 8.2 L12 4.8 L15.4 8.2 M5.5 12.5 v6 q0 1.4 1.4 1.4 h10.2 q1.4 0 1.4 -1.4 v-6"/></svg>
+            {$t("lector.compartir")} .yappy
+          </button>
+          <button class="tecla-menu" use:presionable onclick={() => { if (menuPieza) compartirLibro(menuPieza, "m4b"); }}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15.5 V5 M8.6 8.2 L12 4.8 L15.4 8.2 M5.5 12.5 v6 q0 1.4 1.4 1.4 h10.2 q1.4 0 1.4 -1.4 v-6"/></svg>
+            {$t("lector.compartir")} .m4b
+          </button>
+        {/if}
+        {#if !esLibro(menuPieza) && menuPieza.estado === "listo" && menuPieza.ruta}
+          <button class="tecla-menu" use:presionable onclick={() => { if (menuPieza) aLaImprenta(menuPieza); }}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 13.2 Q4.2 6.4 12 6.2 Q19.8 6.4 19.5 13.2 M4.6 13 q-1.8 0.6 -1.2 3 q0.5 2.2 2.4 1.9 q1 -0.2 0.9 -1.3 l-0.3 -2.6 q-0.1 -1.2 -1.8 -1 z M19.4 13 q1.8 0.6 1.2 3 q-0.5 2.2 -2.4 1.9 q-1 -0.2 -0.9 -1.3 l0.3 -2.6 q0.1 -1.2 1.8 -1 z"/></svg>
+            {$t("pieza.imprenta")}
+          </button>
+        {/if}
         <button class="tecla-menu" use:presionable onclick={() => { renombrando = true; nuevoNombre = menuPieza?.titulo ?? ""; }}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.6 3.6 q2.5 -1.5 3.9 0.3 q1.3 1.7 -0.7 3.5 L8.5 18.5 l-4.7 1.7 q-0.7 0.2 -0.5 -0.5 l1.6 -4.6 Z"/></svg>
           {$t("pieza.renombrar")}
         </button>
-        <button class="tecla-menu peligro" use:presionable onclick={borrarPieza}>
+        {/if}
+        <button class="tecla-menu peligro" use:presionable onclick={() => { if (menuPieza && esLibro(menuPieza)) { const it = menuPieza; menuPieza = null; borrarLibro(it); } else borrarPieza(); }}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M3.6 6.2 q8.4 -1 16.8 0 M8.3 6 q-0.2 -2.6 1.2 -2.9 q2.5 -0.5 5 0 q1.4 0.3 1.2 2.9 M6 6.4 q0.2 7.6 0.8 12.4 q0.1 1.6 1.7 1.8 q3.5 0.5 7 0 q1.6 -0.2 1.7 -1.8 q0.6 -4.8 0.8 -12.4"/></svg>
           {$t("cinta.borrar")}
         </button>
       {/if}
     </div>
+  {/if}
+
+  {#if encargoPieza}
+    <HojaEncargo pieza={encargoPieza} tinta={tintaDe(encargoPieza)} alCerrar={() => (encargoPieza = null)} alEncargado={encargado} />
+  {/if}
+  {#if imprentaAbierta}
+    <ImprentaHoja alCerrar={() => (imprentaAbierta = false)} />
+  {/if}
+  {#if brindisImprenta}
+    <div class="brindis-imprenta" in:fly={{ y: 14, duration: 280, easing: backOut }} out:fade={{ duration: 160 }}>{brindisImprenta}</div>
   {/if}
 </main>
 
@@ -1846,44 +2009,56 @@
   .loro-jefe.voltereta {
     animation: voltereta 0.85s cubic-bezier(0.34, 1.3, 0.5, 1);
   }
-  .chip-imprenta {
+  /* La pila del membrete: la pestaña de la imprenta asoma sobre la marca. */
+  .marca-pila {
     position: fixed;
     left: 18px;
-    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 84px);
+    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 6px);
     z-index: 31;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    max-width: 46vw;
+    align-items: flex-start;
+  }
+  .marca-pila .marca-fija { position: static; }
+  .marca-imprenta {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 132px;
+    margin: 0 0 -4px 10px;
+    padding: 6px 10px 8px;
     border: 1.5px solid #8a765a;
-    border-radius: 11px;
+    border-bottom: 0;
+    border-radius: 10px 12px 0 0;
     background: var(--yap-superficie, #fdf9ee);
-    padding: 6px 10px;
-    box-shadow: 2px 2.5px 0 #ded7c2;
+    box-shadow: 2px 0 0 #ded7c2;
     cursor: pointer;
-    font: inherit;
-    text-align: left;
+    transform: rotate(-1.5deg);
+    transform-origin: left bottom;
   }
-  .chip-titulo {
-    font-size: 11px;
+  .membrete-imprenta-linea {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--vivo, var(--yap-voz, #e0502a));
     font-weight: 700;
-    color: var(--yap-tinta, #2b2418);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
-  .chip-barra {
+  .membrete-hilo {
     display: block;
-    height: 5px;
-    border-radius: 4px;
-    background: color-mix(in srgb, var(--yap-borde, #d8d0bd) 55%, transparent);
+    height: 4px;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--yap-borde, #d8d0bd) 60%, transparent);
     overflow: hidden;
   }
-  .chip-llena {
+  .membrete-hilo-lleno {
     display: block;
     height: 100%;
-    border-radius: 4px;
-    background: var(--vivo, #e4572e);
+    border-radius: 3px;
+    background: var(--vivo, var(--yap-voz, #e0502a));
     transition: width 0.5s ease;
   }
   .marca-fija {
@@ -2397,8 +2572,13 @@
     text-decoration: underline dotted;
     text-underline-offset: 3px;
   }
+  /* LA SEGUNDA FILA vive ENCIMA de la fila de acciones: las dos son
+     absolutas al pie de la pieza y, sin esto, la principal la tapaba y
+     nadie podía llevar nada a la imprenta. */
   .acciones.fila-imprenta {
-    margin-bottom: 4px;
+    top: 8px;
+    bottom: auto;
+    justify-content: flex-start;
   }
   .perforacion {
     position: absolute;
@@ -2732,6 +2912,41 @@
     color: #fff6ef;
     justify-content: center;
   }
+  /* El loro impresor, comiendo sobre la pieza que se imprime. */
+  .loro-impresor {
+    position: absolute;
+    top: -16px;
+    right: -4px;
+    z-index: 6;
+    pointer-events: none;
+    animation: picoteo-impresor 1.1s ease-in-out infinite;
+    transform-origin: 70% 90%;
+  }
+  .loro-impresor.dormido { animation: none; }
+  @keyframes picoteo-impresor {
+    0%, 100% { rotate: 0deg; }
+    18% { rotate: 12deg; translate: 2px 5px; }
+    30% { rotate: 2deg; }
+    46% { rotate: 10deg; translate: 2px 4px; }
+    60% { rotate: 0deg; }
+  }
+  .brindis-imprenta {
+    position: fixed;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom) + var(--aguja-hueco, 0px) + 92px);
+    transform: translateX(-50%) rotate(-1deg);
+    z-index: 45;
+    max-width: calc(100% - 40px);
+    padding: 10px 16px;
+    border: 1.5px solid #2b2418;
+    border-radius: 14px 12px 15px 11px / 12px 15px 11px 14px;
+    background: var(--yap-dorado, #e8b41a);
+    box-shadow: 2px 3px 0 #2b2418;
+    color: #2b2418;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+  }
   .tecla-menu.peligro {
     color: var(--yap-voz, #e0502a);
     border-color: color-mix(in srgb, var(--yap-voz, #e0502a) 45%, var(--yap-borde));
@@ -2916,4 +3131,11 @@
       animation: none;
     }
   }
+  /* El aviso del loro: la pegatina del paseo que sigue. */
+  .tarjeta.aviso { display: flex; gap: 12px; align-items: flex-start; }
+  .aviso-loro { flex: 0 0 auto; }
+  .aviso-texto { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .aviso-texto h3 { margin: 0; font-size: 16px; font-weight: 800; }
+  .aviso-texto p { margin: 0; font-size: 13.5px; color: var(--yap-tinta-suave); }
+  .aviso-teclas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 </style>

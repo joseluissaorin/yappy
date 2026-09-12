@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Cześć, jestem twoją papugą"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/pl/01-paseo-hola
+- tapOn:
+    text: "Wybierz mi głos"
+- extendedWaitUntil:
+    visible:
+      text: "Wszystko dzieje się w twoim telefonie"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/pl/02-paseo-idiomas
+- tapOn:
+    text: "Dalej"
+- extendedWaitUntil:
+    visible:
+      text: "Wybierz swojego ptaka"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/pl/03-paseo-pajaro
+- tapOn:
+    text: "Zostaję z James"
+- extendedWaitUntil:
+    visible:
+      text: "Co mi dasz\\?"
+    timeout: 10000
+- tapOn:
+    text: "Artykuły"
+- tapOn:
+    text: "Książki"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/04-paseo-que
+- tapOn:
+    text: "Dalej"
+- extendedWaitUntil:
+    visible:
+      text: "Kiedy mnie słuchasz\\?"
+    timeout: 10000
+- tapOn:
+    text: "Gotując"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/05-paseo-cuando
+- tapOn:
+    text: "Dalej"
+- extendedWaitUntil:
+    visible:
+      text: "W jakim tempie\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/06-paseo-velocidad
+- tapOn:
+    text: "Dalej"
+- extendedWaitUntil:
+    visible:
+      text: "Ile masz do przeczytania\\?"
+    timeout: 10000
+- tapOn:
+    text: "Cała góra"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/07-paseo-cuanto
+- tapOn:
+    text: "Dalej"
+- extendedWaitUntil:
+    visible:
+      text: "Twoje, albo opowieść"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/08-paseo-escucha
+- tapOn:
+    text: "(?i)Później"
+- extendedWaitUntil:
+    visible:
+      text: "Ekran to przycisk"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Później"
+- extendedWaitUntil:
+    visible:
+      text: "Udostępnianie to wszystko"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/pl/09-paseo-compartir
+- tapOn:
+    text: "(?i)Później"
+- extendedWaitUntil:
+    visible:
+      text: "I zabierasz go ze sobą"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/10-paseo-exportar
+- tapOn:
+    text: "(?i)Później"
+- extendedWaitUntil:
+    visible:
+      text: "Umieść mnie w swoich ulubionych"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/11-paseo-favoritos
+- tapOn:
+    text: "Gotowe"
+- extendedWaitUntil:
+    visible:
+      text: "Twoja papuga"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/12-paseo-resumen
+- tapOn:
+    text: "Dalej"
+- extendedWaitUntil:
+    visible:
+      text: "Trzy naraz"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/13-paseo-percha
+- tapOn:
+    text: "Dalej"
+- extendedWaitUntil:
+    visible:
+      text: "Wybierz swoją sprężynę"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/pl/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Zacznij z trzema na żerdce"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/pl/15-paseo-cuerda-pie
+- tapOn:
+    text: "Zacznij z trzema na żerdce"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Dobra"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/pl/17-cinta-vacia

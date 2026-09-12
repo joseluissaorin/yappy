@@ -326,6 +326,328 @@ async function cmd_internalGroup() {
   console.log("✓ TestFlight interno listo: cada build procesado llega solo al grupo.");
 }
 
+// ─── La ficha de la App Store (metadatos, capturas, categorías, precio…) ──
+// Añadido en septiembre de 2026 para dejar la ficha entera desde el terminal.
+// Fuentes: marketing/metadata/<locale-asc>/*.txt y marketing/output/<locale-asc>/{iphone,ipad}/NN.png
+
+import { readdir, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const RAIZ = join(dirname(fileURLToPath(import.meta.url)), "..");
+const METADATA_DIR = join(RAIZ, "marketing", "metadata");
+const OUTPUT_DIR = join(RAIZ, "marketing", "output");
+
+async function leerFichero(locale, nombre) {
+  try { return (await readFile(join(METADATA_DIR, locale, nombre), "utf-8")).trim(); } catch { return null; }
+}
+async function localesEnMetadata() {
+  const out = [];
+  for (const e of await readdir(METADATA_DIR)) {
+    if ((await stat(join(METADATA_DIR, e))).isDirectory()) out.push(e);
+  }
+  return out.sort();
+}
+function detalleError(e) {
+  const m = String(e.message);
+  const i = m.indexOf("\n");
+  try { const j = JSON.parse(m.slice(i + 1)); return j.errors?.map((x) => `${x.code}: ${x.detail}`).join(" | ") ?? m; } catch { return m.split("\n")[0]; }
+}
+
+async function versionEditable(app, versionString) {
+  const r = await asc("GET", `/apps/${app.id}/appStoreVersions?filter[platform]=IOS&limit=10`);
+  const exacta = r.data.find((v) => v.attributes.versionString === versionString);
+  if (exacta) return exacta;
+  // Si hay una versión aún sin enviar, se renombra a la pedida (la 1.0 vacía
+  // que crea ASC al dar de alta la app).
+  const abierta = r.data.find((v) => ["PREPARE_FOR_SUBMISSION", "DEVELOPER_REJECTED", "REJECTED", "METADATA_REJECTED", "WAITING_FOR_REVIEW"].includes(v.attributes.appStoreState));
+  if (abierta && versionString) {
+    console.log(`→ renombrando la versión ${abierta.attributes.versionString} (${abierta.attributes.appStoreState}) a ${versionString}`);
+    const p = await asc("PATCH", `/appStoreVersions/${abierta.id}`, {
+      data: { type: "appStoreVersions", id: abierta.id, attributes: { versionString } },
+    });
+    return p.data;
+  }
+  const c = await asc("POST", "/appStoreVersions", {
+    data: { type: "appStoreVersions", attributes: { versionString, platform: "IOS", releaseType: "MANUAL" },
+      relationships: { app: { data: { type: "apps", id: app.id } } } },
+  });
+  console.log(`→ versión ${versionString} creada`);
+  return c.data;
+}
+
+async function cmd_pushMetadata() {
+  const versionString = process.argv[3];
+  if (!versionString) throw new Error("uso: push-metadata <versión>");
+  const app = await getApp();
+  const version = await versionEditable(app, versionString);
+  console.log(`versión ${version.attributes.versionString} (${version.attributes.appStoreState}, id=${version.id})`);
+  const infos = await asc("GET", `/apps/${app.id}/appInfos?limit=5`);
+  const appInfo = infos.data.find((i) => i.attributes.state !== "READY_FOR_SALE") ?? infos.data[0];
+  const vLocs = await asc("GET", `/appStoreVersions/${version.id}/appStoreVersionLocalizations?limit=200`);
+  const porLocaleV = Object.fromEntries(vLocs.data.map((d) => [d.attributes.locale, d]));
+  const aLocs = await asc("GET", `/appInfos/${appInfo.id}/appInfoLocalizations?limit=200`);
+  const porLocaleA = Object.fromEntries(aLocs.data.map((d) => [d.attributes.locale, d]));
+  const locales = await localesEnMetadata();
+  const solo = process.argv[4];
+  let ok = 0;
+  for (const locale of locales) {
+    if (solo && locale !== solo) continue;
+    const [name, subtitle, description, keywords, promo, marketingUrl, supportUrl, privacyUrl, whatsNew] = await Promise.all(
+      ["name", "subtitle", "description", "keywords", "promotional_text", "marketing_url", "support_url", "privacy_url", "release_notes"].map((f) => leerFichero(locale, `${f}.txt`)));
+    let appOk = true, verOk = true;
+    const aAttrs = {};
+    if (name) aAttrs.name = name;
+    if (subtitle) aAttrs.subtitle = subtitle;
+    if (privacyUrl) aAttrs.privacyPolicyUrl = privacyUrl;
+    try {
+      if (porLocaleA[locale]) {
+        await asc("PATCH", `/appInfoLocalizations/${porLocaleA[locale].id}`, { data: { type: "appInfoLocalizations", id: porLocaleA[locale].id, attributes: aAttrs } });
+      } else {
+        await asc("POST", "/appInfoLocalizations", { data: { type: "appInfoLocalizations", attributes: { locale, ...aAttrs },
+          relationships: { appInfo: { data: { type: "appInfos", id: appInfo.id } } } } });
+      }
+    } catch (e) { appOk = false; console.log(`   [${locale} app-level] ${detalleError(e)}`); }
+    // Al crear la localización de app, ASC crea sola la de versión: releer.
+    if (!porLocaleV[locale]) {
+      const otra = await asc("GET", `/appStoreVersions/${version.id}/appStoreVersionLocalizations?limit=200`);
+      for (const d of otra.data) porLocaleV[d.attributes.locale] = d;
+    }
+    const vAttrs = {};
+    if (description) vAttrs.description = description;
+    if (keywords) vAttrs.keywords = keywords;
+    if (promo) vAttrs.promotionalText = promo;
+    if (marketingUrl) vAttrs.marketingUrl = marketingUrl;
+    if (supportUrl) vAttrs.supportUrl = supportUrl;
+    if (whatsNew) vAttrs.whatsNew = whatsNew;
+    try {
+      if (porLocaleV[locale]) {
+        await asc("PATCH", `/appStoreVersionLocalizations/${porLocaleV[locale].id}`, { data: { type: "appStoreVersionLocalizations", id: porLocaleV[locale].id, attributes: vAttrs } });
+      } else {
+        await asc("POST", "/appStoreVersionLocalizations", { data: { type: "appStoreVersionLocalizations", attributes: { locale, ...vAttrs },
+          relationships: { appStoreVersion: { data: { type: "appStoreVersions", id: version.id } } } } });
+      }
+    } catch (e) { verOk = false; console.log(`   [${locale} version-level] ${detalleError(e)}`); }
+    console.log(`  ${appOk && verOk ? "✓" : "✗"} ${locale}`);
+    if (appOk && verOk) ok++;
+  }
+  console.log(`\n${ok}/${solo ? 1 : locales.length} idiomas al día.`);
+}
+
+// Capturas: marketing/output/<locale-asc>/iphone/NN.png (6,9") e ipad/NN.png (13")
+const TIPOS = { iphone: "APP_IPHONE_67", ipad: "APP_IPAD_PRO_3GEN_129" };
+
+async function conjuntoCapturas(versionLocId, tipo) {
+  const ex = await asc("GET", `/appStoreVersionLocalizations/${versionLocId}/appScreenshotSets?limit=20`);
+  const f = ex.data.find((d) => d.attributes.screenshotDisplayType === tipo);
+  if (f) return f.id;
+  const c = await asc("POST", "/appScreenshotSets", { data: { type: "appScreenshotSets", attributes: { screenshotDisplayType: tipo },
+    relationships: { appStoreVersionLocalization: { data: { type: "appStoreVersionLocalizations", id: versionLocId } } } } });
+  return c.data.id;
+}
+async function vaciarConjunto(setId) {
+  const ex = await asc("GET", `/appScreenshotSets/${setId}/appScreenshots?limit=20`);
+  for (const s of ex.data) { try { await asc("DELETE", `/appScreenshots/${s.id}`); } catch {} }
+}
+async function subirCaptura(setId, ruta) {
+  const buf = await readFile(ruta);
+  const fileName = ruta.split("/").pop();
+  const c = await asc("POST", "/appScreenshots", { data: { type: "appScreenshots", attributes: { fileName, fileSize: buf.length },
+    relationships: { appScreenshotSet: { data: { type: "appScreenshotSets", id: setId } } } } });
+  for (const op of c.data.attributes.uploadOperations || []) {
+    const headers = {}; for (const h of op.requestHeaders || []) headers[h.name] = h.value;
+    const r = await fetch(op.url, { method: op.method, headers, body: buf.subarray(op.offset, op.offset + op.length) });
+    if (!r.ok) throw new Error(`subida fallida: ${r.status} ${await r.text()}`);
+  }
+  await asc("PATCH", `/appScreenshots/${c.data.id}`, { data: { type: "appScreenshots", id: c.data.id,
+    attributes: { uploaded: true, sourceFileChecksum: createHash("md5").update(buf).digest("hex") } } });
+}
+
+async function cmd_pushScreenshots() {
+  const versionString = process.argv[3];
+  const solo = process.argv[4];
+  if (!versionString) throw new Error("uso: push-screenshots <versión> [locale]");
+  const app = await getApp();
+  const version = await versionEditable(app, versionString);
+  const vLocs = await asc("GET", `/appStoreVersions/${version.id}/appStoreVersionLocalizations?limit=200`);
+  const porLocale = Object.fromEntries(vLocs.data.map((d) => [d.attributes.locale, d]));
+  const locales = (await readdir(OUTPUT_DIR)).filter((e) => !e.startsWith(".") && !e.startsWith("_")).sort();
+  let ok = 0, n = 0;
+  for (const locale of locales) {
+    if (solo && locale !== solo) continue;
+    if (!(await stat(join(OUTPUT_DIR, locale))).isDirectory()) continue;
+    n++;
+    const loc = porLocale[locale];
+    if (!loc) { console.log(`  ⚠ ${locale}: sin localización en ASC (haz push-metadata antes)`); continue; }
+    try {
+      const partes = [];
+      for (const [carpeta, tipo] of Object.entries(TIPOS)) {
+        // SOLO_DEVICE=iphone|ipad sube solo ese tipo y no toca el otro set.
+        if (process.env.SOLO_DEVICE && process.env.SOLO_DEVICE !== carpeta) continue;
+        const dir = join(OUTPUT_DIR, locale, carpeta);
+        let pngs = [];
+        try { pngs = (await readdir(dir)).filter((f) => /^\d\d\.png$/.test(f)).sort(); } catch { continue; }
+        if (!pngs.length) continue;
+        const setId = await conjuntoCapturas(loc.id, tipo);
+        await vaciarConjunto(setId);
+        for (const f of pngs) await subirCaptura(setId, join(dir, f));
+        partes.push(`${carpeta}:${pngs.length}`);
+      }
+      console.log(`  ✓ ${locale} (${partes.join(", ")})`);
+      ok++;
+    } catch (e) { console.log(`  ✗ ${locale}: ${detalleError(e)}`); }
+  }
+  console.log(`\n${ok}/${n} idiomas con capturas.`);
+}
+
+async function cmd_prepareListing() {
+  // Todo lo que no es texto ni imagen: categorías, edades, contacto de
+  // revisión, precio (gratis), disponibilidad mundial, copyright.
+  const versionString = process.argv[3];
+  if (!versionString) throw new Error("uso: prepare-listing <versión>");
+  const app = await getApp();
+  const version = await versionEditable(app, versionString);
+  const infos = await asc("GET", `/apps/${app.id}/appInfos?limit=5`);
+  const appInfo = infos.data.find((i) => i.attributes.state !== "READY_FOR_SALE") ?? infos.data[0];
+
+  // 1. Categorías
+  try {
+    await asc("PATCH", `/appInfos/${appInfo.id}`, { data: { type: "appInfos", id: appInfo.id, relationships: {
+      primaryCategory: { data: { type: "appCategories", id: "PRODUCTIVITY" } },
+      secondaryCategory: { data: { type: "appCategories", id: "EDUCATION" } } } } });
+    console.log("✓ categorías: Productividad / Educación");
+  } catch (e) { console.log(`✗ categorías: ${detalleError(e)}`); }
+
+  // 2. Clasificación por edades (4+): nada de nada.
+  try {
+    const ar = await asc("GET", `/appInfos/${appInfo.id}/ageRatingDeclaration`);
+    const attrs = {
+      advertising: false, alcoholTobaccoOrDrugUseOrReferences: "NONE", contests: "NONE", gambling: false,
+      gamblingSimulated: "NONE", healthOrWellnessTopics: false, lootBox: false, medicalOrTreatmentInformation: "NONE",
+      messagingAndChat: false, parentalControls: false, profanityOrCrudeHumor: "NONE", sexualContentGraphicAndNudity: "NONE",
+      sexualContentOrNudity: "NONE", horrorOrFearThemes: "NONE", matureOrSuggestiveThemes: "NONE", unrestrictedWebAccess: false,
+      userGeneratedContent: false, violenceCartoonOrFantasy: "NONE", violenceRealisticProlongedGraphicOrSadistic: "NONE",
+      violenceRealistic: "NONE", gunsOrOtherWeapons: "NONE", socialMedia: false, ageAssurance: false,
+    };
+    const intentar = async (a) => asc("PATCH", `/ageRatingDeclarations/${ar.data.id}`, { data: { type: "ageRatingDeclarations", id: ar.data.id, attributes: a } });
+    try { await intentar(attrs); }
+    catch (e) {
+      // Quitar los atributos que esta versión de la API no conozca y reintentar.
+      const malos = [...String(e.message).matchAll(/\/data\/attributes\/(\w+)/g)].map((m) => m[1]);
+      for (const m of malos) delete attrs[m];
+      await intentar(attrs);
+      if (malos.length) console.log(`  (sin ${malos.join(", ")})`);
+    }
+    console.log("✓ clasificación por edades: 4+");
+  } catch (e) { console.log(`✗ edades: ${detalleError(e)}`); }
+
+  // 3. Datos de contacto para la revisión
+  try {
+    const attrs = {
+      contactFirstName: "José Luis", contactLastName: "Saorín Ferrer", contactPhone: "+34622512078", contactEmail: "jlsf2005@gmail.com",
+      demoAccountRequired: false,
+      notes: [
+        "Yappy reads any text aloud with an on-device model (Supertonic 3, ~200 MB, downloaded once on first launch from our own Cloudflare store). No account is needed.",
+        "Main entry point: the iOS Share Sheet (share an article from Safari, a PDF from Files, or a YouTube link) or the + button on the tape (paste text or a link). Two sample stories are bundled and play without the model.",
+        "In-app purchases (Yappy Parlanchín: monthly, yearly, lifetime) unlock an unlimited perch (the free tier holds 3 documents at a time), the audiobook press and the desktop bridge. They are handled by StoreKit through RevenueCat; sandbox purchases work with a sandbox Apple account.",
+        "Optional anonymous usage statistics (no names, texts or links) go to our own Cloudflare Worker; they can be switched off in the settings drawer. Privacy policy: https://yappy.joseluissaorin.com/en/privacy/",
+      ].join("\n\n"),
+    };
+    const ex = await asc("GET", `/appStoreVersions/${version.id}/appStoreReviewDetail`).catch(() => null);
+    if (ex?.data) {
+      await asc("PATCH", `/appStoreReviewDetails/${ex.data.id}`, { data: { type: "appStoreReviewDetails", id: ex.data.id, attributes: attrs } });
+    } else {
+      await asc("POST", "/appStoreReviewDetails", { data: { type: "appStoreReviewDetails", attributes: attrs,
+        relationships: { appStoreVersion: { data: { type: "appStoreVersions", id: version.id } } } } });
+    }
+    console.log("✓ contacto de revisión y notas");
+  } catch (e) { console.log(`✗ contacto de revisión: ${detalleError(e)}`); }
+
+  // 4. Copyright y lanzamiento manual
+  try {
+    await asc("PATCH", `/appStoreVersions/${version.id}`, { data: { type: "appStoreVersions", id: version.id,
+      attributes: { copyright: "2026 José Luis Saorín Ferrer", releaseType: "MANUAL" } } });
+    console.log("✓ copyright y lanzamiento manual tras la aprobación");
+  } catch (e) { console.log(`✗ copyright: ${detalleError(e)}`); }
+
+  // 5. Precio: gratis (punto de precio 0 en la base España)
+  try {
+    const ya = await asc("GET", `/apps/${app.id}/appPriceSchedule/manualPrices?include=appPricePoint&limit=5`).catch(() => null);
+    if (ya?.data?.length) {
+      console.log(`✓ precio ya fijado (${ya.included?.[0]?.attributes?.customerPrice ?? "?"})`);
+    } else {
+      let pts = await asc("GET", `/apps/${app.id}/appPricePoints?filter[territory]=ESP&limit=200`);
+      let gratis = pts.data.find((p) => Number(p.attributes.customerPrice) === 0);
+      while (!gratis && pts.links?.next) { pts = await asc("GET", pts.links.next); gratis = pts.data.find((p) => Number(p.attributes.customerPrice) === 0); }
+      if (!gratis) throw new Error("no encuentro el punto de precio 0 en ESP");
+      await asc("POST", "/appPriceSchedules", {
+        data: { type: "appPriceSchedules", relationships: {
+          app: { data: { type: "apps", id: app.id } },
+          baseTerritory: { data: { type: "territories", id: "ESP" } },
+          manualPrices: { data: [{ type: "appPrices", id: "${gratis}" }] } } },
+        included: [{ type: "appPrices", id: "${gratis}", attributes: { startDate: null },
+          relationships: { appPricePoint: { data: { type: "appPricePoints", id: gratis.id } } } }],
+      });
+      console.log("✓ precio: gratis (base España)");
+    }
+  } catch (e) { console.log(`✗ precio: ${detalleError(e)}`); }
+
+  // 6. Disponibilidad: todos los territorios (v2, hay que enumerarlos todos)
+  try {
+    const ya = await asc("GET", `/apps/${app.id}/appAvailabilityV2`).catch(() => null);
+    if (ya?.data) {
+      console.log("✓ disponibilidad ya configurada");
+    } else {
+      let terr = [], r = await asc("GET", "/territories?limit=200");
+      terr.push(...r.data.map((t) => t.id));
+      while (r.links?.next) { r = await asc("GET", r.links.next); terr.push(...r.data.map((t) => t.id)); }
+      await asc("POST", "https://api.appstoreconnect.apple.com/v2/appAvailabilities", {
+        data: { type: "appAvailabilities", attributes: { availableInNewTerritories: true },
+          relationships: { app: { data: { type: "apps", id: app.id } },
+            territoryAvailabilities: { data: terr.map((t) => ({ type: "territoryAvailabilities", id: `\${ta-${t}}` })) } } },
+        included: terr.map((t) => ({ type: "territoryAvailabilities", id: `\${ta-${t}}`, attributes: { available: true },
+          relationships: { territory: { data: { type: "territories", id: t } } } })),
+      });
+      console.log(`✓ disponibilidad: ${terr.length} territorios`);
+    }
+  } catch (e) { console.log(`✗ disponibilidad: ${detalleError(e)}`); }
+
+  // 7. Derechos de contenido de terceros
+  try {
+    await asc("PATCH", `/apps/${app.id}`, { data: { type: "apps", id: app.id, attributes: { contentRightsDeclaration: "DOES_NOT_USE_THIRD_PARTY_CONTENT" } } });
+    console.log("✓ declaración de derechos de contenido");
+  } catch (e) { console.log(`✗ derechos: ${detalleError(e)}`); }
+}
+
+async function cmd_attachBuild() {
+  const versionString = process.argv[3];
+  if (!versionString) throw new Error("uso: attach-build <versión> [build]");
+  const app = await getApp();
+  const version = await versionEditable(app, versionString);
+  const builds = await buildState({ version: versionString, app });
+  const pedido = process.argv[4];
+  const b = pedido ? builds.find((x) => x.attributes.version === pedido) : builds.find((x) => x.attributes.processingState === "VALID");
+  if (!b) throw new Error("no hay build válido para esa versión");
+  await asc("PATCH", `/appStoreVersions/${version.id}/relationships/build`, { data: { type: "builds", id: b.id } });
+  console.log(`✓ build ${b.attributes.version} enganchado a la versión ${versionString}`);
+}
+
+async function cmd_listingStatus() {
+  const app = await getApp();
+  const vs = await asc("GET", `/apps/${app.id}/appStoreVersions?filter[platform]=IOS&limit=5&include=build`);
+  for (const v of vs.data) {
+    const locs = await asc("GET", `/appStoreVersions/${v.id}/appStoreVersionLocalizations?limit=200`);
+    let conCapturas = 0, conTexto = 0;
+    for (const l of locs.data) {
+      if (l.attributes.description) conTexto++;
+      const sets = await asc("GET", `/appStoreVersionLocalizations/${l.id}/appScreenshotSets?include=appScreenshots&limit=20`);
+      if (sets.data.some((s) => (s.relationships?.appScreenshots?.data?.length ?? 0) > 0)) conCapturas++;
+    }
+    console.log(`${v.attributes.versionString} ${v.attributes.appStoreState} build=${v.relationships?.build?.data?.id ?? "-"} idiomas=${locs.data.length} con_texto=${conTexto} con_capturas=${conCapturas}`);
+  }
+}
+
 const sub = process.argv[2];
 switch (sub) {
   case "status":              await cmd_status(); break;
@@ -337,7 +659,12 @@ switch (sub) {
   case "submit-beta-review":  await cmd_submitBetaReview(); break;
   case "pipeline":            await cmd_pipeline(); break;
   case "internal-group":      await cmd_internalGroup(); break;
+  case "push-metadata":       await cmd_pushMetadata(); break;
+  case "push-screenshots":    await cmd_pushScreenshots(); break;
+  case "prepare-listing":     await cmd_prepareListing(); break;
+  case "attach-build":        await cmd_attachBuild(); break;
+  case "listing-status":      await cmd_listingStatus(); break;
   default:
-    console.log("usage: asc-helper.mjs <status|wait-for-app|list-builds|wait-for-build|create-beta-group|add-build-to-beta|submit-beta-review|pipeline|internal-group>");
+    console.log("usage: asc-helper.mjs <status|wait-for-app|list-builds|wait-for-build|create-beta-group|add-build-to-beta|submit-beta-review|pipeline|internal-group|push-metadata <v> [locale]|push-screenshots <v> [locale]|prepare-listing <v>|attach-build <v> [build]|listing-status>");
     process.exit(1);
 }

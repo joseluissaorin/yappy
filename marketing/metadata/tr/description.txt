@@ -1,0 +1,28 @@
+Yappy ile bir makale, PDF, EPUB, Word dosyası ya da video paylaş; bir papağan onu sana doğal bir sesle okusun. Yemek yaparken, yürürken ya da gözlerin kapalıyken. Her şey iPhone'unun içinde olur: hiçbir şey dışarı çıkmaz, asla.
+
+BULUT YOK, HESAP YOK, KARAKTER BAŞINA ÜCRET YOK
+Ses, cihazında yaklaşık 66 milyon parametreli açık bir modelle üretilir. Kayıt olmak ya da e-posta vermek gerekmez. Bağlantısız çalışır, sonsuza dek.
+
+31 DİL VE ON SES, HEPSİ ÇOK DİLLİ
+Türkçe, İngilizce, İspanyolca, Fransızca, Almanca, İtalyanca, Portekizce, Felemenkçe, Lehçe, Rumence, İsveççe, Danca, Fince, Estonca, Litvanca, Letonca, Hırvatça, Slovence, Slovakça, Çekçe, Macarca, Yunanca, Bulgarca, Ukraynaca, Rusça, Arapça, Hintçe, Endonezce, Vietnamca, Korece ve Japonca. Başka bir dilden alıntı içeren metinler paragraf paragraf kendi kendine dil değiştirir.
+
+PAYLAŞMAK KAPIDIR
+Safari'den, Mail'den, Dosyalar'dan ya da herhangi bir uygulamadan: Paylaş'a dokun ve Yappy'yi seç. Sayfa kendi kendine temizlenir (menüler, bannerlar ve alt bilgiler gider) ve geriye başlıkları ve ritmiyle düzyazı kalır. YouTube videoları makale gibi dinlenir. PDF'ler ve EPUB'lar bölümleriyle gelir. Sesli notlar cihazda yazıya dökülür.
+
+SENARİST: YAZILANDAN SÖYLENENE
+Sesli okumak harf harf okumak değildir. "1492", "bin dört yüz doksan iki" diye okunur; "VIII. Henry", "Sekizinci Henry" diye okunur, ama "Louis XIV" Fransızcada "Louis quatorze"dur. Yappy her metni, her dilin kurallarıyla bir okuma senaryosuna dönüştürür ve ses, metin ekranda aydınlanırken onu cümle cümle izler.
+
+EKRAN DÜĞMEDİR
+Duraklatmak için herhangi bir yere dokun, paragraf atlamak için kaydır, kenardan hızı artır ya da azalt. Ve kilit ekranından ya da kulaklıktan, her oynatıcıda olduğu gibi.
+
+MATBAA: KOCA KİTAPLAR SESLİ KİTAP OLARAK
+Yatarken bir kitabı işlenmeye bırak, uyandığında kütüphanende bölümleri olan bir sesli kitap seni bekler. Köprüyle Mac'in ya da PC'n onu senin yerine dönüştürüp kendiliğinden geri gönderebilir.
+
+GERÇEKTEN ÜCRETSİZ, VE KURMALI BİR PAPAĞAN
+Yappy açık kaynaklıdır (MIT lisansı). Ücretsiz papağan tüneğinde aynı anda üç belge taşır; birini kaldır, bir başkası sığar, süre sınırı yok. Dipsiz bir tünek, sesli kitap matbaası ve bilgisayarla köprü istiyorsan Yappy Parlanchín ile kur onu: aylık ya da yıllık abonelik, ya da tek seferlik ömür boyu satın alma. İstediğin zaman iptal edersin.
+
+Abonelikler, her dönemin sonunda, en az 24 saat önce Apple hesabından iptal edilmedikçe otomatik olarak yenilenir.
+Kullanım koşulları: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Gizlilik: https://yappy.joseluissaorin.com/en/privacy
+
+José Luis Saorín tarafından sevgiyle yapıldı. Okuduğunu dinlemek isteyen bir filolog ve papağanla oynamak isteyen altı yaşında bir çocuk.

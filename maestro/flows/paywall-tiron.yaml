@@ -1,0 +1,40 @@
+# El paywall se cierra deslizándolo hacia abajo (y no se sale de la
+# pantalla). Requiere el paseo ya hecho y la tienda simulada.
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: "yappy"
+    timeout: 15000
+- tapOn:
+    point: "50%,50%"
+- tapOn:
+    text: "la trastienda|the back room|.*trastienda.*"
+- extendedWaitUntil:
+    visible:
+      text: "Velocidad|Speed"
+    timeout: 8000
+- scrollUntilVisible:
+    element:
+      text: "Dar cuerda al loro|Wind up the parrot"
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: "Dar cuerda al loro|Wind up the parrot"
+- extendedWaitUntil:
+    visible:
+      text: "Elige tu cuerda|Pick your winding"
+    timeout: 8000
+- takeScreenshot: /tmp/paseo/20-paywall-arriba
+# El tirón hacia abajo: la hoja se va.
+# El tirador vive en la franja de arriba de la hoja.
+- swipe:
+    start: "50%,13%"
+    end: "50%,62%"
+    duration: 300
+- extendedWaitUntil:
+    notVisible:
+      text: "Elige tu cuerda|Pick your winding"
+    timeout: 6000
+- takeScreenshot: /tmp/paseo/21-paywall-cerrado

@@ -1,0 +1,28 @@
+Condividi un articolo, un PDF, un EPUB, un file Word o un video con Yappy, e un pappagallo te lo legge ad alta voce con una voce naturale. Mentre cucini, mentre cammini o a occhi chiusi. Tutto avviene dentro il tuo iPhone: niente ne esce, mai.
+
+SENZA CLOUD, SENZA ACCOUNT, SENZA TARIFFA A CARATTERE
+La voce viene sintetizzata sul tuo dispositivo da un modello aperto di circa 66 milioni di parametri. Non serve registrarsi né lasciare l'email. Funziona senza connessione, per sempre.
+
+31 LINGUE E DIECI VOCI, TUTTE POLIGLOTTE
+Italiano, inglese, spagnolo, francese, tedesco, portoghese, olandese, polacco, rumeno, svedese, danese, finlandese, estone, lituano, lettone, croato, sloveno, slovacco, ceco, ungherese, greco, bulgaro, ucraino, russo, turco, arabo, hindi, indonesiano, vietnamita, coreano e giapponese. I testi con citazioni in un'altra lingua cambiano lingua da soli, paragrafo per paragrafo.
+
+CONDIVIDERE È LA PORTA
+Da Safari, Mail, File o qualsiasi app: tocca Condividi e scegli Yappy. La pagina si ripulisce da sola (via menu, banner e piè di pagina) e resta la prosa, con i suoi titoli e il suo ritmo. I video di YouTube si ascoltano come articoli. I PDF e gli EPUB arrivano con i capitoli. I memo vocali vengono trascritti sul dispositivo.
+
+LO SCENEGGIATORE: DALLO SCRITTO AL DETTO
+Leggere ad alta voce non è fare lo spelling. «1492» si dice «millequattrocentonovantadue»; «Enrico VIII» si dice «Enrico ottavo», ma «Louis XIV» in francese si dice «Louis quatorze». Yappy trasforma ogni testo in un copione di lettura con le regole di ciascuna lingua, e la voce lo segue frase per frase mentre il testo si illumina sullo schermo.
+
+LO SCHERMO È IL PULSANTE
+Tocca ovunque per mettere in pausa, scorri per saltare un paragrafo, alza o abbassa la velocità lungo il bordo. E dalla schermata di blocco o dagli auricolari, come con qualsiasi lettore.
+
+LA STAMPERIA: LIBRI INTERI COME AUDIOLIBRI
+Lascia un libro in elaborazione quando vai a dormire e al risveglio trovi un audiolibro con i capitoli nella tua libreria. Con il ponte, il tuo Mac o il tuo PC possono convertirlo per te e restituirtelo da soli.
+
+GRATIS DAVVERO, E UN PAPPAGALLO A CARICA
+Yappy è open source (licenza MIT). Il pappagallo gratuito porta tre documenti alla volta sul suo trespolo; togline uno e ce ne sta un altro, senza limiti di tempo. Se vuoi un trespolo senza fondo, la stamperia di audiolibri e il ponte con il computer, dagli la carica con Yappy Parlanchín: abbonamento mensile o annuale, oppure un unico acquisto a vita. Disdici quando vuoi.
+
+Gli abbonamenti si rinnovano automaticamente alla fine di ogni periodo, salvo disdetta nel tuo account Apple almeno 24 ore prima.
+Termini d'uso: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy: https://yappy.joseluissaorin.com/en/privacy
+
+Fatto con amore da José Luis Saorín. Un filologo che voleva ascoltare ciò che leggeva, e un bambino di sei anni che voleva giocare con il pappagallo.

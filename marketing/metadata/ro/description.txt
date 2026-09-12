@@ -1,0 +1,28 @@
+Trimite-i lui Yappy un articol, un PDF, un EPUB, un fișier Word sau un video, și un papagal ți-l citește cu voce tare, cu o voce naturală. În timp ce gătești, în timp ce te plimbi sau cu ochii închiși. Totul se întâmplă în iPhone-ul tău: nimic nu iese din el, niciodată.
+
+FĂRĂ CLOUD, FĂRĂ CONTURI, FĂRĂ TARIF PE CARACTER
+Vocea este sintetizată pe dispozitivul tău cu un model deschis de aproximativ 66 de milioane de parametri. Nu trebuie să te înregistrezi și nici să dai e-mailul. Funcționează fără conexiune, pentru totdeauna.
+
+31 DE LIMBI ȘI ZECE VOCI, TOATE POLIGLOTE
+Română, engleză, spaniolă, franceză, germană, italiană, portugheză, neerlandeză, poloneză, suedeză, daneză, finlandeză, estonă, lituaniană, letonă, croată, slovenă, slovacă, cehă, maghiară, greacă, bulgară, ucraineană, rusă, turcă, arabă, hindi, indoneziană, vietnameză, coreeană și japoneză. Textele cu citate în altă limbă schimbă limba singure, paragraf cu paragraf.
+
+PARTAJAREA ESTE UȘA
+Din Safari, Mail, Fișiere sau orice altă aplicație: atinge Partajează și alege Yappy. Pagina se curăță singură (dispar meniurile, bannerele și subsolurile) și rămâne proza, cu titlurile și ritmul ei. Videoclipurile de pe YouTube se ascultă ca niște articole. PDF-urile și EPUB-urile vin cu capitole. Notele vocale sunt transcrise pe dispozitiv.
+
+SCENARISTUL: DE LA SCRIS LA SPUS
+A citi cu voce tare nu înseamnă a silabisi. „1492” se citește „o mie patru sute nouăzeci și doi”; „Henric al VIII-lea” se citește „Henric al optulea”, dar „Louis XIV” în franceză se citește „Louis quatorze”. Yappy transformă fiecare text într-un scenariu de lectură după regulile fiecărei limbi, iar vocea îl urmează frază cu frază în timp ce textul se luminează pe ecran.
+
+ECRANUL ESTE BUTONUL
+Atinge oriunde ca să pui pauză, glisează ca să sari peste un paragraf, urcă sau coboară viteza pe margine. Și de pe ecranul de blocare sau din căști, ca la orice player.
+
+TIPOGRAFIA: CĂRȚI ÎNTREGI CA AUDIOBOOKURI
+Lasă o carte să se genereze când te culci, iar la trezire ai în bibliotecă un audiobook cu capitole. Cu puntea, Mac-ul sau PC-ul tău o poate converti pentru tine și ți-o trimite înapoi singur.
+
+GRATUIT CU ADEVĂRAT, ȘI UN PAPAGAL CU CHEIȚĂ
+Yappy este open source (licență MIT). Papagalul gratuit duce trei documente odată pe stinghia lui; ia unul și mai încape altul, fără limită de timp. Dacă vrei o stinghie fără fund, tipografia de audiobookuri și puntea cu computerul, întoarce-i cheița cu Yappy Parlanchín: abonament lunar sau anual, ori o singură plată pe viață. Anulezi când vrei.
+
+Abonamentele se reînnoiesc automat la sfârșitul fiecărei perioade, dacă nu le anulezi în contul tău Apple cu cel puțin 24 de ore înainte.
+Termeni de utilizare: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Confidențialitate: https://yappy.joseluissaorin.com/en/privacy
+
+Făcut cu dragoste de José Luis Saorín. Un filolog care voia să asculte ce citea, și un copil de șase ani care voia să se joace cu papagalul.

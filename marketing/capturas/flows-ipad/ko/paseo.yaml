@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "안녕하세요, 저는 당신의 앵무새예요"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/ko/01-paseo-hola
+- tapOn:
+    text: "저에게 목소리를 골라 주세요"
+- extendedWaitUntil:
+    visible:
+      text: "모든 게 당신의 휴대폰 안에서 이루어져요"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/ko/02-paseo-idiomas
+- tapOn:
+    text: "다음"
+- extendedWaitUntil:
+    visible:
+      text: "당신의 새를 골라 주세요"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/ko/03-paseo-pajaro
+- tapOn:
+    text: "James로 할게요"
+- extendedWaitUntil:
+    visible:
+      text: "저에게 뭘 주실 건가요\\?"
+    timeout: 10000
+- tapOn:
+    text: "기사"
+- tapOn:
+    text: "책"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ko/04-paseo-que
+- tapOn:
+    text: "다음"
+- extendedWaitUntil:
+    visible:
+      text: "언제 저를 들으시나요\\?"
+    timeout: 10000
+- tapOn:
+    text: "요리할 때"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ko/05-paseo-cuando
+- tapOn:
+    text: "다음"
+- extendedWaitUntil:
+    visible:
+      text: "어느 정도 속도로요\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ko/06-paseo-velocidad
+- tapOn:
+    text: "다음"
+- extendedWaitUntil:
+    visible:
+      text: "읽을 게 얼마나 쌓여 있나요\\?"
+    timeout: 10000
+- tapOn:
+    text: "산더미"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ko/07-paseo-cuanto
+- tapOn:
+    text: "다음"
+- extendedWaitUntil:
+    visible:
+      text: "당신 것, 아니면 이야기 하나"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ko/08-paseo-escucha
+- tapOn:
+    text: "(?i)나중에"
+- extendedWaitUntil:
+    visible:
+      text: "화면 자체가 버튼이에요"
+    timeout: 10000
+- tapOn:
+    text: "(?i)나중에"
+- extendedWaitUntil:
+    visible:
+      text: "공유가 전부예요"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/ko/09-paseo-compartir
+- tapOn:
+    text: "(?i)나중에"
+- extendedWaitUntil:
+    visible:
+      text: "그리고 어디든 가지고 다녀요"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ko/10-paseo-exportar
+- tapOn:
+    text: "(?i)나중에"
+- extendedWaitUntil:
+    visible:
+      text: "저를 즐겨찾기에 고정해 주세요"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ko/11-paseo-favoritos
+- tapOn:
+    text: "완료"
+- extendedWaitUntil:
+    visible:
+      text: "당신의 앵무새"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ko/12-paseo-resumen
+- tapOn:
+    text: "다음"
+- extendedWaitUntil:
+    visible:
+      text: "한 번에 셋"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ko/13-paseo-percha
+- tapOn:
+    text: "다음"
+- extendedWaitUntil:
+    visible:
+      text: "태엽을 골라 주세요"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/ko/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "횃대에 세 개로 시작하기"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/ko/15-paseo-cuerda-pie
+- tapOn:
+    text: "횃대에 세 개로 시작하기"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "네"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/ko/17-cinta-vacia

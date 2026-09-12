@@ -1,0 +1,102 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- tapOn:
+    point: "50%,97%"
+- tapOn:
+    text: "Okay"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/de/20-cinta
+- tapOn:
+    text: "(?i)Bauernbrot"
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: "Anhören"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/de/21-lector-a
+- extendedWaitUntil:
+    visible:
+      text: "(?i)ich lese|(?i)läuft"
+    timeout: 25000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 6000
+- takeScreenshot: marketing/screenshots/de/22-lector-b
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: marketing/screenshots/de/23-lector-c
+- tapOn:
+    text: "(?i)zurück"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    point: "8%,9%"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/de/24-cinta-sonando
+- tapOn:
+    text: "die Hinterstube"
+- extendedWaitUntil:
+    visible:
+      text: "Tempo"
+    timeout: 8000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/de/25-trastienda
+- tapOn:
+    text: "Nacht"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/de/26-trastienda-noche
+- tapOn:
+    text: "Papier"
+    optional: true
+- scrollUntilVisible:
+    element:
+      text: "Papagei aufziehen|Abo verwalten"
+    direction: DOWN
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/de/27-trastienda-cuerda
+- tapOn:
+    text: "Papagei aufziehen"
+- extendedWaitUntil:
+    visible:
+      text: "Wähl, wie du ihn aufziehst"
+    timeout: 12000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/de/28-paywall
+- tapOn:
+    text: "(?i)Schließen"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- tapOn:
+    point: "90%,11%"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- swipe:
+    start: "50%,25%"
+    end: "50%,85%"
+    duration: 400
+- waitForAnimationToEnd:
+    timeout: 2500
+- tapOn:
+    text: "Okay"
+    optional: true
+- tapOn:
+    text: "(?i)die Druckerei öffnen"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/de/29-imprenta

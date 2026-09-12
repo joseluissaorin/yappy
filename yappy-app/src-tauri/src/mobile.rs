@@ -316,6 +316,17 @@ extern "C" {
         body: *const std::os::raw::c_char,
     );
     fn yappy_share_file(path: *const std::os::raw::c_char);
+    fn yappy_notify_request();
+    fn yappy_notify_status() -> i32;
+}
+
+/// El permiso de avisos, pedido a las claras desde el paseo.
+pub fn notify_request() {
+    unsafe { yappy_notify_request() };
+}
+/// 0 sin decidir · 1 concedido · 2 denegado.
+pub fn notify_status() -> i32 {
+    unsafe { yappy_notify_status() }
 }
 
 pub fn notify(identifier: &str, title: &str, body: &str) {
@@ -518,4 +529,80 @@ impl Drop for BackgroundAudioGuard {
         unsafe { yappy_background_audio_end() };
         tracing::info!("mobile: background-audio keepalive released");
     }
+}
+
+// ─── LOS RECURSOS: App Group, red barata y Background Assets ─────────────
+// Ver gen/apple/Sources/yappy-app/Recursos.swift.
+extern "C" {
+    fn yappy_app_group_path() -> *mut std::os::raw::c_char;
+    fn yappy_red_barata() -> bool;
+    fn yappy_ba_register_progreso(cb: extern "C" fn(u64, u64, bool));
+    fn yappy_ba_reanudar() -> i32;
+}
+
+/// La ruta del contenedor del App Group (donde viven las voces en iOS).
+pub fn app_group_path() -> Option<String> {
+    let raw = unsafe { yappy_app_group_path() };
+    if raw.is_null() {
+        return None;
+    }
+    let s = unsafe { std::ffi::CStr::from_ptr(raw) }
+        .to_string_lossy()
+        .into_owned();
+    unsafe { yappy_free_string(raw) };
+    (!s.is_empty()).then_some(s)
+}
+
+/// ¿Wifi (o cable) y sin ahorro de datos? Entonces la descarga arranca sola.
+pub fn red_barata() -> bool {
+    unsafe { yappy_red_barata() }
+}
+
+/// Si la instalación dejó descargas de voces a medias, las sube a primer
+/// plano y devuelve cuántas había; el progreso llega por el callback.
+pub fn ba_reanudar(cb: extern "C" fn(u64, u64, bool)) -> i32 {
+    unsafe {
+        yappy_ba_register_progreso(cb);
+        yappy_ba_reanudar()
+    }
+}
+
+// ─── EL PASEO: portapapeles sin leerlo y el loro en PiP ──────────────────
+// Ver gen/apple/Sources/yappy-app/Paseo.swift.
+extern "C" {
+    fn yappy_portapapeles_tiene_enlace() -> bool;
+    fn yappy_pip_iniciar(path: *const std::os::raw::c_char, x: f64, y: f64, w: f64, h: f64);
+    fn yappy_pip_parar();
+}
+
+pub fn portapapeles_tiene_enlace() -> bool {
+    unsafe { yappy_portapapeles_tiene_enlace() }
+}
+
+pub fn pip_iniciar(path: &str, x: f64, y: f64, w: f64, h: f64) {
+    use std::ffi::CString;
+    if let Ok(c) = CString::new(path) {
+        unsafe { yappy_pip_iniciar(c.as_ptr(), x, y, w, h) };
+    }
+}
+
+pub fn pip_parar() {
+    unsafe { yappy_pip_parar() }
+}
+
+// ─── El usuario anónimo de la tienda (Compras.swift) ─────────────────────
+extern "C" {
+    fn yappy_compras_usuario() -> *mut std::os::raw::c_char;
+}
+
+pub fn compras_usuario() -> Option<String> {
+    let raw = unsafe { yappy_compras_usuario() };
+    if raw.is_null() {
+        return None;
+    }
+    let s = unsafe { std::ffi::CStr::from_ptr(raw) }
+        .to_string_lossy()
+        .into_owned();
+    unsafe { yappy_free_string(raw) };
+    (!s.is_empty()).then_some(s)
 }

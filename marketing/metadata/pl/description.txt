@@ -1,0 +1,28 @@
+Udostępnij Yappy artykuł, PDF, EPUB, plik Worda albo film, a papuga przeczyta ci go na głos naturalnym głosem. Gdy gotujesz, gdy spacerujesz albo z zamkniętymi oczami. Wszystko dzieje się w twoim iPhonie: nic z niego nie wychodzi, nigdy.
+
+BEZ CHMURY, BEZ KONT, BEZ OPŁAT ZA ZNAK
+Głos jest syntezowany na twoim urządzeniu przez otwarty model o około 66 milionach parametrów. Nie trzeba się rejestrować ani podawać adresu e-mail. Działa bez połączenia, na zawsze.
+
+31 JĘZYKÓW I DZIESIĘĆ GŁOSÓW, WSZYSTKIE POLIGLOTYCZNE
+Polski, angielski, hiszpański, francuski, niemiecki, włoski, portugalski, niderlandzki, rumuński, szwedzki, duński, fiński, estoński, litewski, łotewski, chorwacki, słoweński, słowacki, czeski, węgierski, grecki, bułgarski, ukraiński, rosyjski, turecki, arabski, hindi, indonezyjski, wietnamski, koreański i japoński. Teksty z cytatami w innym języku same zmieniają język, akapit po akapicie.
+
+UDOSTĘPNIANIE TO DRZWI
+Z Safari, Poczty, Plików albo dowolnej aplikacji: stuknij Udostępnij i wybierz Yappy. Strona sama się czyści (znikają menu, banery i stopki) i zostaje proza ze swoimi tytułami i swoim rytmem. Filmów z YouTube słucha się jak artykułów. PDF-y i EPUB-y przychodzą z rozdziałami. Notatki głosowe są transkrybowane na urządzeniu.
+
+SCENARZYSTA: OD NAPISANEGO DO POWIEDZIANEGO
+Czytanie na głos to nie literowanie. „1492” czyta się „tysiąc czterysta dziewięćdziesiąt dwa”; „Henryk VIII” to „Henryk Ósmy”, ale „Louis XIV” po francusku to „Louis quatorze”. Yappy zamienia każdy tekst w scenariusz czytania według reguł danego języka, a głos podąża za nim zdanie po zdaniu, podczas gdy tekst rozświetla się na ekranie.
+
+EKRAN JEST PRZYCISKIEM
+Stuknij gdziekolwiek, by zatrzymać, przesuń, by przeskoczyć akapit, zmień prędkość przy krawędzi. I z ekranu blokady albo słuchawek, jak w każdym odtwarzaczu.
+
+DRUKARNIA: CAŁE KSIĄŻKI JAKO AUDIOBOOKI
+Zostaw książkę do renderowania, kładąc się spać, a po przebudzeniu masz w bibliotece audiobook z rozdziałami. Dzięki mostowi twój Mac albo PC może przekonwertować ją za ciebie i sam ci ją odesłać.
+
+NAPRAWDĘ ZA DARMO, I PAPUGA NA KLUCZYK
+Yappy jest open source (licencja MIT). Darmowa papuga nosi na swojej grzędzie trzy dokumenty naraz; zdejmij jeden, a zmieści się inny, bez limitu czasu. Jeśli chcesz grzędy bez dna, drukarni audiobooków i mostu z komputerem, nakręć ją z Yappy Parlanchín: subskrypcja miesięczna lub roczna albo jednorazowy zakup na zawsze. Anulujesz, kiedy chcesz.
+
+Subskrypcje odnawiają się automatycznie na koniec każdego okresu, chyba że anulujesz je na swoim koncie Apple co najmniej 24 godziny wcześniej.
+Warunki użytkowania: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Prywatność: https://yappy.joseluissaorin.com/en/privacy
+
+Zrobione z miłością przez José Luisa Saorína. Filologa, który chciał słuchać tego, co czyta, i sześciolatka, który chciał bawić się z papugą.

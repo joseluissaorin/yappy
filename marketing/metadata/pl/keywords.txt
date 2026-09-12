@@ -1,0 +1,1 @@
+czytnik,tekstu,syntezator,mowy,audiobook,ebook,książka,artykuł,dysleksja,dokument,czytanie

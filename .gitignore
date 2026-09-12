@@ -53,3 +53,9 @@ yappy-devid.key*
 
 # Libs nativas Android: las trae scripts/fetch-ort-android.sh
 yappy-app/src-tauri/gen/android/app/src/main/jniLibs/
+
+# ── Marketing: capturas crudas y renders (gigas; se regeneran) ───────────
+marketing/output/
+marketing/screenshots/
+marketing/screenshots-ipad/
+web/.wrangler/

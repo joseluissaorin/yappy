@@ -1,0 +1,96 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- tapOn:
+    point: "50%,97%"
+- tapOn:
+    text: "Okay"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/en/20-cinta
+- tapOn:
+    text: "(?i)Village bread"
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: "Listen"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/en/21-lector-a
+- extendedWaitUntil:
+    visible:
+      text: "(?i)reading aloud|(?i)playing"
+    timeout: 25000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 6000
+- takeScreenshot: marketing/screenshots/en/22-lector-b
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: marketing/screenshots/en/23-lector-c
+- tapOn:
+    text: "(?i)back"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    point: "8%,9%"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/en/24-cinta-sonando
+- tapOn:
+    text: "the back room"
+- extendedWaitUntil:
+    visible:
+      text: "Speed"
+    timeout: 8000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/en/25-trastienda
+- tapOn:
+    text: "Night"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/en/26-trastienda-noche
+- tapOn:
+    text: "Paper"
+    optional: true
+- scrollUntilVisible:
+    element:
+      text: "Wind up the parrot|Manage subscription"
+    direction: DOWN
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/en/27-trastienda-cuerda
+- tapOn:
+    text: "Wind up the parrot"
+- extendedWaitUntil:
+    visible:
+      text: "Pick your winding"
+    timeout: 12000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/en/28-paywall
+- tapOn:
+    point: "90%,11%"
+- waitForAnimationToEnd:
+    timeout: 2500
+- swipe:
+    start: "50%,25%"
+    end: "50%,85%"
+    duration: 400
+- waitForAnimationToEnd:
+    timeout: 2500
+- tapOn:
+    text: "Okay"
+    optional: true
+- tapOn:
+    text: "(?i)open the press"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/en/29-imprenta

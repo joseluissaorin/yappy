@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "felhő\nnélkül",
+    "idiomas": "31\nnyelv",
+    "compartir": "koppints\nmegosztás",
+    "capitulos": "fejezetekre\nbontva",
+    "ritmo": "saját\ntempóban",
+    "hola": "szia!",
+    "gratis": "ingyen",
+    "offline": "offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Minden szöveg, hangosan.",
+      "subtitle": "Ossz meg egy cikket, PDF-et vagy könyvet, és egy papagáj felolvassa."
+    },
+    {
+      "slot": 2,
+      "title": "A hang követi a szöveget.",
+      "subtitle": "Minden mondat felragyog, ahogy elhangzik. Koppints a szünethez."
+    },
+    {
+      "slot": 3,
+      "title": "Tíz madár, 31 nyelv.",
+      "subtitle": "Mind poliglott: maguktól váltanak nyelvet, bekezdésről bekezdésre."
+    },
+    {
+      "slot": 4,
+      "title": "Minden az iPhone-on marad.",
+      "subtitle": "Se felhő, se fiók, se karakterdíj. Offline is működik."
+    },
+    {
+      "slot": 5,
+      "title": "Bármelyik appból.",
+      "subtitle": "Safari, Fájlok, YouTube, levelezés: koppints a Megosztásra, és válaszd a Yappyt."
+    },
+    {
+      "slot": 6,
+      "title": "Úgy olvas, mint egy ember.",
+      "subtitle": "„1492” így hangzik: „ezernégyszázkilencvenkettő”, minden nyelv szabályai szerint."
+    },
+    {
+      "slot": 7,
+      "title": "Egész könyvek, hangban.",
+      "subtitle": "Fejezetekkel. Este otthagyod, reggelre a könyvtáradban van."
+    },
+    {
+      "slot": 8,
+      "title": "Éjjel is.",
+      "subtitle": "Hang, tempó és téma, ízlésed szerint, a hátsó szobában."
+    },
+    {
+      "slot": 9,
+      "title": "Szakmabeli papagáj.",
+      "subtitle": "Az első naptól veled tart, egy háromperces sétával."
+    },
+    {
+      "slot": 10,
+      "title": "Húzd fel a papagájt.",
+      "subtitle": "Ingyen, hárommal a rúdon. Yappy Parlanchín: feneketlen rúd, örökre."
+    }
+  ]
+}

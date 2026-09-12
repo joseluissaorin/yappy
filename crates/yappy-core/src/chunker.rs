@@ -74,17 +74,22 @@ pub fn chunk_paragraphs(text: &str, max_chars: usize) -> Vec<Chunk> {
                     });
                     current.clear();
                 }
-                // Split by comma, then by space.
-                let sub = split_too_long(&s, max_chars);
-                let mut sub_start = running_offset;
-                for piece in sub {
-                    let piece_len = piece.len();
+                // Por signo débil, luego por espacio: SIEMPRE rebanadas
+                // exactas de la frase, para que los offsets valgan y
+                // `trocear` pueda localizar cada trozo.
+                for (a, b) in split_too_long(&s, max_chars) {
+                    let crudo = &s[a..b];
+                    let t = crudo.trim();
+                    if t.is_empty() {
+                        continue;
+                    }
+                    let desplaz = crudo.len() - crudo.trim_start().len();
+                    let ini = running_offset + a + desplaz;
                     chunks.push(Chunk {
-                        text: piece.trim().to_string(),
-                        start: sub_start,
-                        end: sub_start + piece_len,
+                        text: t.to_string(),
+                        start: ini,
+                        end: ini + t.len(),
                     });
-                    sub_start += piece_len;
                 }
                 running_offset += s.len();
                 current_start = running_offset;
@@ -206,52 +211,80 @@ fn split_sentences(text: &str) -> Vec<String> {
     sentences
 }
 
-fn split_too_long(s: &str, max_chars: usize) -> Vec<String> {
-    let mut out: Vec<String> = Vec::new();
-    let parts: Vec<&str> = s.split(',').collect();
-    let mut current = String::new();
-    for part in parts {
-        let p = part.trim();
-        if p.is_empty() {
-            continue;
+/// Corta una frase demasiado larga en trozos que son REBANADAS EXACTAS de
+/// ella. Nunca reconstruye el texto: la versión vieja partía por comas,
+/// recortaba y volvía a unir con «, », y entonces el trozo ya no aparecía
+/// literal en el hablado; `guion::trocear`, que los localiza buscándolos,
+/// los descartaba EN SILENCIO. Ese era el bug de «solo lee hasta la coma»
+/// y el de los párrafos larguísimos que se quedaban en las primeras frases.
+///
+/// Prefiere cortar tras un signo débil (coma, punto y coma, dos puntos,
+/// raya, paréntesis o comilla de cierre); si el signo cae demasiado
+/// pronto, corta en un espacio; si no hay ninguno, corta a lo bruto.
+/// Devuelve rangos de bytes CONTIGUOS que cubren la frase entera.
+fn split_too_long(s: &str, max_chars: usize) -> Vec<(usize, usize)> {
+    let max = max_chars.max(16);
+    let mut debiles: Vec<usize> = Vec::new();
+    let mut espacios: Vec<usize> = Vec::new();
+    for (i, c) in s.char_indices() {
+        let fin = i + c.len_utf8();
+        if matches!(
+            c,
+            ',' | ';' | ':' | '\u{2014}' | '\u{2013}' | ')' | '\u{bb}'
+        ) {
+            debiles.push(fin);
+        } else if c.is_whitespace() {
+            espacios.push(fin);
         }
-        if p.chars().count() > max_chars {
-            if !current.is_empty() {
-                out.push(current.trim().to_string());
-                current.clear();
-            }
-            // last resort: split on spaces
-            let mut wchunk = String::new();
-            for w in p.split_whitespace() {
-                if wchunk.chars().count() + w.chars().count() + 1 > max_chars && !wchunk.is_empty()
-                {
-                    out.push(wchunk.trim().to_string());
-                    wchunk.clear();
-                }
-                if !wchunk.is_empty() {
-                    wchunk.push(' ');
-                }
-                wchunk.push_str(w);
-            }
-            if !wchunk.is_empty() {
-                out.push(wchunk.trim().to_string());
-            }
-            continue;
-        }
-        if current.chars().count() + p.chars().count() + 2 > max_chars && !current.is_empty() {
-            out.push(current.trim().to_string());
-            current.clear();
-        }
-        if !current.is_empty() {
-            current.push_str(", ");
-        }
-        current.push_str(p);
     }
-    if !current.is_empty() {
-        out.push(current.trim().to_string());
+    let mut out: Vec<(usize, usize)> = Vec::new();
+    let mut ini = 0usize;
+    while ini < s.len() {
+        let resto = &s[ini..];
+        if resto.chars().count() <= max {
+            out.push((ini, s.len()));
+            break;
+        }
+        // El techo: como mucho `max` caracteres desde `ini`.
+        let limite = ini
+            + resto
+                .char_indices()
+                .nth(max)
+                .map(|(b, _)| b)
+                .unwrap_or(resto.len());
+        // Un corte débil que deje el trozo demasiado corto parte el fraseo
+        // en migas: por debajo del 45 % del cupo, mejor un espacio.
+        let suelo = ini
+            + resto
+                .char_indices()
+                .nth(max * 45 / 100)
+                .map(|(b, _)| b)
+                .unwrap_or(0);
+        let corte = debiles
+            .iter()
+            .rev()
+            .find(|&&p| p > suelo && p <= limite)
+            .copied()
+            .or_else(|| {
+                espacios
+                    .iter()
+                    .rev()
+                    .find(|&&p| p > suelo && p <= limite)
+                    .copied()
+            })
+            .or_else(|| {
+                espacios
+                    .iter()
+                    .rev()
+                    .find(|&&p| p > ini && p <= limite)
+                    .copied()
+            })
+            .unwrap_or(limite);
+        out.push((ini, corte));
+        ini = corte;
     }
     if out.is_empty() {
-        out.push(s.trim().to_string());
+        out.push((0, s.len()));
     }
     out
 }
@@ -317,5 +350,101 @@ mod tests {
     fn parrafo_de_una_frase_queda_entero() {
         let trozos = chunk_paragraphs("Una sola frase tranquila sin más compañía.", 300);
         assert_eq!(trozos.len(), 1);
+    }
+}
+
+#[cfg(test)]
+mod tests_largos {
+    use super::*;
+
+    /// La ley del troceador: cada trozo es una REBANADA EXACTA del texto.
+    /// Si se rompe, `guion::trocear` no encuentra el trozo y lo descarta en
+    /// silencio: la voz se para a mitad del párrafo.
+    fn rebanadas_exactas(texto: &str, chunks: &[Chunk]) {
+        for c in chunks {
+            assert_eq!(
+                texto[c.start..c.end].trim(),
+                c.text,
+                "offset roto: {:?} no casa con {:?}",
+                &texto[c.start..c.end],
+                c.text
+            );
+        }
+    }
+
+    /// Nada se pierde: todas las palabras del original salen en algún trozo,
+    /// en orden.
+    fn nada_se_pierde(texto: &str, chunks: &[Chunk]) {
+        let dichas: Vec<String> = chunks
+            .iter()
+            .flat_map(|c| c.text.split_whitespace().map(|w| w.to_string()))
+            .collect();
+        let originales: Vec<String> = texto.split_whitespace().map(|w| w.to_string()).collect();
+        assert_eq!(
+            dichas.len(),
+            originales.len(),
+            "se perdieron palabras: {} de {}",
+            dichas.len(),
+            originales.len()
+        );
+        assert_eq!(dichas, originales, "el orden o el contenido cambió");
+    }
+
+    #[test]
+    fn la_frase_con_subordinadas_se_lee_entera() {
+        // Una sola frase de más de 300 caracteres, llena de comas: el caso
+        // que se quedaba «leyendo hasta la coma».
+        let frase = "Cuando el hombre llegó al recodo del río, que a esa hora bajaba turbio y \
+                     lento, con esa lentitud que engaña a quien no lo conoce, se dio cuenta, \
+                     aunque tarde, de que la canoa, atada con un nudo que él mismo había hecho \
+                     la noche anterior, ya no estaba donde la había dejado, y que la corriente, \
+                     paciente como todas las cosas del monte, se la había llevado sin ruido.";
+        assert!(
+            frase.chars().count() > 300,
+            "la prueba necesita una frase larga"
+        );
+        let chunks = chunk_paragraphs(frase, 300);
+        assert!(chunks.len() > 1, "debería trocearse");
+        rebanadas_exactas(frase, &chunks);
+        nada_se_pierde(frase, &chunks);
+    }
+
+    #[test]
+    fn el_parrafo_larguisimo_se_lee_entero() {
+        // Doce frases seguidas: antes solo sonaban las primeras.
+        let mut parrafo = String::new();
+        for i in 1..=12 {
+            parrafo.push_str(&format!(
+                "Esta es la frase número {i} del párrafo, y viene con su coma, su inciso y su \
+                 final. "
+            ));
+        }
+        let parrafo = parrafo.trim();
+        let chunks = chunk_paragraphs(parrafo, 300);
+        rebanadas_exactas(parrafo, &chunks);
+        nada_se_pierde(parrafo, &chunks);
+    }
+
+    #[test]
+    fn la_frase_sin_comas_ni_espacios_raros_tambien() {
+        // Sin una sola coma: hay que cortar por espacios, sin perder nada.
+        let frase = "palabra ".repeat(80);
+        let frase = frase.trim();
+        let chunks = chunk_paragraphs(frase, 120);
+        assert!(chunks.len() > 3);
+        rebanadas_exactas(frase, &chunks);
+        nada_se_pierde(frase, &chunks);
+    }
+
+    #[test]
+    fn los_espacios_dobles_y_saltos_no_pierden_texto() {
+        // La versión vieja normalizaba los espacios y el trozo dejaba de
+        // aparecer literal en el hablado: se perdía.
+        let frase = "Primera parte con espacios  dobles,   segunda parte con más texto todavía, \
+                     tercera parte que alarga la frase por encima del límite del troceador, \
+                     cuarta parte final que cierra la oración con un punto.";
+        let chunks = chunk_paragraphs(frase, 100);
+        rebanadas_exactas(frase, &chunks);
+        nada_se_pierde(frase, &chunks);
     }
 }

@@ -13,11 +13,14 @@
   },
   "bundle": {
     "iOS": {
-      "bundleVersion": "0.3.0.3"
+      "bundleVersion": "1.0.0.5"
     },
     "resources": [
       "../resources/paddleocr/*",
       "../resources/defuddle.js",
+      "../resources/muestras/*",
+      "../resources/cuentos/*",
+      "../resources/paseo/*",
       "../resources/licenses/*"
     ]
   }

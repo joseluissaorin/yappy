@@ -91,3 +91,26 @@ impl BackgroundAudioGuard {
 impl Drop for BackgroundAudioGuard {
     fn drop(&mut self) {}
 }
+
+// ─── Los recursos: sin App Group ni Background Assets en Android ─────────
+pub fn app_group_path() -> Option<String> {
+    None
+}
+pub fn red_barata() -> bool {
+    // Sin monitor de red todavía: se asume wifi (la descarga fp16 pesa la
+    // mitad y la tarjeta de las voces sigue enseñando el tamaño).
+    true
+}
+pub fn ba_reanudar(_cb: extern "C" fn(u64, u64, bool)) -> i32 {
+    0
+}
+
+// ─── El paseo: sin PiP ni portapapeles nativo en Android ─────────────────
+pub fn portapapeles_tiene_enlace() -> bool {
+    false
+}
+pub fn pip_iniciar(_path: &str, _x: f64, _y: f64, _w: f64, _h: f64) {}
+pub fn pip_parar() {}
+pub fn compras_usuario() -> Option<String> {
+    None
+}

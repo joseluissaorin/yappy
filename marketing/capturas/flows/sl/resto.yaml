@@ -1,0 +1,107 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- tapOn:
+    point: "30%,3%"
+- tapOn:
+    text: "V redu"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/sl/20-cinta
+- tapOn:
+    text: "zakulisje"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+- runFlow:
+    when:
+      notVisible:
+        text: "Hitrost"
+    commands:
+      - tapOn:
+          point: "96%,33%"
+- extendedWaitUntil:
+    visible:
+      text: "Hitrost"
+    timeout: 8000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/25-trastienda
+- tapOn:
+    text: "Noč"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/sl/26-trastienda-noche
+- tapOn:
+    text: "Papir"
+    optional: true
+- scrollUntilVisible:
+    element:
+      text: "Navij papigo|Upravljaj naročnino"
+    direction: DOWN
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/27-trastienda-cuerda
+- tapOn:
+    text: "Navij papigo"
+- extendedWaitUntil:
+    visible:
+      text: "Izberi svojo vzmet"
+    timeout: 12000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/sl/28-paywall
+# Relanzar en vez de volver atrás: la cinta se conserva y no hay flecha que acertar.
+- launchApp:
+    stopApp: true
+    arguments:
+      AppleLanguages: "(sl)"
+      AppleLocale: "sl_SL"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "V redu"
+    optional: true
+- tapOn:
+    text: "(?i)odpri tiskarno"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/sl/29-imprenta
+- launchApp:
+    stopApp: true
+    arguments:
+      AppleLanguages: "(sl)"
+      AppleLocale: "sl_SL"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "V redu"
+    optional: true
+- tapOn:
+    text: "(?i)Domači kruh"
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: "Poslušaj"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/sl/21-lector-a
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: marketing/screenshots/sl/22-lector-b
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: marketing/screenshots/sl/23-lector-c
+- takeScreenshot: marketing/screenshots/sl/24-cinta-sonando

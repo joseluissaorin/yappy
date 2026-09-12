@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Tere, ma olen sinu papagoi"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/et/01-paseo-hola
+- tapOn:
+    text: "Vali mulle hääl"
+- extendedWaitUntil:
+    visible:
+      text: "Kõik toimub sinu telefonis"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/et/02-paseo-idiomas
+- tapOn:
+    text: "Edasi"
+- extendedWaitUntil:
+    visible:
+      text: "Vali oma lind"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/et/03-paseo-pajaro
+- tapOn:
+    text: "Olgu James"
+- extendedWaitUntil:
+    visible:
+      text: "Mida sa mulle annad\\?"
+    timeout: 10000
+- tapOn:
+    text: "Artiklid"
+- tapOn:
+    text: "Raamatud"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/et/04-paseo-que
+- tapOn:
+    text: "Edasi"
+- extendedWaitUntil:
+    visible:
+      text: "Millal sa mind kuulad\\?"
+    timeout: 10000
+- tapOn:
+    text: "Süüa tehes"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/et/05-paseo-cuando
+- tapOn:
+    text: "Edasi"
+- extendedWaitUntil:
+    visible:
+      text: "Kui kiiresti\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/et/06-paseo-velocidad
+- tapOn:
+    text: "Edasi"
+- extendedWaitUntil:
+    visible:
+      text: "Kui palju sul lugeda on\\?"
+    timeout: 10000
+- tapOn:
+    text: "Terve mägi"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/et/07-paseo-cuanto
+- tapOn:
+    text: "Edasi"
+- extendedWaitUntil:
+    visible:
+      text: "Midagi sinu oma või üks lugu"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/et/08-paseo-escucha
+- tapOn:
+    text: "(?i)Hiljem"
+- extendedWaitUntil:
+    visible:
+      text: "Ekraan ongi nupp"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Hiljem"
+- extendedWaitUntil:
+    visible:
+      text: "Jagamine on kõik"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/et/09-paseo-compartir
+- tapOn:
+    text: "(?i)Hiljem"
+- extendedWaitUntil:
+    visible:
+      text: "Ja võtad selle kaasa"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/et/10-paseo-exportar
+- tapOn:
+    text: "(?i)Hiljem"
+- extendedWaitUntil:
+    visible:
+      text: "Kinnita mind oma lemmikutesse"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/et/11-paseo-favoritos
+- tapOn:
+    text: "Valmis"
+- extendedWaitUntil:
+    visible:
+      text: "Sinu papagoi"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/et/12-paseo-resumen
+- tapOn:
+    text: "Edasi"
+- extendedWaitUntil:
+    visible:
+      text: "Kolm korraga"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/et/13-paseo-percha
+- tapOn:
+    text: "Edasi"
+- extendedWaitUntil:
+    visible:
+      text: "Vali oma vedru"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/et/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Alusta kolmega õrrel"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/et/15-paseo-cuerda-pie
+- tapOn:
+    text: "Alusta kolmega õrrel"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Olgu"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/et/17-cinta-vacia

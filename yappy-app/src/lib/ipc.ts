@@ -18,7 +18,22 @@ export type PlayerTheme = "cream" | "dark" | "translucent";
 export type AppTheme = "cream" | "dark" | "system";
 export type OcrEngine = "auto" | "applevision" | "paddle";
 
+/// La libreta del paseo (ver settings.rs::Paseo).
+export interface Paseo {
+  hecho: boolean;
+  paso: number;
+  que: string[];
+  cuando: string;
+  cuanto: string;
+  gestos: string[];
+  compartido: boolean;
+  segundos_escuchados: number;
+  avisos: string[];
+  aperturas: number;
+  estadisticas: boolean;
+}
 export interface Settings {
+  paseo: Paseo;
   voice: string;
   voice_overrides: Record<string, string>;
   voz_al_azar: boolean;
@@ -131,6 +146,8 @@ export interface PlaybackSnapshot {
   volume: number;
   output_sample_rate: number;
   /// Modo libro: ventana temporal real de la frase en curso (0/0 si no).
+  /// Saltos de frase pedidos por delante de la cocina, pendientes de cobrar.
+  salto_pendiente?: number;
   frase_ini_s?: number;
   frase_fin_s?: number;
 }
@@ -350,8 +367,20 @@ export interface ItemCola {
   agregado_unix: number;
   chars: number | null;
   favorito: boolean;
+  de_la_casa?: boolean;
 }
 export const colaListar = (): Promise<ItemCola[]> => invoke("cola_listar_cmd");
+/// Un cuento de la casa (resources/cuentos) entra en la cinta sin ocupar percha.
+export const colaAgregarCuento = (id: string): Promise<ItemCola> =>
+  invoke("cola_agregar_cuento_cmd", { id });
+export interface Cuento { id: string; titulo: string; autor: string; idioma: string; primera_frase: string; palabras: number }
+export const cuentosListar = (): Promise<Cuento[]> => invoke("cuentos_listar_cmd");
+/// ¿Hay un enlace copiado? (iOS, sin leer el portapapeles.)
+export const portapapelesTieneEnlace = (): Promise<boolean> => invoke("portapapeles_tiene_enlace_cmd");
+/// El loro en PiP: el vídeo mudo que sigue al usuario a Safari.
+export const pipIniciar = (x: number, y: number, ancho: number, alto: number): Promise<void> =>
+  invoke("pip_iniciar_cmd", { x, y, ancho, alto });
+export const pipParar = (): Promise<void> => invoke("pip_parar_cmd");
 export const colaAgregarUrl = (url: string): Promise<ItemCola> =>
   invoke("cola_agregar_url_cmd", { url });
 
@@ -454,6 +483,12 @@ export const colaReintentar = (id: string): Promise<void> =>
 /// El progreso duradero del backend (clave por nombre de fichero).
 export const progresoTodo = (): Promise<Record<string, { parrafo: number; total: number }>> =>
   invoke("progreso_todo_cmd");
+/// Guarda SOLO la libreta del paseo (no pisa voz, velocidad ni tema).
+export const setPaseo = (paseo: Paseo): Promise<void> => invoke("set_paseo_cmd", { paseo });
+/// El loro dice algo corto por el canal de efectos (iOS). `velocidad` e
+/// `idioma` los usa el paseo (demo del deslizador, sellos de idioma).
+export const hablar = (texto: string, velocidad?: number, idioma?: string): Promise<number> =>
+  invoke("decir_cmd", { texto, velocidad: velocidad ?? null, idioma: idioma ?? null });
 export const decir = (texto: string, clave?: string): Promise<number> =>
   invoke("decir_cmd", { texto, clave: clave ?? null });
 /// Una voz al azar (estable) para cada pieza.
@@ -497,6 +532,12 @@ export const puenteVincular = (dato: string): Promise<ConfigPuenteMovil> =>
 export const puenteMovilEstado = (): Promise<ConfigPuenteMovil> =>
   invoke("puente_movil_estado_cmd");
 export const puenteDesvincular = (): Promise<void> => invoke("puente_desvincular_cmd");
+/// Los avisos (notificaciones): pedir el permiso a las claras y consultarlo.
+export const avisosPedir = (): Promise<void> => invoke("avisos_pedir_cmd");
+/// 0 sin decidir · 1 concedido · 2 denegado.
+export const avisosEstado = (): Promise<number> => invoke("avisos_estado_cmd");
+/// La sonda: ¿el ordenador emparejado responde ahora mismo? Devuelve su nombre.
+export const puenteProbar = (): Promise<{ nombre: string; ms: number }> => invoke("puente_probar_cmd");
 export const puenteConvertir = (titulo: string, texto: string): Promise<string> =>
   invoke("puente_convertir_cmd", { titulo, texto });
 export function onPuenteProgreso(
@@ -650,6 +691,10 @@ export function onCaptureProgress(cb: (stage: string) => void): Promise<Unlisten
 export function onModelMissing(cb: () => void): Promise<UnlistenFn> {
   return listen("model_missing", () => cb());
 }
+/// Las voces están enteras (descarga automática o de la instalación).
+export function onModelReady(cb: () => void): Promise<UnlistenFn> {
+  return listen("model_ready", () => cb());
+}
 export function onAsrModelDownload(cb: (p: DownloadProgress) => void): Promise<UnlistenFn> {
   return listen<DownloadProgress>("asr_model_download", (ev) => cb(ev.payload));
 }
@@ -706,4 +751,47 @@ export const LANGUAGES: { code: string; label: string; flag?: string }[] = [
 
 export function langLabel(code: string): string {
   return LANGUAGES.find((l) => l.code === code)?.label ?? code;
+}
+
+// ─── LAS COMPRAS: Yappy Parlanchín (RevenueCat por el puente Swift) ──────
+export interface InfoCuota { usados: number; limite: number; agotada: boolean }
+export interface EstadoCompras { disponible: boolean; pro: boolean; cuota: InfoCuota; entitlement: string }
+export type TipoPaquete = "mensual" | "anual" | "vida" | "semanal" | "otro";
+export interface Paquete {
+  id: string;
+  tipo: TipoPaquete;
+  producto: string;
+  precio: string;
+  precio_num: number;
+  moneda: string | null;
+  periodo: string | null;
+  titulo?: string | null;
+  intro?: { precio: string; periodo: string | null; modo: string } | null;
+}
+export interface Cliente {
+  pro: boolean;
+  producto?: string | null;
+  desde?: string | null;
+  expira?: string | null;
+  renovara?: boolean | null;
+  periodo?: string | null;
+  gestionar?: string | null;
+}
+export const comprasEstado = (): Promise<EstadoCompras> => invoke("compras_estado_cmd");
+export const comprasOfertas = (): Promise<{ paquetes: Paquete[]; oferta?: string; simulado?: boolean }> =>
+  invoke("compras_ofertas_cmd");
+export const comprasComprar = (paquete: string): Promise<{ ok?: boolean; pro?: boolean; cancelado?: boolean; error?: string }> =>
+  invoke("compras_comprar_cmd", { paquete });
+export const comprasRestaurar = (): Promise<{ ok?: boolean; pro?: boolean; error?: string }> =>
+  invoke("compras_restaurar_cmd");
+export const comprasCliente = (): Promise<Cliente> => invoke("compras_cliente_cmd");
+export const comprasGestionar = (): Promise<void> => invoke("compras_gestionar_cmd");
+export const comprasUsuario = (): Promise<string | null> => invoke("compras_usuario_cmd");
+export const comprasSimular = (activa: boolean, pro: boolean): Promise<void> =>
+  invoke("compras_simular_cmd", { activa, pro });
+export function onProCambio(cb: (pro: boolean) => void): Promise<UnlistenFn> {
+  return listen<boolean>("pro_cambio", (ev) => cb(ev.payload));
+}
+export function onCuotaAgotada(cb: (c: InfoCuota) => void): Promise<UnlistenFn> {
+  return listen<InfoCuota>("cuota_agotada", (ev) => cb(ev.payload));
 }

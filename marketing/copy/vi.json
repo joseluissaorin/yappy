@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "không\nđám mây",
+    "idiomas": "31\nngôn ngữ",
+    "compartir": "chạm\nchia sẻ",
+    "capitulos": "có\nchương",
+    "ritmo": "theo nhịp\ncủa bạn",
+    "hola": "chào!",
+    "gratis": "miễn phí",
+    "offline": "không cần mạng",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Văn bản nào cũng đọc to.",
+      "subtitle": "Chia sẻ bài viết, PDF hay sách, một chú vẹt sẽ đọc cho bạn nghe."
+    },
+    {
+      "slot": 2,
+      "title": "Giọng đọc theo sát chữ.",
+      "subtitle": "Mỗi câu sáng lên khi được đọc. Chạm để tạm dừng."
+    },
+    {
+      "slot": 3,
+      "title": "Mười chú chim, 31 ngôn ngữ.",
+      "subtitle": "Đều đa ngữ: tự đổi ngôn ngữ, từng đoạn một."
+    },
+    {
+      "slot": 4,
+      "title": "Không gì rời khỏi iPhone.",
+      "subtitle": "Không đám mây, không tài khoản, không tính phí theo ký tự. Chạy không cần mạng."
+    },
+    {
+      "slot": 5,
+      "title": "Từ bất kỳ ứng dụng nào.",
+      "subtitle": "Safari, Tệp, YouTube, thư: chạm Chia sẻ rồi chọn Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Đọc như người thật.",
+      "subtitle": "“1492” đọc là “một nghìn bốn trăm chín mươi hai”, theo quy tắc từng ngôn ngữ."
+    },
+    {
+      "slot": 7,
+      "title": "Sách nói, trọn cuốn.",
+      "subtitle": "Có chương. Để qua đêm, sáng ra đã nằm trong thư viện của bạn."
+    },
+    {
+      "slot": 8,
+      "title": "Ban đêm cũng được.",
+      "subtitle": "Giọng, tốc độ và giao diện, tùy ý bạn, trong hậu trường."
+    },
+    {
+      "slot": 9,
+      "title": "Chú vẹt lành nghề.",
+      "subtitle": "Đồng hành cùng bạn từ ngày đầu, với một chuyến dạo ba phút."
+    },
+    {
+      "slot": 10,
+      "title": "Lên dây cót cho vẹt.",
+      "subtitle": "Miễn phí với ba cuốn trên cành. Yappy Parlanchín: cành không đáy, mãi mãi."
+    }
+  ]
+}

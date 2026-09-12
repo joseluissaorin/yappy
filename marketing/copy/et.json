@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "ilma\npilveta",
+    "idiomas": "31\nkeelt",
+    "compartir": "puuduta\njaga",
+    "capitulos": "koos\npeatükkidega",
+    "ritmo": "omas\ntempos",
+    "hola": "tere!",
+    "gratis": "tasuta",
+    "offline": "võrguta",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Iga tekst, valjusti.",
+      "subtitle": "Jaga artiklit, PDF-i või raamatut, ja papagoi loeb selle sulle ette."
+    },
+    {
+      "slot": 2,
+      "title": "Hääl järgib teksti.",
+      "subtitle": "Iga lause süttib, kui see kõlab. Puuduta, et peatada."
+    },
+    {
+      "slot": 3,
+      "title": "Kümme lindu, 31 keelt.",
+      "subtitle": "Kõik polüglotid: vahetavad keelt ise, lõik lõigu haaval."
+    },
+    {
+      "slot": 4,
+      "title": "Kõik jääb su iPhone'i.",
+      "subtitle": "Ei pilve, ei kontot, ei tasu märgi pealt. Töötab võrguta."
+    },
+    {
+      "slot": 5,
+      "title": "Igast rakendusest.",
+      "subtitle": "Safari, Failid, YouTube, e-post: puuduta Jaga ja vali Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Loeb nagu inimene.",
+      "subtitle": "„1492“ öeldakse „tuhat nelisada üheksakümmend kaks“, iga keele reeglite järgi."
+    },
+    {
+      "slot": 7,
+      "title": "Terve raamat, kuulamiseks.",
+      "subtitle": "Peatükkidega. Jäta ööseks, hommikul on see su raamatukogus."
+    },
+    {
+      "slot": 8,
+      "title": "Ka öösel.",
+      "subtitle": "Hääl, kiirus ja teema, sinu maitse järgi, tagatoas."
+    },
+    {
+      "slot": 9,
+      "title": "Oma ametit tundev papagoi.",
+      "subtitle": "Ta saadab sind esimesest päevast kolmeminutilise jalutuskäiguga."
+    },
+    {
+      "slot": 10,
+      "title": "Keera papagoi üles.",
+      "subtitle": "Tasuta kolmega õrrel. Yappy Parlanchín: põhjatu õrs, igaveseks."
+    }
+  ]
+}

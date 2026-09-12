@@ -1,0 +1,31 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- tapOn:
+    point: "30%,3%"
+- tapOn:
+    text: "Oke"
+    optional: true
+# Abrir la boca solo si no está ya abierta (un fallo anterior la deja abierta).
+- runFlow:
+    when:
+      notVisible:
+        text: "Tempel yang disalin"
+    commands:
+      - tapOn:
+          point: "86%,91%"
+- extendedWaitUntil:
+    visible:
+      text: "Tempel yang disalin"
+    timeout: 8000
+- waitForAnimationToEnd:
+    timeout: 1500
+- takeScreenshot: marketing/screenshots/id/16-boca
+- tapOn:
+    text: "Tempel yang disalin"
+- tapOn:
+    text: "Permitir pegar|Allow Paste"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 4000

@@ -1,5 +1,5 @@
 {
-  "originHash" : "d526b956b2941e51520eb1a181d281939054defb03feb9302533a12952391e2e",
+  "originHash" : "29f1c69796af206c771b38b45d2b9e3cd4dcb160b8d6c38161c226e8cb431a4a",
   "pins" : [
     {
       "identity" : "fluidaudio",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "8048812869b0c7c6fa393e564a4fb6f95126ba23",
         "version" : "0.14.7"
+      }
+    },
+    {
+      "identity" : "purchases-ios-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios-spm.git",
+      "state" : {
+        "revision" : "b5c4652249754d6d8ec415a6bc79a611ea38c839",
+        "version" : "5.88.0"
       }
     }
   ],

@@ -1,0 +1,28 @@
+Deel een artikel, een pdf, een EPUB, een Word-bestand of een video met Yappy, en een papegaai leest het je voor met een natuurlijke stem. Terwijl je kookt, terwijl je wandelt of met je ogen dicht. Alles gebeurt in je iPhone: er verlaat nooit iets het toestel.
+
+GEEN CLOUD, GEEN ACCOUNTS, GEEN TARIEF PER TEKEN
+De stem wordt op je toestel gemaakt door een open model van zo'n 66 miljoen parameters. Geen registratie, geen e-mailadres. Het werkt offline, voor altijd.
+
+31 TALEN EN TIEN STEMMEN, ALLEMAAL MEERTALIG
+Nederlands, Engels, Spaans, Frans, Duits, Italiaans, Portugees, Pools, Roemeens, Zweeds, Deens, Fins, Ests, Litouws, Lets, Kroatisch, Sloveens, Slowaaks, Tsjechisch, Hongaars, Grieks, Bulgaars, Oekraïens, Russisch, Turks, Arabisch, Hindi, Indonesisch, Vietnamees, Koreaans en Japans. Teksten met citaten in een andere taal wisselen vanzelf van taal, alinea voor alinea.
+
+DELEN IS DE DEUR
+Vanuit Safari, Mail, Bestanden of elke andere app: tik op Deel en kies Yappy. De pagina ruimt zichzelf op (weg met menu's, banners en voetteksten) en wat overblijft is de tekst, met zijn koppen en zijn ritme. YouTube-video's luister je als artikelen. Pdf's en EPUB's komen met hoofdstukken. Spraakmemo's worden op het toestel getranscribeerd.
+
+DE SCRIPTSCHRIJVER: VAN GESCHREVEN NAAR GESPROKEN
+Voorlezen is niet spellen. "1492" wordt "veertienhonderdtweeënnegentig"; "Hendrik VIII" wordt "Hendrik de Achtste", maar "Louis XIV" is in het Frans "Louis quatorze". Yappy zet elke tekst om in een leesscript volgens de regels van elke taal, en de stem volgt het zin voor zin terwijl de tekst op het scherm oplicht.
+
+HET SCHERM IS DE KNOP
+Tik waar dan ook om te pauzeren, veeg om een alinea over te slaan, schuif langs de rand om de snelheid te veranderen. En vanaf het toegangsscherm of je koptelefoon, zoals bij elke speler.
+
+DE DRUKKERIJ: HELE BOEKEN ALS LUISTERBOEK
+Laat een boek renderen als je naar bed gaat en word wakker met een luisterboek met hoofdstukken in je bibliotheek. Met de brug kan je Mac of pc het voor je omzetten en vanzelf terugsturen.
+
+ECHT GRATIS, EN EEN PAPEGAAI MET EEN SLEUTELTJE
+Yappy is open source (MIT-licentie). De gratis papegaai draagt drie documenten tegelijk op zijn stok; haal er één weg en er past weer een andere bij, zonder tijdslimiet. Wil je een stok zonder bodem, de luisterboekdrukkerij en de brug naar je computer, draai hem dan op met Yappy Parlanchín: een maand- of jaarabonnement, of één aankoop voor het leven. Opzeggen kan wanneer je wilt.
+
+Abonnementen worden aan het einde van elke periode automatisch verlengd, tenzij je ze minstens 24 uur van tevoren opzegt in je Apple-account.
+Gebruiksvoorwaarden: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy: https://yappy.joseluissaorin.com/en/privacy
+
+Met liefde gemaakt door José Luis Saorín. Een filoloog die wilde horen wat hij las, en een zesjarige die met de papegaai wilde spelen.

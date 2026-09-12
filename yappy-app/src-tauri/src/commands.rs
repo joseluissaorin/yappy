@@ -1111,6 +1111,9 @@ pub async fn render_audiobook_cmd(
     output_path: String,
     metadata: Option<AudiobookMeta>,
 ) -> Result<(), String> {
+    if !crate::compras::es_pro() {
+        return Err("parlanchin".into());
+    }
     if paragraphs.is_empty() {
         return Err("nothing to render".into());
     }
@@ -1417,6 +1420,25 @@ pub async fn render_audiobook_cmd(
     })
     .await
     .map_err(|e| e.to_string())?
+}
+
+/// EL PERMISO DE AVISOS (el paseo lo pide explicando para qué). En
+/// escritorio no hay diálogo: se da por concedido.
+#[tauri::command]
+pub fn avisos_pedir_cmd() {
+    #[cfg(target_os = "ios")]
+    crate::mobile::notify_request();
+}
+
+/// 0 sin decidir · 1 concedido · 2 denegado.
+#[tauri::command]
+pub fn avisos_estado_cmd() -> i32 {
+    #[cfg(target_os = "ios")]
+    {
+        return crate::mobile::notify_status();
+    }
+    #[cfg(not(target_os = "ios"))]
+    1
 }
 
 /// Begin reading a document. Called from the document window after the user clicks
@@ -1892,7 +1914,69 @@ pub fn library_tiempos_cmd(path: String) -> Vec<crate::yappy_pack::TiempoFrase> 
 /// título, y su título DICHO a la caché de dichos (suena al instante).
 #[tauri::command]
 pub fn library_import_yappy_cmd(app: AppHandle, ruta: String) -> Result<String, String> {
-    let origen = std::path::Path::new(&ruta);
+    importar_yappy(&app, &ruta)
+}
+
+/// LOS CUENTOS EMPAQUETADOS: los `.yappy` de resources/cuentos entran en la
+/// biblioteca en la primera apertura (una vez por título). Suenan sin
+/// motor: son la primera escucha del onboarding mientras llegan las voces.
+pub fn importar_cuentos_empaquetados(app: &AppHandle) {
+    let Ok(base) = app.path().resource_dir() else {
+        return;
+    };
+    let dirs = [
+        base.join("_up_").join("resources").join("cuentos"),
+        base.join("resources").join("cuentos"),
+        base.join("cuentos"),
+    ];
+    let Some(dir) = dirs.iter().find(|d| d.is_dir()) else {
+        return;
+    };
+    let marca = app
+        .path()
+        .app_data_dir()
+        .ok()
+        .map(|d| d.join("cuentos-importados.json"));
+    let mut hechos: Vec<String> = marca
+        .as_ref()
+        .and_then(|m| std::fs::read_to_string(m).ok())
+        .and_then(|s| serde_json::from_str(&s).ok())
+        .unwrap_or_default();
+    let Ok(entradas) = std::fs::read_dir(dir) else {
+        return;
+    };
+    let mut cambio = false;
+    for e in entradas.flatten() {
+        let p = e.path();
+        if p.extension().and_then(|x| x.to_str()) != Some("yappy") {
+            continue;
+        }
+        let nombre = p
+            .file_name()
+            .map(|n| n.to_string_lossy().to_string())
+            .unwrap_or_default();
+        if hechos.contains(&nombre) {
+            continue;
+        }
+        match importar_yappy(app, &p.to_string_lossy()) {
+            Ok(destino) => {
+                tracing::info!("cuento empaquetado en la biblioteca: {destino}");
+                hechos.push(nombre);
+                cambio = true;
+            }
+            Err(err) => tracing::warn!("cuento empaquetado {nombre}: {err}"),
+        }
+    }
+    if cambio {
+        if let (Some(m), Ok(json)) = (marca, serde_json::to_string(&hechos)) {
+            let _ = std::fs::write(m, json);
+        }
+    }
+}
+
+/// Copia un `.yappy` a la biblioteca (Documentos) con su título como nombre.
+pub fn importar_yappy(app: &AppHandle, ruta: &str) -> Result<String, String> {
+    let origen = std::path::Path::new(ruta);
     if !crate::yappy_pack::es_yappy(origen) {
         return Err("no es un archivo .yappy".into());
     }
@@ -1920,7 +2004,7 @@ pub fn library_import_yappy_cmd(app: AppHandle, ruta: String) -> Result<String, 
     }
     std::fs::copy(origen, &destino).map_err(|e| e.to_string())?;
     // El título dicho, a la caché de dichos de SU voz.
-    if let Ok(wav) = dicho_path(&app, &mani.voz, &mani.titulo) {
+    if let Ok(wav) = dicho_path(app, &mani.voz, &mani.titulo) {
         let _ = crate::yappy_pack::extraer_titulo_wav(&destino, &wav);
     }
     Ok(destino.to_string_lossy().to_string())
@@ -2444,6 +2528,29 @@ fn muestra_path(app: &AppHandle, voice: &str, lang: &str) -> Result<std::path::P
     Ok(muestras_dir(app)?.join(format!("{v}-{lang}-v1.wav")))
 }
 
+/// La presentación EMPAQUETADA de una voz (resources/muestras, AAC): suena
+/// sin motor, desde el primer segundo de la primera apertura. Tauri copia
+/// `../resources/*` bajo `_up_/resources/` en el bundle.
+fn muestra_empaquetada(app: &AppHandle, voice: &str, lang: &str) -> Option<std::path::PathBuf> {
+    let v: String = voice
+        .chars()
+        .filter(|c| c.is_alphanumeric())
+        .collect::<String>()
+        .to_lowercase();
+    let nombre = format!("{v}-{lang}.m4a");
+    let base = app.path().resource_dir().ok()?;
+    [
+        base.join("_up_")
+            .join("resources")
+            .join("muestras")
+            .join(&nombre),
+        base.join("resources").join("muestras").join(&nombre),
+        base.join("muestras").join(&nombre),
+    ]
+    .into_iter()
+    .find(|c| c.exists())
+}
+
 /// Sintetiza la presentación de una voz y la escribe en la caché. Bloqueante:
 /// llamar desde spawn_blocking o el hilo de cocina.
 fn cocinar_muestra_blocking(
@@ -2519,9 +2626,10 @@ pub fn precocinar_muestras(app: AppHandle, state: Arc<AppState>) {
                 let faltan: Vec<String> = yappy_core::VOICES
                     .iter()
                     .filter(|v| {
-                        muestra_path(&app, v.name, &lang)
-                            .map(|p| !p.exists())
-                            .unwrap_or(false)
+                        muestra_empaquetada(&app, v.name, &lang).is_none()
+                            && muestra_path(&app, v.name, &lang)
+                                .map(|p| !p.exists())
+                                .unwrap_or(false)
                     })
                     .map(|v| v.name.to_string())
                     .collect();
@@ -2560,10 +2668,14 @@ pub async fn sample_voice(
     };
     #[cfg(target_os = "ios")]
     {
-        // Camino instantáneo: la muestra ya está cocinada.
+        // Camino instantáneo: la muestra ya está cocinada, o viene
+        // EMPAQUETADA con la app (sin motor: la primera apertura ya habla).
         let p = muestra_path(&app, &voice, &lang)?;
         if p.exists() {
             return Ok(crate::mobile::efecto_play(&p.to_string_lossy()));
+        }
+        if let Some(e) = muestra_empaquetada(&app, &voice, &lang) {
+            return Ok(crate::mobile::efecto_play(&e.to_string_lossy()));
         }
         // Aún no cocinada. Con una sesión de lectura viva NO se sintetiza
         // (dos síntesis a la vez tumbaron el simulador): la cocina de fondo
@@ -2799,6 +2911,8 @@ pub async fn decir_cmd(
     app: AppHandle,
     state: State<'_, Arc<AppState>>,
     texto: String,
+    velocidad: Option<f32>,
+    idioma: Option<String>,
 ) -> Result<f64, String> {
     #[cfg(target_os = "ios")]
     {
@@ -2823,14 +2937,21 @@ pub async fn decir_cmd(
                 let s = st.settings.lock().unwrap();
                 (s.voice.clone(), s.default_lang.clone())
             };
-            let lang = if lang == "na" || lang.is_empty() {
-                "en".into()
-            } else {
-                lang
+            // El paseo pide idioma y velocidad a mano (los sellos de idioma,
+            // el deslizador con demo en vivo).
+            let lang = match idioma {
+                Some(l) if !l.is_empty() && l != "na" => l,
+                _ => {
+                    if lang == "na" || lang.is_empty() {
+                        "en".into()
+                    } else {
+                        lang
+                    }
+                }
             };
             let opts = SynthesisOptions {
                 voice,
-                speed: 1.0,
+                speed: velocidad.unwrap_or(1.0).clamp(0.5, 2.0),
                 default_lang: lang,
                 total_steps: Quality::Fast.total_steps(),
                 seed: Some(7),
@@ -2859,9 +2980,195 @@ pub async fn decir_cmd(
     }
     #[cfg(not(target_os = "ios"))]
     {
-        let _ = (app, state, texto);
+        let _ = (app, state, texto, velocidad, idioma);
         Ok(0.0)
     }
+}
+
+/// LA LIBRETA DEL PASEO, a solas. Guardar los ajustes ENTEROS desde el
+/// paseo pisaba lo que se hubiera cambiado por el camino (setVoice,
+/// setSpeed, el tema): esto toca solo `paseo` (y, si toca, cierra el
+/// primer arranque).
+#[tauri::command]
+pub async fn set_paseo_cmd(
+    app: AppHandle,
+    state: State<'_, Arc<AppState>>,
+    paseo: crate::settings::Paseo,
+) -> Result<(), String> {
+    {
+        let mut s = state.settings.lock().unwrap();
+        if paseo.hecho {
+            s.first_launch_done = true;
+        }
+        s.paseo = paseo;
+    }
+    let snapshot = state.settings.lock().unwrap().clone();
+    let _guard = state.save_lock.lock().unwrap();
+    settings::SettingsStore::save(&app, &snapshot).map_err(|e| e.to_string())
+}
+
+// ─── LOS CUENTOS DE LA CASA (resources/cuentos/*.md) ─────────────────────
+
+#[derive(serde::Serialize, Clone)]
+pub struct Cuento {
+    pub id: String,
+    pub titulo: String,
+    pub autor: String,
+    pub idioma: String,
+    /// La primera frase, para que el loro la diga de anticipo.
+    pub primera_frase: String,
+    pub palabras: usize,
+    #[serde(skip)]
+    pub texto: String,
+}
+
+fn dir_cuentos(app: &AppHandle) -> Option<std::path::PathBuf> {
+    let base = app.path().resource_dir().ok()?;
+    [
+        base.join("_up_").join("resources").join("cuentos"),
+        base.join("resources").join("cuentos"),
+        base.join("cuentos"),
+    ]
+    .into_iter()
+    .find(|d| d.is_dir())
+}
+
+/// Parsea un cuento con cabecera YAML sencilla (`clave: valor` entre `---`).
+fn parsear_cuento(id: &str, crudo: &str) -> Option<Cuento> {
+    let resto = crudo.strip_prefix("---")?;
+    let (cabecera, cuerpo) = resto.split_once("\n---")?;
+    let mut titulo = String::new();
+    let mut autor = String::new();
+    let mut idioma = String::from("es");
+    for linea in cabecera.lines() {
+        if let Some((k, v)) = linea.split_once(':') {
+            let v = v.trim().trim_matches('"').trim_matches('\'').to_string();
+            match k.trim() {
+                "titulo" => titulo = v,
+                "autor" => autor = v,
+                "idioma" => idioma = v,
+                _ => {}
+            }
+        }
+    }
+    let texto = cuerpo.trim().to_string();
+    if titulo.is_empty() || texto.is_empty() {
+        return None;
+    }
+    let primera = texto
+        .lines()
+        .find(|l| !l.trim().is_empty())
+        .unwrap_or("")
+        .trim();
+    let corte = primera
+        .char_indices()
+        .find(|(i, c)| *i > 20 && matches!(c, '.' | '!' | '?' | '…'))
+        .map(|(i, c)| i + c.len_utf8())
+        .unwrap_or(primera.len().min(160));
+    let primera_frase = primera[..corte].to_string();
+    Some(Cuento {
+        id: id.to_string(),
+        titulo,
+        autor,
+        idioma,
+        primera_frase,
+        palabras: texto.split_whitespace().count(),
+        texto,
+    })
+}
+
+pub fn cuento_empaquetado(app: &AppHandle, id: &str) -> Option<Cuento> {
+    let dir = dir_cuentos(app)?;
+    let seguro: String = id
+        .chars()
+        .filter(|c| c.is_alphanumeric() || *c == '-')
+        .collect();
+    let crudo = std::fs::read_to_string(dir.join(format!("{seguro}.md"))).ok()?;
+    parsear_cuento(&seguro, &crudo)
+}
+
+/// Los cuentos empaquetados, en cualquier idioma (el paseo elige los del
+/// idioma del usuario y, si no hay, los del inglés).
+#[tauri::command]
+pub fn cuentos_listar_cmd(app: AppHandle) -> Vec<Cuento> {
+    let Some(dir) = dir_cuentos(&app) else {
+        return Vec::new();
+    };
+    let Ok(entradas) = std::fs::read_dir(dir) else {
+        return Vec::new();
+    };
+    let mut out: Vec<Cuento> = entradas
+        .flatten()
+        .filter_map(|e| {
+            let p = e.path();
+            if p.extension().and_then(|x| x.to_str()) != Some("md") {
+                return None;
+            }
+            let id = p.file_stem()?.to_string_lossy().to_string();
+            let crudo = std::fs::read_to_string(&p).ok()?;
+            parsear_cuento(&id, &crudo)
+        })
+        .collect();
+    out.sort_by(|a, b| a.titulo.cmp(&b.titulo));
+    out
+}
+
+// ─── EL PASEO: portapapeles, el loro en PiP y el usuario de la tienda ────
+
+/// ¿Hay un enlace copiado? Sin leer el portapapeles (iOS no avisa).
+#[tauri::command]
+pub fn portapapeles_tiene_enlace_cmd() -> bool {
+    #[cfg(target_os = "ios")]
+    {
+        crate::mobile::portapapeles_tiene_enlace()
+    }
+    #[cfg(not(target_os = "ios"))]
+    {
+        false
+    }
+}
+
+/// El loro en PiP: un vídeo mudo empaquetado que sigue al usuario a Safari
+/// mientras aprende a compartir. `x, y, ancho, alto` en puntos, donde la
+/// página deja el hueco.
+#[tauri::command]
+pub fn pip_iniciar_cmd(
+    app: AppHandle,
+    x: f64,
+    y: f64,
+    ancho: f64,
+    alto: f64,
+) -> Result<(), String> {
+    #[cfg(target_os = "ios")]
+    {
+        let base = app.path().resource_dir().map_err(|e| e.to_string())?;
+        let video = [
+            base.join("_up_")
+                .join("resources")
+                .join("paseo")
+                .join("loro-comparte.mp4"),
+            base.join("resources")
+                .join("paseo")
+                .join("loro-comparte.mp4"),
+            base.join("paseo").join("loro-comparte.mp4"),
+        ]
+        .into_iter()
+        .find(|c| c.exists())
+        .ok_or_else(|| "sin vídeo del loro".to_string())?;
+        crate::mobile::pip_iniciar(&video.to_string_lossy(), x, y, ancho, alto);
+        Ok(())
+    }
+    #[cfg(not(target_os = "ios"))]
+    {
+        let _ = (app, x, y, ancho, alto);
+        Err("sin PiP en esta plataforma".into())
+    }
+}
+
+#[tauri::command]
+pub fn pip_parar_cmd() {
+    #[cfg(target_os = "ios")]
+    crate::mobile::pip_parar();
 }
 
 /// La presentación de cada voz, en el idioma preferido del usuario: los 31

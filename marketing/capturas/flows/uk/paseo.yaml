@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Привіт, я твій папуга"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/uk/01-paseo-hola
+- tapOn:
+    text: "Обери мені голос"
+- extendedWaitUntil:
+    visible:
+      text: "Усе відбувається на твоєму телефоні"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/uk/02-paseo-idiomas
+- tapOn:
+    text: "Далі"
+- extendedWaitUntil:
+    visible:
+      text: "Обери свого птаха"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/uk/03-paseo-pajaro
+- tapOn:
+    text: "Залишаюся на James"
+- extendedWaitUntil:
+    visible:
+      text: "Що ти мені даси\\?"
+    timeout: 10000
+- tapOn:
+    text: "Статті"
+- tapOn:
+    text: "Книжки"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/uk/04-paseo-que
+- tapOn:
+    text: "Далі"
+- extendedWaitUntil:
+    visible:
+      text: "Коли ти мене слухаєш\\?"
+    timeout: 10000
+- tapOn:
+    text: "Готування"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/uk/05-paseo-cuando
+- tapOn:
+    text: "Далі"
+- extendedWaitUntil:
+    visible:
+      text: "З якою швидкістю\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/uk/06-paseo-velocidad
+- tapOn:
+    text: "Далі"
+- extendedWaitUntil:
+    visible:
+      text: "Скільки в тебе є для читання\\?"
+    timeout: 10000
+- tapOn:
+    text: "Ціла гора"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/uk/07-paseo-cuanto
+- tapOn:
+    text: "Далі"
+- extendedWaitUntil:
+    visible:
+      text: "Твоє, або історія"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/uk/08-paseo-escucha
+- tapOn:
+    text: "(?i)Пізніше"
+- extendedWaitUntil:
+    visible:
+      text: "Екран і є кнопка"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Пізніше"
+- extendedWaitUntil:
+    visible:
+      text: "Поділитися вирішує все"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/uk/09-paseo-compartir
+- tapOn:
+    text: "(?i)Пізніше"
+- extendedWaitUntil:
+    visible:
+      text: "І забираєш це з собою"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/uk/10-paseo-exportar
+- tapOn:
+    text: "(?i)Пізніше"
+- extendedWaitUntil:
+    visible:
+      text: "Прикріпи мене до улюблених"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/uk/11-paseo-favoritos
+- tapOn:
+    text: "Готово"
+- extendedWaitUntil:
+    visible:
+      text: "Твій папуга"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/uk/12-paseo-resumen
+- tapOn:
+    text: "Далі"
+- extendedWaitUntil:
+    visible:
+      text: "Три одразу"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/uk/13-paseo-percha
+- tapOn:
+    text: "Далі"
+- extendedWaitUntil:
+    visible:
+      text: "Обери, як завести папугу"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/uk/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Почати з трьох на жердинці"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots/uk/15-paseo-cuerda-pie
+- tapOn:
+    text: "Почати з трьох на жердинці"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Гаразд"
+    optional: true
+- takeScreenshot: marketing/screenshots/uk/17-cinta-vacia

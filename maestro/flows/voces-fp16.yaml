@@ -1,0 +1,29 @@
+# Las voces sin muro: con el modelo fp16 recién llegado del espejo, el loro
+# lee su manual («Enséñame») y las muestras empaquetadas suenan sin cocina.
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: "yappy"
+    timeout: 15000
+- tapOn:
+    point: "50%,50%"
+- assertNotVisible:
+    text: ".*380 MB.*"
+- tapOn:
+    text: "Enséñame|Show me"
+- extendedWaitUntil:
+    visible:
+      text: "sonando|playing|preparando.*|preparing.*"
+    timeout: 25000
+- takeScreenshot: /tmp/paywall/09-manual
+- tapOn:
+    text: "la trastienda|the back room|.*trastienda.*"
+- extendedWaitUntil:
+    visible:
+      text: "Velocidad|Speed"
+    timeout: 8000
+- tapOn:
+    text: "James"
+- takeScreenshot: /tmp/paywall/10-cromo

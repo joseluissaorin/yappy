@@ -1,0 +1,980 @@
+tienda,busqueda,popularidad,dificultad,apps,medido,cubierta_antes,cubierta_ahora,locales_que_la_cubren_ahora
+au,offline,61,71,248,2026-09-12 09:12:59,sí,no,
+au,text to speech,50,23,249,2026-09-12 09:12:51,sí,sí,en-AU en-GB
+au,pdf reader,50,37,249,2026-09-12 09:12:53,sí,sí,en-AU en-GB
+au,epub reader,44,42,250,2026-09-12 09:12:55,sí,sí,en-AU en-GB
+au,ebook reader,43,43,250,2026-09-12 09:12:58,no,sí,en-AU
+au,audiobook,38,63,250,2026-09-12 09:12:54,sí,sí,en-AU en-GB
+au,voice reader,16,19,250,2026-09-12 09:12:52,sí,sí,en-AU en-GB
+au,read to me,16,44,248,2026-09-12 09:12:55,no,no,
+au,dyslexia,9,11,247,2026-09-12 09:12:56,sí,sí,en-AU en-GB
+au,text reader,9,21,247,2026-09-12 09:12:53,sí,sí,en-AU en-GB
+au,read out loud,9,21,249,2026-09-12 09:12:56,no,sí,en-AU
+au,read aloud,9,36,249,2026-09-12 09:12:52,sí,sí,en-GB
+au,text to voice,8,19,248,2026-09-12 09:12:57,sí,sí,en-AU en-GB
+au,reader,8,47,250,2026-09-12 09:12:59,sí,sí,en-AU en-GB
+au,narrator,5,13,249,2026-09-12 09:12:58,no,sí,en-AU en-GB
+au,pdf to audio,5,15,249,2026-09-12 09:12:54,no,sí,en-AU
+au,speak text,5,17,249,2026-09-12 09:12:57,no,no,
+au,tts,5,21,249,2026-09-12 09:12:52,sí,sí,en-AU en-GB
+bg,text to speech,30,7,216,2026-09-12 09:17:22,sí,sí,en-GB
+bg,четене на глас,5,5,0,2026-09-12 09:17:20,no,no,
+bg,pdf четец,5,5,0,2026-09-12 09:17:22,no,no,
+bg,дислексия,5,5,1,2026-09-12 09:17:22,no,no,
+bg,текст в реч,5,7,18,2026-09-12 09:17:20,no,no,
+bg,аудиокнига,5,7,83,2026-09-12 09:17:21,no,no,
+bg,tts,5,7,215,2026-09-12 09:17:21,sí,sí,en-GB
+bg,read aloud,5,9,224,2026-09-12 09:17:23,sí,sí,en-GB
+bg,epub,5,17,236,2026-09-12 09:17:23,sí,sí,en-GB
+bg,глас,5,19,55,2026-09-12 09:17:23,no,no,
+bg,четец,5,23,226,2026-09-12 09:17:22,no,no,
+bg,audiobook,5,42,236,2026-09-12 09:17:24,sí,sí,en-GB
+br,pdf,72,70,240,2026-09-12 09:19:39,sí,sí,pt-BR en-GB
+br,offline,69,64,244,2026-09-12 09:14:26,sí,no,
+br,livros,66,68,246,2026-09-12 09:19:39,no,sí,pt-BR
+br,leitura,55,65,250,2026-09-12 09:14:25,sí,no,
+br,audiobook,54,63,248,2026-09-12 09:14:21,sí,sí,pt-BR en-GB
+br,epub,51,45,250,2026-09-12 09:19:39,sí,sí,pt-BR en-GB
+br,ler,47,66,250,2026-09-12 09:14:24,sí,sí,pt-BR
+br,voz,46,53,250,2026-09-12 09:14:23,sí,sí,pt-BR
+br,leitor de livros,43,50,248,2026-09-12 09:19:37,no,sí,pt-BR
+br,ler livros,43,57,248,2026-09-12 09:19:41,no,sí,pt-BR
+br,ler texto,41,23,250,2026-09-12 09:19:36,sí,sí,pt-BR
+br,leitor,40,58,247,2026-09-12 09:14:24,sí,sí,pt-BR
+br,artigos,14,15,245,2026-09-12 09:14:27,sí,sí,pt-BR
+br,narrador,10,37,146,2026-09-12 09:14:21,no,sí,pt-BR
+br,dislexia,9,19,248,2026-09-12 09:14:22,sí,sí,pt-BR
+br,tts,8,17,249,2026-09-12 09:14:21,sí,sí,pt-BR en-GB
+br,text to speech,7,23,248,2026-09-12 09:14:26,sí,sí,pt-BR en-GB
+br,acessibilidade,5,9,222,2026-09-12 09:14:22,sí,no,
+br,leitura em voz alta,5,19,56,2026-09-12 09:14:24,sí,no,
+br,conversor de texto em voz,5,19,67,2026-09-12 09:14:26,no,no,
+br,texto falado,5,21,250,2026-09-12 09:19:36,no,no,
+br,leitor de voz,5,23,244,2026-09-12 09:14:19,sí,sí,pt-BR
+br,voz para texto,5,23,250,2026-09-12 09:19:36,no,no,
+br,narrador de texto,5,23,110,2026-09-12 09:19:37,no,sí,pt-BR
+br,leitor de voz alta,5,23,74,2026-09-12 09:19:38,sí,sí,pt-BR
+br,voz natural,5,34,77,2026-09-12 09:19:40,no,no,
+br,sintetizador de voz,5,37,249,2026-09-12 09:14:23,no,no,
+br,texto para voz,5,38,250,2026-09-12 09:14:18,no,no,
+br,falar texto,5,38,249,2026-09-12 09:19:38,no,no,
+br,narrador de voz,5,38,161,2026-09-12 09:19:40,no,sí,pt-BR
+br,leitor de texto em voz alta,5,39,183,2026-09-12 09:19:36,sí,sí,pt-BR
+br,leitor epub,5,41,250,2026-09-12 09:14:22,sí,sí,pt-BR
+br,leitura de texto,5,41,250,2026-09-12 09:19:37,sí,no,
+br,texto em voz,5,42,250,2026-09-12 09:14:18,sí,sí,pt-BR
+br,ouvir pdf,5,43,97,2026-09-12 09:19:38,no,sí,pt-BR
+br,ler em voz alta,5,46,103,2026-09-12 09:14:19,sí,sí,pt-BR
+br,leitor de texto,5,47,245,2026-09-12 09:14:19,sí,sí,pt-BR
+br,leitor pdf,5,51,243,2026-09-12 09:14:20,sí,sí,pt-BR
+br,ler pdf,5,51,245,2026-09-12 09:14:23,sí,sí,pt-BR
+br,ouvir livros,5,57,247,2026-09-12 09:14:26,no,sí,pt-BR
+br,estudar,5,58,249,2026-09-12 09:19:40,no,no,
+br,audiolivro,5,63,250,2026-09-12 09:14:20,sí,sí,pt-BR
+ca,offline,59,75,248,2026-09-12 09:12:48,sí,no,
+ca,pdf reader,54,23,248,2026-09-12 09:12:42,sí,sí,en-CA
+ca,text to speech,51,42,250,2026-09-12 09:12:40,sí,sí,en-CA fr-CA
+ca,epub reader,48,50,250,2026-09-12 09:12:43,sí,sí,en-CA
+ca,reader,46,54,249,2026-09-12 09:12:47,sí,sí,en-CA
+ca,ebook reader,45,45,249,2026-09-12 09:12:46,no,sí,en-CA
+ca,audiobook,40,70,250,2026-09-12 09:12:43,sí,sí,en-CA
+ca,read aloud,36,41,249,2026-09-12 09:12:40,sí,sí,en-CA
+ca,read out loud,25,37,249,2026-09-12 09:12:44,no,sí,en-CA
+ca,dyslexia,20,11,250,2026-09-12 09:12:44,sí,sí,en-CA
+ca,voice reader,19,43,248,2026-09-12 09:12:41,sí,sí,en-CA
+ca,text reader,9,38,247,2026-09-12 09:12:41,sí,sí,en-CA
+ca,tts,8,23,248,2026-09-12 09:12:40,sí,sí,en-CA fr-CA
+ca,synthèse vocale,6,11,249,2026-09-12 09:12:48,sí,sí,fr-CA
+ca,text to voice,6,37,247,2026-09-12 09:12:45,sí,sí,en-CA
+ca,read to me,6,43,249,2026-09-12 09:12:44,no,no,
+ca,lire à voix haute,5,9,178,2026-09-12 09:12:48,sí,sí,fr-CA
+ca,narrator,5,13,248,2026-09-12 09:12:46,no,sí,en-CA
+ca,speak text,5,17,249,2026-09-12 09:12:45,no,no,
+ca,pdf to audio,5,39,248,2026-09-12 09:12:42,sí,sí,en-CA fr-CA
+ca,lecteur de texte,5,40,250,2026-09-12 09:12:48,sí,sí,fr-CA
+cz,youtube,91,76,197,2026-09-12 09:15:43,sí,no,
+cz,offline,56,50,216,2026-09-12 09:15:42,sí,sí,cs
+cz,epub,36,23,231,2026-09-12 09:15:41,sí,sí,cs en-GB
+cz,text to speech,32,9,218,2026-09-12 09:15:39,sí,sí,cs en-GB
+cz,předčítání,5,5,20,2026-09-12 09:15:37,no,sí,cs
+cz,hlasová syntéza,5,5,0,2026-09-12 09:15:38,no,no,
+cz,přístupnost,5,5,40,2026-09-12 09:15:40,sí,no,
+cz,čtení nahlas,5,7,35,2026-09-12 09:15:37,sí,no,
+cz,dyslexie,5,7,203,2026-09-12 09:15:40,sí,sí,cs
+cz,text na řeč,5,9,151,2026-09-12 09:15:37,sí,sí,cs
+cz,tts,5,11,218,2026-09-12 09:15:39,sí,sí,cs en-GB
+cz,čtečka textu,5,13,87,2026-09-12 09:15:38,no,no,
+cz,články,5,13,40,2026-09-12 09:15:42,sí,no,
+cz,hlas,5,19,233,2026-09-12 09:15:41,sí,sí,cs
+cz,čtení,5,21,242,2026-09-12 09:15:42,sí,no,
+cz,audiokniha,5,38,162,2026-09-12 09:15:38,sí,sí,cs
+cz,čtečka,5,38,236,2026-09-12 09:15:40,sí,sí,cs
+cz,pdf čtečka,5,40,206,2026-09-12 09:15:38,sí,sí,cs
+de,youtube,89,88,185,2026-09-12 09:13:44,sí,no,
+de,pdf,69,67,209,2026-09-12 09:19:52,sí,sí,de-DE en-GB
+de,bücher,63,68,220,2026-09-12 09:19:53,no,no,
+de,offline,61,69,218,2026-09-12 09:13:42,sí,no,
+de,lernen,58,75,200,2026-09-12 09:19:53,no,no,
+de,pdf reader,53,57,210,2026-09-12 09:13:36,sí,sí,en-GB
+de,text to speech,52,42,211,2026-09-12 09:13:41,sí,sí,de-DE en-GB
+de,lesen,50,65,209,2026-09-12 09:13:42,no,sí,de-DE
+de,ebook reader,49,53,222,2026-09-12 09:13:39,no,no,
+de,ebook,48,64,222,2026-09-12 09:19:54,no,sí,de-DE
+de,lese app,47,72,215,2026-09-12 09:19:54,no,no,
+de,text vorlesen app,46,37,242,2026-09-12 09:19:49,no,sí,de-DE
+de,reader,46,55,220,2026-09-12 09:13:43,sí,sí,en-GB
+de,epub,33,40,229,2026-09-12 09:13:39,sí,sí,de-DE en-GB
+de,vorlese app,23,21,220,2026-09-12 09:13:34,no,sí,de-DE
+de,stimme,22,45,212,2026-09-12 09:13:41,no,sí,de-DE
+de,text zu sprache,12,38,226,2026-09-12 09:13:34,no,no,
+de,vorlesen,9,21,222,2026-09-12 09:13:33,sí,sí,de-DE
+de,texte vorlesen,8,23,233,2026-09-12 09:19:49,no,no,
+de,tts,8,45,236,2026-09-12 09:13:37,sí,sí,de-DE en-GB
+de,artikel,7,23,214,2026-09-12 09:13:44,sí,sí,de-DE
+de,pdf vorlesen,7,45,231,2026-09-12 09:13:36,sí,sí,de-DE
+de,diktieren,7,45,218,2026-09-12 09:19:55,no,no,
+de,texte vorlesen lassen,6,21,235,2026-09-12 09:13:37,no,no,
+de,sprache zu text,6,41,236,2026-09-12 09:19:51,no,no,
+de,hörbuch,6,65,218,2026-09-12 09:13:35,sí,sí,de-DE
+de,legasthenie,5,5,126,2026-09-12 09:13:38,sí,sí,de-DE
+de,artikel vorlesen,5,5,40,2026-09-12 09:13:40,sí,sí,de-DE
+de,sprachsynthese,5,9,30,2026-09-12 09:13:38,no,no,
+de,sprachausgabe app,5,9,146,2026-09-12 09:19:50,no,sí,de-DE
+de,legasthenie app,5,9,126,2026-09-12 09:19:55,no,sí,de-DE
+de,hörbuch erstellen,5,11,17,2026-09-12 09:13:36,no,no,
+de,laut vorlesen,5,11,33,2026-09-12 09:13:40,no,no,
+de,barrierefrei,5,13,165,2026-09-12 09:13:38,sí,no,
+de,vorlesen lassen,5,15,218,2026-09-12 09:19:49,sí,no,
+de,vorleseapp,5,19,220,2026-09-12 09:19:51,no,no,
+de,pdf vorlesen lassen,5,21,233,2026-09-12 09:19:50,sí,no,
+de,vorlese,5,21,226,2026-09-12 09:19:52,no,sí,de-DE
+de,vorlesefunktion,5,33,2,2026-09-12 09:13:44,no,no,
+de,sprachausgabe,5,35,231,2026-09-12 09:13:34,sí,sí,de-DE
+de,vorleser,5,36,225,2026-09-12 09:13:35,sí,sí,de-DE
+de,tts app,5,40,230,2026-09-12 09:19:49,no,sí,de-DE
+de,text vorlesen,5,41,235,2026-09-12 09:13:33,sí,sí,de-DE
+de,text to speech deutsch,5,45,233,2026-09-12 09:19:51,no,no,
+de,bücher vorlesen,5,47,222,2026-09-12 09:13:40,no,no,
+de,hörbuch app,5,62,220,2026-09-12 09:19:50,no,sí,de-DE
+de,bücher hören,5,63,217,2026-09-12 09:13:43,no,no,
+dk,youtube,95,75,189,2026-09-12 09:15:12,sí,no,
+dk,lydbøger,57,54,115,2026-09-12 09:15:06,no,no,
+dk,offline,41,57,224,2026-09-12 09:15:10,sí,sí,da
+dk,text to speech,30,11,215,2026-09-12 09:15:07,sí,sí,da en-GB
+dk,lydbog,28,60,205,2026-09-12 09:15:05,sí,sí,da
+dk,epub,24,17,229,2026-09-12 09:15:09,sí,sí,da en-GB
+dk,talesyntese,5,5,7,2026-09-12 09:15:05,no,sí,da
+dk,læse op,5,7,22,2026-09-12 09:15:03,no,no,
+dk,tekst til tale,5,11,223,2026-09-12 09:15:02,sí,sí,da
+dk,oplæsning,5,11,83,2026-09-12 09:15:03,sí,sí,da
+dk,pdf læser,5,13,230,2026-09-12 09:15:06,sí,no,
+dk,tts,5,13,216,2026-09-12 09:15:07,sí,sí,da en-GB
+dk,tilgængelighed,5,13,81,2026-09-12 09:15:08,sí,no,
+dk,ordblindhed,5,15,31,2026-09-12 09:15:08,no,no,
+dk,artikler,5,15,144,2026-09-12 09:15:11,sí,no,
+dk,oplæser,5,17,121,2026-09-12 09:15:04,no,sí,da
+dk,læs op,5,19,218,2026-09-12 09:15:11,no,sí,da
+dk,stemme,5,23,228,2026-09-12 09:15:10,sí,sí,da
+dk,ordblind,5,29,195,2026-09-12 09:15:08,sí,sí,da
+ee,pdf,49,21,221,2026-09-12 09:17:29,sí,sí,en-GB
+ee,text to speech,24,7,219,2026-09-12 09:17:28,sí,sí,en-GB
+ee,audiobook,22,21,241,2026-09-12 09:17:30,sí,sí,en-GB
+ee,tekst kõneks,5,5,0,2026-09-12 09:17:27,no,no,
+ee,ettelugemine,5,5,0,2026-09-12 09:17:27,no,no,
+ee,kõnesüntees,5,5,0,2026-09-12 09:17:28,no,no,
+ee,lugeja,5,5,0,2026-09-12 09:17:29,no,no,
+ee,tts,5,7,217,2026-09-12 09:17:28,sí,sí,en-GB
+ee,read aloud,5,9,232,2026-09-12 09:17:29,sí,sí,en-GB
+ee,audioraamat,5,13,16,2026-09-12 09:17:27,no,no,
+es,youtube,88,83,192,2026-09-12 09:13:14,sí,no,
+es,pdf,67,59,212,2026-09-12 09:19:27,sí,sí,es-ES en-GB
+es,libros,65,56,224,2026-09-12 09:13:13,no,sí,es-ES
+es,offline,55,57,218,2026-09-12 09:13:12,sí,no,
+es,estudiar,54,59,230,2026-09-12 09:19:28,no,sí,es-ES
+es,epub,50,41,227,2026-09-12 09:19:27,sí,sí,es-ES en-GB
+es,audiolibros,50,57,222,2026-09-12 09:13:05,sí,sí,es-ES
+es,leer,46,59,220,2026-09-12 09:13:11,sí,sí,es-ES
+es,lectura,45,55,229,2026-09-12 09:19:25,no,no,
+es,lector de textos,44,40,230,2026-09-12 09:13:03,sí,sí,es-ES
+es,texto a voz,43,39,234,2026-09-12 09:13:01,sí,sí,es-ES
+es,lector epub,43,42,226,2026-09-12 09:13:08,sí,sí,es-ES
+es,lector pdf,43,50,226,2026-09-12 09:13:04,sí,sí,es-ES
+es,voz,34,48,230,2026-09-12 09:13:07,sí,sí,es-ES
+es,text to speech,32,37,220,2026-09-12 09:13:13,sí,sí,en-GB
+es,leer texto,15,43,235,2026-09-12 09:19:22,sí,sí,es-ES
+es,narrador,11,23,191,2026-09-12 09:13:07,no,sí,es-ES
+es,sin conexión,9,67,239,2026-09-12 09:13:13,no,no,
+es,tts,8,40,212,2026-09-12 09:13:06,sí,sí,es-ES en-GB
+es,lector de documentos,8,47,202,2026-09-12 09:13:11,no,sí,es-ES
+es,lector de libros,8,50,233,2026-09-12 09:19:24,no,sí,es-ES
+es,leer libros,7,59,239,2026-09-12 09:13:09,no,sí,es-ES
+es,dislexia,6,13,186,2026-09-12 09:13:08,sí,sí,es-ES
+es,texto a audio,6,42,229,2026-09-12 09:13:09,no,no,
+es,lector de texto,6,42,238,2026-09-12 09:19:22,sí,sí,es-ES
+es,audiolibro,6,56,217,2026-09-12 09:13:05,sí,sí,es-ES
+es,leer articulos,5,5,91,2026-09-12 09:19:28,no,no,
+es,voz alta,5,7,179,2026-09-12 09:13:10,sí,no,
+es,accesibilidad,5,9,193,2026-09-12 09:13:08,sí,no,
+es,lectura en voz alta,5,11,50,2026-09-12 09:13:10,no,no,
+es,artículos,5,13,187,2026-09-12 09:13:14,sí,sí,es-ES
+es,lector de voz alta,5,13,75,2026-09-12 09:19:23,sí,no,
+es,lector de pdf en voz alta,5,13,75,2026-09-12 09:19:26,sí,no,
+es,narrador de texto,5,21,176,2026-09-12 09:19:23,no,sí,es-ES
+es,lector de voz,5,23,218,2026-09-12 09:13:03,sí,sí,es-ES
+es,voz natural,5,23,76,2026-09-12 09:19:26,no,no,
+es,lector de noticias,5,34,89,2026-09-12 09:19:28,no,sí,es-ES
+es,convertir texto a voz,5,40,237,2026-09-12 09:13:06,no,no,
+es,texto hablado,5,40,220,2026-09-12 09:19:26,no,no,
+es,leer en voz alta,5,42,118,2026-09-12 09:13:02,sí,no,
+es,pdf a audio,5,44,223,2026-09-12 09:13:04,no,no,
+es,voz a texto,5,44,244,2026-09-12 09:19:23,sí,sí,es-ES
+es,sintetizador de voz,5,45,234,2026-09-12 09:13:11,no,no,
+es,texto a voz español,5,47,241,2026-09-12 09:19:22,no,no,
+es,escuchar libros,5,48,235,2026-09-12 09:13:10,no,sí,es-ES
+es,leer pdf,5,52,230,2026-09-12 09:13:04,sí,sí,es-ES
+es,lector,5,53,239,2026-09-12 09:13:06,sí,sí,es-ES
+es,leer documentos,5,53,227,2026-09-12 09:19:24,no,sí,es-ES
+es,audio libros,5,59,235,2026-09-12 09:19:26,no,no,
+es,app para leer,5,60,226,2026-09-12 09:19:24,no,no,
+es,escuchar pdf,5,63,236,2026-09-12 09:19:25,no,sí,es-ES
+fi,youtube,90,70,182,2026-09-12 09:15:20,sí,no,
+fi,äänikirjat,53,45,221,2026-09-12 09:15:15,no,sí,fi
+fi,offline,44,53,223,2026-09-12 09:15:19,sí,sí,fi
+fi,text to speech,36,9,213,2026-09-12 09:15:17,sí,sí,fi en-GB
+fi,epub,26,15,230,2026-09-12 09:15:17,sí,sí,fi en-GB
+fi,puhesynteesi,5,5,12,2026-09-12 09:15:14,sí,sí,fi
+fi,ääneen lukeminen,5,5,18,2026-09-12 09:15:14,no,no,
+fi,lukihäiriö,5,5,26,2026-09-12 09:15:17,sí,sí,fi
+fi,saavutettavuus,5,5,27,2026-09-12 09:15:17,sí,no,
+fi,lue ääneen,5,5,40,2026-09-12 09:15:19,no,no,
+fi,artikkelit,5,5,77,2026-09-12 09:15:19,sí,no,
+fi,teksti puheeksi,5,7,230,2026-09-12 09:15:14,sí,sí,fi
+fi,lukija,5,7,233,2026-09-12 09:15:15,sí,sí,fi
+fi,tts,5,7,215,2026-09-12 09:15:16,sí,sí,fi en-GB
+fi,pdf lukija,5,13,207,2026-09-12 09:15:16,sí,sí,fi
+fi,ääni,5,15,230,2026-09-12 09:15:18,no,sí,fi
+fi,äänikirja,5,44,215,2026-09-12 09:15:15,sí,no,
+fr,youtube,90,87,188,2026-09-12 09:13:54,sí,no,
+fr,pdf,70,68,214,2026-09-12 09:20:06,sí,sí,fr-FR en-GB
+fr,livre audio gratuit,56,65,233,2026-09-12 09:20:05,no,no,
+fr,livre audio,54,64,236,2026-09-12 09:13:48,sí,sí,fr-FR
+fr,lecture,53,67,225,2026-09-12 09:20:08,sí,sí,fr-FR
+fr,lire,48,65,212,2026-09-12 09:13:52,sí,sí,fr-FR
+fr,epub,45,43,229,2026-09-12 09:20:06,sí,sí,fr-FR en-GB
+fr,lecteur de texte,44,41,223,2026-09-12 09:13:45,sí,sí,fr-FR
+fr,text to speech,35,38,217,2026-09-12 09:13:46,sí,sí,fr-FR en-GB
+fr,texte,33,68,209,2026-09-12 09:13:53,sí,sí,fr-FR
+fr,voix,24,50,232,2026-09-12 09:13:52,sí,sí,fr-FR
+fr,lecteur pdf,23,57,231,2026-09-12 09:13:47,sí,sí,fr-FR
+fr,livres audio,23,62,242,2026-09-12 09:13:48,sí,sí,fr-FR
+fr,voix off,15,41,225,2026-09-12 09:13:50,no,no,
+fr,lecteur,14,52,230,2026-09-12 09:13:51,sí,sí,fr-FR
+fr,lecteur epub,10,45,222,2026-09-12 09:13:50,sí,sí,fr-FR
+fr,lecteur texte,9,41,226,2026-09-12 09:20:02,sí,sí,fr-FR
+fr,tts,8,38,230,2026-09-12 09:13:47,sí,sí,fr-FR en-GB
+fr,dyslexie,7,13,210,2026-09-12 09:13:49,sí,sí,fr-FR
+fr,synthèse vocale,6,35,215,2026-09-12 09:13:45,sí,sí,fr-FR
+fr,lecture texte,6,44,239,2026-09-12 09:20:02,sí,sí,fr-FR
+fr,hors ligne,6,73,232,2026-09-12 09:13:52,sí,no,
+fr,voix naturelle,5,5,36,2026-09-12 09:20:07,no,no,
+fr,lire à voix haute,5,7,113,2026-09-12 09:13:45,sí,sí,fr-FR
+fr,lecture à voix haute,5,7,72,2026-09-12 09:13:46,sí,sí,fr-FR
+fr,accessibilité,5,9,211,2026-09-12 09:13:50,sí,no,
+fr,narrateur,5,9,87,2026-09-12 09:13:51,no,sí,fr-FR
+fr,dyslexique,5,9,205,2026-09-12 09:20:07,no,no,
+fr,lecteur de texte vocal,5,19,116,2026-09-12 09:20:01,no,no,
+fr,écouter pdf,5,19,106,2026-09-12 09:20:04,no,sí,fr-FR
+fr,lecture vocale,5,40,161,2026-09-12 09:13:49,sí,sí,fr-FR
+fr,lecteur vocal,5,42,240,2026-09-12 09:13:49,no,no,
+fr,lire texte,5,42,224,2026-09-12 09:20:01,sí,sí,fr-FR
+fr,voix texte,5,42,239,2026-09-12 09:20:03,sí,sí,fr-FR
+fr,texte en voix,5,45,235,2026-09-12 09:13:46,sí,sí,fr-FR
+fr,text to speech français,5,45,123,2026-09-12 09:20:03,no,no,
+fr,texte en audio,5,46,235,2026-09-12 09:20:07,sí,sí,fr-FR
+fr,pdf audio,5,49,231,2026-09-12 09:13:48,sí,sí,fr-FR
+fr,lecteur de document,5,53,214,2026-09-12 09:20:05,no,sí,fr-FR
+fr,lecteur de livre,5,55,234,2026-09-12 09:20:04,sí,sí,fr-FR
+fr,étudier,5,55,224,2026-09-12 09:20:06,no,no,
+fr,article,5,58,207,2026-09-12 09:13:53,sí,sí,fr-FR
+fr,lire pdf,5,62,234,2026-09-12 09:13:51,sí,sí,fr-FR
+gb,offline,61,70,247,2026-09-12 09:12:35,sí,no,
+gb,text to speech,54,44,248,2026-09-12 09:12:25,sí,sí,en-GB
+gb,pdf reader,53,38,245,2026-09-12 09:12:27,sí,sí,en-GB
+gb,epub reader,46,45,250,2026-09-12 09:12:28,sí,sí,en-GB
+gb,audiobook,45,67,249,2026-09-12 09:12:27,sí,sí,en-GB
+gb,read aloud,29,39,249,2026-09-12 09:12:25,sí,sí,en-GB
+gb,reading app,29,66,249,2026-09-12 09:12:36,no,no,
+gb,tts,23,23,249,2026-09-12 09:12:25,sí,sí,en-GB
+gb,read to me,16,40,246,2026-09-12 09:12:28,no,no,
+gb,voice reader,16,48,247,2026-09-12 09:12:26,sí,sí,en-GB
+gb,dyslexia,9,11,247,2026-09-12 09:12:29,sí,sí,en-GB
+gb,text to audio,9,39,250,2026-09-12 09:12:31,no,no,
+gb,text reader,9,43,250,2026-09-12 09:12:26,sí,sí,en-GB
+gb,ebook reader,9,54,249,2026-09-12 09:12:32,no,no,
+gb,audio book,9,66,247,2026-09-12 09:12:36,no,no,
+gb,text to voice,8,23,249,2026-09-12 09:12:30,sí,sí,en-GB
+gb,reader,8,51,248,2026-09-12 09:12:34,sí,sí,en-GB
+gb,study app,7,57,249,2026-09-12 09:19:18,no,no,
+gb,read out loud,6,21,249,2026-09-12 09:12:29,no,no,
+gb,speech to text,6,38,250,2026-09-12 09:19:18,sí,sí,en-GB
+gb,accessibility,5,9,249,2026-09-12 09:12:30,no,sí,en-GB
+gb,pdf to audiobook,5,11,248,2026-09-12 09:19:16,sí,sí,en-GB
+gb,accessibility app,5,11,250,2026-09-12 09:19:19,no,no,
+gb,speech synthesis,5,13,244,2026-09-12 09:12:33,no,no,
+gb,narrator,5,17,249,2026-09-12 09:12:33,no,sí,en-GB
+gb,text to speech app,5,19,249,2026-09-12 09:19:15,no,no,
+gb,tts app,5,21,247,2026-09-12 09:19:16,no,no,
+gb,article reader,5,23,245,2026-09-12 09:12:29,sí,no,
+gb,read books aloud,5,36,249,2026-09-12 09:12:32,sí,sí,en-GB
+gb,pdf to audio,5,39,249,2026-09-12 09:12:27,no,no,
+gb,document reader,5,39,250,2026-09-12 09:12:33,no,sí,en-GB
+gb,screen reader,5,40,249,2026-09-12 09:19:17,no,no,
+gb,speak text,5,42,249,2026-09-12 09:12:31,no,no,
+gb,voice reader app,5,44,246,2026-09-12 09:19:17,no,no,
+gb,read aloud app,5,48,248,2026-09-12 09:19:16,no,no,
+gb,listen to books,5,61,249,2026-09-12 09:19:16,no,sí,en-GB
+gr,youtube,91,77,198,2026-09-12 09:15:59,sí,no,
+gr,offline,55,54,221,2026-09-12 09:15:58,sí,sí,el
+gr,pdf reader,48,40,222,2026-09-12 09:15:55,sí,sí,el en-GB
+gr,text to speech,31,9,214,2026-09-12 09:15:56,sí,sí,el en-GB
+gr,audiobook,24,23,233,2026-09-12 09:15:55,sí,sí,el en-GB
+gr,εκφώνηση,5,5,13,2026-09-12 09:15:54,no,no,
+gr,ηχητικό βιβλίο,5,5,35,2026-09-12 09:15:54,no,no,
+gr,δυσλεξία,5,5,31,2026-09-12 09:15:56,sí,sí,el
+gr,προσβασιμότητα,5,5,40,2026-09-12 09:15:56,sí,no,
+gr,ανάγνωση,5,5,227,2026-09-12 09:15:57,sí,sí,el
+gr,φωνή,5,5,221,2026-09-12 09:15:57,sí,sí,el
+gr,αφήγηση,5,5,69,2026-09-12 09:15:58,no,sí,el
+gr,άρθρα,5,5,50,2026-09-12 09:15:59,sí,no,
+gr,κείμενο σε ομιλία,5,7,146,2026-09-12 09:15:54,sí,no,
+gr,ανάγνωση κειμένου,5,7,23,2026-09-12 09:15:54,no,no,
+gr,epub,5,15,229,2026-09-12 09:15:57,sí,sí,el en-GB
+gr,tts,5,21,212,2026-09-12 09:15:55,sí,sí,el en-GB
+hr,youtube,90,70,195,2026-09-12 09:15:27,sí,no,
+hr,offline,39,43,214,2026-09-12 09:15:26,sí,sí,hr
+hr,text to speech,19,7,224,2026-09-12 09:15:24,sí,sí,hr en-GB
+hr,tekst u govor,5,5,147,2026-09-12 09:15:22,sí,sí,hr
+hr,pdf čitač,5,5,167,2026-09-12 09:15:23,sí,sí,hr
+hr,disleksija,5,5,27,2026-09-12 09:15:24,sí,sí,hr
+hr,pristupačnost,5,5,30,2026-09-12 09:15:24,sí,no,
+hr,članci,5,5,44,2026-09-12 09:15:26,sí,no,
+hr,čitač teksta,5,7,35,2026-09-12 09:15:22,no,no,
+hr,tts,5,7,217,2026-09-12 09:15:23,sí,sí,hr en-GB
+hr,čitač,5,7,243,2026-09-12 09:15:25,sí,sí,hr
+hr,glas,5,7,223,2026-09-12 09:15:25,sí,sí,hr
+hr,čitanje naglas,5,9,30,2026-09-12 09:15:22,no,sí,hr
+hr,audioknjiga,5,13,89,2026-09-12 09:15:22,sí,sí,hr
+hr,audio knjiga,5,13,89,2026-09-12 09:15:23,no,no,
+hr,epub,5,13,239,2026-09-12 09:15:25,sí,sí,hr en-GB
+hu,youtube,93,73,198,2026-09-12 09:15:52,sí,no,
+hu,hangoskönyv,58,19,141,2026-09-12 09:15:47,sí,sí,hu
+hu,offline,56,55,219,2026-09-12 09:15:51,sí,sí,hu
+hu,epub,41,19,237,2026-09-12 09:15:50,sí,sí,hu en-GB
+hu,text to speech,28,9,217,2026-09-12 09:15:48,sí,sí,hu en-GB
+hu,szöveg hanggá,5,5,7,2026-09-12 09:15:46,no,no,
+hu,beszédszintézis,5,5,6,2026-09-12 09:15:46,no,no,
+hu,akadálymentes,5,5,11,2026-09-12 09:15:49,sí,no,
+hu,felolvasás,5,7,53,2026-09-12 09:15:45,no,no,
+hu,tts,5,9,217,2026-09-12 09:15:48,sí,sí,hu en-GB
+hu,diszlexia,5,9,209,2026-09-12 09:15:49,sí,sí,hu
+hu,cikkek,5,9,26,2026-09-12 09:15:51,sí,no,
+hu,felolvasó,5,11,233,2026-09-12 09:15:46,no,sí,hu
+hu,szövegfelolvasó,5,15,60,2026-09-12 09:15:45,sí,sí,hu
+hu,olvasó,5,32,231,2026-09-12 09:15:49,sí,sí,hu
+hu,pdf olvasó,5,45,234,2026-09-12 09:15:47,sí,sí,hu
+hu,hang,5,45,234,2026-09-12 09:15:50,sí,sí,hu
+id,youtube,93,88,213,2026-09-12 09:16:52,sí,no,
+id,pdf,74,62,229,2026-09-12 09:20:59,sí,sí,id en-GB
+id,tts,59,46,249,2026-09-12 09:16:49,sí,sí,id en-GB
+id,offline,59,62,245,2026-09-12 09:16:51,sí,no,
+id,buku,55,44,249,2026-09-12 09:20:59,sí,sí,id
+id,ebook,55,47,241,2026-09-12 09:21:00,no,sí,id
+id,text to speech,46,17,249,2026-09-12 09:16:46,sí,sí,id en-GB
+id,belajar,46,51,248,2026-09-12 09:21:00,no,no,
+id,pembaca pdf,44,21,248,2026-09-12 09:16:48,sí,sí,id
+id,baca buku,43,38,249,2026-09-12 09:21:01,no,sí,id
+id,suara,18,37,249,2026-09-12 09:16:47,sí,sí,id
+id,aksesibilitas,5,5,44,2026-09-12 09:16:50,sí,no,
+id,pembaca teks suara,5,5,65,2026-09-12 09:20:57,sí,sí,id
+id,baca teks otomatis,5,5,7,2026-09-12 09:20:57,no,no,
+id,ubah teks jadi suara,5,7,49,2026-09-12 09:16:49,no,no,
+id,pembaca teks,5,9,179,2026-09-12 09:16:46,sí,sí,id
+id,baca teks,5,9,141,2026-09-12 09:16:46,no,sí,id
+id,pembaca,5,9,250,2026-09-12 09:16:49,sí,sí,id
+id,disleksia,5,9,248,2026-09-12 09:16:50,sí,sí,id
+id,baca pdf,5,9,141,2026-09-12 09:16:51,no,sí,id
+id,artikel,5,11,248,2026-09-12 09:16:52,sí,sí,id
+id,pembaca buku,5,11,150,2026-09-12 09:20:58,sí,sí,id
+id,suara ke teks,5,11,248,2026-09-12 09:20:58,no,no,
+id,teks ke suara,5,13,248,2026-09-12 09:16:49,no,no,
+id,buku audio,5,15,248,2026-09-12 09:16:47,sí,sí,id
+id,epub,5,17,249,2026-09-12 09:16:50,sí,sí,id en-GB
+id,text to speech indonesia,5,21,250,2026-09-12 09:20:58,no,no,
+id,tts indonesia,5,21,250,2026-09-12 09:20:58,no,no,
+id,audiobook,5,23,249,2026-09-12 09:16:48,sí,sí,id en-GB
+id,membaca buku,5,23,240,2026-09-12 09:16:51,no,no,
+in,youtube,90,92,233,2026-09-12 09:16:44,sí,no,
+in,pdf reader,56,47,243,2026-09-12 09:16:39,sí,sí,hi en-GB
+in,text to speech,47,45,247,2026-09-12 09:16:37,sí,sí,hi en-GB
+in,offline,47,58,243,2026-09-12 09:16:44,sí,no,
+in,voice,42,41,242,2026-09-12 09:21:14,sí,sí,hi en-GB
+in,reader,39,47,230,2026-09-12 09:16:41,sí,sí,hi en-GB
+in,पढ़कर सुनाए,5,5,0,2026-09-12 09:16:43,sí,sí,hi
+in,आवाज़,5,9,243,2026-09-12 09:16:42,sí,sí,hi
+in,dyslexia,5,11,246,2026-09-12 09:16:41,sí,sí,hi en-GB
+in,ऑडियोबुक,5,11,83,2026-09-12 09:16:42,no,sí,hi
+in,text to speech hindi,5,15,76,2026-09-12 09:21:13,no,sí,hi
+in,epub,5,17,248,2026-09-12 09:16:42,sí,sí,hi en-GB
+in,read aloud,5,19,247,2026-09-12 09:16:38,sí,sí,hi en-GB
+in,tts,5,19,248,2026-09-12 09:16:38,sí,sí,hi en-GB
+in,voice reader,5,21,249,2026-09-12 09:16:38,sí,sí,hi en-GB
+in,pdf to audio,5,21,249,2026-09-12 09:16:42,no,no,
+in,text reader,5,21,247,2026-09-12 09:16:43,sí,sí,hi en-GB
+in,hindi text to speech,5,35,58,2026-09-12 09:16:40,no,sí,hi
+in,text to voice,5,37,246,2026-09-12 09:16:40,sí,sí,hi en-GB
+in,pdf reader hindi,5,38,12,2026-09-12 09:21:14,no,sí,hi
+in,read aloud app,5,41,248,2026-09-12 09:21:16,no,no,
+in,text to speech app,5,45,249,2026-09-12 09:21:16,no,no,
+in,speech to text,5,47,247,2026-09-12 09:21:15,sí,sí,hi en-GB
+in,hindi reader,5,52,157,2026-09-12 09:21:14,no,sí,hi
+in,study app,5,59,249,2026-09-12 09:21:15,no,no,
+in,audio book,5,64,250,2026-09-12 09:21:16,no,no,
+in,audiobook,5,65,249,2026-09-12 09:16:39,sí,sí,hi en-GB
+in,hindi voice,5,69,188,2026-09-12 09:16:40,no,sí,hi
+it,youtube,89,83,182,2026-09-12 09:14:05,sí,no,
+it,pdf,71,68,217,2026-09-12 09:20:14,sí,sí,it en-GB
+it,libri,66,63,203,2026-09-12 09:20:15,no,no,
+it,offline,60,68,217,2026-09-12 09:14:03,sí,no,
+it,audiolibri,56,61,227,2026-09-12 09:13:58,no,no,
+it,text to speech,47,38,221,2026-09-12 09:13:57,sí,sí,it en-GB
+it,epub,44,43,231,2026-09-12 09:20:14,sí,sí,it en-GB
+it,lettore pdf,44,54,223,2026-09-12 09:13:58,sí,sí,it
+it,voce,21,54,227,2026-09-12 09:14:00,sí,sí,it
+it,lettura,18,63,227,2026-09-12 09:14:05,sí,sí,it
+it,studiare,17,61,235,2026-09-12 09:20:15,no,sí,it
+it,lettore epub,9,42,224,2026-09-12 09:14:00,sí,sí,it
+it,tts,8,23,216,2026-09-12 09:13:57,sí,sí,it en-GB
+it,lettore di testi,8,38,216,2026-09-12 09:20:11,no,sí,it
+it,testo,8,50,223,2026-09-12 09:14:04,sí,no,
+it,sintesi vocale,6,23,171,2026-09-12 09:13:55,sí,sí,it
+it,lettore testi,6,39,216,2026-09-12 09:20:11,no,sí,it
+it,lettore,6,50,236,2026-09-12 09:14:01,sí,sí,it
+it,leggi pdf,6,53,228,2026-09-12 09:20:13,sí,no,
+it,audiolibro,6,55,219,2026-09-12 09:13:57,sí,sí,it
+it,voce che legge,5,5,4,2026-09-12 09:20:12,no,no,
+it,narratore,5,7,228,2026-09-12 09:14:03,no,no,
+it,leggere ad alta voce,5,15,57,2026-09-12 09:13:56,no,no,
+it,lettura ad alta voce,5,15,40,2026-09-12 09:13:56,sí,no,
+it,dislessia,5,15,128,2026-09-12 09:13:59,sí,sí,it
+it,accessibilità,5,15,182,2026-09-12 09:13:59,sí,no,
+it,testo in voce,5,17,240,2026-09-12 09:14:02,no,no,
+it,articoli,5,19,215,2026-09-12 09:14:04,sí,no,
+it,lettore vocale testi,5,19,78,2026-09-12 09:20:12,no,sí,it
+it,da testo a voce,5,23,226,2026-09-12 09:14:02,sí,no,
+it,voce naturale,5,38,216,2026-09-12 09:20:16,no,no,
+it,lettore di testo,5,39,222,2026-09-12 09:13:56,sí,no,
+it,sintetizzatore vocale,5,39,188,2026-09-12 09:20:16,no,no,
+it,leggi,5,41,206,2026-09-12 09:14:01,sí,no,
+it,leggere testi,5,41,218,2026-09-12 09:20:12,no,no,
+it,lettura vocale,5,45,96,2026-09-12 09:14:02,sí,sí,it
+it,lettore libri,5,48,226,2026-09-12 09:20:13,no,no,
+it,lettore vocale,5,49,231,2026-09-12 09:13:59,sí,sí,it
+it,text to speech italiano,5,50,56,2026-09-12 09:20:16,no,no,
+it,testo parlato,5,53,210,2026-09-12 09:20:13,no,no,
+jp,pdf,76,62,239,2026-09-12 09:20:47,sí,sí,en-US
+jp,勉強,76,70,246,2026-09-12 09:20:48,no,no,
+jp,小説,69,72,250,2026-09-12 09:20:47,no,sí,ja
+jp,読書,64,68,248,2026-09-12 09:17:16,sí,sí,ja
+jp,オフライン,62,72,248,2026-09-12 09:17:18,sí,no,
+jp,電子書籍,61,79,250,2026-09-12 09:17:14,sí,sí,ja
+jp,オーディオブック,60,62,246,2026-09-12 09:17:14,sí,sí,ja
+jp,読み上げアプリ,54,45,249,2026-09-12 09:17:12,no,sí,ja
+jp,text to speech,51,15,246,2026-09-12 09:17:15,sí,sí,ja en-US
+jp,音声読み上げ,41,45,248,2026-09-12 09:17:12,no,sí,ja
+jp,読み上げ,41,47,249,2026-09-12 09:17:11,sí,sí,ja
+jp,音声,39,56,242,2026-09-12 09:17:17,sí,sí,ja
+jp,テキスト読み上げ,29,47,250,2026-09-12 09:17:12,sí,sí,ja
+jp,音読,28,46,248,2026-09-12 09:17:13,no,sí,ja
+jp,音声読み上げアプリ,25,39,249,2026-09-12 09:20:47,no,sí,ja
+jp,朗読,22,45,248,2026-09-12 09:17:13,sí,sí,ja
+jp,音声変換,19,40,250,2026-09-12 09:20:48,no,sí,ja
+jp,文字読み上げ,18,38,250,2026-09-12 09:20:46,no,no,
+jp,リーダー,18,66,244,2026-09-12 09:17:17,sí,sí,ja
+jp,音声合成,17,41,249,2026-09-12 09:17:13,sí,sí,ja
+jp,文章読み上げ,14,37,250,2026-09-12 09:20:48,no,no,
+jp,pdf 読み上げ,9,23,250,2026-09-12 09:17:14,sí,no,
+jp,tts,8,15,248,2026-09-12 09:17:15,sí,sí,ja en-US
+jp,読み上げ機能,7,33,250,2026-09-12 09:20:45,no,no,
+jp,アクセシビリティ,5,11,206,2026-09-12 09:17:18,sí,no,
+jp,ディスレクシア,5,23,247,2026-09-12 09:17:15,sí,no,
+jp,ニュース 読み上げ,5,23,81,2026-09-12 09:20:49,no,no,
+jp,読み上げ オフライン,5,35,115,2026-09-12 09:20:49,sí,no,
+jp,ボイスリーダー,5,36,248,2026-09-12 09:20:46,no,no,
+jp,読み上げソフト,5,39,249,2026-09-12 09:20:45,no,no,
+jp,テキスト 音声,5,39,249,2026-09-12 09:20:45,sí,sí,ja
+jp,小説 読み上げ,5,43,250,2026-09-12 09:17:16,no,sí,ja
+jp,聴く読書,5,43,50,2026-09-12 09:20:46,no,no,
+jp,英語 読み上げ,5,43,183,2026-09-12 09:20:49,no,no,
+jp,記事,5,61,235,2026-09-12 09:17:18,sí,sí,ja
+kr,유튜브,97,76,233,2026-09-12 09:17:09,sí,no,
+kr,pdf,74,68,242,2026-09-12 09:20:53,sí,sí,ko en-GB
+kr,공부,72,53,247,2026-09-12 09:20:54,no,no,
+kr,뉴스,65,46,243,2026-09-12 09:20:55,no,no,
+kr,독서,65,47,248,2026-09-12 09:20:54,no,sí,ko
+kr,전자책,61,57,248,2026-09-12 09:17:09,sí,sí,ko
+kr,소설,61,61,249,2026-09-12 09:20:54,no,sí,ko
+kr,tts,59,19,247,2026-09-12 09:17:04,sí,sí,ko en-GB
+kr,오디오북,59,54,250,2026-09-12 09:17:06,sí,sí,ko
+kr,음성,34,48,249,2026-09-12 09:20:53,sí,sí,ko
+kr,오프라인,32,68,246,2026-09-12 09:17:10,sí,no,
+kr,텍스트 음성 변환,31,41,246,2026-09-12 09:17:04,sí,sí,ko
+kr,낭독,5,5,246,2026-09-12 09:17:05,sí,sí,ko
+kr,접근성,5,5,170,2026-09-12 09:17:08,sí,no,
+kr,문자 읽어주기,5,5,21,2026-09-12 09:20:52,no,no,
+kr,오디오북 만들기,5,5,13,2026-09-12 09:20:52,no,no,
+kr,책 읽어주기,5,7,218,2026-09-12 09:20:52,sí,sí,ko
+kr,텍스트 읽어주기,5,11,149,2026-09-12 09:17:06,sí,sí,ko
+kr,난독증,5,11,54,2026-09-12 09:17:07,sí,sí,ko
+kr,글 읽어주는 앱,5,11,71,2026-09-12 09:17:10,no,no,
+kr,문서 읽어주기,5,11,59,2026-09-12 09:17:11,no,sí,ko
+kr,음성 읽기,5,11,246,2026-09-12 09:20:51,sí,sí,ko
+kr,텍스트 읽기,5,13,246,2026-09-12 09:20:52,sí,sí,ko
+kr,기사,5,15,250,2026-09-12 09:17:11,sí,sí,ko
+kr,tts 앱,5,15,246,2026-09-12 09:20:51,no,no,
+kr,읽어주기,5,17,245,2026-09-12 09:17:05,sí,sí,ko
+kr,텍스트 음성,5,23,250,2026-09-12 09:20:53,sí,sí,ko
+kr,책 읽어주는,5,36,250,2026-09-12 09:17:05,sí,no,
+kr,pdf 리더,5,37,229,2026-09-12 09:17:07,sí,sí,ko
+kr,음성합성,5,37,248,2026-09-12 09:17:10,no,sí,ko
+kr,리더,5,41,246,2026-09-12 09:17:07,sí,sí,ko
+kr,음성 변환,5,46,249,2026-09-12 09:17:04,sí,sí,ko
+kr,보이스,5,53,246,2026-09-12 09:17:08,sí,no,
+lv,pdf,61,21,220,2026-09-12 09:17:35,sí,sí,en-GB
+lv,text to speech,27,9,221,2026-09-12 09:17:34,sí,sí,en-GB
+lv,teksts runā,5,5,0,2026-09-12 09:17:33,no,no,
+lv,lasīšana skaļi,5,5,0,2026-09-12 09:17:33,no,no,
+lv,audiogrāmata,5,5,2,2026-09-12 09:17:33,no,no,
+lv,tts,5,7,221,2026-09-12 09:17:34,sí,sí,en-GB
+lv,read aloud,5,7,233,2026-09-12 09:17:36,sí,sí,en-GB
+lv,audiobook,5,21,239,2026-09-12 09:17:36,sí,sí,en-GB
+lv,lasītājs,5,58,14,2026-09-12 09:17:35,no,no,
+mx,pdf,73,68,236,2026-09-12 09:19:33,sí,sí,es-MX en-GB
+mx,audiolibros,57,63,248,2026-09-12 09:13:17,sí,sí,es-MX
+mx,lector pdf,50,42,247,2026-09-12 09:13:16,sí,sí,es-MX
+mx,voz,50,46,247,2026-09-12 09:13:22,sí,sí,es-MX
+mx,epub,49,40,250,2026-09-12 09:19:33,sí,sí,es-MX en-GB
+mx,text to speech,47,17,249,2026-09-12 09:13:29,sí,sí,en-GB
+mx,leer,47,64,248,2026-09-12 09:13:28,sí,sí,es-MX
+mx,lectura,46,57,249,2026-09-12 09:19:33,no,no,
+mx,lector de textos,45,17,249,2026-09-12 09:13:15,sí,sí,es-MX
+mx,texto a voz,44,44,246,2026-09-12 09:13:15,sí,sí,es-MX
+mx,lector de libros,43,51,249,2026-09-12 09:19:32,no,sí,es-MX
+mx,leer pdf,17,52,249,2026-09-12 09:13:17,sí,sí,es-MX
+mx,accesibilidad,5,7,218,2026-09-12 09:13:22,sí,no,
+mx,lectura en voz alta,5,11,58,2026-09-12 09:13:27,no,no,
+mx,dislexia,5,15,248,2026-09-12 09:13:22,sí,sí,es-MX
+mx,tts,5,17,249,2026-09-12 09:13:20,sí,sí,es-MX en-GB
+mx,text reader,5,17,249,2026-09-12 09:13:29,sí,sí,en-GB
+mx,read aloud,5,19,249,2026-09-12 09:13:30,sí,sí,en-GB
+mx,leer texto,5,23,249,2026-09-12 09:19:31,sí,sí,es-MX
+mx,texto hablado,5,23,237,2026-09-12 09:19:33,no,no,
+mx,lector epub,5,37,250,2026-09-12 09:13:22,sí,sí,es-MX
+mx,lector de voz,5,38,248,2026-09-12 09:13:16,sí,sí,es-MX
+mx,lector de texto,5,39,247,2026-09-12 09:19:31,sí,sí,es-MX
+mx,convertir texto a voz,5,40,250,2026-09-12 09:13:20,no,no,
+mx,voz a texto,5,41,249,2026-09-12 09:19:31,sí,sí,es-MX
+mx,narrador de texto,5,41,208,2026-09-12 09:19:32,no,sí,es-MX
+mx,narrador,5,42,200,2026-09-12 09:13:21,no,sí,es-MX
+mx,leer en voz alta,5,44,135,2026-09-12 09:13:15,sí,no,
+mx,lector,5,44,249,2026-09-12 09:13:21,sí,sí,es-MX
+mx,leer documentos,5,51,248,2026-09-12 09:19:34,no,sí,es-MX
+mx,audiolibro,5,58,248,2026-09-12 09:13:17,sí,sí,es-MX
+mx,escuchar libros,5,60,250,2026-09-12 09:13:27,no,sí,es-MX
+mx,app para leer,5,63,250,2026-09-12 09:19:32,no,no,
+mx,leer libros,5,64,249,2026-09-12 09:13:26,no,sí,es-MX
+nl,youtube,92,77,193,2026-09-12 09:14:35,sí,no,
+nl,pdf,64,56,218,2026-09-12 09:20:20,sí,sí,nl-NL en-GB
+nl,boeken,62,58,218,2026-09-12 09:20:20,no,no,
+nl,luisterboeken,57,59,212,2026-09-12 09:14:31,no,no,
+nl,offline,56,63,222,2026-09-12 09:14:34,sí,no,
+nl,lezen,47,56,196,2026-09-12 09:20:21,no,sí,nl-NL
+nl,text to speech,35,15,210,2026-09-12 09:14:33,sí,sí,nl-NL en-GB
+nl,epub,32,43,232,2026-09-12 09:14:32,sí,sí,nl-NL en-GB
+nl,tts,30,17,232,2026-09-12 09:14:31,sí,sí,nl-NL en-GB
+nl,hardop voorlezen,5,5,15,2026-09-12 09:14:34,sí,no,
+nl,voorleesfunctie,5,5,0,2026-09-12 09:20:19,no,no,
+nl,lezer,5,7,219,2026-09-12 09:14:33,sí,sí,nl-NL
+nl,toegankelijkheid,5,11,123,2026-09-12 09:14:32,no,no,
+nl,tekst naar spraak,5,13,229,2026-09-12 09:14:29,sí,sí,nl-NL
+nl,dyslexie,5,13,186,2026-09-12 09:14:32,sí,sí,nl-NL
+nl,artikelen,5,13,170,2026-09-12 09:14:35,sí,no,
+nl,tekst voorlezen,5,15,230,2026-09-12 09:14:30,sí,sí,nl-NL
+nl,tekst naar spraak app,5,15,229,2026-09-12 09:20:18,no,no,
+nl,pdf voorlezen,5,17,228,2026-09-12 09:14:31,sí,sí,nl-NL
+nl,voorlees app,5,17,57,2026-09-12 09:20:18,no,no,
+nl,voorleesapp,5,19,57,2026-09-12 09:14:29,no,sí,nl-NL
+nl,spraak naar tekst,5,19,231,2026-09-12 09:20:19,sí,sí,nl-NL
+nl,voorlezen,5,21,211,2026-09-12 09:14:29,sí,sí,nl-NL
+nl,spraak,5,21,232,2026-09-12 09:14:31,sí,sí,nl-NL
+nl,tts app,5,23,223,2026-09-12 09:20:21,no,no,
+nl,stem,5,35,212,2026-09-12 09:14:33,sí,sí,nl-NL
+nl,studeren,5,40,240,2026-09-12 09:20:22,no,no,
+nl,pdf lezer,5,44,228,2026-09-12 09:14:34,sí,sí,nl-NL
+nl,e-book,5,53,217,2026-09-12 09:20:22,sí,sí,en-GB
+nl,luisterboek,5,64,212,2026-09-12 09:14:30,sí,sí,nl-NL
+pl,youtube,88,76,192,2026-09-12 09:14:43,sí,no,
+pl,pdf,66,53,222,2026-09-12 09:20:26,sí,sí,pl en-GB
+pl,audiobook,61,61,233,2026-09-12 09:14:39,sí,sí,pl en-GB
+pl,nauka,60,49,210,2026-09-12 09:20:27,no,no,
+pl,offline,59,58,216,2026-09-12 09:14:43,sí,no,
+pl,ebook,56,60,217,2026-09-12 09:20:27,no,sí,pl
+pl,książki,48,51,225,2026-09-12 09:20:26,no,no,
+pl,epub,38,39,233,2026-09-12 09:14:41,sí,sí,pl en-GB
+pl,tts,34,13,237,2026-09-12 09:14:38,sí,sí,pl en-GB
+pl,text to speech,30,17,215,2026-09-12 09:14:38,sí,sí,pl en-GB
+pl,mowa,5,5,240,2026-09-12 09:20:24,no,no,
+pl,lektor tekstu,5,5,15,2026-09-12 09:20:25,sí,sí,pl
+pl,dostępność,5,7,79,2026-09-12 09:14:41,sí,no,
+pl,czytanie tekstu,5,11,33,2026-09-12 09:14:37,sí,sí,pl
+pl,tekst na mowę,5,11,112,2026-09-12 09:14:38,no,no,
+pl,czytanie na głos,5,11,53,2026-09-12 09:14:40,sí,sí,pl
+pl,czytanie na głos aplikacja,5,11,81,2026-09-12 09:20:24,no,no,
+pl,syntezator mowy,5,13,38,2026-09-12 09:14:37,no,sí,pl
+pl,dysleksja,5,13,210,2026-09-12 09:14:41,sí,sí,pl
+pl,syntezator,5,15,202,2026-09-12 09:20:25,sí,sí,pl
+pl,lektor,5,19,165,2026-09-12 09:14:37,sí,sí,pl
+pl,czytanie książek,5,19,46,2026-09-12 09:20:24,no,no,
+pl,głos,5,21,238,2026-09-12 09:14:42,sí,sí,pl
+pl,czytnik tekstu,5,23,78,2026-09-12 09:14:37,sí,sí,pl
+pl,artykuły,5,28,82,2026-09-12 09:14:43,sí,no,
+pl,czytnik epub,5,37,110,2026-09-12 09:14:42,sí,sí,pl
+pl,czytnik,5,42,244,2026-09-12 09:14:40,sí,sí,pl
+pl,tts app,5,42,238,2026-09-12 09:20:25,no,no,
+pl,czytanie,5,51,222,2026-09-12 09:20:27,sí,sí,pl
+pl,audiobooki,5,53,230,2026-09-12 09:14:39,no,no,
+pl,czytnik pdf,5,53,231,2026-09-12 09:14:39,sí,sí,pl
+pt,pdf,71,52,217,2026-09-12 09:19:44,sí,sí,pt-PT en-GB
+pt,livros,66,45,209,2026-09-12 09:19:45,no,sí,pt-PT
+pt,offline,60,51,219,2026-09-12 09:14:15,sí,sí,pt-PT
+pt,estudar,56,41,236,2026-09-12 09:19:45,no,sí,pt-PT
+pt,audiobooks,53,45,232,2026-09-12 09:19:46,sí,sí,pt-PT en-GB
+pt,epub,31,35,234,2026-09-12 09:19:44,sí,sí,pt-PT en-GB
+pt,text to speech,25,11,220,2026-09-12 09:14:15,sí,sí,pt-PT en-GB
+pt,acessibilidade,5,5,135,2026-09-12 09:14:11,sí,no,
+pt,ler em voz alta,5,9,55,2026-09-12 09:14:08,sí,sí,pt-PT
+pt,dislexia,5,9,205,2026-09-12 09:14:11,sí,sí,pt-PT
+pt,leitura em voz alta,5,9,33,2026-09-12 09:14:13,sí,sí,pt-PT
+pt,narrador de texto,5,9,63,2026-09-12 09:19:43,no,sí,pt-PT
+pt,texto em voz,5,13,224,2026-09-12 09:14:07,sí,sí,pt-PT
+pt,leitor de voz,5,13,153,2026-09-12 09:14:08,sí,sí,pt-PT
+pt,narrador,5,13,85,2026-09-12 09:14:10,no,sí,pt-PT
+pt,ler texto,5,15,222,2026-09-12 09:19:43,sí,sí,pt-PT
+pt,texto para voz,5,17,231,2026-09-12 09:14:07,no,no,
+pt,leitor de texto,5,17,238,2026-09-12 09:14:08,sí,sí,pt-PT
+pt,leitor epub,5,19,225,2026-09-12 09:14:12,sí,sí,pt-PT
+pt,voz para texto,5,19,230,2026-09-12 09:19:43,no,no,
+pt,artigos,5,21,176,2026-09-12 09:14:16,sí,sí,pt-PT
+pt,sintetizador de voz,5,23,241,2026-09-12 09:14:13,no,no,
+pt,tts,5,36,237,2026-09-12 09:14:10,sí,sí,pt-PT en-GB
+pt,audiobook,5,38,237,2026-09-12 09:14:10,sí,sí,pt-PT en-GB
+pt,leitor de livros,5,40,237,2026-09-12 09:19:43,no,sí,pt-PT
+pt,voz,5,42,231,2026-09-12 09:14:13,sí,sí,pt-PT
+pt,leitura,5,43,226,2026-09-12 09:14:14,sí,sí,pt-PT
+pt,privado,5,44,233,2026-09-12 09:14:16,sí,no,
+pt,leitor,5,45,239,2026-09-12 09:14:14,sí,sí,pt-PT
+pt,leitor pdf,5,47,225,2026-09-12 09:14:09,sí,sí,pt-PT
+pt,audiolivro,5,49,198,2026-09-12 09:14:09,sí,sí,pt-PT
+pt,ler,5,50,210,2026-09-12 09:14:14,sí,sí,pt-PT
+pt,ler pdf,5,52,222,2026-09-12 09:14:12,sí,sí,pt-PT
+ro,youtube,93,78,198,2026-09-12 09:14:52,sí,no,
+ro,pdf,72,50,222,2026-09-12 09:14:52,sí,sí,ro en-GB
+ro,offline,55,53,221,2026-09-12 09:14:50,sí,sí,ro
+ro,text to speech,33,11,217,2026-09-12 09:14:46,sí,sí,ro en-GB
+ro,audiobook,29,43,236,2026-09-12 09:14:47,sí,sí,ro en-GB
+ro,citire cu voce tare,5,5,16,2026-09-12 09:14:45,no,no,
+ro,accesibilitate,5,5,38,2026-09-12 09:14:49,sí,no,
+ro,sinteza vocala,5,5,18,2026-09-12 09:14:50,no,sí,ro
+ro,articole,5,5,208,2026-09-12 09:14:51,sí,no,
+ro,text în vorbire,5,9,117,2026-09-12 09:14:45,sí,no,
+ro,tts,5,11,218,2026-09-12 09:14:47,sí,sí,ro en-GB
+ro,dislexie,5,11,205,2026-09-12 09:14:49,sí,sí,ro
+ro,cititor,5,13,244,2026-09-12 09:14:50,sí,sí,ro
+ro,cititor text,5,17,182,2026-09-12 09:14:46,sí,sí,ro
+ro,epub,5,17,237,2026-09-12 09:14:51,sí,sí,ro en-GB
+ro,cititor pdf,5,23,227,2026-09-12 09:14:48,sí,sí,ro
+ro,voce,5,34,223,2026-09-12 09:14:49,sí,sí,ro
+ro,carte audio,5,50,165,2026-09-12 09:14:48,no,sí,ro
+ru,youtube,78,90,219,2026-09-12 09:16:18,sí,no,
+ru,книги,66,69,246,2026-09-12 09:20:37,no,no,
+ru,pdf,56,54,241,2026-09-12 09:20:37,sí,sí,ru en-GB
+ru,читалка,56,63,249,2026-09-12 09:16:10,sí,sí,ru
+ru,аудиокниги,47,73,248,2026-09-12 09:16:13,no,no,
+ru,офлайн,40,66,246,2026-09-12 09:16:17,sí,no,
+ru,читать,37,64,248,2026-09-12 09:20:38,no,no,
+ru,голос,32,39,246,2026-09-12 09:16:15,sí,sí,ru
+ru,чтение,31,55,250,2026-09-12 09:16:17,sí,sí,ru
+ru,статьи,24,21,246,2026-09-12 09:16:18,sí,sí,ru
+ru,text to speech,22,15,246,2026-09-12 09:16:14,sí,sí,ru en-GB
+ru,текст в речь,21,21,248,2026-09-12 09:16:11,no,sí,ru
+ru,голосовое чтение,5,5,7,2026-09-12 09:16:12,no,no,
+ru,чтение текста вслух,5,5,43,2026-09-12 09:20:35,sí,no,
+ru,чтение вслух,5,9,75,2026-09-12 09:16:11,sí,sí,ru
+ru,дислексия,5,9,248,2026-09-12 09:16:15,sí,sí,ru
+ru,чтение книг вслух,5,9,36,2026-09-12 09:20:35,no,no,
+ru,синтез речи,5,13,50,2026-09-12 09:16:10,sí,no,
+ru,озвучка,5,15,248,2026-09-12 09:16:17,sí,sí,ru
+ru,синтезатор речи,5,17,248,2026-09-12 09:20:36,no,no,
+ru,озвучка книг,5,17,83,2026-09-12 09:20:36,no,no,
+ru,tts,5,19,249,2026-09-12 09:16:14,sí,sí,ru en-GB
+ru,текст в голос,5,21,248,2026-09-12 09:16:12,no,sí,ru
+ru,доступность,5,21,208,2026-09-12 09:16:15,sí,no,
+ru,речь,5,21,248,2026-09-12 09:20:37,no,sí,ru
+ru,озвучка текста,5,23,188,2026-09-12 09:16:10,sí,no,
+ru,озвучить текст,5,23,39,2026-09-12 09:20:35,no,no,
+ru,текст в аудио,5,23,250,2026-09-12 09:20:36,no,no,
+ru,голосовой,5,39,246,2026-09-12 09:20:38,no,no,
+ru,epub,5,43,248,2026-09-12 09:16:16,sí,sí,ru en-GB
+ru,pdf читалка,5,44,235,2026-09-12 09:16:13,sí,sí,ru
+ru,аудиокнига,5,57,237,2026-09-12 09:16:12,sí,sí,ru
+ru,читалка книг,5,69,247,2026-09-12 09:16:16,no,no,
+sa,يوتيوب,92,83,207,2026-09-12 09:16:35,sí,no,
+sa,pdf,70,63,238,2026-09-12 09:21:10,sí,sí,ar-SA en-GB
+sa,كتب,61,51,250,2026-09-12 09:21:11,no,no,
+sa,text to speech,41,15,247,2026-09-12 09:16:32,sí,sí,ar-SA en-GB
+sa,صوت,35,53,249,2026-09-12 09:16:33,sí,sí,ar-SA
+sa,قارئ pdf,18,23,243,2026-09-12 09:16:32,sí,sí,ar-SA
+sa,قارئ النصوص,5,5,250,2026-09-12 09:16:30,no,sí,ar-SA
+sa,tts arabic,5,5,10,2026-09-12 09:21:12,no,no,
+sa,عسر القراءة,5,7,32,2026-09-12 09:16:33,sí,sí,ar-SA
+sa,قراءة النصوص,5,7,93,2026-09-12 09:21:08,no,no,
+sa,قراءة بصوت عالٍ,5,9,38,2026-09-12 09:16:30,no,no,
+sa,تحويل الكتابة الى صوت,5,11,123,2026-09-12 09:16:34,no,no,
+sa,text to speech arabic,5,11,74,2026-09-12 09:21:11,no,no,
+sa,تحويل النص إلى كلام,5,13,240,2026-09-12 09:16:29,sí,no,
+sa,قراءة النص,5,13,221,2026-09-12 09:16:29,no,no,
+sa,tts,5,15,249,2026-09-12 09:16:32,sí,sí,ar-SA en-GB
+sa,epub,5,15,250,2026-09-12 09:16:33,sí,sí,ar-SA en-GB
+sa,تحويل النص الى صوت,5,15,249,2026-09-12 09:16:36,no,no,
+sa,نطق,5,15,250,2026-09-12 09:21:08,no,no,
+sa,تحويل النص إلى صوت,5,15,248,2026-09-12 09:21:09,sí,no,
+sa,تحويل الصوت الى نص,5,15,250,2026-09-12 09:21:10,no,no,
+sa,نطق النص,5,19,97,2026-09-12 09:16:30,no,no,
+sa,مقالات,5,19,250,2026-09-12 09:16:35,sí,sí,ar-SA
+sa,قارئ,5,38,250,2026-09-12 09:16:34,sí,sí,ar-SA
+sa,كتاب صوتي,5,42,250,2026-09-12 09:16:31,sí,sí,ar-SA
+sa,قراءة,5,42,250,2026-09-12 09:21:11,no,no,
+sa,قارئ الكتب,5,44,250,2026-09-12 09:21:09,no,no,
+sa,قراءة الكتب,5,46,250,2026-09-12 09:16:34,no,no,
+sa,كتب صوتية,5,47,250,2026-09-12 09:16:31,no,no,
+sa,دراسة,5,49,249,2026-09-12 09:21:11,no,no,
+se,youtube,94,78,186,2026-09-12 09:15:00,sí,no,
+se,ljudböcker,58,67,160,2026-09-12 09:14:55,no,no,
+se,offline,56,58,220,2026-09-12 09:14:59,sí,sí,sv
+se,ljudbok,50,61,216,2026-09-12 09:14:55,sí,sí,sv
+se,text to speech,36,21,214,2026-09-12 09:14:56,sí,sí,sv en-GB
+se,epub,30,41,235,2026-09-12 09:14:58,sí,sí,sv en-GB
+se,dyslexi,5,13,192,2026-09-12 09:14:57,sí,sí,sv
+se,artiklar,5,13,143,2026-09-12 09:14:59,sí,no,
+se,uppläsning,5,15,97,2026-09-12 09:14:54,sí,sí,sv
+se,läsa upp,5,15,57,2026-09-12 09:14:54,no,no,
+se,tillgänglighet,5,15,182,2026-09-12 09:14:57,sí,no,
+se,talsyntes,5,17,51,2026-09-12 09:14:55,no,sí,sv
+se,tts,5,17,213,2026-09-12 09:14:56,sí,sí,sv en-GB
+se,text till tal,5,19,228,2026-09-12 09:14:54,sí,sí,sv
+se,röst,5,19,228,2026-09-12 09:14:58,no,sí,sv
+se,läsare,5,21,228,2026-09-12 09:14:57,sí,sí,sv
+se,läs upp text,5,35,58,2026-09-12 09:14:59,no,no,
+se,pdf läsare,5,44,235,2026-09-12 09:14:56,sí,sí,sv
+si,pdf,62,41,217,2026-09-12 09:17:40,sí,sí,en-GB
+si,audiobook,44,23,231,2026-09-12 09:17:41,sí,sí,en-GB
+si,text to speech,19,7,215,2026-09-12 09:17:39,sí,sí,en-GB
+si,besedilo v govor,5,5,0,2026-09-12 09:17:38,no,no,
+si,branje na glas,5,5,0,2026-09-12 09:17:38,no,no,
+si,zvočna knjiga,5,5,0,2026-09-12 09:17:38,no,no,
+si,bralnik,5,5,1,2026-09-12 09:17:39,no,no,
+si,read aloud,5,9,231,2026-09-12 09:17:40,sí,sí,en-GB
+si,tts,5,11,212,2026-09-12 09:17:38,sí,sí,en-GB
+sk,youtube,88,68,199,2026-09-12 09:15:35,sí,no,
+sk,offline,47,49,226,2026-09-12 09:15:33,sí,sí,sk
+sk,epub,29,15,233,2026-09-12 09:15:33,sí,sí,sk en-GB
+sk,text to speech,19,7,221,2026-09-12 09:15:31,sí,sí,sk en-GB
+sk,prístupnosť,5,5,26,2026-09-12 09:15:32,sí,no,
+sk,hlas,5,5,241,2026-09-12 09:15:32,sí,sí,sk
+sk,predčítanie,5,5,5,2026-09-12 09:15:34,no,sí,sk
+sk,text na reč,5,7,126,2026-09-12 09:15:29,sí,sí,sk
+sk,čítanie nahlas,5,7,30,2026-09-12 09:15:29,sí,no,
+sk,čítačka textu,5,7,40,2026-09-12 09:15:29,no,no,
+sk,tts,5,7,215,2026-09-12 09:15:31,sí,sí,sk en-GB
+sk,dyslexia,5,7,218,2026-09-12 09:15:32,sí,sí,sk en-GB
+sk,články,5,9,33,2026-09-12 09:15:34,sí,no,
+sk,pdf čítačka,5,11,148,2026-09-12 09:15:30,sí,sí,sk
+sk,čítanie,5,19,237,2026-09-12 09:15:34,sí,no,
+sk,audiokniha,5,34,215,2026-09-12 09:15:30,sí,sí,sk
+sk,čítačka,5,35,235,2026-09-12 09:15:32,sí,sí,sk
+tr,youtube,90,88,224,2026-09-12 09:16:27,sí,no,
+tr,pdf,66,56,237,2026-09-12 09:20:32,sí,sí,tr en-GB
+tr,kitap,62,61,245,2026-09-12 09:16:27,sí,sí,tr
+tr,sesli kitap,55,60,248,2026-09-12 09:16:22,sí,sí,tr
+tr,e kitap,53,53,248,2026-09-12 09:20:33,sí,sí,tr
+tr,pdf okuyucu,52,38,240,2026-09-12 09:16:23,sí,sí,tr
+tr,kitap okuma,50,45,248,2026-09-12 09:16:22,sí,sí,tr
+tr,epub,41,23,250,2026-09-12 09:16:25,sí,sí,tr en-GB
+tr,ses,32,43,247,2026-09-12 09:20:33,no,sí,tr
+tr,text to speech,25,17,247,2026-09-12 09:16:23,sí,sí,tr en-GB
+tr,tts,21,23,249,2026-09-12 09:16:23,sí,sí,tr en-GB
+tr,erişilebilirlik,5,5,75,2026-09-12 09:16:25,sí,no,
+tr,yazı okuma,5,5,250,2026-09-12 09:20:30,no,sí,tr
+tr,seslendirme,5,9,156,2026-09-12 09:16:20,sí,sí,tr
+tr,metni sese çevir,5,9,26,2026-09-12 09:16:21,no,no,
+tr,yazıyı sese çevir,5,9,136,2026-09-12 09:16:22,no,no,
+tr,metin okuma,5,11,250,2026-09-12 09:16:21,no,sí,tr
+tr,sesli okuyucu,5,11,116,2026-09-12 09:16:26,sí,sí,tr
+tr,metin seslendirme,5,11,73,2026-09-12 09:16:26,no,sí,tr
+tr,seslendirme uygulaması,5,11,10,2026-09-12 09:20:30,no,no,
+tr,disleksi,5,13,72,2026-09-12 09:16:24,sí,sí,tr
+tr,metin okuyucu,5,13,241,2026-09-12 09:20:29,no,sí,tr
+tr,sesli okuma,5,19,250,2026-09-12 09:16:21,sí,sí,tr
+tr,makale,5,21,245,2026-09-12 09:16:27,sí,sí,tr
+tr,sesli,5,21,244,2026-09-12 09:20:31,sí,sí,tr
+tr,okuyucu,5,35,250,2026-09-12 09:16:24,sí,sí,tr
+tr,pdf okuma,5,39,233,2026-09-12 09:20:31,sí,sí,tr
+tr,ders çalışma,5,39,250,2026-09-12 09:20:32,no,no,
+tr,sesli kitap dinle,5,43,250,2026-09-12 09:20:30,no,sí,tr
+tr,kitap dinle,5,45,249,2026-09-12 09:20:31,no,sí,tr
+tr,sesli okuma uygulaması,5,49,28,2026-09-12 09:20:29,no,no,
+tr,çevrimdışı,5,61,248,2026-09-12 09:16:26,sí,no,
+ua,youtube,93,81,221,2026-09-12 09:16:08,sí,no,
+ua,книги,74,58,249,2026-09-12 09:20:41,no,no,
+ua,pdf,67,48,230,2026-09-12 09:20:41,sí,sí,uk en-GB
+ua,читалка,60,49,248,2026-09-12 09:16:02,sí,sí,uk
+ua,аудіокниги,54,52,235,2026-09-12 09:16:03,no,no,
+ua,читання,50,38,250,2026-09-12 09:16:07,sí,sí,uk
+ua,epub,36,38,250,2026-09-12 09:16:06,sí,sí,uk en-GB
+ua,text to speech,29,15,248,2026-09-12 09:16:05,sí,sí,uk en-GB
+ua,офлайн,25,59,245,2026-09-12 09:16:06,sí,no,
+ua,синтез мовлення,5,5,16,2026-09-12 09:16:02,no,no,
+ua,дислексія,5,5,26,2026-09-12 09:16:05,sí,sí,uk
+ua,доступність,5,5,50,2026-09-12 09:16:05,sí,no,
+ua,статті,5,5,48,2026-09-12 09:16:08,sí,no,
+ua,озвучити текст,5,7,12,2026-09-12 09:20:40,no,no,
+ua,озвучка тексту,5,9,148,2026-09-12 09:16:01,no,no,
+ua,озвучка,5,9,248,2026-09-12 09:16:07,sí,sí,uk
+ua,читалка вголос,5,9,10,2026-09-12 09:20:40,sí,sí,uk
+ua,читання вголос,5,11,29,2026-09-12 09:16:02,sí,sí,uk
+ua,tts,5,13,249,2026-09-12 09:16:04,sí,sí,uk en-GB
+ua,голос,5,15,248,2026-09-12 09:16:06,sí,sí,uk
+ua,текст в мовлення,5,15,56,2026-09-12 09:20:40,no,no,
+ua,мовлення,5,15,249,2026-09-12 09:20:42,no,sí,uk
+ua,текст в голос,5,21,249,2026-09-12 09:16:03,no,no,
+ua,синтезатор,5,21,115,2026-09-12 09:20:42,no,no,
+ua,аудіокнига,5,46,183,2026-09-12 09:16:03,sí,sí,uk
+ua,pdf читалка,5,47,241,2026-09-12 09:16:04,sí,sí,uk
+us,youtube,92,97,237,2026-09-12 09:12:19,sí,no,
+us,voice,67,56,243,2026-09-12 09:12:11,sí,sí,en-US en-GB en-AU en-CA
+us,offline,64,80,247,2026-09-12 09:12:20,sí,no,
+us,text to speech,60,62,248,2026-09-12 09:12:01,sí,sí,en-US en-GB en-AU en-CA
+us,pdf reader,57,61,246,2026-09-12 09:12:05,sí,sí,en-US en-GB en-AU en-CA
+us,private,53,83,247,2026-09-12 09:12:17,sí,no,
+us,reader,52,69,247,2026-09-12 09:12:18,sí,sí,en-US en-GB en-AU en-CA
+us,audiobook,48,83,248,2026-09-12 09:12:06,sí,sí,en-US en-GB en-AU en-CA
+us,epub reader,46,60,248,2026-09-12 09:12:07,sí,sí,en-US en-GB en-AU en-CA
+us,tts,41,56,248,2026-09-12 09:12:02,sí,sí,en-US en-GB en-AU en-CA es-MX
+us,document reader,37,47,249,2026-09-12 09:12:15,no,sí,en-US en-GB en-AU en-CA
+us,reading app,29,87,248,2026-09-12 09:12:14,no,no,
+us,text to speech reader,28,48,246,2026-09-12 09:19:03,sí,sí,en-US en-GB en-AU en-CA
+us,accessibility,23,13,249,2026-09-12 09:12:10,no,sí,en-US en-GB en-AU en-CA
+us,audio reader,21,49,250,2026-09-12 09:19:00,no,sí,en-US en-AU en-CA
+us,screen reader,21,55,248,2026-09-12 09:19:08,no,sí,en-US en-AU
+us,pdf to audio,20,40,248,2026-09-12 09:12:05,no,sí,en-US en-AU en-CA
+us,listen to books,19,72,247,2026-09-12 09:19:06,no,sí,en-US en-GB en-AU en-CA
+us,read to me,17,63,248,2026-09-12 09:12:07,no,sí,en-US
+us,voice reader,16,52,243,2026-09-12 09:12:03,sí,sí,en-US en-GB en-AU en-CA
+us,reader app,15,65,248,2026-09-12 09:19:02,no,no,
+us,article,14,69,249,2026-09-12 09:12:18,sí,sí,en-US en-CA
+us,dyslexia,13,23,245,2026-09-12 09:12:09,sí,sí,en-US en-GB en-AU en-CA
+us,text to audio,12,44,248,2026-09-12 09:12:13,no,sí,en-US en-AU en-CA
+us,pdf voice reader,11,42,245,2026-09-12 09:19:04,sí,sí,en-US en-GB en-AU en-CA
+us,read along,9,49,246,2026-09-12 09:19:10,no,no,
+us,voice notes,9,51,248,2026-09-12 09:19:04,no,no,
+us,read aloud,9,53,250,2026-09-12 09:12:02,sí,sí,en-US en-GB en-CA
+us,text reader,9,60,249,2026-09-12 09:12:03,sí,sí,en-US en-GB en-AU en-CA
+us,ebook reader,9,69,248,2026-09-12 09:12:15,no,sí,en-AU en-CA
+us,audio book,9,83,248,2026-09-12 09:12:20,no,sí,en-US en-AU en-CA
+us,voice aloud reader,8,47,249,2026-09-12 09:19:06,sí,sí,en-US en-GB en-CA
+us,text to voice,8,54,248,2026-09-12 09:12:10,sí,sí,en-US en-GB en-AU en-CA
+us,speech to text,8,62,249,2026-09-12 09:19:03,sí,sí,en-US en-GB en-AU en-CA
+us,ai voice,8,65,246,2026-09-12 09:19:07,no,no,
+us,book reader,8,69,247,2026-09-12 09:12:11,sí,sí,en-US en-GB en-AU en-CA
+us,study app,8,73,248,2026-09-12 09:19:09,no,no,
+us,polyglot,6,17,250,2026-09-12 09:19:11,no,no,
+us,tts reader,6,48,249,2026-09-12 09:12:17,sí,sí,en-US en-GB en-AU en-CA
+us,read out loud,6,57,248,2026-09-12 09:12:07,no,sí,en-AU en-CA
+us,multilingual,5,5,245,2026-09-12 09:19:11,no,no,
+us,listen to articles,5,9,244,2026-09-12 09:12:08,no,sí,en-US en-CA
+us,offline tts,5,11,249,2026-09-12 09:12:09,sí,no,
+us,adhd reading,5,11,249,2026-09-12 09:19:09,no,no,
+us,learning disability,5,13,250,2026-09-12 09:19:10,no,no,
+us,audiobook maker,5,15,248,2026-09-12 09:12:06,no,no,
+us,text to speech offline,5,15,250,2026-09-12 09:18:59,sí,no,
+us,natural voice,5,21,247,2026-09-12 09:19:07,no,sí,en-GB
+us,safari reader,5,21,249,2026-09-12 09:19:08,no,no,
+us,karaoke reading,5,21,226,2026-09-12 09:19:10,no,no,
+us,speech synthesis,5,23,245,2026-09-12 09:12:16,no,no,
+us,spanish text to speech,5,35,247,2026-09-12 09:19:12,no,no,
+us,web reader,5,36,248,2026-09-12 09:12:21,no,no,
+us,audiobook creator,5,36,250,2026-09-12 09:19:05,no,no,
+us,language reader,5,36,250,2026-09-12 09:19:11,no,no,
+us,french voice,5,38,241,2026-09-12 09:19:12,no,no,
+us,pdf to audiobook,5,39,248,2026-09-12 09:19:05,sí,sí,en-US en-GB en-AU en-CA
+us,narrator,5,40,248,2026-09-12 09:12:16,no,sí,en-GB en-AU en-CA
+us,read aloud voice,5,42,243,2026-09-12 09:19:06,sí,sí,en-US en-GB en-CA
+us,read webpage,5,42,250,2026-09-12 09:19:08,no,no,
+us,text to speech app,5,45,248,2026-09-12 09:18:58,no,no,
+us,pdf to speech,5,46,248,2026-09-12 09:12:05,sí,sí,en-US en-GB en-AU en-CA
+us,listen to pdf,5,46,250,2026-09-12 09:12:14,no,sí,en-US en-GB en-AU en-CA
+us,read aloud text,5,47,248,2026-09-12 09:18:59,sí,sí,en-US en-GB en-CA
+us,speak text,5,48,247,2026-09-12 09:12:12,no,no,
+us,read pdf aloud,5,48,250,2026-09-12 09:19:04,sí,sí,en-US en-GB en-CA
+us,article reader,5,49,249,2026-09-12 09:12:08,sí,sí,en-US en-CA
+us,read aloud pdf,5,49,250,2026-09-12 09:12:17,sí,sí,en-US en-GB en-CA
+us,listening app,5,49,244,2026-09-12 09:19:01,no,no,
+us,read it to me,5,50,145,2026-09-12 09:12:12,no,no,
+us,ai voice reader,5,50,248,2026-09-12 09:12:13,no,no,
+us,tts app,5,50,248,2026-09-12 09:18:59,no,no,
+us,read my text,5,51,249,2026-09-12 09:19:02,no,no,
+us,speech reader,5,52,246,2026-09-12 09:12:04,sí,sí,en-US en-GB en-AU en-CA
+us,ebook to audiobook,5,52,245,2026-09-12 09:19:05,no,sí,en-AU en-CA
+us,voice reader app,5,53,247,2026-09-12 09:19:00,no,no,
+us,read books aloud,5,57,248,2026-09-12 09:12:13,sí,sí,en-US en-GB en-CA
+us,read aloud app,5,58,250,2026-09-12 09:12:03,no,no,
+us,read aloud books,5,65,247,2026-09-12 09:12:21,sí,sí,en-US en-GB en-CA
+vn,youtube,97,84,218,2026-09-12 09:17:02,sí,no,
+vn,pdf,66,48,242,2026-09-12 09:21:04,sí,sí,vi en-GB
+vn,text to speech,64,42,248,2026-09-12 09:16:55,sí,sí,vi en-GB
+vn,sách,61,60,248,2026-09-12 09:17:01,sí,sí,vi
+vn,truyện,59,51,243,2026-09-12 09:21:05,no,sí,vi
+vn,đọc truyện,59,57,247,2026-09-12 09:16:56,no,sí,vi
+vn,sách nói,54,57,248,2026-09-12 09:16:56,sí,sí,vi
+vn,ebook,54,59,241,2026-09-12 09:16:58,sí,sí,vi
+vn,đọc sách,52,61,249,2026-09-12 09:16:58,sí,sí,vi
+vn,offline,51,73,242,2026-09-12 09:17:00,sí,no,
+vn,audio,50,37,248,2026-09-12 09:17:01,sí,sí,vi
+vn,học,50,70,248,2026-09-12 09:21:05,no,no,
+vn,đọc báo,42,48,198,2026-09-12 09:17:00,no,sí,vi
+vn,giọng đọc,5,11,249,2026-09-12 09:16:56,sí,sí,vi
+vn,đọc to,5,11,250,2026-09-12 09:21:04,sí,sí,vi
+vn,chuyển văn bản sang giọng nói,5,13,42,2026-09-12 09:21:03,no,no,
+vn,đọc văn bản thành giọng nói,5,15,176,2026-09-12 09:21:02,sí,no,
+vn,đọc truyện audio,5,19,141,2026-09-12 09:21:03,no,sí,vi
+vn,đọc văn bản,5,21,249,2026-09-12 09:16:54,sí,sí,vi
+vn,tts,5,21,249,2026-09-12 09:16:55,sí,sí,vi en-GB
+vn,epub,5,21,249,2026-09-12 09:16:59,sí,sí,vi en-GB
+vn,chuyển văn bản thành giọng nói,5,23,246,2026-09-12 09:16:55,sí,no,
+vn,tiếng việt,5,23,247,2026-09-12 09:16:59,sí,sí,vi
+vn,giọng nói,5,33,247,2026-09-12 09:21:03,sí,sí,vi
+vn,audiobook,5,39,246,2026-09-12 09:16:57,sí,sí,en-GB
+vn,trợ năng,5,39,248,2026-09-12 09:16:59,sí,no,
+vn,text to speech tiếng việt,5,45,36,2026-09-12 09:21:04,no,sí,vi
+vn,bài viết,5,46,245,2026-09-12 09:17:02,sí,sí,vi
+vn,đọc pdf,5,47,243,2026-09-12 09:16:57,sí,sí,vi
+vn,đọc,5,55,246,2026-09-12 09:21:06,sí,sí,vi

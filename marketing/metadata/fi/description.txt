@@ -1,0 +1,28 @@
+Jaa artikkeli, PDF, EPUB, Word-tiedosto tai video Yappylle, niin papukaija lukee sen sinulle ääneen luonnollisella äänellä. Kun kokkaat, kun kävelet tai silmät kiinni. Kaikki tapahtuu iPhonesi sisällä: mitään ei lähde siitä ulos, koskaan.
+
+EI PILVEÄ, EI TILEJÄ, EI MAKSUA MERKEITTÄIN
+Ääni syntetisoidaan laitteellasi avoimella mallilla, jossa on noin 66 miljoonaa parametria. Ei rekisteröitymistä, ei sähköpostia. Toimii ilman yhteyttä, ikuisesti.
+
+31 KIELTÄ JA KYMMENEN ÄÄNTÄ, KAIKKI MONIKIELISIÄ
+Suomi, englanti, espanja, ranska, saksa, italia, portugali, hollanti, puola, romania, ruotsi, tanska, viro, liettua, latvia, kroatia, sloveeni, slovakki, tšekki, unkari, kreikka, bulgaria, ukraina, venäjä, turkki, arabia, hindi, indonesia, vietnam, korea ja japani. Tekstit, joissa on lainauksia toisella kielellä, vaihtavat kieltä itsestään, kappale kappaleelta.
+
+JAKAMINEN ON OVI
+Safarista, Mailista, Tiedostoista tai mistä tahansa sovelluksesta: napauta Jaa ja valitse Yappy. Sivu siivoaa itsensä (pois valikot, bannerit ja alatunnisteet), ja jäljelle jää proosa otsikoineen ja rytmeineen. YouTube-videoita kuunnellaan kuin artikkeleita. PDF:t ja EPUBit tulevat lukuineen. Ääniviestit litteroidaan laitteella.
+
+KÄSIKIRJOITTAJA: KIRJOITETUSTA SANOTTUUN
+Ääneen lukeminen ei ole tavaamista. ”1492” luetaan ”tuhat neljäsataa yhdeksänkymmentäkaksi”; ”Henrik VIII” luetaan ”Henrik kahdeksas”, mutta ”Louis XIV” on ranskaksi ”Louis quatorze”. Yappy muuntaa jokaisen tekstin lukukäsikirjoitukseksi kunkin kielen sääntöjen mukaan, ja ääni seuraa sitä lause lauseelta, kun teksti syttyy näytöllä.
+
+NÄYTTÖ ON NAPPI
+Napauta mihin tahansa pysäyttääksesi, pyyhkäise hypätäksesi kappaleen yli, säädä nopeutta reunasta. Ja lukitusnäytöltä tai kuulokkeista, kuten missä tahansa soittimessa.
+
+PAINO: KOKONAISET KIRJAT ÄÄNIKIRJOIKSI
+Jätä kirja renderöitymään nukkumaan mennessäsi, ja herätessäsi kirjastossasi on äänikirja lukuineen. Sillan avulla Macisi tai PC:si voi muuntaa sen puolestasi ja palauttaa sen itsestään.
+
+OIKEASTI ILMAINEN, JA VETOAVAIMELLINEN PAPUKAIJA
+Yappy on avointa lähdekoodia (MIT-lisenssi). Ilmainen papukaija kantaa orrellaan kolmea dokumenttia kerrallaan; ota yksi pois, niin toinen mahtuu tilalle, ilman aikarajaa. Jos haluat pohjattoman orren, äänikirjapainon ja sillan tietokoneeseen, vedä se käyntiin Yappy Parlanchínilla: kuukausi- tai vuositilaus, tai yksi ainoa elinikäinen osto. Peruutat milloin haluat.
+
+Tilaukset uusiutuvat automaattisesti jokaisen jakson lopussa, ellet peruuta niitä Apple-tililläsi vähintään 24 tuntia ennen.
+Käyttöehdot: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Tietosuoja: https://yappy.joseluissaorin.com/en/privacy
+
+Rakkaudella tehnyt José Luis Saorín. Filologi, joka halusi kuunnella lukemansa, ja kuusivuotias, joka halusi leikkiä papukaijan kanssa.

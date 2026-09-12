@@ -54,6 +54,10 @@ pub struct ItemCola {
     /// Favorito: fijado arriba de la cinta, con su estrella.
     #[serde(default)]
     pub favorito: bool,
+    /// Pieza DE LA CASA (un cuento empaquetado del paseo): no ocupa hueco
+    /// en la percha del loro de prueba.
+    #[serde(default)]
+    pub de_la_casa: bool,
 }
 
 fn ahora_unix() -> u64 {
@@ -200,6 +204,7 @@ pub fn agregar_url<R: Runtime>(app: &AppHandle<R>, url: String) -> Result<ItemCo
             return Ok(existente.clone());
         }
     }
+    crate::cuota::aforo(app)?;
     let tipo = if es_youtube(&url) {
         TipoItem::Youtube
     } else {
@@ -222,6 +227,7 @@ pub fn agregar_url<R: Runtime>(app: &AppHandle<R>, url: String) -> Result<ItemCo
         agregado_unix: ahora_unix(),
         chars: None,
         favorito: false,
+        de_la_casa: false,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -272,6 +278,7 @@ pub fn agregar_web<R: Runtime>(app: &AppHandle<R>, ruta_html: String) -> Result<
             clon
         }
         None => {
+            crate::cuota::aforo(app)?;
             let nuevo = ItemCola {
                 id: nuevo_id(),
                 tipo: TipoItem::Url,
@@ -283,6 +290,7 @@ pub fn agregar_web<R: Runtime>(app: &AppHandle<R>, ruta_html: String) -> Result<
                 agregado_unix: ahora_unix(),
                 chars: None,
                 favorito: false,
+                de_la_casa: false,
             };
             let clon = nuevo.clone();
             mutar(app, |items| items.insert(0, nuevo))?;
@@ -301,6 +309,7 @@ pub fn agregar_texto<R: Runtime>(
     texto: String,
     titulo: Option<String>,
 ) -> Result<ItemCola> {
+    crate::cuota::aforo(app)?;
     let id = nuevo_id();
     let ruta = dir_cola(app)?.join(format!("{id}.md"));
     fs::write(&ruta, &texto)?;
@@ -326,6 +335,7 @@ pub fn agregar_texto<R: Runtime>(
         agregado_unix: ahora_unix(),
         chars: Some(texto.chars().count()),
         favorito: false,
+        de_la_casa: false,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -393,6 +403,7 @@ fn percent_decode(s: &str) -> String {
 }
 
 pub fn agregar_archivo<R: Runtime>(app: &AppHandle<R>, ruta_original: String) -> Result<ItemCola> {
+    crate::cuota::aforo(app)?;
     let ruta_original = ruta_de_selector(&ruta_original);
     let origen = PathBuf::from(&ruta_original);
     let nombre = origen
@@ -417,6 +428,7 @@ pub fn agregar_archivo<R: Runtime>(app: &AppHandle<R>, ruta_original: String) ->
         agregado_unix: ahora_unix(),
         chars: None,
         favorito: false,
+        de_la_casa: false,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -424,6 +436,7 @@ pub fn agregar_archivo<R: Runtime>(app: &AppHandle<R>, ruta_original: String) ->
 }
 
 pub fn agregar_audio<R: Runtime>(app: &AppHandle<R>, ruta_original: String) -> Result<ItemCola> {
+    crate::cuota::aforo(app)?;
     let origen = PathBuf::from(&ruta_original);
     let nombre = origen
         .file_name()
@@ -447,10 +460,49 @@ pub fn agregar_audio<R: Runtime>(app: &AppHandle<R>, ruta_original: String) -> R
         agregado_unix: ahora_unix(),
         chars: None,
         favorito: false,
+        de_la_casa: false,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
     Ok(clon)
+}
+
+/// Un CUENTO DE LA CASA (resources/cuentos/<id>.md, con su cabecera YAML):
+/// entra en la cinta como pieza propia, sin ocupar hueco en la percha, y
+/// listo al instante (el texto ya está).
+pub fn agregar_cuento(app: &AppHandle, id_cuento: &str) -> Result<ItemCola> {
+    let cuento = crate::commands::cuento_empaquetado(app, id_cuento)
+        .ok_or_else(|| anyhow!("no hay cuento «{id_cuento}»"))?;
+    // El mismo cuento dos veces no duplica la pieza.
+    if let Ok(items) = listar(app) {
+        if let Some(existente) = items.iter().find(|i| i.de_la_casa && i.origen == cuento.id) {
+            return Ok(existente.clone());
+        }
+    }
+    let id = nuevo_id();
+    let ruta = dir_cola(app)?.join(format!("{id}.md"));
+    fs::write(&ruta, &cuento.texto)?;
+    let item = ItemCola {
+        id,
+        tipo: TipoItem::Texto,
+        titulo: cuento.titulo.clone(),
+        origen: cuento.id.clone(),
+        ruta: Some(ruta.to_string_lossy().to_string()),
+        estado: EstadoItem::Listo,
+        error: None,
+        agregado_unix: ahora_unix(),
+        chars: Some(cuento.texto.chars().count()),
+        favorito: false,
+        de_la_casa: true,
+    };
+    let clon = item.clone();
+    mutar(app, |items| items.insert(0, item))?;
+    Ok(clon)
+}
+
+#[tauri::command]
+pub fn cola_agregar_cuento_cmd(app: AppHandle, id: String) -> Result<ItemCola, String> {
+    agregar_cuento(&app, &id).map_err(|e| format!("{e:#}"))
 }
 
 pub fn eliminar<R: Runtime>(app: &AppHandle<R>, id: &str) -> Result<()> {

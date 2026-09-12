@@ -1,0 +1,28 @@
+Comparte un artículo, un PDF, un EPUB, un Word o un vídeo con Yappy, y un loro te lo lee en voz alta con una voz natural. Mientras cocinas, mientras caminas o con los ojos cerrados. Todo ocurre dentro de tu iPhone: nada sale de él, nunca.
+
+SIN NUBE, SIN CUENTAS, SIN TARIFA POR CARÁCTER
+La voz se sintetiza en tu dispositivo con un modelo abierto de unos 66 millones de parámetros. No hace falta registrarse ni dar el correo. Funciona sin conexión, para siempre.
+
+31 IDIOMAS Y DIEZ VOCES, TODAS POLÍGLOTAS
+Español, inglés, francés, alemán, italiano, portugués, neerlandés, polaco, rumano, sueco, danés, finés, estonio, lituano, letón, croata, esloveno, eslovaco, checo, húngaro, griego, búlgaro, ucraniano, ruso, turco, árabe, hindi, indonesio, vietnamita, coreano y japonés. Los textos con citas en otra lengua cambian de idioma solos, párrafo a párrafo.
+
+COMPARTIR ES LA PUERTA
+Desde Safari, el correo, Archivos o cualquier app: toca compartir y elige Yappy. La página se limpia sola (fuera menús, banners y pies) y queda la prosa con sus títulos y su ritmo. Los vídeos de YouTube se escuchan como artículos. Los PDF y EPUB llegan con capítulos. Las notas de voz se transcriben en el dispositivo.
+
+EL GUIONIZADOR: DE LO ESCRITO A LO DICHO
+Leer en voz alta no es deletrear. «1492» se dice «mil cuatrocientos noventa y dos»; «Enrique VIII» se dice «Enrique octavo», pero «Luis XIV» en francés se dice «Louis quatorze». Yappy convierte cada texto en un guion de lectura con las reglas de cada lengua, y la voz lo sigue frase a frase mientras el texto se ilumina en pantalla.
+
+LA PANTALLA ES EL BOTÓN
+Toca en cualquier sitio para pausar, desliza para saltar de párrafo, sube o baja la velocidad por el borde. Y desde la pantalla de bloqueo o los auriculares, como con cualquier reproductor.
+
+LA IMPRENTA: LIBROS ENTEROS COMO AUDIOLIBROS
+Deja un libro renderizando al acostarte y al despertar tienes un audiolibro con capítulos en tu biblioteca. Con el puente, tu Mac o tu PC pueden convertirlo por ti y devolvértelo solo.
+
+GRATIS DE VERDAD, Y UN LORO CON CUERDA
+Yappy es código abierto (licencia MIT). El loro de prueba lleva tres documentos a la vez en su percha; quita uno y cabe otro, sin límite de tiempo. Si quieres una percha sin fondo, la imprenta de audiolibros y el puente con el ordenador, dale cuerda con Yappy Parlanchín: suscripción mensual o anual, o un único pago de por vida. Cancelas cuando quieras.
+
+Las suscripciones se renuevan solas al final de cada periodo salvo que las canceles en tu cuenta de Apple al menos 24 horas antes.
+Términos de uso: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacidad: https://yappy.joseluissaorin.com/privacidad
+
+Hecho con amor por José Luis Saorín. Un filólogo que quería escuchar lo que leía, y un niño de seis que quería jugar con el loro.

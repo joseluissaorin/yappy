@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Bună, sunt papagalul tău"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/ro/01-paseo-hola
+- tapOn:
+    text: "Alege-mi o voce"
+- extendedWaitUntil:
+    visible:
+      text: "Totul se întâmplă pe telefonul tău"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/ro/02-paseo-idiomas
+- tapOn:
+    text: "Continuă"
+- extendedWaitUntil:
+    visible:
+      text: "Alege-ți pasărea"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/ro/03-paseo-pajaro
+- tapOn:
+    text: "Rămân cu James"
+- extendedWaitUntil:
+    visible:
+      text: "Ce-mi dai\\?"
+    timeout: 10000
+- tapOn:
+    text: "Articole"
+- tapOn:
+    text: "Cărți"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ro/04-paseo-que
+- tapOn:
+    text: "Continuă"
+- extendedWaitUntil:
+    visible:
+      text: "Când mă asculți\\?"
+    timeout: 10000
+- tapOn:
+    text: "Când gătești"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ro/05-paseo-cuando
+- tapOn:
+    text: "Continuă"
+- extendedWaitUntil:
+    visible:
+      text: "Cu ce viteză\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ro/06-paseo-velocidad
+- tapOn:
+    text: "Continuă"
+- extendedWaitUntil:
+    visible:
+      text: "Cât ai de citit\\?"
+    timeout: 10000
+- tapOn:
+    text: "Un munte"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ro/07-paseo-cuanto
+- tapOn:
+    text: "Continuă"
+- extendedWaitUntil:
+    visible:
+      text: "Ceva al tău, sau o poveste"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ro/08-paseo-escucha
+- tapOn:
+    text: "(?i)Mai târziu"
+- extendedWaitUntil:
+    visible:
+      text: "Ecranul e butonul"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Mai târziu"
+- extendedWaitUntil:
+    visible:
+      text: "Partajarea e totul"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/ro/09-paseo-compartir
+- tapOn:
+    text: "(?i)Mai târziu"
+- extendedWaitUntil:
+    visible:
+      text: "Și îl iei cu tine"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ro/10-paseo-exportar
+- tapOn:
+    text: "(?i)Mai târziu"
+- extendedWaitUntil:
+    visible:
+      text: "Fixează-mă în favoritele tale"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ro/11-paseo-favoritos
+- tapOn:
+    text: "Gata"
+- extendedWaitUntil:
+    visible:
+      text: "Papagalul tău"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ro/12-paseo-resumen
+- tapOn:
+    text: "Continuă"
+- extendedWaitUntil:
+    visible:
+      text: "Trei deodată"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/ro/13-paseo-percha
+- tapOn:
+    text: "Continuă"
+- extendedWaitUntil:
+    visible:
+      text: "Alege-ți cheița"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/ro/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Începe cu trei pe stinghie"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/ro/15-paseo-cuerda-pie
+- tapOn:
+    text: "Începe cu trei pe stinghie"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Bine"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/ro/17-cinta-vacia

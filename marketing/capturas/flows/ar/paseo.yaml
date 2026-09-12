@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "أهلًا، أنا ببغاؤك"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/ar/01-paseo-hola
+- tapOn:
+    text: "اختر لي صوتًا"
+- extendedWaitUntil:
+    visible:
+      text: "كل شيء يحدث في هاتفك"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/ar/02-paseo-idiomas
+- tapOn:
+    text: "التالي"
+- extendedWaitUntil:
+    visible:
+      text: "اختر طائرك"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/ar/03-paseo-pajaro
+- tapOn:
+    text: "أختار James"
+- extendedWaitUntil:
+    visible:
+      text: "ماذا ستعطيني؟"
+    timeout: 10000
+- tapOn:
+    text: "مقالات"
+- tapOn:
+    text: "كتب"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/ar/04-paseo-que
+- tapOn:
+    text: "التالي"
+- extendedWaitUntil:
+    visible:
+      text: "متى تستمع إليّ؟"
+    timeout: 10000
+- tapOn:
+    text: "أثناء الطبخ"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/ar/05-paseo-cuando
+- tapOn:
+    text: "التالي"
+- extendedWaitUntil:
+    visible:
+      text: "بأي سرعة؟"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/ar/06-paseo-velocidad
+- tapOn:
+    text: "التالي"
+- extendedWaitUntil:
+    visible:
+      text: "كم من المحتوى في انتظارك؟"
+    timeout: 10000
+- tapOn:
+    text: "جبل كامل"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/ar/07-paseo-cuanto
+- tapOn:
+    text: "التالي"
+- extendedWaitUntil:
+    visible:
+      text: "ما تملكه، أو حكاية"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/ar/08-paseo-escucha
+- tapOn:
+    text: "(?i)لاحقًا"
+- extendedWaitUntil:
+    visible:
+      text: "الشاشة هي الزر"
+    timeout: 10000
+- tapOn:
+    text: "(?i)لاحقًا"
+- extendedWaitUntil:
+    visible:
+      text: "المشاركة هي كل شيء"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/ar/09-paseo-compartir
+- tapOn:
+    text: "(?i)لاحقًا"
+- extendedWaitUntil:
+    visible:
+      text: "وتأخذه معك"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/ar/10-paseo-exportar
+- tapOn:
+    text: "(?i)لاحقًا"
+- extendedWaitUntil:
+    visible:
+      text: "ثبّتني في مفضّلاتك"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/ar/11-paseo-favoritos
+- tapOn:
+    text: "تم"
+- extendedWaitUntil:
+    visible:
+      text: "ببغاؤك"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/ar/12-paseo-resumen
+- tapOn:
+    text: "التالي"
+- extendedWaitUntil:
+    visible:
+      text: "ثلاثة في الوقت نفسه"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/ar/13-paseo-percha
+- tapOn:
+    text: "التالي"
+- extendedWaitUntil:
+    visible:
+      text: "اختر لفّة مفتاحك"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/ar/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "البدء بثلاثة على المجثم"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots/ar/15-paseo-cuerda-pie
+- tapOn:
+    text: "البدء بثلاثة على المجثم"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "حسنًا"
+    optional: true
+- takeScreenshot: marketing/screenshots/ar/17-cinta-vacia

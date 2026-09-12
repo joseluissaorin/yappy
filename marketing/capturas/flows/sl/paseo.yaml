@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Živjo, jaz sem tvoja papiga"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/sl/01-paseo-hola
+- tapOn:
+    text: "Izberi mi glas"
+- extendedWaitUntil:
+    visible:
+      text: "Vse se zgodi na tvojem telefonu"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/sl/02-paseo-idiomas
+- tapOn:
+    text: "Naprej"
+- extendedWaitUntil:
+    visible:
+      text: "Izberi svojo ptico"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/sl/03-paseo-pajaro
+- tapOn:
+    text: "Ostajam pri James"
+- extendedWaitUntil:
+    visible:
+      text: "Kaj mi boš dal\\?"
+    timeout: 10000
+- tapOn:
+    text: "Članki"
+- tapOn:
+    text: "Knjige"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/04-paseo-que
+- tapOn:
+    text: "Naprej"
+- extendedWaitUntil:
+    visible:
+      text: "Kdaj me poslušaš\\?"
+    timeout: 10000
+- tapOn:
+    text: "Kuhanje"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/05-paseo-cuando
+- tapOn:
+    text: "Naprej"
+- extendedWaitUntil:
+    visible:
+      text: "S kakšno hitrostjo\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/06-paseo-velocidad
+- tapOn:
+    text: "Naprej"
+- extendedWaitUntil:
+    visible:
+      text: "Koliko imaš za prebrati\\?"
+    timeout: 10000
+- tapOn:
+    text: "Cela gora"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/07-paseo-cuanto
+- tapOn:
+    text: "Naprej"
+- extendedWaitUntil:
+    visible:
+      text: "Tvoje, ali zgodba"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/08-paseo-escucha
+- tapOn:
+    text: "(?i)Pozneje"
+- extendedWaitUntil:
+    visible:
+      text: "Zaslon je gumb"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Pozneje"
+- extendedWaitUntil:
+    visible:
+      text: "Deljenje je vse"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/sl/09-paseo-compartir
+- tapOn:
+    text: "(?i)Pozneje"
+- extendedWaitUntil:
+    visible:
+      text: "In vzameš to s seboj"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/10-paseo-exportar
+- tapOn:
+    text: "(?i)Pozneje"
+- extendedWaitUntil:
+    visible:
+      text: "Pripni me med priljubljene"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/11-paseo-favoritos
+- tapOn:
+    text: "Končano"
+- extendedWaitUntil:
+    visible:
+      text: "Tvoja papiga"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/12-paseo-resumen
+- tapOn:
+    text: "Naprej"
+- extendedWaitUntil:
+    visible:
+      text: "Tri naenkrat"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/sl/13-paseo-percha
+- tapOn:
+    text: "Naprej"
+- extendedWaitUntil:
+    visible:
+      text: "Izberi svojo vzmet"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/sl/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Začni s tremi na gredi"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots/sl/15-paseo-cuerda-pie
+- tapOn:
+    text: "Začni s tremi na gredi"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "V redu"
+    optional: true
+- takeScreenshot: marketing/screenshots/sl/17-cinta-vacia

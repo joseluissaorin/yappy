@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "sem\nnuvem",
+    "idiomas": "31\nidiomas",
+    "compartir": "toca em\npartilhar",
+    "capitulos": "com\ncapítulos",
+    "ritmo": "ao teu\nritmo",
+    "hola": "olá!",
+    "gratis": "grátis",
+    "offline": "sem ligação",
+    "aso": "ler texto · text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Tudo lido em voz alta.",
+      "subtitle": "Partilha um artigo, um PDF ou um livro, e um papagaio lê-to."
+    },
+    {
+      "slot": 2,
+      "title": "A voz segue o texto.",
+      "subtitle": "Cada frase acende enquanto soa. Toca para pausar."
+    },
+    {
+      "slot": 3,
+      "title": "Dez pássaros, 31 idiomas.",
+      "subtitle": "Todos poliglotas: mudam de língua sozinhos, parágrafo a parágrafo."
+    },
+    {
+      "slot": 4,
+      "title": "Nada sai do teu iPhone.",
+      "subtitle": "Sem nuvem, sem conta, sem tarifa ao carácter. Funciona sem ligação."
+    },
+    {
+      "slot": 5,
+      "title": "De qualquer app.",
+      "subtitle": "Safari, Ficheiros, YouTube, o correio: toca em Partilhar e escolhe o Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Lê como uma pessoa.",
+      "subtitle": "«1492» diz-se «mil quatrocentos e noventa e dois», com as regras de cada língua."
+    },
+    {
+      "slot": 7,
+      "title": "Livros inteiros, em áudio.",
+      "subtitle": "Com capítulos. Deixas à noite e de manhã está na tua biblioteca."
+    },
+    {
+      "slot": 8,
+      "title": "Também de noite.",
+      "subtitle": "Voz, velocidade e tema, a teu gosto, nos bastidores."
+    },
+    {
+      "slot": 9,
+      "title": "Um papagaio com ofício.",
+      "subtitle": "Acompanha-te desde o primeiro dia com um passeio de três minutos."
+    },
+    {
+      "slot": 10,
+      "title": "Dá corda ao papagaio.",
+      "subtitle": "Grátis com três no poleiro. Yappy Parlanchín: poleiro sem fundo, para sempre."
+    }
+  ]
+}

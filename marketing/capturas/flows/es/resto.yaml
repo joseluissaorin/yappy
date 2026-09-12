@@ -1,0 +1,91 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- tapOn:
+    point: "50%,97%"
+- tapOn:
+    text: "Vale"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/es/20-cinta
+- tapOn:
+    text: "(?i)Pan de pueblo"
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: "Escuchar"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/es/21-lector-a
+- extendedWaitUntil:
+    visible:
+      text: "(?i)leyendo|(?i)sonando"
+    timeout: 25000
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 6000
+- takeScreenshot: marketing/screenshots/es/22-lector-b
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: marketing/screenshots/es/23-lector-c
+- tapOn:
+    text: "(?i)volver"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    point: "8%,9%"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/es/24-cinta-sonando
+- tapOn:
+    text: "la trastienda"
+- extendedWaitUntil:
+    visible:
+      text: "Velocidad"
+    timeout: 8000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/es/25-trastienda
+- tapOn:
+    text: "Noche"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/es/26-trastienda-noche
+- tapOn:
+    text: "Papel"
+    optional: true
+- scrollUntilVisible:
+    element:
+      text: "Dar cuerda al loro|Gestionar la suscripción"
+    direction: DOWN
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/es/27-trastienda-cuerda
+- tapOn:
+    text: "Dar cuerda al loro"
+- extendedWaitUntil:
+    visible:
+      text: "Elige tu cuerda"
+    timeout: 12000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/es/28-paywall
+- tapOn:
+    point: "90%,11%"
+- waitForAnimationToEnd:
+    timeout: 2500
+- tapOn:
+    point: "50%,50%"
+- waitForAnimationToEnd:
+    timeout: 1500
+- tapOn:
+    text: "(?i)abrir la imprenta"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/es/29-imprenta

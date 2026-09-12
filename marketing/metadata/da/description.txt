@@ -1,0 +1,28 @@
+Del en artikel, en PDF, en EPUB, en Word-fil eller en video med Yappy, og en papegøje læser den højt for dig med en naturlig stemme. Mens du laver mad, mens du går tur eller med lukkede øjne. Alt sker inde i din iPhone: intet forlader den, nogensinde.
+
+INGEN CLOUD, INGEN KONTI, INTET GEBYR PR. TEGN
+Stemmen syntetiseres på din enhed af en åben model med omkring 66 millioner parametre. Ingen tilmelding, ingen e-mail. Det virker offline, for altid.
+
+31 SPROG OG TI STEMMER, ALLE FLERSPROGEDE
+Dansk, engelsk, spansk, fransk, tysk, italiensk, portugisisk, nederlandsk, polsk, rumænsk, svensk, finsk, estisk, litauisk, lettisk, kroatisk, slovensk, slovakisk, tjekkisk, ungarsk, græsk, bulgarsk, ukrainsk, russisk, tyrkisk, arabisk, hindi, indonesisk, vietnamesisk, koreansk og japansk. Tekster med citater på et andet sprog skifter sprog af sig selv, afsnit for afsnit.
+
+AT DELE ER DØREN
+Fra Safari, Mail, Arkiver eller enhver anden app: tryk på Del og vælg Yappy. Siden rydder op i sig selv (væk med menuer, bannere og sidefødder), og tilbage er prosaen med sine overskrifter og sin rytme. YouTube-videoer lytter du til som artikler. PDF'er og EPUB'er kommer med kapitler. Talebeskeder transskriberes på enheden.
+
+MANUSKRIPTFORFATTEREN: FRA DET SKREVNE TIL DET SAGTE
+At læse højt er ikke at stave. "1492" læses "fjortenhundrede og tooghalvfems"; "Henrik VIII" læses "Henrik den Ottende", men "Louis XIV" læses på fransk "Louis quatorze". Yappy laver hver tekst om til et læsemanuskript efter hvert sprogs regler, og stemmen følger det sætning for sætning, mens teksten lyser op på skærmen.
+
+SKÆRMEN ER KNAPPEN
+Tryk hvor som helst for at sætte på pause, swipe for at springe et afsnit over, skru op eller ned for hastigheden langs kanten. Og fra låseskærmen eller hovedtelefonerne, som med enhver anden afspiller.
+
+TRYKKERIET: HELE BØGER SOM LYDBØGER
+Lad en bog rendere, når du går i seng, og vågn op til en lydbog med kapitler i dit bibliotek. Med broen kan din Mac eller pc konvertere den for dig og sende den tilbage af sig selv.
+
+GRATIS FOR ALVOR, OG EN PAPEGØJE MED OPTRÆK
+Yappy er open source (MIT-licens). Gratispapegøjen bærer tre dokumenter ad gangen på sin pind; fjern ét, og der er plads til et andet, uden tidsgrænse. Vil du have en pind uden bund, lydbogstrykkeriet og broen til computeren, så træk den op med Yappy Parlanchín: måneds- eller årsabonnement, eller ét enkelt køb for livstid. Opsig, når du vil.
+
+Abonnementer fornyes automatisk ved udgangen af hver periode, medmindre de opsiges på din Apple-konto mindst 24 timer før.
+Brugsbetingelser: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privatliv: https://yappy.joseluissaorin.com/en/privacy
+
+Lavet med kærlighed af José Luis Saorín. En filolog, der ville høre det, han læste, og en seksårig, der ville lege med papegøjen.

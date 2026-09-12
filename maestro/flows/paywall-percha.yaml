@@ -1,0 +1,11 @@
+# La percha llena: la app lanzada con SIMCTL_CHILD_YAPPY_TIENDA=sim y
+# SIMCTL_CHILD_YAPPY_TIENDA_MOTIVO=percha emite cuota_agotada a los 4 s.
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: ".*percha.*|.*perch is full.*"
+    timeout: 20000
+- takeScreenshot: /tmp/paywall/06-percha

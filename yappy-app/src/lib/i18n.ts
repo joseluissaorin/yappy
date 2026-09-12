@@ -105,6 +105,12 @@ export const NOMBRE_IDIOMA: Record<IdiomaUI, string> = {
   id: "Bahasa Indonesia", vi: "Tiếng Việt", ko: "한국어", ja: "日本語",
 };
 
+/// Una frase en OTRO idioma (los sellos de idioma del paseo: el loro dice
+/// «hola» en la lengua que tocas). Cae a inglés y a español.
+export function frase(idioma: IdiomaUI, clave: string): string {
+  return DICCIONARIOS[idioma]?.[clave] ?? DICCIONARIOS.en[clave] ?? DICCIONARIOS.es[clave] ?? clave;
+}
+
 /// t("clave") reactivo: $t en los componentes. Cae a inglés y luego a
 /// español antes de rendirse a la clave cruda.
 export const t = derived(idiomaUI, ($l) => (clave: string): string => {

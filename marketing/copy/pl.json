@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "bez\nchmury",
+    "idiomas": "31\njęzyków",
+    "compartir": "stuknij\nudostępnij",
+    "capitulos": "z\nrozdziałami",
+    "ritmo": "w twoim\ntempie",
+    "hola": "cześć!",
+    "gratis": "za darmo",
+    "offline": "offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Każdy tekst, na głos.",
+      "subtitle": "Udostępnij artykuł, PDF albo książkę, a papuga ci to przeczyta."
+    },
+    {
+      "slot": 2,
+      "title": "Głos podąża za tekstem.",
+      "subtitle": "Każde zdanie rozświetla się, gdy brzmi. Stuknij, by zatrzymać."
+    },
+    {
+      "slot": 3,
+      "title": "10 ptaków, 31 języków.",
+      "subtitle": "Wszystkie poliglotki: same zmieniają język, akapit po akapicie."
+    },
+    {
+      "slot": 4,
+      "title": "Nic nie opuszcza iPhone'a.",
+      "subtitle": "Bez chmury, bez konta, bez opłat za znaki. Działa offline."
+    },
+    {
+      "slot": 5,
+      "title": "Z każdej aplikacji.",
+      "subtitle": "Safari, Pliki, YouTube, poczta: stuknij Udostępnij i wybierz Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Czyta jak człowiek.",
+      "subtitle": "„1492” to „tysiąc czterysta dziewięćdziesiąt dwa”, według reguł każdego języka."
+    },
+    {
+      "slot": 7,
+      "title": "Całe książki do słuchania.",
+      "subtitle": "Z rozdziałami. Zostawiasz na noc, a rano czeka w twojej bibliotece."
+    },
+    {
+      "slot": 8,
+      "title": "Także nocą.",
+      "subtitle": "Głos, tempo i motyw, jak lubisz, na zapleczu."
+    },
+    {
+      "slot": 9,
+      "title": "Papuga z fachem.",
+      "subtitle": "Towarzyszy ci od pierwszego dnia trzyminutowym spacerem."
+    },
+    {
+      "slot": 10,
+      "title": "Nakręć papugę.",
+      "subtitle": "Za darmo z trzema na grzędzie. Yappy Parlanchín: grzęda bez dna, na zawsze."
+    }
+  ]
+}

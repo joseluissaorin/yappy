@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Γεια, είμαι ο παπαγάλος σου"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/el/01-paseo-hola
+- tapOn:
+    text: "Διάλεξέ μου μια φωνή"
+- extendedWaitUntil:
+    visible:
+      text: "Όλα γίνονται στο κινητό σου"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/el/02-paseo-idiomas
+- tapOn:
+    text: "Επόμενο"
+- extendedWaitUntil:
+    visible:
+      text: "Διάλεξε το πουλί σου"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/el/03-paseo-pajaro
+- tapOn:
+    text: "Διαλέγω αυτό: James"
+- extendedWaitUntil:
+    visible:
+      text: "Τι θα μου δώσεις;"
+    timeout: 10000
+- tapOn:
+    text: "Άρθρα"
+- tapOn:
+    text: "Βιβλία"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/el/04-paseo-que
+- tapOn:
+    text: "Επόμενο"
+- extendedWaitUntil:
+    visible:
+      text: "Πότε με ακούς;"
+    timeout: 10000
+- tapOn:
+    text: "Μαγειρεύοντας"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/el/05-paseo-cuando
+- tapOn:
+    text: "Επόμενο"
+- extendedWaitUntil:
+    visible:
+      text: "Με ποια ταχύτητα;"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/el/06-paseo-velocidad
+- tapOn:
+    text: "Επόμενο"
+- extendedWaitUntil:
+    visible:
+      text: "Πόσα έχεις να διαβάσεις;"
+    timeout: 10000
+- tapOn:
+    text: "Ένα ολόκληρο βουνό"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/el/07-paseo-cuanto
+- tapOn:
+    text: "Επόμενο"
+- extendedWaitUntil:
+    visible:
+      text: "Κάτι δικό σου, ή μια ιστορία"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/el/08-paseo-escucha
+- tapOn:
+    text: "(?i)Αργότερα"
+- extendedWaitUntil:
+    visible:
+      text: "Η οθόνη είναι το κουμπί"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Αργότερα"
+- extendedWaitUntil:
+    visible:
+      text: "Η κοινοποίηση είναι το παν"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/el/09-paseo-compartir
+- tapOn:
+    text: "(?i)Αργότερα"
+- extendedWaitUntil:
+    visible:
+      text: "Και το παίρνεις μαζί σου"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/el/10-paseo-exportar
+- tapOn:
+    text: "(?i)Αργότερα"
+- extendedWaitUntil:
+    visible:
+      text: "Καρφίτσωσέ με στα αγαπημένα σου"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/el/11-paseo-favoritos
+- tapOn:
+    text: "Έγινε"
+- extendedWaitUntil:
+    visible:
+      text: "Ο παπαγάλος σου"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/el/12-paseo-resumen
+- tapOn:
+    text: "Επόμενο"
+- extendedWaitUntil:
+    visible:
+      text: "Τρία τη φορά"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/el/13-paseo-percha
+- tapOn:
+    text: "Επόμενο"
+- extendedWaitUntil:
+    visible:
+      text: "Διάλεξε το κούρδισμά σου"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/el/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Ξεκίνα με τρία στην κούρνια"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/el/15-paseo-cuerda-pie
+- tapOn:
+    text: "Ξεκίνα με τρία στην κούρνια"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Εντάξει"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/el/17-cinta-vacia

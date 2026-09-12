@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "नमस्ते, मैं आपका तोता हूँ"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/hi/01-paseo-hola
+- tapOn:
+    text: "मेरे लिए आवाज़ चुनिए"
+- extendedWaitUntil:
+    visible:
+      text: "सब कुछ आपके फ़ोन में ही होता है"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/hi/02-paseo-idiomas
+- tapOn:
+    text: "आगे बढ़ें"
+- extendedWaitUntil:
+    visible:
+      text: "अपना पंछी चुनिए"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/hi/03-paseo-pajaro
+- tapOn:
+    text: "मैं James चुनता हूँ"
+- extendedWaitUntil:
+    visible:
+      text: "आप मुझे क्या देंगे\\?"
+    timeout: 10000
+- tapOn:
+    text: "लेख"
+- tapOn:
+    text: "किताबें"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hi/04-paseo-que
+- tapOn:
+    text: "आगे बढ़ें"
+- extendedWaitUntil:
+    visible:
+      text: "आप मुझे कब सुनते हैं\\?"
+    timeout: 10000
+- tapOn:
+    text: "खाना बनाते समय"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hi/05-paseo-cuando
+- tapOn:
+    text: "आगे बढ़ें"
+- extendedWaitUntil:
+    visible:
+      text: "किस रफ़्तार से\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hi/06-paseo-velocidad
+- tapOn:
+    text: "आगे बढ़ें"
+- extendedWaitUntil:
+    visible:
+      text: "आपके पास पढ़ने को कितना है\\?"
+    timeout: 10000
+- tapOn:
+    text: "एक पहाड़ जितना"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hi/07-paseo-cuanto
+- tapOn:
+    text: "आगे बढ़ें"
+- extendedWaitUntil:
+    visible:
+      text: "आपकी अपनी चीज़, या एक कहानी"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hi/08-paseo-escucha
+- tapOn:
+    text: "(?i)बाद में"
+- extendedWaitUntil:
+    visible:
+      text: "स्क्रीन ही बटन है"
+    timeout: 10000
+- tapOn:
+    text: "(?i)बाद में"
+- extendedWaitUntil:
+    visible:
+      text: "शेयर करना ही सब कुछ है"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/hi/09-paseo-compartir
+- tapOn:
+    text: "(?i)बाद में"
+- extendedWaitUntil:
+    visible:
+      text: "और आप इसे साथ ले जाते हैं"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hi/10-paseo-exportar
+- tapOn:
+    text: "(?i)बाद में"
+- extendedWaitUntil:
+    visible:
+      text: "मुझे अपने पसंदीदा में रखिए"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hi/11-paseo-favoritos
+- tapOn:
+    text: "हो गया"
+- extendedWaitUntil:
+    visible:
+      text: "आपका तोता"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hi/12-paseo-resumen
+- tapOn:
+    text: "आगे बढ़ें"
+- extendedWaitUntil:
+    visible:
+      text: "एक साथ तीन"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/hi/13-paseo-percha
+- tapOn:
+    text: "आगे बढ़ें"
+- extendedWaitUntil:
+    visible:
+      text: "अपनी चाबी चुनिए"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/hi/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "अड्डे पर तीन के साथ शुरू करें"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots/hi/15-paseo-cuerda-pie
+- tapOn:
+    text: "अड्डे पर तीन के साथ शुरू करें"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "ठीक है"
+    optional: true
+- takeScreenshot: marketing/screenshots/hi/17-cinta-vacia

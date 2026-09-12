@@ -47,6 +47,8 @@ pub mod yappy_pack;
 // decoding is desktop-only (iOS decodes via AVFoundation in Swift).
 mod asr_decode;
 mod asr_model;
+mod compras;
+mod cuota;
 mod playback;
 mod puente;
 mod settings;
@@ -76,6 +78,36 @@ use tauri::Emitter;
 use tauri::Manager;
 
 use crate::state::AppState;
+
+/// El AppHandle para el progreso de las descargas de la instalación.
+#[cfg(mobile)]
+static APP_VOCES: once_cell::sync::OnceCell<tauri::AppHandle> = once_cell::sync::OnceCell::new();
+
+/// Progreso de Background Assets (Swift → Rust): se traduce al mismo evento
+/// que la descarga en la app, así la tarjeta del loro comiendo no distingue
+/// de dónde vienen las voces.
+#[cfg(mobile)]
+extern "C" fn cb_progreso_instalacion(done: u64, total: u64, fin: bool) {
+    let Some(app) = APP_VOCES.get() else { return };
+    let _ = app.emit(
+        "model_download",
+        model::DownloadProgress {
+            file: "instalación".into(),
+            bytes_done: done,
+            bytes_total: total,
+            stage: if fin {
+                "done".into()
+            } else {
+                "downloading".into()
+            },
+            overall_done: done,
+            overall_total: total.max(1),
+        },
+    );
+    if fin && model::is_model_ready(app).unwrap_or(false) {
+        let _ = app.emit("model_ready", true);
+    }
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -512,6 +544,56 @@ pub fn run() {
                 });
             }
 
+            // LA TIENDA: RevenueCat arranca en iOS (en el resto
+            // `compras::es_pro()` es verdadero y la percha no tiene fondo).
+            compras::arrancar(app.handle().clone());
+
+            // LOS CUENTOS EMPAQUETADOS: a la biblioteca en la primera apertura.
+            commands::importar_cuentos_empaquetados(app.handle());
+
+            // LAS VOCES SIN MURO (móvil): si faltan, primero se reanudan las
+            // descargas que dejó la instalación (Background Assets, con su
+            // progreso pintado como el loro comiendo); si no había, y la
+            // red es barata, la descarga arranca sola desde el espejo.
+            #[cfg(mobile)]
+            {
+                let app_voces = app.handle().clone();
+                std::thread::Builder::new()
+                    .name("yappy-voces".into())
+                    .spawn(move || {
+                        std::thread::sleep(std::time::Duration::from_millis(600));
+                        if model::is_model_ready(&app_voces).unwrap_or(false) {
+                            return;
+                        }
+                        let _ = APP_VOCES.set(app_voces.clone());
+                        let en_marcha = mobile::ba_reanudar(cb_progreso_instalacion);
+                        if en_marcha > 0 {
+                            tracing::info!("voces: {en_marcha} descargas de la instalación reanudadas");
+                            return;
+                        }
+                        if !mobile::red_barata() {
+                            tracing::info!("voces: red cara; la descarga espera al toque del usuario");
+                            return;
+                        }
+                        tracing::info!("voces: red barata; descarga automática");
+                        let app2 = app_voces.clone();
+                        tauri::async_runtime::spawn(async move {
+                            let app3 = app2.clone();
+                            let r = model::download_model(&app2, move |p| {
+                                let _ = app3.emit("model_download", p);
+                            })
+                            .await;
+                            match r {
+                                Ok(()) => {
+                                    let _ = app2.emit("model_ready", true);
+                                }
+                                Err(e) => tracing::warn!("voces: descarga automática falló: {e:#}"),
+                            }
+                        });
+                    })
+                    .ok();
+            }
+
             #[cfg(mobile)]
             {
                 mobile::install_now_playing_handlers(state.playback.clone());
@@ -674,6 +756,9 @@ pub fn run() {
             puente::puente_movil_estado_cmd,
             puente::puente_desvincular_cmd,
             puente::puente_convertir_cmd,
+            puente::puente_probar_cmd,
+            commands::avisos_pedir_cmd,
+            commands::avisos_estado_cmd,
             commands::biblioteca_documentos_cmd,
             commands::biblioteca_olvidar_cmd,
             commands::list_voices,
@@ -774,6 +859,20 @@ pub fn run() {
             commands::get_transcripts,
             commands::clear_transcripts_cmd,
             commands::delete_transcript_cmd,
+            commands::set_paseo_cmd,
+            commands::portapapeles_tiene_enlace_cmd,
+            commands::pip_iniciar_cmd,
+            commands::pip_parar_cmd,
+            commands::cuentos_listar_cmd,
+            cola::cola_agregar_cuento_cmd,
+            compras::compras_usuario_cmd,
+            compras::compras_estado_cmd,
+            compras::compras_ofertas_cmd,
+            compras::compras_comprar_cmd,
+            compras::compras_restaurar_cmd,
+            compras::compras_cliente_cmd,
+            compras::compras_gestionar_cmd,
+            compras::compras_simular_cmd,
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application")

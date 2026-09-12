@@ -1,0 +1,41 @@
+# La compra ensayada (tienda simulada): desde la trastienda, abrir el
+# paywall, elegir «De por vida», dar cuerda y ver la celebración.
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: "yappy"
+    timeout: 15000
+- tapOn:
+    point: "50%,50%"
+- tapOn:
+    text: "la trastienda|the back room|.*trastienda.*"
+- extendedWaitUntil:
+    visible:
+      text: "Velocidad|Speed"
+    timeout: 8000
+- scrollUntilVisible:
+    element:
+      text: "Dar cuerda al loro|Wind up the parrot"
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: "Dar cuerda al loro|Wind up the parrot"
+- extendedWaitUntil:
+    visible:
+      text: "Elige tu cuerda|Pick your winding"
+    timeout: 8000
+# El corazón: «De por vida».
+- tapOn:
+    text: ".*De por vida.*|.*Lifetime.*"
+- takeScreenshot: /tmp/paywall/03-vida
+- tapOn:
+    text: "Dar cuerda al loro|Wind up the parrot"
+# La tienda simulada tarda 1,8 s: la captura va al instante, sin esperar.
+- takeScreenshot: /tmp/paywall/04-comprando
+- extendedWaitUntil:
+    visible:
+      text: ".*loro ya canta.*|.*parrot sings again.*"
+    timeout: 8000
+- takeScreenshot: /tmp/paywall/05-celebra

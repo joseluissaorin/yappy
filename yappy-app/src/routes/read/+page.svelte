@@ -12,7 +12,7 @@
   //     párrafo (mantener pulsado el mando o deslizar).
   //   · El guion sigue la lectura con respeto, salta en pausa SIN sonar, y
   //     ofrece «volver a lo que suena».
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy, untrack } from "svelte";
   import { cubicOut, backOut } from "svelte/easing";
   import { goto } from "$app/navigation";
   import { reader } from "$lib/readerStore.svelte";
@@ -26,6 +26,7 @@
   import Criatura from "$lib/Criatura.svelte";
   import { tintaVoz } from "$lib/voces";
   import { repro, reconciliar } from "$lib/reproduccion.svelte";
+  import { paseo, marcarGesto, gestosCompletos, anotarEscucha, GESTOS, PASOS, siguiente as paseoSiguiente } from "$lib/paseo.svelte";
   import { troquelPara, aPoligono, aPuntosSvg } from "$lib/troquel";
   import { colorDeArchivo, colorDe, tonoHondo, tiltDe } from "$lib/juguete";
   import { cartel, VB_ALTO, VB_BASE } from "$lib/cartel";
@@ -42,8 +43,6 @@
     getSettings,
     saveProject,
     loadProject,
-    puenteMovilEstado,
-    imprentaEncargar,
   } from "$lib/ipc";
 
   const doc = $derived(reader.doc);
@@ -80,11 +79,6 @@
   let voicePickerFor = $state<"doc" | "para" | null>(null);
   let cleanups: (() => void)[] = [];
 
-  // LA HOJA DE ENCARGAR (v0.3.0): motor + estimación → a la imprenta.
-  let hojaEncargo = $state(false);
-  let motorEncargo = $state<"local" | "ordenador">("local");
-  let encargado = $state(false);
-  let puenteVinculado = $state(false);
   let toast = $state<string | null>(null);
 
   // El cerrojo de identidad: un snapshot de OTRO documento no puede
@@ -101,8 +95,37 @@
   // escenario, el karaoke y los mandos funcionan por el espejo del backend;
   // lo que NO aplica aquí es re-sintetizar (dial de ritmo, re-encargo).
   const esLibroDoc = $derived(doc?.extension === "yappy");
+  // HUBO SESIÓN en este cartel: una resíntesis a mitad de documento (salto
+  // a un párrafo sin cocinar, cambio de voz o de velocidad) NO vuelve a la
+  // portada: el cartel se queda, con el párrafo destino y su pestaña de
+  // «preparando». Solo la primera cocina (desde la cinta) enseña la
+  // pegatina gigante troquelándose.
+  let habiaSesion = $state(false);
+  // RECOCINANDO: entre el Stop de la sesión vieja y el «preparando» de la
+  // nueva hay unos ms de «inactivo»; sin este cerrojo la portada
+  // parpadeaba en medio.
+  let recocinando = $state(false);
+  let recocinaTimer: ReturnType<typeof setTimeout> | undefined;
+  $effect(() => {
+    if (activo) {
+      habiaSesion = true;
+      recocinando = false;
+      clearTimeout(recocinaTimer);
+    }
+  });
+  // Otro documento en el mismo cartel (la aguja, el relevo): de cero.
+  $effect(() => {
+    doc?.path;
+    untrack(() => {
+      habiaSesion = false;
+      recocinando = false;
+    });
+  });
+  const cocinaEnCartel = $derived(
+    habiaSesion && !esLibroDoc && (preparando || (estado === "inactivo" && recocinando)),
+  );
   const currentPara = $derived(
-    activo && playback ? baseIndex + (playback.current_paragraph_index ?? 0) : -1,
+    (activo || cocinaEnCartel) && playback ? baseIndex + (playback.current_paragraph_index ?? 0) : -1,
   );
   const globalSpeed = $derived(settings?.speed ?? 1.05);
 
@@ -173,86 +196,47 @@
     return Math.round(Math.max(30, Math.min(74, 46 * Math.sqrt(150 / c))));
   });
 
-  // ── El barrido dorado: karaoke por PALABRAS al ritmo estimado ─────────
+  // ── El barrido dorado: karaoke por PALABRAS con los tiempos REALES ────
+  // El motor publica la ventana temporal exacta de la frase que suena
+  // (frase_ini_s/fin_s: los límites del trozo en el reloj de muestras) y
+  // el reloj de sesión (elapsed_secs) en cada emisión. Aquí se ancla ese
+  // reloj al último snapshot y se interpola en local: sin estimar por
+  // caracteres, sin subrayados fantasma. Un salto atrás reposiciona el
+  // reloj y el subrayado vuelve solo a su sitio (antes se quedaba donde
+  // estaba: «la interfaz se queda en el mismo sitio»).
   let barrido = $state(0);
   let rafId = 0;
   let claveFrase = $state("");
-  // El CERROJO DEL FANTASMA: el barrido de una frase queda ARMADO al
-  // llegar la frase y solo NACE cuando la voz suena de verdad (nivel de
-  // audio real). Nada de subrayados avanzando en silencio y volviendo a
-  // empezar cuando arranca el sonido.
-  let barriendo = false;
-  // La ESTIMACIÓN DE RITMO por caracteres, con oído: un dígito se dice
-  // como sus palabras («1936» son cuatro caracteres pero casi un segundo
-  // de voz) y la puntuación respira (la coma retrasa, el punto más).
-  function durEstimada(frase: string): number {
-    let unidades = 0;
-    for (const c of frase) {
-      if (c >= "0" && c <= "9") unidades += 4.5;
-      else if (c === "," || c === ";" || c === ":") unidades += 2.6;
-      else if (c === "." || c === "!" || c === "?" || c === "…") unidades += 3.4;
-      else if (c === "—" || c === "(" || c === ")" || c === "«" || c === "»") unidades += 1.8;
-      else if (c === "%") unidades += 9;
-      else unidades += 1;
-    }
-    return Math.max(0.9, (unidades * 0.062) / effectiveSpeedForPlay());
-  }
-
-  function arrancarBarrido() {
-    cancelAnimationFrame(rafId);
-    barriendo = true;
-    const dur = durEstimada(frase);
-    const ya = barrido;
-    const t0 = performance.now() - ya * dur * 1000;
-    const paso = (ahora: number) => {
-      barrido = Math.min(1, (ahora - t0) / (dur * 1000));
-      if (barrido < 1 && isPlaying) {
-        rafId = requestAnimationFrame(paso);
-      } else {
-        barriendo = false;
-      }
-    };
-    rafId = requestAnimationFrame(paso);
-  }
   $effect(() => {
     const clave = `${currentPara}·${oIni}·${oFin}`;
     if (clave !== claveFrase) {
       const primera = claveFrase === "";
       claveFrase = clave;
       barrido = 0;
-      barriendo = false;
-      cancelAnimationFrame(rafId);
       if (!primera && isPlaying && frase) haptic("tick");
     }
   });
   $effect(() => {
     if (!isPlaying) {
       cancelAnimationFrame(rafId);
-      barriendo = false;
-      return;
-    }
-    if (esLibroDoc) return; // el libro barre con sus tiempos reales (abajo)
-    if (frase && nivel > 0.02 && barrido < 1 && !barriendo) {
-      arrancarBarrido();
-    }
-  });
-
-  // ── MODO LIBRO: el barrido no se estima, SE SABE. La ventana temporal
-  // real de la frase viaja en el snapshot (frase_ini_s/fin_s) y el reloj
-  // se ancla al último elapsed publicado (+300 ms de tick como mucho),
-  // interpolando en local para que el subrayado fluya sin saltos.
-  $effect(() => {
-    if (!esLibroDoc || !isPlaying) {
       return;
     }
     const ini = playback?.frase_ini_s ?? 0;
     const fin = playback?.frase_fin_s ?? 0;
     const elapsedBase = playback?.elapsed_secs ?? 0;
     if (fin <= ini) return;
-    const t0 = performance.now();
+    let t0 = performance.now();
+    // EL CERROJO DEL FANTASMA: si el reloj está justo al principio de la
+    // frase, no se avanza hasta OÍR la voz (nivel real). Así el arranque
+    // de sesión en iOS (la salida tarda unos cientos de ms en sonar) o
+    // un silencio inicial no dejan el subrayado por delante de la voz.
+    let arrancado = elapsedBase > ini + 0.08;
     cancelAnimationFrame(rafId);
-    barriendo = true;
     const paso = (ahora: number) => {
+      if (!arrancado) {
+        if (repro.nivel > 0.02) arrancado = true;
+        else t0 = ahora;
+      }
       const el = elapsedBase + (ahora - t0) / 1000;
       barrido = Math.max(0, Math.min(1, (el - ini) / (fin - ini)));
       rafId = requestAnimationFrame(paso);
@@ -341,18 +325,46 @@
     rachaTimer = setTimeout(() => (racha = 0), 700);
   }
 
+  // ¿Hay una frase más allá de la que suena? Al FINAL del texto (cocina
+  // terminada y último trozo sonando) no hay a dónde ir: nada de «+1».
+  const enLaUltimaFrase = $derived(
+    !!playback &&
+      playback.total > 0 &&
+      playback.chunks_cocinados >= playback.total &&
+      playback.current_index >= playback.chunks_cocinados - 1,
+  );
+  const saltoPendiente = $derived(playback?.salto_pendiente ?? 0);
+
   async function saltoFrase(direccion: -1 | 1) {
     if (!activo) return;
+    if (direccion > 0 && enLaUltimaFrase) {
+      haptic("warning");
+      return;
+    }
+    void marcarGesto("frase");
     anticipa = direccion;
     setTimeout(() => (anticipa = 0), 180);
     enseñaRacha(direccion);
     // Respuesta instantánea: el motor reposiciona dentro de lo cocinado.
+    // Al borde de la cocina el salto queda PENDIENTE en el motor y se
+    // cobra con el trozo siguiente (la racha enseña «+1…»).
     await saltarFrase(direccion).catch(() => {});
   }
 
+  // Una sola resíntesis en vuelo: mantener pulsado el mando disparaba un
+  // readFrom cada 700 ms mientras la cocina aún no había arrancado, y al
+  // perderse el párrafo actual en «preparando» el destino caía al 0.
+  let resintetizando = false;
   async function saltoParrafo(direccion: -1 | 1) {
+    if (resintetizando || preparando) return;
+    if (currentPara < 0) return;
     const destino = currentPara + direccion;
-    if (destino < 0 || destino >= paras.length) return;
+    if (destino < 0 || destino >= paras.length) {
+      haptic("warning");
+      return;
+    }
+    // El gesto cuenta en los dos caminos (salto instantáneo o resíntesis).
+    void marcarGesto("parrafo");
     anticipa = direccion;
     setTimeout(() => (anticipa = 0), 200);
     const destinoRel = destino - baseIndex;
@@ -361,25 +373,53 @@
       // Dentro de lo sintetizado: salto instantáneo, sin resíntesis.
       await saltarParrafo(direccion).catch(() => {});
     } else {
-      await new Promise((r) => setTimeout(r, 110));
-      await readFrom(destino);
+      resintetizando = true;
+      try {
+        await new Promise((r) => setTimeout(r, 110));
+        await readFrom(destino, { enPausa: isPaused });
+      } finally {
+        resintetizando = false;
+      }
     }
   }
 
-  // El mando: tocar = frase; MANTENER = párrafo.
+  // El mando: tocar = frase; MANTENER = párrafo (y sigue saltando mientras
+  // se mantenga). Con CAPTURA del puntero: sin ella, mover el dedo dos
+  // píxeles fuera de la tecla se comía el `pointerup` y el salto no
+  // ocurría nunca. Ese era el mando «inestable».
   let pulsoLargo: ReturnType<typeof setTimeout> | undefined;
+  let repetidor: ReturnType<typeof setInterval> | undefined;
   let fueLargo = false;
-  function mandoAbajo(direccion: -1 | 1) {
+  function mandoAbajo(e: PointerEvent, direccion: -1 | 1) {
+    const tecla = e.currentTarget as HTMLElement;
+    try {
+      tecla.setPointerCapture(e.pointerId);
+    } catch {}
     fueLargo = false;
+    clearTimeout(pulsoLargo);
+    clearInterval(repetidor);
     pulsoLargo = setTimeout(() => {
       fueLargo = true;
       haptic("rigid");
-      saltoParrafo(direccion);
+      void saltoParrafo(direccion);
+      // Mantener sigue avanzando de párrafo, con calma.
+      repetidor = setInterval(() => {
+        if (preparando || resintetizando) return;
+        haptic("light");
+        void saltoParrafo(direccion);
+      }, 700);
     }, 420);
   }
   function mandoArriba(direccion: -1 | 1) {
     clearTimeout(pulsoLargo);
-    if (!fueLargo) saltoFrase(direccion);
+    clearInterval(repetidor);
+    if (!fueLargo) void saltoFrase(direccion);
+    fueLargo = false;
+  }
+  function mandoCancelado() {
+    clearTimeout(pulsoLargo);
+    clearInterval(repetidor);
+    fueLargo = false;
   }
 
   function clampSpeed(s: number) { return Math.max(0.3, Math.min(3.0, s)); }
@@ -393,7 +433,10 @@
     settings = await getSettings().catch(() => null);
     seedOverrides();
     await tryRestoreProject();
-    puenteVinculado = !!(await puenteMovilEstado().catch(() => null))?.token;
+  });
+  onDestroy(() => {
+    clearTimeout(dialTimer);
+    clearTimeout(recocinaTimer);
   });
   onDestroy(() => {
     cancelAnimationFrame(rafId);
@@ -459,6 +502,11 @@
 
   async function readFrom(index: number, opts: { enPausa?: boolean } = {}) {
     haptic("light");
+    if (activo && !esLibroDoc) {
+      recocinando = true;
+      clearTimeout(recocinaTimer);
+      recocinaTimer = setTimeout(() => (recocinando = false), 6000);
+    }
     if (esLibroDoc && doc?.path) {
       // EL LIBRO YA ESTÁ IMPRESO: su audio se reanuda (o se recoloca),
       // jamás se vuelve a sintetizar desde la portada o el guion.
@@ -490,8 +538,20 @@
       { docPath: doc?.path ?? "", titulo: title, startPaused: opts.enPausa ?? false, docLang: docLang === "auto" ? null : docLang },
     );
   }
-  async function pausa() { haptic("medium"); await pausar().catch(() => {}); }
-  async function sigue() { haptic("medium"); await reanudar().catch(() => {}); }
+  async function pausa() { haptic("medium"); void marcarGesto("pausar"); await pausar().catch(() => {}); }
+  async function sigue() { haptic("medium"); void marcarGesto("seguir"); await reanudar().catch(() => {}); }
+  // El paseo: la lección de los gestos vive aquí, sobre el cartel, y los
+  // minutos escuchados se anotan para el resumen.
+  const leccionGestos = $derived(paseo.activo && PASOS[paseo.paso] === "gestos");
+  $effect(() => {
+    const s = playback?.elapsed_secs ?? 0;
+    if (s > 0) untrack(() => anotarEscucha(s));
+  });
+  async function seguirPaseo() {
+    haptic("medium");
+    await paseoSiguiente();
+    goto("/paseo");
+  }
   function back() { goto(get(isMobile) ? "/escuchar" : "/"); }
 
   // LA PEGATINA DE PORTADA: el documento ES su pegatina (mismo troquel,
@@ -566,6 +626,9 @@
     }
   }
   async function saltarDesdeGuion(i: number) {
+    // El gesto cuenta AUNQUE el destino aún no esté cocinado (ese camino
+    // resintetiza y no pasa por saltarParrafo).
+    void marcarGesto("parrafo");
     // En pausa: REPOSICIONA sin sonar (nada arranca audio salvo un mando
     // de reproducir). Sonando: cambia de sitio y sigue sonando.
     guionAbierto = false;
@@ -574,61 +637,105 @@
     const cocinadoHasta = playback?.parrafo_max_cocinado ?? -1;
     if (activo && destinoRel >= 0 && destinoRel <= cocinadoHasta) {
       const delta = i - currentPara;
-      if (delta !== 0) await saltarParrafo(delta).catch(() => {});
+      if (delta !== 0) {
+        void marcarGesto("parrafo");
+        await saltarParrafo(delta).catch(() => {});
+      }
       return;
     }
     await readFrom(i, { enPausa: isPaused });
   }
 
-  // ── El puente y la exportación ────────────────────────────────────────
-  async function encargarALaImprenta() {
-    if (!doc) return;
-    haptic("medium");
-    try {
-      await imprentaEncargar(title, paras.join("\n\n"), {
-        voz: docVoice ?? undefined,
-        idioma: docLang === "auto" ? undefined : docLang,
-        motor: motorEncargo,
-      });
-      hojaEncargo = false;
-      encargado = true;
-      setTimeout(() => (encargado = false), 3200);
-      flashToast(get(t)("imprenta.encargado"));
-    } catch (e) {
-      flashToast(String(e));
-    }
-  }
-
   // ── Gestos del escenario: tocar PAUSA, deslizar salta, el dial ────────
-  let gesto: { x: number; y: number; t: number; borde: boolean; bordeIzq?: boolean; velocidadInicial: number } | null = null;
+  let gesto: {
+    x: number;
+    y: number;
+    t: number;
+    borde: boolean;
+    candidatoBorde?: boolean;
+    bordeIzq?: boolean;
+    velocidadInicial: number;
+  } | null = null;
   let dialVisible = $state(false);
   let dialValor = $state(1.0);
+  // LA PROPUESTA DEL DIAL: al soltar, la velocidad nueva NO se aplica
+  // sola (aplicarla resintetiza y un roce sin querer dejaba la voz
+  // recocinando). Se propone, y hay que tocar «cambiar» o «dejar».
+  let dialPropuesta = $state<number | null>(null);
+  let dialTimer: ReturnType<typeof setTimeout> | undefined;
+  function proponerVelocidad(v: number) {
+    dialPropuesta = v;
+    clearTimeout(dialTimer);
+    dialTimer = setTimeout(() => (dialPropuesta = null), 9000);
+  }
+  async function aplicarVelocidad() {
+    const v = dialPropuesta;
+    dialPropuesta = null;
+    clearTimeout(dialTimer);
+    if (v == null) return;
+    haptic("success");
+    rhythmMult = clampSpeed(v / globalSpeed);
+    scheduleSave();
+    if (activo && currentPara >= 0) await readFrom(currentPara, { enPausa: isPaused });
+  }
+  function dejarVelocidad() {
+    haptic("soft");
+    dialPropuesta = null;
+    clearTimeout(dialTimer);
+  }
+
+  /// ¿El dedo cayó sobre algo que ya hace otra cosa? Entonces el escenario
+  /// no toca nada: el dial de velocidad se armaba al pulsar el mando o al
+  /// abrir el taller, y cambiaba la voz sin que nadie se lo pidiera.
+  function sobreUnControl(e: PointerEvent): boolean {
+    const t = e.target as HTMLElement | null;
+    return !!t?.closest(
+      'button, a, input, select, textarea, label, nav, [role="button"], .mando, .leccion, .aguja, .hoja, .taller, .guion, .dial, .propuesta, .cocina-pestana',
+    );
+  }
 
   function escenarioDown(e: PointerEvent) {
-    if (guionAbierto || tallerAbierto || tweakIndex >= 0) return;
+    if (guionAbierto || tallerAbierto || tweakIndex >= 0 || dialPropuesta != null) return;
+    if (sobreUnControl(e)) return;
     const ancho = (e.currentTarget as HTMLElement).clientWidth;
     gesto = {
       x: e.clientX,
       y: e.clientY,
       t: performance.now(),
-      borde: e.clientX > ancho - 60 && activo && !esLibroDoc,
+      // CANDIDATO a dial: el borde derecho manda, pero el dial no aparece
+      // hasta que hay un arrastre vertical de verdad (ver escenarioMove).
+      borde: false,
+      candidatoBorde: e.clientX > ancho - 64 && activo && !esLibroDoc,
       bordeIzq: e.clientX < 26,
       velocidadInicial: effectiveSpeedForPlay(),
     };
-    if (gesto.borde) {
-      dialValor = gesto.velocidadInicial;
-      dialVisible = true;
-    }
   }
   function escenarioMove(e: PointerEvent) {
     if (!gesto) return;
+    // El dial se ARMA con intención: 28 px de recorrido vertical y una
+    // dirección clara. Antes bastaba un roce en el borde para cambiar la
+    // velocidad sin querer.
+    if (!gesto.borde && gesto.candidatoBorde) {
+      const dyArme = gesto.y - e.clientY;
+      const dxArme = e.clientX - gesto.x;
+      if (Math.abs(dyArme) >= 22 && Math.abs(dyArme) > Math.abs(dxArme) * 1.4) {
+        gesto.borde = true;
+        void marcarGesto("velocidad");
+        gesto.y = e.clientY; // el dial nace donde se armó: sin salto
+        dialValor = gesto.velocidadInicial;
+        dialVisible = true;
+        haptic("rigid");
+      }
+    }
     if (gesto.borde) {
-      const dv = (gesto.y - e.clientY) / 220;
+      // 44 px por cada 0,1×: un dedo que se mueve de verdad, no un roce.
+      const dv = (gesto.y - e.clientY) / 440;
       const nuevo = clampSpeed(Math.round((gesto.velocidadInicial + dv) * 20) / 20);
       if (nuevo !== dialValor) haptic("tick");
       dialValor = nuevo;
       return;
     }
+    if (gesto.candidatoBorde) return;
     if (!activo) return;
     const dx = e.clientX - gesto.x;
     const dy = e.clientY - gesto.y;
@@ -645,12 +752,20 @@
     const dx = e.clientX - g.x;
     const dy = e.clientY - g.y;
     const dt = performance.now() - g.t;
+    if (g.candidatoBorde && !g.borde) {
+      // Roce en el borde sin arrastre: no era el dial, no pasa nada.
+      dialVisible = false;
+      return;
+    }
     if (g.borde) {
       dialVisible = false;
-      if (Math.abs(dialValor - g.velocidadInicial) >= 0.05) {
-        rhythmMult = clampSpeed(dialValor / globalSpeed);
-        scheduleSave();
-        if (activo && currentPara >= 0) await readFrom(currentPara, { enPausa: isPaused });
+      // Arrastrar el dedo lejos del borde (hacia dentro) CANCELA: la
+      // manera natural de decir «no era esto».
+      const cancelado = e.clientX < g.x - 90;
+      if (!cancelado && Math.abs(dialValor - g.velocidadInicial) >= 0.05) {
+        proponerVelocidad(dialValor);
+      } else {
+        haptic("soft");
       }
       return;
     }
@@ -673,12 +788,26 @@
   }
 </script>
 
+{#if leccionGestos}
+  <!-- LA LECCIÓN DE LOS GESTOS (el paseo, paso 9): tres casillas que se
+       marcan solas al hacer el gesto; con las tres, el chip para seguir. -->
+  <aside class="leccion" aria-live="polite">
+    <ul>
+      {#each GESTOS as g (g)}
+        <li class:hecho={paseo.libreta.gestos.includes(g)}><span class="casilla">{paseo.libreta.gestos.includes(g) ? "✓" : ""}</span>{$t(`paseo.gestos.${g}`)}</li>
+      {/each}
+    </ul>
+    <button class="chip-paseo" class:listo={gestosCompletos()} use:presionable={{ hap: "medium" }} onclick={seguirPaseo}>{$t("paseo.gestos.chip")} →</button>
+  </aside>
+{/if}
 <div
   class="escenario"
+  class:con-leccion={leccionGestos}
   class:leyendo={isPlaying}
   onpointerdown={escenarioDown}
   onpointermove={escenarioMove}
   onpointerup={escenarioUp}
+  onpointercancel={() => { gesto = null; dialVisible = false; arrastreX = 0; }}
 >
   <!-- VoiceOver: la pantalla-botón, dicha con palabras. -->
   {#if activo}
@@ -718,8 +847,8 @@
       {/if}
     </section>
 
-    {#if racha !== 0}
-      <div class="racha" aria-hidden="true">{racha > 0 ? `+${racha}` : racha}</div>
+    {#if racha !== 0 || saltoPendiente > 0}
+      <div class="racha" class:espera={saltoPendiente > 0} aria-hidden="true">{racha > 0 ? `+${racha}` : racha !== 0 ? racha : `+${saltoPendiente}`}{#if saltoPendiente > 0}…{/if}</div>
     {/if}
 
     {#if !guionAbierto && !tallerAbierto && tweakIndex < 0}
@@ -754,9 +883,9 @@
         <button
           class="tecla-piano"
           use:presionable={{ hap: "rigid" }}
-          onpointerdown={() => mandoAbajo(-1)}
+          onpointerdown={(e) => mandoAbajo(e, -1)}
           onpointerup={() => mandoArriba(-1)}
-          onpointercancel={() => clearTimeout(pulsoLargo)}
+          onpointercancel={mandoCancelado}
           aria-label={$t("mando.atras")}
         >
           <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M18.4 6.2 Q19.1 5.7 19 6.8 Q18.6 12 19 17.2 Q19.1 18.3 18.3 17.8 L10 12.6 Q9.2 12 10 11.4 Z"/><path d="M7.8 6.1 Q8.6 5.9 8.5 6.9 Q8.2 12 8.5 17.1 Q8.6 18.1 7.7 17.9 Q6.6 17.7 5.9 17.6 Q5.4 12 5.9 6.4 Q6.7 6.2 7.8 6.1 Z"/></svg>
@@ -768,15 +897,40 @@
         <button
           class="tecla-piano"
           use:presionable={{ hap: "rigid" }}
-          onpointerdown={() => mandoAbajo(1)}
+          onpointerdown={(e) => mandoAbajo(e, 1)}
           onpointerup={() => mandoArriba(1)}
-          onpointercancel={() => clearTimeout(pulsoLargo)}
+          onpointercancel={mandoCancelado}
           aria-label={$t("mando.adelante")}
         >
           <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M5.6 6.2 Q4.9 5.7 5 6.8 Q5.4 12 5 17.2 Q4.9 18.3 5.7 17.8 L14 12.6 Q14.8 12 14 11.4 Z"/><path d="M16.2 6.1 Q15.4 5.9 15.5 6.9 Q15.8 12 15.5 17.1 Q15.4 18.1 16.3 17.9 Q17.4 17.7 18.1 17.6 Q18.6 12 18.1 6.4 Q17.3 6.2 16.2 6.1 Z"/></svg>
         </button>
       </nav>
     {/if}
+  {:else if cocinaEnCartel}
+    <!-- LA COCINA A MITAD DE LECTURA: el cartel se queda con el párrafo al
+         que se va (nada de volver a la portada) y una pestaña avisa. -->
+    <section class="cartel atenuado">
+      <div class="zona-dichas">
+        {#key `d·${currentPara}·${oIni}`}
+          <p class="dichas">{dichas}</p>
+        {/key}
+      </div>
+      <div class="zona-frase">
+        {#key claveFrase}
+          <p class="frase" lang={$idiomaUI} class:titulo={esTitulo} style="font-size: {cuerpoFrase}px; --grosor-tinta: 0.28em;">{frase}</p>
+        {/key}
+      </div>
+      {#if porVenir}
+        <p class="porvenir">{porVenir}</p>
+      {/if}
+    </section>
+    <div class="cameo" aria-hidden="true">
+      <Criatura size={62} mirando={-1} cantando tinta={$tintaVoz} />
+    </div>
+    <div class="cocina-pestana" style="background: {hondaPortada}">
+      <span class="cocina-punto"></span>
+      {$t("aguja.preparando")}{#if (playback?.total ?? 0) > 0}&nbsp;· {playback?.chunks_cocinados}/{playback?.total}{/if}
+    </div>
   {:else if preparando}
     <!-- LA COCINA: el loro TROQUELA tu pegatina mientras la voz llega. -->
     <section class="portada">
@@ -860,6 +1014,16 @@
         <strong in:entraFrase={{ duration: 130 }}>{dialValor.toFixed(2).replace(".", ",")}×</strong>
       {/key}
       <span>{$t("cartel.velocidad")}</span>
+    </div>
+  {:else if dialPropuesta != null}
+    <!-- LA PROPUESTA: la velocidad nueva pide permiso antes de recocinar. -->
+    <div class="propuesta" role="dialog" aria-live="polite">
+      <strong>{dialPropuesta.toFixed(2).replace(".", ",")}×</strong>
+      <span>{$t("dial.pregunta")}</span>
+      <div class="propuesta-teclas">
+        <button class="propuesta-si" use:presionable={{ hap: "rigid" }} onclick={aplicarVelocidad}>{$t("dial.aplicar")}</button>
+        <button class="propuesta-no" use:presionable={{ hap: "soft" }} onclick={dejarVelocidad}>{$t("dial.dejar").replace("{v}", effectiveSpeedForPlay().toFixed(2).replace(".", ","))}</button>
+      </div>
     </div>
   {/if}
 
@@ -947,26 +1111,9 @@
       </label>
 
       {#if !esLibroDoc}
-      <button class="tecla-exportar" use:presionable onclick={() => { hojaEncargo = !hojaEncargo; }}>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17H20v5H6.5a2.5 2.5 0 0 1 0-5z"/></svg>
-        {$t("lector.guardar_m4b")}
-      </button>
-      {#if hojaEncargo}
-        <!-- LA HOJA DE ENCARGAR: motor + estimación → la imprenta. -->
-        <div class="hoja-encargo">
-          <div class="encargo-motores">
-            <button class="yap-pestana" class:es-activa={motorEncargo === "local"} use:presionable onclick={() => (motorEncargo = "local")}>{$t("imprenta.motor_aqui")}</button>
-            <button class="yap-pestana" class:es-activa={motorEncargo === "ordenador"} use:presionable disabled={!puenteVinculado} onclick={() => (motorEncargo = "ordenador")}>{$t("imprenta.motor_ordenador")}</button>
-          </div>
-          <p class="encargo-nota">{paras.length} {$t(paras.length === 1 ? "imprenta.pieza" : "imprenta.piezas")} · {$t("imprenta.nota_fondo")}</p>
-          <button class="tecla-exportar" use:presionable onclick={encargarALaImprenta}>
-            {$t("imprenta.encargar")}
-          </button>
-        </div>
-      {/if}
-      {#if encargado}
-        <div class="exporte-hecho"><span>{$t("imprenta.encargado")}</span></div>
-      {/if}
+        <!-- Los audiolibros se encargan en la imprenta (la biblioteca), no
+             desde el cartel: aquí solo se escucha y se afina. -->
+        <p class="ctl-pista">{$t("lector.imprenta_pista")}</p>
       {/if}
       {#if customised}
         <button class="tecla-reiniciar" onclick={resetAll}>{$t("lector.reiniciar_todo")}</button>
@@ -1030,6 +1177,37 @@
 </div>
 
 <style>
+  /* Con la lección puesta, el escenario baja: el papel no puede tapar la
+     palabra gigante (es justo lo que hay que mirar mientras se aprende). */
+  .escenario.con-leccion {
+    padding-top: 148px;
+  }
+
+  /* La lección de los gestos del paseo: papel sobre el cartel, arriba. */
+  .leccion {
+    position: fixed;
+    top: calc(env(safe-area-inset-top) + 8px);
+    left: 12px;
+    right: 12px;
+    z-index: 70;
+    background: var(--yap-superficie);
+    border: 1.5px solid var(--yap-borde);
+    border-radius: 16px;
+    box-shadow: 3px 4px 0 #ded7c2;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    transform: rotate(-0.5deg);
+  }
+  .leccion ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+  .leccion li { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 700; color: var(--yap-tinta-suave); line-height: 1.2; }
+  .leccion li.hecho { color: var(--yap-tinta); }
+  .leccion .casilla { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border: 2px solid var(--yap-tinta); border-radius: 6px; font-size: 12px; font-weight: 800; color: var(--yap-ok); background: var(--yap-papel); flex: 0 0 auto; }
+  .chip-paseo { flex: 0 0 auto; border: 1.5px solid var(--yap-borde); background: var(--yap-papel); color: var(--yap-tinta-suave); font-family: var(--yap-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 10px; border-radius: 999px; min-height: 36px; }
+  .chip-paseo.listo { background: var(--vivo, var(--voz-tinta, var(--yap-voz))); color: #fffdf7; border-color: transparent; box-shadow: 2px 2px 0 #2b2418; }
+
   .solo-voz {
     position: absolute;
     width: 1px;
@@ -1044,7 +1222,10 @@
     inset: 0;
     background: var(--yap-papel);
     overflow: hidden;
-    touch-action: pan-y;
+    /* NADA de pan-y: el escenario no hace scroll, y con pan-y WebKit se
+       quedaba el deslizamiento vertical del borde (el dial de velocidad)
+       y cancelaba el puntero: el gesto «no se activaba». */
+    touch-action: none;
     user-select: none;
     -webkit-user-select: none;
   }
@@ -1105,6 +1286,45 @@
   }
   .cameo.sube {
     transform: translateY(-108px);
+  }
+  .racha.espera {
+    color: var(--yap-tinta-suave, #82755a);
+    animation: racha-espera 1s ease-in-out infinite alternate;
+  }
+  @keyframes racha-espera {
+    from { opacity: 0.55; }
+    to { opacity: 1; }
+  }
+  /* La cocina a mitad de lectura: la pestaña que avisa, donde iría el mando. */
+  .cocina-pestana {
+    position: absolute;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom) + 34px);
+    transform: translateX(-50%) rotate(-1.2deg);
+    z-index: 6;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1.5px solid #2b2418;
+    box-shadow: 2px 3px 0 #2b2418;
+    color: #fffdf7;
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .cocina-punto {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #fffdf7;
+    animation: cocina-late 0.9s ease-in-out infinite alternate;
+  }
+  @keyframes cocina-late {
+    from { transform: scale(0.6); opacity: 0.5; }
+    to { transform: scale(1); opacity: 1; }
   }
   .racha {
     position: absolute;
@@ -1497,6 +1717,75 @@
     color: var(--yap-tinta-suave);
   }
 
+  /* La propuesta del dial: papel con dos teclas, sobre el cartel. */
+  /* Sin translateX: la animación de nacer pisaba el transform y la hoja
+     salía medio fuera de la pantalla. Se centra con márgenes. */
+  .propuesta {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: calc(env(safe-area-inset-top) + 64px);
+    margin: 0 auto;
+    transform: rotate(-0.8deg);
+    z-index: 9;
+    width: min(320px, calc(100% - 32px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 16px 12px;
+    background: var(--yap-superficie);
+    border: 1.5px solid #2b2418;
+    border-radius: 18px;
+    box-shadow: 3px 4px 0 #2b2418;
+    animation: propuesta-nace 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes propuesta-nace {
+    from { transform: rotate(-0.8deg) scale(0.7); opacity: 0; }
+    to { transform: rotate(-0.8deg) scale(1); opacity: 1; }
+  }
+  .propuesta strong {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--yap-voz, #e0502a);
+    line-height: 1;
+  }
+  .propuesta span {
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave);
+    text-align: center;
+  }
+  .propuesta-teclas {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+    width: 100%;
+  }
+  .propuesta-si,
+  .propuesta-no {
+    flex: 1;
+    min-height: 44px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .propuesta-si {
+    border: 1.5px solid #2b2418;
+    background: var(--vivo, var(--voz-tinta, var(--yap-voz, #e0502a)));
+    color: #fffdf7;
+    box-shadow: 2px 2px 0 #2b2418;
+  }
+  .propuesta-no {
+    border: 1.5px solid var(--yap-borde);
+    background: var(--yap-papel);
+    color: var(--yap-tinta-suave);
+  }
+
   /* ── Hojas (guion, taller, ajuste) ── */
   .velo {
     position: fixed;
@@ -1696,24 +1985,6 @@
     text-transform: uppercase;
     color: var(--yap-tinta-suave);
   }
-  .hoja-encargo {
-    border: 1.5px solid var(--yap-borde, #d8d0bd);
-    border-radius: 13px;
-    padding: 10px;
-    margin: 4px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .encargo-motores {
-    display: flex;
-    gap: 6px;
-  }
-  .encargo-nota {
-    margin: 0;
-    font-size: 12px;
-    color: var(--yap-tinta-suave, #82755a);
-  }
   .tecla-exportar {
     display: inline-flex;
     align-items: center;
@@ -1741,16 +2012,6 @@
     font-weight: 700;
     padding: 8px;
     cursor: pointer;
-  }
-  .exporte-hecho {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: color-mix(in srgb, var(--yap-dorado, #e8b41a) 16%, var(--yap-superficie));
-    border: 1px solid var(--yap-borde);
-    border-radius: 12px;
-    padding: 10px 14px;
-    font-weight: 700;
   }
   .tweak-vista {
     font-family: var(--yap-lectura, Georgia, serif);

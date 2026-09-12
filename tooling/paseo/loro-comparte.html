@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>loro-comparte</title>
+<!--
+  El loro señala el icono de compartir de iOS. Fotograma a fotograma:
+  el estado de la animación lo fija ?t=<segundos> (bucle de 6 s).
+  Sin animaciones CSS en marcha: todo lo pone el JS para ese instante.
+  Sin texto: se usa en 31 idiomas.
+-->
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 720px; height: 720px; overflow: hidden; position: relative;
+    background: #f7f2e7;
+  }
+  /* el grano del papel: huella del proceso, casi invisible (el de app.css) */
+  body::before {
+    content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0 0.06 0 0 0 0.055 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+  .capa { position: absolute; left: 0; top: 0; width: 720px; height: 720px; overflow: visible; }
+
+  /* ── El loro (dibujo base mira a la izquierda; aquí espejado, mira a la derecha) ── */
+  .loro { position: absolute; left: 2px; top: 250px; width: 352px; height: 352px; transform: scaleX(-1); }
+  .loro svg { display: block; overflow: visible; }
+  .cuerpo-vivo { transform-origin: 30px 46px; }
+  .cabeza { transform-origin: 29px 26px; }
+  .mandibula { transform-origin: 19px 24.5px; }
+  .gancho { transform-origin: 17px 16px; }
+  .parpado { transform-origin: 27px 13.4px; }
+
+  /* ── La pegatina del icono de compartir ── */
+  .pegatina {
+    position: absolute; left: 454px; top: 174px; width: 232px; height: 232px;
+    box-sizing: border-box;
+    background: #fffdf7; background-clip: padding-box;
+    border: 7px solid #ebe4d0;             /* el borde crema del troquel */
+    border-radius: 54px;
+    box-shadow: 3px 3px 0 #ded7c2;         /* sombra de contacto, dura */
+    transform-origin: 50% 50%;
+    transform: rotate(4deg);
+  }
+  .pegatina .costura { position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); overflow: visible; }
+  .pegatina .glifo { position: absolute; left: 50%; top: 50%; width: 156px; height: 156px; margin: -78px 0 0 -78px; overflow: visible; }
+</style>
+</head>
+<body>
+
+<!-- sombra de suelo bajo el loro: plana, sin desenfoque -->
+<svg class="capa" style="z-index:1" viewBox="0 0 720 720" aria-hidden="true">
+  <ellipse id="suelo" cx="176" cy="571" rx="104" ry="9" fill="#ded7c2" />
+</svg>
+
+<div class="loro" style="z-index:2" aria-hidden="true">
+  <svg viewBox="0 0 64 64" width="352" height="352">
+    <g class="cuerpo-vivo" id="cuerpoVivo">
+      <!-- La sombra ultramar: el desregistro de imprenta de la casa.
+           (translate negativo en x porque el grupo va espejado: en pantalla cae abajo-derecha) -->
+      <g fill="#2f4bc4" opacity="0.9" transform="translate(-1.8 2)">
+        <path d="M41 40 C48 44 54 50 57 56 C51 53 45 49 41 45 Z" />
+        <path d="M42.5 37.5 C51 40 58 44 61.5 49 C55 48 48 45 43.5 41.5 Z" />
+        <path d="M30 5 C 22.5 5 17.5 9 16 14 C 11 14.5 7.5 17.5 7.5 21.5 C 7.5 25.5 10 28.5 13.5 30 C 12.5 27 13.5 24.5 16 23.5 C 17 24.5 18.5 25.3 20 25.6 C 18.3 28.4 17.2 31.6 17.2 35 C 17.2 43.5 22.5 50.5 30.5 51 C 38.5 51.5 44.5 45 45.3 36 C 45.8 31 45.3 26 44.3 22 C 42.8 12 37.5 5 30 5 Z" />
+      </g>
+
+      <g>
+        <!-- La cola: tres plumas, de la más oscura a la más clara. -->
+        <g class="cola">
+          <path d="M41 40 C48 44 54 50 57 56 C51 53 45 49 41 45 Z" fill="#9b3f23" />
+          <path d="M42.5 37.5 C51 40 58 44 61.5 49 C55 48 48 45 43.5 41.5 Z" fill="#bc4726" />
+          <path d="M43 34.5 C52 35 60 38 63.5 42 C57 42 49.5 40.5 44 38 Z" fill="#e0502a" />
+        </g>
+        <!-- El cuerpo: huevo rechoncho, con la barriga crema delante. -->
+        <path d="M30 8 C 21 8.5 16.8 16 16.8 26 C 16.8 27 16.9 28 17 29 C 17.2 40.5 22.5 50.5 30.5 51 C 38.5 51.5 44.5 45 45.3 36 C 45.8 31 45.3 26 44.3 22 C 42.8 12 37.5 8 30 8 Z" fill="#e0502a" />
+        <path d="M23.5 31 C 20.5 34.5 20 40 22 44.5 C 23.8 48.5 27 50.8 30.5 51 C 34 51 36.5 49 38 46 C 34 46.5 29.5 44.5 27 40.5 C 25 37.5 24 34 23.5 31 Z" fill="#f7f2e7" opacity="0.92" />
+        <!-- El ala festoneada, un punto más oscura que el cuerpo. -->
+        <g class="ala">
+          <path d="M35 22 C 41 23 44.5 28 44.5 34 C 44.5 39 42 43.5 38.5 45.5 C 39 43 37.5 41.5 35.5 41.5 C 36.5 39.5 36 37.5 34 37 C 35 35 34.5 33 32.5 32.5 C 33.5 29 33.5 25 35 22 Z" fill="#b14525" />
+        </g>
+        <!-- Las patas: dos dedos, tinta de imprenta. -->
+        <g stroke="#2b2418" stroke-width="2.6" fill="none" stroke-linecap="round">
+          <path d="M26.5 50.5 L26.5 54.5 L23.5 57.5 M26.5 54.5 L29.5 57.5" />
+          <path d="M34.5 50.5 L34.5 54.5 L31.5 57.5 M34.5 54.5 L37.5 57.5" />
+        </g>
+      </g>
+
+      <!-- LA CABEZA: gira entera desde el cuello; el gancho no se deforma. -->
+      <g class="cabeza" id="cabeza">
+        <path d="M30 5 C 22.5 5 17.5 9 16 14 C 15.2 16.8 15.2 20.5 16.2 23.5 C 17.5 27.5 20.5 30 24.5 30.5 C 30 31 36 30 40 27 C 43 24.5 44 19 42.5 14.5 C 40.5 8.5 36 5 30 5 Z" fill="#e0502a" />
+        <g class="copete">
+          <path d="M28 5.5 C 27 2 29.5 -0.5 33 0.5 C 31 2 30.5 4 31 5.5 Z" fill="#e0502a" />
+          <path d="M32.5 5.2 C 32.8 2.4 35.5 1 38 2.2 C 36.2 3.2 35.4 4.6 35.4 6.2 Z" fill="#b14525" />
+        </g>
+        <!-- El interior de la boca: crema, solo se ve al abrir. -->
+        <path d="M11 21 C 13 20 17 20.5 19.5 22.5 L 18.5 27.5 C 15 27 12 25 11 21 Z" fill="#f7f2e7" />
+        <!-- Mandíbula inferior: la que CAE al hablar. -->
+        <g class="mandibula" id="mandibula">
+          <path d="M11.5 24.5 C 12.5 27.5 15.5 29.5 19 29.8 L 18.2 25.6 C 15.8 25.4 13.5 25 11.5 24.5 Z" fill="#2b2418" />
+        </g>
+        <!-- Mandíbula superior: EL GANCHO. Sube un pelín, nunca se deforma. -->
+        <g class="gancho" id="gancho">
+          <path d="M16 13.5 C 11 14 7.5 17.5 7.5 21.5 C 7.5 25.5 10 28.5 13.5 30 C 12.5 27 13.5 24.5 16 23.5 C 17.5 24.8 19.5 25.6 21.5 25.8 C 22.5 22 21.5 17 19 14.5 C 18 13.8 17 13.5 16 13.5 Z" fill="#2b2418" />
+        </g>
+        <!-- El ojo: anillo crema, pupila mirando al icono, párpado del cuerpo. -->
+        <circle cx="27" cy="18" r="5.1" fill="#f7f2e7" />
+        <circle cx="25.4" cy="18.4" r="2.5" fill="#2b2418" />
+        <g class="parpado" id="parpado">
+          <rect x="21.6" y="13.2" width="10.8" height="9.6" rx="4.6" fill="#e0502a" />
+        </g>
+        <!-- La mejilla. -->
+        <circle cx="21" cy="26.5" r="2.4" fill="#f7f2e7" opacity="0.4" />
+      </g>
+    </g>
+  </svg>
+</div>
+
+<!-- La flecha a mano: del pico al icono. Terracota con desregistro ultramar. -->
+<svg class="capa" style="z-index:3" viewBox="0 0 720 720" aria-hidden="true">
+  <g id="flecha" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g id="flechaSombra" stroke="#2f4bc4" opacity="0.9" transform="translate(4 5)">
+      <path class="asta" d="M 328 380 C 348 366, 362 346, 384 336 S 414 324, 432 319" />
+      <path class="punta" d="M 411 305 L 435 318 L 414 336" />
+    </g>
+    <g id="flechaTinta" stroke="#e0502a">
+      <path class="asta" d="M 328 380 C 348 366, 362 346, 384 336 S 414 324, 432 319" />
+      <path class="punta" d="M 411 305 L 435 318 L 414 336" />
+    </g>
+  </g>
+</svg>
+
+<!-- La pegatina: blanco roto, borde crema de troquel, costura punteada, y el icono de compartir de iOS -->
+<div class="pegatina" id="pegatina" style="z-index:4" aria-hidden="true">
+  <svg class="costura" viewBox="0 0 200 200" preserveAspectRatio="none">
+    <rect x="1" y="1" width="198" height="198" rx="40" ry="40" fill="none" stroke="#d8cfb3" stroke-width="2" stroke-dasharray="6 5" vector-effect="non-scaling-stroke" />
+  </svg>
+  <svg class="glifo" viewBox="0 0 24 24" fill="none" stroke="#2b2418" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- la bandeja, abierta por arriba; trazo un pelín torcido, de mano -->
+    <path d="M8.3 9.15 L6.4 9.1 C5.15 9.1 4.35 9.95 4.35 11.15 C4.3 13.9 4.25 16.8 4.4 19.55 C4.45 20.8 5.25 21.6 6.45 21.6 C10.2 21.55 14 21.7 17.75 21.6 C18.95 21.55 19.75 20.75 19.75 19.55 C19.85 16.75 19.8 13.9 19.7 11.1 C19.65 9.9 18.85 9.1 17.65 9.1 L15.75 9.15" />
+    <!-- el asta, que sube y se sale de la bandeja -->
+    <path d="M12.05 15.4 C11.95 12.3 12.15 8.1 12.0 3.35" />
+    <!-- la punta -->
+    <path d="M8.35 6.8 C9.55 5.55 10.75 4.35 12.0 3.1 C13.25 4.3 14.45 5.5 15.7 6.75" />
+  </svg>
+</div>
+
+<script>
+(function () {
+  const q = new URLSearchParams(location.search);
+  let t = parseFloat(q.get("t") || "0");
+  if (!isFinite(t)) t = 0;
+  t = ((t % 6) + 6) % 6;               // bucle de 6 s: t=6 ≡ t=0
+
+  const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+  const easeOut = (u) => 1 - Math.pow(1 - clamp(u, 0, 1), 3);
+  const easeIn = (u) => Math.pow(clamp(u, 0, 1), 2.2);
+  const smooth = (u) => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
+
+  // 1. Respiración: dos suspiros por bucle (periodo 3 s), 1 → 1.02.
+  const resp = 1 + 0.02 * (0.5 - 0.5 * Math.cos(2 * Math.PI * t / 3));
+  document.getElementById("cuerpoVivo").style.transform = `scale(${resp.toFixed(4)})`;
+
+  // 2. El pico: se abre y se cierra dos veces por bucle.
+  let boca = 0;
+  for (const t0 of [0.2, 2.75]) {
+    const u = (t - t0) / 0.6;
+    if (u > 0 && u < 1) boca = Math.max(boca, Math.sin(Math.PI * u));
+  }
+  document.getElementById("mandibula").style.transform = `rotate(${(boca * 24).toFixed(3)}deg)`;
+  document.getElementById("gancho").style.transform = `rotate(${(-boca * 7).toFixed(3)}deg)`;
+  document.getElementById("cabeza").style.transform = `rotate(${(-boca * 7).toFixed(3)}deg)`;
+
+  // 3. El parpadeo: uno, a los 4,5 s.
+  let par = 0;
+  { const u = (t - 4.5) / 0.18; if (u > 0 && u < 1) par = Math.sin(Math.PI * u); }
+  document.getElementById("parpado").style.transform = `scaleY(${par.toFixed(3)})`;
+
+  // 4. La flecha: se dibuja sola (0–1,3 s), late suave, y al final se la
+  //    traga el icono (5,35–5,85 s) para que el bucle cierre limpio.
+  const astas = document.querySelectorAll("#flecha .asta");
+  const puntas = document.querySelectorAll("#flecha .punta");
+  const L = astas[0].getTotalLength();
+  const Lp = puntas[0].getTotalLength();
+  let offA;
+  if (t < 1.3) offA = L * (1 - easeOut(t / 1.3));
+  else if (t < 5.35) offA = 0;
+  else offA = -L * easeIn((t - 5.35) / 0.5);
+  let offP = Lp * (1 - easeOut((t - 1.15) / 0.3));
+  let escP = 1;
+  if (t > 5.6) escP = 1 - smooth((t - 5.6) / 0.25);
+  // latido: grosor 6 → 7 y un empujoncito de 4 px hacia el icono
+  let pulso = 0;
+  if (t > 1.4 && t < 5.9) pulso = 0.5 - 0.5 * Math.cos(2 * Math.PI * (t - 1.4) / 0.9);
+  const grosor = 6 + 1 * pulso;
+  const dx = 0.92 * 4 * pulso, dy = -0.39 * 4 * pulso;
+  astas.forEach((p) => {
+    p.style.strokeDasharray = `${L} ${L}`;
+    p.style.strokeDashoffset = `${offA}`;
+    p.style.strokeWidth = grosor;
+  });
+  puntas.forEach((p) => {
+    p.style.strokeDasharray = `${Lp} ${Lp}`;
+    p.style.strokeDashoffset = `${offP}`;
+    p.style.strokeWidth = grosor;
+    p.style.transformOrigin = "435px 318px";
+    p.style.transform = `scale(${escP.toFixed(3)})`;
+  });
+  document.getElementById("flechaTinta").setAttribute("transform", `translate(${dx.toFixed(2)} ${dy.toFixed(2)})`);
+  document.getElementById("flechaSombra").setAttribute("transform", `translate(${(4 + dx).toFixed(2)} ${(5 + dy).toFixed(2)})`);
+  if (t >= 5.85 || (t < 0.02 && offA >= L - 0.5)) document.getElementById("flecha").style.visibility = "hidden";
+
+  // 5. La pegatina: un "pop" de muelle a los 2 s (1 → 1,12 → 1), se levanta un pelín.
+  let s = 1, alza = 0;
+  { const u = t - 2;
+    if (u > 0 && u < 1) {
+      if (u < 0.16) { const k = easeOut(u / 0.16); s = 1 + 0.12 * k; alza = k; }
+      else { const v = u - 0.16; const d = Math.cos(2 * Math.PI * v / 0.5) * Math.exp(-5 * v) * (1 - smooth((v - 0.5) / 0.34)); s = 1 + 0.12 * d; alza = Math.max(0, d); }
+    } }
+  const peg = document.getElementById("pegatina");
+  const giro = 4 + (s - 1) * 12;
+  peg.style.transform = `translate(${(-2 * alza).toFixed(2)}px, ${(-2 * alza).toFixed(2)}px) rotate(${giro.toFixed(3)}deg) scale(${s.toFixed(4)})`;
+  const so = 3 + 4 * alza;
+  peg.style.boxShadow = `${so.toFixed(2)}px ${so.toFixed(2)}px 0 #ded7c2`;
+})();
+</script>
+</body>
+</html>

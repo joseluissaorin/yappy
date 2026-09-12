@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Hoi, ik ben je papegaai"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/nl/01-paseo-hola
+- tapOn:
+    text: "Kies een stem voor mij"
+- extendedWaitUntil:
+    visible:
+      text: "Alles gebeurt op je telefoon"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/nl/02-paseo-idiomas
+- tapOn:
+    text: "Verder"
+- extendedWaitUntil:
+    visible:
+      text: "Kies je vogel"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/nl/03-paseo-pajaro
+- tapOn:
+    text: "Ik neem James"
+- extendedWaitUntil:
+    visible:
+      text: "Wat geef je mij\\?"
+    timeout: 10000
+- tapOn:
+    text: "Artikelen"
+- tapOn:
+    text: "Boeken"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/nl/04-paseo-que
+- tapOn:
+    text: "Verder"
+- extendedWaitUntil:
+    visible:
+      text: "Wanneer luister je naar mij\\?"
+    timeout: 10000
+- tapOn:
+    text: "Aan het koken"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/nl/05-paseo-cuando
+- tapOn:
+    text: "Verder"
+- extendedWaitUntil:
+    visible:
+      text: "Hoe snel\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/nl/06-paseo-velocidad
+- tapOn:
+    text: "Verder"
+- extendedWaitUntil:
+    visible:
+      text: "Hoeveel heb je te lezen\\?"
+    timeout: 10000
+- tapOn:
+    text: "Een berg"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/nl/07-paseo-cuanto
+- tapOn:
+    text: "Verder"
+- extendedWaitUntil:
+    visible:
+      text: "Iets van jou, of een verhaal"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/nl/08-paseo-escucha
+- tapOn:
+    text: "(?i)Later"
+- extendedWaitUntil:
+    visible:
+      text: "Het scherm is de knop"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Later"
+- extendedWaitUntil:
+    visible:
+      text: "Delen is alles"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots/nl/09-paseo-compartir
+- tapOn:
+    text: "(?i)Later"
+- extendedWaitUntil:
+    visible:
+      text: "En je neemt het mee"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/nl/10-paseo-exportar
+- tapOn:
+    text: "(?i)Later"
+- extendedWaitUntil:
+    visible:
+      text: "Speld mij vast bij je favorieten"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/nl/11-paseo-favoritos
+- tapOn:
+    text: "Klaar"
+- extendedWaitUntil:
+    visible:
+      text: "Jouw papegaai"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/nl/12-paseo-resumen
+- tapOn:
+    text: "Verder"
+- extendedWaitUntil:
+    visible:
+      text: "Drie tegelijk"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots/nl/13-paseo-percha
+- tapOn:
+    text: "Verder"
+- extendedWaitUntil:
+    visible:
+      text: "Kies je veer"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots/nl/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Beginnen met drie op de zitstok"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots/nl/15-paseo-cuerda-pie
+- tapOn:
+    text: "Beginnen met drie op de zitstok"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Oké"
+    optional: true
+- takeScreenshot: marketing/screenshots/nl/17-cinta-vacia

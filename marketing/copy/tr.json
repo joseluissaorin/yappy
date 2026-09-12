@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "bulut\nyok",
+    "idiomas": "31\ndil",
+    "compartir": "paylaş'a\ndokun",
+    "capitulos": "bölüm\nbölüm",
+    "ritmo": "kendi\nhızında",
+    "hola": "merhaba!",
+    "gratis": "ücretsiz",
+    "offline": "çevrimdışı",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Her metin, sesli.",
+      "subtitle": "Bir makale, PDF ya da kitap paylaş; bir papağan sana okusun."
+    },
+    {
+      "slot": 2,
+      "title": "Ses metni izler.",
+      "subtitle": "Her cümle okunurken ışıldar. Durdurmak için dokun."
+    },
+    {
+      "slot": 3,
+      "title": "On kuş, 31 dil.",
+      "subtitle": "Hepsi çok dilli: paragraf paragraf, dili kendileri değiştirir."
+    },
+    {
+      "slot": 4,
+      "title": "Her şey iPhone'unda kalır.",
+      "subtitle": "Bulut yok, hesap yok, karakter başı ücret yok. Çevrimdışı çalışır."
+    },
+    {
+      "slot": 5,
+      "title": "Her uygulamadan.",
+      "subtitle": "Safari, Dosyalar, YouTube, e-posta: Paylaş'a dokun, Yappy'yi seç."
+    },
+    {
+      "slot": 6,
+      "title": "İnsan gibi okur.",
+      "subtitle": "“1492”, “bin dört yüz doksan iki” diye okunur; her dilin kendi kuralıyla."
+    },
+    {
+      "slot": 7,
+      "title": "Bütün kitap, sesli kitap.",
+      "subtitle": "Bölüm bölüm. Gece bırak, sabah kitaplığında hazır."
+    },
+    {
+      "slot": 8,
+      "title": "Gece de.",
+      "subtitle": "Ses, hız ve tema, senin zevkine göre, arka odada."
+    },
+    {
+      "slot": 9,
+      "title": "İşinin ehli bir papağan.",
+      "subtitle": "İlk günden yanında: üç dakikalık bir gezintiyle."
+    },
+    {
+      "slot": 10,
+      "title": "Papağanı kur.",
+      "subtitle": "Tünekte üç kitapla ücretsiz. Yappy Parlanchín: dipsiz tünek, sonsuza dek."
+    }
+  ]
+}

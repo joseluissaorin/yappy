@@ -1,0 +1,28 @@
+Dela en artikel, en PDF, en EPUB, en Word-fil eller en video med Yappy, så läser en papegoja upp den för dig med naturlig röst. Medan du lagar mat, medan du promenerar eller med slutna ögon. Allt sker inuti din iPhone: inget lämnar den, någonsin.
+
+INGET MOLN, INGA KONTON, INGEN AVGIFT PER TECKEN
+Rösten syntetiseras på din enhet av en öppen modell med omkring 66 miljoner parametrar. Ingen registrering, ingen e-postadress. Det fungerar offline, för alltid.
+
+31 SPRÅK OCH TIO RÖSTER, ALLA FLERSPRÅKIGA
+Svenska, engelska, spanska, franska, tyska, italienska, portugisiska, nederländska, polska, rumänska, danska, finska, estniska, litauiska, lettiska, kroatiska, slovenska, slovakiska, tjeckiska, ungerska, grekiska, bulgariska, ukrainska, ryska, turkiska, arabiska, hindi, indonesiska, vietnamesiska, koreanska och japanska. Texter med citat på ett annat språk byter språk av sig själva, stycke för stycke.
+
+ATT DELA ÄR DÖRREN
+Från Safari, Mail, Filer eller vilken app som helst: tryck på Dela och välj Yappy. Sidan städar sig själv (bort med menyer, banners och sidfötter) och kvar blir prosan, med sina rubriker och sin rytm. YouTube-videor lyssnar du på som artiklar. PDF:er och EPUB:er kommer med kapitel. Röstmemon transkriberas på enheten.
+
+MANUSFÖRFATTAREN: FRÅN DET SKRIVNA TILL DET SAGDA
+Att läsa högt är inte att bokstavera. ”1492” läses ”fjortonhundranittiotvå”; ”Henrik VIII” läses ”Henrik den åttonde”, men ”Louis XIV” på franska läses ”Louis quatorze”. Yappy gör om varje text till ett läsmanus efter varje språks regler, och rösten följer det mening för mening medan texten tänds på skärmen.
+
+SKÄRMEN ÄR KNAPPEN
+Tryck var som helst för att pausa, svep för att hoppa över ett stycke, dra längs kanten för att ändra hastigheten. Och från låsskärmen eller hörlurarna, som med vilken spelare som helst.
+
+TRYCKERIET: HELA BÖCKER SOM LJUDBÖCKER
+Låt en bok renderas när du går och lägger dig, och vakna med en ljudbok med kapitel i ditt bibliotek. Med bryggan kan din Mac eller PC konvertera den åt dig och skicka tillbaka den av sig själv.
+
+GRATIS PÅ RIKTIGT, OCH EN PAPEGOJA MED NYCKEL
+Yappy är öppen källkod (MIT-licens). Gratispapegojan bär tre dokument åt gången på sin pinne; ta bort ett så får ett annat plats, utan tidsgräns. Vill du ha en pinne utan botten, ljudbokstryckeriet och bryggan till datorn, vrid upp den med Yappy Parlanchín: månads- eller årsprenumeration, eller ett enda köp för livet. Avsluta när du vill.
+
+Prenumerationer förnyas automatiskt i slutet av varje period om de inte sägs upp i ditt Apple-konto minst 24 timmar innan.
+Användarvillkor: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Integritet: https://yappy.joseluissaorin.com/en/privacy
+
+Gjord med kärlek av José Luis Saorín. En filolog som ville lyssna på det han läste, och en sexåring som ville leka med papegojan.

@@ -1,0 +1,48 @@
+# El aforo de la percha, DE VERDAD: con la app lanzada con
+# SIMCTL_CHILD_YAPPY_TIENDA=sim (loro de prueba), tres enlaces entran en la
+# cinta y el cuarto abre el paywall de la percha llena.
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: "yappy"
+    timeout: 15000
+- tapOn:
+    point: "50%,50%"
+- repeat:
+    times: 3
+    commands:
+      - tapOn:
+          text: "Añadir|Add"
+      - extendedWaitUntil:
+          visible:
+            text: "A la cinta|To the tape"
+          timeout: 6000
+      - tapOn:
+          text: "https://…"
+      - inputText: "https://example.com/${output.n = (output.n || 0) + 1}"
+      - tapOn:
+          text: "A la cinta|To the tape"
+      - extendedWaitUntil:
+          notVisible:
+            text: "A la cinta|To the tape"
+          timeout: 6000
+- takeScreenshot: /tmp/paywall/07-tres
+# El cuarto: no cabe.
+- tapOn:
+    text: "Añadir|Add"
+- extendedWaitUntil:
+    visible:
+      text: "A la cinta|To the tape"
+    timeout: 6000
+- tapOn:
+    text: "https://…"
+- inputText: "https://example.com/cuatro"
+- tapOn:
+    text: "A la cinta|To the tape"
+- extendedWaitUntil:
+    visible:
+      text: ".*percha.*llena.*|.*perch is full.*"
+    timeout: 8000
+- takeScreenshot: /tmp/paywall/08-aforo

@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Chào bạn, mình là vẹt của bạn"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/vi/01-paseo-hola
+- tapOn:
+    text: "Chọn cho mình một giọng đọc"
+- extendedWaitUntil:
+    visible:
+      text: "Mọi thứ diễn ra ngay trên điện thoại của bạn"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/vi/02-paseo-idiomas
+- tapOn:
+    text: "Tiếp tục"
+- extendedWaitUntil:
+    visible:
+      text: "Chọn chú chim của bạn"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/vi/03-paseo-pajaro
+- tapOn:
+    text: "Mình chọn James"
+- extendedWaitUntil:
+    visible:
+      text: "Bạn sẽ đưa cho mình những gì\\?"
+    timeout: 10000
+- tapOn:
+    text: "Bài báo"
+- tapOn:
+    text: "Sách"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/vi/04-paseo-que
+- tapOn:
+    text: "Tiếp tục"
+- extendedWaitUntil:
+    visible:
+      text: "Khi nào bạn nghe mình\\?"
+    timeout: 10000
+- tapOn:
+    text: "Khi nấu ăn"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/vi/05-paseo-cuando
+- tapOn:
+    text: "Tiếp tục"
+- extendedWaitUntil:
+    visible:
+      text: "Nhanh cỡ nào\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/vi/06-paseo-velocidad
+- tapOn:
+    text: "Tiếp tục"
+- extendedWaitUntil:
+    visible:
+      text: "Bạn có bao nhiêu thứ đang chờ đọc\\?"
+    timeout: 10000
+- tapOn:
+    text: "Cả một ngọn núi"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/vi/07-paseo-cuanto
+- tapOn:
+    text: "Tiếp tục"
+- extendedWaitUntil:
+    visible:
+      text: "Thứ của riêng bạn, hoặc một câu chuyện"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/vi/08-paseo-escucha
+- tapOn:
+    text: "(?i)Để sau"
+- extendedWaitUntil:
+    visible:
+      text: "Màn hình chính là cái nút"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Để sau"
+- extendedWaitUntil:
+    visible:
+      text: "Chia sẻ là tất cả"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/vi/09-paseo-compartir
+- tapOn:
+    text: "(?i)Để sau"
+- extendedWaitUntil:
+    visible:
+      text: "Và bạn mang nó theo khắp nơi"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/vi/10-paseo-exportar
+- tapOn:
+    text: "(?i)Để sau"
+- extendedWaitUntil:
+    visible:
+      text: "Ghim mình vào mục yêu thích của bạn"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/vi/11-paseo-favoritos
+- tapOn:
+    text: "Xong"
+- extendedWaitUntil:
+    visible:
+      text: "Con vẹt của bạn"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/vi/12-paseo-resumen
+- tapOn:
+    text: "Tiếp tục"
+- extendedWaitUntil:
+    visible:
+      text: "Ba cái cùng lúc"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/vi/13-paseo-percha
+- tapOn:
+    text: "Tiếp tục"
+- extendedWaitUntil:
+    visible:
+      text: "Chọn dây cót của bạn"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/vi/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Bắt đầu với ba chỗ trên cầu đậu"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/vi/15-paseo-cuerda-pie
+- tapOn:
+    text: "Bắt đầu với ba chỗ trên cầu đậu"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Được"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/vi/17-cinta-vacia

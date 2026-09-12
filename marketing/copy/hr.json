@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "bez\noblaka",
+    "idiomas": "31\njezik",
+    "compartir": "dodirni\npodijeli",
+    "capitulos": "s\npoglavljima",
+    "ritmo": "tvojim\ntempom",
+    "hola": "bok!",
+    "gratis": "besplatno",
+    "offline": "bez mreže",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Bilo koji tekst, naglas.",
+      "subtitle": "Podijeli članak, PDF ili knjigu, a papiga ti ga pročita."
+    },
+    {
+      "slot": 2,
+      "title": "Glas prati tekst.",
+      "subtitle": "Svaka se rečenica zasvijetli dok zvuči. Dodirni za pauzu."
+    },
+    {
+      "slot": 3,
+      "title": "Deset ptica, 31 jezik.",
+      "subtitle": "Sve poliglotske: same mijenjaju jezik, odlomak po odlomak."
+    },
+    {
+      "slot": 4,
+      "title": "Sve ostaje na iPhoneu.",
+      "subtitle": "Bez oblaka, bez računa, bez naplate po znaku. Radi bez mreže."
+    },
+    {
+      "slot": 5,
+      "title": "Iz bilo koje aplikacije.",
+      "subtitle": "Safari, Datoteke, YouTube, pošta: dodirni Podijeli i odaberi Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Čita kao čovjek.",
+      "subtitle": "„1492” kaže se „tisuću četiristo devedeset dva”, po pravilima svakog jezika."
+    },
+    {
+      "slot": 7,
+      "title": "Knjige kao audioknjige.",
+      "subtitle": "S poglavljima. Ostaviš navečer, ujutro je u tvojoj knjižnici."
+    },
+    {
+      "slot": 8,
+      "title": "I noću.",
+      "subtitle": "Glas, brzina i tema, po tvom ukusu, u stražnjoj sobi."
+    },
+    {
+      "slot": 9,
+      "title": "Papiga sa zanatom.",
+      "subtitle": "Prati te od prvog dana šetnjom od tri minute."
+    },
+    {
+      "slot": 10,
+      "title": "Navij papigu.",
+      "subtitle": "Besplatno s tri na prečki. Yappy Parlanchín: prečka bez dna, zauvijek."
+    }
+  ]
+}

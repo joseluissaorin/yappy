@@ -1,0 +1,23 @@
+# La trastienda tras el paseo: la caja del paseo (repetir) y el interruptor
+# de las estadísticas anónimas.
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: "yappy"
+    timeout: 15000
+- tapOn:
+    point: "50%,50%"
+- tapOn:
+    text: "la trastienda|the back room|.*trastienda.*"
+- extendedWaitUntil:
+    visible:
+      text: "Velocidad|Speed"
+    timeout: 8000
+- scrollUntilVisible:
+    element:
+      text: ".*paseo del loro.*|.*parrot's walk.*"
+    direction: DOWN
+    timeout: 20000
+- takeScreenshot: /tmp/paseo/17-trastienda

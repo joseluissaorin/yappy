@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "fără\ncloud",
+    "idiomas": "31\nde limbi",
+    "compartir": "atinge\ntrimite",
+    "capitulos": "cu\ncapitole",
+    "ritmo": "în ritmul\ntău",
+    "hola": "salut!",
+    "gratis": "gratuit",
+    "offline": "fără conexiune",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Orice text, cu voce tare.",
+      "subtitle": "Trimite un articol, un PDF sau o carte, și un papagal ți-l citește."
+    },
+    {
+      "slot": 2,
+      "title": "Vocea urmează textul.",
+      "subtitle": "Fiecare frază se aprinde în timp ce sună. Atinge ca să oprești."
+    },
+    {
+      "slot": 3,
+      "title": "Zece păsări, 31 de limbi.",
+      "subtitle": "Toate poliglote: schimbă limba singure, paragraf cu paragraf."
+    },
+    {
+      "slot": 4,
+      "title": "Nimic nu iese din iPhone.",
+      "subtitle": "Fără cloud, fără cont, fără tarif pe caracter. Merge fără conexiune."
+    },
+    {
+      "slot": 5,
+      "title": "Din orice aplicație.",
+      "subtitle": "Safari, Fișiere, YouTube, e-mail: atinge Trimite și alege Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Citește ca un om.",
+      "subtitle": "„1492” se spune „o mie patru sute nouăzeci și doi”, după regulile fiecărei limbi."
+    },
+    {
+      "slot": 7,
+      "title": "Cărți întregi, audiobook.",
+      "subtitle": "Cu capitole. O lași seara și dimineața e în biblioteca ta."
+    },
+    {
+      "slot": 8,
+      "title": "Și noaptea.",
+      "subtitle": "Voce, viteză și temă, pe gustul tău, în culise."
+    },
+    {
+      "slot": 9,
+      "title": "Un papagal cu meserie.",
+      "subtitle": "Te însoțește din prima zi cu o plimbare de trei minute."
+    },
+    {
+      "slot": 10,
+      "title": "Întoarce papagalul.",
+      "subtitle": "Gratuit cu trei pe stinghie. Yappy Parlanchín: stinghie fără fund, pentru totdeauna."
+    }
+  ]
+}

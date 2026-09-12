@@ -1,0 +1,28 @@
+Ossz meg a Yappyval egy cikket, PDF-et, EPUB-ot, Word-fájlt vagy videót, és egy papagáj felolvassa neked természetes hangon. Főzés közben, séta közben vagy csukott szemmel. Minden az iPhone-odon belül történik: semmi sem hagyja el, soha.
+
+FELHŐ, FIÓK ÉS KARAKTERENKÉNTI DÍJ NÉLKÜL
+A hangot a készülékeden állítja elő egy körülbelül 66 millió paraméteres nyílt modell. Nem kell regisztrálni, nem kell e-mail-címet megadni. Kapcsolat nélkül működik, örökre.
+
+31 NYELV ÉS TÍZ HANG, MIND POLIGLOTT
+Magyar, angol, spanyol, francia, német, olasz, portugál, holland, lengyel, román, svéd, dán, finn, észt, litván, lett, horvát, szlovén, szlovák, cseh, görög, bolgár, ukrán, orosz, török, arab, hindi, indonéz, vietnámi, koreai és japán. A más nyelvű idézeteket tartalmazó szövegek maguktól váltanak nyelvet, bekezdésről bekezdésre.
+
+A MEGOSZTÁS AZ AJTÓ
+A Safariból, a Mailből, a Fájlokból vagy bármelyik appból: koppints a Megosztásra, és válaszd a Yappyt. Az oldal magától kitakarítja magát (menük, bannerek és láblécek nélkül), és marad a próza a címeivel és a ritmusával. A YouTube-videókat cikként hallgathatod. A PDF-ek és EPUB-ok fejezetekkel érkeznek. A hangjegyzeteket a készülék írja le.
+
+A FORGATÓKÖNYVÍRÓ: A LEÍRTTÓL A KIMONDOTTIG
+Felolvasni nem betűzést jelent. Az „1492” úgy hangzik: „ezernégyszázkilencvenkettő”; a „VIII. Henrik” úgy: „nyolcadik Henrik”, a „XIV. Lajos” viszont franciául „Louis quatorze”. A Yappy minden szöveget felolvasó-forgatókönyvvé alakít az adott nyelv szabályai szerint, és a hang mondatról mondatra követi, miközben a szöveg kigyullad a képernyőn.
+
+A KÉPERNYŐ A GOMB
+Koppints bárhová a szünethez, húzd el az ujjad a bekezdés átugrásához, a szélén állítsd a sebességet. És a zárolási képernyőről vagy a fülhallgatóról, mint bármelyik lejátszónál.
+
+A NYOMDA: EGÉSZ KÖNYVEK HANGOSKÖNYVKÉNT
+Hagyj egy könyvet renderelődni lefekvéskor, és ébredésre egy fejezetekre osztott hangoskönyv vár a könyvtáradban. A híddal a Maced vagy PC-d átalakítja helyetted, és magától visszaküldi.
+
+TÉNYLEG INGYENES, ÉS EGY FELHÚZHATÓ PAPAGÁJ
+A Yappy nyílt forráskódú (MIT-licenc). Az ingyenes papagáj egyszerre három dokumentumot visz az ülőrúdján; vegyél le egyet, és elfér egy másik, időkorlát nélkül. Ha feneketlen ülőrudat, hangoskönyv-nyomdát és hidat szeretnél a számítógépedhez, húzd fel a Yappy Parlanchínnal: havi vagy éves előfizetés, vagy egyetlen, életre szóló vásárlás. Bármikor lemondhatod.
+
+Az előfizetések minden időszak végén automatikusan megújulnak, hacsak legalább 24 órával korábban le nem mondod őket az Apple-fiókodban.
+Felhasználási feltételek: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Adatvédelem: https://yappy.joseluissaorin.com/en/privacy
+
+Szeretettel készítette José Luis Saorín. Egy filológus, aki hallani akarta, amit olvas, és egy hatéves, aki játszani akart a papagájjal.

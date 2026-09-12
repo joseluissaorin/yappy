@@ -271,8 +271,14 @@ pub fn cancelar(app: &AppHandle, id: &str) {
                 if let Ok(texto) = fs::read_to_string(d.join("texto.md")) {
                     let app2 = app.clone();
                     let titulo = e.titulo.clone();
+                    let receta = crate::puente::RecetaRemota {
+                        voz: Some(e.voz.clone()),
+                        velocidad: Some(e.velocidad),
+                        steps: Some(e.steps),
+                        idioma: e.idioma.clone(),
+                    };
                     tauri::async_runtime::spawn(async move {
-                        let _ = crate::puente::cancelar_remoto(app2, titulo, texto).await;
+                        let _ = crate::puente::cancelar_remoto(app2, titulo, texto, receta).await;
                     });
                 }
             }
@@ -986,6 +992,12 @@ async fn procesar_remoto(
         app.clone(),
         encargo.titulo.clone(),
         texto,
+        crate::puente::RecetaRemota {
+            voz: Some(encargo.voz.clone()),
+            velocidad: Some(encargo.velocidad),
+            steps: Some(encargo.steps),
+            idioma: encargo.idioma.clone(),
+        },
     ));
     let resultado = loop {
         if control.cancelar.load(Ordering::SeqCst) || control.pausar.load(Ordering::SeqCst) {
@@ -1092,6 +1104,10 @@ pub fn imprenta_encargar_cmd(
     idioma: Option<String>,
     motor: Option<String>,
 ) -> Result<Encargo, String> {
+    // La imprenta es cosa de parlanchines (solo muerde donde hay tienda).
+    if !crate::compras::es_pro() {
+        return Err("parlanchin".into());
+    }
     let motor = match motor.as_deref() {
         Some("ordenador") => MotorEncargo::Ordenador,
         _ => MotorEncargo::Local,

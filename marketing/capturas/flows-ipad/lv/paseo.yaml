@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Sveiks, es esmu tavs papagailis"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/lv/01-paseo-hola
+- tapOn:
+    text: "Izvēlies man balsi"
+- extendedWaitUntil:
+    visible:
+      text: "Viss notiek tavā telefonā"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/lv/02-paseo-idiomas
+- tapOn:
+    text: "Tālāk"
+- extendedWaitUntil:
+    visible:
+      text: "Izvēlies savu putnu"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/lv/03-paseo-pajaro
+- tapOn:
+    text: "Paturu James"
+- extendedWaitUntil:
+    visible:
+      text: "Ko tu man dosi\\?"
+    timeout: 10000
+- tapOn:
+    text: "Raksti"
+- tapOn:
+    text: "Grāmatas"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/lv/04-paseo-que
+- tapOn:
+    text: "Tālāk"
+- extendedWaitUntil:
+    visible:
+      text: "Kad tu mani klausies\\?"
+    timeout: 10000
+- tapOn:
+    text: "Gatavojot ēst"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/lv/05-paseo-cuando
+- tapOn:
+    text: "Tālāk"
+- extendedWaitUntil:
+    visible:
+      text: "Ar kādu ātrumu\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/lv/06-paseo-velocidad
+- tapOn:
+    text: "Tālāk"
+- extendedWaitUntil:
+    visible:
+      text: "Cik daudz tev ir jāizlasa\\?"
+    timeout: 10000
+- tapOn:
+    text: "Kalnu"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/lv/07-paseo-cuanto
+- tapOn:
+    text: "Tālāk"
+- extendedWaitUntil:
+    visible:
+      text: "Kaut kas tavs, vai stāsts"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/lv/08-paseo-escucha
+- tapOn:
+    text: "(?i)Vēlāk"
+- extendedWaitUntil:
+    visible:
+      text: "Ekrāns ir poga"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Vēlāk"
+- extendedWaitUntil:
+    visible:
+      text: "Dalīšanās ir viss"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/lv/09-paseo-compartir
+- tapOn:
+    text: "(?i)Vēlāk"
+- extendedWaitUntil:
+    visible:
+      text: "Un paņem to sev līdzi"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/lv/10-paseo-exportar
+- tapOn:
+    text: "(?i)Vēlāk"
+- extendedWaitUntil:
+    visible:
+      text: "Pieliec mani savām izlasēm"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/lv/11-paseo-favoritos
+- tapOn:
+    text: "Gatavs"
+- extendedWaitUntil:
+    visible:
+      text: "Tavs papagailis"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/lv/12-paseo-resumen
+- tapOn:
+    text: "Tālāk"
+- extendedWaitUntil:
+    visible:
+      text: "Trīs vienlaikus"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/lv/13-paseo-percha
+- tapOn:
+    text: "Tālāk"
+- extendedWaitUntil:
+    visible:
+      text: "Izvēlies savu atsperi"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/lv/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Sāc ar trim uz laktas"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/lv/15-paseo-cuerda-pie
+- tapOn:
+    text: "Sāc ar trim uz laktas"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Labi"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/lv/17-cinta-vacia

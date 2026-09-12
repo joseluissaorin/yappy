@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Selam, ben senin papağanın"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/tr/01-paseo-hola
+- tapOn:
+    text: "Bana bir ses seç"
+- extendedWaitUntil:
+    visible:
+      text: "Her şey telefonunda olur"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/tr/02-paseo-idiomas
+- tapOn:
+    text: "İleri"
+- extendedWaitUntil:
+    visible:
+      text: "Kuşunu seç"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/tr/03-paseo-pajaro
+- tapOn:
+    text: "James olsun"
+- extendedWaitUntil:
+    visible:
+      text: "Bana ne vereceksin\\?"
+    timeout: 10000
+- tapOn:
+    text: "Makaleler"
+- tapOn:
+    text: "Kitaplar"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/tr/04-paseo-que
+- tapOn:
+    text: "İleri"
+- extendedWaitUntil:
+    visible:
+      text: "Beni ne zaman dinlersin\\?"
+    timeout: 10000
+- tapOn:
+    text: "Yemek yaparken"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/tr/05-paseo-cuando
+- tapOn:
+    text: "İleri"
+- extendedWaitUntil:
+    visible:
+      text: "Hangi hızda\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/tr/06-paseo-velocidad
+- tapOn:
+    text: "İleri"
+- extendedWaitUntil:
+    visible:
+      text: "Okunacak ne kadar şeyin var\\?"
+    timeout: 10000
+- tapOn:
+    text: "Bir dağ kadar"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/tr/07-paseo-cuanto
+- tapOn:
+    text: "İleri"
+- extendedWaitUntil:
+    visible:
+      text: "Kendi seçtiğin, ya da bir hikâye"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/tr/08-paseo-escucha
+- tapOn:
+    text: "(?i)Sonra"
+- extendedWaitUntil:
+    visible:
+      text: "Ekranın kendisi düğmedir"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Sonra"
+- extendedWaitUntil:
+    visible:
+      text: "Her şey paylaşmakta"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/tr/09-paseo-compartir
+- tapOn:
+    text: "(?i)Sonra"
+- extendedWaitUntil:
+    visible:
+      text: "Ve onu yanında götürürsün"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/tr/10-paseo-exportar
+- tapOn:
+    text: "(?i)Sonra"
+- extendedWaitUntil:
+    visible:
+      text: "Beni favorilerine sabitle"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/tr/11-paseo-favoritos
+- tapOn:
+    text: "Bitti"
+- extendedWaitUntil:
+    visible:
+      text: "Senin papağanın"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/tr/12-paseo-resumen
+- tapOn:
+    text: "İleri"
+- extendedWaitUntil:
+    visible:
+      text: "Aynı anda üç"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/tr/13-paseo-percha
+- tapOn:
+    text: "İleri"
+- extendedWaitUntil:
+    visible:
+      text: "Zembereğini seç"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/tr/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Tünekte üçle başla"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/tr/15-paseo-cuerda-pie
+- tapOn:
+    text: "Tünekte üçle başla"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Tamam"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/tr/17-cinta-vacia

@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "sans\nnuage",
+    "idiomas": "31\nlangues",
+    "compartir": "touche\npartager",
+    "capitulos": "avec\nchapitres",
+    "ritmo": "à ton\nrythme",
+    "hola": "salut !",
+    "gratis": "gratuit",
+    "offline": "hors ligne",
+    "aso": "lecteur de texte"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Tout texte, à voix haute.",
+      "subtitle": "Partage un article, un PDF ou un livre, et un perroquet te le lit."
+    },
+    {
+      "slot": 2,
+      "title": "La voix suit le texte.",
+      "subtitle": "Chaque phrase s'illumine quand elle sonne. Touche pour mettre en pause."
+    },
+    {
+      "slot": 3,
+      "title": "Dix oiseaux, 31 langues.",
+      "subtitle": "Tous polyglottes : ils changent de langue tout seuls, paragraphe par paragraphe."
+    },
+    {
+      "slot": 4,
+      "title": "Rien ne quitte ton iPhone.",
+      "subtitle": "Sans nuage, sans compte, sans tarif au caractère. Fonctionne hors ligne."
+    },
+    {
+      "slot": 5,
+      "title": "Depuis toutes tes apps.",
+      "subtitle": "Safari, Fichiers, YouTube, le courrier : touche Partager et choisis Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Lit comme une personne.",
+      "subtitle": "« 1492 » se dit « mille quatre cent quatre-vingt-douze », selon chaque langue."
+    },
+    {
+      "slot": 7,
+      "title": "Un livre entier, en audio.",
+      "subtitle": "Avec chapitres. Tu le laisses le soir, au matin il est dans ta bibliothèque."
+    },
+    {
+      "slot": 8,
+      "title": "La nuit aussi.",
+      "subtitle": "Voix, vitesse et thème, à ton goût, dans l'arrière-boutique."
+    },
+    {
+      "slot": 9,
+      "title": "Un perroquet de métier.",
+      "subtitle": "Il t'accompagne dès le premier jour, en une balade de trois minutes."
+    },
+    {
+      "slot": 10,
+      "title": "Remonte le perroquet.",
+      "subtitle": "Gratuit avec trois sur le perchoir. Yappy Parlanchín : perchoir sans fond, à vie."
+    }
+  ]
+}

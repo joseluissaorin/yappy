@@ -1,0 +1,28 @@
+Teile einen Artikel, ein PDF, ein EPUB, eine Word-Datei oder ein Video mit Yappy, und ein Papagei liest es dir mit natürlicher Stimme vor. Beim Kochen, beim Spazierengehen oder mit geschlossenen Augen. Alles passiert in deinem iPhone: Nichts verlässt es, niemals.
+
+KEINE CLOUD, KEINE KONTEN, KEINE GEBÜHR PRO ZEICHEN
+Die Stimme wird auf deinem Gerät mit einem offenen Modell von rund 66 Millionen Parametern erzeugt. Keine Registrierung, keine E-Mail-Adresse. Es funktioniert offline, für immer.
+
+31 SPRACHEN UND ZEHN STIMMEN, ALLE MEHRSPRACHIG
+Deutsch, Englisch, Spanisch, Französisch, Italienisch, Portugiesisch, Niederländisch, Polnisch, Rumänisch, Schwedisch, Dänisch, Finnisch, Estnisch, Litauisch, Lettisch, Kroatisch, Slowenisch, Slowakisch, Tschechisch, Ungarisch, Griechisch, Bulgarisch, Ukrainisch, Russisch, Türkisch, Arabisch, Hindi, Indonesisch, Vietnamesisch, Koreanisch und Japanisch. Texte mit Zitaten in einer anderen Sprache wechseln von selbst, Absatz für Absatz.
+
+TEILEN IST DIE TÜR
+Aus Safari, Mail, Dateien oder jeder anderen App: auf Teilen tippen und Yappy wählen. Die Seite räumt sich selbst auf (Menüs, Banner und Fußzeilen verschwinden), und übrig bleibt die Prosa mit ihren Überschriften und ihrem Rhythmus. YouTube-Videos hörst du wie Artikel. PDFs und EPUBs kommen mit Kapiteln. Sprachnotizen werden auf dem Gerät transkribiert.
+
+DER SPRECHTEXT: VOM GESCHRIEBENEN ZUM GESAGTEN
+Vorlesen ist nicht Buchstabieren. „1492“ wird „vierzehnhundertzweiundneunzig“ gesprochen; „Heinrich VIII.“ wird „Heinrich der Achte“, aber „Louis XIV“ heißt auf Französisch „Louis quatorze“. Yappy verwandelt jeden Text nach den Regeln der jeweiligen Sprache in ein Lesemanuskript, und die Stimme folgt ihm Satz für Satz, während der Text auf dem Bildschirm aufleuchtet.
+
+DER BILDSCHIRM IST DER KNOPF
+Tippe irgendwohin, um zu pausieren, wische, um einen Absatz zu überspringen, und ändere die Geschwindigkeit am Rand. Und vom Sperrbildschirm oder den Kopfhörern aus, wie bei jedem anderen Player.
+
+DIE DRUCKEREI: GANZE BÜCHER ALS HÖRBÜCHER
+Lass ein Buch beim Schlafengehen rendern, und beim Aufwachen liegt ein Hörbuch mit Kapiteln in deiner Bibliothek. Mit der Brücke kann dein Mac oder PC es für dich umwandeln und von selbst zurückschicken.
+
+WIRKLICH KOSTENLOS, UND EIN PAPAGEI ZUM AUFZIEHEN
+Yappy ist Open Source (MIT-Lizenz). Der Gratis-Papagei trägt drei Dokumente gleichzeitig auf seiner Stange; nimm eines weg, und ein anderes passt, ohne Zeitlimit. Wenn du eine Stange ohne Boden, die Hörbuch-Druckerei und die Brücke zum Computer willst, zieh ihn mit Yappy Parlanchín auf: Monats- oder Jahresabo, oder ein einmaliger Kauf auf Lebenszeit. Kündigen kannst du jederzeit.
+
+Abonnements verlängern sich am Ende jeder Laufzeit automatisch, sofern sie nicht mindestens 24 Stunden vorher in deinem Apple-Konto gekündigt werden.
+Nutzungsbedingungen: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Datenschutz: https://yappy.joseluissaorin.com/en/privacy
+
+Mit Liebe gemacht von José Luis Saorín. Ein Philologe, der hören wollte, was er las, und ein Sechsjähriger, der mit dem Papagei spielen wollte.

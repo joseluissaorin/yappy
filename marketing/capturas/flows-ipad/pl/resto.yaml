@@ -1,0 +1,107 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- tapOn:
+    point: "30%,3%"
+- tapOn:
+    text: "Dobra"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/pl/20-cinta
+- tapOn:
+    text: "zaplecze"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2000
+- runFlow:
+    when:
+      notVisible:
+        text: "Prędkość"
+    commands:
+      - tapOn:
+          point: "97%,30%"
+- extendedWaitUntil:
+    visible:
+      text: "Prędkość"
+    timeout: 8000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/25-trastienda
+- tapOn:
+    text: "Noc"
+    optional: true
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/pl/26-trastienda-noche
+- tapOn:
+    text: "Papier"
+    optional: true
+- scrollUntilVisible:
+    element:
+      text: "Nakręć papugę|Zarządzaj subskrypcją"
+    direction: DOWN
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/pl/27-trastienda-cuerda
+- tapOn:
+    text: "Nakręć papugę"
+- extendedWaitUntil:
+    visible:
+      text: "Wybierz swoją sprężynę"
+    timeout: 12000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/pl/28-paywall
+# Relanzar en vez de volver atrás: la cinta se conserva y no hay flecha que acertar.
+- launchApp:
+    stopApp: true
+    arguments:
+      AppleLanguages: "(pl)"
+      AppleLocale: "pl_PL"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Dobra"
+    optional: true
+- tapOn:
+    text: "(?i)otwórz drukarnię"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/pl/29-imprenta
+- launchApp:
+    stopApp: true
+    arguments:
+      AppleLanguages: "(pl)"
+      AppleLocale: "pl_PL"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Dobra"
+    optional: true
+- tapOn:
+    text: "(?i)Chleb wiejski"
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: "Słuchaj"
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/pl/21-lector-a
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: marketing/screenshots-ipad/pl/22-lector-b
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: marketing/screenshots-ipad/pl/23-lector-c
+- takeScreenshot: marketing/screenshots-ipad/pl/24-cinta-sonando

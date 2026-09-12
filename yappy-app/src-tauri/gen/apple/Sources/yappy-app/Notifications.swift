@@ -37,6 +37,32 @@ private func ensurePermission(_ then: @escaping (Bool) -> Void) {
     }
 }
 
+/// EL PASEO pide el permiso a las claras, explicando para qué (el
+/// audiolibro que termina mientras el teléfono duerme). El sistema
+/// enseña su diálogo una sola vez; después el estado se consulta.
+@_cdecl("yappy_notify_request")
+public func yappy_notify_request() {
+    permissionAsked = true
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
+}
+
+/// 0 = sin decidir, 1 = concedido (o provisional), 2 = denegado.
+@_cdecl("yappy_notify_status")
+public func yappy_notify_status() -> Int32 {
+    var estado: Int32 = 0
+    let sem = DispatchSemaphore(value: 0)
+    UNUserNotificationCenter.current().getNotificationSettings { settings in
+        switch settings.authorizationStatus {
+        case .authorized, .provisional: estado = 1
+        case .denied, .ephemeral: estado = 2
+        default: estado = 0
+        }
+        sem.signal()
+    }
+    _ = sem.wait(timeout: .now() + 2)
+    return estado
+}
+
 /// Fire an immediate local notification. Rust calls this when an m4b
 /// render finishes. Title and body are UTF-8 C strings. `identifier`
 /// dedupes — passing the same identifier twice replaces the earlier one.

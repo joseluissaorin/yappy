@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "be\ndebesies",
+    "idiomas": "31\nkalba",
+    "compartir": "paliesk\nbendrinti",
+    "capitulos": "su\nskyriais",
+    "ritmo": "tavo\ntempu",
+    "hola": "labas!",
+    "gratis": "nemokamai",
+    "offline": "be ryšio",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Bet koks tekstas, garsiai.",
+      "subtitle": "Pasidalink straipsniu, PDF ar knyga, ir papūga tau perskaitys."
+    },
+    {
+      "slot": 2,
+      "title": "Balsas seka tekstą.",
+      "subtitle": "Kiekvienas sakinys nušvinta, kai skamba. Paliesk, kad sustabdytum."
+    },
+    {
+      "slot": 3,
+      "title": "Dešimt paukščių, 31 kalba.",
+      "subtitle": "Visi poliglotai: patys keičia kalbą, pastraipa po pastraipos."
+    },
+    {
+      "slot": 4,
+      "title": "Niekas nepalieka iPhone'o.",
+      "subtitle": "Be debesies, be paskyros, be mokesčio už simbolį. Veikia be ryšio."
+    },
+    {
+      "slot": 5,
+      "title": "Iš bet kurios programėlės.",
+      "subtitle": "Safari, Failai, YouTube, paštas: paliesk Bendrinti ir pasirink Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Skaito kaip žmogus.",
+      "subtitle": "„1492“ tariama „tūkstantis keturi šimtai devyniasdešimt du“, pagal kalbos taisykles."
+    },
+    {
+      "slot": 7,
+      "title": "Visa knyga, klausymui.",
+      "subtitle": "Su skyriais. Palieki vakare, o ryte ji jau tavo bibliotekoje."
+    },
+    {
+      "slot": 8,
+      "title": "Ir naktį.",
+      "subtitle": "Balsas, greitis ir tema, pagal tavo skonį, užkulisiuose."
+    },
+    {
+      "slot": 9,
+      "title": "Papūga su amatu.",
+      "subtitle": "Lydi tave nuo pirmos dienos trijų minučių pasivaikščiojimu."
+    },
+    {
+      "slot": 10,
+      "title": "Prisuk papūgą.",
+      "subtitle": "Nemokamai su trimis ant laktos. Yappy Parlanchín: bedugnė lakta, visam laikui."
+    }
+  ]
+}

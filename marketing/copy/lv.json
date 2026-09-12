@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "bez\nmākoņa",
+    "idiomas": "31\nvaloda",
+    "compartir": "spied\nkopīgot",
+    "capitulos": "ar\nnodaļām",
+    "ritmo": "savā\ntempā",
+    "hola": "sveiki!",
+    "gratis": "bez maksas",
+    "offline": "bezsaistē",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Jebkurš teksts, skaļi.",
+      "subtitle": "Kopīgo rakstu, PDF vai grāmatu, un papagailis to tev nolasa."
+    },
+    {
+      "slot": 2,
+      "title": "Balss seko tekstam.",
+      "subtitle": "Katrs teikums iedegas, kamēr skan. Pieskaries, lai apturētu."
+    },
+    {
+      "slot": 3,
+      "title": "Desmit putni, 31 valoda.",
+      "subtitle": "Visi poligloti: paši maina valodu, rindkopu pēc rindkopas."
+    },
+    {
+      "slot": 4,
+      "title": "Nekas nepamet tavu iPhone.",
+      "subtitle": "Bez mākoņa, bez konta, bez maksas par rakstzīmi. Darbojas bezsaistē."
+    },
+    {
+      "slot": 5,
+      "title": "No jebkuras lietotnes.",
+      "subtitle": "Safari, Faili, YouTube, pasts: spied Kopīgot un izvēlies Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Lasa kā cilvēks.",
+      "subtitle": "„1492” saka „tūkstoš četri simti deviņdesmit divi”, pēc katras valodas likumiem."
+    },
+    {
+      "slot": 7,
+      "title": "Veselas grāmatas, audio.",
+      "subtitle": "Ar nodaļām. Atstāj uz nakti, un no rīta tā ir tavā bibliotēkā."
+    },
+    {
+      "slot": 8,
+      "title": "Arī naktī.",
+      "subtitle": "Balss, ātrums un tēma, pēc tavas gaumes, aizkulisēs."
+    },
+    {
+      "slot": 9,
+      "title": "Papagailis ar amatu.",
+      "subtitle": "Pavada tevi no pirmās dienas ar trīs minūšu pastaigu."
+    },
+    {
+      "slot": 10,
+      "title": "Uzvelc papagaili.",
+      "subtitle": "Bez maksas ar trim uz laktas. Yappy Parlanchín: lakta bez dibena, uz mūžu."
+    }
+  ]
+}

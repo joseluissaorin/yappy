@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "brez\noblaka",
+    "idiomas": "31\njezikov",
+    "compartir": "tapni\ndeli",
+    "capitulos": "s\npoglavji",
+    "ritmo": "v svojem\ntempu",
+    "hola": "živjo!",
+    "gratis": "brezplačno",
+    "offline": "brez povezave",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Vsako besedilo, na glas.",
+      "subtitle": "Deli članek, PDF ali knjigo, in papiga ti ga prebere."
+    },
+    {
+      "slot": 2,
+      "title": "Glas sledi besedilu.",
+      "subtitle": "Vsak stavek zasveti, medtem ko zveni. Tapni za premor."
+    },
+    {
+      "slot": 3,
+      "title": "Deset ptic, 31 jezikov.",
+      "subtitle": "Vsi poligloti: jezik menjajo sami, odstavek za odstavkom."
+    },
+    {
+      "slot": 4,
+      "title": "iPhone obdrži vse zase.",
+      "subtitle": "Brez oblaka, brez računa, brez cene na znak. Deluje brez povezave."
+    },
+    {
+      "slot": 5,
+      "title": "Iz katere koli aplikacije.",
+      "subtitle": "Safari, Datoteke, YouTube, pošta: tapni Deli in izberi Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Bere kot človek.",
+      "subtitle": "»1492« se reče »tisoč štiristo dvaindevetdeset«, po pravilih vsakega jezika."
+    },
+    {
+      "slot": 7,
+      "title": "Knjige kot zvočne knjige.",
+      "subtitle": "S poglavji. Pustiš zvečer, zjutraj je v tvoji knjižnici."
+    },
+    {
+      "slot": 8,
+      "title": "Tudi ponoči.",
+      "subtitle": "Glas, hitrost in tema, po tvojem okusu, v zakulisju."
+    },
+    {
+      "slot": 9,
+      "title": "Papiga z obrtjo.",
+      "subtitle": "Spremlja te od prvega dne s triminutnim sprehodom."
+    },
+    {
+      "slot": 10,
+      "title": "Navij papigo.",
+      "subtitle": "Brezplačno s tremi na gredi. Yappy Parlanchín: gred brez dna, za vedno."
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Salut, je suis ton perroquet"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/fr/01-paseo-hola
+- tapOn:
+    text: "Choisis-moi une voix"
+- extendedWaitUntil:
+    visible:
+      text: "Tout se passe dans ton téléphone"
+    timeout: 10000
+- tapOn:
+    text: "Deutsch"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/fr/02-paseo-idiomas
+- tapOn:
+    text: "Continue"
+- extendedWaitUntil:
+    visible:
+      text: "Choisis ton oiseau"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/fr/03-paseo-pajaro
+- tapOn:
+    text: "Je prends James"
+- extendedWaitUntil:
+    visible:
+      text: "Qu'est-ce que tu vas me donner \\?"
+    timeout: 10000
+- tapOn:
+    text: "Des articles"
+- tapOn:
+    text: "Des livres"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fr/04-paseo-que
+- tapOn:
+    text: "Continue"
+- extendedWaitUntil:
+    visible:
+      text: "Quand est-ce que tu m'écoutes \\?"
+    timeout: 10000
+- tapOn:
+    text: "En cuisinant"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fr/05-paseo-cuando
+- tapOn:
+    text: "Continue"
+- extendedWaitUntil:
+    visible:
+      text: "À quelle vitesse \\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fr/06-paseo-velocidad
+- tapOn:
+    text: "Continue"
+- extendedWaitUntil:
+    visible:
+      text: "Combien as-tu à lire \\?"
+    timeout: 10000
+- tapOn:
+    text: "Une montagne"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fr/07-paseo-cuanto
+- tapOn:
+    text: "Continue"
+- extendedWaitUntil:
+    visible:
+      text: "Un truc à toi, ou un conte"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fr/08-paseo-escucha
+- tapOn:
+    text: "(?i)Plus tard"
+- extendedWaitUntil:
+    visible:
+      text: "L'écran, c'est le bouton"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Plus tard"
+- extendedWaitUntil:
+    visible:
+      text: "Partager, c'est tout"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/fr/09-paseo-compartir
+- tapOn:
+    text: "(?i)Plus tard"
+- extendedWaitUntil:
+    visible:
+      text: "Et tu l'emportes avec toi"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fr/10-paseo-exportar
+- tapOn:
+    text: "(?i)Plus tard"
+- extendedWaitUntil:
+    visible:
+      text: "Épingle-moi dans tes favoris"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fr/11-paseo-favoritos
+- tapOn:
+    text: "C'est fait"
+- extendedWaitUntil:
+    visible:
+      text: "Ton perroquet"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fr/12-paseo-resumen
+- tapOn:
+    text: "Continue"
+- extendedWaitUntil:
+    visible:
+      text: "Trois à la fois"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fr/13-paseo-percha
+- tapOn:
+    text: "Continue"
+- extendedWaitUntil:
+    visible:
+      text: "Choisis ton remontage"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/fr/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Commencer avec trois sur le perchoir"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/fr/15-paseo-cuerda-pie
+- tapOn:
+    text: "Commencer avec trois sur le perchoir"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "D'accord"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/fr/17-cinta-vacia

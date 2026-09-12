@@ -1,0 +1,162 @@
+{
+ "en-US": [
+  "Yappy: Text to Speech Reader",
+  "Articles, PDFs & books, spoken",
+  "tts,read aloud,voice,reader,audiobook,pdf,epub,article,youtube,offline,private,dyslexia,accessible"
+ ],
+ "en-GB": [
+  "Yappy: Text to Speech Reader",
+  "Articles, PDFs & books, spoken",
+  "tts,read aloud,voice,reader,audiobook,pdf,epub,article,youtube,offline,private,dyslexia,accessible"
+ ],
+ "en-AU": [
+  "Yappy: Text to Speech Reader",
+  "Articles, PDFs & books, spoken",
+  "tts,read aloud,voice,reader,audiobook,pdf,epub,article,youtube,offline,private,dyslexia,accessible"
+ ],
+ "en-CA": [
+  "Yappy: Text to Speech Reader",
+  "Articles, PDFs & books, spoken",
+  "tts,read aloud,voice,reader,audiobook,pdf,epub,article,youtube,offline,private,dyslexia,accessible"
+ ],
+ "es-ES": [
+  "Yappy: lee en voz alta",
+  "Texto a voz local, sin nube",
+  "tts,texto a voz,leer,lector,voz,audiolibro,pdf,epub,artículos,youtube,dislexia,accesibilidad,offline"
+ ],
+ "es-MX": [
+  "Yappy: lee en voz alta",
+  "Texto a voz local, sin nube",
+  "tts,texto a voz,leer,lector,voz,audiolibro,pdf,epub,artículos,youtube,dislexia,accesibilidad,offline"
+ ],
+ "de-DE": [
+  "Yappy: Text vorlesen lassen",
+  "Lokal & privat, ohne Cloud",
+  "tts,sprachausgabe,vorleser,reader,hörbuch,pdf,epub,artikel,youtube,offline,legasthenie,barrierefrei"
+ ],
+ "fr-FR": [
+  "Yappy : lecture à voix haute",
+  "Synthèse vocale locale, privée",
+  "tts,lire,lecteur,texte,livre audio,pdf,epub,article,youtube,hors ligne,dyslexie,accessibilité"
+ ],
+ "fr-CA": [
+  "Yappy : lecture à voix haute",
+  "Synthèse vocale locale, privée",
+  "tts,lire,lecteur,texte,livre audio,pdf,epub,article,youtube,hors ligne,dyslexie,accessibilité"
+ ],
+ "it": [
+  "Yappy: legge ad alta voce",
+  "Sintesi vocale locale, privata",
+  "tts,leggi,lettore,testo,audiolibro,pdf,epub,articoli,youtube,offline,dislessia,accessibilità,lettura"
+ ],
+ "pt-PT": [
+  "Yappy: lê em voz alta",
+  "Texto em voz local, sem nuvem",
+  "tts,ler,leitor,audiolivro,pdf,epub,artigos,youtube,offline,dislexia,acessibilidade,privado,leitura"
+ ],
+ "pt-BR": [
+  "Yappy: lê em voz alta",
+  "Texto em voz local, sem nuvem",
+  "tts,ler,leitor,audiolivro,audiobook,pdf,epub,artigos,youtube,offline,dislexia,acessibilidade,leitura"
+ ],
+ "nl-NL": [
+  "Yappy: leest hardop voor",
+  "Lokaal en privé, zonder cloud",
+  "tts,tekst naar spraak,voorlezen,lezer,stem,luisterboek,pdf,epub,artikelen,youtube,offline,dyslexie"
+ ],
+ "pl": [
+  "Yappy: czyta na głos",
+  "Lokalny syntezator, bez chmury",
+  "tts,czytanie tekstu,czytnik,lektor,audiobook,pdf,epub,artykuły,youtube,offline,dysleksja,dostępność"
+ ],
+ "ro": [
+  "Yappy: citește cu voce tare",
+  "Local și privat, fără cloud",
+  "tts,text în vorbire,cititor,audiobook,pdf,epub,articole,youtube,offline,dislexie,accesibilitate"
+ ],
+ "sv": [
+  "Yappy: läser högt för dig",
+  "Lokalt och privat, utan moln",
+  "tts,text till tal,uppläsning,läsare,ljudbok,pdf,epub,artiklar,youtube,offline,dyslexi,tillgänglighet"
+ ],
+ "da": [
+  "Yappy: læser højt for dig",
+  "Lokalt og privat, uden cloud",
+  "tts,tekst til tale,oplæsning,stemme,lydbog,pdf,epub,artikler,youtube,offline,ordblind,tilgængelighed"
+ ],
+ "fi": [
+  "Yappy: lukee ääneen",
+  "Puhesynteesi ilman pilveä",
+  "tts,teksti puheeksi,lukija,äänikirja,pdf,epub,artikkelit,youtube,offline,lukihäiriö,saavutettavuus"
+ ],
+ "hr": [
+  "Yappy: čita naglas",
+  "Lokalno i privatno, bez oblaka",
+  "tts,tekst u govor,čitač,glas,audioknjiga,pdf,epub,članci,youtube,offline,disleksija,pristupačnost"
+ ],
+ "sk": [
+  "Yappy: číta nahlas",
+  "Lokálne a súkromne, bez cloudu",
+  "tts,text na reč,čítačka,hlas,audiokniha,pdf,epub,články,youtube,offline,dyslexia,prístupnosť,čítanie"
+ ],
+ "cs": [
+  "Yappy: čte nahlas",
+  "Lokálně a soukromě, bez cloudu",
+  "tts,text na řeč,čtečka,hlas,audiokniha,pdf,epub,články,youtube,offline,dyslexie,přístupnost,čtení"
+ ],
+ "hu": [
+  "Yappy: felolvassa a szöveget",
+  "Helyben, felhő és fiók nélkül",
+  "tts,szövegfelolvasó,olvasó,hang,hangoskönyv,pdf,epub,cikkek,youtube,offline,diszlexia,akadálymentes"
+ ],
+ "el": [
+  "Yappy: διαβάζει δυνατά",
+  "Τοπικά, ιδιωτικά, χωρίς cloud",
+  "tts,κείμενο σε ομιλία,ανάγνωση,φωνή,audiobook,pdf,epub,άρθρα,youtube,offline,δυσλεξία,προσβασιμότητα"
+ ],
+ "uk": [
+  "Yappy: читає вголос",
+  "Локально, приватно, без хмари",
+  "tts,читалка,голос,аудіокнига,pdf,epub,статті,youtube,офлайн,дислексія,доступність,озвучка,читання"
+ ],
+ "ru": [
+  "Yappy: читает вслух",
+  "Озвучка текста без облака",
+  "tts,синтез речи,читалка,чтение,голос,аудиокнига,pdf,epub,статьи,youtube,офлайн,дислексия,доступность"
+ ],
+ "tr": [
+  "Yappy: metni sesli okur",
+  "Cihazında, özel, bulutsuz",
+  "tts,seslendirme,okuyucu,okuma,kitap,pdf,epub,makale,youtube,çevrimdışı,disleksi,erişilebilirlik"
+ ],
+ "ar-SA": [
+  "Yappy: يقرأ لك بصوت عالٍ",
+  "محلي وخاص، بدون سحابة",
+  "tts,تحويل النص إلى كلام,قارئ,صوت,كتاب صوتي,pdf,epub,مقالات,يوتيوب,أوفلاين,عسر القراءة,إمكانية الوصول"
+ ],
+ "hi": [
+  "Yappy: ज़ोर से पढ़कर सुनाए",
+  "लोकल, प्राइवेट, बिना क्लाउड",
+  "tts,text to speech,read aloud,reader,audiobook,आवाज़,pdf,epub,लेख,youtube,ऑफलाइन,डिस्लेक्सिया"
+ ],
+ "id": [
+  "Yappy: membacakan teks untukmu",
+  "Lokal dan privat, tanpa cloud",
+  "tts,text to speech,pembaca,suara,buku audio,pdf,epub,artikel,youtube,offline,disleksia,aksesibilitas"
+ ],
+ "vi": [
+  "Yappy: đọc to cho bạn nghe",
+  "Chuyển văn bản thành giọng nói",
+  "tts,ebook,audio,sách,audiobook,pdf,epub,bài viết,youtube,offline,riêng tư,trợ năng,tiếng việt"
+ ],
+ "ko": [
+  "Yappy: 텍스트를 소리 내어 읽기",
+  "기기 안에서 비공개로, 클라우드 없이",
+  "tts,음성 변환,읽어주기,낭독,리더,오디오북,pdf,epub,기사,유튜브,오프라인,난독증,접근성,책 읽어주는,보이스,전자책"
+ ],
+ "ja": [
+  "Yappy: テキスト読み上げ",
+  "端末内で完結、クラウド不要",
+  "tts,朗読,リーダー,音声,音声合成,オーディオブック,pdf,epub,記事,youtube,オフライン,ディスレクシア,アクセシビリティ,電子書籍,読書"
+ ]
+}

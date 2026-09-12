@@ -33,6 +33,7 @@ import {
 } from "$lib/ipc";
 import { reader } from "$lib/readerStore.svelte";
 import { soltarLlegada } from "$lib/llegada.svelte";
+import { abrirPaywall, esErrorParlanchin } from "$lib/compras.svelte";
 
 // Load extracted/shared text into the immersive reader as a document (so it
 // shows with sections + maintains proper playback state / mini-player), then
@@ -270,6 +271,12 @@ async function handlePayload(payload: string): Promise<void> {
     try {
       await handleOne(trimmed);
     } catch (e) {
+      // La percha llena: el loro pide cuerda en vez de tragarse el papel.
+      if (esErrorParlanchin(e)) {
+        goto("/escuchar").catch(() => {});
+        abrirPaywall("percha");
+        continue;
+      }
       console.error("[shareIntake] failed:", e);
     }
   }

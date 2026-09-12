@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Hei, olen papukaijasi"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/fi/01-paseo-hola
+- tapOn:
+    text: "Valitse minulle ääni"
+- extendedWaitUntil:
+    visible:
+      text: "Kaikki tapahtuu puhelimessasi"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/fi/02-paseo-idiomas
+- tapOn:
+    text: "Jatka"
+- extendedWaitUntil:
+    visible:
+      text: "Valitse lintusi"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/fi/03-paseo-pajaro
+- tapOn:
+    text: "Otan James"
+- extendedWaitUntil:
+    visible:
+      text: "Mitä annat minulle\\?"
+    timeout: 10000
+- tapOn:
+    text: "Artikkelit"
+- tapOn:
+    text: "Kirjat"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fi/04-paseo-que
+- tapOn:
+    text: "Jatka"
+- extendedWaitUntil:
+    visible:
+      text: "Milloin kuuntelet minua\\?"
+    timeout: 10000
+- tapOn:
+    text: "Ruoanlaitossa"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fi/05-paseo-cuando
+- tapOn:
+    text: "Jatka"
+- extendedWaitUntil:
+    visible:
+      text: "Kuinka nopeasti\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fi/06-paseo-velocidad
+- tapOn:
+    text: "Jatka"
+- extendedWaitUntil:
+    visible:
+      text: "Kuinka paljon sinulla on luettavaa\\?"
+    timeout: 10000
+- tapOn:
+    text: "Kokonainen vuori"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fi/07-paseo-cuanto
+- tapOn:
+    text: "Jatka"
+- extendedWaitUntil:
+    visible:
+      text: "Jotain omaasi, tai tarina"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fi/08-paseo-escucha
+- tapOn:
+    text: "(?i)Myöhemmin"
+- extendedWaitUntil:
+    visible:
+      text: "Ruutu on painike"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Myöhemmin"
+- extendedWaitUntil:
+    visible:
+      text: "Jakaminen on kaikki kaikessa"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/fi/09-paseo-compartir
+- tapOn:
+    text: "(?i)Myöhemmin"
+- extendedWaitUntil:
+    visible:
+      text: "Ja otat sen mukaasi"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fi/10-paseo-exportar
+- tapOn:
+    text: "(?i)Myöhemmin"
+- extendedWaitUntil:
+    visible:
+      text: "Kiinnitä minut suosikkeihisi"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fi/11-paseo-favoritos
+- tapOn:
+    text: "Valmis"
+- extendedWaitUntil:
+    visible:
+      text: "Papukaijasi"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fi/12-paseo-resumen
+- tapOn:
+    text: "Jatka"
+- extendedWaitUntil:
+    visible:
+      text: "Kolme kerrallaan"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/fi/13-paseo-percha
+- tapOn:
+    text: "Jatka"
+- extendedWaitUntil:
+    visible:
+      text: "Valitse jousesi"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/fi/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Aloita kolmella orrella"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/fi/15-paseo-cuerda-pie
+- tapOn:
+    text: "Aloita kolmella orrella"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Selvä"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/fi/17-cinta-vacia

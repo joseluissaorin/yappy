@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "senza\ncloud",
+    "idiomas": "31\nlingue",
+    "compartir": "tocca\ncondividi",
+    "capitulos": "con\ncapitoli",
+    "ritmo": "al tuo\nritmo",
+    "hola": "ciao!",
+    "gratis": "gratis",
+    "offline": "offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Ogni testo, ad alta voce.",
+      "subtitle": "Condividi un articolo, un PDF o un libro, e un pappagallo te lo legge."
+    },
+    {
+      "slot": 2,
+      "title": "La voce segue il testo.",
+      "subtitle": "Ogni frase si illumina mentre suona. Tocca per mettere in pausa."
+    },
+    {
+      "slot": 3,
+      "title": "Dieci uccelli, 31 lingue.",
+      "subtitle": "Tutti poliglotti: cambiano lingua da soli, paragrafo dopo paragrafo."
+    },
+    {
+      "slot": 4,
+      "title": "Nulla esce dal tuo iPhone.",
+      "subtitle": "Niente cloud, niente account, niente tariffa a carattere. Funziona offline."
+    },
+    {
+      "slot": 5,
+      "title": "Da qualsiasi app.",
+      "subtitle": "Safari, File, YouTube, la posta: tocca Condividi e scegli Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Legge come una persona.",
+      "subtitle": "«1492» si dice «millequattrocentonovantadue», con le regole di ogni lingua."
+    },
+    {
+      "slot": 7,
+      "title": "Libri interi, in audio.",
+      "subtitle": "Con capitoli. Lo lasci la sera e la mattina è nella tua libreria."
+    },
+    {
+      "slot": 8,
+      "title": "Anche di notte.",
+      "subtitle": "Voce, velocità e tema, a tuo gusto, nel retrobottega."
+    },
+    {
+      "slot": 9,
+      "title": "Un pappagallo di mestiere.",
+      "subtitle": "Ti accompagna dal primo giorno con una passeggiata di tre minuti."
+    },
+    {
+      "slot": 10,
+      "title": "Carica il pappagallo.",
+      "subtitle": "Gratis con tre sul trespolo. Yappy Parlanchín: trespolo senza fondo, per sempre."
+    }
+  ]
+}

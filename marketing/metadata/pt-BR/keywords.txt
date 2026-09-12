@@ -1,0 +1,1 @@
+tts,narrador,artigo,dislexia,audiobook,audiolivro,text,speech,documento,notícia,estudo,ouvir

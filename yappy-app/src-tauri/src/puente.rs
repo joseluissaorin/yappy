@@ -128,6 +128,16 @@ pub struct Peticion {
     /// Reanudación: desde qué byte del .yappy terminado seguir (0 = entero).
     #[serde(default)]
     pub desde: u64,
+    /// Idioma del texto fijado por el encargo (None = detectar allí).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub idioma: Option<String>,
+    /// La SONDA: no es un trabajo, es «¿estás ahí?». El servidor contesta
+    /// {"tipo":"pong","nombre":…} y cierra. (Los servidores viejos, sin
+    /// este campo, lo ignoran y lo tratarían como trabajo: por eso la
+    /// sonda viaja ADEMÁS como `cancelar: "sonda"`, que cualquier versión
+    /// responde sin sintetizar nada.)
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub sonda: bool,
 }
 
 /// Trabajos cancelados a distancia: sintetizar_pack los consulta y
@@ -148,6 +158,7 @@ fn job_id_de(p: &Peticion) -> String {
         .bytes()
         .chain(p.texto.bytes())
         .chain(p.voz.clone().unwrap_or_default().bytes())
+        .chain(p.idioma.clone().unwrap_or_default().bytes())
     {
         h ^= b as u64;
         h = h.wrapping_mul(1099511628211);
@@ -282,14 +293,20 @@ pub fn sintetizar_pack(
         return Ok(pack);
     }
 
-    let guion = yappy_core::guion::construir_desde_texto(&peticion.texto, "en");
+    let guion = yappy_core::guion::construir_desde_texto(
+        &peticion.texto,
+        peticion.idioma.as_deref().unwrap_or("en"),
+    );
     let opts = yappy_core::engine::SynthesisOptions {
         voice: voz.clone(),
         speed: velocidad,
-        default_lang: guion.idioma_base.clone(),
+        default_lang: peticion
+            .idioma
+            .clone()
+            .unwrap_or_else(|| guion.idioma_base.clone()),
         total_steps: steps,
         seed: None,
-        detectar_idioma: true,
+        detectar_idioma: peticion.idioma.is_none(),
         pausa_entre_parrafos_s: 0.0,
     };
     let mut samples: Vec<f32> = Vec::new();
@@ -467,6 +484,16 @@ pub async fn atender_conexion(
         .await?;
         return Ok(());
     }
+    if peticion.sonda || peticion.cancelar.as_deref() == Some("sonda") {
+        enviar_json(
+            &mut tx,
+            &serde_json::json!({"tipo":"pong","nombre": nombre_maquina()}),
+        )
+        .await?;
+        tx.finish()?;
+        let _ = tokio::time::timeout(std::time::Duration::from_secs(5), conn.closed()).await;
+        return Ok(());
+    }
     if let Some(job) = &peticion.cancelar {
         cancelados().lock().unwrap().insert(job.clone());
         enviar_json(&mut tx, &serde_json::json!({"tipo":"cancelado"})).await?;
@@ -592,7 +619,12 @@ fn productor_de_app(app: AppHandle) -> Productor {
 
 /// Cancela un trabajo A DISTANCIA (best effort): reconstruye la petición
 /// para derivar su job_id y manda la orden por el puente.
-pub async fn cancelar_remoto(app: AppHandle, titulo: String, texto: String) -> Result<()> {
+pub async fn cancelar_remoto(
+    app: AppHandle,
+    titulo: String,
+    texto: String,
+    receta: RecetaRemota,
+) -> Result<()> {
     let cfg = leer_movil(&app);
     let (addr_json, token) = match (cfg.addr, cfg.token) {
         (Some(a), Some(t)) => (a, t),
@@ -602,7 +634,17 @@ pub async fn cancelar_remoto(app: AppHandle, titulo: String, texto: String) -> R
     let (voz, velocidad, steps) = {
         let estado = app.state::<Arc<crate::state::AppState>>();
         let s = estado.settings.lock().unwrap();
-        (s.voice.clone(), s.speed, s.quality.total_steps())
+        // La MISMA receta que el encargo, o el job_id no coincide y la
+        // cancelación no encuentra su trabajo.
+        (
+            receta
+                .voz
+                .clone()
+                .filter(|v| !v.is_empty())
+                .unwrap_or_else(|| s.voice.clone()),
+            receta.velocidad.unwrap_or(s.speed),
+            receta.steps.unwrap_or_else(|| s.quality.total_steps()),
+        )
     };
     let base = Peticion {
         token: token.clone(),
@@ -613,6 +655,11 @@ pub async fn cancelar_remoto(app: AppHandle, titulo: String, texto: String) -> R
         velocidad: Some(velocidad),
         steps: Some(steps),
         desde: 0,
+        idioma: receta
+            .idioma
+            .clone()
+            .filter(|l| !l.is_empty() && l != "auto"),
+        sonda: false,
     };
     let orden = Peticion {
         cancelar: Some(job_id_de(&base)),
@@ -746,25 +793,115 @@ async fn intento_convertir(
     Ok(total_bytes)
 }
 
-/// La conversión remota, expuesta para la imprenta.
-pub async fn convertir_publico(app: AppHandle, titulo: String, texto: String) -> Result<String> {
-    convertir(app, titulo, texto).await
+/// La receta de un encargo remoto: lo que el encargo pidió (voz, velocidad,
+/// pasos, idioma). Lo que venga vacío lo rellenan los ajustes del teléfono.
+#[derive(Debug, Clone, Default)]
+pub struct RecetaRemota {
+    pub voz: Option<String>,
+    pub velocidad: Option<f32>,
+    pub steps: Option<usize>,
+    pub idioma: Option<String>,
 }
 
-async fn convertir(app: AppHandle, titulo: String, texto: String) -> Result<String> {
-    let cfg = leer_movil(&app);
+/// La conversión remota, expuesta para la imprenta.
+pub async fn convertir_publico(
+    app: AppHandle,
+    titulo: String,
+    texto: String,
+    receta: RecetaRemota,
+) -> Result<String> {
+    convertir(app, titulo, texto, receta).await
+}
+
+/// La dirección y el token del ordenador emparejado (o el porqué de que no).
+fn destino_movil(app: &AppHandle) -> Result<(iroh::EndpointAddr, String)> {
+    let cfg = leer_movil(app);
     let (addr_json, token) = match (cfg.addr, cfg.token) {
         (Some(a), Some(t)) => (a, t),
         _ => return Err(anyhow!("no hay ningún ordenador emparejado")),
     };
     let addr: iroh::EndpointAddr =
         serde_json::from_str(&addr_json).context("dirección corrupta")?;
+    Ok((addr, token))
+}
+
+/// LA SONDA: conecta con el ordenador emparejado, se identifica con el
+/// token y espera el «pong». Devuelve el nombre del ordenador y los ms.
+pub async fn sondear(app: &AppHandle) -> Result<(String, u128)> {
+    let (addr, token) = destino_movil(app)?;
+    let endpoint = iroh::Endpoint::builder(presets::N0)
+        .bind()
+        .await
+        .map_err(|e| anyhow!("iroh bind: {e}"))?;
+    // El reloj arranca al llamar (el bind de iroh no es latencia al Mac).
+    let t0 = std::time::Instant::now();
+    let conn = tokio::time::timeout(
+        std::time::Duration::from_secs(12),
+        endpoint.connect(addr, ALPN),
+    )
+    .await
+    .map_err(|_| anyhow!("no llego al ordenador (sin respuesta); ¿está Yappy abierto allí?"))?
+    .map_err(|e| anyhow!("no llego al ordenador ({e}); ¿está Yappy abierto allí?"))?;
+    let (mut tx, mut rx) = conn.open_bi().await?;
+    let peticion = Peticion {
+        token,
+        cancelar: Some("sonda".into()),
+        titulo: String::new(),
+        texto: String::new(),
+        voz: None,
+        velocidad: None,
+        steps: None,
+        desde: 0,
+        idioma: None,
+        sonda: true,
+    };
+    tx.write_all(format!("{}\n", serde_json::to_string(&peticion)?).as_bytes())
+        .await?;
+    let linea = tokio::time::timeout(
+        std::time::Duration::from_secs(8),
+        leer_linea(&mut rx, 64 * 1024),
+    )
+    .await
+    .map_err(|_| anyhow!("el ordenador no contesta"))??;
+    let v: serde_json::Value = serde_json::from_str(&linea).context("respuesta ilegible")?;
+    let nombre = match v["tipo"].as_str().unwrap_or("") {
+        "pong" => v["nombre"].as_str().unwrap_or("ordenador").to_string(),
+        // Un servidor anterior a la sonda contesta «cancelado»: está ahí.
+        "cancelado" => leer_movil(app).nombre.unwrap_or_else(|| "ordenador".into()),
+        "error" => {
+            return Err(anyhow!(v["mensaje"]
+                .as_str()
+                .unwrap_or("el ordenador rechazó el token")
+                .to_string()))
+        }
+        otro => return Err(anyhow!("respuesta desconocida: {otro}")),
+    };
+    conn.close(0u32.into(), b"sonda");
+    Ok((nombre, t0.elapsed().as_millis()))
+}
+
+async fn convertir(
+    app: AppHandle,
+    titulo: String,
+    texto: String,
+    receta: RecetaRemota,
+) -> Result<String> {
+    let (addr, token) = destino_movil(&app)?;
 
     let (voz, velocidad, steps) = {
         let estado = app.state::<Arc<crate::state::AppState>>();
         let s = estado.settings.lock().unwrap();
-        // La CALIDAD del teléfono manda también en el render remoto.
-        (s.voice.clone(), s.speed, s.quality.total_steps())
+        // El encargo manda; lo que no fijó, lo ponen los ajustes del
+        // teléfono (la CALIDAD también viaja al render remoto).
+        (
+            receta
+                .voz
+                .clone()
+                .filter(|v| !v.is_empty())
+                .unwrap_or_else(|| s.voice.clone()),
+            receta.velocidad.unwrap_or(s.speed),
+            receta.steps.unwrap_or_else(|| s.quality.total_steps()),
+        )
     };
     let mut peticion = Peticion {
         token,
@@ -775,6 +912,11 @@ async fn convertir(app: AppHandle, titulo: String, texto: String) -> Result<Stri
         velocidad: Some(velocidad),
         steps: Some(steps),
         desde: 0,
+        idioma: receta
+            .idioma
+            .clone()
+            .filter(|l| !l.is_empty() && l != "auto"),
+        sonda: false,
     };
 
     // El destino y su .part (la reanudación vive en el .part).
@@ -1000,10 +1142,28 @@ pub async fn puente_convertir_cmd(
     titulo: String,
     texto: String,
 ) -> Result<String, String> {
-    convertir(app, titulo, texto).await.map_err(|e| {
-        tracing::warn!("puente_convertir: {e:#}");
-        e.to_string()
-    })
+    // El puente es cosa de parlanchines (solo muerde donde hay tienda).
+    if !crate::compras::es_pro() {
+        return Err("parlanchin".into());
+    }
+    convertir(app, titulo, texto, RecetaRemota::default())
+        .await
+        .map_err(|e| {
+            tracing::warn!("puente_convertir: {e:#}");
+            e.to_string()
+        })
+}
+
+/// La sonda desde la trastienda: ¿responde el ordenador emparejado?
+#[tauri::command]
+pub async fn puente_probar_cmd(app: AppHandle) -> Result<serde_json::Value, String> {
+    sondear(&app)
+        .await
+        .map(|(nombre, ms)| serde_json::json!({"nombre": nombre, "ms": ms}))
+        .map_err(|e| {
+            tracing::warn!("puente_probar: {e:#}");
+            e.to_string()
+        })
 }
 
 #[cfg(test)]
@@ -1139,6 +1299,8 @@ mod tests {
                 velocidad: None,
                 steps: None,
                 desde: 0,
+                idioma: None,
+                sonda: false,
             };
             let destino_mal = dir.join("mal.yappy");
             let err = cliente_de_prueba(addr.clone(), &mala, &destino_mal).await;
@@ -1154,6 +1316,8 @@ mod tests {
                 velocidad: None,
                 steps: None,
                 desde: 0,
+                idioma: None,
+                sonda: false,
             };
             let destino = dir.join("recibido.yappy");
             let (total, recibidos) = cliente_de_prueba(addr.clone(), &buena, &destino)
@@ -1216,6 +1380,8 @@ mod tests {
                 velocidad: Some(1.05),
                 steps: Some(4),
                 desde: 0,
+                idioma: None,
+                sonda: false,
             };
             let dir = std::env::temp_dir().join("yappy-puente-prueba-real");
             let _ = std::fs::create_dir_all(&dir);

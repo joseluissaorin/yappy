@@ -1,0 +1,164 @@
+appId: com.joseluissaorin.yappy
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      text: "Hej, jag är din papegoja"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/sv/01-paseo-hola
+- tapOn:
+    text: "Välj en röst åt mig"
+- extendedWaitUntil:
+    visible:
+      text: "Allt sker i din telefon"
+    timeout: 10000
+- tapOn:
+    text: "Français"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/sv/02-paseo-idiomas
+- tapOn:
+    text: "Fortsätt"
+- extendedWaitUntil:
+    visible:
+      text: "Välj din fågel"
+    timeout: 10000
+- tapOn:
+    text: "James"
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/sv/03-paseo-pajaro
+- tapOn:
+    text: "Jag tar James"
+- extendedWaitUntil:
+    visible:
+      text: "Vad ska du ge mig\\?"
+    timeout: 10000
+- tapOn:
+    text: "Artiklar"
+- tapOn:
+    text: "Böcker"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/sv/04-paseo-que
+- tapOn:
+    text: "Fortsätt"
+- extendedWaitUntil:
+    visible:
+      text: "När lyssnar du på mig\\?"
+    timeout: 10000
+- tapOn:
+    text: "När du lagar mat"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/sv/05-paseo-cuando
+- tapOn:
+    text: "Fortsätt"
+- extendedWaitUntil:
+    visible:
+      text: "Hur snabbt\\?"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/sv/06-paseo-velocidad
+- tapOn:
+    text: "Fortsätt"
+- extendedWaitUntil:
+    visible:
+      text: "Hur mycket har du att läsa\\?"
+    timeout: 10000
+- tapOn:
+    text: "Ett berg"
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/sv/07-paseo-cuanto
+- tapOn:
+    text: "Fortsätt"
+- extendedWaitUntil:
+    visible:
+      text: "Något av ditt eget, eller en berättelse"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/sv/08-paseo-escucha
+- tapOn:
+    text: "(?i)Senare"
+- extendedWaitUntil:
+    visible:
+      text: "Skärmen är knappen"
+    timeout: 10000
+- tapOn:
+    text: "(?i)Senare"
+- extendedWaitUntil:
+    visible:
+      text: "Att dela är allt"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2500
+- takeScreenshot: marketing/screenshots-ipad/sv/09-paseo-compartir
+- tapOn:
+    text: "(?i)Senare"
+- extendedWaitUntil:
+    visible:
+      text: "Och du tar det med dig"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/sv/10-paseo-exportar
+- tapOn:
+    text: "(?i)Senare"
+- extendedWaitUntil:
+    visible:
+      text: "Fäst mig bland dina favoriter"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/sv/11-paseo-favoritos
+- tapOn:
+    text: "Klart"
+- extendedWaitUntil:
+    visible:
+      text: "Din papegoja"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/sv/12-paseo-resumen
+- tapOn:
+    text: "Fortsätt"
+- extendedWaitUntil:
+    visible:
+      text: "Tre åt gången"
+    timeout: 10000
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: marketing/screenshots-ipad/sv/13-paseo-percha
+- tapOn:
+    text: "Fortsätt"
+- extendedWaitUntil:
+    visible:
+      text: "Välj din fjäder"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: marketing/screenshots-ipad/sv/14-paseo-cuerda
+- scrollUntilVisible:
+    element:
+      text: "Börja med tre på sittpinnen"
+    direction: DOWN
+    timeout: 15000
+- takeScreenshot: marketing/screenshots-ipad/sv/15-paseo-cuerda-pie
+- tapOn:
+    text: "Börja med tre på sittpinnen"
+- extendedWaitUntil:
+    visible:
+      text: "yappy"
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    text: "Okej"
+    optional: true
+- takeScreenshot: marketing/screenshots-ipad/sv/17-cinta-vacia
