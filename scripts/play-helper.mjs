@@ -131,6 +131,20 @@ async function ficha(raiz = "marketing", conImagenes = true) {
   console.log(JSON.stringify({ ok: true, locales, edit: fin.id }));
 }
 
+// Promociona un versionCode ya subido a otra pista (internal → alpha/beta/production).
+async function promover(versionCode, pista = "alpha") {
+  const tok = await token();
+  const edit = await api(tok, "/edits", { method: "POST", body: "{}" });
+  await api(tok, `/edits/${edit.id}/tracks/${pista}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      releases: [{ versionCodes: [String(versionCode)], status: "completed" }],
+    }),
+  });
+  const fin = await api(tok, `/edits/${edit.id}:commit`, { method: "POST", body: "{}" });
+  console.log(JSON.stringify({ ok: true, pista, versionCode, edit: fin.id }));
+}
+
 async function listado() {
   const tok = await token();
   const edit = await api(tok, "/edits", { method: "POST", body: "{}" });
@@ -148,8 +162,9 @@ try {
   else if (cmd === "upload") await upload(args[0], args[1]);
   else if (cmd === "ficha") await ficha(args[0], args[1] !== "--sin-imagenes");
   else if (cmd === "listado") await listado();
+  else if (cmd === "promote") await promover(args[0], args[1]);
   else {
-    console.error("uso: play-helper.mjs token|status|upload <fichero> [pista]|ficha [raiz] [--sin-imagenes]|listado");
+    console.error("uso: play-helper.mjs token|status|upload <fichero> [pista]|ficha [raiz] [--sin-imagenes]|listado|promote <versionCode> [pista]");
     process.exitCode = 2;
   }
 } catch (e) {
