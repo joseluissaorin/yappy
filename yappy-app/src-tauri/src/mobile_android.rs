@@ -12,8 +12,8 @@ use std::sync::Arc;
 use crate::state::AppState;
 
 fn ruta_compartidos() -> Option<std::path::PathBuf> {
-    // El paquete es fijo (tauri.conf identifier → com.yappy.app en Android).
-    let base = std::path::PathBuf::from("/data/data/com.yappy.app/files");
+    // El paquete de Android es el de Play (applicationId en build.gradle.kts).
+    let base = std::path::PathBuf::from("/data/data/com.joseluissaorin.yappy/files");
     base.exists().then(|| base.join("yappy-shared.txt"))
 }
 

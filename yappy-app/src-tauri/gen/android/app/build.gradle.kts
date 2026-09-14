@@ -18,7 +18,7 @@ android {
     namespace = "com.yappy.app"
     defaultConfig {
         manifestPlaceholders["usesCleartextTraffic"] = "false"
-        applicationId = "com.yappy.app"
+        applicationId = "com.joseluissaorin.yappy"
         minSdk = 24
         targetSdk = 36
         versionCode = tauriProperties.getProperty("tauri.android.versionCode", "1").toInt()

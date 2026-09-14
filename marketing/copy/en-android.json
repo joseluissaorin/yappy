@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "no\ncloud",
+    "idiomas": "31\nlanguages",
+    "compartir": "tap\nshare",
+    "capitulos": "with\nchapters",
+    "ritmo": "your\npace",
+    "hola": "hi!",
+    "gratis": "free",
+    "offline": "works offline",
+    "aso": "text to speech"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Any text, read aloud.",
+      "subtitle": "Share an article, a PDF or a book, and a parrot reads it to you."
+    },
+    {
+      "slot": 2,
+      "title": "The voice follows the text.",
+      "subtitle": "Each sentence lights up as it is spoken. Tap to pause."
+    },
+    {
+      "slot": 3,
+      "title": "Ten birds, 31 languages.",
+      "subtitle": "All of them polyglot: they switch language on their own, paragraph by paragraph."
+    },
+    {
+      "slot": 4,
+      "title": "Nothing leaves your phone.",
+      "subtitle": "No cloud, no account, no per-character fees. Works offline."
+    },
+    {
+      "slot": 5,
+      "title": "From any app.",
+      "subtitle": "Chrome, Files, YouTube, Mail: tap Share and choose Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Reads like a person.",
+      "subtitle": "“1492” is said “fourteen ninety-two”, with the rules of each language."
+    },
+    {
+      "slot": 7,
+      "title": "Whole books, as audiobooks.",
+      "subtitle": "With chapters. Leave it overnight and it is in your library by morning."
+    },
+    {
+      "slot": 8,
+      "title": "At night, too.",
+      "subtitle": "Voice, speed and theme, your way, in the back room."
+    },
+    {
+      "slot": 9,
+      "title": "A parrot with a trade.",
+      "subtitle": "It walks you through the first day in three minutes."
+    },
+    {
+      "slot": 10,
+      "title": "Wind up the parrot.",
+      "subtitle": "Free with three on the perch. Yappy Parlanchín: a bottomless perch, forever."
+    }
+  ]
+}

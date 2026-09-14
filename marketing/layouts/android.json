@@ -1,0 +1,301 @@
+{
+ "slot_size": [
+  1440,
+  2560
+ ],
+ "global": {
+  "paper": "#f7f2e7",
+  "grain_opacity": 0.05,
+  "title_color": "#2b2418",
+  "subtitle_color": "#82755a",
+  "title_size_px": 150,
+  "title_wrap_chars": 13,
+  "title_max_lines": 2,
+  "title_line_height": 0.98,
+  "title_letter_spacing": -2,
+  "title_max_w": 0.88,
+  "subtitle_size_px": 52,
+  "caption_y": 0.052,
+  "bezel_png": "assets/android/generic.png",
+  "bezel_dims": [
+   1470,
+   3000
+  ],
+  "screen_offset": {
+   "x": 75,
+   "y": 66,
+   "w": 1320,
+   "h": 2868
+  },
+  "screen_corner_radius_px": 220,
+  "device_shadow": 0.3
+ },
+ "groups": [
+  {
+   "type": "panorama",
+   "slots": [
+    1,
+    2
+   ],
+   "devices": [
+    {
+     "screen": "21-lector-a.png",
+     "x": 1.47,
+     "y": 0.24,
+     "scale": 0.76,
+     "rotate": 5
+    },
+    {
+     "screen": "20-cinta.png",
+     "x": 0.54,
+     "y": 0.22,
+     "scale": 0.8,
+     "rotate": -5
+    }
+   ],
+   "piezas": [
+    {
+     "type": "imagen",
+     "src": "assets/loro/loro-coral.png",
+     "x": 0.83,
+     "y": 0.97,
+     "width_px": 520,
+     "rotate": 6,
+     "flip": true
+    },
+    {
+     "type": "pegatina",
+     "shape": "sello",
+     "points": 14,
+     "copy_id": "sin_nube",
+     "color": "#2f4bc4",
+     "size_px": 400,
+     "font_size_px": 62,
+     "x": 1.88,
+     "y": 0.42,
+     "rotate": 9
+    },
+    {
+     "type": "pegatina",
+     "shape": "estrella",
+     "points": 8,
+     "copy_id": "idiomas",
+     "color": "#e8b41a",
+     "text_color": "#2b2418",
+     "size_px": 400,
+     "font_size_px": 58,
+     "x": 1.9,
+     "y": 0.72,
+     "rotate": -7
+    },
+    {
+     "type": "etiqueta",
+     "copy_id": "aso",
+     "x": 0.5,
+     "y": 0.245,
+     "font_size_px": 46,
+     "rotate": -2,
+     "color": "#fffdf7",
+     "bajo_titulo": true,
+     "hueco_px": 64
+    }
+   ]
+  },
+  {
+   "type": "standalone",
+   "slot": 3,
+   "device": {
+    "screen": "03-paseo-pajaro.png",
+    "x": 0.5,
+    "y": 0.215,
+    "scale": 0.78,
+    "rotate": 0
+   },
+   "piezas": [
+    {
+     "type": "pegatina",
+     "shape": "estrella",
+     "points": 8,
+     "copy_id": "idiomas",
+     "color": "#e8b41a",
+     "text_color": "#2b2418",
+     "size_px": 420,
+     "font_size_px": 60,
+     "x": 0.86,
+     "y": 0.84,
+     "rotate": 10
+    },
+    {
+     "type": "imagen",
+     "src": "assets/loro/loro-ultramar.png",
+     "x": 0.1,
+     "y": 0.9,
+     "width_px": 380,
+     "rotate": 6,
+     "flip": true
+    }
+   ]
+  },
+  {
+   "type": "standalone",
+   "slot": 4,
+   "device": {
+    "screen": "02-paseo-idiomas.png",
+    "x": 0.5,
+    "y": 0.215,
+    "scale": 0.78,
+    "rotate": 0
+   },
+   "piezas": [
+    {
+     "type": "pegatina",
+     "shape": "sello",
+     "points": 14,
+     "copy_id": "sin_nube",
+     "color": "#e0502a",
+     "size_px": 400,
+     "font_size_px": 66,
+     "x": 0.88,
+     "y": 0.5,
+     "rotate": 10
+    },
+    {
+     "type": "etiqueta",
+     "copy_id": "offline",
+     "x": 0.85,
+     "y": 0.87,
+     "font_size_px": 36,
+     "rotate": 8
+    }
+   ]
+  },
+  {
+   "type": "standalone",
+   "slot": 5,
+   "device": {
+    "screen": "16-boca.png",
+    "x": 0.5,
+    "y": 0.215,
+    "scale": 0.68,
+    "rotate": 0
+   },
+   "piezas": [
+    {
+     "type": "pegatina",
+     "shape": "banderin",
+     "copy_id": "compartir",
+     "color": "#2f4bc4",
+     "size_px": 420,
+     "font_size_px": 58,
+     "x": 0.88,
+     "y": 0.5,
+     "rotate": 8
+    },
+    {
+     "type": "imagen",
+     "src": "assets/loro/loro-coral.png",
+     "x": 0.1,
+     "y": 0.93,
+     "width_px": 380,
+     "rotate": -6
+    }
+   ]
+  },
+  {
+   "type": "standalone",
+   "slot": 6,
+   "device": {
+    "screen": "22-lector-b.png",
+    "x": 0.5,
+    "y": 0.215,
+    "scale": 0.78,
+    "rotate": 0
+   },
+   "piezas": [
+    {
+     "type": "glifo",
+     "text": "1492",
+     "color": "#e0502a",
+     "font_size_px": 280,
+     "x": 0.8,
+     "y": 0.9,
+     "rotate": -6,
+     "opacity": 0.95
+    }
+   ]
+  },
+  {
+   "type": "standalone",
+   "slot": 7,
+   "device": {
+    "screen": "10-paseo-exportar.png",
+    "x": 0.5,
+    "y": 0.215,
+    "scale": 0.78,
+    "rotate": 0
+   },
+   "piezas": [
+    {
+     "type": "pegatina",
+     "shape": "ovalo",
+     "copy_id": "capitulos",
+     "color": "#3d8b40",
+     "size_px": 460,
+     "font_size_px": 56,
+     "x": 0.86,
+     "y": 0.6,
+     "rotate": 7
+    }
+   ]
+  },
+  {
+   "type": "standalone",
+   "slot": 8,
+   "device": {
+    "screen": "26-trastienda-noche.png",
+    "x": 0.5,
+    "y": 0.215,
+    "scale": 0.78,
+    "rotate": 0
+   },
+   "piezas": [
+    {
+     "type": "pegatina",
+     "shape": "rombo",
+     "copy_id": "ritmo",
+     "color": "#e8b41a",
+     "text_color": "#2b2418",
+     "size_px": 420,
+     "font_size_px": 56,
+     "x": 0.13,
+     "y": 0.64,
+     "rotate": -8
+    }
+   ]
+  },
+  {
+   "type": "standalone",
+   "slot": 9,
+   "device": {
+    "screen": "01-paseo-hola.png",
+    "x": 0.5,
+    "y": 0.215,
+    "scale": 0.78,
+    "rotate": 0
+   },
+   "piezas": [
+    {
+     "type": "pegatina",
+     "shape": "corazon",
+     "copy_id": "hola",
+     "color": "#c8407a",
+     "size_px": 380,
+     "font_size_px": 58,
+     "x": 0.87,
+     "y": 0.6,
+     "rotate": 10
+    }
+   ]
+  }
+ ]
+}

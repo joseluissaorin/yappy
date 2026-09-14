@@ -1,0 +1,65 @@
+{
+  "stickers": {
+    "sin_nube": "sin\nnube",
+    "idiomas": "31\nidiomas",
+    "compartir": "toca\ncompartir",
+    "capitulos": "con\ncapítulos",
+    "ritmo": "a tu\nritmo",
+    "hola": "¡hola!",
+    "gratis": "gratis",
+    "offline": "sin conexión",
+    "aso": "texto a voz"
+  },
+  "slots": [
+    {
+      "slot": 1,
+      "title": "Cualquier texto, en voz alta.",
+      "subtitle": "Comparte un artículo, un PDF o un libro, y un loro te lo lee."
+    },
+    {
+      "slot": 2,
+      "title": "La voz sigue el texto.",
+      "subtitle": "Cada frase se ilumina mientras suena. Toca para pausar."
+    },
+    {
+      "slot": 3,
+      "title": "Diez pájaros, 31 idiomas.",
+      "subtitle": "Todos políglotas: cambian de lengua solos, párrafo a párrafo."
+    },
+    {
+      "slot": 4,
+      "title": "Nada sale de tu móvil.",
+      "subtitle": "Sin nube, sin cuenta, sin tarifa por carácter. Funciona sin conexión."
+    },
+    {
+      "slot": 5,
+      "title": "Desde cualquier app.",
+      "subtitle": "Chrome, Archivos, YouTube, el correo: toca compartir y elige Yappy."
+    },
+    {
+      "slot": 6,
+      "title": "Lee como una persona.",
+      "subtitle": "«1492» se dice «mil cuatrocientos noventa y dos», con las reglas de cada lengua."
+    },
+    {
+      "slot": 7,
+      "title": "Libros enteros, en audiolibro.",
+      "subtitle": "Con capítulos. Lo dejas por la noche y por la mañana está en tu biblioteca."
+    },
+    {
+      "slot": 8,
+      "title": "También de noche.",
+      "subtitle": "Voz, velocidad y tema, a tu gusto, en la trastienda."
+    },
+    {
+      "slot": 9,
+      "title": "Un loro con oficio.",
+      "subtitle": "Te acompaña desde el primer día con un paseo de tres minutos."
+    },
+    {
+      "slot": 10,
+      "title": "Dale cuerda al loro.",
+      "subtitle": "Gratis con tres en la percha. Yappy Parlanchín: percha sin fondo, para siempre."
+    }
+  ]
+}
