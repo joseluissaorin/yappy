@@ -18,10 +18,9 @@ Toca en cualquier sitio para pausar, desliza para saltar de párrafo, sube o baj
 LA IMPRENTA: LIBROS ENTEROS COMO AUDIOLIBROS
 Deja un libro renderizando al acostarte y al despertar tienes un audiolibro con capítulos en tu biblioteca. Con el puente, tu Mac o tu PC pueden convertirlo por ti y devolvértelo solo.
 
-GRATIS DE VERDAD, Y UN LORO CON CUERDA
-Yappy es código abierto (licencia MIT). El loro de prueba lleva tres documentos a la vez en su percha; quita uno y cabe otro, sin límite de tiempo. Si quieres una percha sin fondo, la imprenta de audiolibros y el puente con el ordenador, dale cuerda con Yappy Parlanchín: suscripción mensual o anual, o un único pago de por vida. Cancelas cuando quieras.
+GRATIS DE VERDAD
+Yappy es código abierto (licencia MIT). En Android todo está abierto: la percha sin fondo, la imprenta de audiolibros y el puente con el ordenador. Sin anuncios, sin cuenta y sin compras dentro de la app.
 
-Las suscripciones se renuevan solas al final de cada periodo salvo que las canceles en Google Play al menos 24 horas antes.
 Privacidad: https://yappy.joseluissaorin.com/privacidad
 
 Hecho con amor por José Luis Saorín. Un filólogo que quería escuchar lo que leía, y un niño de seis que quería jugar con el loro.

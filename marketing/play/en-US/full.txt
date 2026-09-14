@@ -18,10 +18,9 @@ Tap anywhere to pause, swipe to skip a paragraph, slide along the edge to change
 THE PRESS: WHOLE BOOKS AS AUDIOBOOKS
 Leave a book rendering when you go to bed and wake up with an audiobook with chapters in your library. With the bridge, your Mac or PC can convert it for you and send it back on its own.
 
-TRULY FREE, AND A WIND-UP PARROT
-Yappy is open source (MIT licence). The free parrot carries three documents at a time on its perch; remove one and another fits, with no time limit. If you want a bottomless perch, the audiobook press and the bridge to your computer, wind it up with Yappy Parlanchín: a monthly or yearly subscription, or a single lifetime purchase. Cancel whenever you like.
+TRULY FREE
+Yappy is open source (MIT licence). On Android everything is open: the bottomless perch, the audiobook press and the bridge to your computer. No ads, no account and no in-app purchases.
 
-Subscriptions renew automatically at the end of each period unless cancelled in Google Play at least 24 hours before.
 Privacy: https://yappy.joseluissaorin.com/en/privacy
 
 Made with love by José Luis Saorín. A philologist who wanted to listen to what he read, and a six-year-old who wanted to play with the parrot.
