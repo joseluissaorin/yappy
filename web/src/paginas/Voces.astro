@@ -1,6 +1,7 @@
 ---
 import Interior from "../layouts/Interior.astro";
 import Loro from "../components/Loro.svelte";
+import Pajaros from "../components/Pajaros.svelte";
 import Aparato from "../components/Aparato.astro";
 import { t, type Idioma } from "../i18n";
 import { rutaPagina, rutaIdioma, ALCANCE, type RutaPagina } from "../lib/rutas";
@@ -27,14 +28,12 @@ const mig = [{ nombre: t(lang, "nav.voces"), ruta: ruta.ruta }];
 >
   <section class="seccion" style="padding-top:0">
     <p class="susurro">{t(lang, "voces.elige")}</p>
-    <div class="rejilla rejilla-4" style="margin-top:1.4rem">
-      {VOCES.map((v, i) => (
-        <div class:list={["hoja", `torcido-${(i % 5) + 1}`]} style="text-align:center">
-          <Loro size={62} tinta={v.tinta} etiqueta={v.nombre} />
-          <h3 style="margin:0.6rem 0 0;font-size:1.1rem">{v.nombre}</h3>
-        </div>
-      ))}
-    </div>
+    <Pajaros
+      client:visible
+      voces={VOCES.map((v) => ({ nombre: v.nombre, tinta: v.tinta }))}
+      idioma={lang === "es" ? "es" : "en"}
+      etiqueta={t(lang, "voces.elige")}
+    />
   </section>
 
   <section class="seccion">

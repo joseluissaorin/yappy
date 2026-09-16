@@ -1,0 +1,979 @@
+{
+  "meta": {
+    "codigo": "pl",
+    "nombre": "Polski",
+    "dir": "ltr",
+    "ogLocale": "pl_PL",
+    "hreflang": "pl",
+    "og_alt": "„Dowolny tekst, na głos” wielkimi literami na kremowym papierze, a obok koralowa papuga"
+  },
+  "slugs": {
+    "uso": "jak-uzywac",
+    "guionizador": "generator-skryptow",
+    "descargas": "pobierz",
+    "precios": "cennik",
+    "voces": "glosy",
+    "preguntas": "faq",
+    "privacidad": "prywatnosc",
+    "accesibilidad": "dostepnosc",
+    "cuentos": "bajki",
+    "blog": "blog",
+    "convertir": "konwertuj",
+    "idiomas": "jezyki",
+    "alternativas": "alternatywy",
+    "formato_pdf": "pdf-na-audio",
+    "formato_epub": "epub-na-audiobook",
+    "formato_word": "word-na-glos",
+    "formato_articulos": "artykuly-na-audio",
+    "formato_videos": "wideo-na-audio",
+    "formato_notas": "notatki-glosowe-na-tekst"
+  },
+  "comunes": {
+    "saltar": "Przejdź do treści",
+    "marca_aria": "Yappy, strona główna",
+    "idioma": "Język",
+    "menu": "Otwórz menu",
+    "secciones": "Sekcje",
+    "descargar": "Pobierz",
+    "descargar_gratis": "Pobierz za darmo",
+    "en_app_store": "Pobierz w App Store",
+    "escuchar_muestra": "Odsłuchaj próbkę",
+    "probar": "Wypróbuj teraz",
+    "leer_mas": "Czytaj dalej",
+    "volver": "Wróć",
+    "inicio": "Strona główna",
+    "minutos": "{n} min czytania",
+    "publicado": "Opublikowano",
+    "actualizado": "zaktualizowano",
+    "por": "autor:",
+    "gratis": "za darmo",
+    "si": "Tak",
+    "no": "Nie",
+    "parcial": "Częściowo",
+    "sin_datos": "brak danych"
+  },
+  "nav": {
+    "uso": "Jak używać",
+    "guionizador": "Scenarzysta",
+    "voces": "Głosy",
+    "precios": "Ceny",
+    "descargas": "Do pobrania",
+    "preguntas": "Pytania",
+    "privacidad": "Prywatność",
+    "accesibilidad": "Dostępność",
+    "cuentos": "Bajki",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "Produkt",
+    "leer": "Do czytania",
+    "casa": "O nas",
+    "codigo": "Kod",
+    "licencia": "Licencja MIT",
+    "novedades": "Nowości",
+    "firma": "Yappy · ręczna robota na Teneryfie autorstwa <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · kod otwarty (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Text to speech: lektor PDF, EPUB i artykułów",
+    "description": "Zamienia dowolny tekst w naturalny głos: PDF, EPUB, Word, artykuły i filmy, w 31 językach. Wszystko dzieje się na twoim telefonie lub komputerze: bez chmury, bez konta i bez opłaty za znak. Za darmo i z otwartym kodem.",
+    "susurro": "text to speech · 31 języków · bez chmury · kod otwarty",
+    "titular_1": "Dowolny",
+    "titular_texto": "tekst",
+    "titular_2": ", na ",
+    "titular_voz": "głos",
+    "titular_3": ".",
+    "entradilla": "Udostępnij artykuł, PDF, EPUB, Word albo film, a papuga przeczyta ci go naturalnym głosem, kiedy gotujesz, spacerujesz albo zamykasz oczy. Model działa w całości na twoim urządzeniu: nic z niego nie wychodzi. Nigdy.",
+    "nota_acciones": "za darmo · bez konta · bez opłaty za znak",
+    "pegatina_sin_nube": "bez\nchmury",
+    "pegatina_idiomas": "31\njęzyków",
+    "pegatina_gratis": "za darmo",
+    "pegatina_offline": "bez internetu",
+    "demo_susurro": "dotknij i posłuchaj: to powiedział ten sam silnik, który masz w kieszeni",
+    "demo_titulo": "Tak to brzmi.",
+    "demo_nota": "To, co podkreślone, odczytuje scenarzysta: „1492” powie jako „tysiąc czterysta dziewięćdziesiąt dwa”, a „XV wiek” jako „piętnasty wiek”, zgodnie z zasadami każdego języka.",
+    "momentos_susurro": "kiedy się przydaje",
+    "momentos_titulo": "Trzy chwile, jeden gest.",
+    "momentos": [
+      {
+        "titulo": "Kiedy gotujesz",
+        "texto": "Udostępniasz artykuł, opierasz telefon, a głos czyta dalej, między garnkami."
+      },
+      {
+        "titulo": "Na spacerze",
+        "texto": "Wczorajsza książka, zamieniona w audiobook z rozdziałami, idzie z tobą pod górę."
+      },
+      {
+        "titulo": "Noc pracuje",
+        "texto": "Zostawiasz renderowanie na noc; budzisz się, a audiobook jest już w kieszeni."
+      }
+    ],
+    "porque_susurro": "dlaczego istnieje",
+    "porque_titulo": "Bez chmury, bez kont, bez liczenia znaków.",
+    "porque_entradilla": "Inne aplikacje typu tekst na mowę wysyłają to, co czytasz, na serwer i żądają zapłaty za znaki albo za godziny słuchania. Yappy nie ma serwera do utrzymania, więc nie ma czego od ciebie ściągać za słuchanie.",
+    "porque": [
+      {
+        "titulo": "Nic nie opuszcza twojego urządzenia",
+        "texto": "Mowa powstaje na twoim telefonie albo komputerze, dzięki otwartemu modelowi. Działa też bez internetu. Na zawsze."
+      },
+      {
+        "titulo": "31 prawdziwych języków",
+        "texto": "Dziesięć głosów, każdy poliglota. Tekst z cytatami w obcej mowie przełącza się sam, akapit po akapicie."
+      },
+      {
+        "titulo": "Żadnych godzin, żadnych znaków",
+        "texto": "Słuchasz, co chcesz, i tak długo, jak chcesz. Nie ma licznika, bo nie ma rachunku do dzielenia."
+      },
+      {
+        "titulo": "Otwarty kod (MIT)",
+        "texto": "Silnik, skrypter, aplikacja i ta strona są opublikowane. Możesz je przeczytać, skompilować i sprawdzić."
+      }
+    ],
+    "formatos_susurro": "udostępnianie to drzwi wejściowe",
+    "formatos_titulo": "Cokolwiek czytasz.",
+    "formatos_entradilla": "Z Safari, poczty, Plików albo dowolnej aplikacji: stuknij „Udostępnij” i wybierz Yappy. Strona czyści się sama — znikają menu, banery i stopki — a zostaje proza ze swoimi nagłówkami i rytmem.",
+    "guion_susurro": "tego nikt inny nie pokazuje",
+    "guion_titulo": "Czyta jak człowiek, nie jak maszyna.",
+    "guion_entradilla": "Czytanie na głos to nie literowanie: to interpretacja. „1492” czyta się „tysiąc czterysta dziewięćdziesiąt dwa”; „Henryk VIII” czyta się „Henryk ósmy”, ale „Louis XIV” po francusku brzmi „Louis quatorze”; „EL CID” nie jest liczbą rzymską; FBI czyta się litera po literze, a NASA nie. Zanim zsyntetyzuje choć jedną sylabę, Yappy zamienia tekst w <strong>skrypt lektorski</strong>: partyturę tego, co głos naprawdę powie.",
+    "guion_pruebalo": "Wypróbuj tutaj: to ten sam Rust, co w aplikacji, skompilowany do przeglądarki.",
+    "guion_boton": "Skryptuj",
+    "guion_ejemplo": "XIX wiek skończył się w 1900 roku. Ludwik XIV panował 72 lata, wydał 3,50 € na lody, a FBI nigdy się nie dowiedziało.",
+    "guion_marcador": "Wpisz coś z liczbami, skrótami, datami albo stuleciami…",
+    "guion_espera": "Tutaj pojawi się skrypt, a przekształcone fragmenty będą podkreślone.",
+    "guion_fallo": "Nie udało się wczytać skryptera w tej przeglądarce. Aplikacja ma go w środku.",
+    "guion_mas": "Jak działa skrypter",
+    "capturas_susurro": "tak to wygląda, bez retuszu",
+    "capturas_titulo": "Zrzuty ekranu prawdziwej aplikacji.",
+    "capturas_entradilla": "Żadnych malowanych makiet: to Yappy w działaniu, z prawdziwymi tekstami na drążku i lektorem z gotowym skryptem.",
+    "precio_susurro": "pieniądze, wprost",
+    "precio_titulo": "Naprawdę za darmo, plus nakręcana papuga.",
+    "precio_entradilla": "Papuga na próbę mieści na drążku trzy dokumenty naraz i czyta je bez limitu czasu. Zdejmujesz jeden, wchodzi następny. Jeśli chcesz drążek bez dna, drukarnię audiobooków i most do komputera, nakręcasz ją.",
+    "cierre_titulo": "Papuga w kieszeni.",
+    "cierre_texto": "Za darmo, bez konta, bez rejestracji. Instalujesz, udostępniasz tekst i już gra."
+  },
+  "uso": {
+    "title": "Jak korzystać z Yappy: udostępnianie, słuchanie i niewiele więcej",
+    "description": "Kompletny przewodnik: udostępnianie z iPhone'a, skróty klawiszowe na komputerze, most przez QR między telefonem a Makiem, audiobooki z rozdziałami, Siri, widżety i ustawienia.",
+    "h1": "Udostępniasz — i już gra.",
+    "entradilla": "Yappy zna jeden gest: udostępnij. Reszta to szczegóły, które są już dopięte.",
+    "pasos": [
+      {
+        "titulo": "Udostępnij",
+        "texto": "Z dowolnej aplikacji: Safari, poczta, Pliki, notatka głosowa, PDF, który przyszedł na czacie. Dotykasz „Udostępnij”, wybierasz Yappy i aplikacja otwiera się sama."
+      },
+      {
+        "titulo": "Wybierz głos",
+        "texto": "Dziesięć głosów, każdy poliglota. Jeśli tekst jest w innym języku, Yappy sam go rozpoznaje i czyta według zasad tego języka, a nie z pożyczonym akcentem."
+      },
+      {
+        "titulo": "Słuchaj",
+        "texto": "Blokujesz ekran i chowasz telefon do kieszeni. Głos czyta dalej: na ekranie blokady jest okładka, tytuł i sterowanie, a słuchawki dowodzą."
+      },
+      {
+        "titulo": "Zapisz",
+        "texto": "Jeśli chcesz zabrać to na jutrzejszy spacer, drukarnia wyda ci audiobook .m4b z rozdziałami, a otworzy go każdy odtwarzacz."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "Na iPhonie i iPadzie",
+        "texto": "Cała instrukcja to jedno słowo: udostępnij. W dowolnej aplikacji dotykasz „Udostępnij” i wybierasz Yappy: przyjmuje linki, zwykły tekst, PDF, EPUB, Word, ODT i audio. Yappy otwiera się sam, od razu. Nic nie gotuje się w panelu udostępniania, bo iOS ucina rozszerzenia przy 120 MB; Yappy kopiuje udostępnioną treść i przeskakuje do aplikacji, gdzie limitów nie ma. Ten przeskok to zamysł, nie obejście. <strong>Wszystko dzieje się na urządzeniu</strong>: jedyną siecią, której dotyka Yappy, jest wizyta na udostępnionym adresie, wykonywana z twojego własnego telefonu.",
+        "puntos": [
+          "Kolejka robi swoje, kiedy patrzysz: artykuł się czyści, wideo przynosi transkrypcję, PDF układa się na strony. Jeśli dalej trzymasz aplikację przed oczami, czytanie rusza samo, jak tylko wszystko jest gotowe.",
+          "Karaoke podświetla to, co słychać, zdanie po zdaniu. Dotkniesz w dowolnym miejscu, żeby zrobić pauzę, przesuniesz, żeby przeskoczyć akapit, a prędkość zmienisz palcem przy brzegu ekranu.",
+          "Blokujesz ekran, a lektura trwa. AirPods pauzują i wznawiają; system traktuje Yappy jak każdy inny odtwarzacz.",
+          "Na wieszaku mieszczą się naraz trzy dokumenty: zdejmiesz jeden, wejdzie inny. Bajki na koszt domu nie zajmują miejsca."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Na Macu, Windowsie i Linuksie",
+        "texto": "Jeden skrót i gra to, na co patrzysz: zaznaczenie, strona w przeglądarce albo aktywny dokument. Wszystkie trzy skróty zmienisz w Ustawieniach, a działają nawet wtedy, gdy aplikacja siedzi schowana w zasobniku. Poza skrótem wersja na komputer ma jeszcze to, czego nie zmieści jedna dłoń.",
+        "puntos": [
+          "<strong>Biblioteka.</strong> Wszystko, co otworzysz albo udostępnisz, zostaje na półce razem z postępem. Wracasz dokładnie tam, gdzie skończyła się lektura — co do akapitu.",
+          "<strong>Edytor akapitów.</strong> Każdy akapit może mieć własny głos, własną prędkość i własną pauzę. Do dialogów, cytatów albo dokumentów w dwóch językach.",
+          "<strong>Transkrypcja lokalna.</strong> Przeciągasz notatkę głosową albo nagranie, a lokalne ucho zamienia je w czytelny tekst. Nic nie wychodzi z komputera.",
+          "<strong>Eksport audiobooka.</strong> Każdy dokument wychodzi jako prawdziwy .m4b z rozdziałami wyciągniętymi z tekstu, po których można skakać. Także jako .wav albo .mp3.",
+          "<strong>PDF z oczami.</strong> Zeskanowane PDF-y przechodzą najpierw przez lokalny OCR, a potem są czytane. Cyfrowe od urodzenia idą wprost, strona po stronie.",
+          "<strong>Motywy.</strong> W dzień kremowy papier, w nocy jasny atrament na ciemnym tle, albo niech zdecyduje system.",
+          "<strong>Bez smyczy.</strong> Na komputerze wszystko jest otwarte: drukarnia, żerdź bez dna i most — masz je od razu."
+        ]
+      },
+      {
+        "id": "most",
+        "titulo": "Most: komputer renderuje, telefon słucha",
+        "texto": "Zsyntetyzowanie całej książki chwilę trwa. Most przekazuje ciężką robotę komputerowi i oddaje gotowy audiobook prosto do kieszeni — przez bezpośrednie połączenie między twoimi urządzeniami, szyfrowane end-to-end, bez niczyjego serwera pośrodku.",
+        "puntos": [
+          "Na komputerze, w Preferencjach, „Most”: Yappy pokazuje kod QR z zaszyfrowanym adresem twojej maszyny i kluczem zaproszenia.",
+          "Celujesz aparatem iPhone'a w kod QR i urządzenia są sparowane. Klucz zapisuje się na miejscu; z komputera możesz go w każdej chwili unieważnić.",
+          "W telefonie, „Konwertuj na komputerze”: wybierasz dokument, komputer syntetyzuje go we własnym tempie, a .m4b pojawia się w bibliotece telefonu — z rozdziałami. Noc pracuje na twój poranny spacer.",
+          "Most jest szyfrowany protokołem QUIC, tym od <a href=\"https://iroh.computer\">iroh</a>. Jeśli dwa urządzenia potrzebują przekaźnika, żeby się odnaleźć, przekaźnik widzi tylko zaszyfrowany ruch, którego nie potrafi odczytać."
+        ]
+      },
+      {
+        "id": "audiobooki",
+        "titulo": "Audiobooki: .m4b z prawdziwymi rozdziałami",
+        "texto": "Yappy nie eksportuje „jednego długiego audio”: eksportuje audiobooki .m4b jak ze sklepu, z rozdziałami z prawdziwych nagłówków dokumentu, z okładką i wznowieniem. Odtwarzasz je w Yappy, z jego biblioteką i postępem, albo w dowolnym odtwarzaczu audiobooków, którego już używasz. A scenarzysta daje im oddech: pauza po nagłówkach, rytm listy na listach.",
+        "puntos": [
+          "W telefonie zamawiasz je z biblioteki, rozdział po rozdziale: wybierasz, które wydrukować i w jakim głosie.",
+          "Papuga drukuje dalej, nawet gdy zamkniesz aplikację albo zablokujesz telefon.",
+          "Z biblioteki wyślesz go do Plików, do Książek, dokąd chcesz: plik jest twój.",
+          "Drukarnia jest częścią Yappy Parlanchín na iPhone'a i iPada. Na komputerze jest po prostu otwarta."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, Skróty i przycisk czynności",
+        "texto": "„Siri, przeczytaj mój schowek w Yappy.” Aplikacja ma prawdziwe App Intents: same pojawiają się w aplikacji Skróty, reagują na Siri i dają się podpiąć pod przycisk czynności iPhone'a. Niczego nie trzeba składać.",
+        "puntos": [
+          "<strong>Przeczytaj mój schowek.</strong> Kopiujesz gdziekolwiek, prosisz Siri — i gra.",
+          "<strong>Wznów czytanie.</strong> Wraca do tego, co grało ostatnio, dokładnie tam, gdzie skończyło.",
+          "<strong>Posłuchaj linku.</strong> Przyjmuje adres jako parametr: idealna puenta twoich własnych skrótów.",
+          "Dla ręcznych automatyzacji rozpoznawany jest też schemat <code>yappy://</code>: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> i <code>yappy://pair?d=…</code>.",
+          "Jest też widżet na ekran początkowy z tym, co grało ostatnio — do wznowienia jednym dotknięciem."
+        ]
+      },
+      {
+        "id": "ustawienia",
+        "titulo": "Ustawienia: mało pokręteł, wszystkie prawdziwe",
+        "texto": "Yappy nie ma panelu ze stu przełącznikami. Ma tylko te kilka, które naprawdę zmieniają brzmienie.",
+        "puntos": [
+          "<strong>Głos.</strong> Dziesięć głosów, wszystkie wielojęzyczne: ten sam głos czyta po hiszpańsku, po angielsku albo po japońsku, nie zmieniając barwy.",
+          "<strong>Tempo.</strong> Od 0,5× do 2×. Głos powstaje od razu w tym tempie, a nie jest przyspieszany po fakcie: ton się nie zniekształca.",
+          "<strong>Pauzy.</strong> Ile oddechu między akapitami. Nagłówki i listy dostają swój rytm już od scenarzysty.",
+          "<strong>Język.</strong> Automatyczne wykrywanie dla całego dokumentu i akapit po akapicie albo ustawienie na sztywno. Cytaty w innym języku przełączają się same.",
+          "<strong>Anonimowe statystyki.</strong> Na telefonie są domyślnie włączone; wyłączysz je tutaj, w zapleczu. Co dokładnie jest wysyłane, punkt po punkcie, opisuje polityka prywatności."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Na Androidzie",
+        "texto": "Ten sam gest: udostępniasz link, tekst albo dokument i trafia do tej samej kolejki — z automatycznym wyodrębnianiem artykułu, karaoke i głosem, wszystko w samym telefonie. Wersja na Androida jest najmłodsza w rodzinie i wciąż brakuje jej trzech rzeczy, które iPhone już ma: sterowania z ekranu blokady, filmów i odtwarzacza audiobooków .m4b. I coś ważniejszego: <strong>na razie nie jest opublikowana</strong>. Konto deweloperskie Google wciąż jest w trakcie weryfikacji, a daty nie podajemy, bo jej nie znamy. Gdy wersja wyjdzie, ogłosimy to tutaj i w repozytorium. Za to na Androidzie nie będzie żadnych haczyków. Wszystko jest otwarte."
+      }
+    ],
+    "atajo": "Skrót",
+    "atajo_leer": "Czytaj to, na co patrzysz",
+    "atajo_portapapeles": "Czytaj schowek",
+    "atajo_pausar": "Wstrzymaj",
+    "cierre": "To cały podręcznik."
+  },
+  "guionizador": {
+    "title": "Scenarzysta Yappy: od pisanego do mówionego",
+    "description": "Jak Yappy zamienia „1492”, „XV wiek”, „3,50 €” czy „FBI” na słowa mówione według zasad danej mowy, w 31 językach. Z demem na żywo: ten sam Rust, co w aplikacji, skompilowany do WebAssembly.",
+    "h1": "Od pisanego do mówionego.",
+    "oficios_titulo": "Dwanaście rzemiosł za jednym zamachem.",
+    "oficios": [
+      {
+        "titulo": "Daty",
+        "texto": "„24/5/1533” mówi się w całości, z szykiem i rodzajem gramatycznym właściwymi dla każdego języka."
+      },
+      {
+        "titulo": "Godziny",
+        "texto": "„14:05” mówi się tak, jak powie człowiek, a nie tak, jak odczyta zegar."
+      },
+      {
+        "titulo": "Waluty",
+        "texto": "„3,50 €” mówi się „trzy euro pięćdziesiąt”, z właściwą liczbą mnogą."
+      },
+      {
+        "titulo": "Procenty",
+        "texto": "„7%” czyta się „siedem procent”, a „0,5%” nie zamienia się w „zero przecinek pięć”."
+      },
+      {
+        "titulo": "Jednostki",
+        "texto": "„230 °C” czyta się „dwieście trzydzieści stopni Celsjusza”."
+      },
+      {
+        "titulo": "Liczebniki porządkowe",
+        "texto": "„3.” czyta się „trzecia” — z rodzajem gramatycznym i odmianą, gdzie trzeba."
+      },
+      {
+        "titulo": "Rzymskie z głową",
+        "texto": "„Wiek XX” to liczebnik główny, „Henryk VIII” — porządkowy, a „EL CID” to wcale nie liczba."
+      },
+      {
+        "titulo": "Akronimy według fonotaktyki",
+        "texto": "FBI czyta się litera po literze; NASA — jak jedno słowo. Regułę dyktuje brzmienie, nie lista."
+      },
+      {
+        "titulo": "Skróty",
+        "texto": "„itd.”, „str.”, „XIX w.”: każdy język ma swoją tabelę."
+      },
+      {
+        "titulo": "Duże liczby",
+        "texto": "Gramatyki RBNF z Unicode CLDR — rodzaj i deklinacja w zestawie."
+      },
+      {
+        "titulo": "31 języków",
+        "texto": "Te same reguły, z gramatyką każdego języka. Bez ręcznie pisanych list."
+      },
+      {
+        "titulo": "Rytm",
+        "texto": "Nagłówki biorą oddech po wypowiedzeniu; listy wybijają swój takt. Pauzy należą do scenariusza, nie do przypadku."
+      }
+    ],
+    "cierre": "Scenariusz to połowa opowieści; drugiej połowy słucha się.",
+    "faq": [
+      {
+        "q": "Czym są gramatyki RBNF?",
+        "a": "RBNF to skrótowiec od <em>Rule-Based Number Format</em>: reguły, którymi Unicode CLDR opisuje, jak w danym języku czyta się liczbę na głos. To nie tabela na tysiąc słów, tylko gramatyka: dlatego wie, że po hiszpańsku będzie „doscientas páginas”, a nie „doscientos páginas”, że rosyjskie liczebniki się odmieniają, a francuski dolicza do dziewięćdziesięciu dwudziestkami. Yappy interpretuje je w czystym Ruście, bez ręcznie pisanych list."
+      },
+      {
+        "q": "Po co skrypter? Czy głos sam sobie nie poradzi?",
+        "a": "Nie, i to celowo. Model głosu Yappy pracuje na poziomie znaków: wymawia dokładnie to, co dostaje na piśmie. To go czyni szybkim i lekkim, ale znaczy też, że gdy dostanie „1492”, spróbuje przeczytać je litera po literze. W takim modelu normalizacja <em>jest</em> wymową. Skrypter to element, który zamienia każdą liczbę, każdy skrót i każdy symbol w słowa, jakie wypowiedziałby człowiek."
+      },
+      {
+        "q": "W ilu językach to działa?",
+        "a": "W 31 językach, które zna głos — każdy z własnymi regułami: kolejność dat, sposób łączenia walut, liczebniki porządkowe, skróty i liczby rzymskie. „Wiek XV” po hiszpańsku to „siglo quince”, po angielsku „fifteenth century”; „Louis XIV” to „Louis quatorze”, nie „Louis fourteenth”. Te same dwanaście zadań, trzydzieści jedna gramatyka."
+      },
+      {
+        "q": "Dlaczego karaoke zawsze trafia dokładnie w słowo?",
+        "a": "Bo skrypt to nie tylko przerobiony tekst: przechowuje mapę między tym, co napisane, a tym, co powiedziane. Gdy głos mówi „tysiąc czterysta dziewięćdziesiąt dwa”, skrypt wie, że te cztery słowa pochodzą z czterech cyfr „1492”, więc podkreślenie kładzie się dokładnie na właściwych słowach i ani drgnie. To różnica między podświetleniem tekstu a zgadywaniem."
+      },
+      {
+        "q": "Jakieś słowo wymawia się źle. Czy mogę je poprawić?",
+        "a": "Nie ma jeszcze słownika wymowy dla użytkownika. Model czyta znaki, więc najszybsza droga: wpisz w edytorze słowo tak, jak brzmi, i odsłuchaj je jeszcze raz. A jeśli zawodzi ogólny wzorzec (skrót, skrótowiec, jednostka), napisz o tym w <a href=\"https://github.com/joseluissaorin/yappy/issues\">zgłoszeniach na GitHubie</a>: tabele generatora skryptu rosną właśnie o takie przypadki."
+      },
+      {
+        "q": "Czy generator skryptu na tej stronie to ten sam, co w aplikacji?",
+        "a": "Ten sam kod, skompilowany do WebAssembly, żeby działał w przeglądarce. To, co tu napiszesz, nie opuszcza twojej karty. A ponieważ cały projekt jest otwarty, możesz przeczytać zasady jedną po drugiej w <a href=\"https://github.com/joseluissaorin/yappy\">repozytorium</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Pobierz Yappy: iPhone, iPad, Mac, Windows i Linux",
+    "description": "Yappy jest darmowy i o otwartym kodzie. W App Store na iPhone'a i iPada; wersję na komputer skompilujesz z kodu albo pobierzesz z GitHuba. Wymagania i rozmiar modelu głosu.",
+    "h1": "Darmowy, otwarty i twój.",
+    "entradilla": "Żadnej rejestracji, żadnego adresu e-mail, żadnej wersji próbnej, która wygasa. Pobierasz i tyle.",
+    "modelo_nota": "Za pierwszym razem Yappy pobiera model głosu ({peso}). Na iPhonie dołącza do instalacji; na komputerze pobiera się przy pierwszym otwarciu aplikacji. Potem internet nie jest już potrzebny.",
+    "android_titulo": "Android",
+    "android_texto": "Aplikacja jest skompilowana i działa, ale jeszcze nie została opublikowana: konto deweloperskie Google wciąż czeka na weryfikację. Gdy wyjdzie, ogłosimy to tutaj i w repozytorium.",
+    "escritorio_aviso": "Pliki binarne na komputery publikujemy na GitHubie. Jeśli wersja, którą tam znajdziesz, jest starsza niż ta na iPhone'a, to najnowsza jeszcze nie została wgrana: kod za to jest aktualny i skompilujesz go poleceniem <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone i iPad",
+        "texto": "W App Store, za darmo i bez konta. Głosy pobierają się razem z aplikacją, więc wystarczy ją otworzyć, udostępnić jej tekst i już czyta. To najbardziej kompletna wersja: audiobooki, Siri, widżet, mostek i sterowanie na ekranie blokady.",
+        "requisitos": "iOS lub iPadOS 17 albo nowszy · model głosu zajmuje ok. 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Pobierz w App Store"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon i Intel, w notaryzowanym .dmg. Z trzema globalnymi skrótami, edytorem akapitowym, OCR-em zeskanowanych PDF-ów i eksportem audiobooków. Tu nie ma haczyka: wszystko jest otwarte.",
+        "requisitos": "macOS 12 lub nowszy · model głosu zajmuje ok. 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Zobacz wydania na GitHubie"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "Instalator .exe lub .msi dla x64, z tymi samymi skrótami i tymi samymi funkcjami co wersja na Maca. Każdy laptop z ostatnich lat syntetyzuje szybciej, niż trwa odsłuch.",
+        "requisitos": "Windows 10 lub nowszy, x64 · model głosu, ok. 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Zobacz wydania na GitHubie"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage i .deb dla x64. Globalne skróty zależą od środowiska graficznego; jeśli twoje są już zajęte, w Preferencjach ustawisz inne.",
+        "requisitos": "x64 · model głosu, ok. 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Zobacz wydania na GitHubie"
+      },
+      {
+        "nombre": "Z kodu źródłowego",
+        "texto": "Cały projekt jest publiczny: aplikacja na komputery i telefony (Tauri, Rust i Svelte), silnik syntezy, skrypter z wbudowanymi gramatykami CLDR i ta strona. Z zainstalowanym Rustem i Node polecenie <code>cargo tauri build</code> zbuduje twoją własną kopię. Jeśli opublikowane binarki zostają w tyle za wersją na iPhone'a, to najszybsza droga: kod jest zawsze aktualny.",
+        "requisitos": "Rust i Node · pełne instrukcje w README",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Zobacz kod na GitHubie"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Ceny Yappy: darmowe na zawsze, bez opłaty za znak",
+    "description": "Yappy jest darmowe i bez limitu słuchania: trzy dokumenty naraz na półce. Yappy Parlanchín dodaje półkę bez dna, drukarnię audiobooków i most, od 3,99 € miesięcznie albo 59,99 € jednorazowo.",
+    "h1": "Pieniądze, wprost.",
+    "entradilla": "Wysłuchiwanie tego, co się czyta, to kwestia dostępności, a dostępność nie powinna prosić o kartę. Dlatego ta ważna część jest darmowa i bez licznika.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "na zawsze",
+    "gratis_puntos": [
+      "Słuchanie bez limitu minut ani znaków",
+      "31 języków i dziesięć głosów",
+      "PDF, EPUB, Word, artykuły, filmy i notatki głosowe",
+      "Trzy dokumenty naraz na półce: zdejmiesz jeden, wejdzie następny",
+      "Bez konta, bez maila, bez reklam",
+      "Otwarty kod na licencji MIT"
+    ],
+    "gratis_no": [
+      "Bez drukarni audiobooków",
+      "Bez mostu z komputerem"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "miesięcznie",
+    "cuerda_periodo_anio": "rocznie",
+    "cuerda_periodo_vida": "jednorazowo",
+    "cuerda_puntos": [
+      "Wszystko, co powyżej",
+      "Wieszak bez dna: tyle dokumentów, ile chcesz",
+      "Drukarnia: całe książki jako audiobooki z rozdziałami",
+      "Most: twój komputer sam go przerabia i sam ci odsyła",
+      "Anulujesz, kiedy chcesz"
+    ],
+    "cuerda_nota": "Bez okresu próbnego, i to celowo: wieszak na trzy dokumenty <em>jest</em> próbą – nie wygasa i później niczego nie doliczy. Ceny podane dla Hiszpanii; w twoim sklepie pojawią się w twojej walucie.",
+    "cuerda_donde": "Korbkę zakręca się w samej aplikacji, w zapleczu.",
+    "solo_ios": "Na komputerze i Androidzie wszystko jest otwarte: korbka istnieje tylko na iPhonie i iPadzie.",
+    "comparacion_titulo": "Ile biorą inni.",
+    "comparacion_entradilla": "Aplikacje głosowe w chmurze płacą za serwery za każdym razem, gdy naciskasz play, więc rozliczają cię godzinami albo znakami. Yappy syntetyzuje mowę na twoim urządzeniu: koszt odsłuchu wynosi zero, więc nie ma czego brać.",
+    "comparacion_nota": "Publiczne ceny, sprawdzone we wrześniu 2026 r. Zmieniają się często: zweryfikuj je na każdej stronie, zanim się zdecydujesz.",
+    "faq": [
+      {
+        "q": "Dlaczego to darmowe?",
+        "a": "Bo nie ma serwerów do opłacenia. Mowa powstaje na twoim urządzeniu, więc słuchanie nikogo nic nie kosztuje i nie ma rachunku do podziału. Aplikacje głosowe w chmurze płacą za maszynę przy każdym naciśnięciu play, dlatego rozliczają cię za znaki albo godziny. Yappy nie może cię obciążać za coś, co go nie kosztuje."
+      },
+      {
+        "q": "Co się stanie, jeśli nigdy nie zapłacę?",
+        "a": "Nic. Yappy działa i będzie działał, z dziesięcioma głosami, 31 językami i wszystkimi formatami – bez reklam, bez konta i bez licznika minut. Jedyna różnica: na iPhonie i iPadzie wieszak mieści trzy dokumenty naraz. Zdejmij jeden, wejdzie następny. Na komputerze nawet tego nie ma."
+      },
+      {
+        "q": "Czy jest darmowy okres próbny?",
+        "a": "Nie, i to jest decyzja, nie przeoczenie. Wieszak na trzy dokumenty <em>jest</em> próbą: nie wygasa, nie prosi o kartę i ósmego dnia nie zaczyna niczego pobierać. Nikt nie powinien budzić się z obciążeniem, którego nie pamięta, że zaakceptował."
+      },
+      {
+        "q": "Mogę anulować, kiedy chcę?",
+        "a": "Tak, z poziomu konta Apple, jak każda inna subskrypcja. Odnowią się same na koniec każdego okresu, chyba że anulujesz je co najmniej 24 godziny wcześniej. Zakup dożywotni nigdy się nie odnawia: płacisz raz i tyle. A jeśli anulujesz, nie tracisz nic z tego, co darmowe: wracasz na grzędę na trzy."
+      },
+      {
+        "q": "Dlaczego na komputerze i na Androidzie nic się nie płaci?",
+        "a": "Bo mechanizm nakręcania zamontowano tylko w iPhonie i iPadzie. Na komputerze — i w wersji na Androida, kiedy się pojawi — drukarnia, grzęda bez dna i most są otwarte od razu. To nie jest oferta premierowa: po prostu nie ma tam nic, za co brać pieniądze."
+      }
+    ]
+  },
+  "voces": {
+    "title": "Głosy Yappy: dziesięć wielojęzycznych ptaków w 31 językach",
+    "description": "Dziesięć naturalnych głosów, które mówią we wszystkich 31 językach bez zmiany barwy. Posłuchaj próbki każdego i wybierz swój: wybrany głos zabarwia całą aplikację.",
+    "h1": "Dziesięć ptaków, trzydzieści jeden języków.",
+    "entradilla": "Każdy głos to poliglota: ten sam głos czyta po hiszpańsku, angielsku albo japońsku bez zmiany barwy. A tekst z cytatem w innym języku sam zmienia język, akapit po akapicie.",
+    "elige": "Dotknij ptaka, a powie ci, jak brzmi.",
+    "idiomas_titulo": "Języki, którymi mówi.",
+    "idiomas_entradilla": "Trzydzieści jeden, każdy z własnym scenarzystą: to nie ten sam głos czytający z akcentem — każdy język trzyma się własnych reguł."
+  },
+  "preguntas": {
+    "title": "Pytania o Yappy: prywatność, języki, ceny i licencje",
+    "description": "Odpowiedzi wprost: co jest darmowe, co sięga do sieci, jakich modeli używa Yappy, jakie formaty przyjmuje i co robić, gdy coś nie działa.",
+    "h1": "Pytania, które przychodzą.",
+    "entradilla": "Odpowiedzi wprost, bez owijania w bawełnę.",
+    "grupos": [
+      {
+        "susurro": "pieniądze i wolność",
+        "titulo": "Za darmo. Serio.",
+        "lista": [
+          {
+            "q": "Czy to naprawdę za darmo?",
+            "a": "Tak. Kod Yappy jest otwarty, na licencji MIT. Możliwość odsłuchania tego, co się czyta, to kwestia dostępności, a narzędzia dostępności nie powinny prosić o kartę. Na komputerze nie ma wersji płatnej ani reklam. Na iPhonie papuga próbna trzyma na swojej grzędzie trzy dokumenty naraz, bez limitu czasu; jeśli chcesz grzędę bez dna, drukarnię audiobooków i most do komputera, wszystko nakręca Yappy Parlanchín — w subskrypcji albo za jednorazową opłatę dożywotnią. Tak czy inaczej: bez konta i bez reklam."
+          },
+          {
+            "q": "Gdzie jest haczyk? Jak to się finansuje?",
+            "a": "Nie ma haczyka: nie ma serwerów do opłacenia. Synteza działa na twoim urządzeniu, więc Yappy nie ma kosztu na użytkownika. To osobisty projekt autora, opublikowany, bo już istniał i jeszcze komuś by się przydał."
+          },
+          {
+            "q": "Czy jest darmowy okres próbny?",
+            "a": "Nie, i to celowo. Grzęda na trzy dokumenty jest próbą: nie wygasa po siedmiu dniach ani nie zmienia się wtedy w opłatę. Jeśli Yappy ci się przyda, sam się o tym przekonasz — nikt nie musi ci stawiać zegarka pod nosem."
+          },
+          {
+            "q": "Czy mogę publikować wygenerowane audio, w podcaście albo w filmie?",
+            "a": "Kod Yappy jest na licencji MIT i nie stawia ci żadnych warunków. Model głosu, Supertonic 3, ma własną licencję: otwartą licencję typu OpenRAIL-M, z klauzulami użycia. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Przejrzyj ją na stronie modelu</a> przed użyciem komercyjnym: ta część nie zależy od Yappy i nie możemy obiecywać niczego w jej imieniu."
+          }
+        ]
+      },
+      {
+        "susurro": "twoje teksty nie podróżują",
+        "titulo": "Prywatność, z imienia i nazwiska",
+        "lista": [
+          {
+            "q": "Czy moje teksty trafiają na jakiś serwer?",
+            "a": "Nie. Synteza, transkrypcja i wyciąganie artykułów dzieją się na twoim urządzeniu. To, co udostępniasz Yappy, nigdzie nie wychodzi: nie ma kont, nie ma kopii, a serwer Yappy, na którym mogłyby się zapisywać, po prostu nie istnieje. Z sieci korzystają tylko cztery konkretne rzeczy — wszystkie są opisane w polityce prywatności."
+          },
+          {
+            "q": "Czy Yappy zbiera statystyki użytkowania?",
+            "a": "Tak, zbiera, i nie ma co owijać w bawełnę. Aplikacja na telefon wysyła anonimowe statystyki użytkowania: fabrycznie są włączone, a wyłączysz je w zakamarkach ustawień. Przez sieć idzie nazwa zdarzenia z zamkniętej listy (że włączono aplikację, który krok pierwszego oprowadzania jest na ekranie, którego planu się dotyka, czy czytanie dobiegło końca), losowy identyfikator instalacji, język i wersja. Nigdy twojego imienia, adresu e-mail, czytanego tekstu, tytułu dokumentu ani linku. I żadnego identyfikatora reklamowego. Nie trafiają ani do Google, ani do Firebase, ani do żadnej firmy analitycznej: lądują u samego autora — w Workerze i bazie danych D1 na Cloudflare. Na komputerze nie ma statystyk żadnej maści."
+          },
+          {
+            "q": "A most między telefonem a komputerem?",
+            "a": "To bezpośrednie połączenie między twoimi dwoma urządzeniami, szyfrowane od końca do końca QUIC-em i prowadzone protokołem <a href=\"https://iroh.computer\">iroh</a>. Parowanie: celujesz aparatem telefonu w kod QR, który pokazuje komputer. Powstały klucz możesz w każdej chwili unieważnić właśnie tam. Między nimi nie stoi żaden serwer Yappy, bo żaden serwer Yappy nie istnieje."
+          },
+          {
+            "q": "Czy działa bez internetu?",
+            "a": "Tak, na zawsze. Po pierwszym pobraniu modelu — ok. 200 MB na telefonie, ok. 398 MB na komputerze — Yappy działa w trybie samolotowym: wklejasz tekst, otwierasz dokumenty, syntetyzujesz, eksportujesz. Sieć jest potrzebna tylko do dzielenia się nowymi adresami — z oczywistych powodów. Nie ma też synchronizacji z chmurą: twoja biblioteka mieszka na twoim urządzeniu, a most to najbliższy odpowiednik przekazania czegoś z jednej maszyny na drugą."
+          }
+        ]
+      },
+      {
+        "susurro": "to, co brzmi",
+        "titulo": "Głos i języki",
+        "lista": [
+          {
+            "q": "Na jakim modelu głosu to działa?",
+            "a": "Supertonic 3 — otwarty model od Supertone, ok. 99 mln parametrów. Mieści się w 398 MB na komputerze i 200 MB na telefonie, a syntetyzuje szybciej niż w czasie rzeczywistym na każdym laptopie z ostatnich lat. Pracuje na poziomie znaków: dlatego istnieje skryptor, który zamienia liczby, skrótowce i symbole na słowa, zanim głos je zobaczy."
+          },
+          {
+            "q": "W jakich językach mówi?",
+            "a": "Niemiecki, arabski, bułgarski, czeski, koreański, chorwacki, duński, słowacki, słoweński, hiszpański, estoński, fiński, francuski, grecki, hindi, węgierski, indonezyjski, angielski, włoski, japoński, łotewski, litewski, niderlandzki, polski, portugalski, rumuński, rosyjski, szwedzki, turecki, ukraiński i wietnamski. Trzydzieści jeden. A te dziesięć głosów jest wielojęzycznych: ten sam głos czyta je wszystkie, nie zmieniając barwy."
+          },
+          {
+            "q": "Co z dokumentem, który miesza języki?",
+            "a": "Yappy rozpoznaje język dokumentu, a potem, akapit po akapicie, język każdego fragmentu: angielski cytat w polskim eseju zostanie przeczytany po angielsku, tym samym głosem, a ty nie ruszysz palcem. Gdy rozpoznawanie się pomyli, język ustawisz ręcznie."
+          },
+          {
+            "q": "Czym się różni od VoiceOver albo funkcji „Czytaj ekran”?",
+            "a": "Czytniki systemowe czytają ekran takim, jaki jest: systemową prozodią i bez pamięci. Yappy najpierw przygotowuje tekst (czyści artykuł, zamienia liczby i skrótowce na słowa, stawia pauzy), potem czyta go naturalnym głosem, pamięta, gdzie skończyłeś, eksportuje audiobooki i gra dalej przy zablokowanym ekranie. To narzędzia-krewniacy, każdy z innym fachem, i mogą działać naraz, nie przeszkadzając sobie. Yappy nie zastępuje czytnika ekranu — i nie próbuje."
+          }
+        ]
+      },
+      {
+        "susurro": "to, co wchodzi",
+        "titulo": "Dokumenty",
+        "lista": [
+          {
+            "q": "Jakie formaty przyjmuje?",
+            "a": "Artykuły z sieci (strona czyści się sama), filmy na podstawie opublikowanej transkrypcji, PDF, EPUB, Word, ODT, RTF, Markdown, zwykły tekst, .pptx, .xlsx, .csv i notatki głosowe. Na telefonie wszystko przez arkusz udostępniania; na komputerze dodatkowo przez przeciągnięcie albo skróty klawiszowe. A jeśli na komputerze jest zainstalowany pandoc, lista rośnie o LaTeX, reStructuredText, Org i kilka dalszych."
+          },
+          {
+            "q": "A zeskanowane PDF-y, bez tekstu w środku?",
+            "a": "Na komputerze przechodzą najpierw przez lokalny OCR, zanim zostaną przeczytane, i nawet wtedy nic nie opuszcza twojego komputera. Na iPhonie — jeszcze nie: jeśli PDF to zdjęcie kartki, telefon nie znajdzie tekstu do przeczytania. Krzywy albo rozmazany skan da tyle, ile da każdy OCR, ale przyzwoity zostanie przeczytany od deski do deski."
+          },
+          {
+            "q": "Czy odczyta książki kupione w sklepie?",
+            "a": "Tylko te, które da się otworzyć. EPUB bez zabezpieczeń czyta się w całości, razem z rozdziałami. Książek z DRM ze sklepu nie da się przeczytać — ani tutaj, ani nigdzie indziej: ta kłódka nie należy do Yappy, a udawać, że mamy klucz, nie będziemy."
+          },
+          {
+            "q": "Jak usunąć coś z biblioteki?",
+            "a": "Prosto z biblioteki: każdy dokument ma swoją opcję „zapomnij”, a razem z nim znika też jego dźwięk. Wyeksportowane pliki (.m4b, .mp3, .wav) są twoje i zostają tam, gdzie je zapisano; usuwanie i przenoszenie to już sprawa Findera albo Plików."
+          }
+        ]
+      },
+      {
+        "susurro": "gdy coś się psuje",
+        "titulo": "Awarie i pomoc.",
+        "lista": [
+          {
+            "q": "Dlaczego pierwsza synteza trwa kilka sekund dłużej?",
+            "a": "Za pierwszym razem model ładuje się do pamięci. Potem jest już rozgrzany i kolejne zdania powstają od ręki. Jeśli aplikacja na komputerze jest świeżo zainstalowana, do pierwszego czekania dochodzi jeszcze pobranie modelu głosu."
+          },
+          {
+            "q": "Słowo wymawia się źle. Czy da się go czemuś nauczyć?",
+            "a": "Nie ma słownika wymowy edytowanego przez użytkownika, więc najszybsza droga to zapisać w edytorze słowo tak, jak brzmi: model czyta znaki i posłucha cię. Jeśli to ogólna zasada (skrót, skrótowiec, jednostka), napisz o tym w <a href=\"https://github.com/joseluissaorin/yappy/issues\">zgłoszeniach na GitHubie</a>: tabele fonetyzatora rosną o takie przypadki."
+          },
+          {
+            "q": "Film udostępniony, a on milczy.",
+            "a": "Yappy korzysta z opublikowanej transkrypcji filmu, nie transkrybuje jego dźwięku. Jeśli film nie ma transkrypcji, nie ma czego czytać. A jeśli film jest twój i masz go w pliku, udostępnij plik: wtedy transkrybuje go lokalne ucho."
+          },
+          {
+            "q": "Trafił się błąd. Gdzie go zgłosić?",
+            "a": "W <a href=\"https://github.com/joseluissaorin/yappy/issues\">zgłoszeniach na GitHubie</a> albo na adres <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Z tekstem, na którym występuje błąd — jeśli możesz go udostępnić — i z informacją o systemie naprawa przychodzi szybciej."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Prywatność Yappy: twoje teksty nie ruszają się z miejsca",
+    "description": "Co wychodzi z twojego urządzenia, a co nie — czarno na białym: synteza, transkrypcja i wyciąganie artykułów dzieją się w środku; z siecią stykają się tylko cztery przypadki, i wszystkie je wypisujemy.",
+    "h1": "Twoje teksty nie ruszają się z miejsca.",
+    "actualizado": "Ostatnia aktualizacja: {fecha}. Administrator danych: José Luis Saorín Ferrer, Teneryfa (Hiszpania).",
+    "bloques": [
+      {
+        "titulo": "O co tu chodzi",
+        "texto": "To jest polityka prywatności Yappy: aplikacji na iPhone, iPad, Mac, Windows i Linux, z jej widżetami i rozszerzeniami. Jest krótka, bo niewiele się tu dzieje. Yappy nie ma kont, nie prosi o imię ani adres e-mail, a wszystko, co dostaje do przeczytania, zostaje na twoim urządzeniu. Z siecią stykają się za to cztery konkretne sprawy — i oto wszystkie cztery, po kolei."
+      },
+      {
+        "titulo": "Żadnego konta, żadnego imienia, żadnych tekstów",
+        "texto": "Yappy nie ma rejestracji ani logowania. Nie zbiera twojego imienia, adresu e-mail, kontaktów, lokalizacji ani żadnego identyfikatora reklamowego. Artykuły, PDF, EPUB, dokumenty, notatki głosowe i teksty, którymi dzielisz się z aplikacją, zamieniają się w głos <strong>na twoim urządzeniu</strong>: synteza, transkrypcja i czyszczenie stron dzieją się lokalnie i nic nie idzie na żaden serwer — ani nasz, ani cudzy. Nie ma też synchronizacji z chmurą: twoja biblioteka, postępy i audiobooki żyją na twoim urządzeniu i znikają, jeśli odinstalujesz aplikację."
+      },
+      {
+        "titulo": "Co sięga do sieci (1): pobieranie głosów",
+        "texto": "Za pierwszym razem Yappy pobiera model głosu (około 200 MB na telefonie, około 398 MB na komputerze) z <code>modelos.yappy.joseluissaorin.com</code>, magazynu R2 od Cloudflare. Jak przy każdym pobieraniu, serwer widzi twój adres IP, dopóki trwa żądanie. Nie prowadzimy rejestru, który by cię identyfikował. Po tym pobraniu synteza działa w trybie samolotowym na zawsze."
+      },
+      {
+        "titulo": "Co sięga do sieci (2): linki, które udostępniasz",
+        "texto": "Gdy udostępniasz link lub film, twoje urządzenie odwiedza ten adres, żeby pobrać tekst lub transkrypcję — dokładnie tak, jak zrobiłaby to przeglądarka. Odwiedzin dokonuje twoje urządzenie, a nie serwer Yappy, a odwiedzana strona dostaje to, co dostałaby od przeglądarki: twój adres IP i typ urządzenia. Historia nie zapisuje się nigdzie poza twoim urządzeniem."
+      },
+      {
+        "titulo": "O sieci (3): anonimowe statystyki",
+        "texto": "Trzeba to powiedzieć wprost: <strong>analityka istnieje</strong>, tylko w aplikacji na telefon i jest domyślnie włączona. Wyłączysz ją kiedy chcesz, w zakładce „Anonimowe statystyki”. Wysyłana jest nazwa zdarzenia z zamkniętej listy (że aplikacja się uruchomiła, który krok wprowadzenia widać na ekranie, który plan otwarto, czy czytanie dobiegło końca), losowy identyfikator instalacji, język aplikacji i jej wersja. <strong>Nigdy</strong> twoje imię, twój e-mail, tekst, który czytasz, tytuł dokumentu, link ani identyfikator reklamowy. Nic z tego nie idzie do Google Analytics, Firebase ani żadnej firmy od analityki: dane trafiają do workera i bazy danych D1 w Cloudflare należących do samego autora i służą temu, żeby wiedzieć, których części aplikacji się używa, a które są zbędne. Na komputerze nie ma statystyk żadnego rodzaju."
+      },
+      {
+        "titulo": "O sieci (4): zakupy",
+        "texto": "Subskrypcjami i dożywotnim zakupem Yappy Parlanchín zarządza Apple przez App Store i istnieją one tylko na iPhonie i iPadzie. Żeby sprawdzić, czy twoja subskrypcja jest aktywna, aplikacja korzysta z <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, menedżera subskrypcji, który dostaje anonimowy identyfikator instalacji i paragon od Apple; nie dostaje twojego imienia ani twojego e-maila. Apple opisuje własne dane w <a href=\"https://www.apple.com/legal/privacy/\">swojej polityce</a>."
+      },
+      {
+        "titulo": "Most: z iPhone'a na komputer i z powrotem",
+        "texto": "Jeśli sparujesz Yappy z Makiem albo PC, dokumenty, które wyślesz do konwersji, jadą bezpośrednim połączeniem szyfrowanym end-to-end między twoimi dwoma urządzeniami, dzięki bibliotece <a href=\"https://iroh.computer\">iroh</a> działającej na QUIC. Żeby się odnaleźć, urządzenia mogą wesprzeć się serwerami przekaźnikowymi, które widzą tylko szyfrowany ruch i nie potrafią go odczytać. Yappy nie ma serwerów pośredniczących, które cokolwiek przechowują, bo nie ma serwerów."
+      },
+      {
+        "titulo": "Nieletni i uprawnienia",
+        "texto": "Yappy nie jest skierowana do osób poniżej 13 lat i nie zbiera danych osobowych od nikogo, niezależnie od wieku. Uprawnienia, o które prosi system, służą tylko jednej czynności i tylko w tej chwili: schowek przy wklejaniu, aparat przy skanowaniu kodu QR mostu, mikrofon na komputerze do dyktowania. Żadne nie działa w tle."
+      },
+      {
+        "titulo": "Twoje prawa i do kogo pisać",
+        "texto": "Nie przechowujemy danych osobowych, więc na naszych serwerach nie ma nic do wyeksportowania ani usunięcia: wszystko, co Yappy o tobie wie, mieszka na twoim urządzeniu i znika po odinstalowaniu aplikacji. Jeśli chcesz, żebyśmy przestali dostawać nawet anonimowe statystyki, wyłączysz je w samej aplikacji. W razie pytań pisz na <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> albo otwórz wątek na <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHubie</a>. Kod jest otwarty, na licencji MIT: wszystko, co napisano wyżej, można sprawdzić, czytając go."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy na dysleksję, ADHD i słabe widzenie: słuchaj tego, czego nie da się przeczytać",
+    "description": "Narzędzie do czytania na głos (text to speech), które nie wymaga konta, nie każe płacić za godziny i działa bez internetu. Na dysleksję, ADHD, zmęczenie oczu, słabe widzenie i dla każdego, kto po prostu lepiej czyta uszami.",
+    "h1": "Czytać uszami.",
+    "entradilla": "Możliwość wysłuchania tego, co się czyta, to kwestia dostępności, a narzędzia dostępnościowe nie powinny prosić o kartę. Yappy o kartę nie prosi, nie prowadzi licznika minut i działa w samolocie.",
+    "voiceover_titulo": "Yappy nie zastępuje VoiceOver",
+    "voiceover_texto": "To spokrewnione narzędzia, każde z innym fachem. Czytnik ekranu opowiada interfejs, żeby dało się nim sterować; Yappy czyta treść, żeby dało się jej słuchać dla przyjemności. Używa się ich jednocześnie, nie wchodząc sobie w drogę.",
+    "casos": [
+      {
+        "titulo": "Dysleksja",
+        "texto": "Rozszyfrowywanie litera po literze męczy, a zmęczenie zjada rozumienie na długo, zanim skończy się czas. Słuchanie tekstu, który podświetla się na ekranie, pozwala czytać i słyszeć naraz: wzrok śledzi wiersz, a ucho robi ciężką robotę. Yappy niczego nie naprawia, ale odsuwa na bok tę część, która wyczerpuje."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "Milcząca strona zaprasza do ucieczki. Głos, który idzie do przodu, trzyma rytm i zawraca do akapitu, kiedy głowa już wyszła na spacer. A skoro można słuchać w marszu albo z zajętymi rękami, czytanie przestaje wymagać nieruchomienia: dla wielu ludzi to cała różnica."
+      },
+      {
+        "titulo": "Słabe widzenie i zmęczenie oczu",
+        "texto": "Kiedy mały druk przestaje wchodzić w grę, albo kiedy o siodmej wieczorem oczy odpracowały już swoją zmianę, tekst wciąż jest dostępny przez ucho. Yappy przeczyta PDF, maila albo cały artykuł, z wyłączonym ekranem, jeśli trzeba, z ekranu blokady albo ze słuchawek."
+      },
+      {
+        "titulo": "Nauka języków",
+        "texto": "Słyszeć i czytać naraz to najstarszy i najskuteczniejszy sposób nauki wymowy. Dziesięć głosów to poligloci i czytają 31 języków według ich własnych zasad, więc tekst po niemiecku brzmi po niemiecku, a nie po niemiecku z angielskim akcentem. Przy 0,75× słychać każdą sylabę; przy 1,5× ucho robi trening."
+      },
+      {
+        "titulo": "Poprawianie tego, co piszesz",
+        "texto": "Zdanie, którego nie da się powiedzieć na głos, nie obroni się też na piśmie. Słuchanie własnego tekstu zdradza powtórzenia, przecinki w złych miejscach i wtrącenia bez końca. To korekta taka jak niegdyś w drukarni, i to za darmo: otwierasz .docx, wciskasz play i słyszysz, co naprawdę wyszło spod ręki, a nie to, co miało wyjść."
+      },
+      {
+        "titulo": "Nauka słuchaniem",
+        "texto": "Notatki z przedmiotu, rozdział na egzamin, artykuł na dwieście stron. Wieczorem wysyłasz je do drukarni, a rano słuchasz ich w autobusie jako audiobooka z rozdziałami. Wznowienie pamięta dokładny akapit: nie musisz niczego szukać."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Czy działa z włączonym VoiceOver albo TalkBack?",
+        "a": "Tak, i wcale sobie nie przeszkadzają. Czytnik ekranu opisuje interfejs, żeby dało się nim sterować; Yappy czyta treść, żeby dało się jej słuchać. Można ich używać jednocześnie: VoiceOver doprowadza cię do przycisku odtwarzania, a od tego momentu książkę czyta głos Yappy."
+      },
+      {
+        "q": "Czy da się z tego korzystać bez patrzenia na ekran?",
+        "a": "Tak. Na iPhonie są skróty Siri („Hej Siri, przeczytaj mój schowek w Yappy”), przycisk akcji, sterowanie na ekranie blokady i w słuchawkach. Na komputerze trzy skróty klawiszowe: jeden czyta zaznaczenie, drugi schowek, trzeci pauzuje — aplikacja siedzi przy tym schowana w zasobniku."
+      },
+      {
+        "q": "Czy przeczyta szkolne PDF-y i książki, które już mam?",
+        "a": "Każdy PDF, EPUB, Word czy ODT, który da się otworzyć. Jeśli PDF to skan bez warstwy tekstowej, wersja komputerowa przepuszcza go najpierw przez lokalny OCR; w wersji mobilnej tego jeszcze nie ma. Książki z DRM ze sklepu nie da się przeczytać nigdzie. Tu też nie."
+      },
+      {
+        "q": "Ile kosztuje codzienne korzystanie?",
+        "a": "Nic. Żadnych liczników minut ani znaków, żadnych reklam, żadnego konta. Można słuchać po osiem godzin dziennie przez lata, nie płacąc ani grosza, i bez internetu. Płatna opcja dodaje tylko wieszak bez dna, drukarnię i most — i to wyłącznie na iPhonie oraz iPadzie."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Bajki dla papugi: teksty z domeny publicznej do wypróbowania Yappy",
+    "description": "Kompletne opowiadania z domeny publicznej, gotowe do udostępnienia Yappy i wysłuchania w całości. Bez rejestracji i bez pobierania.",
+    "h1": "Bajki dla papugi.",
+    "entradilla": "Całe teksty, z domeny publicznej. Udostępnij tę stronę Yappy, a papuga przeczyta ci ją na głos.",
+    "dominio_publico": "Domena publiczna."
+  },
+  "blog": {
+    "title": "Blog Yappy: słuchać, co napisano",
+    "description": "Jak zamienić PDF na audio, dlaczego czytnik tekstu powinien działać bez internetu, jak mówić liczby na głos i czego nauczyło nas budowanie aplikacji, która mówi.",
+    "h1": "Słuchać, co napisano.",
+    "entradilla": "Rzemiosło, sztuczki i odrobina historii czytania na głos. Każdy artykuł można odsłuchać od razu tutaj — czyta go sam głos Yappy.",
+    "escuchame": "Posłuchaj tego artykułu",
+    "escuchame_nota": "Czyta Yappy, głosem {voz}, w twojej przeglądarce.",
+    "vacio": "W tym języku nie ma jeszcze żadnych artykułów."
+  },
+  "convertir": {
+    "title": "Zamień dowolny tekst na mowę: PDF, EPUB, Word, artykuły i filmy",
+    "description": "Sześć sposobów, żeby zamienić to, co czytasz, na naturalnie brzmiący głos. Wszystkie działają na twoim urządzeniu: PDF, EPUB, Word, artykuły z internetu, filmy i notatki głosowe.",
+    "h1": "Konwertuj",
+    "entradilla": "Nieważne, co wchodzi: artykuł, książka, dokument czy nagranie. Yappy zamienia to w tekst do czytania i czyta na głos. Plik nie opuszcza twojego urządzenia.",
+    "pasos_titulo": "W trzech krokach.",
+    "faq_titulo": "Częste pytania",
+    "otros_titulo": "Inne rzeczy, które też czyta",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "Konwertuj PDF na audio: słuchaj PDF-a na głos, za darmo",
+        "description": "Zamień dowolny PDF na naturalnie brzmiącą mowę i słuchaj go, robiąc coś innego. Albo zapisz jako audiobook z rozdziałami. Bez wysyłania do chmury i bez limitu stron.",
+        "h1": "Słuchaj swoich PDF-ów.",
+        "entradilla": "Artykuł naukowy, instrukcja, notatki, umowa. Yappy otwiera PDF, wycina powtarzające się nagłówki i numery stron, znajduje rozdziały i czyta całość naturalnym głosem. Plik nie opuszcza twojego urządzenia.",
+        "pasos": [
+          {
+            "titulo": "Udostępnij PDF",
+            "texto": "W Plikach, Poczcie albo Safari: dotknij „Udostępnij” i wybierz Yappy. Na komputerze przeciągnij plik do okna."
+          },
+          {
+            "titulo": "Wybierz głos",
+            "texto": "Dziesięć głosów, 31 języków. Jeśli PDF jest w innym języku, Yappy sam go rozpozna."
+          },
+          {
+            "titulo": "Posłuchaj albo zapisz",
+            "texto": "Wciśnij play albo zleć to drukarni — dostaniesz audiobook z rozdziałami."
+          }
+        ],
+        "extra_titulo": "Zeskanowane PDF-y",
+        "extra_texto": "Jeśli PDF to zdjęcie papieru i nie ma w środku tekstu, wersja desktopowa najpierw przepuszcza go przez lokalny OCR. Na iPhonie jeszcze nie.",
+        "faq": [
+          {
+            "q": "Czy jest limit stron?",
+            "a": "Nie. Artykuł na trzy strony albo praca na czterysta: cały PDF zostaje przetworzony i cały przeczytany. Skoro wszystko dzieje się na twoim urządzeniu, nie ma limitu znaków do wykorzystania ani rachunku, który skoczy w połowie siódmego rozdziału."
+          },
+          {
+            "q": "A jeśli PDF to skan bez tekstu?",
+            "a": "Wersja desktopowa najpierw przepuszcza go przez lokalny OCR, zanim zacznie czytać, i tam też nic nie opuszcza twojego komputera. Na iPhonie jeszcze nie: jeśli PDF to zdjęcie papieru, telefon nie znajduje tekstu do przeczytania."
+          },
+          {
+            "q": "Czy usuwa nagłówki i numery stron?",
+            "a": "Tak. Yappy wykrywa to, co powtarza się na każdej stronie (nagłówek, stopka, numer strony, nazwa czasopisma), i pomija to przy czytaniu. Nic tak nie psuje słuchania, jak „Rozdział 3, strona 47” co półtorej minuty."
+          },
+          {
+            "q": "Czy mogę słuchać tylko jednego rozdziału?",
+            "a": "Tak. Yappy wyszukuje w dokumencie prawdziwe tytuły i układa z nich spis treści, po którym można się poruszać. W bibliotece zaznaczasz, które rozdziały chcesz odsłuchać, a które zlecić drukarni — audiobook powstaje właśnie z nich."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "Zamiana EPUB na audiobook: Twoja książka czytana na głos",
+        "description": "Zamień plik EPUB w audiobook z prawdziwymi rozdziałami, przygotowany na własnym urządzeniu. Bez abonamentu liczonego godzinami i bez wysyłania książki na żaden serwer.",
+        "h1": "Twój EPUB staje się audiobookiem.",
+        "entradilla": "Książki, które już masz, z własnymi rozdziałami, czytane naturalnym głosem. Uruchamiasz renderowanie przed snem, a rano książka czeka w bibliotece — jako plik .m4b, który otworzy każdy odtwarzacz.",
+        "pasos": [
+          {
+            "titulo": "Udostępnij EPUB",
+            "texto": "Z aplikacji Pliki albo z miejsca, w którym go masz. Przychodzi z już rozpoznanymi rozdziałami."
+          },
+          {
+            "titulo": "Zleć zadanie drukarni",
+            "texto": "Wybierasz rozdziały, głos i tempo. Papuga drukuje dalej, nawet gdy zamkniesz aplikację."
+          },
+          {
+            "titulo": "Słuchaj, gdzie chcesz",
+            "texto": "Zostaje w bibliotece jako plik .m4b z zakładkami; stamtąd wyślesz go do Plików, do Książek albo gdziekolwiek zechcesz."
+          }
+        ],
+        "extra_titulo": "Książki z DRM",
+        "extra_texto": "Yappy czyta te pliki EPUB, które potrafisz otworzyć. Książek chronionych sklepowym DRM nie da się odczytać — ani tutaj, ani nigdzie indziej.",
+        "faq": [
+          {
+            "q": "Czy zostaną zachowane rozdziały książki?",
+            "a": "Tak, i to prawdziwe rozdziały, a nie znaczniki co dziesięć minut: biorą się ze spisu treści samego pliku EPUB. Powstały .m4b przewija się rozdział po rozdziale w każdym odtwarzaczu audiobooków, z okładką i zapamiętanym miejscem."
+          },
+          {
+            "q": "Ile trwa przerobienie całej książki?",
+            "a": "Zależy to od urządzenia i wielkości książki, ale praktyczna odpowiedź brzmi: uruchamiasz przed snem, rano jest gotowa. Jeśli masz mostek, komputer syntetyzuje ją znacznie szybciej i odsyła na telefon już ukończoną."
+          },
+          {
+            "q": "A książki z DRM?",
+            "a": "Yappy czyta te pliki EPUB, które potrafisz otworzyć. Książek chronionych sklepowym DRM nie da się odczytać — ani tutaj, ani nigdzie indziej: ten zamek nie jest nasz."
+          },
+          {
+            "q": "Gdzie ląduje audiobook?",
+            "a": "W bibliotece Yappy, jako prawdziwy plik .m4b. Stamtąd wyślesz go do Plików, do Książek albo do odtwarzacza, z którego już korzystasz. Plik jest Twój: jeśli odinstalujesz aplikację, to, co wyeksportujesz, zostaje tam, gdzie go zapiszesz."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Odsłuchiwanie Worda na głos: DOCX, ODT i RTF na audio",
+        "description": "Zamienia dokumenty Word, LibreOffice i zwykły tekst w naturalnie brzmiącą mowę, którą sprawdzisz na słuch. Wszystko dzieje się na twoim komputerze albo telefonie.",
+        "h1": "Sprawdzaj słuchem.",
+        "entradilla": "Posłuchać własnego tekstu to najlepsza korekta, jaka istnieje: zdanie, którego nie da się powiedzieć na głos, nie obroni się też na piśmie. Yappy czyta .docx, .odt, .rtf, .txt i Markdown, z zachowaniem nagłówków i rytmu.",
+        "pasos": [
+          {
+            "titulo": "Otwórz dokument",
+            "texto": "Przeciągnij go do okna na komputerze albo udostępnij z telefonu."
+          },
+          {
+            "titulo": "Słuchaj akapit po akapicie",
+            "texto": "Tekst podświetla się, gdy gra; dotknij dowolnego miejsca, żeby przeskoczyć."
+          },
+          {
+            "titulo": "Popraw to, co skrzypi",
+            "texto": "I posłuchaj jeszcze raz. Na komputerze każdy akapit może mieć własny głos i własne tempo."
+          }
+        ],
+        "extra_titulo": "Także arkusze kalkulacyjne i prezentacje",
+        "extra_texto": "Czyta .pptx, .xlsx i .csv. Na komputerze, jeśli masz zainstalowany pandoc, dochodzi jeszcze LaTeX, reStructuredText, Org i kilka innych.",
+        "faq": [
+          {
+            "q": "Jakie dokładnie formaty tekstu czyta?",
+            "a": ".docx, .odt, .rtf, .txt i Markdown, do tego .pptx, .xlsx i .csv. Na komputerze, jeśli masz zainstalowany pandoc, dochodzi jeszcze LaTeX, reStructuredText, Org i kilka innych."
+          },
+          {
+            "q": "Czyta też przypisy i tabele?",
+            "a": "Czyta treść dokumentu, z nagłówkami i w oryginalnej kolejności. Tabele czyta wiersz po wierszu, bo z tabelą na głos więcej nie zrobisz, a przypisy lądują na końcu swojej sekcji, zamiast ucinać zdanie w połowie."
+          },
+          {
+            "q": "Czy mogę nadać każdemu akapitowi inny głos?",
+            "a": "Na komputerze tak: edytor akapitów pozwala przypisać każdemu głos, tempo i pauzę. To właśnie dzięki temu dialog, wywiad albo dokument w dwóch językach słucha się dobrze."
+          },
+          {
+            "q": "Czy to naprawdę nadaje się do korekty?",
+            "a": "To najlepsza korekta, jaka jest. Ucho wyłapuje to, co wzrok wybacza: powtórzenie sprzed trzech linijek, podrzędne, które się nie domyka, wtrącenie, w którym przepadł czasownik. Zwolnij do 0,9×, odsłuchaj rozdziału i zapisz, co skrzypi."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Artykuły",
+        "title": "Słuchaj artykułów z internetu: dowolna strona na głos",
+        "description": "Udostępnij stronę z Safari, a Yappy przeczyta ci ją w czystej wersji: bez menu, bez banerów i bez stopki. Stronę odwiedza twoje urządzenie, nie nasz serwer.",
+        "h1": "Posłuchaj tego, co odkładasz na później.",
+        "entradilla": "Karta, którą zostawiasz otwarte na później. Udostępnij ją Yappy i słuchaj, gdy zmywasz. Strona czyści się sama: znika menu, banery i stopki. Zostaje proza, z nagłówkami i rytmem.",
+        "pasos": [
+          {
+            "titulo": "Dotknij „Udostępnij”",
+            "texto": "W Safari, w czytniku aktualności, w poczcie: tam, gdzie jest arkusz udostępniania, tam jest Yappy."
+          },
+          {
+            "titulo": "Samo się czyści",
+            "texto": "Ekstrakcja dzieje się na twoim urządzeniu. Jeśli masz subskrypcję medium, Yappy bierze dokładnie ten artykuł, który widzisz."
+          },
+          {
+            "titulo": "Trafia do kolejki",
+            "texto": "I czeka, aż będziesz mieć wolne ręce."
+          }
+        ],
+        "extra_titulo": "Co łączy się z siecią",
+        "extra_texto": "Wyłącznie odwiedziny pod udostępnionym adresem, zrobione przez twoje własne urządzenie, tak jak zrobiłaby to przeglądarka. Nie ma po drodze serwera Yappy, bo nie istnieje żaden serwer Yappy.",
+        "faq": [
+          {
+            "q": "Czy działa z mediami, do których mam subskrypcję?",
+            "a": "Ekstrakcję robi twoje własne urządzenie, korzystając z twojej sesji, więc bierze dokładnie ten artykuł, który widzisz w przeglądarce. Skoro ty możesz go przeczytać, Yappy może ci go przeczytać. Nie ma serwera pośredniczącego, który musiałby przeciskać się przez paywall, bo nie ma serwera."
+          },
+          {
+            "q": "A co ze stronami, które ładują się tylko dzięki JavaScriptowi?",
+            "a": "Niektóre stawiają opór: jeśli tekst pojawia się dopiero po tym, jak strona uruchomi połowę bibliotek, Yappy może zostać z pustymi rękami. W takich przypadkach najszybciej jest zaznaczyć tekst, skopiować go i udostępnić jako sam tekst."
+          },
+          {
+            "q": "Czy zapisuje historię tego, co czytam?",
+            "a": "Tylko na twoim urządzeniu, żeby w każdej chwili wznowić czytanie dokładnie tam, gdzie się skończyło. Żadne z tych danych nigdzie nie wędruje, a każdy dokument ma w bibliotece swoją opcję „zapomnij”."
+          },
+          {
+            "q": "Czy czyta menu, bannery i komentarze?",
+            "a": "Nie. Strona jest czyszczona, zanim dotrze do czytnika: precz z menu, bannerami, stopkami, przyciskami udostępniania i polami komentarzy. Zostaje proza ze swoimi nagłówkami i swoim rytmem."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Wideo",
+        "title": "Posłuchaj wideo jak artykułu",
+        "description": "Yappy bierze transkrypcję wideo i czyta ci ją jak artykuł: bez patrzenia w ekran, z dowolną prędkością i bez zużywania danych na wideo.",
+        "h1": "Wideo jak artykuły.",
+        "entradilla": "Pół godziny wideo to dziesięć minut tekstu czytanego w rozsądnym tempie. Yappy zabiera samą transkrypcję i czyta ci ją naturalnym głosem, więc możesz jej słuchać w drodze i z wyłączonym ekranem.",
+        "pasos": [
+          {
+            "titulo": "Udostępnij link",
+            "texto": "Z aplikacji wideo albo z przeglądarki, przez arkusz udostępniania."
+          },
+          {
+            "titulo": "Bierze same słowa",
+            "texto": "Yappy bierze opublikowaną transkrypcję wideo, nie audio."
+          },
+          {
+            "titulo": "Słuchasz we własnym tempie",
+            "texto": "Dowolnym głosem i w dowolnym tempie. Także przy zablokowanym ekranie."
+          }
+        ],
+        "extra_titulo": "Jeśli film nie ma transkrypcji",
+        "extra_texto": "Wtedy nie ma czego czytać: Yappy korzysta z opublikowanego tekstu i nie transkrybuje dźwięku z filmu. Na iPhonie ta funkcja istnieje, na Androidzie jeszcze nie.",
+        "faq": [
+          {
+            "q": "Czy transkrybuje dźwięk z filmu?",
+            "a": "Nie. Yappy bierze już opublikowaną transkrypcję filmu i czyta ją jak artykuł. To szybkie, nie pobiera wideo i nie grzeje telefonu. Ale to znaczy, że jeśli film nie ma transkrypcji, nie ma czego czytać."
+          },
+          {
+            "q": "A jeśli film nie ma transkrypcji?",
+            "a": "Wtedy Yappy nie poradzi sobie z tym linkiem. Jeśli to twój film i masz plik, udostępnij go jako dźwięk. Wtedy wkracza lokalne ucho i transkrybuje go na urządzeniu."
+          },
+          {
+            "q": "Czy działa na wszystkich platformach wideo?",
+            "a": "Tam, gdzie transkrypcja jest opublikowana i dostępna. Na iPhonie ta funkcja istnieje, w wersji na Androida jeszcze nie."
+          },
+          {
+            "q": "Czy zużywa dane?",
+            "a": "Bardzo mało: pobierany jest tekst, nie film. Pół godziny wideo to kilkadziesiąt kilobajtów transkrypcji, a dalej wszystko robi twoje urządzenie."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Notatki głosowe",
+        "title": "Transkrypcja notatek głosowych na własnym telefonie",
+        "description": "Yappy transkrybuje nagrania i notatki głosowe na twoim własnym urządzeniu, bez wysyłania do żadnej usługi, a potem może ci transkrypcję przeczytać.",
+        "h1": "Z głosu na tekst. I z powrotem.",
+        "entradilla": "Nagrane zebranie, podyktowany w samochodzie pomysł, wczorajsza lekcja. Yappy transkrybuje je lokalnym uchem, na twoim urządzeniu, i zostawia ci tekst: możesz go przeczytać, poprawić albo jeszcze raz odsłuchać innym głosem.",
+        "pasos": [
+          {
+            "titulo": "Udostępnij nagranie",
+            "texto": "Z Dyktafonu, Plików albo dowolnej aplikacji, która zapisuje dźwięk."
+          },
+          {
+            "titulo": "Transkrypcja dzieje się na miejscu",
+            "texto": "Używa modelu, który działa na twoim urządzeniu. Dźwięk stamtąd nie wychodzi."
+          },
+          {
+            "titulo": "Przeczytaj albo odsłuchaj",
+            "texto": "Zostaje jak każdy inny dokument: można go czytać, udostępniać i ponownie odczytać na głos."
+          }
+        ],
+        "extra_titulo": "Ucho pobiera się osobno",
+        "extra_texto": "Transkrypcja używa innego modelu niż głos i pobiera się tylko wtedy, gdy z niej korzystasz.",
+        "faq": [
+          {
+            "q": "Jaki model wykonuje transkrypcję?",
+            "a": "Parakeet TDT 0.6B v3 od NVIDIA, na licencji CC-BY-4.0, działa na twoim urządzeniu. To inny model niż ten, który generuje głos: jeden słucha, drugi mówi."
+          },
+          {
+            "q": "Czy dźwięk opuszcza moje urządzenie?",
+            "a": "Nie. Nagranie jest transkrybowane lokalnie, tak jak głos jest syntezowany lokalnie. Żadnej usługi transkrypcji w chmurze, żadnego konta, żadnego wysyłania."
+          },
+          {
+            "q": "W jakich językach transkrybuje?",
+            "a": "Ucho nie zna tylu języków, co głos: transkrybuje główne języki europejskie, a nie wszystkie 31, które Yappy umie czytać. Do czytania na głos — 31; do zamiany mowy na tekst — ta krótsza lista."
+          },
+          {
+            "q": "Czy trzeba coś jeszcze pobrać?",
+            "a": "Tak: ucho pobiera się osobno, i to tylko za pierwszym razem, gdy coś transkrybujesz. Jeśli nigdy nie transkrybujesz, nigdy nie zajmie miejsca na twoim urządzeniu."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Text to speech w języku {lengua}: czytaj na głos dowolny tekst",
+    "description": "Słuchaj dokumentów PDF, EPUB i Word oraz artykułów w języku {lengua} naturalnym głosem, na własnym urządzeniu i bez internetu. Dziesięć głosów, za darmo i bez konta.",
+    "h1": "Text to speech w języku {lengua}.",
+    "entradilla": "Dziesięć głosów czyta {lengua} według jego własnych reguł: jego liczby, jego daty, jego liczebniki porządkowe i jego skróty, a nie zasady innego języka z pożyczonym akcentem.",
+    "muestra": "Próbka",
+    "reglas_titulo": "Co moduł wymowy wie o języku {lengua}",
+    "todas": "Pozostałe trzydzieści języków"
+  },
+  "vs": {
+    "titulo": "Yappy kontra {nombre} w pigułce",
+    "caracteristica": "Co",
+    "gratis": "Co można zrobić za darmo",
+    "precio": "Cena od",
+    "local": "Głos powstaje na twoim urządzeniu",
+    "sin_cuenta": "Bez konta i bez e-maila",
+    "sin_conexion": "Działa offline",
+    "codigo_abierto": "Otwarty kod źródłowy",
+    "tarifa": "Opłata za znak albo za godziny",
+    "idiomas": "Języki",
+    "formatos": "Formaty, które czyta",
+    "audiolibro": "Audiobook z rozdziałami",
+    "escritorio": "Komputer",
+    "yappy_gratis": "Słuchaj bez limitu; trzy dokumenty naraz",
+    "yappy_precio": "0 €; abonament od 3,99 € miesięcznie",
+    "gana_en": "Gdzie {nombre} wygrywa",
+    "verificado": "Dane publiczne sprawdzone {fecha} na stronie każdego produktu.",
+    "sin_verificar": "Los precios cambian a menudo: compruébalos antes de decidir.",
+    "ver_web": "Oficjalna strona"
+  },
+  "preguntas_comunes": {
+    "titulo": "Częste pytania"
+  }
+}

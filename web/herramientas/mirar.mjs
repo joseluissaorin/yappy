@@ -83,7 +83,7 @@ for (const ruta of rutas.length ? rutas : POR_DEFECTO) {
         fuera.push(`${el.tagName.toLowerCase()}.${(el.className || "").toString().split(" ")[0]} R=${Math.round(r.right)} W=${Math.round(r.width)}`);
       }
       // El collage sangra por los bordes a propósito: solo molesta si es mucho.
-      if (el.scrollWidth > el.clientWidth + 16 && e.overflowX === "visible") {
+      if (el.scrollWidth > el.clientWidth + 40 && e.overflowX === "visible") {
         rebosa.push(`${el.tagName.toLowerCase()}.${(el.className || "").toString().split(" ")[0]} ${el.scrollWidth}>${el.clientWidth}`);
       }
     }

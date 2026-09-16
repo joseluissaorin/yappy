@@ -8,7 +8,7 @@ import Interior from "../layouts/Interior.astro";
 import Pegatina from "../components/Pegatina.astro";
 import Tienda from "../components/Tienda.astro";
 import { t, tv, type Idioma } from "../i18n";
-import { rutaPagina, type RutaPagina } from "../lib/rutas";
+import { rutaPagina, rutaRival, RIVALES as FICHAS, ALCANCE, type RutaPagina } from "../lib/rutas";
 import { CUERDA, RIVALES } from "../lib/datos";
 import { migas, persona, aplicacion, preguntas as faqLd } from "../lib/jsonld";
 
@@ -20,6 +20,12 @@ const noHay = tv<string[]>(lang, "precios.gratis_no");
 const cuerda = tv<string[]>(lang, "precios.cuerda_puntos");
 const faq = tv<{ q: string; a: string }[]>(lang, "precios.faq") ?? [];
 const mig = [{ nombre: t(lang, "nav.precios"), ruta: ruta.ruta }];
+
+const hayComparativas = (ALCANCE.alternativas as readonly string[]).includes(lang);
+const nombreRival: Record<string, string> = {
+  speechify: "Speechify", naturalreader: "NaturalReader", elevenreader: "ElevenReader",
+  "voice-dream": "Voice Dream", "apple-vozalta": lang === "en" ? "Apple Spoken Content" : "el lector de Apple",
+};
 
 const otros = [
   { nombre: "Speechify", ...RIVALES.speechify },
@@ -117,7 +123,19 @@ const otros = [
       </table>
     </div>
     <p class="susurro" style="margin-top:1rem">{t(lang, "precios.comparacion_nota")}</p>
-    <p style="margin-top:1rem"><a href={rutaPagina(lang, "preguntas")}>{t(lang, "nav.preguntas")} →</a></p>
+    {hayComparativas && (
+      <div style="margin-top:1.6rem">
+        <p class="susurro">{t(lang, "precios.una_a_una")}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          {FICHAS.map((r) => (
+            <a class="boton" href={rutaRival(lang, r)}>
+              {t(lang, "vs.frente_a", { nombre: nombreRival[r] })}
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+    <p style="margin-top:1.6rem"><a href={rutaPagina(lang, "preguntas")}>{t(lang, "nav.preguntas")} →</a></p>
   </section>
 
   {faq.length > 0 && (

@@ -20,8 +20,7 @@
  *    uno a la vez: hay que comparar contra el original, siempre.
  */
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { execFile } from "node:child_process";
-import { promisify } from "node:util";
+import { spawn } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
@@ -32,8 +31,7 @@ const OR = join(homedir(), ".claude/skills/openrouter/scripts/or.py");
 const MODELO = process.env.MODELO_TRADUCCION || "z-ai/glm-5.3-flash";
 // Cuánta gente trabaja a la vez. Treinta idiomas en serie son horas; en
 // piscina, minutos. Si la API empieza a devolver 429, baja estos números.
-const IDIOMAS_A_LA_VEZ = Number(process.env.IDIOMAS_A_LA_VEZ || 5);
-const LOTES_A_LA_VEZ = Number(process.env.LOTES_A_LA_VEZ || 4);
+const A_LA_VEZ = Number(process.env.A_LA_VEZ || 6);
 
 // Los treinta idiomas de la app, con su nombre, su etiqueta BCP-47 y el
 // locale de Open Graph. El español es el original y no se traduce.
@@ -76,30 +74,55 @@ function montar(plano, molde) {
   return copia;
 }
 
-const ejecutar = promisify(execFile);
-async function modelo(texto) {
-  const { stdout } = await ejecutar("python3", [OR, texto, "--model", MODELO, "--json"], {
-    encoding: "utf8", maxBuffer: 32 * 1024 * 1024,
-  });
-  const m = stdout.match(/\{[\s\S]*\}/);
-  if (!m) throw new Error("el modelo no ha devuelto JSON");
-  return JSON.parse(m[0]);
+/// El torno: como mucho A_LA_VEZ peticiones en vuelo, contando todas las
+/// de todos los idiomas. Pasarse no acelera nada, solo llena la cola del
+/// otro lado y hace que una petición de diez segundos tarde tres minutos.
+let enVuelo = 0;
+const esperando = [];
+async function torno(tarea) {
+  if (enVuelo >= A_LA_VEZ) await new Promise((r) => esperando.push(r));
+  enVuelo++;
+  try { return await tarea(); }
+  finally { enVuelo--; esperando.shift()?.(); }
 }
 
-/// Una piscina: como mucho `a la vez` tareas en vuelo simultáneo.
-async function piscina(tareas, aLaVez) {
-  const salida = new Array(tareas.length);
-  let i = 0;
-  await Promise.all(
-    Array.from({ length: Math.min(aLaVez, tareas.length) }, async () => {
-      for (;;) {
-        const j = i++;
-        if (j >= tareas.length) return;
-        salida[j] = await tareas[j]();
-      }
-    }),
-  );
-  return salida;
+/**
+ * Llama al modelo. Se usa `spawn` y no `execFile` por una razón concreta:
+ * or.py lee de la entrada estándar cuando no es un terminal, y execFile le
+ * deja la tubería ABIERTA. El proceso se queda esperando un EOF que no
+ * llega y una petición de ocho segundos tarda tres minutos. Con
+ * `stdio: ["ignore", ...]` no hay entrada que esperar.
+ */
+function llamar(texto) {
+  return new Promise((cumple, falla) => {
+    const hijo = spawn("python3", [OR, texto, "--model", MODELO, "--json"], {
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let salida = "", error = "";
+    hijo.stdout.on("data", (d) => (salida += d));
+    hijo.stderr.on("data", (d) => (error += d));
+    const reloj = setTimeout(() => hijo.kill("SIGKILL"), 180000);
+    hijo.on("error", (e) => { clearTimeout(reloj); falla(e); });
+    hijo.on("close", (codigo) => {
+      clearTimeout(reloj);
+      if (codigo !== 0) return falla(new Error(`or.py salió con ${codigo}: ${error.slice(0, 200)}`));
+      cumple(salida);
+    });
+  });
+}
+
+/// Una piscina: lanza todas las tareas y deja que el torno las ordene.
+async function piscina(tareas) {
+  return Promise.all(tareas.map((t) => t()));
+}
+
+async function modelo(texto) {
+  return torno(async () => {
+    const salida = await llamar(texto);
+    const m = salida.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error("el modelo no ha devuelto JSON");
+    return JSON.parse(m[0]);
+  });
 }
 
 const INSTRUCCIONES = `You translate the interface and marketing copy of Yappy, a text-to-speech app.
@@ -129,6 +152,56 @@ const trozos = (pares, n) => {
   return out;
 };
 
+async function remendar(codigo) {
+  const [nombre, bcp] = IDIOMAS[codigo];
+  const es = JSON.parse(readFileSync(join(I18N, "es.json"), "utf8"));
+  const plano = aplanar(es);
+  const claves = Object.keys(plano);
+  const actual = aplanar(JSON.parse(readFileSync(join(I18N, `${codigo}.json`), "utf8")));
+
+  const slugsRotos = claves.filter((k) => k.startsWith("slugs.") && actual[k] == null);
+  const rotas = claves.filter((k) => {
+    if (k.startsWith("slugs.") || (k.startsWith("meta.") && k !== "meta.og_alt")) return false;
+    if (actual[k] == null) return true;
+    // Idéntica al español y lo bastante larga para no ser una coincidencia
+    // («Blog», «RSS» y «PDF» se dicen igual en media Europa).
+    return typeof plano[k] === "string" && actual[k] === plano[k] && plano[k].length > 18;
+  });
+
+  if (!rotas.length && !slugsRotos.length) { console.log(`  · ${codigo} no necesita remiendo`); return; }
+
+  const resultado = { ...actual };
+  if (slugsRotos.length) {
+    const d = {};
+    for (const k of slugsRotos) d[k] = plano[k];
+    try { Object.assign(resultado, await modelo(`${SLUGS}\n\nTarget language: ${nombre} (${bcp}).\n\n${JSON.stringify(d, null, 1)}`)); } catch {}
+  }
+
+  const lotes = trozos(rotas, 20);
+  await piscina(lotes.map((lote) => async () => {
+    const d = {};
+    for (const k of lote) d[k] = plano[k];
+    for (let intento = 0; ; intento++) {
+      try {
+        const r = await modelo(`${INSTRUCCIONES}\n\nTarget language: ${nombre} (${bcp}).\n\n${JSON.stringify(d, null, 1)}`);
+        for (const k of lote) if (typeof r[k] === "string") resultado[k] = r[k];
+        return;
+      } catch {
+        if (intento >= 3) { process.stdout.write("!"); return; }
+        await new Promise((r) => setTimeout(r, 2000 * (intento + 1)));
+      }
+    }
+  }));
+
+  for (const k of claves) if (resultado[k] == null) resultado[k] = plano[k];
+  for (const k of Object.keys(resultado)) if (!claves.includes(k)) delete resultado[k];
+  const objeto = montar(resultado, es);
+  if (Object.keys(aplanar(objeto)).length !== claves.length) throw new Error(`${codigo}: no cuadra, no se escribe`);
+  writeFileSync(join(I18N, `${codigo}.json`), JSON.stringify(objeto, null, 2) + "\n");
+  const quedan = claves.filter((k) => typeof plano[k] === "string" && resultado[k] === plano[k] && plano[k].length > 18).length;
+  console.log(`  ✓ ${codigo} remendado (${rotas.length} claves${quedan ? `, ${quedan} siguen en español` : ""})`);
+}
+
 async function traducir(codigo) {
   const [nombre, bcp, og] = IDIOMAS[codigo];
   const es = JSON.parse(readFileSync(join(I18N, "es.json"), "utf8"));
@@ -137,7 +210,9 @@ async function traducir(codigo) {
 
   // Los slugs van por su cuenta, con otras reglas.
   const clavesSlug = claves.filter((k) => k.startsWith("slugs."));
-  const clavesTexto = claves.filter((k) => !k.startsWith("slugs.") && !k.startsWith("meta."));
+  const clavesTexto = claves.filter(
+    (k) => !k.startsWith("slugs.") && (!k.startsWith("meta.") || k === "meta.og_alt"),
+  );
 
   const resultado = {};
 
@@ -148,7 +223,7 @@ async function traducir(codigo) {
     `${SLUGS}\n\nTarget language: ${nombre} (${bcp}).\n\nSlugs (the value is the Spanish slug; the key tells you what the page is):\n${JSON.stringify(dSlug, null, 1)}`,
   ));
 
-  const lotes = trozos(clavesTexto, 40);
+  const lotes = trozos(clavesTexto, 25);
   let hechos = 0;
   await piscina(lotes.map((lote) => async () => {
     const d = {};
@@ -169,7 +244,7 @@ async function traducir(codigo) {
       }
     }
     process.stdout.write(` ${++hechos}/${lotes.length}`);
-  }), LOTES_A_LA_VEZ);
+  }));
 
   // La cabecera va a mano: son identificadores, no prosa.
   resultado["meta.codigo"] = codigo;
@@ -197,18 +272,22 @@ async function traducir(codigo) {
 
 const args = process.argv.slice(2);
 const todos = args.includes("--todos");
+const remiendo = args.includes("--rellenar");
 const pedidos = args.filter((a) => !a.startsWith("--"));
-const cola = (pedidos.length ? pedidos : Object.keys(IDIOMAS))
-  .filter((c) => IDIOMAS[c] && (todos || pedidos.length || !existsSync(join(I18N, `${c}.json`))));
+const cola = (pedidos.length ? pedidos : Object.keys(IDIOMAS)).filter(
+  (c) => IDIOMAS[c] && (remiendo
+    ? existsSync(join(I18N, `${c}.json`))
+    : todos || pedidos.length || !existsSync(join(I18N, `${c}.json`))),
+);
 
 if (!existsSync(OR)) {
   console.error(`No encuentro ${OR}. Este script necesita la skill «openrouter».`);
   process.exit(1);
 }
-console.log(`Traduciendo ${cola.length} idiomas con ${MODELO} (${IDIOMAS_A_LA_VEZ} a la vez, ${LOTES_A_LA_VEZ} lotes por idioma):`);
+console.log(`${remiendo ? "Remendando" : "Traduciendo"} ${cola.length} idiomas con ${MODELO}, ${A_LA_VEZ} peticiones a la vez:`);
 const t0 = Date.now();
 await piscina(cola.map((c) => async () => {
-  try { await traducir(c); }
+  try { await (remiendo ? remendar(c) : traducir(c)); }
   catch (e) { console.error(`\n  ✗ ${c}: ${e.message}`); }
-}), IDIOMAS_A_LA_VEZ);
+}));
 console.log(`\nHecho en ${Math.round((Date.now() - t0) / 1000)} s.`);

@@ -445,7 +445,8 @@
         "q": "¿Por qué en el ordenador y en Android no se paga?",
         "a": "Porque la cuerda solo está montada en el iPhone y el iPad. En el escritorio, y en la versión de Android cuando se publique, la imprenta, la percha sin fondo y el puente vienen abiertos. No es una oferta de lanzamiento: es que ahí no hay nada que cobrar."
       }
-    ]
+    ],
+    "una_a_una": "una a una, con sus datos"
   },
   "voces": {
     "title": "Las voces de Yappy: diez pájaros políglotas en 31 idiomas",
@@ -971,7 +972,8 @@
     "gana_en": "Dónde gana {nombre}",
     "verificado": "Datos públicos consultados en {fecha} en la web de cada producto.",
     "sin_verificar": "Los precios cambian a menudo: compruébalos antes de decidir.",
-    "ver_web": "Web oficial"
+    "ver_web": "Web oficial",
+    "frente_a": "Frente a {nombre}"
   },
   "preguntas_comunes": {
     "titulo": "Preguntas frecuentes"

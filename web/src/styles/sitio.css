@@ -8,7 +8,7 @@
 
 .saltar {
   position: absolute;
-  left: -9999px;
+  inset-inline-start: -9999px;
   z-index: 200;
   background: var(--voz);
   color: var(--tecla-tinta);
@@ -16,7 +16,7 @@
   border-radius: 0 0 12px 0;
   font-weight: 700;
 }
-.saltar:focus { left: 0; top: 0; }
+.saltar:focus { inset-inline-start: 0; top: 0; }
 
 .cabecera {
   position: sticky;
@@ -51,7 +51,7 @@
   text-decoration: none;
   flex: 0 1 auto;
   min-width: 0;
-  margin-right: auto;
+  margin-inline-end: auto;
 }
 /* El «yappy» de letras de recorte: cada letra su tinta y su giro, como
    pegada de una revista distinta. Igual que el membrete de la app. */
@@ -108,7 +108,7 @@
 .plegable[open] > summary { background: var(--superficie-2); }
 .plegable > .desplegable {
   position: absolute;
-  right: 0;
+  inset-inline-end: 0;
   top: calc(100% + 9px);
   min-width: 210px;
   max-height: min(70vh, 460px);
@@ -202,17 +202,17 @@ main { position: relative; }
 }
 .escenario .aparato { max-width: 300px; }
 .escenario .flotante { position: absolute; z-index: 3; }
-.escenario .flotante.a { top: 2%; right: -2%; width: 132px; }
-.escenario .flotante.b { bottom: 16%; left: -3%; width: 124px; }
-.escenario .etiqueta-escena { position: absolute; top: 9%; left: -1%; z-index: 3; }
-.escenario .loro-escena { position: absolute; bottom: 1%; right: -7%; z-index: 4; }
+.escenario .flotante.a { top: 2%; inset-inline-end: -2%; width: 132px; }
+.escenario .flotante.b { bottom: 16%; inset-inline-start: -3%; width: 124px; }
+.escenario .etiqueta-escena { position: absolute; top: 9%; inset-inline-start: -1%; z-index: 3; }
+.escenario .loro-escena { position: absolute; bottom: 1%; inset-inline-end: -7%; z-index: 4; }
 @media (max-width: 899px) {
   .escenario { min-height: 500px; }
   .escenario .aparato { max-width: 260px; }
-  .escenario .flotante.a { right: 0; width: 110px; }
-  .escenario .flotante.b { left: 0; width: 104px; }
-  .escenario .etiqueta-escena { left: 2%; }
-  .escenario .loro-escena { right: -2%; }
+  .escenario .flotante.a { inset-inline-end: 0; width: 110px; }
+  .escenario .flotante.b { inset-inline-start: 0; width: 104px; }
+  .escenario .etiqueta-escena { inset-inline-start: 2%; }
+  .escenario .loro-escena { inset-inline-end: -2%; }
 }
 
 /* ── La demo sonora ───────────────────────────────────────────────── */
@@ -391,12 +391,13 @@ main { position: relative; }
 .cuerpo h2 { font-family: var(--fuente); font-size: 1.6rem; margin: 2.4rem 0 0.8rem; }
 .cuerpo h3 { font-family: var(--fuente); font-size: 1.24rem; margin: 1.9rem 0 0.6rem; }
 .cuerpo p { margin: 0 0 1.15rem; }
-.cuerpo ul, .cuerpo ol { margin: 0 0 1.3rem; padding-left: 1.3rem; }
+.cuerpo ul, .cuerpo ol { margin: 0 0 1.3rem; padding-inline-start: 1.3rem; }
 .cuerpo li { margin-bottom: 0.45rem; }
 .cuerpo blockquote {
   margin: 1.8rem 0;
-  padding: 2px 0 2px 20px;
-  border-left: 4px solid var(--voz);
+  padding-inline: 20px 0;
+  padding-block: 2px;
+  border-inline-start: 4px solid var(--voz);
   color: var(--tinta-suave);
   font-style: italic;
 }

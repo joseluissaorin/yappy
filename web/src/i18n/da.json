@@ -1,0 +1,979 @@
+{
+  "meta": {
+    "codigo": "da",
+    "nombre": "Dansk",
+    "dir": "ltr",
+    "ogLocale": "da_DK",
+    "hreflang": "da",
+    "og_alt": "»Enhver tekst, læst højt« i store bogstaver på cremefarvet papir, med en koralfarvet papegøje ved siden af"
+  },
+  "slugs": {
+    "uso": "saadan-bruger-du",
+    "guionizador": "manuskript",
+    "descargas": "downloads",
+    "precios": "priser",
+    "voces": "stemmer",
+    "preguntas": "faq",
+    "privacidad": "privatliv",
+    "accesibilidad": "tilgaengelighed",
+    "cuentos": "historier",
+    "blog": "blog",
+    "convertir": "konverter",
+    "idiomas": "sprog",
+    "alternativas": "alternativer",
+    "formato_pdf": "pdf-til-lyd",
+    "formato_epub": "epub-til-lydbog",
+    "formato_word": "word-til-tale",
+    "formato_articulos": "artikler-til-lyd",
+    "formato_videos": "video-til-lyd",
+    "formato_notas": "stemmenoter-til-tekst"
+  },
+  "comunes": {
+    "saltar": "Gå til indhold",
+    "marca_aria": "Yappy, forside",
+    "idioma": "Sprog",
+    "menu": "Åbn menuen",
+    "secciones": "Sektioner",
+    "descargar": "Hent",
+    "descargar_gratis": "Hent gratis",
+    "en_app_store": "Hent i App Store",
+    "escuchar_muestra": "Lyt til en prøve",
+    "probar": "Prøv nu",
+    "leer_mas": "Læs videre",
+    "volver": "Tilbage",
+    "inicio": "Forside",
+    "minutos": "{n} minutters læsning",
+    "publicado": "Udgivet den",
+    "actualizado": "opdateret den",
+    "por": "af",
+    "gratis": "gratis",
+    "si": "Ja",
+    "no": "Nej",
+    "parcial": "Delvist",
+    "sin_datos": "ingen data"
+  },
+  "nav": {
+    "uso": "Sådan virker det",
+    "guionizador": "Manuskriptværktøjet",
+    "voces": "Stemmer",
+    "precios": "Priser",
+    "descargas": "Downloads",
+    "preguntas": "Spørgsmål",
+    "privacidad": "Privatliv",
+    "accesibilidad": "Tilgængelighed",
+    "cuentos": "Historier",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "Produktet",
+    "leer": "Til at læse",
+    "casa": "Bag om",
+    "codigo": "Koden",
+    "licencia": "MIT-licens",
+    "novedades": "Nyheder",
+    "firma": "Yappy · håndlavet på Tenerife af <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · open source (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Tekst til tale: oplæsning af PDF, EPUB og artikler",
+    "description": "Gør enhver tekst til naturlig tale: PDF, EPUB, Word, artikler og videoer på 31 sprog. Det hele foregår inde i din telefon eller computer: ingen sky, ingen konto og ingen pris pr. tegn. Gratis og open source.",
+    "susurro": "tekst til tale · 31 sprog · ingen sky · open source",
+    "titular_1": "Enhver",
+    "titular_texto": "tekst",
+    "titular_2": ", ",
+    "titular_voz": "læst højt",
+    "titular_3": ".",
+    "entradilla": "Del en artikel, en PDF, en EPUB, et Word-dokument eller en video, og en papegøje læser det op for dig med en naturlig stemme, mens du laver mad, går en tur eller lukker øjnene. Modellen kører i sin helhed på din enhed: intet forlader den – nogensinde.",
+    "nota_acciones": "gratis · ingen konto · ingen pris pr. tegn",
+    "pegatina_sin_nube": "uden\nsky",
+    "pegatina_idiomas": "31\nsprog",
+    "pegatina_gratis": "gratis",
+    "pegatina_offline": "offline",
+    "demo_susurro": "tryk og lyt: det her er sagt af den samme motor, du har i lommen",
+    "demo_titulo": "Sådan lyder det.",
+    "demo_nota": "Det understregede læses op af skripteren: »1492« siges »et tusind firehundrede tooghalvfems«, og »15. århundrede« siges »femtende århundrede« – med hvert sprogs egne regler.",
+    "momentos_susurro": "til når det er tid",
+    "momentos_titulo": "Tre øjeblikke, én handling.",
+    "momentos": [
+      {
+        "titulo": "Mens du laver mad",
+        "texto": "Del artiklen, stil telefonen op, og stemmen læser videre, mens du står ved komfuret."
+      },
+      {
+        "titulo": "På gåturen",
+        "texto": "Bogen fra i nat, lavet om til lydbog med kapitler, følger med dig op ad bakken."
+      },
+      {
+        "titulo": "Natten arbejder",
+        "texto": "Sæt den til at rendere, når du går i seng; når du vågner, ligger lydbogen i lommen."
+      }
+    ],
+    "porque_susurro": "hvorfor den findes",
+    "porque_titulo": "Ingen sky, ingen konti, ingen pris pr. tegn.",
+    "porque_entradilla": "Andre apps til tekst til tale sender det, du læser, til en server og tager sig betalt pr. tegn eller pr. lyttetimme. Yappy har ingen server at betale, så der er heller intet at opkræve, når du lytter.",
+    "porque": [
+      {
+        "titulo": "Intet forlader din enhed",
+        "texto": "Stemmen syntetiseres på din telefon eller computer med en åben model. Det virker også uden internet: for altid."
+      },
+      {
+        "titulo": "31 rigtige sprog",
+        "texto": "Ti stemmer, hver enkelt flersproget. En tekst med citater på et andet sprog skifter sprog af sig selv, afsnit for afsnit."
+      },
+      {
+        "titulo": "Ingen timer, ingen tegn",
+        "texto": "Lyt til det, du vil, så længe du vil. Der er ingen tæller, for der er ingen regning at fordele."
+      },
+      {
+        "titulo": "Åben kildekode (MIT)",
+        "texto": "Motoren, manuskriptgeneratoren, appen og selve hjemmesiden her er offentliggjort. Du kan læse dem, kompilere dem og efterprøve dem."
+      }
+    ],
+    "formatos_susurro": "at dele er indgangen",
+    "formatos_titulo": "Uanset hvad du læser.",
+    "formatos_entradilla": "Fra Safari, Mail, Filer eller enhver anden app: tryk på Del og vælg Yappy. Siden gør rent af sig selv – væk med menuer, bannere og sidefødder – og tilbage står prosaen med sine overskrifter og sin rytme.",
+    "guion_susurro": "det stykke, ingen andre viser frem",
+    "guion_titulo": "Læser som et menneske, ikke som en maskine.",
+    "guion_entradilla": "At læse højt er ikke at stave sig frem. Det er at fortolke. \"1492\" læses \"fjorten hundrede tooghalvfems\". \"Henrik 8.\" læses \"Henrik den ottende\", men \"Louis XIV\" på fransk læses \"Louis quatorze\". \"EL CID\" er ikke et romertal. FBI staves bogstav for bogstav. NASA gør ikke. Før Yappy syntetiserer én eneste stavelse, omdanner den teksten til et <strong>læsemanuskript</strong>: partituret til det, stemmen faktisk kommer til at sige.",
+    "guion_pruebalo": "Prøv det lige her: samme Rust som i appen, kompileret til din browser.",
+    "guion_boton": "Lav manuskript",
+    "guion_ejemplo": "Det 19. århundrede sluttede i 1900. Ludvig 14. regerede i 72 år, brugte 3,50 € på is – og FBI fik det aldrig at vide.",
+    "guion_marcador": "Skriv noget med tal, forkortelser, datoer eller århundreder…",
+    "guion_espera": "Manuskriptet dukker op her, med det omdannede understreget.",
+    "guion_fallo": "Manuskriptgeneratoren kunne ikke indlæses i denne browser. Appen har den til gengæld indbygget.",
+    "guion_mas": "Sådan fungerer manuskriptgeneratoren",
+    "capturas_susurro": "sådan ser den ud, uden retouche",
+    "capturas_titulo": "Screenshots af den rigtige app.",
+    "capturas_entradilla": "Ingen polerede mockups: det er Yappy, der kører, med rigtige tekster på abrien og læseren klar med sit manuskript.",
+    "precio_susurro": "pengene, ligeud",
+    "precio_titulo": "Gratis for alvor – og en papegøje med opleveljes.",
+    "precio_entradilla": "Prøvepapegøjen har tre dokumenter på sin abri ad gangen og læser dem uden tidsgrænse. Fjern ét, og der er plads til et nyt. Vil du have en abri uden bund, lydbogsfabrikken og broen til computeren, spander du den op.",
+    "cierre_titulo": "En papegøje i lommen.",
+    "cierre_texto": "Gratis, uden konto og uden noget at registrere. Installer, del en tekst, og så lyder den."
+  },
+  "uso": {
+    "title": "Sådan bruges Yappy: del, lyt og ikke meget mere",
+    "description": "Den komplette guide: deling fra iPhone, computerens genveje, QR-broen mellem din telefon og din Mac, lydbøger med kapitler, Siri, widgets og indstillinger.",
+    "h1": "Du deler, og så lyder det.",
+    "entradilla": "Yappy har ét greb: at dele. Resten er detaljer, der allerede er på plads.",
+    "pasos": [
+      {
+        "titulo": "Del",
+        "texto": "Fra enhver app: Safari, mail, Filer, et talememo, den PDF, der landede i en chat. Du trykker på Del, vælger Yappy, og appen åbner af sig selv."
+      },
+      {
+        "titulo": "Vælg stemmen",
+        "texto": "Ti stemmer, og alle kan flere sprog. Er teksten på et andet sprog, genkender Yappy det selv og læser det efter det sprogs regler – ikke med lånt accent."
+      },
+      {
+        "titulo": "Lyt",
+        "texto": "Du låser skærmen og stopper telefonen i lommen. Stemmen fortsætter: Cover, titel og betjening ligger på låseskærmen, og hovedtelefonerne bestemmer."
+      },
+      {
+        "titulo": "Gem det",
+        "texto": "Skal det med på morgendagens gåtur, leverer trykkeriet det som ægte lydbog i .m4b med kapitler, og den åbner i enhver afspiller."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "På iPhone og iPad",
+        "texto": "At dele er hele manualen. Fra enhver app trykker du på Del og vælger Yappy: Den tager links, løs tekst, PDF, EPUB, Word, ODT og lyd. Yappy åbner af sig selv, med det samme. Intet bliver ved med at småkoge i delingsarket, for iOS klipper app-udvidelser fra ved 120 MB; Yappy kopierer det delte og springer videre til appen, hvor der ikke er nogen grænse. Springet er designet, ikke et lappejob. <strong>Alt foregår på enheden</strong>: Det eneste netværk, Yappy rører ved, er besøget på den adresse, du har delt – foretaget fra din egen telefon.",
+        "puntos": [
+          "Køen gør klar, mens du ser på: Artiklen renses, videoen kommer med sin transskription, PDF'en sideinddeles. Har du appen fremme, starter oplæsningen af sig selv, så snart den er klar.",
+          "Karaoken lyser teksten op, sætning for sætning. Du trykker hvor som helst for at holde pause, trækker for at springe til et andet afsnit og skruer farten op eller ned langs kanten.",
+          "Du låser skærmen, og stemmen fortsætter. AirPods holder pause og starter igen; systemet behandler den som enhver anden afspiller.",
+          "I bøjlen er der plads til tre dokumenter ad gangen: fjerner du ét, er der plads til et andet. Husets egne historier fylder ikke."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "På Mac, Windows og Linux",
+        "texto": "Én genvej, og det, du ser på, læses op: markeringen, browsersiden eller det aktive dokument. Alle tre genveje kan ændres under Indstillinger og virker, mens appen ligger nede i bakken. Og ud over genvejene har skrivebordet alt det, der ikke kan være i én hånd.",
+        "puntos": [
+          "<strong>Biblioteket.</strong> Alt, hvad du åbner eller deler, ligger på forsiden med sin fremdrift. Du tager videre, hvor du slap – ned til det præcise afsnit.",
+          "<strong>Afsnitsredigeringen.</strong> Hvert afsnit kan have sin egen stemme, sin fart og sin pause. Til dialoger, citater eller tosprogede dokumenter.",
+          "<strong>Lokal transskription.</strong> Træk et talememo eller en optagelse ind, og det lokale øre gør den til læsbar tekst, uden at noget uploades nogen steder.",
+          "<strong>Eksportér lydbog.</strong> Ethvert dokument kommer ud som en rigtig .m4b med navigerbare kapitler taget fra manuskriptet. Også som .wav eller .mp3.",
+          "<strong>PDF med øjne.</strong> Scannede PDF'er kører gennem en lokal OCR, før de læses op. De digitalfødte læses direkte, side for side.",
+          "<strong>Temaer.</strong> Cremehvidt papir om dagen, lys tekst på mørk baggrund om natten – eller lad systemet bestemme.",
+          "<strong>Ingen snor.</strong> På computeren er alt åbent: trykkeriet, den bundløse knage og broen følger med fra start."
+        ]
+      },
+      {
+        "id": "bro",
+        "titulo": "Broen: din computer renderer, din telefon lytter",
+        "texto": "En hel bog tager tid at syntetisere. Broen giver det tunge arbejde til din computer og lægger den færdige lydbog tilbage i lommen – via en direkte forbindelse mellem dine to enheder, krypteret ende til ende, uden nogen server imellem.",
+        "puntos": [
+          "På computeren: Indstillinger, »Broen«. Yappy viser dig en QR-kode med din maskines krypterede adresse og en invitationsnøgle.",
+          "Peg iPhoneens kamera mod QR-koden, så er de to parret. Nøglen gemmes, og du kan tilbagekalde den fra computeren, når du vil.",
+          "På telefonen: »Konvertér på computeren«. Du vælger dokumentet, computeren syntetiserer det i sit eget tempo, og .m4b-filen med alle sine kapitler dukker op i telefonens bibliotek. Natten arbejder for din gåtur i morgen.",
+          "Broen er krypteret med QUIC og bruger protokollen fra <a href=\"https://iroh.computer\">iroh</a>. Skal der et relæ til, før de to enheder finder hinanden, ser relæet kun krypteret trafik, som det ikke kan læse."
+        ]
+      },
+      {
+        "id": "lydboger",
+        "titulo": "Lydbøger: .m4b med rigtige kapitler",
+        "texto": "Yappy eksporterer ikke bare »en lang lydfil«: Det eksporterer .m4b-lydbøger som dem fra butikkerne, med kapitler hentet fra dokumentets rigtige overskrifter, cover og genoptagelse. De afspilles i Yappy med bibliotek og fremdrift, eller i enhver lydbogsafspiller, du allerede bruger. Og manuskriptgeneratoren giver dem åndedræt: pause efter overskrifterne, listerytme i listerne.",
+        "puntos": [
+          "På telefonen bestiller man dem fra biblioteket, kapitel for kapitel: du vælger, hvilke der skal printes, og med hvilken stemme.",
+          "Papegøjen printer videre, selvom du lukker appen eller låser telefonen.",
+          "Fra biblioteket deler du den til Filer, til Bøger eller hvor du vil: filen er din.",
+          "Trykkeriet er en del af Yappy Parlanchín på iPhone og iPad. På computeren er det åbent fra start."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, genveje og handlingsknappen",
+        "texto": "»Hej Siri, læs min udklipsholder med Yappy.« Appen eksponerer ægte App Intents: De dukker selv op i appen Genveje, virker med Siri og kan knyttes til iPhoneens handlingsknap. Der er intet at samle.",
+        "puntos": [
+          "<strong>Læs min udklipsholder.</strong> Kopiér hvad som helst, spørg Siri – og så spiller det.",
+          "<strong>Genoptag oplæsningen.</strong> Det sidste, der spillede, fortsætter præcis hvor det slap.",
+          "<strong>Lyt til et link.</strong> Den tager imod en adresse som parameter: den perfekte afslutning på dine egne genveje.",
+          "Til automatiseringer i hånden behandles også skemaet <code>yappy://</code>: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> og <code>yappy://pair?d=…</code>.",
+          "Og der er en widget til hjemmeskærmen med det sidste, der spillede, klar til at fortsætte med ét tryk."
+        ]
+      },
+      {
+        "id": "indstillinger",
+        "titulo": "Indstillinger: få knapper, alle sammen ægte",
+        "texto": "Yappy har ikke et panel med hundrede til/fra-knapper. Kun de få, der virkelig ændrer, hvordan det lyder.",
+        "puntos": [
+          "<strong>Stemmen.</strong> Ti stemmer, alle flersprogede: den samme stemme læser spansk, engelsk eller japansk uden at skifte klang.",
+          "<strong>Farten.</strong> Fra 0,5× til 2×. Stemmen genereres i den valgte fart og speedes ikke op bagefter: tonelejet forvrænges ikke.",
+          "<strong>Pausen.</strong> Hvor længe der trækkes vejret mellem afsnittene. Overskrifter og lister får deres rytme direkte fra manuskriptforfatteren.",
+          "<strong>Sproget.</strong> Automatisk genkendelse pr. dokument og pr. afsnit, eller sat manuelt. Citater på et andet sprog skifter af sig selv.",
+          "<strong>Anonyme statistikker.</strong> På telefonen kommer de slået til; her i baglokalet slås de fra. Hvad der præcis sendes, står punkt for punkt i privatlivspolitikken."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "På Android",
+        "texto": "Samme bevægelse: Du deler et link, en tekst eller et dokument, og det lander i samme kø, med udtræk af artiklen, karaoke og stemme – alt sammen inde i selve telefonen. Android-versionen er familiens yngste, og den mangler stadig tre ting, som iPhone har: styringen på låseskærmen, videoer og afspilleren til .m4b-lydbøger. Og så er der noget vigtigere: <strong>den er endnu ikke udgivet</strong>. Google-udviklerkontoen er stadig til verificering, og vi sætter ingen dato, for vi kender den ikke. Når den udkommer, bliver det annonceret her og i repositoriet. Til gengæld: På Android er der ingen ting gemt bagved. Det hele er åbent."
+      }
+    ],
+    "atajo": "Genvej",
+    "atajo_leer": "Læs det, du ser på",
+    "atajo_portapapeles": "Læs udklipsholderen",
+    "atajo_pausar": "Pause",
+    "cierre": "Det var hele manualen."
+  },
+  "guionizador": {
+    "title": "Yappys manuskriptforfatter: fra det skrevne til det talte",
+    "description": "Hvordan Yappy omsætter »1492«, »15. århundrede«, »3,50 €« eller »FBI« til ord, der siges efter hvert sprogs regler – på alle 31 sprog. Med en live-demo: samme Rust som i appen, kompileret til WebAssembly.",
+    "h1": "Fra det skrevne til det talte.",
+    "oficios_titulo": "Tolv håndværk i ét hug.",
+    "oficios": [
+      {
+        "titulo": "Datoer",
+        "texto": "»24.5.1533« læses op i sin helhed, med den rækkefølge og det køn, hvert sprog bruger."
+      },
+      {
+        "titulo": "Klokkeslæt",
+        "texto": "»14:05« siges, som et menneske ville sige det – ikke som et ur ville læse det op."
+      },
+      {
+        "titulo": "Valuta",
+        "texto": "»3,50 €« siges »tre euro og halvtreds«, med den form, sproget kræver."
+      },
+      {
+        "titulo": "Procenter",
+        "texto": "»7 %« udtales »syv procent«, og »0,5 %« bliver ikke til »nul komma fem«."
+      },
+      {
+        "titulo": "Enheder",
+        "texto": "»230 °C« udtales »tohundredeogtredive grader celsius«."
+      },
+      {
+        "titulo": "Ordinaltal",
+        "texto": "»3.« udtales »tredje«, med køn og bøjning, hvor sproget har dem."
+      },
+      {
+        "titulo": "Romertal med omtanke",
+        "texto": "»Siglo XX« er kardinaltal, »Henrik VIII« er ordinaltal, og »EL CID« er ikke et tal."
+      },
+      {
+        "titulo": "Akronymer efter fonotakse",
+        "texto": "FBI staves; NASA læses. Lydbilledet bestemmer – ikke en liste."
+      },
+      {
+        "titulo": "Forkortelser",
+        "texto": "»osv.«, »s.«, »19. årh.«: hvert sprog har sin tabel."
+      },
+      {
+        "titulo": "Store tal",
+        "texto": "Med RBNF-grammatikkerne fra Unicode CLDR – køn og bøjning medregnet."
+      },
+      {
+        "titulo": "31 sprog",
+        "texto": "Samme regler, med hvert sprogs egen grammatik. Ingen håndskrevne lister."
+      },
+      {
+        "titulo": "Rytmen",
+        "texto": "Overskrifter får lov at trække vejret, efter de er læst op; lister holder takten. Pauserne er en del af manuskriptet, ikke af tilfældet."
+      }
+    ],
+    "cierre": "Manuskriptet er halvdelen af historien; den anden halvdel hører man.",
+    "faq": [
+      {
+        "q": "Hvad er RBNF-grammatikker?",
+        "a": "RBNF er forkortelse for <em>Rule-Based Number Format</em>: de regler, som Unicode CLDR bruger til at beskrive, hvordan et tal udtales på hvert sprog. Det er ikke en tabel med tusind ord, men en grammatik. Derfor ved den, at det på spansk hedder »doscientas páginas« – tohundrede sider, i hunkøn – og ikke »doscientos páginas«, at russisk bøjer talordene, og at fransk tæller op til halvfems i tyvere. Yappy fortolker dem i ren Rust, uden håndskrevne lister."
+      },
+      {
+        "q": "Hvorfor skal der en manuskriptforfatter til? Kan stemmen ikke klare det alene?",
+        "a": "Nej, og det er med vilje. Yappys stemmemodel arbejder på tegnniveau: den udtaler præcis det, den får at se. Det gør den hurtig og let, men det betyder også, at den ved et »1492« vil forsøge at sige netop dét, tegn for tegn. I en sådan model <em>er</em> normaliseringen udtalen. Manuskriptforfatteren er brikken, der omdanner hvert tal, hver forkortelse og hvert symbol til de ord, et menneske ville sige."
+      },
+      {
+        "q": "Hvor mange sprog fungerer det på?",
+        "a": "I de 31 sprog, stemmen taler – hvert med sine egne regler: rækkefølgen i datoer, hvordan valutabeløb forbindes, ordinaltallene, forkortelserne og romertallene. »Siglo XV« udtales »siglo quince« på spansk og »fifteenth century« på engelsk; »Louis XIV« er »Louis quatorze« og ikke »Louis fourteenth«. Samme tolv opgaver, enogtredive grammatikker."
+      },
+      {
+        "q": "Hvorfor lander karaoken altid på det nøjagtige ord?",
+        "a": "Fordi manuskriptet ikke kun er den omdannede tekst: Det gemmer kortet mellem det skrevne og det talte. Når stemmen udtaler »et tusind firehundrede tooghalvfems«, ved manuskriptet, at de fire ord kommer fra de fire cifre i »1492«, og understregningen lander oven på dem uden at noget flytter sig. Det er forskellen på at lyse teksten op og at gætte sig frem."
+      },
+      {
+        "q": "Et ord udtales forkert. Kan jeg rette det?",
+        "a": "Den dag i dag findes der ingen brugerordbog for udtale. Modellen læser tegn, så den hurtige vej er at skrive ordet, som det lyder, i editoren og lytte til det igen. Og hvis det, der driller, er et generelt mønster (en forkortelse, et akronym, en enhed), så fortæl om det i <a href=\"https://github.com/joseluissaorin/yappy/issues\">issues på GitHub</a>: manuskriptgeneratorens tabeller vokser med den slags tilfælde."
+      },
+      {
+        "q": "Er manuskriptgeneratoren på denne side den samme som i appen?",
+        "a": "Præcis samme kode, kompileret til WebAssembly, så den kører i din browser. Det, du skriver her, forlader ikke din fane. Og fordi hele projektet er åbent, kan du læse reglerne én for én i <a href=\"https://github.com/joseluissaorin/yappy\">repoet</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Download Yappy: iPhone, iPad, Mac, Windows og Linux",
+    "description": "Yappy er gratis og open source. I App Store til iPhone og iPad; computerudgaven kompileres fra koden eller hentes fra GitHub. Krav og størrelsen på stemmemodellen.",
+    "h1": "Gratis, åben og din.",
+    "entradilla": "Ingen registrering, ingen e-mail, ingen prøveversion med udløbsdato. Hent den, og det var det.",
+    "modelo_nota": "Første gang downloader Yappy stemmemodellen ({peso}). På iPhone kommer den med installationen; på computeren, første gang du åbner appen. Bagefter kræves der ingen forbindelse.",
+    "android_titulo": "Android",
+    "android_texto": "Den er kompileret og virker, men er endnu ikke udgivet: Googles udviklerkonto er stadig under verifikation. Når den udkommer, bliver det meldt ud her og i repoet.",
+    "escritorio_aviso": "Binærfilerne til computeren udgives på GitHub. Hvis den version, du finder der, er ældre end iPhone-versionen, er den nyeste ikke skubbet op endnu: koden er opdateret, og du kan selv kompilere den med <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone og iPad",
+        "texto": "I App Store, gratis og uden konto. Stemmerne følger med selve installationen, så du åbner appen, deler en tekst, og den lyder med det samme. Det er den mest komplette version: audiobøger, Siri, widget, bro og betjening fra låseskærmen.",
+        "requisitos": "iOS eller iPadOS 17 og frem · stemmemodellen fylder ca. 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Hent i App Store"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon og Intel, i en notariseret .dmg. Med de tre globale genveje, afsnitseditoren, OCR af scannede PDF'er og eksport af audiobøger. Ingen snore her: det hele er åbent.",
+        "requisitos": "macOS 12 eller nyere · ca. 398 MB stemmemodel",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Se versionerne på GitHub"
+      },
+      {
+        "nombre": "Windows",
+        "texto": ".exe- eller .msi-installationsprogram til x64, med de samme genveje og de samme funktioner som Mac-udgaven. Enhver bærbar fra de seneste år syntetiserer hurtigere end realtiden.",
+        "requisitos": "Windows 10 eller nyere, x64 · ca. 398 MB stemmemodel",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Se versionerne på GitHub"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage og .deb til x64. Globale genveje afhænger af dit skrivebordsmiljø; i Indstillinger kan de ændres, hvis dine allerede er optaget.",
+        "requisitos": "x64 · ca. 398 MB stemmemodel",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Se versionerne på GitHub"
+      },
+      {
+        "nombre": "Fra kildekoden",
+        "texto": "Hele projektet ligger offentligt: skrivebordsappen og mobilappen (Tauri, Rust og Svelte), syntesemotoren, scriptgeneratoren med de medfølgende CLDR-grammatikker og selve hjemmesiden. Med Rust og Node installeret bygger <code>cargo tauri build</code> din egen kopi. Hvis de udgivne binære filer hænger bagefter iPhone-versionen, er det her genvejen: koden er altid opdateret.",
+        "requisitos": "Rust og Node · fuld vejledning i README",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Se koden på GitHub"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Priser på Yappy: gratis for altid, ingen betaling pr. tegn",
+    "description": "Yappy er gratis og uden lyttegrænse: tre dokumenter ad gangen på hylden. Yappy Parlanchín tilføjer en hylde uden bund, lydbogstrykkeriet og broen – fra 3,99 € om måneden eller 59,99 € én gang.",
+    "h1": "Pengene, lige på.",
+    "entradilla": "At kunne lytte til det, man læser, er et spørgsmål om tilgængelighed, og tilgængelighed burde ikke bede om kortoplysninger. Derfor er den del, der betyder noget, gratis og uden tæller.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "for altid",
+    "gratis_puntos": [
+      "Lyt uden minut- eller tegngrænse",
+      "De 31 sprog og de ti stemmer",
+      "PDF, EPUB, Word, artikler, videoer og stemmenoter",
+      "Tre dokumenter ad gangen på hylden: tag ét ud, så er der plads til et mere",
+      "Ingen konto, ingen e-mail, ingen reklamer",
+      "Open source under MIT-licensen"
+    ],
+    "gratis_no": [
+      "Ingen lydbogstrykkeri",
+      "Ingen bro til computeren"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "om måneden",
+    "cuerda_periodo_anio": "om året",
+    "cuerda_periodo_vida": "kun én gang",
+    "cuerda_puntos": [
+      "Alt i ovenstående",
+      "Bøjlen uden bund: så mange dokumenter, du vil",
+      "Trykkeriet: hele bøger som lydbog med kapitler",
+      "Broen: din computer konverterer og giver dokumentet tilbage af sig selv",
+      "Kan opsiges, når du vil"
+    ],
+    "cuerda_nota": "Ingen gratis prøveperiode – med vilje: bøjlen med tre dokumenter <em>er</em> prøven. Den udløber ikke, og der trækkes ikke penge bagefter. Priserne er de spanske. I din butik dukker de op i din valuta.",
+    "cuerda_donde": "Abonnementet købes inde i appen, i baglokalet.",
+    "solo_ios": "På computeren og Android er alt åbent: abonnementet findes kun på iPhone og iPad.",
+    "comparacion_titulo": "Hvad de andre tager betalt.",
+    "comparacion_entradilla": "Taleapps i skyen betaler for servere, hver gang du trykker play. Derfor regner de efter timer eller tegn. Yappy syntetiserer på din enhed: en lytning koster nul, og derfor kan Yappy lade være med at tage betalt.",
+    "comparacion_nota": "Offentlige priser, tjekket i september 2026. De ændrer sig tit: tjek dem på hver hjemmeside, før du beslutter dig.",
+    "faq": [
+      {
+        "q": "Hvorfor er det gratis?",
+        "a": "Fordi der ikke er nogen servere at betale. Stemmen syntetiseres på din enhed, så det ikke koster nogen penge at lytte – og der er ingen regning at fordele. Taleapps i skyen betaler for en maskine, hver gang du trykker play. Derfor regner de efter tegn eller timer. Yappy kan ikke tage betalt for noget, der ikke koster den noget."
+      },
+      {
+        "q": "Hvad sker der, hvis jeg aldrig betaler?",
+        "a": "Intet. Yappy virker for altid med alle ti stemmer, 31 sprog og alle formater – uden reklamer, uden konto og uden minuttæller. Det eneste, der ændrer sig, er, at bøjlen på iPhone og iPad kan bære tre dokumenter ad gangen: fjern ét, så er der plads til et andet. På computeren ikke engang det."
+      },
+      {
+        "q": "Er der en gratis prøveperiode?",
+        "a": "Nej, og det er en beslutning, ikke en glemsel. Bøjlen med tre dokumenter <em>er</em> prøven: den udløber ikke, beder ikke om et kort og begynder ikke at trække penge på den ottende dag. Ingen burde vågne op til en trækning, man ikke kan huske at have sagt ja til."
+      },
+      {
+        "q": "Kan jeg opsige, når jeg vil?",
+        "a": "Ja, via din Apple-konto, som ethvert andet abonnement. De fornyer sig selv, når en periode udløber, medmindre du opsiger dem mindst 24 timer i forvejen. Livstidskøbet fornyes aldrig: man betaler én gang, og så er det. Og opsigør du, mister du ingenting af det gratis: du ryger tilbage til knagen med de tre."
+      },
+      {
+        "q": "Hvorfor betaler man ikke på computer og Android?",
+        "a": "Fordi snoren kun er monteret på iPhone og iPad. På computeren – og i Android-versionen, når den udkommer – er trykkeriet, knagen uden bund og broen åbne fra start. Det er ikke et lanceringstilbud: der er bare intet at opkræve."
+      }
+    ]
+  },
+  "voces": {
+    "title": "Yappys stemmer: ti polyglotte fugle på 31 sprog",
+    "description": "Ti naturlige stemmer, der taler alle 31 sprog uden at skifte klang. Lyt til en prøve af hver og vælg din: stemmen, du vælger, farver hele appen.",
+    "h1": "Ti fugle, enogtredive sprog.",
+    "entradilla": "Alle er polyglotte: den samme stemme læser spansk, engelsk eller japansk uden at skifte klang. Og en tekst med et citat på et andet sprog skifter sprog af sig selv, afsnit for afsnit.",
+    "elige": "Tryk på en fugl, så fortæller den, hvordan den lyder.",
+    "idiomas_titulo": "De sprog, den taler.",
+    "idiomas_entradilla": "Enogtredive, hvert sprog med sin egen manuskriptforfatter: det er ikke den samme stemme, der læser med accent. Det er hvert sprog med sine egne regler."
+  },
+  "preguntas": {
+    "title": "Spørgsmål om Yappy: privatliv, sprog, priser og licenser",
+    "description": "Klare svar om, hvad der er gratis, hvad der rører nettet, hvilke modeller Yappy bruger, hvilke formater den tager imod, og hvad man gør, når noget driller.",
+    "h1": "Spørgsmål, der dukker op.",
+    "entradilla": "Besvaret lige på, uden omsvøb.",
+    "grupos": [
+      {
+        "susurro": "pengene og friheden",
+        "titulo": "Gratis, på serøst.",
+        "lista": [
+          {
+            "q": "Er det virkelig gratis?",
+            "a": "Ja. Yappy er open source med MIT-licens. At kunne lytte til det, man læser, er et spørgsmål om tilgængelighed, og tilgængelighedsværktøjer burde ikke bede om et betalingskort. På computeren findes hverken betalingsversion eller reklamer. På iPhone bærer prøvepapegøjen tre dokumenter ad gangen på sin knage, uden tidsgrænse. Vil du have knagen uden bund, lydbogstrykkeriet og broen til computeren, trækker du i snoren med Yappy Parlanchín – som abonnement eller med ét engangsbeløb for livet. Uden konto og uden reklamer, uanset hvad."
+          },
+          {
+            "q": "Hvor er fisken? Hvordan finansieres det?",
+            "a": "Der er ingen fisk: der er ingen servere at betale for. Syntesen kører på din enhed, så Yappy har ingen omkostninger pr. bruger. Det er skaberens eget projekt, udgivet, fordi det nu engang fandtes og kunne nytte andre."
+          },
+          {
+            "q": "Findes der en gratis prøve?",
+            "a": "Nej, med vilje. Knagen med de tre dokumenter er prøven, og den udløber ikke og bliver heller ikke til en opkrævning efter syv dage. Hvis Yappy dur for dig, ved du det af dig selv, uden at nogen holder et ur foran dig."
+          },
+          {
+            "q": "Må jeg udgive den lyd, jeg genererer, i en podcast eller en video?",
+            "a": "Yappys kode er MIT og stiller ingen betingelser. Stemmemodellen, Supertonic 3, har sin egen licens: en åben licens af typen OpenRAIL-M med brugsklausuler. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Læs den på modellens side</a>, før du bruger den kommercielt – den del styres ikke af Yappy, og vi kan ikke love noget på dens vegne."
+          }
+        ]
+      },
+      {
+        "susurro": "dine tekster bliver hjemme",
+        "titulo": "Privatlivet, sort på hvidt.",
+        "lista": [
+          {
+            "q": "Lander mine tekster på en server?",
+            "a": "Nej. Syntese, transskription og udtræk af artikler foregår på din egen enhed. Det, du deler med Yappy, sendes ingen steder hen: Der er ingen konti, ingen kopier, og der findes ingen Yappy-server, hvor de kunne gemmes. Fire konkrete ting rører nettet, og de står alle i privatlivspolitikken."
+          },
+          {
+            "q": "Indsamler Yappy brugsstatistik?",
+            "a": "Ja, det gør appen, og det skal siges uden omsvøb. Mobilappen sender anonyme brugsstatistikker: De er slået til fra fabrikken og kan slås fra i baglokalet. Det, der sendes, er navnet på en begivenhed fra en lukket liste (at appen blev åbnet, hvilket trin i velkomstrunden man ser, hvilken plan man trykker på, om en oplæsning slutter), et tilfældigt installations-id, sproget og versionen. Aldrig dit navn, din mail, den tekst, du læser, titlen på et dokument eller et link, og aldrig et reklame-id. Og tallene går ikke til Google, ikke til Firebase, ikke til noget analysefirma: De går til en Worker og en Cloudflare D1-database, som forfatteren selv ejer. På computeren findes der ingen statistik overhovedet."
+          },
+          {
+            "q": "Og broen mellem mobil og computer?",
+            "a": "Det er en direkte forbindelse mellem dine to enheder, krypteret fra ende til anden med QUIC via protokollen fra <a href=\"https://iroh.computer\">iroh</a>. Parringen sker ved at rette kameraet mod en QR-kode, som din computer viser, og nøglen kan tilbagekaldes derfra når som helst. Der er ingen Yappy-server imellem, for der findes ingen Yappy-server."
+          },
+          {
+            "q": "Virker den uden internet?",
+            "a": "Ja, for altid. Efter den første download af modellen, ca. 200 MB på mobilen og ca. 398 MB på computeren, kan du bruge Yappy i flytilstand: indsætte tekst, åbne dokumenter, syntetisere og eksportere. Kun deling af nye adresser kræver net, af indlysende grunde. Der er heller ingen skysynkronisering: Dit bibliotek bor på din enhed, og broen er det nærmeste, man kommer på at flytte noget fra én maskine til en anden."
+          }
+        ]
+      },
+      {
+        "susurro": "det, der lyder",
+        "titulo": "Stemmen og sprogene.",
+        "lista": [
+          {
+            "q": "Hvilken stemmemodel bruger Yappy?",
+            "a": "Supertonic 3, en åben model fra Supertone med omkring 99 millioner parametre. Den fylder 398 MB på computeren og 200 MB på mobilen og syntetiserer hurtigere end realtid på enhver bærbar fra de seneste år. Modellen arbejder på tegnniveau: Derfor findes manuskripteren, der omsætter tal, forkortelser og symboler til ord, før stemmen ser dem."
+          },
+          {
+            "q": "Hvilke sprog taler den?",
+            "a": "Tysk, arabisk, bulgarsk, tjekkisk, koreansk, kroatisk, dansk, slovakisk, slovensk, spansk, estisk, finsk, fransk, græsk, hindi, ungarsk, indonesisk, engelsk, italiensk, japansk, letisk, litauisk, hollandsk, polsk, portugisisk, rumænsk, russisk, svensk, tyrkisk, ukrainsk og vietnamesisk. Enogtredive. Og alle ti stemmer er flersprogede: Den samme stemme læser dem alle uden at skifte klang."
+          },
+          {
+            "q": "Hvad med et dokument, der blander sprog?",
+            "a": "Yappy genkender dokumentets sprog og, afsnit for afsnit, hvert stykkes: Et engelsk citat i et spansk essay læses på engelsk, med den samme stemme, uden at du rører noget. Og tager genkendelsen fejl, kan du sætte sproget manuelt."
+          },
+          {
+            "q": "Hvordan adskiller den sig fra VoiceOver eller »Læs skærmen op«?",
+            "a": "Skærmoplæsere læser skærmen, præcis som den ser ud, med systemets prosodi og uden hukommelse. Yappy klargør teksten, før den læses op (gør artiklen ren, sætter ord på tal og forkortelser, markerer pauserne), læser den med en naturlig stemme, husker, hvor du var nået til, eksporterer lydbøger og spiller videre, mens skærmen er låst. De to er i familie, men har hver sit håndværk, og de bruges sagtens samtidig uden at genere hinanden: Yappy erstatter ikke en skærmoplæser og påstår det heller ikke."
+          }
+        ]
+      },
+      {
+        "susurro": "det, der kommer ind",
+        "titulo": "Dokumenterne.",
+        "lista": [
+          {
+            "q": "Hvilke formater tager den imod?",
+            "a": "Webartikler (siden rydder op i sig selv), videoer via deres offentliggjorte transskription, PDF, EPUB, Word, ODT, RTF, Markdown, ren tekst, .pptx, .xlsx, .csv og stemmenoter. På mobilen sker det hele via delingsarket; på computeren kan du desuden trække filer ind eller bruge genvejene. Og har du pandoc installeret på computeren, vokser listen med LaTeX, reStructuredText, Org og nogle få flere."
+          },
+          {
+            "q": "Og scannede PDF'er uden tekst i?",
+            "a": "På computeren kører de igennem en lokal OCR, før de læses op, og heller dér forlader noget din computer. På iPhone endnu ikke: Er PDF'en et fotografi af papiret, finder mobilen ingen tekst at læse. Et skævt eller sløret scan giver det, enhver OCR kan give, men et ordentligt læses helt op."
+          },
+          {
+            "q": "Kan den læse bøger, jeg har købt i en butik?",
+            "a": "Kun dem, du kan åbne. En EPUB uden kopibeskyttelse læses i sin helhed, med alle sine kapitler. Bøger med DRM fra en butik kan ikke læses – hverken her eller andre steder. Låsen er ikke Yappys, og vi skal ikke lade som om, vi har nøglen."
+          },
+          {
+            "q": "Hvordan sletter jeg noget fra biblioteket?",
+            "a": "Fra selve biblioteket: hvert dokument har sin glem-funktion, og med den forsvinder lyden også. De eksporterede filer (.m4b, .mp3, .wav) er dine og ligger der, hvor du gemte dem. At slette eller flytte dem er et stykke arbejde for Finder eller Filer."
+          }
+        ]
+      },
+      {
+        "susurro": "når noget går galt",
+        "titulo": "Fejl og hjælp.",
+        "lista": [
+          {
+            "q": "Hvorfor tager den første syntese et par sekunder ekstra?",
+            "a": "Første gang indlæses modellen i hukommelsen. Bagefter er den varm, og de næste sætninger kommer med det samme. Har du lige installeret appen på computeren, inkluderer den første ventetid også download af stemmemodellen."
+          },
+          {
+            "q": "Et ord udtales forkert. Kan man lære appen det?",
+            "a": "Der findes ingen brugerordbog for udtale, så den hurtige vej er at skrive ordet, som det lyder, i editoren: Modellen læser tegn og adlyder dig. Er det et generelt mønster (en forkortelse, et akronym, en enhed), så fortæl om det i <a href=\"https://github.com/joseluissaorin/yappy/issues\">issues på GitHub</a>: Tabellerne i tekstfortolkeren vokser med den slags tilfælde."
+          },
+          {
+            "q": "Jeg har delt en video, og den siger ingenting.",
+            "a": "Yappy holder sig til videoens offentliggjorte transskription og transskriberer ikke lyden. Har videoen ingen transskription, er der ingenting at læse op. Er videoen din egen, og ligger den i en fil, så del filen: Så transskriberer det lokale øre den faktisk."
+          },
+          {
+            "q": "Jeg har fundet en fejl. Hvor fortæller jeg om den?",
+            "a": "I <a href=\"https://github.com/joseluissaorin/yappy/issues\">issues på GitHub</a>, eller ved at skrive til <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Med den tekst, der fejlede – hvis du kan dele den – og dit system, bliver det hurtigere rettet."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Privatliv i Yappy: dine tekster rejser ikke",
+    "description": "Hvad der går ud af din enhed, og hvad der ikke gør, sagt med klare ord: Syntese, transskription og udtrækning af artikler sker indeni. Det eneste, der rører nettet, er fire tilfælde, og vi fortæller om dem alle.",
+    "h1": "Dine tekster rejser ikke.",
+    "actualizado": "Senest opdateret: {fecha}. Dataansvarlig: José Luis Saorín Ferrer, Tenerife (Spanien).",
+    "bloques": [
+      {
+        "titulo": "Hvad det her handler om",
+        "texto": "Dette er Yappys privatlivspolitik: appen til iPhone, iPad, Mac, Windows og Linux med dens widgets og udvidelser. Den er kort, for der er ikke meget at fortælle. Yappy har ingen konti, beder ikke om dit navn eller din e-mail, og det, du giver den at læse, forlader ikke din enhed. Det, der til gengæld rører nettet, er fire konkrete ting, og her er alle fire, én efter én."
+      },
+      {
+        "titulo": "Hverken konto, navn eller tekster",
+        "texto": "Yappy har hverken tilmelding eller login. Den indsamler ikke dit navn, din e-mail, dine kontakter, din placering eller nogen reklameidentifikator. Artikler, PDF-filer, EPUB-filer, dokumenter, stemmeoptagelser og tekster, du deler med appen, bliver til tale <strong>inden i din enhed</strong>: Syntesen, transskriptionen og rensningen af siderne sker lokalt og sendes ikke til nogen server, hverken vores eller tredjeparts. Heller ikke synkronisering til skyen: Dit bibliotek, din fremgang og dine lydbøger bor på din enhed og forsvinder, hvis du afinstallerer appen."
+      },
+      {
+        "titulo": "Rører nettet (1): download af stemmerne",
+        "texto": "Første gang downloader Yappy stemmemodellen (ca. 200 MB på mobilen, ca. 398 MB på computeren) fra <code>modelos.yappy.joseluissaorin.com</code>, et R2-lager hos Cloudflare. Som ved enhver anden download ser serveren din IP-adresse, mens forespørgslen varer. Vi gemmer ingen log, der kan identificere dig. Efter den ene download kører syntesen i flytilstand for altid."
+      },
+      {
+        "titulo": "Rører nettet (2): de links, du deler",
+        "texto": "Hvis du deler et link eller en video, besøger din enhed adressen for at hente teksten eller transskriptionen – ligesom din browser ville gøre. Besøget foretages af din enhed, ikke af en Yappy-server, og det besøgte websted modtager det, det ville modtage fra en browser: din IP-adresse og din enhedstype. Ingen historik gemmes uden for din enhed."
+      },
+      {
+        "titulo": "Så rører vi nettet (3): anonym statistik",
+        "texto": "Lad os sige det, som det er: <strong>der er statistik</strong>, kun i mobilappen, og den er slået til fra start. Du kan slå den fra, når du vil, i baglokalet under »Anonym statistik«. Det, der sendes, er navnet på en hændelse fra en lukket liste (at appen blev åbnet, hvilket trin i den første rundvisning man er nået til, hvilken plan man trykker på, om en oplæsning sluttede), et tilfældigt installations-id, appens sprog og dens version. <strong>Aldrig</strong> dit navn, din e-mail, den tekst, du læser, titlen på et dokument, et link eller et reklame-id. Intet af det går til Google Analytics, Firebase eller noget analysefirma: det går til en Worker og en Cloudflare D1-database, som forfatteren selv ejer, og de bruges til at se, hvilke dele af appen der bliver brugt, og hvilke der er overflødige. På computeren findes der ingen statistik overhovedet."
+      },
+      {
+        "titulo": "Så rører vi nettet (4): købene",
+        "texto": "Abonnementerne og livstidskøbet af Yappy Parlanchín håndteres af Apple via App Store og findes kun på iPhone og iPad. For at tjekke, om dit abonnement stadig er aktivt, bruger appen <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, en abonnementstjeneste, der modtager et anonymt installations-id og Apples kvittering – ikke dit navn eller din e-mail. Apple redegør for sine egne data i <a href=\"https://www.apple.com/legal/privacy/\">sin politik</a>."
+      },
+      {
+        "titulo": "Broen: fra din iPhone til din computer – og tilbage igen",
+        "texto": "Hvis du kobler Yappy sammen med din Mac eller din PC, rejser de dokumenter, du sender til konvertering, gennem en direkte, ende-til-ende-krypteret forbindelse mellem dine to enheder, med biblioteket <a href=\"https://iroh.computer\">iroh</a> oven på QUIC. For at finde hinanden kan de ty til relæservere, som kun ser krypteret trafik, de ikke kan læse. Yappy har ingen mellemservere, der gemmer på noget, for Yappy har ingen servere."
+      },
+      {
+        "titulo": "Børn og tilladelser",
+        "texto": "Yappy henvender sig ikke til børn under 13 år og indsamler ingen personoplysninger om nogen, uanset alder. De tilladelser, systemet beder om, bruges kun til netop den handling og netop da: udklipsholderen ved indsætning, kameraet til at scanne broens QR-kode, mikrofonen på computeren til diktering. Ingen af dem bruges i baggrunden."
+      },
+      {
+        "titulo": "Dine rettigheder – og hvem du skriver til",
+        "texto": "Da vi ikke gemmer personoplysninger, er der intet at eksportere eller slette på vores servere: Alt, hvad Yappy ved om dig, bor på din enhed og forsvinder, når du afinstallerer appen. Hvis du endda vil slippe for, at vi modtager den anonyme statistik, kan du slå den fra i selve appen. Er der tvivl, så skriv til <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> eller opret et issue på <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a>. Koden er åben under MIT-licensen: Alt det ovenstående kan efterprøves ved at læse den."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy til dysleksi, ADHD og svagt syn: hør det, du ikke kan læse",
+    "description": "Et værktøj til oplæsning, der ikke kræver en konto, ikke tager betaling pr. time og virker offline. Til dysleksi, ADHD, øjentræthed, svagt syn – og til alle, der bare læser bedre med ørerne.",
+    "h1": "At læse med ørerne.",
+    "entradilla": "At kunne lytte til det, man læser, er et spørgsmål om tilgængelighed, og tilgængelighedsværktøjer burde ikke bede om et betalingskort. Yappy beder ikke om det, tæller ikke minutter og virker i et fly.",
+    "voiceover_titulo": "Yappy erstatter ikke VoiceOver",
+    "voiceover_texto": "De to er i familie, men har hver deres håndværk. En skærmlæser oplæser brugerfladen, så man kan betjene den; Yappy læser indholdet, så man kan nyde det. De bruges side om side uden at genere hinanden.",
+    "casos": [
+      {
+        "titulo": "Dysleksi",
+        "texto": "At tyde tekst bogstav for bogstav er trættende, og trætheden æder forståelsen længe før, den æder tiden. At lytte til teksten, mens den lyser op på skærmen, gør det muligt at læse og høre på samme tid: Øjnene følger linjen, ørerne klarer det tunge arbejde. Yappy løser ikke noget som helst, men fjerner den del, der slider."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "En stille side lokker til at gå sin vej. En stemme, der skrider frem, holder rytmen og henter én tilbage til afsnittet, når tankerne er stukket af. Og fordi man kan lytte, mens man går, eller når hænderne er optaget, kræver læsning ikke længere, at man sidder stille: For mange mennesker er det hele forskellen."
+      },
+      {
+        "titulo": "Svagt syn og øjentræthed",
+        "texto": "Når lille skrift ikke længere er en mulighed, eller når øjnene klokken syv om aftenen har aftjent deres arbejdsdag, står teksten stadig til rådighed gennem ørerne. Yappy læser PDF'en, mailen eller hele artiklen – om nødvendigt med slukket skærm, fra låseskærmen eller via høretelefonerne."
+      },
+      {
+        "titulo": "At lære sprog",
+        "texto": "At høre og læse på samme tid er den ældste og mest effektive måde at lære udtale på. De ti stemmer er flersprogede og læser de 31 sprog efter deres egne regler, så en tekst på tysk lyder på tysk – ikke som tysk med engelsk accent. Ved 0,75× kan man høre hver stavelse; ved 1,5× trænes øret."
+      },
+      {
+        "titulo": "Ret det, du skriver",
+        "texto": "En sætning, man ikke kan sige højt, holder heller ikke på skrift. At høre sin egen tekst afslører gentagelserne, kommaerne på de forkerte steder og indskuddene, der aldrig slutter. Det er den korrektur, man lavede på trykkerierne, og den er gratis: Du åbner .docx-filen, trykker på play og hører, hvad du faktisk har skrevet – ikke det, du troede, du havde skrevet."
+      },
+      {
+        "titulo": "Studer med ørerne",
+        "texto": "Noterne til faget, kapitlet, der kommer til eksamen, artiklen på to hundrede sider. De sendes til trykkeriet om aftenen, og om morgenen er det en lydbog med kapitler, man kan høre i bussen. Genoptagelsen gemmer det præcise afsnit: Der skal ikke ledes efter noget."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Virker det med VoiceOver eller TalkBack slået til?",
+        "a": "Ja, og de står ikke i vejen for hinanden. En skærmlæser oplæser brugerfladen, så man kan betjene den; Yappy læser indholdet, så man kan lytte til det. De bruges samtidig: VoiceOver fører dig hen til afspilningsknappen, og derefter er det Yappys stemme, der læser bogen op."
+      },
+      {
+        "q": "Kan man bruge den uden at se på skærmen?",
+        "a": "Ja. På iPhone er der Siri-genveje (»Hej Siri, læs min udklipsmappe med Yappy«), handlingsknappen, styringen på låseskærmen og styringen fra hovedtelefonerne. På computeren er der tre tastaturgenveje: læs markeringen, læs udklipsmappen, hold pause. Appen ligger gemt i bakken."
+      },
+      {
+        "q": "Kan den læse skolens PDF'er og de bøger, jeg allerede har?",
+        "a": "Hvilken som helst PDF, EPUB, Word- eller ODT-fil, du kan åbne. Hvis PDF'en er skannet uden tekst, kører computerudgaven den først igennem lokal OCR, inden den læser den op; på mobil findes det endnu ikke. Bøger med DRM fra en butik kan ikke læses nogen steder, heller ikke her."
+      },
+      {
+        "q": "Hvad koster det at bruge til daglig?",
+        "a": "Intet. Ingen minuttæller eller tegntæller, ingen reklamer og ingen konto. Man kan lytte otte timer om dagen i årevis uden at betale en øre – og uden netforbindelse. Betalingsdelen tilføjer kun den bundløse knage, trykkeriet og broen, og kun på iPhone og iPad."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Historier til papegøjen: tekster i offentligt domæne til at prøve Yappy med",
+    "description": "Hele historier i offentligt domæne, klar til at dele med Yappy og lytte til i fuld længde. Ingen registrering og ingen downloads.",
+    "h1": "Historier til papegøjen.",
+    "entradilla": "Hele tekster, i offentligt domæne. Del denne side med Yappy, så læser papegøjen den op for dig.",
+    "dominio_publico": "Offentligt domæne."
+  },
+  "blog": {
+    "title": "Yappys blog: at lytte til det skrevne",
+    "description": "Hvordan man laver en PDF om til lyd, hvorfor en tekstlæser bør virke uden netforbindelse, hvordan man siger tal højt, og hvad vi lærte af at lave en app, der taler.",
+    "h1": "Lyt til det skrevne.",
+    "entradilla": "Håndværk, tricks og lidt historie om oplæsning. Hver artikel kan høres lige her, læst op af Yappys egen stemme.",
+    "escuchame": "Lyt til denne artikel",
+    "escuchame_nota": "Læst op af Yappy med stemmen {voz} i din browser.",
+    "vacio": "Der er endnu ingen artikler på dette sprog."
+  },
+  "convertir": {
+    "title": "Omdan enhver tekst til tale: PDF, EPUB, Word, artikler og videoer",
+    "description": "Seks måder at omsætte det, du læser, til naturlig tale. Det hele foregår på din egen enhed: PDF, EPUB, Word, artikler fra nettet, videoer og talebeskeder.",
+    "h1": "Konvertér",
+    "entradilla": "Ligegyldigt om det er en artikel, en bog, et dokument eller en optagelse. Yappy gør det til et manuskript og læser det højt, uden at filen forlader din enhed.",
+    "pasos_titulo": "I tre trin.",
+    "faq_titulo": "Spørgsmål om det her",
+    "otros_titulo": "Andre ting, den også læser",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "Konvertér PDF til lyd: få PDF'en læst højt, gratis",
+        "description": "Omsæt enhver PDF til naturlig tale, og lyt, mens du gør noget andet. Eller gem den som lydbog med kapitler. Intet lægges op i skyen, og der er ingen sidegrænse.",
+        "h1": "Lyt til dine PDF'er.",
+        "entradilla": "En videnskabelig artikel, en brugsanvisning, nogle noter, en kontrakt. Yappy åbner PDF'en, fjerner sidehoveder og gentagne sidetal, finder kapitlerne og læser det hele op med en naturlig stemme. Filen forlader ikke din enhed.",
+        "pasos": [
+          {
+            "titulo": "Del PDF'en",
+            "texto": "Fra Filer, Mail eller Safari: tryk på Del, og vælg Yappy. På computeren trækker du den ind i vinduet."
+          },
+          {
+            "titulo": "Vælg stemmen",
+            "texto": "Ti stemmer, 31 sprog. Ligger PDF'en på et andet sprog, genkender Yappy det selv."
+          },
+          {
+            "titulo": "Lyt eller gem",
+            "texto": "Tryk på play, eller send den i trykken. Så får du en lydbog med kapitler."
+          }
+        ],
+        "extra_titulo": "Scannede PDF'er",
+        "extra_texto": "Er PDF'en et foto af papiret uden tekst i sig, kører desktopversionen den først gennem en lokal OCR, inden den læser den op. Ikke på iPhone endnu.",
+        "faq": [
+          {
+            "q": "Er der en grænse for antal sider?",
+            "a": "Nej. En artikel på tre sider eller en afhandling på fire hundrede: PDF'en bliver gennemgået i sin helhed og læst op i sin helhed. Fordi det hele foregår på din enhed, er der ingen tegnkvota at bruge op og ingen regning, der skyder i vejret midt i kapitel syv."
+          },
+          {
+            "q": "Hvad nu, hvis PDF'en er en skanning uden tekst?",
+            "a": "Desktopversionen kører den gennem en lokal OCR, før den læser den op, og heller ikke dér forlader noget din computer. Ikke på iPhone endnu: er PDF'en et foto af papiret, kan telefonen ikke finde tekst at læse."
+          },
+          {
+            "q": "Fjerner den sidehoveder og sidenumre?",
+            "a": "Ja. Yappy finder det, der gentages på alle sider (sidehoved, sidefod, sidetal, tidsskriftets navn), og lader det ude af manuskriptet. Intet ødelægger en oplæsning mere end at høre »Kapitel 3, side 47« hvert halvandet minut."
+          },
+          {
+            "q": "Kan jeg lytte til ét enkelt kapitel?",
+            "a": "Ja. Yappy finder de rigtige titler i dokumentet og bygger et indeks, du kan navigere i. Fra biblioteket vælger du, hvilke kapitler du vil lytte til, og hvilke der skal sendes til trykkeriet. Lydbogen kommer med dem."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "Konverter EPUB til lydbog: din bog, læst op",
+        "description": "Konverter en EPUB til en lydbog med rigtige kapitler, lavet på din egen enhed. Ingen timebaseret abonnement, og bogen uploades ikke til nogen server.",
+        "h1": "Din EPUB, gjort til lydbog.",
+        "entradilla": "Bøgerne, du allerede har, med deres kapitler, læst op med en naturlig stemme. Du sætter den til at rendere, inden du går i seng, og om morgenen ligger den i dit bibliotek som en .m4b-fil, der åbner i enhver afspiller.",
+        "pasos": [
+          {
+            "titulo": "Del EPUB-filen",
+            "texto": "Fra Filer eller derfra, hvor du har den. Den kommer med sine kapitler allerede genkendt."
+          },
+          {
+            "titulo": "Bestil trykkeriet",
+            "texto": "Du vælger kapitler, stemme og hastighed. Papegøjen trykker den færdig, selv om du lukker appen."
+          },
+          {
+            "titulo": "Lyt til den, hvor du vil",
+            "texto": "Den ligger i biblioteket som en .m4b med bogmærker. Derfra deler du den til Filer, til Bøger eller hvor du vil."
+          }
+        ],
+        "extra_titulo": "Bøger med DRM",
+        "extra_texto": "Yappy læser de EPUB'er, du kan åbne. Bøger, der er beskyttet med en butiks DRM, kan ikke læses, hverken her eller noget andet sted.",
+        "faq": [
+          {
+            "q": "Beholder den bogens kapitler?",
+            "a": "Ja, og det er ægte kapitler, ikke mærker hvert tiende minut: De kommer fra EPUB'ens eget indeks. Den færdige .m4b navigeres kapitel for kapitel i enhver lydbogsafspiller, med omslag og genoptagelse."
+          },
+          {
+            "q": "Hvor lang tid tager en hel bog?",
+            "a": "Det afhænger af enheden og bogens størrelse, men det praktiske svar er: Sæt den i gang ved sengetid, og om morgenen er den færdig. Hvis du har broen, syntetiserer computeren den meget hurtigere og giver dig den tilbage på telefonen, færdig."
+          },
+          {
+            "q": "Og hvad med bøger med DRM?",
+            "a": "Yappy læser de EPUB'er, du kan åbne. Bøger, der er låst med en butiks DRM, kan ikke læses, hverken her eller noget andet sted: Den lås er ikke vores."
+          },
+          {
+            "q": "Hvor ender lydbogen?",
+            "a": "I Yappys bibliotek, som en ægte .m4b. Derfra deler du den til Filer, til Bøger eller til den afspiller, du allerede bruger. Filen er din: Hvis du sletter appen, bliver det, du har eksporteret, liggende, hvor du gemte det."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Hør et Word-dokument læst op: DOCX, ODT og RTF til lyd",
+        "description": "Word-, LibreOffice- og almindelige tekstdokumenter bliver til naturlig tale, så du kan korrekturlæse med øret. Alt foregår på din egen computer eller telefon.",
+        "h1": "Læs korrektur med øret.",
+        "entradilla": "At lytte til det, du selv har skrevet, er den bedste korrektur, der findes: Den sætning, du ikke kan sige højt, holder heller ikke på papiret. Yappy læser .docx, .odt, .rtf, .txt og Markdown – med overskrifter og rytme i behold.",
+        "pasos": [
+          {
+            "titulo": "Åbn dokumentet",
+            "texto": "Træk det ind i vinduet på computeren, eller del det fra telefonen."
+          },
+          {
+            "titulo": "Lyt afsnit for afsnit",
+            "texto": "Teksten lyser op, mens den læses op. Tryk, hvor du vil, for at springe."
+          },
+          {
+            "titulo": "Ret det, der knirker",
+            "texto": "Og lyt til det igen. På computeren kan hvert afsnit have sin egen stemme og sit eget tempo."
+          }
+        ],
+        "extra_titulo": "Også regneark og præsentationer",
+        "extra_texto": "Læser .pptx, .xlsx og .csv. På computeren udvides listen til LaTeX, reStructuredText, Org og et par stykker mere, hvis du har pandoc installeret.",
+        "faq": [
+          {
+            "q": "Hvilke tekstformater læses der præcist?",
+            "a": ".docx, .odt, .rtf, .txt og Markdown samt .pptx, .xlsx og .csv. På computeren udvides listen til LaTeX, reStructuredText, Org og et par stykker mere, hvis du har pandoc installeret."
+          },
+          {
+            "q": "Læser den også fodnoter og tabeller?",
+            "a": "Brødteksten læses op med sine overskrifter og i sin rækkefølge. Tabeller læses række for række – det eneste, man kan gøre ved en tabel, når den læses højt – og noterne står til sidst i deres sektion i stedet for at afbryde en sætning midt i."
+          },
+          {
+            "q": "Kan jeg give hvert afsnit sin egen stemme?",
+            "a": "Ja, på computeren: I afsnitseditoren kan du give hvert afsnit sin egen stemme, tempo og pause. Det er det, der gør en dialog, et interview eller et dokument på to sprog til at hænge sammen."
+          },
+          {
+            "q": "Kan det virkelig bruges til korrektur?",
+            "a": "Det er den bedste korrektur, der findes. Øret afslører, hvad øjet tilgiver: gentagelsen tre linjer tidligere, ledsætningen, der aldrig kommer i land, indskuddet, der har slugt verbet. Skru ned til 0,9×, lyt kapitlet igennem, og notér, hvor det knirker."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Artikler",
+        "title": "Lyt til artikler fra nettet: enhver webside, læst højt",
+        "description": "Del en side fra Safari, og Yappy læser den op, ren og skarp: uden menuer, uden bannere og uden sidefod. Siden besøges af din enhed, ikke af vores server.",
+        "h1": "Lyt til det, du gemte til senere.",
+        "entradilla": "Fanebladet, du lader stå åbent til senere. Del det med Yappy, og lyt til det, mens du vasker op. Siden gør rent hos sig selv: væk med menuer, bannere og sidefødder. Tilbage bliver prosaen med sine overskrifter og sin rytme.",
+        "pasos": [
+          {
+            "titulo": "Tryk på Del",
+            "texto": "I Safari, i nyhedsreaderen, i mailen: hvor der er et deleark, er der Yappy."
+          },
+          {
+            "titulo": "Renser sig selv",
+            "texto": "Udpakningen foregår på din enhed. Abonnerer du på et medie, tager den den artikel, du ser."
+          },
+          {
+            "titulo": "Sætter sig i køen",
+            "texto": "Og venter på, at du får hænderne fri."
+          }
+        ],
+        "extra_titulo": "Hvad der rammer nettet",
+        "extra_texto": "Kun besøget på den adresse, du har delt, udført af din egen enhed, ligesom browseren ville gøre. Der er ingen Yappy-server imellem, for der findes ingen Yappy-server.",
+        "faq": [
+          {
+            "q": "Virker det med de medier, jeg abonnerer på?",
+            "a": "Udpakningen laver din egen enhed med din session, så den tager artiklen, som du ser den i din browser. Kan du læse den, kan Yappy læse den op. Der er ingen mellemserver, der skal igennem betalingsmuren, for der er ingen server."
+          },
+          {
+            "q": "Hvad med sider, der kun loader med JavaScript?",
+            "a": "Nogle sider gør modstand: hvis teksten først dukker op, efter at siden har kørt et halvt bibliotek, kan Yappy stå tilbage med tomme hænder. Der er det hurtigste at markere teksten, kopiere den og dele den som ren tekst."
+          },
+          {
+            "q": "Gemmer den en historik over, hvad jeg læser?",
+            "a": "Kun på din enhed, så du kan fortsætte, hvor du slap. Intet af det rejser nogen steder hen, og hvert dokument har sin egen glem-funktion i biblioteket."
+          },
+          {
+            "q": "Læser den menuer, bannere og kommentarer?",
+            "a": "Nej. Siden gøres ren, før den når oplæseren: væk med menuer, bannere, sidefødder, deleknapper og kommentarfelter. Tilbage står prosaen med sine overskrifter og sin rytme."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Videoer",
+        "title": "Lyt til en video, som var den en artikel",
+        "description": "Yappy tager en videos transskription og læser den op som en artikel: uden at kigge på skærmen, i det tempo, du vil, og uden at bruge data på video.",
+        "h1": "Videoer som artikler.",
+        "entradilla": "En halv times video er ti minutters tekst, læst op i et godt tempo. Yappy tager transskriptionen og læser den op med en naturlig stemme, så du kan lytte, mens du går, og med slukket skærm.",
+        "pasos": [
+          {
+            "titulo": "Del linket",
+            "texto": "Fra videoappen eller browseren, via delearket."
+          },
+          {
+            "titulo": "Beholder ordene",
+            "texto": "Yappy tager videoens offentliggjorte transskription, ikke lyden."
+          },
+          {
+            "titulo": "Du lytter i dit eget tempo",
+            "texto": "Med den stemme, du vælger, og i det tempo, du vil. Også med låst skærm."
+          }
+        ],
+        "extra_titulo": "Hvis videoen ikke har en transskription",
+        "extra_texto": "Så er der intet at læse: Yappy arbejder med den tekst, der allerede er offentliggjort, og transskriberer ikke videoens lyd. På iPhone findes funktionen. På Android endnu ikke.",
+        "faq": [
+          {
+            "q": "Transskriberer Yappy videoens lyd?",
+            "a": "Nej. Yappy tager den transskription, der allerede er offentliggjort, og læser den op som en artikel. Det er hurtigt, det bruger ingen videodata, og det opvarmer ikke telefonen. Men det betyder også: Har videoen ingen transskription, er der intet at læse."
+          },
+          {
+            "q": "Og hvad hvis videoen ikke har en transskription?",
+            "a": "Så kan Yappy ikke gøre noget ved linket. Er videoen din egen, og har du filen, så del den som lyd. Så får det lokale øre fat i den og transskriberer den inde på selve enheden."
+          },
+          {
+            "q": "Virker det på alle videoplatforme?",
+            "a": "Der, hvor der findes en offentliggjort og tilgængelig transskription. På iPhone findes funktionen. I Android-versionen endnu ikke."
+          },
+          {
+            "q": "Bruger det data?",
+            "a": "Meget få: Der hentes en tekst, ikke en video. En halv times video er kun nogle få titals kilobyte transskription, og derefter klarer din enhed resten."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Stemmeoptagelser",
+        "title": "Lav stemmeoptagelser om til tekst på selve mobilen",
+        "description": "Yappy transskriberer optagelser og stemmenoter på din egen enhed. Intet uploades til nogen tjeneste. Bagefter kan appen læse transskriptionen op for dig.",
+        "h1": "Fra stemme til tekst – og tilbage igen.",
+        "entradilla": "Et optaget møde, en idé dikteret i bilen, gårsdagens undervisning. Yappy transskriberer det inde på din enhed med et lokalt øre og giver dig teksten, så du kan læse den, rette den eller høre den læst op med en anden stemme.",
+        "pasos": [
+          {
+            "titulo": "Del optagelsen",
+            "texto": "Fra Diktafon, Filer eller enhver app, der gemmer lyd."
+          },
+          {
+            "titulo": "Transskriberes indeni",
+            "texto": "Med en model, der kører på din enhed. Lyden forlader ikke telefonen."
+          },
+          {
+            "titulo": "Læs den, eller lyt til den",
+            "texto": "Den opbevares som ethvert andet dokument: Den kan læses, deles og læses højt igen."
+          }
+        ],
+        "extra_titulo": "Øret downloades separat",
+        "extra_texto": "Transskriptionen bruger en anden model end stemmen, og den downloades kun, hvis du bruger den.",
+        "faq": [
+          {
+            "q": "Hvilken model transskriberer?",
+            "a": "Parakeet TDT 0.6B v3 fra NVIDIA, under CC-BY-4.0-licensen, kører på din egen enhed. Modellen er en anden end stemmens: den ene lytter, den anden taler."
+          },
+          {
+            "q": "Forlader lyden min enhed?",
+            "a": "Nej. Optagelsen transskriberes lokalt, ligesom stemmen syntetiseres lokalt. Der findes ingen transskriptionstjeneste i skyen, ingen konto og ingen upload."
+          },
+          {
+            "q": "Hvilke sprog kan øret transskribere?",
+            "a": "Øret taler ikke så mange sprog som stemmen: det transskriberer de vigtigste europæiske sprog, ikke de 31, som Yappy kan læse. Til oplæsning: alle 31. Fra tale til tekst: den kortere liste."
+          },
+          {
+            "q": "Skal man downloade noget ekstra?",
+            "a": "Ja: øret downloades separat, og kun første gang, du transskriberer noget. Transskriberer du aldrig, tager det aldrig plads på din enhed."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Tekst til tale på {lengua}: få enhver tekst læst op",
+    "description": "Lyt til PDF, EPUB, Word og artikler på {lengua} med en naturlig stemme – på din egen enhed og uden netforbindelse. Ti stemmer, gratis og uden konto.",
+    "h1": "Tekst til tale på {lengua}.",
+    "entradilla": "Ti stemmer læser {lengua} efter sprogets egne regler: dets tal, datoer, ordenstal og forkortelser – ikke reglerne fra et andet sprog med lånt accent.",
+    "muestra": "En prøve",
+    "reglas_titulo": "Hvad tekstmotoren ved om {lengua}",
+    "todas": "De øvrige tredive sprog"
+  },
+  "vs": {
+    "titulo": "Yappy mod {nombre} – et hurtigt overblik",
+    "caracteristica": "Hvad",
+    "gratis": "Hvad man kan gøre gratis",
+    "precio": "Pris fra",
+    "local": "Stemmen dannes på din enhed",
+    "sin_cuenta": "Ingen konto eller e-mail",
+    "sin_conexion": "Virker uden internet",
+    "codigo_abierto": "Åben kildekode",
+    "tarifa": "Takst pr. tegn eller pr. time",
+    "idiomas": "Sprog",
+    "formatos": "Formater, den læser",
+    "audiolibro": "Lydbog med kapitler",
+    "escritorio": "Computer",
+    "yappy_gratis": "Lyt uden begrænsning; tre dokumenter ad gangen",
+    "yappy_precio": "0 €; abonnementet fra 3,99 € om måneden",
+    "gana_en": "Hvor {nombre} vinder",
+    "verificado": "Offentlige data, tjekket {fecha} på hvert produkts hjemmeside.",
+    "sin_verificar": "Priserne ændrer sig ofte: tjek dem, inden du beslutter dig.",
+    "ver_web": "Officiel hjemmeside"
+  },
+  "preguntas_comunes": {
+    "titulo": "Ofte stillede spørgsmål"
+  }
+}

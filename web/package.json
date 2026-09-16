@@ -16,7 +16,10 @@
     "muestras": "node herramientas/muestras.mjs",
     "og": "node herramientas/og.mjs",
     "iconos": "node herramientas/iconos.mjs",
-    "assets": "npm run capturas && npm run muestras && npm run og && npm run iconos"
+    "assets": "npm run capturas && npm run muestras && npm run og && npm run iconos",
+    "enlaces": "node herramientas/enlaces.mjs",
+    "mirar": "node herramientas/mirar.mjs",
+    "revisar": "npm run build && npm run verificar-i18n && npm run enlaces && npm run mirar"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",

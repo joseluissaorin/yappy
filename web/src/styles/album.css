@@ -205,8 +205,8 @@ a.hoja:active {
   pointer-events: none;
   z-index: 2;
 }
-.celo.izq { top: -13px; left: 8%; transform: rotate(-9deg); }
-.celo.der { top: -13px; right: 8%; transform: rotate(7deg); }
+.celo.izq { top: -13px; inset-inline-start: 8%; transform: rotate(-9deg); }
+.celo.der { top: -13px; inset-inline-end: 8%; transform: rotate(7deg); }
 
 /* ── La tecla ────────────────────────────────────────────────────────
    Lo que se pulsa SUBE. La grande es coral; la de la tienda, negra. */

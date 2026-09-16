@@ -445,7 +445,8 @@
         "q": "Why is it free on the computer and on Android?",
         "a": "Because the wind-up key only exists on iPhone and iPad. On the desktop, and on the Android build when it ships, the press, the bottomless perch and the bridge come unlocked. That is not a launch offer: there is simply nothing to charge for there."
       }
-    ]
+    ],
+    "una_a_una": "one by one, with their numbers"
   },
   "voces": {
     "title": "Yappy's voices: ten polyglot birds across 31 languages",
@@ -971,7 +972,8 @@
     "gana_en": "Where {nombre} wins",
     "verificado": "Public data checked in {fecha} on each product's own site.",
     "sin_verificar": "Prices change often: check them before deciding.",
-    "ver_web": "Official site"
+    "ver_web": "Official site",
+    "frente_a": "Against {nombre}"
   },
   "preguntas_comunes": {
     "titulo": "Frequently asked questions"
