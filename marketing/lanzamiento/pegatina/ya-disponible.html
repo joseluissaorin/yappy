@@ -13,8 +13,8 @@
     font-size: 236px; line-height: 1; letter-spacing: -0.03em; white-space: nowrap; }
   #pega .palabra i { display: inline-block; font-style: normal; transform-origin: 50% 80%; }
   #pega .palabra .hueco { display: inline-block; width: 0.28em; }
-  #pega .datos { position: absolute; left: 70px; bottom: 62px; font-family: "Mono"; font-weight: 700; font-size: 46px;
-    letter-spacing: 0.12em; color: #82755a; line-height: 1; }
+  #pega .datos { position: absolute; left: 70px; bottom: 56px; font-family: "Mono"; font-weight: 700; font-size: 62px;
+    letter-spacing: 0.08em; color: #2b2418; line-height: 1; }
   #pega .movil { position: absolute; right: 64px; bottom: 30px; width: 118px; height: 184px; }
   html, body { margin: 0; background: transparent; width: 2880px; height: 2160px; overflow: hidden; }
   #escena { position: relative; width: 2880px; height: 2160px; }
@@ -143,8 +143,8 @@ const pega = document.createElement("div"); pega.id = "pega";
 // para que la palabra siga cabiendo en la misma pegatina, y el resto es idéntico.
 const LANG = q.get("lang") || "es";
 const TEXTOS = {
-  es: { palabra: "ya disponible", datos: "EN iPHONE Y iPAD", cuerpo: 188 },
-  en: { palabra: "out now",       datos: "ON iPHONE AND iPAD", cuerpo: 236 },
+  es: { palabra: "ya disponible", datos: "APP STORE · iPHONE Y iPAD", cuerpo: 188 },
+  en: { palabra: "out now",       datos: "APP STORE · iPHONE AND iPAD", cuerpo: 236 },
 };
 const TX = TEXTOS[LANG] || TEXTOS.es;
 pega.innerHTML = `<div class="parche"></div>

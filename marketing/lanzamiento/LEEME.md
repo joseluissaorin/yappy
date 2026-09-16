@@ -16,7 +16,8 @@ Ulysses → Vídeos → Yappy lanzamiento. Los renders grandes (`out/`) no van a
 | Lo demás que lee la app en el vídeo (Ibn Zamrak, Agustín, la fecha en seis lenguas, los commits, «El cable tiraba…») | `voz/app/*.wav` | ver el bloque `S …` en el historial o repetir con `yappy-cli --voice James --lang es --text …` |
 | Rótulos con alfa (nota de rescate, gritos QUIERO LEER · Y MOVERME · A LA VEZ, sellos) | `rotulos/rotulo.html` → `out/rotulo-*-alfa.mov` | `?tipo=rescate|grito|sello&texto=…&dur=N` · 1920×1080 de diseño, `--escala 2 --alfa` |
 | Milán, 384 (dos actos: 0b con Agustín y la tarjeta; 6 con el loro que repite) | `milan/milan.html` → `out/milan-acto1-0b.mp4` (45 s) · `out/milan-acto2-6.mp4` (60 s, con la cita de James a los 22 s) | `?acto=1|2` y los momentos por URL (`entra`, `pagina`, `tarjeta`, `loro`, `habla`, `ladea`) |
-| Anuncio de 53 s: el teaser con el final nuevo | `out/anuncio-ya-disponible-es.mp4` | el teaser hasta 39,67 s + su último fotograma limpio congelado con un zoom lento + la pegatina con alfa; el audio del teaser entero (el silbido ya cae en su sitio) |
+| Crítica con Gemini (vídeo a N fps + audio, prompt de director; guarda la crítica en Markdown) | `herramientas/critica-gemini.py` → `out/critica-gemini-*.md` | `python3 herramientas/critica-gemini.py video-1080.mp4 --fps 5 --modelo gemini-pro-latest [--guion texto.md] [--prompt p.txt] -o critica.md` (subir la copia a 1080p, no el 4K) |
+| Anuncio de 50 s: el teaser con el final nuevo | `out/anuncio-ya-disponible-es.mp4` | el teaser hasta 39,67 s + mosaico 3×2 de los seis planos crudos (`out/mosaico-teaser.mp4`) + la pegatina con alfa recortada a 10,6 s; el audio del teaser con fundido |
 
 ## Trampas que ya costaron tiempo
 
@@ -26,3 +27,4 @@ Ulysses → Vídeos → Yappy lanzamiento. Los renders grandes (`out/`) no van a
 - El contenido de un «recuerdo» (óvalo recortado) hay que **trasladarlo dentro del óvalo**: `recuerdo(cx, cy, rx, ry, contenido, k, ox, oy, escala)`.
 - Puppeteer global no trae Chrome: `executablePath` apunta al Google Chrome de `/Applications` (o `CHROME=…`).
 - La ficha de App Store se publica con `node scripts/asc-helper.mjs release 1.0.0` (nuevo subcomando: `appStoreVersionReleaseRequests`; solo desde `PENDING_DEVELOPER_RELEASE`).
+- **Gemini como crítico**: pedir `fps=5` en `video_metadata` (por defecto muestrea a 1 fps y no ve el movimiento). Un cuento de 4 min a 5 fps son ~85k tokens. Contarle las decisiones deliberadas (voz sintética, karaoke) o las tomará por errores.

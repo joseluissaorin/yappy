@@ -43,10 +43,12 @@ const easeOut = (k) => 1 - Math.pow(1 - k, 3);
 const easeIn = (k) => k * k * k;
 function rng(seed) { let s = (seed * 9301 + 49297) % 233280; return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; }; }
 const HIERVE = Math.floor(T * 8); // la línea hierve a 8 imágenes por segundo
+let BOIL = 1; // factor del hervor: baja cuando el motor se apaga (se fija más abajo, cuando se conoce MOTOR)
 
 // Un trazo a mano: la polilínea se perturba con un ruido determinista.
 function mano(puntos, amp = 1.6, seed = 1, cerrar = false) {
   const r = rng(seed * 7919 + HIERVE * 131);
+  amp *= BOIL;
   const p = puntos.map(([x, y]) => [x + (r() - 0.5) * 2 * amp, y + (r() - 0.5) * 2 * amp]);
   let d = `M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`;
   for (let i = 1; i < p.length; i++) {
@@ -96,6 +98,7 @@ for (const v of beats.filter((x) => x.voz === "lorca")) {
 const b27 = beats.find((x) => x.id === "b27");
 const T_APAGADO = b27.inicio + (b27.fin - b27.inicio) * 0.58;
 const MOTOR = T < T_APAGADO ? 1 : 0;
+BOIL = MOTOR ? 1 : 0.35; // con el motor apagado, la línea casi no hierve: se nota la quietud
 const vib = (hz, amp, fase = 0) => MOTOR * amp * Math.sin(T * hz * Math.PI * 2 + fase) * (0.7 + 0.3 * Math.sin(T * 1.3 + fase));
 // La respiración de las dos: el cable «tiraba un poco cada vez que respirábamos»
 const RESP = Math.sin(T * 2 * Math.PI / 3.6); // ciclo de 3,6 s
@@ -167,19 +170,22 @@ function placa(x, y, nombre, escala = 1, rot = -2) {
     texto(w / 2, h * 0.68, nombre, { size: 24 * escala, fam: "Mono", peso: 700, color: ULTRA, espaciado: 1 }) + "</g>";
 }
 // Una cabeza vista de espaldas / tres cuartos. `quien`: "ella" (pelo suelto, corto) o "yo" (coleta)
-function cabeza(x, y, quien, { inclina = 0, escala = 1, mirandoAbajo = 0, dormida = 0 } = {}) {
+function cabeza(x, y, quien, { inclina = 0, escala = 1, mirandoAbajo = 0, dormida = 0, ladoOreja = null } = {}) {
   const s = escala, seed = quien === "ella" ? 5 : 9;
   const col = quien === "ella" ? ULTRA : CORAL;
-  let g = `<g transform="translate(${x} ${y}) rotate(${inclina}) scale(${s})">`;
-  // hombros/camiseta
-  g += recorte(mano([[-95, 150], [-70, 92], [-30, 74], [30, 74], [70, 92], [95, 150], [-95, 150]], 2, seed + 1, true), col, { sombra: 6 });
+  const lado = ladoOreja ?? (quien === "ella" ? 1 : -1);
+  let g = `<g transform="translate(${x} ${y}) scale(${s})">`;
+  // hombros/camiseta: quietos (solo se inclinan una cuarta parte)
+  g += `<g transform="rotate(${inclina * 0.25} 0 150)">` + recorte(mano([[-95, 150], [-70, 92], [-30, 74], [30, 74], [70, 92], [95, 150], [-95, 150]], 2, seed + 1, true), col, { sombra: 6 }) + `</g>`;
+  // la cabeza y el cuello pivotan en la base del cuello
+  g += `<g transform="rotate(${inclina} 0 82)">`;
   // cuello
   g += recorte(rect(-16, 42, 32, 40, seed + 2, 1.2), PIEL2, { sombra: 2 });
   // cabeza
   g += recorte(ovalo(0, 0, 52, 62, seed + 3, 1.6), PIEL, { sombra: 5 });
   // pelo
   if (quien === "ella") {
-    g += recorte(mano([[-58, -10], [-54, -46], [-30, -66], [0, -70], [30, -66], [54, -46], [58, -12], [56, 40], [44, 46], [40, 6], [-40, 6], [-44, 46], [-56, 40], [-58, -10]], 2, seed + 4, true), TINTA, { sombra: 4 });
+    g += recorte(mano([[-60, -10], [-56, -46], [-30, -66], [0, -70], [30, -66], [56, -46], [60, -12], [64, 60], [58, 110 + RESP * 2], [40, 116], [34, 40], [-34, 40], [-40, 116], [-58, 110 + RESP * 2], [-64, 60], [-60, -10]], 2, seed + 4, true), TINTA, { sombra: 4 });
   } else {
     g += recorte(mano([[-56, -14], [-52, -48], [-28, -66], [0, -70], [28, -66], [52, -48], [56, -14], [52, 10], [-52, 10], [-56, -14]], 2, seed + 4, true), TINTA, { sombra: 4 });
     // la coleta, con goma coral, que se mueve con la vibración
@@ -188,8 +194,8 @@ function cabeza(x, y, quien, { inclina = 0, escala = 1, mirandoAbajo = 0, dormid
     g += `<ellipse cx="${cx}" cy="${cy + 6}" rx="9" ry="6" fill="${CORAL}"/>`;
   }
   // la oreja (vista de tres cuartos: solo una) con el auricular
-  g += recorte(ovalo(quien === "ella" ? 48 : -48, 4, 10, 15, seed + 6, 1, 12), PIEL2, { sombra: 1 });
-  g += "</g>";
+  g += recorte(ovalo(48 * lado, 4, 10, 15, seed + 6, 1, 12), PIEL2, { sombra: 1 });
+  g += "</g></g>";
   return g;
 }
 // El cable: de la oreja de una a la oreja de la otra, con el móvil colgando de la mano de ella
@@ -218,7 +224,7 @@ function mano_(x, y, rot = 0, escala = 1) {
     linea(mano([[-14, -30], [-12, 10]], 0.6, 48), PIEL2, 2, 0.8) + linea(mano([[2, -34], [4, 10]], 0.6, 49), PIEL2, 2, 0.8) + linea(mano([[18, -28], [18, 10]], 0.6, 50), PIEL2, 2, 0.8) + "</g>";
 }
 // El interior del autobús: asientos, barra, ventana con casas pasando
-function interior(desplaza, { ventanaX = 1180, ventanaW = 640, luzMejilla = 0 } = {}) {
+function interior(desplaza, { ventanaX = 1180, ventanaW = 640, luzMejilla = 0, dentro = "" } = {}) {
   let g = "";
   // pared crema del autobús con vibración
   g += `<rect x="0" y="0" width="${W}" height="${H}" fill="${PAPEL2}" opacity="0.55"/>`;
@@ -229,6 +235,7 @@ function interior(desplaza, { ventanaX = 1180, ventanaW = 640, luzMejilla = 0 } 
   g += `<g transform="translate(0 0)">${casas(desplaza, 470, 0.9, 7, 10)}</g>`;
   // el suelo de la calle (cuesta)
   g += recorte(mano([[-20, 470], [ventanaW + 20, 470], [ventanaW + 20, 400 + 20], [-20, 400 + 70], [-20, 470]], 2, 77, true), SUAVE, { sombra: 0, opacidad: 0.35 });
+  g += dentro; // lo que pasa por la calle (el poste de la parada), en coordenadas de la ventana
   g += `</g>`;
   // marco de la ventana
   g += linea(rect(0, 0, ventanaW, 460, 78, 1.5), TINTA, 6);
@@ -257,9 +264,10 @@ function senora(x, y, escala = 1, { comiendo = 1 } = {}) {
   g += recorte(mano([[-60, -6], [-56, -46], [-30, -68], [0, -74], [30, -68], [56, -46], [60, -6], [50, 20], [-50, 20], [-60, -6]], 2, 103, true), "#b8ad9a", { sombra: 4 });
   g += recorte(ovalo(0, -70, 24, 20, 104, 1.5, 14), "#b8ad9a", { sombra: 3 });
   // la bolsa de pipas, a rayas, con la mano
-  const bx = 70 + Math.sin(T * 1.7) * 3 * comiendo, by = 120;
-  g += recorte(mano([[bx - 26, by], [bx + 26, by], [bx + 30, by + 60], [bx - 30, by + 60], [bx - 26, by]], 1.5, 105, true), PAPEL, { sombra: 4, trazo: CORAL, grosor: 3 });
-  for (let i = 0; i < 4; i++) g += `<rect x="${bx - 22 + i * 12}" y="${by + 6}" width="5" height="48" fill="${CORAL}" opacity="0.7"/>`;
+  const bx = 96 + Math.sin(T * 1.7) * 4 * comiendo, by = 30 - Math.abs(Math.sin(T * 1.7)) * 10 * comiendo; // en alto, junto al hombro: se ve por encima del respaldo
+  g += recorte(mano([[bx - 30, by + 4], [bx - 18, by - 8], [bx - 4, by + 2], [bx + 10, by - 10], [bx + 24, by], [bx + 34, by + 8], [bx + 30, by + 40], [bx + 34, by + 66], [bx - 34, by + 70], [bx - 32, by + 40], [bx - 30, by + 4]], 3, 105, true), PAPEL, { sombra: 4, trazo: CORAL, grosor: 3 });
+  g += `<text x="${bx}" y="${by + 48}" font-family="Mono" font-weight="700" font-size="15" fill="${CORAL}" text-anchor="middle" letter-spacing="1">PIPAS</text>`;
+  for (let i = 0; i < 5; i++) g += `<ellipse cx="${bx - 16 + i * 8}" cy="${by - 2 - (i % 2) * 5}" rx="3" ry="5" fill="${TINTA}" transform="rotate(${-20 + i * 10} ${bx - 16 + i * 8} ${by - 2})"/>`;
   g += "</g>";
   return g;
 }
@@ -281,7 +289,7 @@ function verso(txt, k, y = 300, size = 78) {
 function lavadoVerde(k, cx = 900, cy = 640) {
   if (k <= 0) return "";
   const r = lerp(0, 2600, easeOut(k));
-  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${VERDE2}" opacity="${0.32 * k}"/><rect width="${W}" height="${H}" fill="${VERDE}" opacity="${0.06 * k}"/>`;
+  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${VERDE2}" opacity="${0.16 * k}"/><rect width="${W}" height="${H}" fill="${VERDE}" opacity="${0.025 * k}"/>`;
 }
 // Un recuerdo: un óvalo de papel con otra escena dentro
 function recuerdo(cx, cy, rx, ry, contenido, k = 1, ox = 960, oy = 540, es = 0.6) {
@@ -302,7 +310,7 @@ function karaoke() {
   ks.forEach((w) => {
     const ancho = w.p.length * size * 0.55;
     const k = tramo(T, w.t, w.h);
-    if (k > 0) g += `<rect x="${x - 6}" y="${y - size * 0.78}" width="${(ancho + 4) * k}" height="${size * 1.0}" rx="8" fill="${DORADO}" opacity="0.42"/>`;
+    if (k > 0) g += `<rect x="${x - 4}" y="${y - size * 0.42}" width="${(ancho + 4) * k}" height="${size * 0.62}" rx="6" fill="${DORADO}" opacity="${T <= w.h + 0.15 ? 0.55 : 0.28}"/>`;
     g += texto(x, y, w.p, { size, peso: 500, ancla: "start", color: T >= w.t ? TINTA : SUAVE });
     x += ancho + size * 0.55;
   });
@@ -343,36 +351,40 @@ function escSubida() {
   g += `<g transform="rotate(-8.5 ${bx + 230} ${by + 60})">${autobus(bx, by, 1.6)}</g>`;
   return g;
 }
-function escInterior({ tension = 0.5, luz = 1, cabezasJuntas = 0, inclinaElla = 0, inclinaYo = 0, dormida = 0, luzMejilla = 0, senoraSi = true, zoom = 1, cx = 960, cy = 620, desplazaRitmo = 60 } = {}) {
+function escInterior({ tension = 0.5, luz = 1, cabezasJuntas = 0, inclinaElla = 0, inclinaYo = 0, dormida = 0, luzMejilla = 0, senoraSi = true, zoom = 1, cx = 960, cy = 620, desplazaRitmo = 60, dentro = "", respira = 1 } = {}) {
   let g = cielo();
   const desplaza = (T - primeroDe("cable").inicio) * desplazaRitmo * (MOTOR ? 1 : 0) + (MOTOR ? 0 : (T_APAGADO - primeroDe("cable").inicio) * desplazaRitmo);
   g += `<g transform="translate(${cx} ${cy}) scale(${zoom}) translate(${-cx} ${-cy})">`;
-  g += interior(desplaza, { luzMejilla });
+  g += interior(desplaza, { luzMejilla, dentro });
   if (senoraSi) g += senora(380, 560 + vib(12, 1.2, 2), 0.95);
   g += asientos().replace(/<g/, "<g"); // los asientos van por delante de la señora pero detrás de ellas
   // las dos: ella a la izquierda (móvil), yo a la derecha (coleta). Se acercan con cabezasJuntas.
   const sep = lerp(300, 168, cabezasJuntas);
-  const ex = 960 - sep / 2, yx = 960 + sep / 2, yb = 560 + vib(12, 1.6) - dormida * 0;
-  const ellaY = yb + inclinaElla * 0 + dormida * 22;
-  g += cabeza(ex, ellaY, "ella", { inclina: inclinaElla + dormida * 16, escala: 1.55 });
-  g += cabeza(yx, yb, "yo", { inclina: inclinaYo, escala: 1.55 });
-  // el cable: de la oreja derecha de ella (mira a la derecha: oreja visible en +48) a la oreja izquierda de yo (-48)
-  const oa = [ex + 48 * 1.55 * Math.cos(inclinaElla * Math.PI / 180) - 4, ellaY + 4 * 1.55 + 48 * 1.55 * Math.sin((inclinaElla + dormida * 16) * Math.PI / 180)];
-  const ob = [yx - 48 * 1.55, yb + 4 * 1.55];
-  const tensionReal = clamp(tension + RESP * 0.08, 0, 1);
+  // ella a la derecha (vemos su oído IZQUIERDO: «se quedó el izquierdo»); la narradora a la izquierda (su oído DERECHO)
+  const ex = 960 + sep / 2, yx = 960 - sep / 2, yb = 560 + vib(12, 1.6) + RESP * 3 * respira;
+  const ellaY = yb + dormida * 22 - RESP * 1.5 * respira;
+  const incE = -(inclinaElla + dormida * 16); // inclinarse hacia la narradora es ahora hacia la izquierda
+  g += cabeza(yx, yb, "yo", { inclina: -inclinaYo, escala: 1.55, ladoOreja: 1 });
+  g += cabeza(ex, ellaY, "ella", { inclina: incE, escala: 1.55, ladoOreja: -1 });
+  // el cable: del oído izquierdo de ella (-48, girado con su cabeza sobre la base del cuello) al oído derecho de la narradora (+48)
+  const a0 = incE * Math.PI / 180, px0 = -48 * 1.55, py0 = (4 - 82) * 1.55;
+  const oa = [ex + px0 * Math.cos(a0) - py0 * Math.sin(a0), ellaY + 82 * 1.55 + px0 * Math.sin(a0) + py0 * Math.cos(a0)];
+  const ob = [yx + 48 * 1.55, yb + 4 * 1.55];
+  const tensionReal = clamp(tension + RESP * 0.08 * respira, 0, 1);
   g += cable(oa, ob, tensionReal, 31);
-  // el móvil en la mano de ella, abajo a la izquierda, bajado
-  const mx = ex - 70, my = 900;
-  g += mano_(mx + 6, my + 60, -10, 1.5);
-  g += movil(mx, my, luz, -10, 1.3);
+  // el brazo de ella baja del hombro a la mano; el móvil, en la mano, bajado
+  const mx = ex + 96, my = ellaY + 262 + RESP * 2;
+  g += recorte(mano([[ex + 70, ellaY + 160], [ex + 130, ellaY + 170], [mx + 24, my + 30], [mx - 30, my + 40], [ex + 70, ellaY + 160]], 2, 61, true), ULTRA, { sombra: 5 });
+  g += mano_(mx - 4, my + 52, 10, 1.4);
+  g += movil(mx, my, luz, 10, 1.2);
   g += "</g>";
   return g;
 }
 function escVerso(id, txt, fondoFn) {
   const v = beats.find((x) => x.id === id);
   const k = tramo(T, v.inicio, v.fin - 0.2); // se escribe mientras se dice
-  let g = `<g opacity="${(1 - 0.5 * VERDEK).toFixed(3)}">${fondoFn()}</g>`;
-  g += lavadoVerde(VERDEK, 690, 900);
+  let g = `<g opacity="${(1 - 0.28 * VERDEK).toFixed(3)}">${fondoFn()}</g>`;
+  g += lavadoVerde(VERDEK, 1230, 860);
   g += verso(txt, k);
   return g;
 }
@@ -416,6 +428,12 @@ function ojosDePlata(k) {
   for (let i = 0; i < 9; i++) g += linea(mano([[560 + i * 100, 160], [540 + i * 100 + Math.sin(i) * 30, 320]], 2, 390 + i), VERDE, 8, 0.7);
   return g + "</g>";
 }
+function motasDePlata(k) {
+  // «ojos de fría plata»: unas motas de papel claro que caen despacio, nada más
+  let g = `<g opacity="${k}">`;
+  for (let i = 0; i < 14; i++) { const r = rng(440 + i); const x = r() * W, y = ((r() * H + T * 26) % (H + 40)) - 20; g += `<circle cx="${x}" cy="${y}" r="${4 + r() * 5}" fill="${PAPEL}" stroke="${VERDE}" stroke-width="1.5" opacity="0.8"/>`; }
+  return g + "</g>";
+}
 function ramasViento(k) {
   let g = `<g opacity="${k}">`;
   for (let i = 0; i < 7; i++) {
@@ -443,10 +461,12 @@ switch (esc) {
     const k = tramo(T, t0, t0 + 8);
     const junta = easeOut(tramo(T, t0 + 10, t0 + 16));
     const luz = tramo(T, beats.find((x) => x.id === "b09").inicio + 1.0, beats.find((x) => x.id === "b09").inicio + 1.8);
-    svg = escInterior({ tension: lerp(0.1, 0.72, k), cabezasJuntas: junta, luz: luz * 0.9, luzMejilla: 0.3 });
-    // el nudo del cable, al principio, cerca de la boca de ella
+    const tiron = (k > 0.58 && k < 0.64) ? -9 : (k >= 0.64 && k < 0.70 ? 4 : 0); // anticipación (atrás) y snap cuando el nudo cede
+    const agacha = (k < 1 ? 12 * Math.sin(Math.min(1, k * 1.6) * Math.PI) : 0) + tiron; // baja la cabeza al nudo y la vuelve a subir
+    svg = escInterior({ tension: lerp(0.1, 0.72, k), cabezasJuntas: junta, luz: luz * 0.9, luzMejilla: 0.3, inclinaElla: agacha });
+    // el nudo del cable, al principio, junto a la barbilla de ella (lo desenreda con los dientes)
     if (k < 1) {
-      const kk = 1 - k, cx = 760, cy = 700;
+      const kk = 1 - k, cx = 960 + 150 - 30, cy = 560 + 100 + agacha * 3;
       const pts = []; for (let i = 0; i < 26; i++) { const a = i * 0.9; pts.push([cx + Math.cos(a * 1.3) * 40 * kk + i * 3 * (1 - kk), cy + Math.sin(a * 1.7) * 26 * kk]); }
       svg += linea(mano(pts, 1, 500), TINTA, 2.5, kk);
     }
@@ -465,7 +485,7 @@ switch (esc) {
   case "apoyo": {
     // se apoya un poco más; el recuerdo de anoche (la cama, la luz apagada) mientras lo cuenta
     const t0 = primeroDe("apoyo").inicio;
-    const apoya = easeOut(tramo(T, t0, t0 + 3));
+    const ua = T - t0, apoya = ua < 0 ? 0 : (ua < 2.2 ? easeOut(ua / 2.2) * 1.12 : 1 + 0.12 * Math.exp(-(ua - 2.2) * 4) * Math.cos((ua - 2.2) * 11)); // llega, se pasa un poco y se asienta
     const b14 = beats.find((x) => x.id === "b14"), b16 = beats.find((x) => x.id === "b16");
     const kr = tramo(T, b14.inicio + 1.5, b14.inicio + 2.5) * (1 - tramo(T, b16.fin - 0.3, b16.fin + 0.6));
     svg = escInterior({ tension: 0.6, cabezasJuntas: 1, inclinaElla: 7 * apoya, luz: 0.9, luzMejilla: 0.6, zoom: 1.08, cy: 640 });
@@ -474,22 +494,20 @@ switch (esc) {
       recorte(mano([[300, 720], [1300, 720], [1300, 820], [300, 820], [300, 720]], 2, 600, true), "#3a3227", { sombra: 0 }) +
       recorte(ovalo(560, 700, 60, 44, 601, 2), "#4a4034", { sombra: 0 }) +
       `<circle cx="1000" cy="690" r="60" fill="${DORADO}" opacity="0.18"/><rect x="980" y="660" width="40" height="70" rx="6" fill="${PAPEL}" opacity="0.85"/>`;
-    svg += recuerdo(1500, 330, 300, 190, cama, kr, 800, 740, 0.62);
-    if (kr > 0) svg += texto(1500, 560, "anoche", { size: 30, fam: "Mono", peso: 700, color: SUAVE, espaciado: 3, opacidad: kr });
     break;
   }
   case "baranda": svg = escVerso("v03", "Con la sombra en la cintura, ella sueña en su baranda.", () => escInterior({ tension: 0.6, cabezasJuntas: 1, inclinaElla: 7, luz: 0.9, luzMejilla: 0.5, zoom: 1.08, cy: 640 }) + baranda(VERDEK)); break;
   case "parada": {
     // pasa la parada por la ventana y ninguna dice nada; el cable tira con la respiración
     const t0 = primeroDe("parada").inicio;
-    svg = escInterior({ tension: 0.62, cabezasJuntas: 1, inclinaElla: 7, luz: 0.85, luzMejilla: 0.4, zoom: 1.08, cy: 640 });
-    // el poste de la parada, pasando por la ventana (de derecha a izquierda), dentro del marco de la ventana
-    const px = 1180 + 640 + 80 - (T - t0 - 2.5) * 110;
-    if (px > 1150 && px < 1900) {
-      svg += `<g transform="translate(${px} ${160 + vib(13, 0.9, 1)})"><clipPath id="vp"><rect x="${1180 - px}" y="0" width="640" height="460"/></clipPath><g clip-path="url(#vp)">` +
-        linea(mano([[0, 440], [0, 120]], 1, 700), TINTA, 8) + recorte(rect(-58, 90, 116, 70, 701, 1.5), PAPEL, { sombra: 4, trazo: CORAL, grosor: 4 }) +
-        texto(0, 138, "PARADA", { size: 24, fam: "Mono", peso: 700, color: CORAL, espaciado: 2 }) + `</g></g>`;
+    // el poste de la parada pasa por la ventana (de derecha a izquierda), recortado por el cristal
+    const px = 640 + 80 - (T - t0 - 2.5) * 110; // coordenadas de la ventana (0..640)
+    let poste = "";
+    if (px > -80 && px < 720) {
+      poste = `<g transform="translate(${px} 0)">` + linea(mano([[0, 450], [0, 120]], 1, 700), TINTA, 8) + recorte(rect(-58, 90, 116, 70, 701, 1.5), PAPEL, { sombra: 4, trazo: CORAL, grosor: 4 }) +
+        texto(0, 138, "PARADA", { size: 24, fam: "Mono", peso: 700, color: CORAL, espaciado: 2 }) + `</g>`;
     }
+    svg = escInterior({ tension: 0.62, cabezasJuntas: 1, inclinaElla: 7, luz: 0.85, luzMejilla: 0.4, zoom: 1.08, cy: 640, dentro: poste });
     break;
   }
   case "secreto": {
@@ -510,7 +528,7 @@ switch (esc) {
     if (kr > 0) svg += texto(440, 580, "segundo · el patio", { size: 30, fam: "Mono", peso: 700, color: SUAVE, espaciado: 3, opacidad: kr });
     break;
   }
-  case "plata": svg = escVerso("v04", "Verde carne, pelo verde, con ojos de fría plata.", () => escInterior({ tension: 0.55, cabezasJuntas: 1, inclinaElla: 8, inclinaYo: -5, luz: 0.8, luzMejilla: 0.2, zoom: 1.14, cy: 650 }) + ojosDePlata(VERDEK)); break;
+  case "plata": svg = escVerso("v04", "Verde carne, pelo verde, con ojos de fría plata.", () => escInterior({ tension: 0.55, cabezasJuntas: 1, inclinaElla: 8, inclinaYo: -5, luz: 0.8, luzMejilla: 0.2, zoom: 1.14, cy: 650 }) + motasDePlata(VERDEK)); break;
   case "final-parada": {
     // exterior: el autobús para en lo alto, donde ya no hay más calle. Se baja la señora. El motor se apaga: el papel deja de vibrar.
     const t0 = primeroDe("final-parada").inicio;
@@ -526,7 +544,7 @@ switch (esc) {
     const bajaSenora = tramo(T, t0 + 8.5, t0 + 12.5);
     g += `<g transform="rotate(-8.5 ${bx + 230} ${by + 60})">${autobus(bx, by, 1.6, { puertaAbierta: tramo(T, t0 + 6.5, t0 + 8), luces: 1 - frena * 0.5, quien: true })}</g>`;
     // la señora baja y se aleja con la bolsa
-    if (bajaSenora > 0) { const sx = bx + 700 + bajaSenora * 260, sy = by + 20 - bajaSenora * 60; g += `<g transform="translate(${sx} ${sy}) scale(${0.62 - bajaSenora * 0.12})">${senora(0, 0, 1, { comiendo: 0 })}</g>`; }
+    if (bajaSenora > 0) { const paso = Math.abs(Math.sin(T * Math.PI * 2)) * 5, esc_ = 0.62 - bajaSenora * 0.12, sx = bx + 760 + bajaSenora * 330; const suelo = 900 - (sx + 40) * (260 / 1540); const sy = suelo - 170 * esc_ - paso; g += `<g opacity="${tramo(bajaSenora, 0, 0.15)}" transform="translate(${sx} ${sy}) scale(${esc_})">${senora(0, 0, 1, { comiendo: 0 })}</g>`; }
     // el motor se apaga: una nota que se cae (el humito del tubo deja de salir)
     if (MOTOR) { for (let i = 0; i < 3; i++) { const k = ((T * 0.7 + i / 3) % 1); g += `<circle cx="${bx - 20 - k * 60}" cy="${by + 100 - k * 90}" r="${8 + k * 14}" fill="${SUAVE}" opacity="${0.3 * (1 - k)}"/>`; } }
     else { const ka = tramo(T, T_APAGADO, T_APAGADO + 1.2); g += texto(bx + 230, by - 60, "…", { size: 80, peso: 300, color: SUAVE, opacidad: 0.7 * ka }); }
@@ -543,19 +561,19 @@ switch (esc) {
     // el último verso, muy tenue, como desde el auricular
     const v5 = beats.find((x) => x.id === "v05");
     const kv = tramo(T, v5.inicio, v5.fin - 0.2);
-    if (T > v5.inicio - 0.5) { svg += lavadoVerde(VERDEK * 0.45, 700, 900); svg += `<g opacity="0.75">${verso("Verde que te quiero verde.", kv, 300, 60)}</g>`; }
+    if (T > v5.inicio - 0.5) { svg += lavadoVerde(VERDEK * 0.45, 1230, 860); svg += `<g opacity="0.75">${verso("Verde que te quiero verde.", kv, 300, 60)}</g>`; }
     break;
   }
   case "hombro": {
     // muy cerca: las dos cabezas, el cable, la respiración. La otra mitad se la lee a ella, dormida.
-    svg = escInterior({ tension: 0.45, cabezasJuntas: 1, inclinaElla: 22, dormida: 1, luz: 0.25, luzMejilla: 0.05, zoom: 1.55, cy: 600, cx: 960, senoraSi: false });
+    svg = escInterior({ tension: 0.45, cabezasJuntas: 1, inclinaElla: 22, dormida: 1, luz: 0.25, luzMejilla: 0.05, zoom: 1.55, cy: 600, cx: 960, senoraSi: false, respira: 2.6 });
     break;
   }
   case "cable-final": {
     // la última frase, en karaoke a pantalla completa; debajo, el cable, tirando un poco con la respiración
     const t0 = primeroDe("cable-final").inicio;
-    const ent = easeOut(tramo(T, t0 - 0.9, t0 - 0.1));
-    svg = `<g opacity="${1 - ent}">${escInterior({ tension: 0.45, cabezasJuntas: 1, inclinaElla: 22, dormida: 1, luz: 0.25, luzMejilla: 0.05, zoom: 1.55, cy: 600, senoraSi: false })}</g>`;
+    const ent = easeOut(tramo(T, t0 - 0.35, t0 + 0.3));
+    svg = `<g opacity="${1 - ent}">${escInterior({ tension: 0.45, cabezasJuntas: 1, inclinaElla: 22, dormida: 1, luz: 0.25, luzMejilla: 0.05, zoom: 1.55, cy: 600, senoraSi: false, respira: 2.6 })}</g>`;
     svg += `<rect width="${W}" height="${H}" fill="${PAPEL}" opacity="${ent}"/>`;
     if (ent > 0) {
       svg += `<g opacity="${ent}">${karaoke()}`;

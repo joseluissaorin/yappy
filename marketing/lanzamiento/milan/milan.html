@@ -10,6 +10,7 @@
   svg { display: block; position: absolute; left: 0; top: 0; }
 </style></head>
 <body><div id="escena"></div>
+<script src="envolvente.js"></script>
 <script>
 // ─────────────────────────────────────────────────────────────────────
 //  MILÁN, 384 · teatro de papel · dos actos con el mismo decorado
@@ -30,7 +31,7 @@ const M = {
   entra: parseFloat(q.get("entra") || "4"),
   pagina: parseFloat(q.get("pagina") || "14"),
   tarjeta: parseFloat(q.get("tarjeta") || "24"),
-  tarjetaDur: parseFloat(q.get("tarjetaDur") || "11"),
+  tarjetaDur: parseFloat(q.get("tarjetaDur") || "13"),
   pagina2: parseFloat(q.get("pagina2") || "36"),
   loro: parseFloat(q.get("loro") || "3"),
   habla: parseFloat(q.get("habla") || "22"),
@@ -55,7 +56,7 @@ function mano(puntos, amp = 1.6, seed = 1, cerrar = false) {
 }
 const ovalo = (cx, cy, rx, ry, seed = 1, amp = 2, n = 22) => { const p = []; for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2; p.push([cx + Math.cos(a) * rx, cy + Math.sin(a) * ry]); } p.push(p[0]); return mano(p, amp, seed, true); };
 const rect = (x, y, w, h, seed = 1, amp = 2) => mano([[x, y], [x + w, y], [x + w, y + h], [x, y + h], [x, y]], amp, seed, true);
-const recorte = (d, fill, { sombra = 6, opacidad = 1, trazo = null, grosor = 0 } = {}) => `<g opacity="${opacidad}"><path d="${d}" fill="${SOMBRA}" transform="translate(${sombra} ${sombra * 1.15})"/><path d="${d}" fill="${fill}" ${trazo ? `stroke="${trazo}" stroke-width="${grosor}" stroke-linejoin="round"` : ""}/></g>`;
+const recorte = (d, fill, { sombra = 6, opacidad = 1, trazo = null, grosor = 0 } = {}) => `<g opacity="${opacidad}"><path d="${d}" fill="${SOMBRA}" transform="translate(${-sombra} ${sombra * 1.15})"/><path d="${d}" fill="${fill}" ${trazo ? `stroke="${trazo}" stroke-width="${grosor}" stroke-linejoin="round"` : ""}/></g>`;
 const linea = (d, color = TINTA, grosor = 3, opacidad = 1) => `<path d="${d}" fill="none" stroke="${color}" stroke-width="${grosor}" stroke-linecap="round" stroke-linejoin="round" opacity="${opacidad}"/>`;
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 const texto = (x, y, s, { size = 40, fam = "Literata", peso = 500, color = TINTA, ancla = "middle", cursiva = false, rot = 0, espaciado = 0, opacidad = 1 } = {}) =>
@@ -78,8 +79,8 @@ function celda(luzVentana = 1) {
   g += `<defs><clipPath id="arco"><path d="M${vx} ${vy + vh} V${vy + 130} A150 150 0 0 1 ${vx + vw} ${vy + 130} V${vy + vh} Z"/></clipPath></defs>`;
   g += `<g clip-path="url(#arco)"><rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" fill="${DORADO}" opacity="${0.35 * luzVentana}"/><rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" fill="${PAPEL}" opacity="0.8"/>` +
     // el cielo de fuera: una colina, un ciprés
-    recorte(mano([[vx - 20, vy + 400], [vx + 120, vy + 300], [vx + 260, vy + 330], [vx + vw + 20, vy + 290], [vx + vw + 20, vy + vh + 20], [vx - 20, vy + vh + 20]], 3, 140, true), "#b9c7a4", { sombra: 0, opacidad: 0.9 }) +
-    recorte(mano([[vx + 200, vy + 320], [vx + 214, vy + 180], [vx + 228, vy + 320]], 2, 141, true), "#5d7a4a", { sombra: 0 }) + `</g>`;
+    recorte(mano([[vx - 20, vy + 400], [vx + 120, vy + 300], [vx + 260, vy + 330], [vx + vw + 20, vy + 290], [vx + vw + 20, vy + vh + 20], [vx - 20, vy + vh + 20]], 3, 140, true), PAPEL2, { sombra: 0, opacidad: 1, trazo: ULTRA, grosor: 3 }) +
+    recorte(mano([[vx + 200, vy + 320], [vx + 214, vy + 180], [vx + 228, vy + 320]], 2, 141, true), ULTRA, { sombra: 0, opacidad: 0.85 }) + `</g>`;
   g += linea(`M${vx} ${vy + vh} V${vy + 130} A150 150 0 0 1 ${vx + vw} ${vy + 130} V${vy + vh}`, TINTA, 8);
   g += linea(mano([[vx - 30, vy + vh], [vx + vw + 30, vy + vh]], 2, 142), TINTA, 10);
   // la luz en el suelo, un paralelogramo cálido
@@ -114,7 +115,8 @@ function ambrosio(t, { pagina = 0, ojos = 0 } = {}) {
   for (let i = 0; i < 5; i++) { g += linea(mano([[-135, 135 + i * 10], [-25, 130 + i * 10]], 0.8, 180 + i), TINTA, 2, 0.5); g += linea(mano([[25, 130 + i * 10], [135, 135 + i * 10]], 0.8, 190 + i), TINTA, 2, 0.5); }
   if (pagina > 0 && pagina < 1) { // la hoja que se pasa: gira sobre el lomo
     const sx = Math.cos(k * Math.PI), lado = k < 0.5 ? 1 : -1;
-    g += `<g transform="translate(0 114) scale(${sx} 1)">` + recorte(mano([[0, -6], [155, 6], [148, 76], [0, 64], [0, -6]], 1.5, 200, true), PAPEL, { sombra: 3, trazo: TINTA, grosor: 2 }) + `</g>`;
+    const alza = Math.sin(k * Math.PI) * 26; // la hoja se levanta en mitad del giro
+    g += `<g transform="translate(0 ${114 - alza}) scale(${sx} ${1 + alza / 120})">` + recorte(mano([[0, -6], [155, 6], [148, 76], [0, 64], [0, -6]], 1.5, 200, true), PAPEL, { sombra: 3 + alza / 4, trazo: TINTA, grosor: 2 }) + `</g>`;
   }
   // cabeza inclinada hacia el libro
   g += `<g transform="rotate(8)">`;
@@ -130,8 +132,9 @@ function ambrosio(t, { pagina = 0, ojos = 0 } = {}) {
   return g;
 }
 // Agustín: de pie en el umbral, con un rollo bajo el brazo. Entra por la izquierda.
-function agustin(x, { asombro = 0 } = {}) {
-  let g = `<g transform="translate(${x} 520)">`;
+function agustin(x, { asombro = 0, andando = 0 } = {}) {
+  const paso = andando * Math.abs(Math.sin(T * Math.PI * 2.2)) * 16, vaiven = andando * Math.sin(T * Math.PI * 2.2) * 3.5;
+  let g = `<g transform="translate(${x} ${520 - paso}) rotate(${vaiven + asombro * 7} 0 320)">`;
   g += recorte(mano([[-70, 320], [-50, 40], [-20, 0], [20, 0], [50, 40], [70, 320], [-70, 320]], 2.5, 220, true), "#7a5a3a", { sombra: 7, trazo: TINTA, grosor: 2 });
   // el rollo bajo el brazo
   g += recorte(rect(30, 90, 130, 40, 221, 1.5), VIEJO, { sombra: 4, trazo: TINTA, grosor: 2 });
@@ -143,7 +146,7 @@ function agustin(x, { asombro = 0 } = {}) {
   // barba corta
   g += recorte(mano([[-36, 20], [36, 20], [26, 56], [0, 66], [-26, 56], [-36, 20]], 2, 224, true), TINTA, { sombra: 2, opacidad: 0.9 });
   // el ojo (perfil de tres cuartos): se abre más con el asombro
-  g += `<ellipse cx="22" cy="-6" rx="${8 + asombro * 3}" ry="${5 + asombro * 4}" fill="${PAPEL}"/><circle cx="25" cy="-5" r="3.2" fill="${TINTA}"/>`;
+  g += `<ellipse cx="22" cy="-6" rx="${8 + asombro * 3}" ry="${5 + asombro * 4}" fill="${PAPEL}"/><circle cx="${25 + asombro * 2.5}" cy="${-5 + asombro * 2.5 + 1}" r="3.2" fill="${TINTA}"/>`;
   // la boca: entreabierta cuando se asombra
   g += `<ellipse cx="26" cy="30" rx="${5}" ry="${1.5 + asombro * 5}" fill="${TINTA}"/>`;
   g += `</g></g>`;
@@ -152,8 +155,10 @@ function agustin(x, { asombro = 0 } = {}) {
 // La tarjeta de la cita: papel viejo, cae desde arriba y se posa girada
 function tarjeta(k, k2 = 1) {
   if (k <= 0) return "";
-  const y = lerp(-500, 300, easeOut(k)), rot = lerp(-8, -1.5, easeOut(k));
-  let g = `<g transform="translate(960 ${y}) rotate(${rot})" opacity="${k2}">`;
+  const kk = k * k; // gravedad: acelera al caer
+  const y = lerp(-500, 300, kk) + (k >= 1 ? 0 : 0), balance = k >= 1 ? 4 * Math.exp(-(T - M.tarjeta - 1.1) * 1.6) * Math.cos((T - M.tarjeta - 1.1) * 5.5) : 0;
+  const rot = lerp(-8, -1.5, kk) + balance;
+  let g = `<g transform="translate(1090 ${y}) rotate(${rot}) scale(0.9)" opacity="${k2}">`;
   g += recorte(mano([[-620, -150], [620, -158], [626, 160], [-614, 168], [-620, -150]], 4, 300, true), VIEJO, { sombra: 12 });
   // mancha de tiempo
   g += `<ellipse cx="-380" cy="90" rx="160" ry="60" fill="${SUAVE}" opacity="0.10"/>`;
@@ -167,7 +172,7 @@ function tarjeta(k, k2 = 1) {
 function loro(x, y, { boca = 0, ladea = 0, ala = 0, parpado = 0, escala = 1, mirando = 1 } = {}) {
   const s = 3.2 * escala;
   const oscuro = (pct) => `color-mix(in srgb, ${CORAL} ${pct}%, ${TINTA})`;
-  return `<g transform="translate(${x} ${y}) scale(${mirando * s} ${s}) rotate(${ladea})" >
+  return `<g transform="translate(${x} ${y}) scale(${mirando * s} ${s})"><g transform="rotate(${ladea} 30 30)">
     <g transform="translate(1.8 2)" fill="${ULTRA}" opacity="0.9"><path d="M41 40 C48 44 54 50 57 56 C51 53 45 49 41 45 Z"/><path d="M30 5 C 22.5 5 17.5 9 16 14 C 11 14.5 7.5 17.5 7.5 21.5 C 7.5 25.5 10 28.5 13.5 30 C 12.5 27 13.5 24.5 16 23.5 C 17 24.5 18.5 25.3 20 25.6 C 18.3 28.4 17.2 31.6 17.2 35 C 17.2 43.5 22.5 50.5 30.5 51 C 38.5 51.5 44.5 45 45.3 36 C 45.8 31 45.3 26 44.3 22 C 42.8 12 37.5 5 30 5 Z"/></g>
     <path d="M41 40 C48 44 54 50 57 56 C51 53 45 49 41 45 Z" fill="${oscuro(62)}"/><path d="M42.5 37.5 C51 40 58 44 61.5 49 C55 48 48 45 43.5 41.5 Z" fill="${oscuro(80)}"/><path d="M43 34.5 C52 35 60 38 63.5 42 C57 42 49.5 40.5 44 38 Z" fill="${CORAL}"/>
     <path d="M30 8 C 21 8.5 16.8 16 16.8 26 C 16.8 27 16.9 28 17 29 C 17.2 40.5 22.5 50.5 30.5 51 C 38.5 51.5 44.5 45 45.3 36 C 45.8 31 45.3 26 44.3 22 C 42.8 12 37.5 8 30 8 Z" fill="${CORAL}"/>
@@ -182,7 +187,7 @@ function loro(x, y, { boca = 0, ladea = 0, ala = 0, parpado = 0, escala = 1, mir
       <path d="M16 13.5 C 11 14 7.5 17.5 7.5 21.5 C 7.5 25.5 10 28.5 13.5 30 C 12.5 27 13.5 24.5 16 23.5 C 17.5 24.8 19.5 25.6 21.5 25.8 C 22.5 22 21.5 17 19 14.5 C 18 13.8 17 13.5 16 13.5 Z" fill="${TINTA}"/>
       <circle cx="27" cy="18" r="5.1" fill="#f7f2e7"/><circle cx="26" cy="18.5" r="2.5" fill="${TINTA}"/>
       <g transform="scale(1 ${parpado})" style="transform-origin: 27px 13.4px"><rect x="21.6" y="13.2" width="10.8" height="9.6" rx="4.6" fill="${CORAL}"/></g>
-    </g></g>`;
+    </g></g></g>`;
 }
 
 // ── los actos ──────────────────────────────────────────────────────
@@ -196,13 +201,15 @@ if (ACTO === 1) {
   svg += celda(1);
   svg += puerta();
   svg += ambrosio(T, { pagina: pag > 0 && pag < 1 ? pag : (pag2 > 0 && pag2 < 1 ? pag2 : 0), ojos: T * 2.2 });
-  if (entra > 0) svg += agustin(lerp(-160, 170, entra), { asombro });
+  if (entra > 0) svg += agustin(lerp(-160, 170, entra), { asombro, andando: entra < 1 ? 1 : 0 });
   if (kt > 0) svg += tarjeta(kt, kt2);
 } else {
   // acto 2: sin Agustín. El loro llega a la ventana, mira, repite, y ladea la cabeza.
-  const llega = easeOut(tramo(T, M.loro, M.loro + 1.4));
+  const llega = ease(tramo(T, M.loro, M.loro + 2.0));
   const hablando = T >= M.habla && T <= M.habla + M.hablaDur;
-  const boca = hablando ? 0.45 + 0.45 * Math.abs(Math.sin(T * 9.3)) * (0.6 + 0.4 * Math.sin(T * 2.1)) : 0;
+  const E = window.ENVOLVENTE, ei = Math.floor((T - M.habla) * E.fps);
+  const env = (i) => (i >= 0 && i < E.v.length ? E.v[i] : 0);
+  const boca = hablando ? clamp(((env(ei - 1) + env(ei) + env(ei + 1)) / 3 - 0.12) / 0.8, 0, 1) : 0;
   const ladea = -18 * easeOut(tramo(T, M.ladea, M.ladea + 0.6));
   const parpado = ((T * 10) % 47 < 1) ? 1 : 0;
   const pag = tramo(T, M.ladea - 2.5, M.ladea - 1.1);
@@ -210,13 +217,15 @@ if (ACTO === 1) {
   svg += puerta();
   svg += ambrosio(T, { pagina: pag > 0 && pag < 1 ? pag : 0, ojos: T * 2.2 });
   // el loro: vuela desde fuera (arriba a la derecha) y se posa en el alféizar de la ventana (x≈1510, y≈570)
-  const de = { x: W + 200, y: -200 }, a = { x: 1420, y: 388 }; // los pies (y=57 de 64, ×3,2) caen en el alféizar (y≈570)
-  const x = lerp(de.x, a.x, llega), y = lerp(de.y, a.y, llega) + Math.sin(llega * Math.PI) * -120;
-  const ala = llega < 1 ? -40 - 38 * Math.sin(T * 9 * Math.PI * 2) : 0;
-  const aterriza = tramo(T, M.loro + 1.4, M.loro + 1.65), sq = lerp(0.82, 1, easeOut(aterriza));
+  const de = { x: W + 200, y: 300 }, a = { x: 1420, y: 388 }; // los pies (y=57 de 64, ×3,2) caen en el alféizar (y≈570)
+  // arco: baja en picado, remonta un poco antes de posarse (parábola invertida al final)
+  const x = lerp(de.x, a.x, llega), y = lerp(de.y, a.y, llega) - Math.sin(llega * Math.PI) * 230;
+  const ala = llega < 1 ? -30 - 42 * Math.sin(T * 4.5 * Math.PI * 2) : 0; // aleteo a 4,5 Hz: se ve a 25 fps
+  const u = T - (M.loro + 2.0);
+  const rebote = u >= 0 ? 1 - 0.16 * Math.exp(-u * 5) * Math.cos(u * 16) : 1; // se asienta con un rebote
+  const sq = rebote;
+  if (llega >= 1) svg += `<ellipse cx="${x + 96}" cy="574" rx="${70 * sq}" ry="7" fill="${TINTA}" opacity="0.22"/>`; // sombra de contacto en el alféizar
   svg += `<g transform="translate(${x} ${y}) scale(1 ${llega >= 1 ? sq : 1}) translate(${-x} ${-y})">${loro(x, y, { boca, ladea, ala, parpado })}</g>`;
-  // las notas mientras habla: tres corcheas de papel que salen del pico hacia Ambrosio
-  if (hablando) for (let i = 0; i < 3; i++) { const k = ((T * 0.6 + i / 3) % 1); const nx = x - 40 - k * 520, ny = y - 60 - Math.sin(k * Math.PI) * 90 + i * 12; svg += `<g opacity="${(1 - k) * 0.8}" transform="translate(${nx} ${ny}) rotate(-15)"><ellipse cx="0" cy="8" rx="9" ry="6.5" fill="${CORAL}"/><rect x="7" y="-22" width="3.5" height="30" rx="1.5" fill="${CORAL}"/></g>`; }
 }
 const papel = FONDO ? `<rect width="${W}" height="${H}" fill="${PAPEL}"/>` : "";
 document.getElementById("escena").innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${papel}${svg}</svg>`;

@@ -12,7 +12,7 @@
 | **Pegatina «ya disponible»** (la del título animado, antes «muy pronto») | Renderizada, ES y EN, 13 s, 2880×2160, 30 fps, con alfa. | `out/ya-disponible-es-alfa.mov` · `out/out-now-en-alfa.mov` · previsualizaciones `out/*-preview.mp4` |
 | **«Media voz» leído por la app** | Sintetizado: Emily narra, Sarah dice los versos de Lorca. 3:53. | `voz/media-voz.wav` · partitura `voz/tiempos.json` |
 | **«Media voz» animado** | Rodado en 4K con la voz mezclada (ver §5). | `out/media-voz.mp4` |
-| **Anuncio de 53 s** (el teaser con el final «ya disponible») | Hecho. | `out/anuncio-ya-disponible-es.mp4` |
+| **Anuncio de 52 s** (el teaser con el final «ya disponible» sobre un mosaico de sus planos) | Hecho y revisado con Gemini. | `out/anuncio-ya-disponible-es.mp4` |
 | **Lo que lee la app** (Ibn Zamrak, Agustín, la fecha en seis lenguas, los commits, «El cable tiraba…») | Sintetizado. | `voz/app/*.wav` |
 | **Milán, 384** (0b y 6) y los **rótulos con alfa** (nota de rescate, QUIERO LEER · Y MOVERME · A LA VEZ, sellos «15 · IX · 2026», «LA PRUEBA DE FUEGO», «Milán · año 384») | Hechos. | `out/milan-acto1-0b.mp4` · `out/milan-acto2-6.mp4` · `out/rotulo-*-alfa.mov` |
 | **Web** | Los enlaces de TestFlight apuntan ya a la App Store; desplegada y comprobada. | yappy.joseluissaorin.com |
@@ -96,3 +96,16 @@ Salida: `out/media-voz.mp4` (3840×2160, 25 fps, con la voz mezclada) y `out/med
 3. **X**: el anuncio de 55 s + la frase «Yappy ya está en la App Store. Lee cualquier texto en voz alta, en el teléfono, sin internet y sin cuentas.» y el hilo (la escaleta de veinte tuits está en la servilleta; el de Android del 15 ya está en `marketing/hilos/`).
 4. **TikTok / Reels**: el anuncio en 9:16 queda pendiente (el título «yappy» ocupa todo el ancho del 4:3 y no sobrevive a un recorte vertical: hay que reencuadrarlo en la pegatina). Si hace falta mañana, se hace en media hora.
 5. **App Store**: nada que hacer; comprobar por la mañana que la ficha aparece en `apps.apple.com` desde un teléfono sin sesión.
+
+## 8 · Lo que dijo Gemini (visionado a 5 fps, con audio)
+
+Cada pieza terminada se ha pasado por Gemini Pro como vídeo (cinco fotogramas por segundo, el audio dentro) con un prompt de director de animación. Las críticas completas están en `out/critica-gemini-*.md`. Lo que era un fallo real se ha corregido en la versión 2 de cada pieza; lo que sigue depende de tu montaje:
+
+**Del cuento (5/10 en la primera versión, 6/10 en la segunda; la tercera es la que hay en `out/`):** en la segunda ronda se corrigió además la melena de ella (Gemini la tomaba por un chico y eso confundía quién habla), la bolsa de pipas que tapaba el respaldo, el poste de PARADA que pisaba el marco de la ventana, la señora que bajaba en vertical, el apoyo lineal y la respiración del final, que ahora tensa el cable de forma visible. En la primera ronda se había corregido el hervor de la línea con el motor apagado, la señora que atravesaba la chapa del autobús, los ojos gigantes del verso de la plata, el recuerdo negro de «anoche», el lavado verde demasiado fuerte, el nudo «con los dientes» que no se veía y el móvil flotando sin brazo. El karaoke final se queda (lo tomó por un error de render porque no conocía el karaoke de la app): por eso es importante que en el capítulo 3.4 se vea el karaoke real del iPhone antes del cuento, para que la rima se lea.
+
+**De Milán (4/10 en la primera, 6/10 en la segunda; la tercera es la que hay en `out/`):** en la segunda ronda, el pivote del ladeo del loro (giraba desde la esquina, no desde el cuello), la sombra de contacto en el alféizar, la tarjeta más a la derecha y dos segundos más, los pasos de Agustín y su mirada hacia Ambrosio, la parábola del vuelo y el pico suavizado. En la primera se había corregido el vuelo del loro (arco, aleteo visible, rebote al posarse), el pico movido con la envolvente real de la voz, Agustín que entra andando y se inclina al asombrarse, la página que se dobla, la tarjeta con gravedad, las sombras coherentes con la ventana y el paisaje verde pasado a ultramar. Tu voz va encima; el acto 1 es mudo a propósito.
+
+**Del anuncio (6,5/10):** corregido el final (mosaico de los seis planos del teaser bajo el título, en vez de la acera congelada; tres segundos más corto) y la pegatina (línea «APP STORE · iPHONE Y iPAD» grande y en tinta). Lo que no puedo tocar sin el proyecto de DaVinci, y que merece la pena si tienes veinte minutos:
+- Empezar por la grabación de pantalla (compartir el Quijote) y no por el espejo: los tres primeros segundos deciden en TikTok.
+- Dos rótulos gigantes nuevos entre los casos de uso: **SIN INTERNET** y **SIN CUENTAS**. Es lo que nadie más puede decir y el anuncio no lo dice.
+- La palabra «artículos» del rótulo de 0:17 sale cortada por arriba.
