@@ -40,7 +40,7 @@ const mig = [{ nombre: t(lang, "convertir.h1"), ruta: ruta.ruta }];
   <section class="seccion" style="padding-top:0">
     <div class="rejilla rejilla-2">
       {piezas.map((p, i) => (
-        <a class="hoja" href={rutaConvertir(lang, p.f)}
+        <a class="hoja revela" href={rutaConvertir(lang, p.f)}
            style={`--giro:${[-2, 1.6, -1, 2.2, -2.6, 1.2][i]}deg;display:flex;gap:18px;align-items:flex-start`}>
           <Pegatina forma={p.forma} tinta={p.tinta} giro={p.giro} tamano={84} cuerpo="0.74rem">
             {t(lang, `convertir.formatos.${p.f}.nombre`)}

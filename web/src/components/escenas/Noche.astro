@@ -1,0 +1,90 @@
+---
+/**
+ * LA NOCHE TRABAJA. La luna, el ordenador encendido y la imprenta echando
+ * pliegos: cada uno sale hecho un audiolibro. Y el loro, dormido, porque
+ * quien trabaja aquí es la máquina.
+ */
+import Loro from "../Loro.svelte";
+interface Props { class?: string }
+const { class: clase = "" } = Astro.props;
+---
+<div class:list={["escena", clase]}>
+  <svg viewBox="0 0 280 200" role="img" aria-hidden="true" fill="none"
+       stroke-linecap="round" stroke-linejoin="round">
+    <!-- La luna y tres estrellas. El dorado se gana: aquí lo gana la noche. -->
+    <path d="M250 22a26 26 0 1 0 15 47 30 30 0 0 1-15-47z" fill="var(--dorado)" />
+    <g class="estrellas" fill="var(--dorado)">
+      <path class="e1" d="M206 30l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" />
+      <path class="e2" d="M228 72l2.2 5 5 2.2-5 2.2-2.2 5-2.2-5-5-2.2 5-2.2z" />
+      <path class="e3" d="M186 62l1.8 4 4 1.8-4 1.8-1.8 4-1.8-4-4-1.8 4-1.8z" />
+    </g>
+
+    <!-- La imprenta: el ordenador, con su desregistro y su pantalla viva. -->
+    <g transform="translate(2.5 3)" opacity="0.8">
+      <rect x="62" y="58" width="116" height="74" rx="10" fill="var(--ultramar)" />
+    </g>
+    <rect x="62" y="58" width="116" height="74" rx="10" fill="var(--t10)" />
+    <rect x="72" y="68" width="96" height="48" rx="5" fill="var(--crema)" opacity="0.93" />
+    <!-- Dentro de la pantalla, la barra que se llena toda la noche. -->
+    <rect x="82" y="86" width="76" height="9" rx="4.5" fill="var(--t10)" opacity="0.2" />
+    <rect class="barra" x="82" y="86" width="76" height="9" rx="4.5" fill="var(--t7)" />
+    <g stroke="var(--t10)" stroke-width="3.2" opacity="0.5">
+      <path d="M82 76h44M82 106h60" />
+    </g>
+    <path d="M50 132h140l8 12H42z" fill="var(--t10)" />
+
+    <!-- Los pliegos que salen de la prensa, uno detrás de otro. -->
+    <g class="pliegos">
+      <g class="p1">
+        <rect x="196" y="112" width="52" height="34" rx="7" fill="var(--crema)" stroke="var(--borde)" stroke-width="2.5" />
+        <path d="M217 121l13 8-13 8z" fill="var(--voz)" />
+      </g>
+      <g class="p2">
+        <rect x="196" y="112" width="52" height="34" rx="7" fill="var(--crema)" stroke="var(--borde)" stroke-width="2.5" />
+        <path d="M217 121l13 8-13 8z" fill="var(--voz)" />
+      </g>
+    </g>
+
+  </svg>
+  <span class="loro-en-escena"><Loro size={52} estado="dormido" etiqueta="" /></span>
+</div>
+
+<style>
+  .escena { position: relative; }
+  .escena svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .escena .loro-en-escena { position: absolute; z-index: 2; line-height: 0; }
+  .escena .loro-en-escena { left: 1%; bottom: 1%; }
+
+  /* La barra se llena, se vacía y vuelve: la noche es larga. */
+  .barra { transform-origin: 82px 90px; animation: llena 6s ease-in-out infinite; }
+  @keyframes llena {
+    0% { transform: scaleX(0.06); }
+    70% { transform: scaleX(1); }
+    100% { transform: scaleX(1); }
+  }
+
+  /* Cada pliego sale de la prensa y se va. El segundo, a mitad de camino. */
+  .pliegos g { opacity: 0; animation: sale 3.4s ease-out infinite; }
+  .pliegos .p2 { animation-delay: 1.7s; }
+  @keyframes sale {
+    0% { opacity: 0; transform: translateX(-46px) scale(0.9); }
+    20% { opacity: 1; }
+    75% { opacity: 1; transform: translateX(6px) scale(1); }
+    100% { opacity: 0; transform: translateX(22px) scale(1); }
+  }
+
+  .estrellas path { animation: brilla 3s ease-in-out infinite; transform-origin: center; }
+  .estrellas .e2 { animation-delay: -1s; }
+  .estrellas .e3 { animation-delay: -2s; }
+  @keyframes brilla {
+    0%, 100% { opacity: 0.35; transform: scale(0.82); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .barra { animation: none; transform: scaleX(0.72); }
+    .estrellas path { animation: none; }
+    .pliegos g { animation: none; opacity: 1; }
+    .pliegos .p2 { display: none; }
+  }
+</style>

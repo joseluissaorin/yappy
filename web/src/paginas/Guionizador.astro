@@ -52,7 +52,7 @@ const mig = [{ nombre: t(lang, "nav.guionizador"), ruta: ruta.ruta }];
     <div class="seccion-cabeza"><h2 class="grito">{t(lang, "guionizador.oficios_titulo")}</h2></div>
     <div class="rejilla rejilla-3">
       {oficios.map((o, i) => (
-        <div class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+        <div class:list={["hoja", "revela", `torcido-${(i % 5) + 1}`]}>
           <h3 style="font-size:1.08rem">{o.titulo}</h3>
           <p style="color:var(--tinta-suave);margin:0;font-size:0.96rem">{o.texto}</p>
         </div>

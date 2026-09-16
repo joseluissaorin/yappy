@@ -30,7 +30,7 @@ const mig = [{ nombre: t(lang, "nav.accesibilidad"), ruta: ruta.ruta }];
   <section class="seccion" style="padding-top:0">
     <div class="rejilla rejilla-2">
       {casos.map((c, i) => (
-        <div class:list={["caja", `torcido-${(i % 5) + 1}`]}>
+        <div class:list={["caja", "revela", `torcido-${(i % 5) + 1}`]}>
           <span class="etiqueta-caja">{`0${i + 1}`}</span>
           <h2 style="margin-top:0;font-size:1.3rem">{c.titulo}</h2>
           <div style="color:var(--tinta-suave)" set:html={c.texto}></div>

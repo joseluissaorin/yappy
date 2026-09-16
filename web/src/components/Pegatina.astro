@@ -26,9 +26,15 @@ const {
 } = Astro.props;
 
 const t = TROQUELES[forma]!;
+// El corazón viaja con cada pegatina para que el clip-path pueda
+// interpolar hacia él: las 48 anclas hacen el resto. Es el mismo gesto
+// que marcar un favorito en la app, y no cuesta ni una petición.
+const corazon = TROQUELES.corazon!;
 const estilo = [
   `--troquel:${poligono(t, 1)}`,
   `--troquel-93:${poligono(t, 0.93)}`,
+  `--troquel-corazon:${poligono(corazon, 1)}`,
+  `--troquel-corazon-93:${poligono(corazon, 0.93)}`,
   `--giro:${giro}deg`,
   `width:${tamano}px`,
   `height:${tamano}px`,

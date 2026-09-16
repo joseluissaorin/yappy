@@ -1,0 +1,220 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   YAPPY, LA WEB · 4. LA VIDA
+
+   El credo del juguete, aplicado a una página: «el juguete es textura,
+   jamás obstáculo». Aquí no se anima para que se note que hay animación;
+   se anima porque una pegatina pegada a mano se despega un poco al
+   tocarla, porque el papel que llega cae, y porque una voz que suena hace
+   temblar lo que tiene al lado.
+
+   Tres reglas propias:
+     · Nada se mueve más de 400 ms salvo lo que pasea solo por el fondo.
+     · Nada se mueve al cargar salvo lo que está en pantalla.
+     · Con prefers-reduced-motion se apaga TODO esto y no se pierde ni un
+       dato: los adornos se van, el significado queda.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── El revelado ──────────────────────────────────────────────────────
+   Lo que entra en pantalla sube tres dedos y se asienta con el muelle de
+   la casa. Sin JavaScript no hay revelado: el CSS deja todo visible y la
+   página se lee igual. */
+.revela { opacity: 1; }
+html.con-revelado .revela {
+  opacity: 0;
+  transform: translateY(18px);
+}
+html.con-revelado .revela.visible {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s var(--salida, ease), transform 0.6s var(--sereno);
+}
+/* En una rejilla, las piezas no llegan a la vez: se van pegando. */
+html.con-revelado .revela.visible:nth-child(2) { transition-delay: 0.07s; }
+html.con-revelado .revela.visible:nth-child(3) { transition-delay: 0.14s; }
+html.con-revelado .revela.visible:nth-child(4) { transition-delay: 0.21s; }
+html.con-revelado .revela.visible:nth-child(5) { transition-delay: 0.28s; }
+html.con-revelado .revela.visible:nth-child(6) { transition-delay: 0.35s; }
+
+/* ── El membrete de gelatina ──────────────────────────────────────────
+   Las letras del logotipo están recortadas de revistas distintas. Al
+   pasar por encima hacen la ola, una detrás de otra, como en la app al
+   tocar la marca. */
+.marca-palabra span {
+  transition: transform 0.34s var(--muelle);
+  will-change: transform;
+}
+.marca:hover .marca-palabra span { animation: gelatina 0.62s var(--muelle); }
+.marca:hover .marca-palabra span:nth-child(2) { animation-delay: 0.05s; }
+.marca:hover .marca-palabra span:nth-child(3) { animation-delay: 0.1s; }
+.marca:hover .marca-palabra span:nth-child(4) { animation-delay: 0.15s; }
+.marca:hover .marca-palabra span:nth-child(5) { animation-delay: 0.2s; }
+@keyframes gelatina {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-7px) scale(1.16, 0.88); }
+  65% { transform: translateY(2px) scale(0.92, 1.1); }
+  100% { transform: translateY(0) scale(1); }
+}
+/* El loro del membrete se gira a mirar a quien pasa. */
+.marca .loro { transition: transform 0.4s var(--muelle); }
+.marca:hover .loro { transform: rotate(-9deg) translateY(-2px); }
+
+/* ── El troquel que se funde ──────────────────────────────────────────
+   Todas las formas tienen 48 anclas, así que el clip-path INTERPOLA entre
+   dos cualesquiera: es la firma de la app y en la web sale gratis. La
+   pegatina que se puede pulsar se funde en corazón al pasar por encima,
+   igual que al marcar un favorito. */
+.pegatina::before,
+.pegatina .pegatina-borde,
+.pegatina .pegatina-cuerpo {
+  transition: clip-path 0.55s var(--sereno), background-color 0.4s ease;
+}
+a.pegatina:hover::before, button.pegatina:hover::before,
+a.hoja:hover .pegatina::before, button.hoja:hover .pegatina::before {
+  clip-path: polygon(var(--troquel-corazon));
+}
+/* La pegatina casi nunca es el enlace: vive DENTRO de la tarjeta. Así que
+   el gesto lo dispara la tarjeta, que es lo que la mano toca. */
+a.pegatina:hover .pegatina-borde,
+button.pegatina:hover .pegatina-borde,
+a.hoja:hover .pegatina-borde,
+button.hoja:hover .pegatina-borde { clip-path: polygon(var(--troquel-corazon)); }
+a.pegatina:hover .pegatina-cuerpo,
+button.pegatina:hover .pegatina-cuerpo,
+a.hoja:hover .pegatina-cuerpo,
+button.hoja:hover .pegatina-cuerpo { clip-path: polygon(var(--troquel-corazon-93)); }
+.pegatina .pegatina-costura polygon { transition: opacity 0.3s ease; }
+a.pegatina:hover .pegatina-costura polygon,
+button.pegatina:hover .pegatina-costura polygon,
+a.hoja:hover .pegatina-costura polygon,
+button.hoja:hover .pegatina-costura polygon { opacity: 0; }
+/* Y el texto de dentro se aparta un punto, que en un corazón hay menos
+   sitio que en un sello. */
+.pegatina-texto { transition: transform 0.45s var(--sereno); }
+a.hoja:hover .pegatina-texto, a.pegatina:hover .pegatina-texto { transform: scale(0.88); }
+
+/* ── El despegue ──────────────────────────────────────────────────────
+   Una pegatina pegada a mano se levanta por una esquina antes de salir.
+   La sombra dura se aleja al mismo tiempo: eso es lo que da el volumen. */
+.hoja::after { content: none; }
+a.hoja, button.hoja {
+  transition: transform 0.28s var(--sereno), box-shadow 0.28s var(--sereno);
+}
+
+/* ── La tecla que se hunde ────────────────────────────────────────────
+   En la app el dedo hunde el botón al POSARSE, no al soltar. Aquí igual:
+   el :active baja de verdad y la sombra se come. */
+.tecla, .boton { will-change: transform; }
+
+/* ── El subrayador que pasa ───────────────────────────────────────────
+   El fluorescente dorado recorre la palabra, una vez, al aparecer. Es la
+   marca que va siguiendo a la voz por el guion. */
+html.con-revelado .subraya { background-size: 0% 0.34em; }
+html.con-revelado .subraya.visible {
+  background-size: 100% 0.34em;
+  transition: background-size 0.85s var(--salida) 0.25s;
+}
+.subraya {
+  background-image: linear-gradient(var(--subrayador), var(--subrayador));
+  background-repeat: no-repeat;
+  background-position: 0 86%;
+  background-size: 100% 0.34em;
+  border-radius: 3px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* ── El colofón que se dibuja ─────────────────────────────────────────
+   La raya del pie se traza de izquierda a derecha cuando se llega abajo.
+   Es el punto final de la página, y se ve cómo se pone. */
+html.con-revelado .colofon::before { transform: scaleX(0) rotate(-0.4deg); transform-origin: left; }
+html.con-revelado .colofon.visible::before {
+  transform: scaleX(1) rotate(-0.4deg);
+  transition: transform 1.1s var(--salida);
+}
+
+/* ── El aparato que respira ───────────────────────────────────────────
+   El teléfono del escaparate flota un dedo, muy despacio. Un cartel de
+   escaparate nunca está del todo quieto. */
+.escenario .aparato { animation: flota-aparato 7s ease-in-out infinite; }
+@keyframes flota-aparato {
+  0%, 100% { transform: rotate(var(--giro, 0deg)) translateY(0); }
+  50% { transform: rotate(var(--giro, 0deg)) translateY(-9px); }
+}
+/* Las piezas pegadas encima flotan con otro compás: si van a la vez,
+   parece un ascensor. */
+.escenario .flotante { animation: flota-pieza 5.5s ease-in-out infinite; }
+.escenario .flotante.b { animation-duration: 6.8s; animation-delay: -1.6s; }
+@keyframes flota-pieza {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* ── Las píldoras de la demo ──────────────────────────────────────────
+   La elegida sube como una tecla; las otras esperan hundidas. */
+.demo-idiomas button { transition: transform 0.18s var(--seco), background 0.2s ease, color 0.2s ease; }
+.demo-idiomas button:hover { transform: translateY(-2px); }
+.demo-idiomas button:active { transform: translateY(1px) scale(0.96); }
+
+/* La tecla de reproducir late mientras suena, con el pulso de una voz. */
+.reproducir { transition: transform 0.16s var(--seco), box-shadow 0.16s var(--seco); }
+.reproducir[aria-pressed="true"] { animation: pulso 1.6s ease-in-out infinite; }
+@keyframes pulso {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* ── Las preguntas ────────────────────────────────────────────────────
+   El signo gira al abrirse, y la respuesta baja en lugar de aparecer. */
+.pregunta > summary::after { transition: transform 0.3s var(--muelle), color 0.2s ease; }
+.pregunta[open] > summary::after { transform: rotate(180deg); }
+.pregunta > summary { transition: color 0.2s ease; }
+.pregunta > summary:hover { color: var(--voz); }
+.pregunta[open] > div { animation: baja 0.36s var(--salida); }
+@keyframes baja {
+  from { opacity: 0; transform: translateY(-7px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ── Los enlaces del pie ──────────────────────────────────────────────
+   El subrayado crece desde la izquierda, no aparece de golpe. */
+.pie a, .nav-lineal a, .desplegable a { position: relative; }
+.pie a::after, .nav-lineal a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 100%; bottom: -2px;
+  height: 2px;
+  background: var(--voz);
+  border-radius: 2px;
+  transition: right 0.26s var(--salida);
+}
+.pie a:hover::after, .nav-lineal a:hover::after { right: 0; }
+.pie a:hover { text-decoration: none; }
+
+/* ── La tabla comparativa ─────────────────────────────────────────────
+   La fila que se mira se levanta del papel. */
+.comparativa tbody tr { transition: background 0.2s ease; }
+.comparativa tbody tr:hover { background: color-mix(in srgb, var(--dorado) 9%, transparent); }
+
+/* ── Las etiquetas de lengua ──────────────────────────────────────────
+   Treinta y una cápsulas: al pasar por encima, la de debajo se endereza,
+   como si alguien la despegara para leerla mejor. */
+a.etiqueta { transition: transform 0.24s var(--muelle), box-shadow 0.24s var(--sereno), color 0.2s ease; }
+a.etiqueta:hover {
+  transform: rotate(0deg) translateY(-3px) scale(1.06);
+  box-shadow: var(--sombra-dura);
+  color: var(--voz);
+}
+
+/* ── El apagado general ───────────────────────────────────────────────
+   Quien pide quietud, quietud tiene. */
+@media (prefers-reduced-motion: reduce) {
+  html.con-revelado .revela,
+  html.con-revelado .revela.visible { opacity: 1; transform: none; transition: none; }
+  html.con-revelado .subraya,
+  html.con-revelado .subraya.visible { background-size: 100% 0.34em; transition: none; }
+  html.con-revelado .colofon::before,
+  html.con-revelado .colofon.visible::before { transform: scaleX(1) rotate(-0.4deg); transition: none; }
+  .escenario .aparato, .escenario .flotante,
+  .marca:hover .marca-palabra span, .reproducir[aria-pressed="true"],
+  .pregunta[open] > div { animation: none; }
+}

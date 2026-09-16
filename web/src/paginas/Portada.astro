@@ -13,6 +13,9 @@ import Pegatina from "../components/Pegatina.astro";
 import Etiqueta from "../components/Etiqueta.astro";
 import Aparato from "../components/Aparato.astro";
 import Loro from "../components/Loro.svelte";
+import Cocina from "../components/escenas/Cocina.astro";
+import Paseo from "../components/escenas/Paseo.astro";
+import Noche from "../components/escenas/Noche.astro";
 import Demo from "../components/Demo.svelte";
 import GuionDemo from "../components/GuionDemo.svelte";
 import { t, tv, type Idioma } from "../i18n";
@@ -63,7 +66,7 @@ const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
         <p class="susurro">{t(lang, "portada.susurro")}</p>
         <h1 class="grito">
           {t(lang, "portada.titular_1")} <span class="texto">{t(lang, "portada.titular_texto")}</span>{t(lang, "portada.titular_2")}
-          <span class="voz-alta">{t(lang, "portada.titular_voz")}</span>{t(lang, "portada.titular_3")}
+          <span class="voz-alta subraya">{t(lang, "portada.titular_voz")}</span>{t(lang, "portada.titular_3")}
         </h1>
         <p class="entradilla">{t(lang, "portada.entradilla")}</p>
         <div class="acciones">
@@ -109,14 +112,14 @@ const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
 
     <!-- ── Las objeciones, de frente ───────────────────────────── -->
     <section class="seccion">
-      <div class="seccion-cabeza">
+      <div class="seccion-cabeza revela">
         <p class="susurro">{t(lang, "portada.porque_susurro")}</p>
         <h2 class="grito">{t(lang, "portada.porque_titulo")}</h2>
         <p>{t(lang, "portada.porque_entradilla")}</p>
       </div>
       <div class="rejilla rejilla-4">
         {porque.map((p, i) => (
-          <div class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+          <div class:list={["hoja", "revela", `torcido-${(i % 5) + 1}`]}>
             <h3>{p.titulo}</h3>
             <p style="color:var(--tinta-suave);margin:0">{p.texto}</p>
           </div>
@@ -126,7 +129,7 @@ const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
 
     <!-- ── Las puertas de entrada (y el enlazado interno) ──────── -->
     <section class="seccion">
-      <div class="seccion-cabeza">
+      <div class="seccion-cabeza revela">
         <p class="susurro">{t(lang, "portada.formatos_susurro")}</p>
         <h2 class="grito">{t(lang, "portada.formatos_titulo")}</h2>
         <p>{t(lang, "portada.formatos_entradilla")}</p>
@@ -134,7 +137,7 @@ const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
       <div class="rejilla rejilla-3" style="justify-items:center">
         {puertas.map((p, i) => (
           <a
-            class="hoja"
+            class="hoja revela"
             href={rutaConvertir(lang, p.f)}
             style={`--giro:${[-2, 1.6, -1, 2.2, -2.6, 1.2][i]}deg;width:100%;display:flex;gap:16px;align-items:center`}
           >
@@ -152,14 +155,19 @@ const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
 
     <!-- ── Tres momentos ───────────────────────────────────────── -->
     <section class="seccion">
-      <div class="seccion-cabeza">
+      <div class="seccion-cabeza revela">
         <p class="susurro">{t(lang, "portada.momentos_susurro")}</p>
         <h2 class="grito">{t(lang, "portada.momentos_titulo")}</h2>
       </div>
-      <div class="rejilla rejilla-3">
+      <div class="rejilla rejilla-3 momentos">
         {momentos.map((m, i) => (
-          <div class:list={["caja", `torcido-${i + 2}`]}>
+          <div class:list={["caja", "revela", `torcido-${i + 2}`]}>
             <span class="etiqueta-caja">{`0${i + 1}`}</span>
+            <div class="momento-dibujo">
+              {i === 0 && <Cocina />}
+              {i === 1 && <Paseo />}
+              {i === 2 && <Noche />}
+            </div>
             <h3 style="margin-top:0">{m.titulo}</h3>
             <p style="color:var(--tinta-suave);margin:0">{m.texto}</p>
           </div>
@@ -169,12 +177,12 @@ const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
 
     <!-- ── El guionizador, en vivo ─────────────────────────────── -->
     <section class="seccion" id="guionizador">
-      <div class="seccion-cabeza" style="max-width:60ch">
+      <div class="seccion-cabeza revela" style="max-width:60ch">
         <p class="susurro">{t(lang, "portada.guion_susurro")}</p>
         <h2 class="grito">{t(lang, "portada.guion_titulo")}</h2>
         <p set:html={t(lang, "portada.guion_entradilla")}></p>
       </div>
-      <div class="caja">
+      <div class="caja revela">
         <span class="etiqueta-caja">{t(lang, "nav.guionizador")}</span>
         <p class="susurro" style="margin-bottom:1rem">{t(lang, "portada.guion_pruebalo")}</p>
         <GuionDemo
@@ -195,12 +203,12 @@ const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
 
     <!-- ── Las capturas de verdad ──────────────────────────────── -->
     <section class="seccion">
-      <div class="seccion-cabeza">
+      <div class="seccion-cabeza revela">
         <p class="susurro">{t(lang, "portada.capturas_susurro")}</p>
         <h2 class="grito">{t(lang, "portada.capturas_titulo")}</h2>
         <p>{t(lang, "portada.capturas_entradilla")}</p>
       </div>
-      <div class="rejilla rejilla-aparatos" style="justify-items:center;align-items:end">
+      <div class="rejilla rejilla-aparatos revela" style="justify-items:center;align-items:end">
         <Aparato src={capturaDe(lang, "lector")} alt={t(lang, "portada.guion_titulo")} giro={-2.5} ancho={286} />
         <Aparato src={capturaDe(lang, "pajaros")} alt={t(lang, "voces.elige")} giro={1.8} ancho={286} />
         <Aparato src={capturaDe(lang, "noche")} alt={t(lang, "voces.idiomas_titulo")} giro={-1.4} ancho={286} />
@@ -209,7 +217,7 @@ const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
 
     <!-- ── Las voces y las lenguas ─────────────────────────────── -->
     <section class="seccion">
-      <div class="seccion-cabeza">
+      <div class="seccion-cabeza revela">
         <p class="susurro">{t(lang, "voces.elige")}</p>
         <h2 class="grito">{t(lang, "voces.h1")}</h2>
         <p>{t(lang, "voces.entradilla")}</p>
@@ -233,7 +241,7 @@ const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
 
     <!-- ── El dinero ───────────────────────────────────────────── -->
     <section class="seccion">
-      <div class="seccion-cabeza">
+      <div class="seccion-cabeza revela">
         <p class="susurro">{t(lang, "portada.precio_susurro")}</p>
         <h2 class="grito">{t(lang, "portada.precio_titulo")}</h2>
         <p>{t(lang, "portada.precio_entradilla")}</p>

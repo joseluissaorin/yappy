@@ -1,0 +1,97 @@
+---
+/**
+ * EN EL PASEO. Un camino de puntos que sube, unos auriculares grandes, el
+ * libro de anoche convertido en cinta, y el loro andando por el camino:
+ * su sitio es el progreso, como la aguja en la app.
+ */
+import Loro from "../Loro.svelte";
+interface Props { class?: string }
+const { class: clase = "" } = Astro.props;
+---
+<div class:list={["escena", clase]}>
+  <svg viewBox="0 0 280 200" role="img" aria-hidden="true" fill="none"
+       stroke-linecap="round" stroke-linejoin="round">
+    <!-- El camino: puntos que corren hacia delante, como los kilómetros. -->
+    <path class="camino" d="M6 176C58 176 74 150 118 146s62 14 96-16"
+          stroke="var(--tinta-suave)" stroke-width="6" stroke-dasharray="2 13" opacity="0.8" />
+
+    <!-- Los auriculares, a la izquierda, con su desregistro detrás. -->
+    <g transform="translate(2.5 3)" opacity="0.8">
+      <path d="M46 116V88c0-20 15-33 34-33s34 13 34 33v28" stroke="var(--ultramar)" stroke-width="11" />
+    </g>
+    <path d="M46 116V88c0-20 15-33 34-33s34 13 34 33v28" stroke="var(--t6)" stroke-width="11" />
+    <g class="cascos">
+      <rect class="izq" x="34" y="106" width="25" height="42" rx="11" fill="var(--t6)" />
+      <rect class="der" x="101" y="106" width="25" height="42" rx="11" fill="var(--t6)" />
+      <rect x="39" y="113" width="15" height="28" rx="7" fill="var(--crema)" opacity="0.45" />
+      <rect x="106" y="113" width="15" height="28" rx="7" fill="var(--crema)" opacity="0.45" />
+    </g>
+
+    <!-- El libro de anoche, abierto, soltando lo que lleva dentro. -->
+    <g transform="rotate(-8 214 104)">
+      <path d="M180 78h34v56h-34z" fill="var(--t2)" />
+      <path d="M214 78h34v56h-34z" fill="var(--t2)" opacity="0.78" />
+      <path d="M214 74v62" stroke="var(--crema)" stroke-width="4" />
+      <g stroke="var(--crema)" stroke-width="3" opacity="0.75">
+        <path d="M187 92h20M187 101h20M187 110h13M221 92h20M221 101h20M221 110h13" />
+      </g>
+    </g>
+    <!-- Lo que sale del libro: dos notas que suben. -->
+    <g class="notas" fill="var(--t8)">
+      <g class="n1">
+        <ellipse cx="236" cy="62" rx="6" ry="4.6" transform="rotate(-20 236 62)" />
+        <rect x="240" y="38" width="4" height="24" rx="2" />
+      </g>
+      <g class="n2">
+        <ellipse cx="256" cy="48" rx="5" ry="3.9" transform="rotate(-20 256 48)" />
+        <rect x="259.4" y="28" width="3.4" height="20" rx="1.7" />
+      </g>
+    </g>
+
+  </svg>
+  <span class="loro-en-escena andarin"><Loro size={48} andando etiqueta="" /></span>
+</div>
+
+<style>
+  .escena { position: relative; }
+  .escena svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .escena .loro-en-escena { position: absolute; z-index: 2; line-height: 0; }
+  .escena .loro-en-escena { left: 0; top: 0; }
+
+  /* Los puntos del camino corren hacia delante: el paseo avanza aunque el
+     dibujo esté quieto. */
+  .camino { animation: corre 2.6s linear infinite; }
+  @keyframes corre { to { stroke-dashoffset: -32; } }
+
+  /* Los cascos laten con la música, uno un pelín después que el otro. */
+  .cascos rect { animation: late 1.5s ease-in-out infinite; transform-origin: center; }
+  .cascos .der { animation-delay: 0.22s; }
+  @keyframes late {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.07); }
+  }
+
+  .notas g { opacity: 0; animation: flota 2.8s ease-out infinite; }
+  .notas .n2 { animation-delay: 0.9s; }
+  @keyframes flota {
+    0% { opacity: 0; transform: translateY(10px) rotate(-6deg); }
+    25% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-22px) rotate(8deg); }
+  }
+
+  /* El loro recorre el camino de punta a punta y vuelve a empezar. */
+  .andarin { animation: pasea 11s ease-in-out infinite; }
+  @keyframes pasea {
+    0% { transform: translate(4%, 330%); }
+    45% { transform: translate(210%, 258%); }
+    50% { transform: translate(222%, 252%); }
+    95% { transform: translate(4%, 330%); }
+    100% { transform: translate(4%, 330%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .camino, .cascos rect, .notas g { animation: none; }
+    .notas g { opacity: 1; }
+    .andarin { animation: none; transform: translate(110%, 292%); }
+  }
+</style>

@@ -34,7 +34,7 @@ const mig = [{ nombre: t(lang, "nav.descargas"), ruta: ruta.ruta }];
   <section class="seccion" style="padding-top:0">
     <div class="rejilla rejilla-2">
       {plataformas.map((p, i) => (
-        <div class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+        <div class:list={["hoja", "revela", `torcido-${(i % 5) + 1}`]}>
           <h2 style="margin-top:0;font-size:1.25rem">{p.nombre}</h2>
           <p style="color:var(--tinta-suave)" set:html={p.texto}></p>
           <p class="susurro" style="margin:0.8rem 0 0">{p.requisitos}</p>

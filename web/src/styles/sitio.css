@@ -513,3 +513,16 @@ main { position: relative; }
 .paseo > * { animation: brinco 0.55s ease-in-out infinite alternate; display: block; }
 .paseo.segundo { animation-delay: -15s; opacity: 0.82; }
 @media (prefers-reduced-motion: reduce) { .paseo { display: none; } }
+
+/* ── Los tres momentos ────────────────────────────────────────────────
+   Cada caja lleva su dibujo arriba, sobre el papel hundido: el dibujo es
+   una estampa pegada en la hoja, no una ilustración flotando. */
+.momentos .caja { padding-top: 22px; }
+.momento-dibujo {
+  background: var(--superficie-2);
+  border: 1.5px solid var(--borde);
+  border-radius: 14px;
+  box-shadow: var(--hundido);
+  padding: 10px 12px 6px;
+  margin-bottom: 1.1rem;
+}

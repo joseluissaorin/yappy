@@ -25,7 +25,7 @@ const mig = [{ nombre: t(lang, "nav.cuentos"), ruta: ruta.ruta }];
   <section class="seccion" style="padding-top:0">
     <ul class="entradas">
       {cuentos.map((c, i) => (
-        <li class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+        <li class:list={["hoja", "revela", `torcido-${(i % 5) + 1}`]}>
           <span class="susurro">{c.data.autor} · {c.data.anio} · {c.data.lang}</span>
           <h2><a href={rutaCuento(c.data.lang, c.data.slug)} lang={c.data.lang}>{c.data.title}</a></h2>
           <p>{c.data.description}</p>

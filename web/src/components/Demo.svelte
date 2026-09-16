@@ -42,7 +42,7 @@
 <p class="demo-frase" lang={lengua}>{@html frases[lengua]!.html}</p>
 
 <div class="demo-controles">
-  <button class="reproducir" type="button" onclick={alternar} aria-label={etiquetaPlay}>
+  <button class="reproducir" type="button" onclick={alternar} aria-label={etiquetaPlay} aria-pressed={sonando}>
     {#if sonando}
       <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4.2" height="16" rx="1.4"/><rect x="13.8" y="4" width="4.2" height="16" rx="1.4"/></svg>
     {:else}

@@ -29,7 +29,7 @@ const mig = [{ nombre: t(lang, "nav.blog"), ruta: ruta.ruta }];
     ) : (
       <ul class="entradas">
         {posts.map((p, i) => (
-          <li class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+          <li class:list={["hoja", "revela", `torcido-${(i % 5) + 1}`]}>
             <span class="susurro">{p.data.racimo}</span>
             <h2><a href={rutaPost(lang, p.data.slug)}>{p.data.title}</a></h2>
             <p>{p.data.description}</p>

@@ -1,0 +1,102 @@
+---
+/**
+ * MIENTRAS COCINAS. Una olla al fuego, el teléfono apoyado contra el bote
+ * de la sal y el loro posado en el asa, esperando a que le hagan caso.
+ *
+ * Dibujado a mano, trazo a trazo, según la regla 8 de la casa: dos o tres
+ * trazos, nada de iconos de librería. Planos saturados, una tinta por
+ * pieza, vecinas que no repiten, y el desregistro ultramar detrás de la
+ * olla porque aquí todo se imprime mal a propósito.
+ */
+import Loro from "../Loro.svelte";
+interface Props { class?: string }
+const { class: clase = "" } = Astro.props;
+---
+<div class:list={["escena", clase]}>
+  <svg viewBox="0 0 280 200" role="img" aria-hidden="true" fill="none"
+       stroke-linecap="round" stroke-linejoin="round">
+    <!-- El vapor: tres volutas que suben y se deshacen. -->
+    <g class="vapor" stroke="var(--tinta-suave)" stroke-width="5.5" opacity="0.75">
+      <path class="v1" d="M92 88c-7-9 6-14 0-23s5-13 1-20" />
+      <path class="v2" d="M116 84c-8-10 7-15 1-25s6-14 2-21" />
+      <path class="v3" d="M140 90c-7-9 6-14 0-23s5-12 1-19" />
+    </g>
+
+    <!-- La olla. Detrás, su fantasma ultramar medio milímetro corrido. -->
+    <g transform="translate(2.5 3)" opacity="0.85">
+      <path d="M62 104h112c-3 32-22 46-56 46s-53-14-56-46z" fill="var(--ultramar)" />
+      <path d="M52 100h132" stroke="var(--ultramar)" stroke-width="11" />
+    </g>
+    <path d="M62 104h112c-3 32-22 46-56 46s-53-14-56-46z" fill="var(--t5)" />
+    <path d="M62 104h112c-2 20-10 31-24 38-10-14-12-28-8-38z" fill="#2b2418" opacity="0.13" />
+    <path d="M52 100h132" stroke="var(--t5)" stroke-width="11" />
+    <!-- Las asas: dos trazos y ya. -->
+    <path d="M52 104c-12 2-16 10-10 16" stroke="var(--t5)" stroke-width="8" />
+    <path d="M184 104c12 2 16 10 10 16" stroke="var(--t5)" stroke-width="8" />
+
+    <!-- El fuego: tres lenguas cortas bajo la olla. -->
+    <g class="fuego" stroke="var(--t8)" stroke-width="5">
+      <path d="M96 158c0-7 5-9 5-15 0 6 5 8 5 15" />
+      <path d="M116 162c0-8 6-11 6-18 0 7 6 10 6 18" />
+      <path d="M140 158c0-7 5-9 5-15 0 6 5 8 5 15" />
+    </g>
+    <path d="M78 168h84" stroke="var(--tinta)" stroke-width="5" opacity="0.65" />
+
+    <!-- El teléfono apoyado, y lo que sale de él. -->
+    <g transform="rotate(7 222 96)">
+      <rect x="204" y="52" width="40" height="72" rx="10" fill="var(--t3)" />
+      <rect x="210" y="60" width="28" height="52" rx="5" fill="var(--crema)" opacity="0.92" />
+      <g stroke="var(--t3)" stroke-width="3.4">
+        <path d="M215 72h18M215 81h18M215 90h12" />
+      </g>
+      <circle cx="224" cy="118" r="3" fill="var(--crema)" opacity="0.7" />
+    </g>
+    <g class="ondas" stroke="var(--t8)" stroke-width="4.2">
+      <path class="o1" d="M256 78c6 6 6 22 0 28" />
+      <path class="o2" d="M266 70c11 11 11 40 0 51" />
+    </g>
+
+  </svg>
+  <span class="loro-en-escena"><Loro size={54} etiqueta="" /></span>
+</div>
+
+<style>
+  .escena { position: relative; }
+  .escena svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .escena .loro-en-escena { position: absolute; z-index: 2; line-height: 0; }
+  .escena .loro-en-escena { left: 3%; bottom: 26%; }
+
+  /* El vapor sube, se estira y se va. Cada voluta a su aire: si suben las
+     tres a la vez parece un motor, no una olla. */
+  .vapor path { animation: sube 3.4s ease-in-out infinite; transform-origin: bottom; }
+  .vapor .v2 { animation-delay: -1.1s; }
+  .vapor .v3 { animation-delay: -2.2s; }
+  @keyframes sube {
+    0% { opacity: 0; transform: translateY(6px) scaleY(0.85); }
+    35% { opacity: 0.6; }
+    100% { opacity: 0; transform: translateY(-16px) scaleY(1.15); }
+  }
+
+  /* El fuego no se mueve: tiembla. */
+  .fuego path { animation: tiembla 0.9s ease-in-out infinite alternate; transform-origin: bottom; }
+  .fuego path:nth-child(2) { animation-duration: 0.7s; }
+  .fuego path:nth-child(3) { animation-duration: 1.1s; }
+  @keyframes tiembla {
+    from { transform: scaleY(0.88) translateY(2px); }
+    to { transform: scaleY(1.08); }
+  }
+
+  /* Las ondas salen del teléfono una detrás de otra, como al hablar. */
+  .ondas path { opacity: 0; animation: onda 1.9s ease-out infinite; transform-origin: 250px 92px; }
+  .ondas .o2 { animation-delay: 0.32s; }
+  @keyframes onda {
+    0% { opacity: 0; transform: scale(0.72); }
+    30% { opacity: 0.95; }
+    100% { opacity: 0; transform: scale(1.1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vapor path, .fuego path { animation: none; }
+    .ondas path { animation: none; opacity: 0.9; }
+  }
+</style>

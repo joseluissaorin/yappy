@@ -35,7 +35,7 @@ const mig = [{ nombre: t(lang, "nav.uso"), ruta: ruta.ruta }];
     <section class="seccion" style="padding-top:0">
       <div class="rejilla rejilla-4">
         {pasos.map((p, i) => (
-          <div class:list={["caja", `torcido-${(i % 5) + 1}`]}>
+          <div class:list={["caja", "revela", `torcido-${(i % 5) + 1}`]}>
             <span class="etiqueta-caja">{`0${i + 1}`}</span>
             <h3 style="margin-top:0">{p.titulo}</h3>
             <p style="color:var(--tinta-suave);margin:0">{p.texto}</p>

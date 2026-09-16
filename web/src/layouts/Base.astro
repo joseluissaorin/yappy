@@ -13,9 +13,11 @@ import { rutaPagina, type Alternativa } from "../lib/rutas";
 import { ENLACES } from "../lib/datos";
 import Cabecera from "../components/Cabecera.astro";
 import Pie from "../components/Pie.astro";
+import Cameo from "../components/Cameo.svelte";
 import "../styles/papel.css";
 import "../styles/album.css";
 import "../styles/sitio.css";
+import "../styles/vida.css";
 
 interface Props {
   lang: Idioma;
@@ -103,6 +105,7 @@ const dir = direccion(lang);
       <slot />
     </main>
     <Pie lang={lang} />
+    <Cameo client:idle />
     <script is:inline>
       // El aspecto, antes de pintar, para que quien eligió noche no vea un
       // fogonazo de papel. La casa arranca en papel: «como el sistema» es
@@ -113,6 +116,27 @@ const dir = direccion(lang);
           document.documentElement.dataset.tema = g;
         }
       } catch (e) {}
+
+      // EL REVELADO. La clase se pone desde JavaScript a propósito: si no
+      // hay JavaScript, el CSS no esconde nada y la página se lee entera.
+      // Esconder con CSS lo que solo JavaScript puede enseñar es la forma
+      // más fácil de dejar una página en blanco.
+      (function () {
+        var quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (quieto || !("IntersectionObserver" in window)) return;
+        document.documentElement.classList.add("con-revelado");
+        document.addEventListener("DOMContentLoaded", function () {
+          var ojo = new IntersectionObserver(function (entradas) {
+            for (var i = 0; i < entradas.length; i++) {
+              if (!entradas[i].isIntersecting) continue;
+              entradas[i].target.classList.add("visible");
+              ojo.unobserve(entradas[i].target);   // se revela una vez, no cada vez
+            }
+          }, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 });
+          var piezas = document.querySelectorAll(".revela, .subraya, .colofon");
+          for (var i = 0; i < piezas.length; i++) ojo.observe(piezas[i]);
+        });
+      })();
     </script>
   </body>
 </html>
