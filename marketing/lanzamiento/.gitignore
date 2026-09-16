@@ -1,0 +1,4 @@
+out/
+voz/beats/
+voz/app/*.wav
+voz/media-voz*.wav

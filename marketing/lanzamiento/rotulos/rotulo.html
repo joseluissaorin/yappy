@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8" />
+<style>
+  @font-face { font-family: "Baloo"; src: url("../pegatina/Baloo2-Variable.woff2") format("woff2"); font-weight: 400 800; }
+  @font-face { font-family: "Mono"; src: url("../pegatina/SpaceMono-Bold.woff2") format("woff2"); font-weight: 700; }
+  @font-face { font-family: "Literata"; src: url("../cuento/literata-latin.woff2") format("woff2"); font-weight: 200 900; }
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+  #escena { position: relative; width: 1920px; height: 1080px; }
+  svg { position: absolute; left: 0; top: 0; }
+</style></head>
+<body><div id="escena"></div>
+<script>
+// Rótulos con alfa para el montaje: la NOTA DE RESCATE (papel detrás, carácter a carácter),
+// los tres rótulos mudos de las flexiones, y el SELLO de tinta.
+//   ?tipo=rescate&texto=…&dur=6      · papel crema, Literata, aparece letra a letra
+//   ?tipo=grito&texto=QUIERO LEER    · blanco enorme a sangre, Baloo 800 (como los del teaser)
+//   ?tipo=sello&texto=15 · IX · 2026 · tampón coral, cae con golpe
+const q = new URLSearchParams(location.search);
+const T = parseFloat(q.get("t") || "1"), W = 1920, H = 1080;
+const tipo = q.get("tipo") || "rescate", texto = q.get("texto") || "QUE UN NIÑO DE SEIS QUIERA JUGAR SIN QUERER ESCUCHAR NADA, Y QUE UN FILÓLOGO DE SESENTA LA USE A DIARIO SIN ESTORBO.";
+const dur = parseFloat(q.get("dur") || "6");
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v)), tramo = (t, a, b) => clamp((t - a) / (b - a), 0, 1), easeOut = (k) => 1 - Math.pow(1 - k, 3);
+const PAPEL = "#fdf9ee", TINTA = "#2b2418", CORAL = "#e0502a";
+function rng(seed) { let s = (seed * 9301 + 49297) % 233280; return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; }; }
+function mano(p, amp, seed) { const r = rng(seed + Math.floor(T * 8) * 131); const pts = p.map(([x, y]) => [x + (r() - 0.5) * amp, y + (r() - 0.5) * amp]); return "M" + pts.map((a) => a.join(" ")).join(" L") + " Z"; }
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let svg = "";
+const salida = 1 - easeOut(tramo(T, dur - 0.5, dur)); // se va en el último medio segundo
+if (tipo === "rescate") {
+  // partir en líneas de ~38 caracteres
+  const palabras = texto.split(" "), lineas = [[]];
+  for (const p of palabras) { const l = lineas[lineas.length - 1]; if ((l.join(" ") + " " + p).length > 38 && l.length) lineas.push([p]); else l.push(p); }
+  const ls = lineas.map((l) => l.join(" "));
+  const size = 66, alto = ls.length * size * 1.35 + 80, y0 = (H - alto) / 2;
+  const kEntra = easeOut(tramo(T, 0, 0.5));
+  let cont = 0; const total = texto.length; const visibles = Math.floor(tramo(T, 0.4, 0.4 + total * 0.028) * total);
+  svg += `<g opacity="${salida}" transform="translate(0 ${(1 - kEntra) * 40})">`;
+  svg += `<path d="${mano([[200, y0], [W - 200, y0 + 6], [W - 206, y0 + alto], [206, y0 + alto - 8]], 6, 3)}" fill="rgba(43,36,24,0.25)" transform="translate(10 12)"/>`;
+  svg += `<path d="${mano([[200, y0], [W - 200, y0 + 6], [W - 206, y0 + alto], [206, y0 + alto - 8]], 6, 3)}" fill="${PAPEL}" transform="rotate(-0.8 960 540)"/>`;
+  ls.forEach((l, i) => {
+    const vis = l.slice(0, clamp(visibles - cont, 0, l.length)); cont += l.length + 1;
+    svg += `<text x="960" y="${y0 + 60 + size + i * size * 1.35}" font-family="Literata" font-weight="700" font-size="${size}" fill="${TINTA}" text-anchor="middle" transform="rotate(-0.8 960 540)">${esc(vis)}</text>`;
+  });
+  svg += "</g>";
+} else if (tipo === "grito") {
+  // blanco enorme, dos líneas si hay espacio; entra con la gelatina de la marca
+  const partes = texto.split(" "), size = partes.length > 1 ? 380 : 480;
+  const k = tramo(T, 0, 0.35), g = [[0, 1, 1], [0.25, 1.22, 0.78], [0.45, 0.86, 1.16], [0.65, 1.1, 0.92], [0.85, 0.97, 1.03], [1, 1, 1]];
+  let sx = 1, sy = 1; for (let i = 0; i < g.length - 1; i++) if (k >= g[i][0] && k <= g[i + 1][0]) { const u = (k - g[i][0]) / (g[i + 1][0] - g[i][0]); sx = g[i][1] + (g[i + 1][1] - g[i][1]) * u; sy = g[i][2] + (g[i + 1][2] - g[i][2]) * u; }
+  svg += `<g opacity="${salida}" transform="translate(960 540) scale(${sx} ${sy}) translate(-960 -540)">`;
+  partes.forEach((p, i) => { svg += `<text x="960" y="${540 + (i - (partes.length - 1) / 2) * size * 0.95 + size * 0.34}" font-family="Baloo" font-weight="800" font-size="${size}" fill="#fff" text-anchor="middle" letter-spacing="-0.02em">${esc(p)}</text>`; });
+  svg += "</g>";
+} else if (tipo === "sello") {
+  // el tampón cae desde arriba con un golpe y se queda ladeado
+  const k = easeOut(tramo(T, 0, 0.28)), s = 1.6 - 0.6 * k;
+  svg += `<g opacity="${(0.92 * salida).toFixed(3)}" transform="translate(300 220) rotate(-7) scale(${s})">` +
+    `<rect x="0" y="0" width="${texto.length * 34 + 80}" height="120" rx="10" fill="none" stroke="${CORAL}" stroke-width="9"/>` +
+    `<rect x="14" y="14" width="${texto.length * 34 + 52}" height="92" rx="6" fill="none" stroke="${CORAL}" stroke-width="3" opacity="0.7"/>` +
+    `<text x="${(texto.length * 34 + 80) / 2}" y="82" font-family="Mono" font-weight="700" font-size="56" fill="${CORAL}" text-anchor="middle" letter-spacing="0.1em">${esc(texto)}</text></g>`;
+}
+document.getElementById("escena").innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${svg}</svg>`;
+</script></body></html>

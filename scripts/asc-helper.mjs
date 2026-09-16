@@ -648,6 +648,30 @@ async function cmd_listingStatus() {
   }
 }
 
+// Publica en la App Store una versión aprobada que espera al desarrollador
+// (releaseType MANUAL → estado PENDING_DEVELOPER_RELEASE).
+async function cmd_release() {
+  const versionString = process.argv[3];
+  if (!versionString) throw new Error("uso: release <versión>");
+  const app = await getApp();
+  const vs = await asc("GET", `/apps/${app.id}/appStoreVersions?filter[platform]=IOS&filter[versionString]=${versionString}&limit=5`);
+  const v = vs.data[0];
+  if (!v) throw new Error(`no existe la versión ${versionString}`);
+  const estado = v.attributes.appStoreState;
+  if (estado === "READY_FOR_SALE" || estado === "READY_FOR_DISTRIBUTION") {
+    console.log(`✓ ${versionString} ya está publicada (${estado})`); return;
+  }
+  if (estado !== "PENDING_DEVELOPER_RELEASE") {
+    throw new Error(`la versión ${versionString} está en ${estado}; solo se puede publicar desde PENDING_DEVELOPER_RELEASE`);
+  }
+  await asc("POST", "/appStoreVersionReleaseRequests", {
+    data: { type: "appStoreVersionReleaseRequests",
+      relationships: { appStoreVersion: { data: { type: "appStoreVersions", id: v.id } } } },
+  });
+  const tras = await asc("GET", `/appStoreVersions/${v.id}`);
+  console.log(`✓ ${versionString} enviada a publicación → ${tras.data.attributes.appStoreState}`);
+}
+
 const sub = process.argv[2];
 switch (sub) {
   case "status":              await cmd_status(); break;
@@ -664,7 +688,8 @@ switch (sub) {
   case "prepare-listing":     await cmd_prepareListing(); break;
   case "attach-build":        await cmd_attachBuild(); break;
   case "listing-status":      await cmd_listingStatus(); break;
+  case "release":             await cmd_release(); break;
   default:
-    console.log("usage: asc-helper.mjs <status|wait-for-app|list-builds|wait-for-build|create-beta-group|add-build-to-beta|submit-beta-review|pipeline|internal-group|push-metadata <v> [locale]|push-screenshots <v> [locale]|prepare-listing <v>|attach-build <v> [build]|listing-status>");
+    console.log("usage: asc-helper.mjs <status|wait-for-app|list-builds|wait-for-build|create-beta-group|add-build-to-beta|submit-beta-review|pipeline|internal-group|push-metadata <v> [locale]|push-screenshots <v> [locale]|prepare-listing <v>|attach-build <v> [build]|listing-status|release <v>>");
     process.exit(1);
 }

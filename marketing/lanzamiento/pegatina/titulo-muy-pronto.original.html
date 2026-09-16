@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8" />
+<style>
+  @font-face { font-family: "Baloo"; src: url("Baloo2-Variable.woff2") format("woff2"); font-weight: 400 800; }
+  @font-face { font-family: "Mono"; src: url("SpaceMono-Bold.woff2") format("woff2"); font-weight: 700; }
+  /* LA PEGATINA: la marca de la cinta de la app, a tamaño de cartel. */
+  #pega { position: absolute; width: 1400px; height: 560px; z-index: 4; transform-origin: 50% 0; display: none; }
+  #pega .parche { position: absolute; inset: 0; background: #fdf9ee; border: 5px solid #8a765a;
+    border-radius: 52px 66px 48px 72px / 62px 48px 70px 52px; box-shadow: 12px 14px 0 rgba(43, 36, 24, 0.30); }
+  #pega .parche::after { content: ""; position: absolute; inset: 14px; border: 4px dashed rgba(43, 36, 24, 0.36);
+    border-radius: 40px 52px 38px 58px / 48px 38px 54px 42px; }
+  #pega .palabra { position: absolute; left: 0; right: 0; top: 56px; text-align: center; font-family: "Baloo"; font-weight: 800;
+    font-size: 236px; line-height: 1; letter-spacing: -0.03em; white-space: nowrap; }
+  #pega .palabra i { display: inline-block; font-style: normal; transform-origin: 50% 80%; }
+  #pega .palabra .hueco { display: inline-block; width: 0.28em; }
+  #pega .datos { position: absolute; left: 70px; bottom: 62px; font-family: "Mono"; font-weight: 700; font-size: 46px;
+    letter-spacing: 0.12em; color: #82755a; line-height: 1; }
+  #pega .movil { position: absolute; right: 64px; bottom: 30px; width: 118px; height: 184px; }
+  html, body { margin: 0; background: transparent; width: 2880px; height: 2160px; overflow: hidden; }
+  #escena { position: relative; width: 2880px; height: 2160px; }
+  .marca { position: absolute; left: 0; top: 0; width: 2880px; height: 2160px; display: flex; align-items: center; justify-content: center;
+           font-family: "Baloo"; font-weight: 800; font-size: 940px; letter-spacing: -0.03em; line-height: 1; color: #fff; }
+  .marca i { display: inline-block; font-style: normal; will-change: transform; }
+  #atras, #delante { position: absolute; inset: 0; }
+  #atras { z-index: 1; } #loro { z-index: 2; } #delante { z-index: 3; }
+  #delante i { color: #fff; }
+  #loro { position: absolute; left: 0; top: 0; transform-origin: 50% 100%; }
+  #loro svg { display: block; overflow: visible; }
+</style></head>
+<body><div id="escena">
+  <div class="marca" id="atras"></div>
+  <div id="loro"></div>
+  <div class="marca" id="delante"></div>
+</div>
+<script>
+const q = new URLSearchParams(location.search);
+const T = parseFloat(q.get("t") || "3.0");
+const W = 2880, H = 2160;
+const LETRAS = "yappy".split("");
+const ROT = [-3.5, 3, -3.5, 3, -3.5], DY = [-1, 1.5, -1, 1.5, -1];
+
+// ── utilidades de animación ─────────────────────────────────────────
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, k) => a + (b - a) * k;
+const ease = (k) => k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+const easeOut = (k) => 1 - Math.pow(1 - k, 3);
+const tramo = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+// Gelatina de la marca (la del «yappy» de la app), muestreada en k∈[0,1].
+function gelatina(k) {
+  const p = [[0, 0, 1, 1], [0.25, -4, 1.22, 0.78], [0.45, 1, 0.86, 1.16], [0.65, 0, 1.1, 0.92], [0.85, 0, 0.97, 1.03], [1, 0, 1, 1]];
+  for (let i = 0; i < p.length - 1; i++) {
+    const [k0, y0, sx0, sy0] = p[i], [k1, y1, sx1, sy1] = p[i + 1];
+    if (k >= k0 && k <= k1) { const u = (k - k0) / (k1 - k0); return { y: lerp(y0, y1, u), sx: lerp(sx0, sx1, u), sy: lerp(sy0, sy1, u) }; }
+  }
+  return { y: 0, sx: 1, sy: 1 };
+}
+
+// ── las letras: entran una a una (0.00–0.55) con gelatina ───────────
+function pintarMarca(cont, soloDelante) {
+  cont.innerHTML = "";
+  LETRAS.forEach((l, k) => {
+    const i = document.createElement("i");
+    i.textContent = l;
+    const t0 = 0.05 + k * 0.08;
+    const k1 = tramo(T, t0, t0 + 0.55);
+    let sx = 0.01, sy = 0.01, y = 0;
+    if (T >= t0) { const g = gelatina(k1); sx = g.sx; sy = g.sy; y = g.y * 6; }
+    i.style.transform = `rotate(${ROT[k]}deg) translateY(${DY[k] * 6 + y}px) scale(${sx}, ${sy})`;
+    i.style.opacity = T >= t0 ? 1 : 0;
+    i.dataset.k = k;
+    cont.appendChild(i);
+  });
+}
+pintarMarca(document.getElementById("atras"));
+pintarMarca(document.getElementById("delante"));
+// Las cajas de las letras (en píxeles de la escena).
+const cajas = [...document.querySelectorAll("#atras i")].map((el) => el.getBoundingClientRect());
+const caja = (k) => cajas[k];
+// Puntos de la coreografía a partir de las cajas (fracciones de cada letra).
+const horquillaY = (k) => ({ x: caja(k).x + caja(k).width * 0.46, y: caja(k).y + caja(k).height * 0.54 });
+const agujeroA   = { x: caja(1).x + caja(1).width * 0.44, y: caja(1).y + caja(1).height * 0.63 };
+const cimaP      = (k) => ({ x: caja(k).x + caja(k).width * 0.50, y: caja(k).y + caja(k).height * 0.34 });
+
+// ── el brazo delantero de la «y»: solo el brazo derecho, por delante ──
+// Se recorta la copia delantera de la marca a un polígono sobre la y
+// (brazo derecho hasta la unión); el resto de la copia delantera se
+// oculta. Se activa solo cuando el loro está posado en esa y.
+function brazoDelante(k) {
+  const del = document.getElementById("delante");
+  const c = caja(k);
+  del.style.clipPath = `polygon(${c.x + c.width * 0.56}px ${c.y}px, ${c.x + c.width}px ${c.y}px, ${c.x + c.width}px ${c.y + c.height * 0.64}px, ${c.x + c.width * 0.50}px ${c.y + c.height * 0.64}px)`;
+  del.style.display = "flex";
+}
+document.getElementById("delante").style.display = "none";
+
+// ── el loro (Criatura de la app), con parámetros por tiempo ──────────
+function loroSVG(p) {
+  const tinta = "#e0502a", oscuro = (pct) => `color-mix(in srgb, ${tinta} ${pct}%, #2b2418)`;
+  const boca = clamp(p.boca, 0, 1), giro = p.giro, parpado = p.parpado, ala = p.ala, cola = p.cola, pata = p.pata;
+  return `<svg viewBox="0 0 64 64" width="${p.size}" height="${p.size}" style="transform: scaleX(${p.mirando}) rotate(${p.inclina}deg) scale(${p.sx}, ${p.sy}); transform-origin: 50% 90%;">
+    <g transform="translate(1.8 2)" fill="#2f4bc4" opacity="0.9">
+      <path d="M41 40 C48 44 54 50 57 56 C51 53 45 49 41 45 Z"/><path d="M42.5 37.5 C51 40 58 44 61.5 49 C55 48 48 45 43.5 41.5 Z"/>
+      <path d="M30 5 C 22.5 5 17.5 9 16 14 C 11 14.5 7.5 17.5 7.5 21.5 C 7.5 25.5 10 28.5 13.5 30 C 12.5 27 13.5 24.5 16 23.5 C 17 24.5 18.5 25.3 20 25.6 C 18.3 28.4 17.2 31.6 17.2 35 C 17.2 43.5 22.5 50.5 30.5 51 C 38.5 51.5 44.5 45 45.3 36 C 45.8 31 45.3 26 44.3 22 C 42.8 12 37.5 5 30 5 Z"/>
+    </g>
+    <g style="transform: rotate(${cola}deg); transform-origin: 41px 40px;">
+      <path d="M41 40 C48 44 54 50 57 56 C51 53 45 49 41 45 Z" fill="${oscuro(62)}"/>
+      <path d="M42.5 37.5 C51 40 58 44 61.5 49 C55 48 48 45 43.5 41.5 Z" fill="${oscuro(80)}"/>
+      <path d="M43 34.5 C52 35 60 38 63.5 42 C57 42 49.5 40.5 44 38 Z" fill="${tinta}"/>
+    </g>
+    <path d="M30 8 C 21 8.5 16.8 16 16.8 26 C 16.8 27 16.9 28 17 29 C 17.2 40.5 22.5 50.5 30.5 51 C 38.5 51.5 44.5 45 45.3 36 C 45.8 31 45.3 26 44.3 22 C 42.8 12 37.5 8 30 8 Z" fill="${tinta}"/>
+    <path d="M23.5 31 C 20.5 34.5 20 40 22 44.5 C 23.8 48.5 27 50.8 30.5 51 C 34 51 36.5 49 38 46 C 34 46.5 29.5 44.5 27 40.5 C 25 37.5 24 34 23.5 31 Z" fill="#f7f2e7" opacity="0.92"/>
+    <g style="transform: rotate(${ala}deg) translateY(${ala < -30 ? -4 : 0}px); transform-origin: 36px 25px;">
+      <path d="M35 22 C 41 23 44.5 28 44.5 34 C 44.5 39 42 43.5 38.5 45.5 C 39 43 37.5 41.5 35.5 41.5 C 36.5 39.5 36 37.5 34 37 C 35 35 34.5 33 32.5 32.5 C 33.5 29 33.5 25 35 22 Z" fill="${oscuro(74)}"/>
+    </g>
+    <g stroke="#2b2418" stroke-width="2.6" fill="none" stroke-linecap="round" style="transform: translateY(${pata}px);">
+      <path d="M26.5 50.5 L26.5 54.5 L23.5 57.5 M26.5 54.5 L29.5 57.5"/><path d="M34.5 50.5 L34.5 54.5 L31.5 57.5 M34.5 54.5 L37.5 57.5"/>
+    </g>
+    <g style="transform: rotate(${giro}deg); transform-origin: 29px 26px;">
+      <path d="M30 5 C 22.5 5 17.5 9 16 14 C 15.2 16.8 15.2 20.5 16.2 23.5 C 17.5 27.5 20.5 30 24.5 30.5 C 30 31 36 30 40 27 C 43 24.5 44 19 42.5 14.5 C 40.5 8.5 36 5 30 5 Z" fill="${tinta}"/>
+      <path d="M28 5.5 C 27 2 29.5 -0.5 33 0.5 C 31 2 30.5 4 31 5.5 Z" fill="${tinta}"/>
+      <path d="M32.5 5.2 C 32.8 2.4 35.5 1 38 2.2 C 36.2 3.2 35.4 4.6 35.4 6.2 Z" fill="${oscuro(74)}"/>
+      <path d="M11 21 C 13 20 17 20.5 19.5 22.5 L 18.5 27.5 C 15 27 12 25 11 21 Z" fill="#f7f2e7"/>
+      <g style="transform: rotate(${boca * 25}deg); transform-origin: 19px 24.5px;"><path d="M11.5 24.5 C 12.5 27.5 15.5 29.5 19 29.8 L 18.2 25.6 C 15.8 25.4 13.5 25 11.5 24.5 Z" fill="#2b2418"/></g>
+      <g style="transform: rotate(${-boca * 7}deg); transform-origin: 17px 16px;"><path d="M16 13.5 C 11 14 7.5 17.5 7.5 21.5 C 7.5 25.5 10 28.5 13.5 30 C 12.5 27 13.5 24.5 16 23.5 C 17.5 24.8 19.5 25.6 21.5 25.8 C 22.5 22 21.5 17 19 14.5 C 18 13.8 17 13.5 16 13.5 Z" fill="#2b2418"/></g>
+      <circle cx="27" cy="18" r="5.1" fill="#f7f2e7"/><circle cx="${27 + p.ojoX}" cy="${18 + p.ojoY}" r="2.5" fill="#2b2418"/>
+      <g style="transform: scaleY(${parpado}); transform-origin: 27px 13.4px;"><rect x="21.6" y="13.2" width="10.8" height="9.6" rx="4.6" fill="${tinta}"/></g>
+      <circle cx="21" cy="26.5" r="2.4" fill="#f7f2e7" opacity="0.4"/>
+    </g>
+    ${p.notas ? `<g fill="#f7f2e7" opacity="${p.notas}"><ellipse cx="8" cy="12" rx="2.2" ry="1.7" transform="rotate(-20 8 12)"/><rect x="9.6" y="3.5" width="1.5" height="8.8" rx="0.75"/><path d="M9.6 3.5 q3.4 0.6 3.8 3.4 q-1.9-1.4-3.8-1.4 Z"/><ellipse cx="4" cy="22" rx="1.9" ry="1.5" transform="rotate(-20 4 22)"/><rect x="5.3" y="14.8" width="1.3" height="7.5" rx="0.65"/></g>` : ""}
+  </svg>`;
+}
+
+const SIZE = caja(0).height * 0.42;
+// ── LA PEGATINA («muy pronto» + datos + movilito con el loro asomando) ──
+const PALETA = ["#FF6B6B", "#F94892", "#A166F2", "#5D5FEF", "#2E9BF7", "#00A896", "#2EC96E", "#FF8E3C", "#E84393", "#7C4DFF"];
+const pega = document.createElement("div"); pega.id = "pega";
+pega.innerHTML = `<div class="parche"></div>
+  <div class="palabra">${"muy pronto".split("").map((l, k) => l === " " ? `<span class="hueco"></span>` :
+    `<i data-k="${k}" style="color: ${PALETA[(k * 3 + 1) % PALETA.length]}; transform: rotate(${k % 2 === 0 ? -3.5 : 3}deg) translateY(${k % 2 === 0 ? -6 : 8}px)">${l}</i>`).join("")}</div>
+  <div class="datos">DISPONIBLE PARA iOS Y ANDROID</div>
+  <svg class="movil" viewBox="0 0 64 100" fill="none" stroke="#2b2418" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6" y="4" width="52" height="92" rx="11" fill="#fdf9ee"/>
+    <path d="M24 12 h16"/>
+    <rect x="12" y="20" width="40" height="60" rx="4" fill="#f7f2e7" stroke="none"/>
+    <svg x="11" y="27" width="42" height="42" viewBox="0 0 64 64">${loroSVG({ size: 42, boca: 0, giro: 0, parpado: 0, ala: 0, cola: 0, pata: 0, mirando: 1, inclina: 0, sx: 1, sy: 1, ojoX: 0, ojoY: 0, notas: 0 }).replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "")}</svg>
+  </svg>`;
+document.getElementById("escena").appendChild(pega);
+const ESCALA_PEGA = 0.6;                      // «bastante más pequeña», idéntica por dentro
+const PEGA_W = 1400 * ESCALA_PEGA, PEGA_H = 560 * ESCALA_PEGA; // tamaño VISIBLE
+const MEDIA_CAJA = 700;                        // media anchura de la caja de diseño (origen del escalado)
+// Dónde queda estampada: mordiendo la esquina inferior derecha del logo
+// (el descendente de la última «y»), ladeada.
+const colgar = { x: Math.min(caja(4).x + caja(4).width * 0.02 + PEGA_W / 2, W - 40 - PEGA_W / 2), y: caja(4).y + caja(4).height * 0.69 };
+const PEGA_FINAL = { x: colgar.x, y: colgar.y, rot: -3 }; // x,y = punto de cuelgue en reposo
+// El pico del loro en pantalla, según hacia dónde mira.
+const pico = (pos, mirando) => ({ x: pos.x + (mirando === 1 ? SIZE * (8 / 64) : SIZE * (56 / 64)), y: pos.y + SIZE * (23 / 64) });
+let pegaEstado = null; // {x, y, rot, sx, sy, gelK, dip}
+
+// ── LA COREOGRAFÍA ───────────────────────────────────────────────────
+// El loro mide ~0.62 del alto de la x de las letras; su «pie» (y=57 de 64)
+// se posa en el punto dado. Entre saltos, parábolas; en vuelo, aleteo.
+const pie = (pt) => ({ x: pt.x - SIZE / 2, y: pt.y - SIZE * (57 / 64) });
+function salto(t, a, b, de, a_, altura) {
+  const k = tramo(t, a, b);
+  const x = lerp(de.x, a_.x, k), y = lerp(de.y, a_.y, k) - Math.sin(k * Math.PI) * altura;
+  return { x, y, k };
+}
+const P0 = horquillaY(0), P_A = agujeroA, P_ABAJO = { x: agujeroA.x + 60, y: caja(1).y + caja(1).height + SIZE * 0.55 };
+const P_P1 = cimaP(2), P_P2 = cimaP(3), P4 = horquillaY(4);
+let pos, estado = "delante", p = { size: SIZE, boca: 0, giro: 0, parpado: 0, ala: 0, cola: 0, pata: 0, mirando: -1, inclina: 0, sx: 1, sy: 1, ojoX: 0, ojoY: 0, notas: 0 };
+const aleteo = (t, hz) => -40 - 38 * Math.sin(t * hz * Math.PI * 2);
+const brincoAla = (k) => -14 * Math.sin(k * Math.PI);
+if (T >= 7.0) { /* segundo acto, abajo */ }
+else if (T < 0.45) { pos = { x: -SIZE * 2, y: -SIZE }; }
+else if (T < 1.10) { // vuela desde arriba a la izquierda hasta la horquilla de la primera y
+  const k = easeOut(tramo(T, 0.45, 1.10));
+  const de = { x: -SIZE * 1.5, y: P0.y - 900 };
+  pos = { x: lerp(de.x, P0.x, k), y: lerp(de.y, P0.y, k) + Math.sin(k * Math.PI) * 120 };
+  p.ala = aleteo(T, 9); p.cola = 4; p.inclina = lerp(-14, 0, k); p.sy = 0.96;
+} else if (T < 2.35) { // posado en la horquilla, mira a cámara, parpadea
+  pos = P0; estado = "horquilla0";
+  const k = tramo(T, 1.10, 1.28); p.sy = lerp(0.78, 1, easeOut(k)); p.sx = lerp(1.18, 1, easeOut(k));
+  if (T >= 1.35) { p.mirando = 1; const v = tramo(T, 1.35, 1.5); pos = { x: P0.x, y: P0.y - Math.sin(v * Math.PI) * 60 }; }
+  p.giro = T > 1.6 ? -4 : 0; p.ojoX = T > 1.6 ? -1.4 : 0; p.ojoY = T > 1.6 ? -0.6 : 0;
+  if (T > 1.72 && T < 1.83) p.parpado = 1;
+  if (T > 2.15) { const c = tramo(T, 2.15, 2.35); p.sy = lerp(1, 0.82, c); p.sx = lerp(1, 1.12, c); }
+} else if (T < 2.95) { // salta hasta encima del agujero de la a
+  const s = salto(T, 2.35, 2.95, P0, { x: P_A.x, y: P_A.y - SIZE * 0.9 }, 520);
+  pos = s; p.ala = brincoAla(s.k); p.inclina = -10 * Math.sin(s.k * Math.PI); p.sy = 1.06; p.sx = 0.96;
+} else if (T < 3.15) { // pica de cabeza hacia el agujero (por delante)
+  const k = ease(tramo(T, 2.95, 3.15));
+  const dentro = { x: P_A.x, y: P_A.y + SIZE * 0.05 };
+  pos = { x: lerp(P_A.x, dentro.x, k), y: lerp(P_A.y - SIZE * 0.9, dentro.y, k) };
+  estado = k > 0.7 ? "atras" : "delante"; p.inclina = 14 * k; p.sy = 1.1; p.sx = 0.92; p.ojoY = 1.2;
+} else if (T < 3.42) { // DENTRO del agujero: solo se le ve por el hueco de la a
+  pos = { x: P_A.x + 6 * Math.sin((T - 3.15) * 30), y: P_A.y + SIZE * 0.05 };
+  estado = "atras"; p.inclina = 14; p.ojoX = -1.2; p.ojoY = 0.4;
+  if (T > 3.3 && T < 3.38) p.parpado = 1;
+} else if (T < 3.62) { // cae por debajo de la letra (sigue detrás)
+  const k = ease(tramo(T, 3.42, 3.62));
+  pos = { x: lerp(P_A.x, P_ABAJO.x, k), y: lerp(P_A.y + SIZE * 0.05, P_ABAJO.y, k) };
+  estado = "atras"; p.inclina = 12; p.sy = 1.12; p.sx = 0.9; p.ojoY = 1.2;
+} else if (T < 3.95) { // rebota desde abajo a la cima de la primera p
+  const s = salto(T, 3.62, 3.95, P_ABAJO, P_P1, 760); pos = s; estado = s.k < 0.3 ? "atras" : "delante";
+  p.ala = brincoAla(s.k); p.inclina = -8 * Math.sin(s.k * Math.PI);
+} else if (T < 4.35) { // brinca a la segunda p
+  const s = salto(T, 3.95, 4.35, P_P1, P_P2, 260); pos = s; p.ala = brincoAla(s.k); p.inclina = -6 * Math.sin(s.k * Math.PI);
+} else if (T < 4.95) { // y a la horquilla de la última y
+  const s = salto(T, 4.35, 4.95, P_P2, P4, 420); pos = s; p.ala = brincoAla(s.k); p.inclina = -8 * Math.sin(s.k * Math.PI);
+} else { // posado en la última y: aterriza, mira a cámara y SILBA
+  pos = P4; estado = "horquilla4";
+  const k = tramo(T, 4.95, 5.15); p.sy = lerp(0.8, 1, easeOut(k)); p.sx = lerp(1.16, 1, easeOut(k));
+  p.mirando = 1; // gira: ahora mira a la izquierda (a la palabra), de perfil
+  if (T > 5.35) { const s = tramo(T, 5.35, 5.6); p.giro = lerp(0, -16, easeOut(s)); }
+  if (T > 5.6 && T < 6.4) { p.boca = 0.55 + 0.35 * Math.sin((T - 5.6) * 22); p.giro = -16 + 3 * Math.sin((T - 5.6) * 22); p.notas = clamp((T - 5.6) * 3, 0, 1) * clamp((6.6 - T) * 2, 0, 1); }
+  if (T >= 6.4) { p.giro = lerp(-16, -2, easeOut(tramo(T, 6.4, 6.9))); }
+  if (T > 6.75 && T < 6.86) p.parpado = 1;
+}
+// ── SEGUNDO ACTO: se va, vuelve con la pegatina y la estampa ────────────
+if (T >= 7.0) {
+  const FUERA = { x: W + SIZE * 1.6, y: H + SIZE * 0.6 };
+  const ANCLA = () => { // posición del loro tal que su pico (mirando a la izquierda) cae en el punto de cuelgue
+    const b = pico({ x: 0, y: 0 }, 1); return { x: colgar.x - b.x, y: colgar.y - b.y - 10 };
+  };
+  if (T < 7.35) { // mira abajo a la derecha: ha visto algo
+    pos = P4; estado = "horquilla4"; p.mirando = 1; p.giro = lerp(-2, 9, easeOut(tramo(T, 7.0, 7.2))); p.ojoX = 1.6; p.ojoY = 1.2;
+  } else if (T < 7.8) { // se lanza fuera de plano por la esquina inferior derecha
+    const k = ease(tramo(T, 7.35, 7.8)); pos = { x: lerp(P4.x, FUERA.x, k), y: lerp(P4.y, FUERA.y, k) - Math.sin(k * Math.PI) * 140 };
+    p.mirando = -1; p.ala = aleteo(T, 9); p.inclina = 16 * k; p.sy = 0.96;
+  } else if (T < 8.05) { pos = FUERA; }
+  else if (T < 8.9) { // vuelve con la pegatina colgando del pico, aleteando
+    const k = easeOut(tramo(T, 8.05, 8.9)); const a = ANCLA();
+    pos = { x: lerp(FUERA.x - SIZE * 0.4, a.x, k), y: lerp(FUERA.y - SIZE * 1.2, a.y, k) + Math.sin(k * Math.PI) * -160 };
+    p.mirando = 1; p.ala = aleteo(T, 9.5); p.inclina = lerp(-10, 0, k); p.sy = 0.96;
+    const b = pico(pos, 1); const decay = lerp(1, 0.35, k);
+    pegaEstado = { x: b.x, y: b.y - 4, rot: -9 + 16 * Math.sin((T - 8.05) * 7.5) * decay, sx: 1, sy: 1, gelK: null, dip: 0 };
+  } else if (T < 9.3) { // LA ESTAMPA: la pega con gelatina, y él se aparta
+    const k = tramo(T, 8.9, 9.3); const a = ANCLA();
+    pos = { x: a.x + 40 * easeOut(k), y: a.y - 90 * easeOut(k) };
+    p.mirando = 1; p.ala = k < 0.5 ? brincoAla(k * 2) : 0; p.inclina = -6;
+    pegaEstado = { x: PEGA_FINAL.x, y: PEGA_FINAL.y, rot: PEGA_FINAL.rot, sx: 1, sy: 1, gelK: k, dip: 0 };
+  } else if (T < 9.75) { // aterriza sobre el borde de la pegatina, que se hunde y vuelve
+    const k = tramo(T, 9.3, 9.75); const a = ANCLA();
+    const percha = { x: PEGA_FINAL.x + PEGA_W * 0.16, y: PEGA_FINAL.y + (PEGA_W * 0.16) * Math.tan(PEGA_FINAL.rot * Math.PI / 180) };
+    const s = salto(T, 9.3, 9.75, { x: a.x + 40, y: a.y - 90 }, percha, 120); pos = s;
+    p.mirando = 1; p.ala = brincoAla(s.k); p.inclina = -4 * Math.sin(s.k * Math.PI);
+    pegaEstado = { x: PEGA_FINAL.x, y: PEGA_FINAL.y, rot: PEGA_FINAL.rot, sx: 1, sy: 1, gelK: 1, dip: 0 };
+  } else { // posado en la pegatina: hundimiento con muelle, mira a cámara, gelatina de las letras, reposo
+    const percha = { x: PEGA_FINAL.x + PEGA_W * 0.16, y: PEGA_FINAL.y + (PEGA_W * 0.16) * Math.tan(PEGA_FINAL.rot * Math.PI / 180) };
+    const u = T - 9.75; const dip = 26 * Math.exp(-u * 4.5) * Math.cos(u * 14);
+    pos = { x: percha.x, y: percha.y + dip }; p.mirando = 1;
+    const k = tramo(T, 9.75, 9.95); p.sy = lerp(0.8, 1, easeOut(k)); p.sx = lerp(1.16, 1, easeOut(k));
+    p.sy *= 1 + 0.012 * Math.sin(T * 2.4);
+    if (T > 10.1) { p.giro = lerp(0, -5, easeOut(tramo(T, 10.1, 10.4))); p.ojoX = -1.3; p.ojoY = -0.4; }
+    if ((T > 10.7 && T < 10.81) || (T > 12.2 && T < 12.31)) p.parpado = 1;
+    pegaEstado = { x: PEGA_FINAL.x, y: PEGA_FINAL.y, rot: PEGA_FINAL.rot, sx: 1, sy: 1, gelK: 1, dip, letrasT: T - 9.85 };
+  }
+  estado = "acto2";
+}
+// respiración sutil siempre que está posado
+if (estado.startsWith("horquilla")) { p.sy *= 1 + 0.012 * Math.sin(T * 2.4); }
+
+
+
+const loro = document.getElementById("loro");
+const f = pie(pos);
+loro.style.left = `${f.x}px`; loro.style.top = `${f.y}px`;
+loro.style.zIndex = estado === "atras" ? 0 : (estado === "acto2" ? 5 : 2);
+if (pegaEstado) {
+  const e = pegaEstado; pega.style.display = "block";
+  let sx = e.sx, sy = e.sy, ty = 0;
+  if (e.gelK !== null && e.gelK < 1) { const g = gelatina(e.gelK); sx = g.sx; sy = g.sy; ty = g.y * 10; }
+  pega.style.left = `${e.x - MEDIA_CAJA}px`; pega.style.top = `${e.y + (e.dip || 0) * 0.8}px`;
+  pega.style.transform = `rotate(${e.rot}deg) translateY(${ty * ESCALA_PEGA}px) scale(${sx * ESCALA_PEGA}, ${sy * ESCALA_PEGA})`;
+  if (e.letrasT !== undefined) { // la gelatina de las letras, en cascada (45 ms por letra), como en la app
+    pega.querySelectorAll(".palabra i").forEach((el) => {
+      const k = parseInt(el.dataset.k); const tt = e.letrasT - k * 0.045; const g = gelatina(clamp(tt / 0.55, 0, 1));
+      el.style.transform = `rotate(${k % 2 === 0 ? -3.5 : 3}deg) translateY(${(k % 2 === 0 ? -6 : 8) + g.y * 4}px) scale(${g.sx}, ${g.sy})`;
+    });
+  }
+}
+loro.innerHTML = loroSVG(p);
+if (estado === "horquilla0") brazoDelante(0);
+if (estado === "horquilla4") brazoDelante(4);
+document.title = `t=${T} estado=${estado} pos=${Math.round(pos.x)},${Math.round(pos.y)} cajas=${cajas.map(c => Math.round(c.x)).join("/")}`;
+</script></body></html>

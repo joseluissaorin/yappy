@@ -1,0 +1,326 @@
+{
+ "titulo": "Media voz",
+ "total": 232.858,
+ "beats": [
+  {
+   "id": "b01",
+   "voz": "narra",
+   "escena": "subida",
+   "texto": "El autobús subía tan despacio que se podía leer el nombre de las calles. Yo iba leyendo los nombres. Ella iba mirando el móvil.",
+   "inicio": 0.8,
+   "fin": 11.293
+  },
+  {
+   "id": "b02",
+   "voz": "narra",
+   "escena": "subida",
+   "texto": "—Dame uno.",
+   "inicio": 11.843,
+   "fin": 13.227
+  },
+  {
+   "id": "b03",
+   "voz": "narra",
+   "escena": "subida",
+   "texto": "—Espera, que se lía.",
+   "inicio": 13.777,
+   "fin": 15.767
+  },
+  {
+   "id": "b04",
+   "voz": "narra",
+   "escena": "cable",
+   "texto": "Desenredó el cable con los dientes. Me dio el auricular derecho, todavía caliente de su bolsillo, y se quedó el izquierdo. El cable era corto. Para que no tirara teníamos que ir con las cabezas juntas, como si nos contáramos algo.",
+   "inicio": 17.167,
+   "fin": 34.583
+  },
+  {
+   "id": "b05",
+   "voz": "narra",
+   "escena": "cable",
+   "texto": "—¿Qué es?",
+   "inicio": 35.133,
+   "fin": 36.508
+  },
+  {
+   "id": "b06",
+   "voz": "narra",
+   "escena": "cable",
+   "texto": "—Lorca. Nos lo mandan para el lunes.",
+   "inicio": 37.058,
+   "fin": 41.091
+  },
+  {
+   "id": "b07",
+   "voz": "narra",
+   "escena": "cable",
+   "texto": "—¿Y lo estás oyendo?",
+   "inicio": 41.641,
+   "fin": 43.505
+  },
+  {
+   "id": "b08",
+   "voz": "narra",
+   "escena": "cable",
+   "texto": "—Lo estoy leyendo.",
+   "inicio": 44.055,
+   "fin": 45.87
+  },
+  {
+   "id": "b09",
+   "voz": "narra",
+   "escena": "cable",
+   "texto": "Le dio a la pantalla. Una voz de mujer, seria, con acento de ninguna parte, empezó a decir:",
+   "inicio": 46.42,
+   "fin": 54.206
+  },
+  {
+   "id": "v01",
+   "voz": "lorca",
+   "escena": "verde",
+   "texto": "Verde que te quiero verde. Verde viento. Verdes ramas.",
+   "inicio": 55.106,
+   "fin": 59.721
+  },
+  {
+   "id": "b10",
+   "voz": "narra",
+   "escena": "ventana",
+   "texto": "Yo solo oía la mitad. Las palabras entraban por un lado y por el otro entraba el autobús: el freno, una señora con una bolsa de pipas, el calor de la ventana en la mejilla.",
+   "inicio": 60.621,
+   "fin": 74.458
+  },
+  {
+   "id": "b11",
+   "voz": "narra",
+   "escena": "ventana",
+   "texto": "—Dice «verde» muchas veces.",
+   "inicio": 75.008,
+   "fin": 77.188
+  },
+  {
+   "id": "b12",
+   "voz": "narra",
+   "escena": "ventana",
+   "texto": "—Calla.",
+   "inicio": 77.738,
+   "fin": 79.078
+  },
+  {
+   "id": "v02",
+   "voz": "lorca",
+   "escena": "barco",
+   "texto": "El barco sobre la mar y el caballo en la montaña.",
+   "inicio": 79.978,
+   "fin": 83.937
+  },
+  {
+   "id": "b13",
+   "voz": "narra",
+   "escena": "apoyo",
+   "texto": "Se apoyó un poco más. Olía a piscina, a cloro y a algo dulce, la crema esa que se pone. Con el cable así, si una giraba la cabeza, la otra se quedaba sin voz.",
+   "inicio": 84.837,
+   "fin": 97.812
+  },
+  {
+   "id": "b14",
+   "voz": "narra",
+   "escena": "apoyo",
+   "texto": "—Anoche lo oí entero —dijo—. Sola. En la cama, con la luz apagada.",
+   "inicio": 98.362,
+   "fin": 104.616
+  },
+  {
+   "id": "b15",
+   "voz": "narra",
+   "escena": "apoyo",
+   "texto": "—¿Y?",
+   "inicio": 105.166,
+   "fin": 106.469
+  },
+  {
+   "id": "b16",
+   "voz": "narra",
+   "escena": "apoyo",
+   "texto": "—Que no me enteré de nada. Me quedé dormida en el caballo.",
+   "inicio": 107.019,
+   "fin": 111.886
+  },
+  {
+   "id": "b17",
+   "voz": "narra",
+   "escena": "apoyo",
+   "texto": "—Pues ahora tampoco te vas a enterar.",
+   "inicio": 112.436,
+   "fin": 115.384
+  },
+  {
+   "id": "b18",
+   "voz": "narra",
+   "escena": "apoyo",
+   "texto": "—Ahora sí.",
+   "inicio": 115.934,
+   "fin": 117.399
+  },
+  {
+   "id": "v03",
+   "voz": "lorca",
+   "escena": "baranda",
+   "texto": "Con la sombra en la cintura, ella sueña en su baranda.",
+   "inicio": 118.299,
+   "fin": 122.716
+  },
+  {
+   "id": "b19",
+   "voz": "narra",
+   "escena": "parada",
+   "texto": "Nos saltamos nuestra parada. Lo vi pasar por la ventana y no dije nada. Ella también lo vio. Tampoco dijo nada. El cable seguía tirando un poco cada vez que respirábamos.",
+   "inicio": 123.616,
+   "fin": 137.801
+  },
+  {
+   "id": "b20",
+   "voz": "narra",
+   "escena": "secreto",
+   "texto": "—¿Quieres que te cuente un secreto?",
+   "inicio": 139.201,
+   "fin": 141.604
+  },
+  {
+   "id": "b21",
+   "voz": "narra",
+   "escena": "secreto",
+   "texto": "—Vale.",
+   "inicio": 142.154,
+   "fin": 143.486
+  },
+  {
+   "id": "b22",
+   "voz": "narra",
+   "escena": "secreto",
+   "texto": "—El libro lo elegí yo. La profesora dijo que eligiéramos y yo dije Lorca porque tú dijiste una vez que te gustaba.",
+   "inicio": 144.036,
+   "fin": 152.644
+  },
+  {
+   "id": "b23",
+   "voz": "narra",
+   "escena": "secreto",
+   "texto": "—Yo no dije eso.",
+   "inicio": 153.194,
+   "fin": 154.806
+  },
+  {
+   "id": "b24",
+   "voz": "narra",
+   "escena": "secreto",
+   "texto": "—Lo dijiste en segundo. En el patio.",
+   "inicio": 155.356,
+   "fin": 158.583
+  },
+  {
+   "id": "b25",
+   "voz": "narra",
+   "escena": "secreto",
+   "texto": "—No me acuerdo.",
+   "inicio": 159.133,
+   "fin": 160.805
+  },
+  {
+   "id": "b26",
+   "voz": "narra",
+   "escena": "secreto",
+   "texto": "—Yo sí.",
+   "inicio": 161.355,
+   "fin": 162.693
+  },
+  {
+   "id": "v04",
+   "voz": "lorca",
+   "escena": "plata",
+   "texto": "Verde carne, pelo verde, con ojos de fría plata.",
+   "inicio": 163.593,
+   "fin": 167.511
+  },
+  {
+   "id": "b27",
+   "voz": "narra",
+   "escena": "final-parada",
+   "texto": "El autobús paró en lo alto, donde ya no hay más calle. Se bajó la señora de las pipas. El conductor apagó el motor y se quedó quieto, como si también estuviera escuchando.",
+   "inicio": 168.411,
+   "fin": 182.116
+  },
+  {
+   "id": "b28",
+   "voz": "narra",
+   "escena": "final-parada",
+   "texto": "—Nos hemos pasado —dije.",
+   "inicio": 182.666,
+   "fin": 184.883
+  },
+  {
+   "id": "b29",
+   "voz": "narra",
+   "escena": "final-parada",
+   "texto": "—Ya.",
+   "inicio": 185.433,
+   "fin": 186.74
+  },
+  {
+   "id": "b30",
+   "voz": "narra",
+   "escena": "final-parada",
+   "texto": "—¿Bajamos?",
+   "inicio": 187.29,
+   "fin": 188.707
+  },
+  {
+   "id": "b31",
+   "voz": "narra",
+   "escena": "final-parada",
+   "texto": "—Cuando termine.",
+   "inicio": 189.257,
+   "fin": 190.908
+  },
+  {
+   "id": "b32",
+   "voz": "narra",
+   "escena": "dormida",
+   "texto": "La voz siguió leyendo. No sabía que estábamos allí. No sabía que era verano ni que el motor se había apagado ni que ella se había quedado dormida contra mi hombro con el auricular todavía puesto.",
+   "inicio": 192.308,
+   "fin": 207.439
+  },
+  {
+   "id": "b33",
+   "voz": "narra",
+   "escena": "dormida",
+   "texto": "Le bajé el volumen. No lo paré.",
+   "inicio": 207.989,
+   "fin": 211.079
+  },
+  {
+   "id": "v05",
+   "voz": "lorca",
+   "escena": "dormida",
+   "texto": "Verde que te quiero verde.",
+   "inicio": 211.979,
+   "fin": 214.041
+  },
+  {
+   "id": "b34",
+   "voz": "narra",
+   "escena": "hombro",
+   "texto": "Con la cabeza así, yo oía la mitad. La otra mitad se la estaba leyendo a ella, dormida, en el oído izquierdo.",
+   "inicio": 214.941,
+   "fin": 223.701
+  },
+  {
+   "id": "b35",
+   "voz": "narra",
+   "escena": "cable-final",
+   "texto": "El cable tiraba un poco cada vez que respiraba.",
+   "inicio": 225.101,
+   "fin": 228.858
+  }
+ ]
+}
