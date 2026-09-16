@@ -179,10 +179,10 @@
         "titulo": "No iPhone e no iPad",
         "texto": "Partilhar é o manual inteiro. Em qualquer app, tocas em partilhar e escolhes o Yappy: aceita ligações, texto solto, PDF, EPUB, Word, ODT e áudio. O Yappy abre-se sozinho, de imediato. Nada fica a cozer dentro da folha de partilha, porque o iOS corta as extensões aos 120 MB; o Yappy copia o que partilhaste e salta para a app, onde não há limite. O salto é design, não um remendo. <strong>Tudo acontece no aparelho</strong>: a única rede que o Yappy toca é a visita ao endereço que partilhaste, feita a partir do teu próprio telemóvel.",
         "puntos": [
-          "La cola lo prepara mientras miras: el artículo se limpia, el vídeo trae su transcripción, el PDF se pagina. Si sigues con la app delante, la lectura arranca sola en cuanto está lista.",
-          "El karaoke ilumina lo que suena, frase a frase. Tocas en cualquier sitio para pausar, deslizas para saltar de párrafo y subes o bajas la velocidad por el borde.",
-          "Bloqueas la pantalla y la voz sigue. Los AirPods pausan y reanudan; el sistema la trata como a cualquier reproductor.",
-          "En la percha caben tres documentos a la vez: quitas uno y cabe otro. Los cuentos de la casa no ocupan sitio."
+          "A fila trata de tudo enquanto olhas: o artigo fica limpo, o vídeo vem com a transcrição, o PDF fica paginado. Se ficares com a app aberta, a leitura arranca sozinha assim que estiver pronta.",
+          "O karaoke ilumina o que soa, frase a frase. Tocas em qualquer sítio para pausar, deslizas para saltar de parágrafo e sobes ou baixas a velocidade pela borda.",
+          "Bloqueias o ecrã e a voz continua. Os AirPods pausam e retomam; o sistema trata-a como um leitor qualquer.",
+          "No cabide cabem três documentos ao mesmo tempo: tiras um e cabe outro. Os contos da casa não ocupam sítio."
         ]
       },
       {
@@ -190,52 +190,52 @@
         "titulo": "No Mac, no Windows e no Linux",
         "texto": "Um atalho e soa o que estiveres a ver: a seleção, a página do navegador ou o documento ativo. Os três atalhos alteram-se nas Preferências e funcionam com a app escondida na bandeja do sistema. Além do atalho, o computador traz o que não cabe numa mão.",
         "puntos": [
-          "<strong>La biblioteca.</strong> Todo lo que abres o compartes queda en la portada, con su progreso. Retomas donde lo dejaste, en el párrafo exacto.",
-          "<strong>El editor por párrafos.</strong> Cada párrafo puede llevar su voz, su velocidad y su pausa. Para diálogos, citas o documentos a dos lenguas.",
-          "<strong>Transcripción local.</strong> Arrastras una nota de voz o una grabación y el oído local la convierte en texto legible, sin subir nada a ningún sitio.",
-          "<strong>Exportar audiolibro.</strong> Cualquier documento sale como .m4b de verdad, con capítulos navegables sacados del guion. También como .wav o .mp3.",
-          "<strong>PDF con ojos.</strong> Los PDF escaneados pasan por un OCR local antes de leerse. Los nacidos digitales se leen directos, página a página.",
-          "<strong>Temas.</strong> Papel crema de día, tinta clara sobre fondo oscuro de noche, o que decida el sistema.",
-          "<strong>Sin cuerda.</strong> En el escritorio está todo abierto: la imprenta, la percha sin fondo y el puente vienen puestos."
+          "<strong>A biblioteca.</strong> Tudo o que abres ou partilhas fica na capa, com o seu progresso. Retomas onde deixaste, no parágrafo exato.",
+          "<strong>O editor por parágrafos.</strong> Cada parágrafo pode ter a sua voz, a sua velocidade e a sua pausa. Para diálogos, citações ou documentos em duas línguas.",
+          "<strong>Transcrição local.</strong> Arrastas uma nota de voz ou uma gravação e o ouvido local converte-a em texto legível, sem enviar nada para lado nenhum.",
+          "<strong>Exportar audiolivro.</strong> Qualquer documento sai como .m4b a sério, com capítulos navegáveis tirados do guião. Também como .wav ou .mp3.",
+          "<strong>PDF com olhos.</strong> Os PDF digitalizados passam por um OCR local antes de serem lidos. Os nascidos digitais leem-se logo, página a página.",
+          "<strong>Temas.</strong> Papel creme de dia, tinta clara sobre fundo escuro de noite, ou o que o sistema decidir.",
+          "<strong>Sem cordas.</strong> No computador está tudo aberto: a imprenta, o cabide sem fundo e a ponte vêm de série."
         ]
       },
       {
         "id": "puente",
-        "titulo": "El puente: tu ordenador renderiza, tu móvil escucha",
-        "texto": "Un libro entero tarda en sintetizarse. El puente le pasa el trabajo gordo a tu ordenador y te devuelve el audiolibro terminado al bolsillo, por una conexión directa y cifrada de extremo a extremo entre tus dos aparatos, sin servidor de nadie en medio.",
+        "titulo": "A ponte: o teu computador sintetiza, o teu telemóvel ouve",
+        "texto": "Um livro inteiro demora a sintetizar. A ponte passa o grosso do trabalho ao teu computador e devolve-te o audiolivro pronto ao bolso, por uma ligação direta e encriptada de ponta a ponta entre os teus dois aparelhos, sem servidor de ninguém no meio.",
         "puntos": [
-          "En el ordenador, Preferencias, «El puente»: Yappy te enseña un código QR con la dirección cifrada de tu máquina y una llave de invitación.",
-          "Apuntas la cámara del iPhone al QR y quedan emparejados. La llave se guarda y puedes revocarla desde el ordenador cuando quieras.",
-          "En el móvil, «Convertir en el ordenador»: eliges el documento, el ordenador lo sintetiza a su ritmo y el .m4b aparece en la biblioteca del teléfono, con sus capítulos. La noche trabaja para tu paseo de mañana.",
+          "No computador, em Preferências, «A ponte»: o Yappy mostra-te um código QR com o endereço cifrado da tua máquina e uma chave de convite.",
+          "Apontas a câmara do iPhone para o QR e ficam emparelhados. A chave fica guardada e podes revogá-la no computador quando quiseres.",
+          "No telemóvel, «Converter no computador»: escolhes o documento, o computador sintetiza-o ao seu ritmo e o .m4b aparece na biblioteca do telefone, com os capítulos. A noite trabalha para o teu passeio de amanhã.",
           "El puente va cifrado con QUIC, usando el protocolo de <a href=\"https://iroh.computer\">iroh</a>. Si hace falta un relevo para que los dos aparatos se encuentren, ese relevo solo ve tráfico cifrado que no puede leer."
         ]
       },
       {
         "id": "audiolibros",
-        "titulo": "Audiolibros: .m4b con capítulos de verdad",
-        "texto": "Yappy no exporta «un audio largo»: exporta audiolibros .m4b como los de las tiendas, con capítulos sacados de los títulos reales del documento, portada y reanudación. Se escuchan dentro de Yappy, con su biblioteca y su progreso, o en cualquier reproductor de audiolibros que ya uses. Y el guionizador les da la respiración: pausa después de los títulos, ritmo de lista en las listas.",
+        "titulo": "Audiolivros: .m4b com capítulos a sério",
+        "texto": "O Yappy não exporta «um áudio comprido»: exporta audiolivros .m4b como os das lojas, com capítulos tirados dos títulos reais do documento, capa e retoma. Ouvem-se dentro do Yappy, com a sua biblioteca e o seu progresso, ou em qualquer leitor de audiolivros que já uses. E o guião dá-lhes a respiração: pausa depois dos títulos, ritmo de lista nas listas.",
         "puntos": [
           "En el móvil se encargan desde la biblioteca, capítulo a capítulo: eliges cuáles imprimir y en qué voz.",
-          "El loro sigue imprimiendo aunque cierres la app o bloquees el teléfono.",
-          "Desde la biblioteca lo compartes a Archivos, a Libros o a donde quieras: el fichero es tuyo.",
-          "La imprenta forma parte de Yappy Parlanchín en el iPhone y el iPad. En el ordenador viene abierta."
+          "O papagaio continua a imprimir mesmo que feches a app ou bloqueies o telemóvel.",
+          "Da biblioteca, partilhas para os Ficheiros, os Livros ou para onde quiseres: o ficheiro é teu.",
+          "A tipografia faz parte do Yappy Parlanchín no iPhone e no iPad. No computador vem aberta."
         ]
       },
       {
         "id": "siri",
-        "titulo": "Siri, atajos y el botón de acción",
-        "texto": "«Oye Siri, lee mi portapapeles con Yappy.» La app expone App Intents de verdad: aparecen solos en la app Atajos, responden a Siri y se pueden colgar del botón de acción del iPhone. No hay nada que montar.",
+        "titulo": "Siri, atalhos e o botão de Ação",
+        "texto": "«Ouve Siri, lê a minha área de transferência com o Yappy.» A app expõe App Intents a sério: aparecem sozinhos na app Atalhos, respondem ao Siri e podem ficar pendurados no botão de Ação do iPhone. Não há nada a montar.",
         "puntos": [
-          "<strong>Lee mi portapapeles.</strong> Copias en cualquier sitio, se lo pides a Siri, y suena.",
-          "<strong>Reanuda la lectura.</strong> Retoma lo último que sonaba, justo donde iba.",
-          "<strong>Escuchar un enlace.</strong> Acepta una dirección como parámetro: el final perfecto para tus propios atajos.",
-          "Para automatizaciones a mano, el esquema <code>yappy://</code> también se procesa: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> y <code>yappy://pair?d=…</code>.",
-          "Y hay un widget para la pantalla de inicio con lo último que sonó, listo para retomarse con un toque."
+          "<strong>Lê a minha área de transferência.</strong> Copias em qualquer lado, pedes ao Siri, e toca.",
+          "<strong>Retoma a leitura.</strong> Apanha o último que tocou, exatamente onde ficou.",
+          "<strong>Ouvir um link.</strong> Aceita um endereço como parâmetro: o remate perfeito para os teus próprios atalhos.",
+          "Para automatizações feitas à mão, o esquema <code>yappy://</code> também é processado: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> e <code>yappy://pair?d=…</code>.",
+          "E há um widget para o ecrã principal com o último que tocou, pronto a retomar com um toque."
         ]
       },
       {
         "id": "ajustes",
-        "titulo": "Ajustes: pocas ruedas, todas de verdad",
+        "titulo": "Definições: poucos comandos, todos a sério",
         "texto": "O Yappy não tem um painel com cem interruptores. Tem os poucos que mudam mesmo a forma como soa.",
         "puntos": [
           "<strong>A voz.</strong> Dez vozes, todas poliglotas: a mesma voz lê espanhol, inglês ou japonês sem mudar de timbre.",
@@ -292,7 +292,7 @@
         "texto": "«século XX» é cardinal, «Henrique VIII» é ordinal e «EL CID» não é um número."
       },
       {
-        "titulo": "Siglas por fonotáctica",
+        "titulo": "Siglas por fonotática",
         "texto": "O FBI diz-se letra a letra; a NASA lê-se. É o som que decide, não uma lista."
       },
       {
@@ -445,7 +445,8 @@
         "q": "Porque é que no computador e no Android não se paga?",
         "a": "Porque a corda só está montada no iPhone e no iPad. No computador, e na versão Android quando for publicada, a tipografia, o poleiro sem fundo e a ponte vêm abertos. Não é uma oferta de lançamento: é que aí não há nada a cobrar."
       }
-    ]
+    ],
+    "una_a_una": "uma a uma, com os respetivos dados"
   },
   "voces": {
     "title": "As vozes do Yappy: dez pássaros poliglotas em 31 idiomas",
@@ -971,7 +972,8 @@
     "gana_en": "Onde ganha {nombre}",
     "verificado": "Dados públicos consultados em {fecha} no sítio web de cada produto.",
     "sin_verificar": "Os preços mudam com frequência: confirme-os antes de decidir.",
-    "ver_web": "Sítio oficial"
+    "ver_web": "Sítio oficial",
+    "frente_a": "Contra {nombre}"
   },
   "preguntas_comunes": {
     "titulo": "Perguntas frequentes"

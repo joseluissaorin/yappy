@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "lt",
+    "nombre": "Lietuvių",
+    "dir": "ltr",
+    "ogLocale": "lt_LT",
+    "hreflang": "lt",
+    "og_alt": "„Bet koks tekstas – garsiai“ didelėmis raidėmis ant kreminio popieriaus, šalia – koralinė papūga"
+  },
+  "slugs": {
+    "uso": "kaip-naudoti",
+    "guionizador": "scenarijaus-generatorius",
+    "descargas": "atsisiuntimai",
+    "precios": "kainos",
+    "voces": "balsai",
+    "preguntas": "duk",
+    "privacidad": "privatumas",
+    "accesibilidad": "prieinamumas",
+    "cuentos": "pasakos",
+    "blog": "blogas",
+    "convertir": "konvertuoti",
+    "idiomas": "kalbos",
+    "alternativas": "alternatyvos",
+    "formato_pdf": "pdf-i-audio",
+    "formato_epub": "epub-i-audioknyga",
+    "formato_word": "word-i-balsa",
+    "formato_articulos": "straipsniai-i-audio",
+    "formato_videos": "video-i-audio",
+    "formato_notas": "balso-irasai-i-teksta"
+  },
+  "comunes": {
+    "saltar": "Pereiti prie turinio",
+    "marca_aria": "Yappy, titulinis puslapis",
+    "idioma": "Kalba",
+    "menu": "Atidaryti meniu",
+    "secciones": "Skyriai",
+    "descargar": "Atsisiųsti",
+    "descargar_gratis": "Atsisiųsti nemokamai",
+    "en_app_store": "Atsisiųsti iš App Store",
+    "escuchar_muestra": "Pasiklausyti pavyzdžio",
+    "probar": "Išbandyti dabar",
+    "leer_mas": "Skaityti toliau",
+    "volver": "Grįžti",
+    "inicio": "Pradžia",
+    "minutos": "{n} min. skaitymo",
+    "publicado": "Paskelbta",
+    "actualizado": "atnaujinta",
+    "por": "parašė",
+    "gratis": "nemokamai",
+    "si": "Taip",
+    "no": "Ne",
+    "parcial": "Iš dalies",
+    "sin_datos": "nėra duomenų"
+  },
+  "nav": {
+    "uso": "Kaip naudotis",
+    "guionizador": "Scenarijų kūrėjas",
+    "voces": "Balsai",
+    "precios": "Kainos",
+    "descargas": "Atsisiuntimai",
+    "preguntas": "Klausimai",
+    "privacidad": "Privatumas",
+    "accesibilidad": "Prieinamumas",
+    "cuentos": "Pasakos",
+    "blog": "Tinklaraštis"
+  },
+  "pie": {
+    "producto": "Produktas",
+    "leer": "Skaitymui",
+    "casa": "Namai",
+    "codigo": "Kodas",
+    "licencia": "MIT licencija",
+    "novedades": "Naujienos",
+    "firma": "Yappy · rankų darbas iš Tenerifės, <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · atvirojo kodo (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Tekstas į kalbą: PDF, EPUB ir straipsnių skaitytuvas balsu",
+    "description": "Paverčia bet kokį tekstą natūraliu balsu: PDF, EPUB, Word, straipsniai ir vaizdo įrašai 31 kalba. Viskas vyksta tavo telefone ar kompiuteryje: be debesies, be paskyros ir be mokesčio už ženklą. Nemokama ir atvirojo kodo.",
+    "susurro": "tekstas į kalbą · 31 kalba · be debesies · atvirojo kodo",
+    "titular_1": "Bet koks",
+    "titular_texto": "tekstas",
+    "titular_2": ", ",
+    "titular_voz": "garsiai",
+    "titular_3": ".",
+    "entradilla": "Pasidalink straipsniu, PDF, EPUB, Word dokumentu ar vaizdo įrašu, ir papūga tau jį perskaitys natūraliu balsu, kol gamini, eini ar užmerki akis. Visas modelis veikia tavo įrenginyje: iš jo niekas neišeina. Niekada.",
+    "nota_acciones": "nemokama · be paskyros · be mokesčio už ženklą",
+    "pegatina_sin_nube": "be\ndebesies",
+    "pegatina_idiomas": "31\nkalba",
+    "pegatina_gratis": "nemokamai",
+    "pegatina_offline": "be interneto",
+    "demo_susurro": "paspausk ir klausyk: tai pasakė tas pats variklis, kuris dabar tavo kišenėje",
+    "demo_titulo": "Taip skamba.",
+    "demo_nota": "Tai, kas paryškinta, įgarsina sintezatorius: „1492“ perskaitoma kaip „tūkstantis keturi šimtai devyniasdešimt du“, o „XV amžius“ – kaip „penkioliktas amžius“; kiekviena kalba – pagal savo taisykles.",
+    "momentos_susurro": "kada tai praverčia",
+    "momentos_titulo": "Trys momentai, vienas mostas.",
+    "momentos": [
+      {
+        "titulo": "Kol gamini",
+        "texto": "Pasidalini straipsniu, atremi telefoną – ir balsas skaito toliau, kol tu prie viryklės."
+      },
+      {
+        "titulo": "Kol eini",
+        "texto": "Vakar pradėta knyga, paversta audioknyga su skyriais, lydi tave įkalnėn."
+      },
+      {
+        "titulo": "Naktis dirba",
+        "texto": "Užmiegi – palieki renderintis; pabundi – audioknyga jau tavo kišenėje."
+      }
+    ],
+    "porque_susurro": "kodėl egzistuoja",
+    "porque_titulo": "Be debesies, be paskyrų, be mokesčio už simbolį.",
+    "porque_entradilla": "Kitos teksto į kalbą programėlės tai, ką skaitai, siunčia į serverį ir ima mokestį už simbolius arba klausymo valandas. Yappy neturi serverio, kurį išlaikyti, – taigi nėra už ką imti mokesčio už klausymą.",
+    "porque": [
+      {
+        "titulo": "Niekas nepalieka tavo įrenginio",
+        "texto": "Balsas sintetinamas tavo telefone arba kompiuteryje atviru modeliu. Veikia ir be interneto: visam laikui."
+      },
+      {
+        "titulo": "31 tikra kalba",
+        "texto": "Dešimt balsų, kiekvienas – daugiakalbis. Tekstas su citatomis iš kitos kalbos pats perjungia kalbą, pastraipa po pastraipos."
+      },
+      {
+        "titulo": "Nei valandų, nei simbolių",
+        "texto": "Klausaisi, ką nori, ir tiek, kiek nori. Skaitliuko nėra, nes nėra sąskaitos, kurią dalyti."
+      },
+      {
+        "titulo": "Atviro kodo (MIT)",
+        "texto": "Variklis, scenarijų generatorius, programėlė ir pati ši svetainė – paskelbti. Gali juos skaityti, kompiliuoti ir patikrinti."
+      }
+    ],
+    "formatos_susurro": "dalintis – durys",
+    "formatos_titulo": "Kad ir ką skaitai.",
+    "formatos_entradilla": "Iš Safari, pašto, Failų ar bet kokios kitos programėlės: paliesk „Dalintis“ ir pasirink Yappy. Puslapis išsivalo pats – dingsta meniu, baneriai ir poraštės – ir lieka proza su savo antraštėmis ir ritmu.",
+    "guion_susurro": "dalis, kurios kiti nerodo",
+    "guion_titulo": "Skaito kaip žmogus, o ne kaip mašina.",
+    "guion_entradilla": "Garsiai skaityti – ne skandinimas, o interpretavimas. „1492“ sakoma „tūkstantis keturi šimtai devyniasdešimt du“; „Henris VIII“ – „Henris aštuntasis“, bet „Louis XIV“ prancūziškai – „Louis quatorze“; „EL CID“ nėra romėniškas skaičius; FBI skandinamas, NASA – ne. Prieš sintetinant bent vieną skiemenį, Yappy paverčia tekstą <strong>skaitymo scenarijumi</strong>: partitūra to, ką balsas iš tiesų pasakys.",
+    "guion_pruebalo": "Išbandyk čia pat: tai tas pats Rust iš programėlės, sukompiliuotas tavo naršyklei.",
+    "guion_boton": "Sukurti scenarijų",
+    "guion_ejemplo": "XIX amžius baigėsi 1900 m. Liudvikas XIV valdė 72 metus, išleido 3,50 € ledams, o FBI taip ir nesužinojo.",
+    "guion_marcador": "Įrašyk ką nors su skaičiais, santrumpomis, datomis ar amžiais…",
+    "guion_espera": "Scenarijus atsiras čia, o pakeisti fragmentai bus pabraukti.",
+    "guion_fallo": "Šioje naršyklėje nepavyko įkelti scenarijų generatoriaus. Programėlė jį turi viduje.",
+    "guion_mas": "Kaip veikia scenarijų generatorius",
+    "capturas_susurro": "taip atrodo, be retušo",
+    "capturas_titulo": "Tikros programėlės ekrano kopijos.",
+    "capturas_entradilla": "Jokių nudažytų maketų: tai Yappy veikia iš tikrųjų – tekstai ant lintelės tikri, o skaitytuvas su paruoštu scenarijumi.",
+    "precio_susurro": "pinigai, atvirai",
+    "precio_titulo": "Tikrai nemokama, o papūga – su rakteliu.",
+    "precio_entradilla": "Bandomoji papūga ant savo lintelės laiko tris dokumentus vienu metu ir skaito juos be laiko apribojimo. Išimi vieną – telpa kitas. Nori lintelės be dugno, audioknygų spaustuvės ir tilto iki kompiuterio – užsuk raktelį.",
+    "cierre_titulo": "Papūga – kišenėje.",
+    "cierre_texto": "Nemokama, be paskyros, nieko registruoti nereikia. Įdiegi, pasidalini tekstu – ir jau skamba."
+  },
+  "uso": {
+    "title": "Kaip naudoti Yappy: dalintis, klausytis ir tiek",
+    "description": "Išsamus vadovas: dalinimasis iš iPhone, kompiuterio spartieji klavišai, QR tiltas tarp telefono ir Mac, audioknygos su skyriais, Siri, valdikliai ir nustatymai.",
+    "h1": "Pasidalini – ir skamba.",
+    "entradilla": "Yappy turi vieną gestą: bendrinti. Visa kita – detalės, kurios jau sudėtos.",
+    "pasos": [
+      {
+        "titulo": "Bendrink",
+        "texto": "Iš bet kurios programėlės: Safari, pašto, Failų, balso įrašo, PDF, atsiųsto per pokalbį. Palieči „Bendrinti“, pasirenki Yappy – ir programa atsidaro pati."
+      },
+      {
+        "titulo": "Pasirink balsą",
+        "texto": "Dešimt balsų – visi poliglotai. Jei tekstas kita kalba, Yappy jos atpažįsta pats ir skaito pagal tos kalbos taisykles, o ne svetimu akcentu."
+      },
+      {
+        "titulo": "Klausyk",
+        "texto": "Užrakini ekraną ir dėk telefoną į kišenę. Balsas nesustoja: užrakintame ekrane yra viršelis, pavadinimas ir valdikliai, o ausinės vadovauja."
+      },
+      {
+        "titulo": "Įrašyk",
+        "texto": "Jei reikia rytojaus pasivaikščiojimui, spaustuvė padaro iš jo .m4b audioknygą su skyriais, o ji atsidaro bet kuriame grotuve."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "iPhone ir iPad",
+        "texto": "Bendrinimas – visas naudojimo vadovas. Bet kurioje programėlėje palieči „Bendrinti“ ir pasirenki Yappy: ji priima nuorodas, laisvą tekstą, PDF, EPUB, Word, ODT ir garsą. Yappy atsidaro iš karto. Bendrinimo lange niekas nepuverda – iOS nutraukia plėtinius ties 120 MB, todėl Yappy nukopijuoja bendrintą turinį ir peršoka į programą, kur ribų nėra. Šuolis – dizainas, o ne lopas. <strong>Viskas vyksta įrenginyje</strong>: vienintelis tinklas, kurio paliečia Yappy, – apsilankymas adresu, kurį bendrinai, atliekamas iš tavo pačio telefono.",
+        "puntos": [
+          "Eilė viską paruošia, kol tu žiūri: straipsnis išvalomas, vaizdo įrašas parsineša transkripciją, PDF išdėstomas puslapiais. Jei programėlę laikai atvirą, skaitymas prasideda pats, vos tik viskas paruošta.",
+          "Karaoke apšviečia tai, kas skamba, – sakinį po sakinio. Palieči bet kur, kad sustabdytum, brauki, kad peršoktum pastraipą, o greitį keiti pirštu prie krašto.",
+          "Užrakini ekraną – balsas tęsiasi. AirPods pristabdo ir vėl paleidžia; sistema su balsu elgiasi kaip su bet kuriuo grotuvu.",
+          "Laikiklyje telpa trys dokumentai vienu metu: išimi vieną – telpa kitas. Namų pasakos vietos neužima."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Mac, Windows ir Linux",
+        "texto": "Vienas spartusis klavišas – ir suskamba tai, ką žiūri: pažymėta vieta, naršyklės puslapis arba atviras dokumentas. Visus tris klavišus pakeisi Nuostatose, ir jie veikia, kai programa slepiasi sistemos dėkle. Be klavišų, darbalaukis turi tai, kas vienoje rankoje netelpa.",
+        "puntos": [
+          "<strong>Biblioteka.</strong> Viskas, ką atidari ar bendrini, lieka viršelyje su savo pažanga. Tęsi ten, kur baigei, – tiksliai toje pastraipoje.",
+          "<strong>Pastraipų redaktorius.</strong> Kiekviena pastraipa gali turėti savo balsą, savo greitį ir savo pauzę. Dialogams, citatoms ar dviejų kalbų dokumentams.",
+          "<strong>Vietinis transkribavimas.</strong> Nutempi balso įrašą ar bet kokį įrašą, ir vietinė „ausis“ jį paverčia skaitomu tekstu – nieko niekur neįkeliant.",
+          "<strong>Audioknygos eksportas.</strong> Bet kuris dokumentas išeina kaip tikras .m4b su naršomais skyriais, išgautais iš teksto. Taip pat .wav arba .mp3.",
+          "<strong>PDF su akimis.</strong> Skenuoti PDF prieš skaitymą praeina pro vietinį OCR. Skaitmeniniai nuo gimimo skaitomi iškart, puslapis po puslapio.",
+          "<strong>Temos.</strong> Dieną – grietinėlės spalvos popierius, naktį – šviesus raštas tamsiame fone, arba tegu nusprendžia sistema.",
+          "<strong>Be pavadžio.</strong> Darbalaukyje viskas atvira: spaustuvė, ešerėlis be dugno ir tiltas yra iš karto."
+        ]
+      },
+      {
+        "id": "tiltas",
+        "titulo": "Tiltas: kompiuteris sintezuoja, telefonas klauso",
+        "texto": "Visos knygos sintezavimas užtrunka. Tiltas didžiąją darbo dalį nukelia į tavo kompiuterį, o gatavą audioknygą grąžina tau į kišenę – tiesioginiu, nuo galo iki galo šifruotu ryšiu tarp abiejų tavo įrenginių, be jokio serverio tarp jų.",
+        "puntos": [
+          "Kompiuteryje – Nuostatos, „Tiltas“: Yappy parodo QR kodą su tavo kompiuterio šifruotu adresu ir pakvietimo raktu.",
+          "Nukreipk iPhone kamerą į QR kodą, ir įrenginiai susiejami. Raktas išsaugomas; bet kada gali jį atšaukti iš kompiuterio.",
+          "Telefone pasirink „Konvertuoti kompiuteryje“: nurodai dokumentą, kompiuteris jį sintezuoja savo tempu, ir .m4b atsiranda telefono bibliotekoje, su savo skyriais. Naktis dirba tavo rytojaus pasivaikčiojimui.",
+          "Tiltas šifruojamas per QUIC, naudojant <a href=\"https://iroh.computer\">iroh</a> protokolą. Jei įrenginiams susirasti reikia tarpininko, tas tarpininkas mato tik šifruotą srautą, kurio perskaityti negali."
+        ]
+      },
+      {
+        "id": "audioknygos",
+        "titulo": "Audioknygos: .m4b su tikrais skyriais",
+        "texto": "Yappy neeksportuoja „ilgo garso“: jis eksportuoja .m4b audioknygas, kokias perki parduotuvėse, – su skyriais iš tikrųjų dokumento antraščių, su viršeliu ir tęsimu. Jos skamba Yappy viduje, su jo biblioteka ir pažanga, arba bet kuriame audioknygų grotuve, kurį jau naudoji. O scenarijaus rengėjas pasirūpina kvėpavimu: pauzė po antraščių, sąrašo ritmas sąrašuose.",
+        "puntos": [
+          "Telefone jie užsakomi iš bibliotekos, skyrius po skyriaus: pasirenki, kuriuos spausdinti ir kuriuo balsu.",
+          "Papūga spausdina toliau, net jei uždarysi programėlę arba užrakinsi telefoną.",
+          "Iš bibliotekos jį perduodi į Failus, į Knygas ar kur norisi: failas tavo.",
+          "iPhone ir iPad Yappy Parlanchín turi spaustuvę. Kompiuteryje ji atvira iš karto."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, spartieji veiksmai ir veiksmo mygtukas",
+        "texto": "„Hey Siri, perskaityk mano iškarpinę per Yappy.“ Programėlė turi tikrus App Intents: jie patys atsiranda programėlėje Spartieji veiksmai, atsako į Siri ir juos galima pririšti prie iPhone veiksmo mygtuko. Nieką nereikia konfigūruoti.",
+        "puntos": [
+          "<strong>Perskaityk mano iškarpinę.</strong> Kopijuoji bet kur, paprašai Siri, ir skamba.",
+          "<strong>Tęsk skaitymą.</strong> Pratęsia paskutinį skambėjusį – tiksliai ten, kur sustojo.",
+          "<strong>Paklausyk nuorodą.</strong> Priima adresą kaip parametrą: ideali pabaiga tavo veiksmams.",
+          "Rankinėms automatizacijoms taip pat veikia <code>yappy://</code> schema: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> ir <code>yappy://pair?d=…</code>.",
+          "Ir yra valdiklis pradžios ekranui su paskutiniu skambėjusiu įrašu – paruoštas pratęsti vienu palietimu."
+        ]
+      },
+      {
+        "id": "nustatymai",
+        "titulo": "Nustatymai: nedaug rankenėlių, visos tikros",
+        "texto": "Yappy neturi valdymo skydo su šimtu jungiklių. Turi vos kelis, kurie iš tiesų keičia, kaip viskas skamba.",
+        "puntos": [
+          "<strong>Balsas.</strong> Dešimt balsų, visi daugiakalbiai: tas pats balsas skaito ispanų, anglų arba japonų kalbą nepakeisdamas tembro.",
+          "<strong>Greitis.</strong> Nuo 0,5× iki 2×. Balsas generuojamas tokiu greičiu, o ne pagreitinamas vėliau: tonas nedeformuojamas.",
+          "<strong>Pertraukos.</strong> Kiek kvėpuojama tarp pastraipų. Antraštės ir sąrašai ritmą jau gauna iš scenarijaus generatoriaus.",
+          "<strong>Kalba.</strong> Automatinis atpažinimas pagal dokumentą ir pastraipą, arba nustatymas ranka. Citos kita kalba persijungia savaime.",
+          "<strong>Anoniminė statistika.</strong> Telefone ji būna įjungta; išjungiama čia, užkulisiuose. Kas tiksliai siunčiama, išdėstyta taškas po taško privatumo politikoje."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Android sistemoje",
+        "texto": "Tas pats gestas: pasidalini nuoroda, tekstu arba dokumentu, ir jis atkrenta į tą pačią eilę — su straipsnio ištraukimu, karaoke ir balsu, visa tai pačiame telefone. Android versija šeimoje jauniausia, ir jai dar trūksta trijų dalykų, kuriuos iPhone turi: valdiklių užrakintame ekrane, vaizdo įrašų ir audioknygų .m4b grotuvo. Ir dar svarbiau: <strong>kol kas ji nepublikuota</strong>. Google kūrėjo paskyra vis dar tikrinama, o termino nenurodome, nes jo nežinome. Kai ji pasirodys, apie tai paskelbsime čia ir saugykloje. Viena bet: Android'as nesivilks. Viskas atvira."
+      }
+    ],
+    "atajo": "Spartusis klavišas",
+    "atajo_leer": "Skaityti tai, ką žiūri",
+    "atajo_portapapeles": "Skaityti iškarpinę",
+    "atajo_pausar": "Pristabdyti",
+    "cierre": "Tai visas vadovas."
+  },
+  "guionizador": {
+    "title": "Yappy scenarijaus generatorius: nuo parašyto iki pasakyto",
+    "description": "Kaip Yappy „1492“, „XV amžius“, „3,50 €“ arba „FBI“ paverčia ištartais žodžiais pagal kiekvienos kalbos taisykles — 31 kalba. Su gyva demonstracija: tas pats Rust iš programėlės, sukompiliuotas į WebAssembly.",
+    "h1": "Nuo parašyto iki pasakyto.",
+    "oficios_titulo": "Dvylika amatų vienu ėjimu.",
+    "oficios": [
+      {
+        "titulo": "Datos",
+        "texto": "„24/5/1533“ tariama visa, su kiekvienos kalbos žodžių tvarka ir gimine."
+      },
+      {
+        "titulo": "Valandos",
+        "texto": "„14:05“ tariama taip, kaip pasakytų žmogus, o ne kaip perskaitytų laikrodis."
+      },
+      {
+        "titulo": "Pinigai",
+        "texto": "„3,50 €“ tariama „trys eurai su puse“, su teisinga daugiskaita."
+      },
+      {
+        "titulo": "Procentai",
+        "texto": "„7 %“ sakoma „septyni procentai“, o „0,5 %“ netampa vien „nulis kablelis penki“."
+      },
+      {
+        "titulo": "Matavimo vienetai",
+        "texto": "„230 °C“ sakoma „du šimtai trisdešimt laipsnių pagal Celsijų“."
+      },
+      {
+        "titulo": "Kelintiniai",
+        "texto": "„3-oji“ skaitoma „trečioji“ – su gimine ir linksniu, jei jie yra."
+      },
+      {
+        "titulo": "Romėniški skaitmenys su galva",
+        "texto": "„XX amžius“ – tai „dvidešimtas amžius“, „Henrikas VIII“ – „Henrikas Aštuntasis“, o „EL CID“ apskritai ne skaičius."
+      },
+      {
+        "titulo": "Akronimai pagal fonotaktiką",
+        "texto": "FBI ištariamas raidėmis, NASA – kaip žodis. Taisyklę lemia skambesys, ne sąrašas."
+      },
+      {
+        "titulo": "Trumpiniai",
+        "texto": "„ir kt.“, „p.“, „XIX a.“: kiekviena kalba turi savo lentelę."
+      },
+      {
+        "titulo": "Dideli skaičiai",
+        "texto": "Naudojamos Unicode CLDR RBNF gramatikos – su gimine ir linksniavimu."
+      },
+      {
+        "titulo": "31 kalba",
+        "texto": "Tos pačios taisyklės – kiekvienos kalbos gramatika. Be ranka rašytų sąrašų."
+      },
+      {
+        "titulo": "Ritmas",
+        "texto": "Antraštės po pasakymo turi kur atsikvėpti; sąrašai eina savo taktu. Pertraukos priklauso scenarijui, o ne atsitiktinumui."
+      }
+    ],
+    "cierre": "Scenarijus – pusė istorijos; kita pusė – tai, ką išgirsti.",
+    "faq": [
+      {
+        "q": "Kas yra RBNF gramatikos?",
+        "a": "RBNF yra <em>Rule-Based Number Format</em> trumpinys: taisyklės, kuriomis Unicode CLDR aprašo, kaip skaičius skaitomas kiekvienoje kalboje. Tai ne tūkstančio žodžių lentelė, o gramatika: todėl ji žino, kad lietuviškai sakoma „dvi akys“, o ne „du akys“, kad rusų kalba linksnioja skaitvardžius, o prancūzų iki devyniasdešimt skaičiuoja dvidešimtimis. Yappy jas interpretuoja grynuoju Rust – be ranka rašytų sąrašų."
+      },
+      {
+        "q": "Kodėl reikia scenarijų rengyklės? Argi neužtenka vien balso?",
+        "a": "Ne, ir tai sąmoninga. Yappy balso modelis veikia simbolių lygiu: ištaria lygiai tai, ką gauna parašytą. Dėl to jis greitas ir lengvas, bet reiškia, kad gavęs „1492“ mėgins pasakyti lygiai tą patį – raidė po raidės. Tokiame modelyje normalizacija <em>yra</em> tarimas. Scenarijų rengyklė – dalis, kuri kiekvieną skaičių, kiekvieną akronimą ir kiekvieną simbolį paverčia žodžiais, kuriuos pasakytų žmogus."
+      },
+      {
+        "q": "Keliais kalbomis tai veikia?",
+        "a": "Balsas moka 31 kalbą, ir kiekviena turi savo taisykles: datų tvarką, valiutų jungtį, kelintinius, trumpinius ir romėniškus skaitmenis. „XV amžius“ ispaniškai – „siglo quince“, angliškai – „fifteenth century“; „Louis XIV“ yra „Louis quatorze“, o ne „Louis fourteenth“. Tos pačios dvylika užduočių – trisdešimt viena gramatika."
+      },
+      {
+        "q": "Kodėl karaoke visada pataiko į tikslų žodį?",
+        "a": "Nes scenarijus nėra vien paverstas tekstas: jis saugo žemėlapį tarp to, kas parašyta, ir to, kas ištarta. Kai balsas ištaria „tūkstantis keturi šimtai devyniasdešimt du”, scenarijus žino, kuris žodis kilęs iš kurio „1492” skaitmens, ir pabraukimas nusileidžia ant jo, nepasislinkdamas iš vietos. Tai skirtumas tarp teksto apšvietimo ir atspėjimo."
+      },
+      {
+        "q": "Vienas žodis tariamas neteisingai. Ar galiu jį pataisyti?",
+        "a": "Vartotojo tarimo žodyno kol kas nėra. Kadangi modelis skaito raides, greičiausias kelias – redaktoriuje parašyti žodį taip, kaip jis skamba, ir paklausyti iš naujo. O jei klysta ne atskiras žodis, o bendresnis modelis (sutrumpinimas, santrumpa, matavimo vienetas), papasakok apie tai <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub temose</a>: scenarijų kūrėjo lentelės auga iš tokių atvejų."
+      },
+      {
+        "q": "Ar scenarijų kūrėjas šiame puslapyje toks pat, kaip programėlėje?",
+        "a": "Tas pats kodas, sukompiliuotas į WebAssembly, kad veiktų tavo naršyklėje. Čia parašyta nepalieka tavo kortelės. O kadangi visas projektas atviras, taisykles gali perskaityti vieną po kitos <a href=\"https://github.com/joseluissaorin/yappy\">saugykloje</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Atsisiųsti Yappy: iPhone, iPad, Mac, Windows ir Linux",
+    "description": "Yappy nemokama ir atviro kodo. iPhone ir iPad – per App Store; darbalaukio versiją galima sukompiliuoti iš kodo arba atsisiųsti iš GitHub. Reikalavimai ir balso modelio dydis.",
+    "h1": "Nemokama, atvira ir tavo.",
+    "entradilla": "Jokios registracijos, jokio el. pašto, jokios bandomosios versijos, kuri kažkada baigtų galioti. Parsisiunti – ir viskas.",
+    "modelo_nota": "Pirmą kartą Yappy parsisiunčia balso modelį ({peso}). iPhone jis atkeliauja kartu su pačiu įdiegimu; kompiuteryje – pirmą kartą atvėrus programėlę. Po to internetas nebereikalingas.",
+    "android_titulo": "Android",
+    "android_texto": "Sukompiliuota ir veikia, bet kol kas neskelbiama: Google kūrėjo paskyra vis dar tikrinama. Kai versija pasirodys, apie tai bus paskelbta čia ir saugykloje.",
+    "escritorio_aviso": "Darbalaukio binariniai failai skelbiami GitHub. Jei ten rasti rinkiniai senesni nei iPhone versija, tai reiškia, kad naujausia dar nepatalpinta: pats kodas yra atnaujintas, o sukompiliuoti galima su <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone ir iPad",
+        "texto": "App Store, nemokamai ir be paskyros. Balsai atsisiunčiami kartu su pačiu įdiegimu, tad atsidarai, pasidalini tekstu – ir jau skamba. Tai pilniausia versija: audioknygos, Siri, valdiklis, tiltas ir valdymo elementai užrakto ekrane.",
+        "requisitos": "iOS arba iPadOS 17 ir naujesnės · balso modelis užima apie 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Atsisiųsti iš App Store"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon ir Intel, notaruotas .dmg. Su trimis globaliais sparčiaisiais klavišais, redagavimu pastraipomis, nuskaitytų PDF OCR ir audioknygų eksportu. Čia jokių sąlygų: viskas atvira.",
+        "requisitos": "macOS 12 arba naujesnė · balso modelis užima apie 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Peržiūrėti versijas GitHub"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "x64 architektūrai skirta .exe arba .msi diegimo programa, su tais pačiais sparčiaisiais klavišais ir tomis pačiomis funkcijomis, kaip Mac versijoje. Bet koks pastarųjų metų nešiojamasis kompiuteris sintetina greičiau nei realus laikas.",
+        "requisitos": "Windows 10 arba naujesnė, x64 · apie 398 MB balso modelio",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Peržiūrėti laidas GitHub'e"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage ir .deb paketai x64. Globalieji spartieji klavišai priklauso nuo tavo darbalaukio aplinkos; jei tavo deriniai jau užimti, nustatymuose juos galima pakeisti kitais.",
+        "requisitos": "x64 · apie 398 MB balso modelio",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Peržiūrėti laidas GitHub'e"
+      },
+      {
+        "nombre": "Iš šaltinio kodo",
+        "texto": "Visas projektas paskelbtas: darbalaukio ir mobiliosios programėlės (Tauri, Rust ir Svelte), sintezės variklis, scenarijų rengyklė su pridėtomis CLDR gramatikomis ir ši pati svetainė. Kai Rust ir Node įdiegti, <code>cargo tauri build</code> sukurs tavo asmeninę kopiją. Jei paskelbti binariniai failai atsilieka nuo iPhone versijos, greičiausias kelias – pats kodas: jis visada naujausias.",
+        "requisitos": "Rust ir Node · išsamios instrukcijos README faile",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Peržiūrėti kodą GitHub'e"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Yappy kainos: nemokama visam laikui, be mokesčio už simbolį",
+    "description": "Yappy nemokamas, be klausymosi apribojimų: trys dokumentai vienu metu ant stovo. Yappy Parlanchín prideda stovą be dugno, audioknygų spaustuvę ir tiltą – nuo 3,99 € per mėnesį arba 59,99 € vieną kartą.",
+    "h1": "Apie pinigus – be užuolankų.",
+    "entradilla": "Galėti klausytis to, ką skaitai, yra prieinamumo klausimas, o prieinamumas neturėtų reikalauti banko kortelės. Todėl svarbioji dalis nemokama ir be skaitiklio.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "visam laikui",
+    "gratis_puntos": [
+      "Klausymasis be minučių ir simbolių ribų",
+      "31 kalba ir dešimt balsų",
+      "PDF, EPUB, Word, straipsniai, vaizdo įrašai ir balso įrašai",
+      "Trys dokumentai vienu metu ant stovo: nuimi vieną – telpa kitas",
+      "Be paskyros, be el. pašto, be reklamų",
+      "Atvirojo kodo su MIT licencija"
+    ],
+    "gratis_no": [
+      "Be audioknygų spaustuvės",
+      "Be tilto su kompiuteriu"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "per mėnesį",
+    "cuerda_periodo_anio": "per metus",
+    "cuerda_periodo_vida": "vieną kartą",
+    "cuerda_puntos": [
+      "Viskas, kas pirmiau",
+      "Pakaba be dugno: tiek dokumentų, kiek norite",
+      "Spaustuvė: sveikos knygos virsta audioknygomis su skyriais",
+      "Tiltas: jūsų kompiuteris pats konvertuoja ir grąžina",
+      "Atšaukite, kada norite"
+    ],
+    "cuerda_nota": "Be bandomojo laikotarpio, ir tai sąmoninga: trijų dokumentų pakaba <em>yra</em> tas bandymas – ji nesibaigia ir vėliau nieko nereikalauja. Kainos nurodytos Ispanijai; savo parduotuvėje jas pamatysite savo valiuta.",
+    "cuerda_donde": "Prenumeratą įsigysite pačioje programėlėje, užkulisiuose.",
+    "solo_ios": "Kompiuteryje ir „Android“ viskas atvira: prenumerata būna tik „iPhone“ ir „iPad“.",
+    "comparacion_titulo": "Kiek ima kiti.",
+    "comparacion_entradilla": "Balso programėlės debesyje serveriams moka kiekvieną kartą, kai paspaudžiate „groti“, todėl ima už valandas arba simbolius. Yappy sintezuoja jūsų įrenginyje: klausymasis jo nekainuoja nė cento, todėl gali būti ir nemokamas.",
+    "comparacion_nota": "Viešai skelbtos kainos, patikrintos 2026 m. rugsėjį. Jos dažnai keičiasi: prieš apsispręsdami pasitikrinkite kiekvienoje svetainėje.",
+    "faq": [
+      {
+        "q": "Kodėl nemokama?",
+        "a": "Nes nėra serverių, kuriems mokėti. Balsas sintezuojamas jūsų įrenginyje, tad klausytis niekam nekainuoja, ir sąskaitos dalinti nėra. Balso programėlės debesyje už mašiną moka kiekvieną kartą, kai paspaudžiate „groti“, todėl skaičiuoja simboliais arba valandomis. Yappy negali imti už tai, kas jai pačiai nekainuoja."
+      },
+      {
+        "q": "Kas, jei niekada nesumokėsiu?",
+        "a": "Nieko. Yappy veikia amžinai: dešimt balsų, 31 kalba, visi formatai, be reklamų, be paskyros ir be minučių skaitliuko. Vienintelis skirtumas – „iPhone“ ir „iPad“ pakaba vienu metu laiko tris dokumentus. Išimi vieną – telpa kitas. Kompiuteryje ir to nėra."
+      },
+      {
+        "q": "Ar yra nemokamas bandymas?",
+        "a": "Ne, ir tai sąmoningas sprendimas, ne užmiršimas. Trijų dokumentų pakaba <em>yra</em> tas bandymas: ji nesibaigia, neprašo kortelės ir aštuntą dieną nepereina prie atskaitymų. Niekas neturėtų pabusti su atskaitymu, kurio nepamena sutikęs."
+      },
+      {
+        "q": "Ar galiu atšaukti, kada noriu?",
+        "a": "Taip, per savo Apple paskyrą, kaip ir bet kuri kita prenumerata. Jos atsinaujina automatiškai kiekvieno laikotarpio pabaigoje, nebent atšauksi jas bent likus 24 valandoms. Pirkimas visam gyvenimui nesinaujina niekada: sumoki vieną kartą ir tiek. O jei atšauksi, nieko iš to, kas nemokama, neprarandi: grįžti prie trijų vietų stovo."
+      },
+      {
+        "q": "Kodėl kompiuteryje ir Android nereikia mokėti?",
+        "a": "Nes raktas įtaisytas tik iPhone ir iPad. Darbalaukyje, o ir Android versijoje, kai ji pasirodys, spaustuvė, stovas be dugno ir tiltas atviri iš karto. Tai ne išleidimo akcija: ten tiesiog nėra už ką imti pinigų."
+      }
+    ],
+    "una_a_una": "po vieną, su jų duomenimis"
+  },
+  "voces": {
+    "title": "Yappy balsai: dešimt daugiakalbių paukščių, kalbančių 31 kalba",
+    "description": "Dešimt natūralių balsų, kalbančių 31 kalba nekeisdami tembro. Pasiklausyk kiekvieno pavyzdžio ir pasirink savąjį: pasirinktas balsas nudažo visą programėlę.",
+    "h1": "Dešimt paukščių, trisdešimt viena kalba.",
+    "entradilla": "Visos daugiakalbės: tas pats balsas skaito ispanų, anglų ar japonų kalba nekeisdamas tembro. O tekstas su citata kita kalba persijunginėja pats, iš pastraipos į pastraipą.",
+    "elige": "Paliesk paukštį ir išgirsi, kaip jis skamba.",
+    "idiomas_titulo": "Kalbos, kurias jie moka.",
+    "idiomas_entradilla": "Trisdešimt viena, kiekviena su savu garsintoju: ne tas pats balsas, skaitantis su akcentu, o kiekviena kalba pagal savas taisykles."
+  },
+  "preguntas": {
+    "title": "Klausimai apie Yappy: privatumas, kalbos, kainos ir licencijos",
+    "description": "Tiesūs atsakymai apie tai, kas nemokama, kas jungiasi prie interneto, kokius modelius naudoja Yappy, kokius formatus priima ir ką daryti, kai kas nors neveikia.",
+    "h1": "Klausimai, kurie atkeliauja.",
+    "entradilla": "Atsakoma tiesiai, nevarstant okų.",
+    "grupos": [
+      {
+        "susurro": "pinigai ir laisvė",
+        "titulo": "Nemokama, iš tikrųjų.",
+        "lista": [
+          {
+            "q": "Ar tikrai nemokama?",
+            "a": "Taip. Yappy – atvirojo kodo programa su MIT licencija. Galėti klausytis to, ką skaitai, yra prieinamumo klausimas, o prieinamumo priemonės neturėtų prašyti kortelės. Kompiuteryje nėra nei mokamos versijos, nei reklamų. iPhone bandomoji papūga savo stove vienu metu laiko tris dokumentus, be laiko ribos; jei nori stovo be dugno, audioknygų spaustuvės ir tilto su kompiuteriu, raktą užsuki su Yappy Parlanchín – prenumerata arba vienkartinis mokėjimas visam gyvenimui. Bet kuriuo atveju – be paskyros ir be reklamų."
+          },
+          {
+            "q": "Kokia čia gudrybė? Iš ko tai finansuojama?",
+            "a": "Jokios gudrybės: nėra serverių, kuriems mokėti. Sintezė veikia tavo įrenginyje, todėl Yappy neturi išlaidų vienam naudotojui. Tai autoriaus asmeninis projektas, išleistas todėl, kad jau buvo padarytas ir gali praversti dar kam nors."
+          },
+          {
+            "q": "Ar yra nemokamas bandymas?",
+            "a": "Ne, tyčia. Trijų dokumentų stovas ir yra bandymas – jis nepasenka ir po septynių dienų netampa sąskaita. Jei Yappy tau tinka, to sužinosi ir be laikrodžio, statyto prieš nosį."
+          },
+          {
+            "q": "Ar galiu skelbti savo sugeneruotą garsą podcaste ar vaizdo įraše?",
+            "a": "Yappy kodas – MIT ir jokių sąlygų nenumato. Balso modelis Supertonic 3 turi savą licenciją: atvirą OpenRAIL-M tipo licenciją su naudojimo sąlygomis. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Peržiūrėk ją modelio puslapyje</a> prieš komercinį naudojimą – ta dalis nepriklauso nuo Yappy, ir mes už jos pažadėti nieko negalime."
+          }
+        ]
+      },
+      {
+        "susurro": "tavo tekstai niekur nekeliauja",
+        "titulo": "Privatumas, su vardu ir pavarde.",
+        "lista": [
+          {
+            "q": "Ar mano tekstai keliauja į kokį nors serverį?",
+            "a": "Ne. Sintezė, transkribavimas ir straipsnių ištraukimas vyksta tavo įrenginyje. Tai, ką daliniesi su Yappy, nesiunčiama niekur: jokių paskyrų, jokių kopijų, o Yappy serverio, kuriame jie galėtų būti saugomi, iš viso nėra. Su tinklu susiję tik keturi konkretūs dalykai, ir visi jie išvardyti privatumo politikoje."
+          },
+          {
+            "q": "Ar Yappy renka naudojimo statistiką?",
+            "a": "Taip, renka, ir tai reikia pasakyti be apyrankių. Telefoninė programėlė siunčia anoniminę naudojimo statistiką: ji įjungta pagal numatymą, o išjungiama nustatymuose. Keliauja tik įvykio iš uždaro sąrašo pavadinimas (kad atsidarė programėlė, kuris pirmojo susipažinimo žingsnis matomas, kuris planas paliečiamas, ar baigiasi skaitymas), atsitiktinis įdiegimo identifikatorius, kalba ir versija. Niekuomet nesiunčiami tavo vardas, el. pašto adresas, skaitomas tekstas, dokumento pavadinimas ar nuoroda, taip pat joks reklamos identifikatorius. Ir jie nekeliauja į Google, į Firebase ar kurią analitikos įmonę: jie keliauja į paties autoriaus Worker ir Cloudflare D1 duomenų bazę. Darbalaukyje statistikos nėra iš viso."
+          },
+          {
+            "q": "O tiltas tarp telefono ir kompiuterio?",
+            "a": "Tai tiesioginis tavo dviejų įrenginių ryšys, šifruotas nuo galo iki galo su QUIC, naudojant <a href=\"https://iroh.computer\">iroh</a> protokolą. Susiejama nukreipus kamerą į QR kodą, kurį rodo tavo kompiuteris, o gautą raktą iš ten pat galima bet kada atšaukti. Tarp jų nėra jokio Yappy serverio, nes Yappy serverių nėra iš viso."
+          },
+          {
+            "q": "Ar veikia be interneto?",
+            "a": "Taip, visam laikui. Po pirmojo modelio atsisiuntimo — apie 200 MB telefone ir apie 398 MB kompiuteryje — Yappy veikia ir lėktuvo režimu: įklijuoti tekstą, atidaryti dokumentus, sintetinti ir eksportuoti. Tik dalijimasis naujais adresais reikalauja tinklo — dėl akivaizdžių priežasčių. Debesies sinchronizacijos irgi nėra: tavo biblioteka gyvena tavo įrenginyje, o tiltas — artimiausias būdas ką nors nunešti iš vienos mašinos į kitą."
+          }
+        ]
+      },
+      {
+        "susurro": "tai, kas skamba",
+        "titulo": "Balsas ir kalbos.",
+        "lista": [
+          {
+            "q": "Kurį balso modelį naudoja?",
+            "a": "Supertonic 3 — atviras Supertone modelis, apie 99 milijonų parametrų: telpa į 398 MB kompiuteryje ir į 200 MB telefone, o sintetina greičiau už realųjį laiką bet kuriame pastarųjų metų nešiojamajame kompiuteryje. Dirba simbolių lygiu — todėl ir yra skriptuotojas, kuris skaičius, santrumpas ir simbolius paverčia žodžiais dar prieš balsui juos pamatant."
+          },
+          {
+            "q": "Kokiomis kalbomis kalba?",
+            "a": "Vokiečių, arabų, bulgarų, čekų, korėjiečių, kroatų, danų, slovakų, slovėnų, ispanų, estų, suomių, prancūzų, graikų, hindi, vengrų, indonezų, anglų, italų, japonų, latvių, lietuvių, olandų, lenkų, portugalų, rumunų, rusų, švedų, turkų, ukrainiečių ir vietnamiečių. Trisdešimt viena. Ir visi dešimt balsų — poliglotai: tas pats balsas perskaito jas visas, nekeisdamas tembro."
+          },
+          {
+            "q": "O kas, jei dokumente maišosi kalbos?",
+            "a": "Yappy atpažįsta dokumento kalbą ir, pastraipa po pastraipos, kiekvieno gabalo: angliška citata ispaniškame esė skaitoma angliškai, tuo pačiu balsu, o tau nereikia nieko spausti. Jei atpažinimas suklysta, kalbą gali nustatyti rankomis."
+          },
+          {
+            "q": "Kuo tai skiriasi nuo VoiceOver ar „Skaityti ekraną“?",
+            "a": "Sistemos skaitytuvai skaito ekraną tokį, koks jis yra, su sistemos prozodija ir be atminties. Yappy tekstą paruošia prieš jį ištardamas (išvalo straipsnį, skaičius ir santrumpas paverčia žodžiais, pažymi pauzes), skaito natūraliu balsu, atsimena, kur nustojai, eksportuoja garsaknyges ir toliau skamba, kai ekranas užrakintas. Tai giminingi įrankiai, bet kiekvienas turi savo amatą, ir jie naudojami drauge, vienas kitam netrukdami: Yappy nepakeičia ekrano skaitytuvo ir to nesirengia daryti."
+          }
+        ]
+      },
+      {
+        "susurro": "tai, kas patenka",
+        "titulo": "Dokumentai.",
+        "lista": [
+          {
+            "q": "Kokius formatus priima?",
+            "a": "Interneto straipsniai (puslapis apsivalo pats), vaizdo įrašai pagal jų paskelbtą transkripciją, PDF, EPUB, Word, ODT, RTF, Markdown, paprastas tekstas, .pptx, .xlsx, .csv ir balso įrašai. Telefone — viskas per dalijimosi meniu; darbalaukyje, be to, pertempus arba spartiesiais klavišais. O jei kompiuteryje įdiegtas pandoc, sąrašas išsiplečia iki LaTeX, reStructuredText, Org ir dar kelių."
+          },
+          {
+            "q": "O skenuoti PDF be teksto viduje?",
+            "a": "Darbalaukyje jie prieš skaitymą praeina pro vietinį OCR, ir ten taip pat iš tavo kompiuterio niekas neišeina. iPhone'e – kol kas ne: jei PDF yra popieriaus lapo nuotrauka, telefonas neranda, ką skaityti. Kreivas ar neryškus skenavimas duos tai, ką gali duoti bet koks OCR, o geras skenavimas perskaitomas iki galo."
+          },
+          {
+            "q": "Ar gali skaityti knygas, kurias nusipirkau parduotuvėje?",
+            "a": "Tik tas, kurias gali atidaryti. EPUB be apsaugos perskaitomas visas, kartu su skyriais. Knygų su DRM iš parduotuvės perskaityti neįmanoma – nei čia, nei kur nors kitur: tas užraktas – ne Yappy, o mes nesiruošiame apsimesti, kad turime raktą."
+          },
+          {
+            "q": "Kaip ištrinti ką nors iš bibliotekos?",
+            "a": "Pačioje bibliotekoje: kiekvienas dokumentas turi savo parinktį „pamiršti“, o kartu su ja dingsta ir jo garsas. Eksportuoti failai (.m4b, .mp3, .wav) priklauso tau ir gyvena ten, kur juos išsaugojai; jų trynimu arba perkėlimu rūpinasi Finder arba Failai."
+          }
+        ]
+      },
+      {
+        "susurro": "kai kažkas sugenda",
+        "titulo": "Gedimai ir pagalba.",
+        "lista": [
+          {
+            "q": "Kodėl pirmoji sintezė užtrunka kelias sekundes ilgiau?",
+            "a": "Pirmą kartą modelis įkeliamas į atmintį. Paskui jis jau įšilęs, ir tolesni sakiniai skamba iš karto. Jei programą kompiuteryje ką tik įdiegei, į pirmąjį laukimą įeina ir balso modelio atsisiuntimas."
+          },
+          {
+            "q": "Vienas žodis ištariamas neteisingai. Ar jį galima išmokyti?",
+            "a": "Vartotojo tarimo žodyno nėra, todėl paprasčiausias kelias – redaktoriuje parašyti žodį taip, kaip jis skamba: modelis skaito raides ir tavęs paklausys. Jei tai bendresnis dėsningumas (žodžio sutrumpinimas, santrumpa, matavimo vienetas), parašyk apie tai <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub problemose</a>: tokie atvejai papildo segmentavimo lenteles."
+          },
+          {
+            "q": "Pasidalinau vaizdo įrašu, o jis nieko nesako.",
+            "a": "Yappy naudoja vaizdo įrašo paskelbtą transkripciją, o jo garso netranskribuoja. Jei to vaizdo įrašo transkripcijos nėra, skaityti nieko. O jei vaizdo įrašas tavo ir jį turi faile, bendrink patį failą: tada jį jau transkribuoja vietinė „ausis“."
+          },
+          {
+            "q": "Radau klaidą. Kur apie ją papasakoti?",
+            "a": "<a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub problemose</a> arba rašyk <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Jei gali bendrinti tekstą, kuris neveikė, ir nurodyti savo sistemą, klaida ištaisoma greičiau."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Yappy privatumas: tavo tekstai nekeliauja",
+    "description": "Kas išeina iš tavo įrenginio ir kas ne, pasakyta atvirai: sintezė, transkribavimas ir straipsnių ištraukimas vyksta viduje; tinklą liečia tik keturi atvejai, ir visi keturi čia išvardyti.",
+    "h1": "Tavo tekstai nekeliauja.",
+    "actualizado": "Paskutinį kartą atnaujinta: {fecha}. Atsakingas asmuo: José Luis Saorín Ferrer, Tenerifė (Ispanija).",
+    "bloques": [
+      {
+        "titulo": "Apie ką tai",
+        "texto": "Tai – Yappy privatumo politika: iPhone, iPad, Mac, Windows ir Linux programos su jos valdikliais ir plėtiniais. Ji trumpa, nes pasakoti nedaug ką. Yappy neturi paskyrų, neprašo nei vardo, nei el. pašto, o tai, ką jai duodi perskaityti, neišeina iš tavo įrenginio. Tinklą liečia tik keturi konkretūs dalykai – štai jie visi keturi, po vieną."
+      },
+      {
+        "titulo": "Nei paskyros, nei vardo, nei tekstų",
+        "texto": "Yappy neturi nei registracijos, nei prisijungimo. Nerenka nei tavo vardo, nei el. pašto, nei kontaktų, nei vietovės, nei jokio reklaminio identifikatoriaus. Straipsniai, PDF, EPUB, dokumentai, balso įrašai ir tekstai, kuriuos bendrini su programa, į garsą virsta <strong>tavo įrenginyje</strong>: sintezė, transkribavimas ir puslapių išvalymas vyksta vietoje ir nesiunčiami į jokį mūsų ar trečiųjų šalių serverį. Sinchronizavimo debesyje irgi nėra: tavo biblioteka, pažanga ir audioknygos gyvena tavo įrenginyje ir išnyksta, jei programą išdiegsi."
+      },
+      {
+        "titulo": "Liečia tinklą (1): balsų atsisiuntimas",
+        "texto": "Pirmą kartą Yappy atsisiunčia balso modelį (apie 200 MB telefone, apie 398 MB kompiuteryje) iš <code>modelos.yappy.joseluissaorin.com</code> – tai Cloudflare R2 saugykla. Kaip ir bet kuriame atsisiuntime, serveris mato tavo IP adresą, kol trunka užklausa. Įrašo, kuris tave identifikuotų, nesaugome. Po to atsisiuntimo sintezė visam laikui veikia lėktuvo režimu."
+      },
+      {
+        "titulo": "Kai paliečiamas tinklas (2): nuorodos, kurias dalijatės",
+        "texto": "Jei dalijatės nuoroda arba vaizdo įrašu, jūsų įrenginys apsilanko tame adrese, kad parsineštų tekstą arba transkripciją — lygiai taip, kaip tai padarytų jūsų naršyklė. Apsilanko jūsų įrenginys, o ne Yappy serveris, ir lankomas tinklapis gauna tai, ką būtų gavęs iš naršyklės: jūsų IP adresą ir įrenginio tipą. Jokios istorijos nesaugoma už jūsų įrenginio ribų."
+      },
+      {
+        "titulo": "Kai paliečiamas tinklas (3): anoniminė statistika",
+        "texto": "Apie tai verta pasakyti aiškiai: <strong>analitika yra</strong>, tik mobiliojoje programėlėje, ir ji įjungta pagal numatytuosius nustatymus. Išjungti ją galima bet kada programėlės nustatymuose, skiltyje „Anoniminė statistika“. Siunčiami: įvykio pavadinimas iš uždaro sąrašo (kad programėlė atidaryta, kuris pradinio susipažinimo žingsnis rodomas, kuris planas paliečiamas, ar skaitymas pasibaigia), atsitiktinis diegimo identifikatorius, programėlės kalba ir jos versija. <strong>Niekada</strong> ne jūsų vardas, ne el. paštas, ne skaitomas tekstas, ne dokumento pavadinimas, ne nuoroda ir ne reklamos identifikatorius. Šie duomenys keliauja ne į Google Analytics, ne į Firebase, ne į jokią analitikos įmonę: jie keliauja į paties autoriaus Worker tarnybą ir Cloudflare D1 duomenų bazę, o jų paskirtis — sužinoti, kurios programėlės dalys naudojamos, o kurios nereikalingos. Darbalaukio versijoje statistikos nėra iš viso."
+      },
+      {
+        "titulo": "Kai paliečiamas tinklas (4): pirkimai",
+        "texto": "Prenumeratas ir Yappy Parlanchín pirkimą visam laikui tvarko Apple per App Store, ir jie galioja tik iPhone bei iPad įrenginiuose. Kad sužinotų, ar jūsų prenumerata aktyvi, programėlė naudojasi <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a> — prenumeratų tvarkykle, kuri gauna anoniminį diegimo identifikatorių ir Apple kvitą; jūsų vardo ir el. pašto ji negauna. Apie savo duomenis Apple pasakoja <a href=\"https://www.apple.com/legal/privacy/\">savoje privatumo politikoje</a>."
+      },
+      {
+        "titulo": "Tiltas: iš jūsų iPhone į kompiuterį ir atgal",
+        "texto": "Jei susiejate Yappy su savo Mac arba PC, konvertuoti siunčiami dokumentai keliauja tiesioginiu, nuo galo iki galo šifruotu ryšiu tarp jūsų dviejų įrenginių, naudojant <a href=\"https://iroh.computer\">iroh</a> biblioteką, veikiančią QUIC protokolu. Kad vienas kitą rastų, įrenginiai gali remtis perdavimo serveriais, kurie mato tik šifruotą srautą ir jo perskaityti negali. Yappy neturi jokių tarpinių serverių, kurie ką nors saugotų, nes jų iš viso neturi."
+      },
+      {
+        "titulo": "Nepilnamečiai ir leidimai",
+        "texto": "Yappy neskirta jaunesniems nei 13 metų žmonėms ir nerenka jokių asmens duomenų iš nieko, kiek metų bebūtų. Leidimai, kurių prašo sistema, naudojami tik tam vienam veiksmui ir tik tą akimirką: iškarpinė — įklijuojant, kamera — skenuojant tilto QR kodą, mikrofonas — diktuojant darbalaukyje. Nė vienas iš jų nenaudojamas fone."
+      },
+      {
+        "titulo": "Jūsų teisės ir kam rašyti",
+        "texto": "Kadangi nesaugome jokių asmens duomenų, mūsų serveriuose nėra ką eksportuoti ar ištrinti: viskas, ką Yappy apie jus žino, gyvena jūsų įrenginyje ir dingsta programėlę išinstalavus. Jei norite, kad net anoniminės statistikos nustotume gauti, ją išjungsite pačioje programėlėje. Dėl bet kokių klausimų rašykite <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> arba sukurkite naują temą <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a> tinklalapyje. Kodas atviras, su MIT licencija: visa tai, kas išdėstyta pirmiau, galima patikrinti jį perskaičius."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy disleksijai, ADHD ir silpnaregystei: klausytis to, ko neįmanoma perskaityti",
+    "description": "Įrankis, skaitantis balsu, kuris nereikalauja paskyros, neima mokesčio už valandas ir veikia be interneto. Disleksijai, ADHD, akių nuovargiui, silpnaregystei ir tiems, kam paprasčiausiai geriau sekasi skaityti ausimis.",
+    "h1": "Skaityti ausimis.",
+    "entradilla": "Galimybė išgirsti tai, ką skaitai, yra prieinamumo klausimas, o prieinamumo priemonės neturėtų prašyti kortelės. Yappy jos neprašo, neturi minučių skaitiklio ir veikia lėktuve.",
+    "voiceover_titulo": "Yappy nepakeičia VoiceOver",
+    "voiceover_texto": "Tai giminingi įrankiai, atliekantys skirtingus darbus. Ekrano skaitytuvas perskaito sąsają, kad ja būtų galima naudotis; Yappy skaito turinį, kad juo būtų galima mėgautis. Naudojami kartu ir vienas kitam netrukdo.",
+    "casos": [
+      {
+        "titulo": "Disleksija",
+        "texto": "Dešifruoti tekstą raidė po raidės vargina, o nuovargis suėda supratimą žymiai anksčiau, nei baigiasi laikas. Teksto klausymasis, kai jis kartu paryškinamas ekrane, leidžia skaityti ir girdėti vienu metu: akys seka eilutę, ausys atlieka sunkųjį darbą. Yappy nieko nepataiso, tačiau nuima nuo kelio tą dalį, kuri atima jėgas."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "Tylus puslapis kviečia pasišalinti. Balsas, einantis pirmyn, palaiko ritmą ir sugrąžina į pastraipą, kai galva jau nuėjusi pasivaikščioti. Ir kadangi klausytis galima eidamas ar su užimtomis rankomis, skaityti nebėra būtina sėdėti ramiai: daugeliui žmonių būtent tai ir yra visas skirtumas."
+      },
+      {
+        "titulo": "Silpnaregystė ir akių nuovargis",
+        "texto": "Kai smulkus šriftas nebėra išeitis arba kai septintą valandą vakaro akys jau atidirbusios savo pamainą, tekstas vis tiek lieka pasiekiamas per ausis. Yappy perskaito visą PDF, laišką ar straipsnį — jei reikia, išjungtu ekranu, nuo užrakinto ekrano arba su ausinėmis."
+      },
+      {
+        "titulo": "Kalbų mokymasis",
+        "texto": "Klausytis ir skaityti kartu – seniausias ir veiksmingiausias būdas išmokti tarti. Dešimt balsų yra poliglotai: jie skaito 31 kalbą pagal tos kalbos taisykles, todėl vokiškas tekstas skamba vokiškai, o ne vokiškai su anglų akcentu. Esant 0,75× greičiui girdisi kiekvienas skiemuo; esant 1,5× – treniruojasi klausa."
+      },
+      {
+        "titulo": "Taisyti tai, ką rašai",
+        "texto": "Sakinys, kurio negalima ištarti garsiai, neatsilaiko ir parašytas. Įsiklausius į savo tekstą, išryškėja pasikartojimai, ne ten padėti kableliai ir įterpiniai, kurie nesibaigia niekada. Tai korrektūra, kokią kadaise atlikdavo spaustuvėse, ir ji nemokama: atidarai .docx, spaudi grojimą ir girdi, ką parašei iš tiesų, o ne ką manei parašęs."
+      },
+      {
+        "titulo": "Mokytis ausimis",
+        "texto": "Dalyko konspektas, skyrius, kuris bus egzamine, dviejų šimtų puslapių straipsnis. Naktimi atsiduria spaustuvėje, o ryte jau audioknyga su skyriais, kurią klausaisi autobuse. Atkūrimas prisimena tikslią pastraipą: tęsti – be jokių paieškų."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Ar veikia su įjungtu VoiceOver arba TalkBack?",
+        "a": "Taip, ir jie vienas kitam netrukdo. Ekrano skaitytuvas perskaito sąsają, kad ja galėtum naudotis; Yappy skaito turinį, kad galėtum mėgautis. Jie dirba kartu: VoiceOver atveda iki grojimo mygtuko, o nuo tada knygą skaito jau Yappy balsas."
+      },
+      {
+        "q": "Ar galima naudotis nežiūrint į ekraną?",
+        "a": "Taip. iPhone telefone yra Siri trumpiniai („Siri, perskaityk mano iškarpinę su Yappy“), veiksmo mygtukas, užrakto ekrano valdikliai ir ausinių valdikliai. Kompiuteryje trys klaviatūros trumpiniai perskaito pažymėtą tekstą, iškarpinę arba pristabdo – programa tuo metu slepiasi pranešimų srityje."
+      },
+      {
+        "q": "Ar jis perskaitys pamokų PDF ir knygas, kurias jau turiu?",
+        "a": "Bet kurį PDF, EPUB, Word arba ODT, kurį gali atidaryti. Jei PDF yra nuskenuotas be teksto, darbalaukio versija prieš skaitydama perleidžia jį per vietinį OCR; mobiliajame to dar nėra. Knygų su DRM iš parduotuvės neperskaitysi niekur – ir čia taip pat."
+      },
+      {
+        "q": "Kiek kainuoja naudotis kiekvieną dieną?",
+        "a": "Nieko. Nėra nei minučių, nei simbolių skaitiklio, nėra reklamų ir nereikia paskyros. Galima klausytis po aštuonias valandas per dieną metų metus, nemokant nė cento, ir be interneto. Mokama siena prideda tik pakabą be dugno, spaustuvę ir tiltą – ir tik iPhone bei iPad."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Pasakos papūgai: viešojo domeno tekstai Yappy išbandyti",
+    "description": "Pilni viešojo domeno kūriniai, paruošti dalintis su Yappy ir išklausyti iki galo. Be registracijos ir be atsisiuntimų.",
+    "h1": "Pasakos papūgai.",
+    "entradilla": "Pilni tekstai, viešasis domenas. Pasidalink šiuo puslapiu su Yappy, ir papūga tau jį perskaitys.",
+    "dominio_publico": "Viešasis domenas."
+  },
+  "blog": {
+    "title": "Yappy tinklaraštis: klausytis to, kas parašyta",
+    "description": "Kaip iš PDF padaryti garso įrašą, kodėl tekstų skaitytuvas turėtų veikti be interneto, kaip skaičiai tariami garsiai ir ko išmokome kurdami programą, kuri kalba.",
+    "h1": "Klausytis to, kas parašyta.",
+    "entradilla": "Amatas, gudrybės ir truputis istorijos apie skaitymą garsiai. Kiekvieną straipsnį galima išklausyti čia pat, perskaitytą pačiu Yappy balsu.",
+    "escuchame": "Pasiklausyk šio straipsnio",
+    "escuchame_nota": "Skaito Yappy, balsu {voz}, tavo naršyklėje.",
+    "vacio": "Šia kalba straipsnių dar nėra."
+  },
+  "convertir": {
+    "title": "Įgarsink bet kokį tekstą: PDF, EPUB, Word, straipsniai ir vaizdo įrašai",
+    "description": "Šeši būdai paversti natūraliu balsu tai, ką skaitai: PDF, EPUB, Word, interneto straipsnius, vaizdo įrašus ir balso įrašus. Viskas vyksta tavo paties įrenginyje.",
+    "h1": "Įgarsinimas",
+    "entradilla": "Nesvarbu, ką atneši: straipsnį, knygą, dokumentą ar įrašą. Yappy paverčia jį skaitymo scenarijumi ir perskaito garsiai. Failas nepalieka tavo įrenginio.",
+    "pasos_titulo": "Trys žingsniai.",
+    "faq_titulo": "Klausimai apie tai",
+    "otros_titulo": "Ką dar jis skaito",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "PDF įgarsinimas: klausyk PDF garsiai, nemokamai",
+        "description": "Paversk bet kokį PDF natūraliu balsu ir klausyk, kol darai ką nors kito, arba išsaugok kaip audioknygą su skyriais. Be įkėlimo į debesį ir be puslapių ribojimo.",
+        "h1": "Klausyk savo PDF.",
+        "entradilla": "Mokslinis straipsnis, instrukcija, užrašai, sutartis. Yappy atidaro PDF, pašalina antraštes ir besikartojančius puslapių numerius, suranda skyrius ir perskaito jį iki galo natūraliu balsu. Failas nepalieka tavo įrenginio.",
+        "pasos": [
+          {
+            "titulo": "Pasidalink PDF",
+            "texto": "Iš Failų, el. pašto arba Safari: paliesk „Bendrinti“ ir pasirink Yappy. Kompiuteryje nutempk jį į langą."
+          },
+          {
+            "titulo": "Pasirink balsą",
+            "texto": "Dešimt balsų, 31 kalba. Jei PDF – kita kalba, Yappy ją atpažįsta pats."
+          },
+          {
+            "titulo": "Klausyk arba išsaugok",
+            "texto": "Paleisk grojimą – arba išsiųsk į spaustuvę ir gausi audioknygą su skyriais."
+          }
+        ],
+        "extra_titulo": "Skenuoti PDF",
+        "extra_texto": "Jei PDF – popieriaus nuotrauka ir teksto jame nėra, darbalaukio versija prieš skaitydama perleidžia jį per vietinį OCR. iPhone dar ne.",
+        "faq": [
+          {
+            "q": "Ar yra puslapių ribojimas?",
+            "a": "Ne. Trijų puslapių straipsnis ar keturių šimtų puslapių disertacija: visas PDF apdorojamas ir perskaitomas iki galo. Kadangi viskas vyksta tavo įrenginyje, nėra nei simbolių kvotos, nei sąskaitos, kuri staiga pašoktų septinto skyriaus viduryje."
+          },
+          {
+            "q": "O jei PDF – skenuotas be teksto?",
+            "a": "Darbalaukio versija prieš skaitydama perleidžia jį per vietinį OCR, ir šiuo atveju iš tavo kompiuterio niekas neišeina. iPhone dar ne: jei PDF – popieriaus nuotrauka, telefonas nesuranda teksto, kurį skaityti."
+          },
+          {
+            "q": "Ar jis pašalina antraštes ir puslapių numerius?",
+            "a": "Taip. Yappy atpažįsta, kas kartojasi visuose puslapiuose (antraštę, poraštę, puslapio numerį, žurnalo pavadinimą), ir palieka tai už scenarijaus ribų. Niekas taip nesugadina klausymo, kaip kas pusantros minutės girdimas „3 skyrius, 47 puslapis“."
+          },
+          {
+            "q": "Ar galiu klausytis tik vieno skyriaus?",
+            "a": "Taip. Yappy suranda tikras dokumento antraštes ir iš jų sudaro turinį, kuriame galima naršyti. Iš bibliotekos pasirenki, kuriuos skyrius klausyti, o kuriuos siųsti į spaustuvę – audioknyga išeina su tais skyriais."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "Konvertuoti EPUB į audioknygą: tavo knyga, skaitoma garsiai",
+        "description": "Paversk EPUB audioknyga su tikrais skyriais – viskas vyksta tavo paties įrenginyje. Be prenumeratų, skaičiuojamų valandomis, ir be knygos kėlimo į jokį serverį.",
+        "h1": "Tavo EPUB – audioknyga.",
+        "entradilla": "Tavo turimos knygos su savo skyriais skaitomos natūraliu balsu. Palieki renderintis prieš miegą, o ryte audioknyga jau tavo bibliotekoje – .m4b failas, kurį atveria bet koks grotuvas.",
+        "pasos": [
+          {
+            "titulo": "Pasidalink EPUB",
+            "texto": "Iš Files arba iš tos vietos, kur jį laikai. Jis atkeliauja su jau atpažintais skyriais."
+          },
+          {
+            "titulo": "Duok darbą spaustuvei",
+            "texto": "Išsirenki skyrius, balsą ir greitį. Papūga spausdina toliau, net jei uždarysi programėlę."
+          },
+          {
+            "titulo": "Klausykis, kur nori",
+            "texto": "Jis lieka bibliotekoje kaip .m4b su žymomis; iš ten persiųsk jį į Files, į Books ar kur nori."
+          }
+        ],
+        "extra_titulo": "Knygos su DRM",
+        "extra_texto": "Yappy skaito EPUB, kuriuos gali atidaryti. Parduotuvių DRM apsaugotų knygų perskaityti neįmanoma – nei čia, nei kur nors kitur.",
+        "faq": [
+          {
+            "q": "Ar išlieka knygos skyriai?",
+            "a": "Taip, ir tai tikri skyriai, o ne žymos kas dešimt minučių: jie paimami iš paties EPUB turinio. Gautą .m4b galima naršyti skyrius po skyriaus bet kuriame audioknygų grotuve – su viršeliu ir tęsimu iš tos vietos, kur sustojai."
+          },
+          {
+            "q": "Kiek užtrunka visa knyga?",
+            "a": "Priklauso nuo įrenginio ir knygos dydžio, bet praktinis atsakymas toks: palieki prieš miegą, o ryte jau baigta. Jei turi tiltą, tavo kompiuteris sintetina daug greičiau ir į telefoną grąžina knygą jau paruoštą."
+          },
+          {
+            "q": "O knygos su DRM?",
+            "a": "Yappy skaito EPUB, kuriuos gali atidaryti. Parduotuvės DRM apsaugotų knygų perskaityti negalima – nei čia, nei kur nors kitur: tas užraktas – ne mūsų."
+          },
+          {
+            "q": "Kur atsiduria audioknyga?",
+            "a": "Yappy bibliotekoje, kaip tikras .m4b. Iš ten persiunksi jį į Files, į Books ar į grotuvą, kurį jau naudoji. Failas priklauso tau: jei ištrinsi programėlę, visa, ką eksportavai, lieka ten, kur jį padėjai."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Klausyti Word dokumentą balsu: DOCX, ODT ir RTF į garsą",
+        "description": "Paversk Word, LibreOffice ir paprasto teksto dokumentus natūraliu balsu ir pasitikrink ausimi. Viskas vyksta tavo kompiuteryje arba telefone.",
+        "h1": "Taisyk ausimi.",
+        "entradilla": "Pasiklausyti, ką parašei, — geriausia korektūra: sakinys, kurio nepavyksta ištarti balsu, neišlaiko ir parašytas. Yappy skaito .docx, .odt, .rtf, .txt ir Markdown — su antraštėmis ir ritmu.",
+        "pasos": [
+          {
+            "titulo": "Atidaryk dokumentą",
+            "texto": "Nuvilk jį į kompiuterio langą arba pasidalink iš telefono."
+          },
+          {
+            "titulo": "Klausyk pastraipa po pastraipos",
+            "texto": "Skaitant tekstas paryškėja; norėdamas peršokti, paliesk norimą vietą."
+          },
+          {
+            "titulo": "Taisyk tai, kas girgžda",
+            "texto": "Ir pasiklausyk vėl. Kompiuteryje kiekviena pastraipa gali turėti savo balsą ir savo greitį."
+          }
+        ],
+        "extra_titulo": "Taip pat skaičiuoklės ir pateiktys",
+        "extra_texto": "Skaito .pptx, .xlsx ir .csv. Kompiuteryje, jei įdiegtas pandoc, sąrašas pasipildo LaTeX, reStructuredText, Org ir dar keliais.",
+        "faq": [
+          {
+            "q": "Kokius teksto formatus jis tiksliai skaito?",
+            "a": ".docx, .odt, .rtf, .txt ir Markdown, taip pat .pptx, .xlsx ir .csv. Kompiuteryje, jei įdiegtas pandoc, sąrašas pasipildo LaTeX, reStructuredText, Org ir dar keliais."
+          },
+          {
+            "q": "Ar skaito ir išnašas, ir lenteles?",
+            "a": "Skaito dokumento tekstą su antraštėmis ir tvarka. Lenteles skaito eilutė po eilutės — kitaip su lentele balsu ir nėra ką veikti, o išnašos atsiduria savo skyriaus gale, nenukirsdamos sakinio per vidurį."
+          },
+          {
+            "q": "Ar galiu kiekvienai pastraipai skirti kitokį balsą?",
+            "a": "Kompiuteryje — taip: pastraipų rengyklė leidžia kiekvienai skirti balsą, greitį ir pauzę. Todėl dialogas, interviu ar dvikalbis dokumentas gerai skamba."
+          },
+          {
+            "q": "Ar tai tikrai tinka tekstui taisyti?",
+            "a": "Tai geriausia korektūra, kokia yra. Ausis išduoda tai, ką akis atleidžia: pasikartojimą per tris eilutes, šalutinį sakinį, kuris nesibaigia, įterpinį, kuris prarijo veiksmažodį. Nuleidi greitį iki 0,9×, išklausai skyrių ir užsirašai, kas girgžda."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Straipsniai",
+        "title": "Klausyti interneto straipsnių balsu: bet koks tinklalapis",
+        "description": "Pasidalink tinklalapiu per Safari, ir Yappy jį perskaitys švarų: be meniu, be reklaminių juostų ir be poraštės. Tinklalapį aplanko tavo įrenginys, o ne mūsų serveris.",
+        "h1": "Pasiklausyk to, ką ketinai skaityti vėliau.",
+        "entradilla": "Ta kortelė, kurią palieki atvertą vėliau. Pasidalink ja su Yappy ir klausykis, kol plauni indus. Puslapis apsivalo pats: laukan meniu, reklaminių juostų ir poraščių. Lieka proza — su antraštėmis ir ritmu.",
+        "pasos": [
+          {
+            "titulo": "Paliesk „Bendrinti“",
+            "texto": "Safari, naujienų skaitytuvė, el. paštas: kur yra bendrinimo meniu, ten ir Yappy."
+          },
+          {
+            "titulo": "Išsivalo savaime",
+            "texto": "Viskas vyksta tavo įrenginyje. Jei turi prenumeratą, paimamas tas straipsnis, kurį matai."
+          },
+          {
+            "titulo": "Atsiduria eilėje",
+            "texto": "Ir laukia, kol turėsi laisvas rankas."
+          }
+        ],
+        "extra_titulo": "Kas eina į tinklą",
+        "extra_texto": "Tik apsilankymas adrese, kurį bendrinai; jį atlieka tavo pats įrenginys – taip, kaip darytų naršyklė. Tarp tavęs ir puslapio nėra jokio Yappy serverio, nes jokio Yappy serverio nėra.",
+        "faq": [
+          {
+            "q": "Ar veikia su leidiniais, kuriuos prenumeruoji?",
+            "a": "Straipsnį išgauna tavo pats įrenginys su tavo paskyra, todėl paimamas tas straipsnis, kurį matai savo naršyklėje. Jei tu gali jį skaityti, Yappy gali jį perskaityti tau. Tarpinio serverio, kuriam tektų įveikti mokamą sieną, nėra – nes serverio iš viso nėra."
+          },
+          {
+            "q": "O puslapiai, kurie užsikrauna tik su JavaScript?",
+            "a": "Kai kurie priešinasi: jei tekstas atsiranda tik tada, kai puslapis paleidžia pusę bibliotekos, Yappy gali likti tuščiomis rankomis. Tokiais atvejais greičiausia pažymėti tekstą, nukopijuoti ir bendrinti jį kaip paprastą tekstą."
+          },
+          {
+            "q": "Ar saugoma mano skaitymo istorija?",
+            "a": "Tik tavo įrenginyje, kad galėtum tęsti ten, kur baigei. Niekas iš to niekur nekeliauja, o kiekvienas dokumentas bibliotekoje turi savo parinktį „pamiršti“."
+          },
+          {
+            "q": "Ar skaito meniu, banerius ir komentarus?",
+            "a": "Ne. Puslapis nuvalomas dar prieš skaitytuvą: laukan meniu, banerių, poraščių, bendrinimo mygtukų ir komentarų laukelių. Lieka proza – su savo antraštėmis ir savo ritmu."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Vaizdo įrašai",
+        "title": "Klausyti vaizdo įrašo taip, lyg tai būtų straipsnis",
+        "description": "Yappy paima vaizdo įrašo transkripciją ir perskaito ją tau kaip straipsnį: nereikia žiūrėti į ekraną, greitį renkiesi pats, o duomenų vaizdui neišleidžiama.",
+        "h1": "Vaizdo įrašai – kaip straipsniai.",
+        "entradilla": "Pusvalandis vaizdo įrašo – dešimt minučių geru tempu skaitomo teksto. Yappy pasilieka transkripciją ir perskaito ją natūraliu balsu, todėl gali klausytis eidamas ir su išjungtu ekranu.",
+        "pasos": [
+          {
+            "titulo": "Bendrink nuorodą",
+            "texto": "Iš vaizdo įrašų programėlės arba naršyklės – per bendrinimo meniu."
+          },
+          {
+            "titulo": "Pasilieka žodžius",
+            "texto": "Yappy paima vaizdo įrašo paskelbtą transkripciją, o ne garso takelį."
+          },
+          {
+            "titulo": "Klausaisi savu tempu",
+            "texto": "Bet kuriuo balsu, bet kokiu greičiu, net kai ekranas užrakintas."
+          }
+        ],
+        "extra_titulo": "Jei vaizdo įraše nėra transkripcijos",
+        "extra_texto": "Tada skaityti nėra ko: Yappy dirba su paskelbtu tekstu, o vaizdo įrašo garso neperkelia į tekstą. Na iPhone ši funkcija yra; na Android — kol kas ne.",
+        "faq": [
+          {
+            "q": "Ar transkribuoja vaizdo įrašo garsą?",
+            "a": "Ne. Yappy pasiima jau paskelbtą vaizdo įrašo transkripciją ir perskaito ją kaip straipsnį. Tai greita, nevalgo vaizdo srauto ir neįkaština telefono; bet tai reiškia, kad jei vaizdo įrašas be transkripcijos, skaityti nėra ko."
+          },
+          {
+            "q": "O jei vaizdo įraše nėra transkripcijos?",
+            "a": "Tada Yappy su nuoroda nieko negali padaryti. Jei tai tavo įrašas ir turi patį failą, pasidalink juo kaip garsu: tada praverčia vietinis balso atpažinimas — jis transkribuoja pačiame įrenginyje."
+          },
+          {
+            "q": "Ar veikia visose vaizdo įrašų platformose?",
+            "a": "Ten, kur yra paskelbta ir prieinama transkripcija. iPhone įrenginiuose ši funkcija yra; Android versijoje jos dar nėra."
+          },
+          {
+            "q": "Ar eikvoja duomenų?",
+            "a": "Labai mažai: atsisiunčiamas tekstas, ne vaizdo įrašas. Pusvalandžio vaizdo įrašo transkripcija užima tik kelias dešimtis kilobaitų, o visa kita daro tavo įrenginys."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Balso įrašai",
+        "title": "Balso įrašų pavertimas tekstu pačiame telefone",
+        "description": "Yappy transkribuoja garso įrašus ir balso žinutes pačiame tavo įrenginyje, jų nesiunčia jokiai paslaugai, o paskui gali perskaityti transkripciją garsiai.",
+        "h1": "Iš balso į tekstą — ir atgal.",
+        "entradilla": "Įrašytas susirinkimas, idėja, padiktuota prie vairo, vakarė paskaita. Yappy įrašą transkribuoja tavo įrenginyje vietiniu balso atpažinimu ir palieka tekstą: gali jį skaityti, taisyti arba vėl išklausyti kitu balsu.",
+        "pasos": [
+          {
+            "titulo": "Pasidalink įrašu",
+            "texto": "Iš Balso įrašų, Failų arba bet kurios kitos programos, kurioje saugomi garso įrašai."
+          },
+          {
+            "titulo": "Transkribuojama įrenginyje",
+            "texto": "Modeliu, kuris veikia tavo įrenginyje. Garsas iš ten neišeina."
+          },
+          {
+            "titulo": "Perskaityk arba paklausyk",
+            "texto": "Lieka kaip bet kuris kitas dokumentas: jį galima skaityti, dalintis juo ir vėl perskaityti garsiai."
+          }
+        ],
+        "extra_titulo": "Atpažinimo modelis atsisiunčiamas atskirai",
+        "extra_texto": "Transkripcijai naudojamas kitas modelis nei balsams, ir jis atsisiunčiamas tik tada, kai juo naudojiesi.",
+        "faq": [
+          {
+            "q": "Kuris modelis transkribuoja?",
+            "a": "Parakeet TDT 0.6B v3 iš NVIDIA, CC-BY-4.0 licencija, veikia tiesiog tavo įrenginyje. Tai atskiras modelis, ne tas, kuris kalba: vienas klauso, kitas kalba."
+          },
+          {
+            "q": "Ar garsas palieka mano įrenginį?",
+            "a": "Ne. Įrašas transkribuojamas vietoje, kaip ir balsas sintetinamas vietoje. Jokio transkribavimo debesijoje, jokios paskyros, jokio įkelimo."
+          },
+          {
+            "q": "Kokiomis kalbomis transkribuoja?",
+            "a": "Ausis kalba mažiau kalbų nei balsas: transkribuoja pagrindines Europos kalbas, o ne 31 kalbą, kurią Yappy moka skaityti. Skaityti balsu – visos 31; iš kalbos į tekstą – ta trumpesnė grupė."
+          },
+          {
+            "q": "Ar dar ką nors reikia atsisiųsti?",
+            "a": "Taip: ausis atsisiunčiama atskirai ir tik pirmą kartą, kai ką nors transkribuoji. Jei niekada nieko netranskribsi, ji niekada neužims vietos tavo įrenginyje."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Tekstas į kalbą {lengua} kalba: skaityk bet kokį tekstą balsu",
+    "description": "Klausyk PDF, EPUB, Word ir straipsnių {lengua} kalba natūraliu balsu – savo įrenginyje ir be interneto. Dešimt balsų, nemokamai ir be paskyros.",
+    "h1": "Tekstas į kalbą {lengua} kalba.",
+    "entradilla": "Dešimt balsų skaito {lengua} kalbą pagal jos pačios taisykles: jos skaičius, datas, kelintinius skaitvardžius ir santrumpas – o ne kaip kita kalba su svetimu akcentu.",
+    "muestra": "Pavyzdys",
+    "reglas_titulo": "Ką garsintojas žino apie {lengua} kalbą",
+    "todas": "Kitos trisdešimt kalbų"
+  },
+  "vs": {
+    "titulo": "Yappy ir {nombre} vienu žvilgsniu",
+    "caracteristica": "Kas",
+    "gratis": "Ką galima daryti nemokamai",
+    "precio": "Kaina nuo",
+    "local": "Balsas kuriamas tavo įrenginyje",
+    "sin_cuenta": "Be paskyros ir el. pašto",
+    "sin_conexion": "Veikia be interneto",
+    "codigo_abierto": "Atviro kodo",
+    "tarifa": "Mokestis už simbolius arba už valandas",
+    "idiomas": "Kalbos",
+    "formatos": "Skaitomi formatai",
+    "audiolibro": "Audioknyga su skyriais",
+    "escritorio": "Kompiuteris",
+    "yappy_gratis": "Klausykite be ribų; trys dokumentai vienu metu",
+    "yappy_precio": "0 €; prenumerata nuo 3,99 € per mėnesį",
+    "gana_en": "Kur {nombre} laimi",
+    "verificado": "Viešai prieinami duomenys, patikrinti {fecha} kiekvieno produkto svetainėje.",
+    "sin_verificar": "Kainos dažnai keičiasi: prieš apsispręsdami jas patikrinkite.",
+    "ver_web": "Oficiali svetainė",
+    "frente_a": "Lyginant su {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Dažniausiai užduodami klausimai"
+  }
+}

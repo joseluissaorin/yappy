@@ -445,7 +445,8 @@
         "q": "Hvorfor betaler man ikke på computer og Android?",
         "a": "Fordi snoren kun er monteret på iPhone og iPad. På computeren – og i Android-versionen, når den udkommer – er trykkeriet, knagen uden bund og broen åbne fra start. Det er ikke et lanceringstilbud: der er bare intet at opkræve."
       }
-    ]
+    ],
+    "una_a_una": "én ad gangen, med tilhørende data"
   },
   "voces": {
     "title": "Yappys stemmer: ti polyglotte fugle på 31 sprog",
@@ -971,7 +972,8 @@
     "gana_en": "Hvor {nombre} vinder",
     "verificado": "Offentlige data, tjekket {fecha} på hvert produkts hjemmeside.",
     "sin_verificar": "Priserne ændrer sig ofte: tjek dem, inden du beslutter dig.",
-    "ver_web": "Officiel hjemmeside"
+    "ver_web": "Officiel hjemmeside",
+    "frente_a": "Mod {nombre}"
   },
   "preguntas_comunes": {
     "titulo": "Ofte stillede spørgsmål"

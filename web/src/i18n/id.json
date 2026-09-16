@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "id",
+    "nombre": "Bahasa Indonesia",
+    "dir": "ltr",
+    "ogLocale": "id_ID",
+    "hreflang": "id",
+    "og_alt": "Tulisan \"Teks apa pun, dibacakan\" dalam huruf besar di atas kertas krem, di sampingnya seekor beo berwarna koral"
+  },
+  "slugs": {
+    "uso": "cara-pakai",
+    "guionizador": "penulis-naskah",
+    "descargas": "unduhan",
+    "precios": "harga",
+    "voces": "suara",
+    "preguntas": "tanya-jawab",
+    "privacidad": "privasi",
+    "accesibilidad": "aksesibilitas",
+    "cuentos": "cerita",
+    "blog": "blog",
+    "convertir": "konversi",
+    "idiomas": "bahasa",
+    "alternativas": "alternatif",
+    "formato_pdf": "pdf-ke-audio",
+    "formato_epub": "epub-ke-audiobook",
+    "formato_word": "word-ke-suara",
+    "formato_articulos": "artikel-ke-audio",
+    "formato_videos": "video-ke-audio",
+    "formato_notas": "catatan-suara-ke-teks"
+  },
+  "comunes": {
+    "saltar": "Lewati ke konten",
+    "marca_aria": "Yappy, beranda",
+    "idioma": "Bahasa",
+    "menu": "Buka menu",
+    "secciones": "Bagian",
+    "descargar": "Unduh",
+    "descargar_gratis": "Unduh gratis",
+    "en_app_store": "Unduh di App Store",
+    "escuchar_muestra": "Dengarkan contoh suara",
+    "probar": "Coba sekarang",
+    "leer_mas": "Baca selengkapnya",
+    "volver": "Kembali",
+    "inicio": "Beranda",
+    "minutos": "{n} menit baca",
+    "publicado": "Diterbitkan pada",
+    "actualizado": "diperbarui pada",
+    "por": "oleh",
+    "gratis": "gratis",
+    "si": "Ya",
+    "no": "Tidak",
+    "parcial": "Sebagian",
+    "sin_datos": "tidak ada data"
+  },
+  "nav": {
+    "uso": "Cara pakai",
+    "guionizador": "Pembuat naskah",
+    "voces": "Suara",
+    "precios": "Harga",
+    "descargas": "Unduhan",
+    "preguntas": "Pertanyaan",
+    "privacidad": "Privasi",
+    "accesibilidad": "Aksesibilitas",
+    "cuentos": "Cerita",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "Produk",
+    "leer": "Bacaan",
+    "casa": "Tentang",
+    "codigo": "Kode sumber",
+    "licencia": "Lisensi MIT",
+    "novedades": "Yang baru",
+    "firma": "Yappy · dibuat dengan tangan di Tenerife oleh <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · sumber terbuka (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Text to Speech: pembaca PDF, EPUB, dan artikel dengan suara nyaring",
+    "description": "Ubah teks apa pun menjadi suara natural: PDF, EPUB, Word, artikel, dan video, dalam 31 bahasa. Semua terjadi di ponsel atau komputer kamu: tanpa cloud, tanpa akun, tanpa tarif per karakter. Gratis dan sumber terbuka.",
+    "susurro": "text to speech · 31 bahasa · tanpa cloud · sumber terbuka",
+    "titular_1": "Apa pun",
+    "titular_texto": "teksnya",
+    "titular_2": ", dibacakan dengan",
+    "titular_voz": "suara nyaring",
+    "titular_3": ".",
+    "entradilla": "Bagikan artikel, PDF, EPUB, Word, atau video, dan seekor nuri akan membacakannya untukmu dengan suara natural sambil kamu memasak, berjalan, atau memejamkan mata. Modelnya berjalan sepenuhnya di perangkatmu: tidak ada yang keluar dari sana, tidak pernah.",
+    "nota_acciones": "gratis · tanpa akun · tanpa tarif per karakter",
+    "pegatina_sin_nube": "tanpa\ncloud",
+    "pegatina_idiomas": "31\nbahasa",
+    "pegatina_gratis": "gratis",
+    "pegatina_offline": "bisa offline",
+    "demo_susurro": "ketuk dan dengarkan: ini diucapkan mesin yang sama yang ada di sakumu",
+    "demo_titulo": "Begini bunyinya.",
+    "demo_nota": "Bagian yang digarisbawahi diucapkan oleh penskrip: “1492” dibaca “seribu empat ratus sembilan puluh dua” dan “abad XV” dibaca “abad kelima belas”, sesuai aturan masing-masing bahasa.",
+    "momentos_susurro": "buat kapan pun",
+    "momentos_titulo": "Tiga momen, satu gerakan.",
+    "momentos": [
+      {
+        "titulo": "Sambil memasak",
+        "texto": "Bagikan artikelnya, letakkan ponsel, dan suaranya tetap membaca sementara kamu di dapur."
+      },
+      {
+        "titulo": "Saat jalan-jalan",
+        "texto": "Buku tadi malam, sudah jadi audiobook lengkap dengan bab, menemanimu naik tanjakan."
+      },
+      {
+        "titulo": "Malamnya bekerja",
+        "texto": "Tinggalkan proses render sebelum tidur; begitu bangun, audiobooknya sudah ada di sakumu."
+      }
+    ],
+    "porque_susurro": "kenapa ini ada",
+    "porque_titulo": "Tanpa cloud, tanpa akun, tanpa tarif per karakter.",
+    "porque_entradilla": "Aplikasi text to speech lain mengirim apa yang kamu baca ke server, lalu menagihmu per karakter atau per jam dengar. Yappy tidak punya server untuk dibayar, jadi tidak ada yang bisa ditagih darimu untuk mendengarkan.",
+    "porque": [
+      {
+        "titulo": "Tidak ada yang keluar dari perangkatmu",
+        "texto": "Suara disintesis di ponsel atau komputermu dengan model terbuka. Tanpa internet pun tetap berfungsi: selamanya."
+      },
+      {
+        "titulo": "31 bahasa sungguhan",
+        "texto": "Sepuluh suara, masing-masing poliglot. Teks dengan kutipan dalam bahasa lain berpindah bahasa sendiri, paragraf demi paragraf."
+      },
+      {
+        "titulo": "Tanpa jam, tanpa karakter",
+        "texto": "Dengarkan apa pun, selama apa pun. Tidak ada penghitung, karena tidak ada tagihan untuk dibagi."
+      },
+      {
+        "titulo": "Kode sumber terbuka (MIT)",
+        "texto": "Mesin, pembuat naskah, aplikasi, dan situs web ini semuanya dipublikasikan. Kamu bisa membacanya, mengompilasinya, dan memeriksanya."
+      }
+    ],
+    "formatos_susurro": "membagikan adalah pintunya",
+    "formatos_titulo": "Apa pun yang sedang kamu baca.",
+    "formatos_entradilla": "Dari Safari, Mail, File, atau aplikasi mana pun: ketuk Bagikan dan pilih Yappy. Halaman membersihkan dirinya sendiri —menu, banner, dan catatan kaki dibuang— dan tersisa prosanya, dengan judul serta ritmenya.",
+    "guion_susurro": "bagian yang tak ditunjukkan siapa pun",
+    "guion_titulo": "Membaca seperti manusia, bukan seperti mesin.",
+    "guion_entradilla": "Membaca nyaring bukan mengeja: ini soal menafsir. “1492” dibaca “seribu empat ratus sembilan puluh dua”; “Henry VIII” dibaca “Henry kedelapan”, tetapi “Louis XIV” dalam bahasa Prancis dibaca “Louis quatorze”; “EL CID” bukan angka Romawi; FBI dieja huruf demi huruf, NASA tidak. Sebelum satu suku kata pun disintesis, Yappy mengubah teks menjadi <strong>naskah baca</strong>: partitur atas apa yang benar-benar akan diucapkan.",
+    "guion_pruebalo": "Cobalah di sini saja: ini Rust yang sama dengan di aplikasi, dikompilasi untuk browser kamu.",
+    "guion_boton": "Naskahkan",
+    "guion_ejemplo": "Abad ke-19 berakhir pada 1900. Louis XIV memerintah 72 tahun, menghabiskan €3,50 untuk es krim, dan FBI tidak pernah tahu.",
+    "guion_marcador": "Tulis sesuatu dengan angka, akronim, tanggal, atau abad…",
+    "guion_espera": "Naskah akan muncul di sini, bagian yang diubah diberi garis bawah.",
+    "guion_fallo": "Pembuat naskah tidak bisa dimuat di browser ini. Aplikasinya sendiri membawanya di dalam.",
+    "guion_mas": "Cara kerja pembuat naskah",
+    "capturas_susurro": "beginilah tampilannya, tanpa polesan",
+    "capturas_titulo": "Tangkapan layar aplikasi yang sesungguhnya.",
+    "capturas_entradilla": "Bukan mockup gambar-gambaran: ini Yappy yang sedang berjalan, dengan teks asli di tenggerannya dan pembaca yang naskahnya sudah siap.",
+    "precio_susurro": "soal uang, terus terang",
+    "precio_titulo": "Gratis sungguhan, dan seekor nuri yang diberi angin.",
+    "precio_entradilla": "Nuri versi coba menampung tiga dokumen sekaligus di tenggerannya dan membacanya tanpa batas waktu. Lepaskan satu, masuk yang lain. Kalau kamu menginginkan tenggeran tanpa dasar, percetakan audiobook, dan jembatan ke komputer, berilah ia angin.",
+    "cierre_titulo": "Seekor nuri, di saku.",
+    "cierre_texto": "Gratis, tanpa akun, dan tanpa apa pun yang perlu didaftarkan. Pasang, bagikan satu teks, dan langsung berbunyi."
+  },
+  "uso": {
+    "title": "Cara memakai Yappy: bagikan, dengarkan, dan tidak banyak lagi",
+    "description": "Panduan lengkapnya: membagikan dari iPhone, pintasan di komputer, jembatan QR antara ponsel dan Mac kamu, audiobook dengan bab, Siri, widget, dan pengaturan.",
+    "h1": "Tinggal bagikan, langsung bunyi.",
+    "entradilla": "Yappy hanya punya satu gerakan: bagikan. Sisanya detail yang sudah tertata.",
+    "pasos": [
+      {
+        "titulo": "Bagikan",
+        "texto": "Dari aplikasi mana saja: Safari, email, Files, catatan suara, atau PDF yang dikirim lewat chat. Ketuk Bagikan, pilih Yappy, aplikasinya terbuka sendiri."
+      },
+      {
+        "titulo": "Pilih suara",
+        "texto": "Sepuluh suara, semuanya poliglot. Kalau teksnya dalam bahasa lain, Yappy mengenalinya sendiri dan membacanya dengan aturan bahasa itu, bukan dengan aksen pinjaman."
+      },
+      {
+        "titulo": "Dengarkan",
+        "texto": "Kunci layar, selipkan ponsel ke saku. Suaranya tetap jalan: ada sampul, judul, dan kontrol di layar kunci, dan tombol headset yang berkuasa."
+      },
+      {
+        "titulo": "Simpan",
+        "texto": "Kalau ini untuk jalan besok pagi, mesin cetaknya menyimpannya jadi audiobook .m4b lengkap dengan bab, dan bisa dibuka di pemutar mana saja."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "Di iPhone dan iPad",
+        "texto": "Manualnya cuma satu kata: bagikan. Dari aplikasi apa pun, ketuk Bagikan lalu pilih Yappy: ia menerima tautan, teks biasa, PDF, EPUB, Word, ODT, dan audio. Yappy terbuka sendiri, seketika. Tidak ada yang direbus-rebus di dalam share sheet, karena iOS memotong ekstensi di 120 MB; Yappy menyalin isi yang dibagikan lalu lompat ke aplikasinya, tempat yang tidak punya batas. Lompatan itu memang desain, bukan tambal sulam. <strong>Semua terjadi di perangkat</strong>: satu-satunya jaringan yang disentuh Yappy adalah kunjungan ke alamat yang kamu bagikan, dilakukan dari ponselmu sendiri.",
+        "puntos": [
+          "Antreannya menyiapkan sambil kamu lihat: artikel dirapikan, video datang dengan transkripnya, PDF dibagi halaman. Kalau kamu membiarkan aplikasinya terbuka, pembacaan mulai sendiri begitu semuanya siap.",
+          "Karaoke menyorot bagian yang sedang terdengar, kalimat demi kalimat. Ketuk di mana saja untuk jeda, geser untuk pindah paragraf, dan geser tepi layar untuk naik-turunkan kecepatan.",
+          "Kunci layar, suaranya tetap jalan. AirPods bisa menjeda dan melanjutkan; sistem memperlakukan Yappy seperti pemutar mana pun.",
+          "Di gantungan muat tiga dokumen sekaligus: lepas satu, masuk satu lagi. Cerita bawaan tidak makan tempat."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Di Mac, Windows, dan Linux",
+        "texto": "Satu pintasan, dan yang sedang kamu lihat langsung bersuara: teks terseleksi, halaman browser, atau dokumen aktif. Ketiga pintasan bisa diubah di Preferensi dan tetap jalan walau aplikasinya sembunyi di tray. Selain pintasan, versi desktop punya yang tidak muat dalam satu genggaman.",
+        "puntos": [
+          "<strong>Pustaka.</strong> Semua yang kamu buka atau bagikan tersimpan di sampul, lengkap dengan progresnya. Kamu lanjut persis dari tempat berhenti, sampai ke paragrafnya.",
+          "<strong>Editor per paragraf.</strong> Tiap paragraf bisa punya suara, kecepatan, dan jeda sendiri. Untuk dialog, kutipan, atau dokumen dua bahasa.",
+          "<strong>Transkripsi lokal.</strong> Seret catatan suara atau rekaman, dan telinga lokalnya mengubahnya jadi teks yang terbaca, tanpa mengunggah apa pun ke mana pun.",
+          "<strong>Ekspor audiobook.</strong> Dokumen apa pun keluar sebagai .m4b sungguhan, dengan bab yang bisa dinavigasi, diambil dari naskahnya. Juga tersedia sebagai .wav atau .mp3.",
+          "<strong>PDF bermata.</strong> PDF hasil pindai melewati OCR lokal dulu sebelum dibacakan. Yang lahir digital langsung dibaca, halaman demi halaman.",
+          "<strong>Tema.</strong> Kertas krem untuk siang hari, tinta terang di atas latar gelap untuk malam, atau biarkan sistem yang memutuskan.",
+          "<strong>Tanpa tali.</strong> Di desktop semuanya terbuka: mesin cetak, gantungan tanpa dasar, dan jembatan sudah terpasang sejak awal."
+        ]
+      },
+      {
+        "id": "jembatan",
+        "titulo": "Jembatan: komputermu yang merender, ponselmu yang mendengarkan",
+        "texto": "Mensintesis satu buku utuh memang butuh waktu. Jembatan menyerahkan pekerjaan beratnya ke komputermu, lalu mengembalikan audiobook yang sudah jadi ke sakumu, lewat koneksi langsung yang terenkripsi ujung ke ujung antara kedua perangkat, tanpa server siapa pun di antaranya.",
+        "puntos": [
+          "Di komputer, buka Preferensi, lalu \"Jembatan\": Yappy menampilkan kode QR berisi alamat terenkripsi komputermu dan sebuah kunci undangan.",
+          "Arahkan kamera iPhone ke kode QR itu, dan keduanya langsung berpasangan. Kuncinya tersimpan, dan kamu bisa mencabutnya dari komputer kapan pun kamu mau.",
+          "Di ponsel, \"Konversi di komputer\": pilih dokumennya, komputer mengerjakannya dengan ritmenya sendiri, dan file .m4b muncul di pustaka ponsel lengkap dengan bab-babnya. Malam bekerja untuk jalan pagimu.",
+          "Jembatan dienkripsi dengan QUIC, memakai protokol dari <a href=\"https://iroh.computer\">iroh</a>. Kalau perlu relai supaya kedua perangkat bisa saling menemukan, relai itu hanya melihat lalu lintas terenkripsi yang tak bisa ia baca."
+        ]
+      },
+      {
+        "id": "audiobook",
+        "titulo": "Audiobook: .m4b dengan bab sungguhan",
+        "texto": "Yappy tidak mengekspor \"satu audio panjang\": yang diekspor adalah audiobook .m4b seperti buatan toko, dengan bab yang diambil dari judul asli dokumen, dilengkapi sampul dan posisi terakhir yang tersimpan. Bisa diputar di dalam Yappy, lengkap dengan pustaka dan progresnya, atau di pemutar audiobook apa pun yang sudah kamu pakai. Dan penata naskahnya yang memberi napas: jeda setelah judul, irama daftar saat membacakan daftar.",
+        "puntos": [
+          "Di ponsel, pemesanannya dari pustaka, bab demi bab: kamu pilih mana yang dicetak dan dengan suara siapa.",
+          "Nuri tetap mencetak meski aplikasinya ditutup atau ponselnya dikunci.",
+          "Dari pustaka, bagikan ke File, ke Buku, atau ke mana pun kamu mau: file-nya milikmu.",
+          "Mesin cetak menjadi bagian dari Yappy Parlanchín di iPhone dan iPad. Di komputer, mesin cetaknya terbuka sejak awal."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, Pintasan, dan Tombol Tindakan",
+        "texto": "\"Hai Siri, bacakan papan klip saya dengan Yappy.\" Aplikasi ini punya App Intents sungguhan: muncul sendiri di aplikasi Pintasan, merespons perintah Siri, dan bisa digantungkan di Tombol Tindakan iPhone. Tidak ada yang perlu dirakit.",
+        "puntos": [
+          "<strong>Bacakan papan klip saya.</strong> Salin teks di mana saja, minta Siri, dan langsung berbunyi.",
+          "<strong>Lanjutkan pembacaan.</strong> Melanjutkan yang terakhir berbunyi, tepat dari titik terakhirnya.",
+          "<strong>Dengarkan tautan.</strong> Menerima alamat sebagai parameter: penutup yang pas untuk pintasan buatanmu sendiri.",
+          "Untuk otomatisasi rakitan sendiri, skema <code>yappy://</code> juga diproses: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code>, dan <code>yappy://pair?d=…</code>.",
+          "Ada juga widget untuk layar utama berisi yang terakhir berbunyi, siap dilanjutkan dengan satu ketukan."
+        ]
+      },
+      {
+        "id": "pengaturan",
+        "titulo": "Pengaturan: kenopnya sedikit, tapi semuanya betulan",
+        "texto": "Yappy tidak punya panel dengan seratus tombol. Yang ada hanya segelintir, dan semuanya benar-benar mengubah cara suaranya terdengar.",
+        "puntos": [
+          "<strong>Suara.</strong> Sepuluh suara, semuanya poliglot: suara yang sama membaca bahasa Spanyol, Inggris, atau Jepang tanpa mengubah warna suaranya.",
+          "<strong>Kecepatan.</strong> Dari 0,5× sampai 2×. Suara dibangkitkan langsung pada kecepatan itu, bukan dipercepat setelahnya: nada tidak ikut berubah.",
+          "<strong>Jeda.</strong> Seberapa lama ia menarik napas antarparagraf. Judul dan daftar sudah membawa ritmenya masing-masing dari penata naskah.",
+          "<strong>Bahasa.</strong> Dideteksi otomatis per dokumen dan per paragraf, atau disetel manual. Kutipan dalam bahasa lain berganti sendiri.",
+          "<strong>Statistik anonim.</strong> Di ponsel, fitur ini aktif sejak awal dan bisa dimatikan di sini, di bagian belakang. Apa persisnya yang dikirim dijelaskan poin demi poin dalam kebijakan privasi."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Di Android",
+        "texto": "Gesturnya sama: bagikan tautan, teks, atau dokumen, dan semuanya mendarat di antrean yang sama—lengkap dengan ekstraksi artikel, karaoke, dan suara, semuanya diproses di dalam ponsel itu sendiri. Versi Android adalah yang termuda sekeluarga dan masih kekurangan tiga hal yang sudah dimiliki iPhone: kontrol di layar kunci, video, dan pemutar buku audio .m4b. Dan ada yang lebih penting: <strong>belum dirilis</strong>. Akun pengembang Google masih dalam proses verifikasi, dan kami tidak memberi tanggal karena memang tidak tahu. Begitu rilis, pengumumannya akan muncul di sini dan di repositori. Yang jelas: di Android tidak ada tangkapannya. Semuanya terbuka."
+      }
+    ],
+    "atajo": "Pintasan",
+    "atajo_leer": "Bacakan apa yang Anda lihat",
+    "atajo_portapapeles": "Bacakan papan klip",
+    "atajo_pausar": "Jeda",
+    "cierre": "Itu saja isi manualnya."
+  },
+  "guionizador": {
+    "title": "Penata naskah Yappy: dari tulisan ke ucapan",
+    "description": "Bagaimana Yappy mengubah “1492”, “abad ke-15”, “3,50 €”, atau “FBI” menjadi kata-kata yang diucapkan sesuai aturan tiap bahasa, dalam 31 bahasa. Ada demo langsung: Rust yang sama persis dengan aplikasinya, dikompilasi ke WebAssembly.",
+    "h1": "Dari tulisan ke ucapan.",
+    "oficios_titulo": "Dua belas keahlian dalam sekali jalan.",
+    "oficios": [
+      {
+        "titulo": "Tanggal",
+        "texto": "“24/5/1533” dibaca utuh, mengikuti urutan dan bentuk kata khas tiap bahasa."
+      },
+      {
+        "titulo": "Jam",
+        "texto": "“14:05” dibaca seperti orang mengatakannya, bukan seperti cara jam membacanya."
+      },
+      {
+        "titulo": "Mata uang",
+        "texto": "“3,50 €” diucapkan “tiga koma lima puluh euro”, dengan bentuk jamak yang semestinya."
+      },
+      {
+        "titulo": "Persentase",
+        "texto": "\"7%\" dibaca \"tujuh persen\", dan \"0,5%\" tidak diubah menjadi \"nol koma lima\"."
+      },
+      {
+        "titulo": "Satuan",
+        "texto": "\"230 °C\" dibaca \"dua ratus tiga puluh derajat Celsius\"."
+      },
+      {
+        "titulo": "Bilangan ordinal",
+        "texto": "\"3.ª\" dibaca \"tercera\", dengan gender dan deklinasinya di bahasa yang memilikinya."
+      },
+      {
+        "titulo": "Angka Romawi dengan akal sehat",
+        "texto": "\"Abad XX\" dibaca sebagai bilangan kardinal, \"Enrique VIII\" sebagai bilangan ordinal, dan \"EL CID\" bukan angka."
+      },
+      {
+        "titulo": "Akronim berdasarkan fonotaktik",
+        "texto": "FBI dieja huruf demi huruf; NASA dibaca sebagai kata. Aturannya ditentukan oleh bunyi, bukan oleh daftar."
+      },
+      {
+        "titulo": "Singkatan",
+        "texto": "\"dll.\", \"hlm.\", \"abd. ke-19\": setiap bahasa punya tabelnya sendiri."
+      },
+      {
+        "titulo": "Angka besar",
+        "texto": "Memakai tata bahasa RBNF dari Unicode CLDR, lengkap dengan gender dan deklinasinya."
+      },
+      {
+        "titulo": "31 bahasa",
+        "texto": "Aturannya sama, tata bahasanya mengikuti tiap bahasa. Tanpa daftar yang ditulis manual."
+      },
+      {
+        "titulo": "Irama",
+        "texto": "Judul mengambil napas setelah diucapkan; daftar menandai ketukannya sendiri. Jeda adalah bagian dari naskah, bukan kebetulan."
+      }
+    ],
+    "cierre": "Naskah adalah separuh cerita; separuh lagi untuk didengar.",
+    "faq": [
+      {
+        "q": "Apa itu tata bahasa RBNF?",
+        "a": "RBNF adalah singkatan dari <em>Rule-Based Number Format</em>: aturan yang dipakai Unicode CLDR untuk menjelaskan cara membacakan angka di tiap bahasa. Ini bukan tabel seribu kata, melainkan tata bahasa: karena itu ia tahu bahwa bahasa Spanyol berkata \"doscientas páginas\" dan bukan \"doscientos páginas\", bahwa bahasa Rusia mendeklinasikan kata bilangannya, dan bahwa bahasa Prancis menghitung sampai sembilan puluh dengan kelipatan dua puluh. Yappy menafsirkannya dalam Rust murni, tanpa daftar yang ditulis manual."
+      },
+      {
+        "q": "Mengapa perlu penyusun naskah? Bukankah suaranya saja bisa?",
+        "a": "Tidak, dan itu memang disengaja. Model suara Yappy bekerja di tingkat karakter: ia mengucapkan persis teks yang diterimanya. Itu membuatnya cepat dan ringan, tetapi berarti jika yang datang \"1492\", ia akan mencoba membacanya begitu saja, karakter demi karakter. Pada model seperti ini, normalisasi <em>adalah</em> pengucapan. Penyusun naskah adalah bagian yang mengubah setiap angka, setiap akronim, dan setiap simbol menjadi kata-kata yang akan diucapkan manusia."
+      },
+      {
+        "q": "Berapa banyak bahasa yang didukung?",
+        "a": "31 bahasa yang dikuasai suaranya, masing-masing dengan aturannya sendiri: urutan tanggal, kata penghubung mata uang, bilangan ordinal, singkatan, dan angka Romawi. Abad ke-15 dibaca \"siglo quince\" dalam bahasa Spanyol dan \"fifteenth century\" dalam bahasa Inggris; \"Louis XIV\" dibaca \"Louis quatorze\", bukan \"Louis fourteenth\". Dua belas tugas yang sama, tiga puluh satu tata bahasa."
+      },
+      {
+        "q": "Mengapa karaoke selalu jatuh tepat pada kata yang benar?",
+        "a": "Karena skrip bukan sekadar teks yang sudah diubah. Skrip menyimpan peta antara yang tertulis dan yang diucapkan. Ketika suara mengucapkan \"seribu empat ratus sembilan puluh dua\", skrip tahu bahwa empat kata itu berasal dari empat angka pada \"1492\", dan garis bawah jatuh tepat di tempatnya tanpa bergeser. Itulah bedanya antara menerangi teks dan menebak-nebaknya."
+      },
+      {
+        "q": "Ada kata yang diucapkan salah. Bisakah saya memperbaikinya?",
+        "a": "Sampai hari ini belum ada kamus pelafalan untuk pengguna. Karena model membaca karakter, jalan pintasnya adalah menulis kata itu sesuai bunyinya di editor, lalu mendengarkannya lagi. Dan jika yang salah adalah pola umum (singkatan, akronim, satuan), ceritakan di <a href=\"https://github.com/joseluissaorin/yappy/issues\">issue di GitHub</a>: tabel penyusun skrip bertambah berkat kasus-kasus seperti itu."
+      },
+      {
+        "q": "Apakah penyusun skrip di halaman ini sama dengan yang ada di aplikasi?",
+        "a": "Kodenya sama, dikompilasi ke WebAssembly agar bisa berjalan di browser Anda. Apa yang Anda tulis di sini tidak keluar dari tab Anda. Dan karena seluruh proyek ini terbuka, Anda bisa membaca aturannya satu per satu di <a href=\"https://github.com/joseluissaorin/yappy\">repositorinya</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Unduh Yappy: iPhone, iPad, Mac, Windows dan Linux",
+    "description": "Yappy gratis dan sumber terbuka. Tersedia di App Store untuk iPhone dan iPad; versi desktop dikompilasi dari kode atau diunduh dari GitHub. Persyaratan dan ukuran model suara.",
+    "h1": "Gratis, terbuka, dan milik Anda.",
+    "entradilla": "Tidak ada pendaftaran, tidak ada email, tidak ada versi coba yang kedaluwarsa. Tinggal unduh, dan selesai.",
+    "modelo_nota": "Pertama kali dijalankan, Yappy mengunduh model suara ({peso}). Di iPhone, model ini sudah ikut saat instalasi; di komputer, baru diunduh saat pertama kali aplikasi dibuka. Setelah itu tidak perlu koneksi lagi.",
+    "android_titulo": "Android",
+    "android_texto": "Versi Android sudah dikompilasi dan berfungsi, tetapi belum dirilis: akun pengembang Google masih dalam proses verifikasi. Begitu rilis, pengumumannya akan muncul di sini dan di repositori.",
+    "escritorio_aviso": "Binari desktop dipublikasikan di GitHub. Jika versi yang Anda temukan di sana lebih lama daripada versi iPhone, berarti yang terbaru belum diunggah: kodenya memang sudah mutakhir dan bisa dikompilasi dengan <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone dan iPad",
+        "texto": "Di App Store, gratis dan tanpa akun. Suara-suara terunduh bersama instalasinya, jadi tinggal buka aplikasinya, bagikan satu teks, dan langsung terdengar. Ini versi yang paling lengkap: buku audio, Siri, widget, jembatan dan kontrol di layar kunci.",
+        "requisitos": "iOS atau iPadOS 17 ke atas · model suara berukuran sekitar 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Unduh di App Store"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon dan Intel, dalam satu berkas .dmg yang dinotarisasi. Lengkap dengan tiga pintasan global, editor per paragraf, OCR untuk PDF hasil pindai dan ekspor buku audio. Di sini tidak ada syarat tersembunyi: semuanya terbuka.",
+        "requisitos": "macOS 12 atau lebih baru · model suara sekitar 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Lihat rilis di GitHub"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "Pemasang .exe atau .msi untuk x64, dengan pintasan dan fitur yang sama seperti versi Mac. Laptop mana pun dari beberapa tahun terakhir menyintesis lebih cepat daripada waktu nyata.",
+        "requisitos": "Windows 10 atau lebih baru, x64 · model suara sekitar 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Lihat rilis di GitHub"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage dan .deb untuk x64. Pintasan global bergantung pada lingkungan desktop Anda; kalau pintasan Anda sudah terpakai, ganti saja lewat Preferensi.",
+        "requisitos": "x64 · model suara sekitar 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Lihat rilis di GitHub"
+      },
+      {
+        "nombre": "Dari kode sumber",
+        "texto": "Seluruh proyek ini dipublikasikan: aplikasi desktop dan selulernya (Tauri, Rust, dan Svelte), mesin sintesisnya, pembuat skrip beserta tata bahasa CLDR yang disertakan, sampai situs web ini sendiri. Dengan Rust dan Node terpasang, <code>cargo tauri build</code> membuatkan salinan milik Anda. Kalau biner yang dirilis tertinggal dari versi iPhone, inilah jalur cepatnya: kodenya selalu mutakhir.",
+        "requisitos": "Rust dan Node · petunjuk lengkap ada di README",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Lihat kode di GitHub"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Harga Yappy: gratis selamanya, tanpa biaya per karakter",
+    "description": "Yappy gratis dan tanpa batas mendengarkan: tiga dokumen sekaligus di gantungan. Yappy Parlanchín menambahkan gantungan tanpa dasar, mesin cetak buku audio, dan jembatan, mulai €3,99 per bulan atau €59,99 sekali bayar.",
+    "h1": "Soal uang, terus terang saja.",
+    "entradilla": "Bisa mendengarkan apa yang dibaca itu urusan aksesibilitas, dan aksesibilitas tidak semestinya minta kartu. Makanya bagian yang penting gratis dan tanpa penghitung.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "€0",
+    "gratis_periodo": "selamanya",
+    "gratis_puntos": [
+      "Mendengarkan tanpa batas menit maupun karakter",
+      "31 bahasa dan sepuluh suara",
+      "PDF, EPUB, Word, artikel, video, dan catatan suara",
+      "Tiga dokumen sekaligus di gantungan: lepas satu, muat satu lagi",
+      "Tanpa akun, tanpa email, tanpa iklan",
+      "Open source dengan lisensi MIT"
+    ],
+    "gratis_no": [
+      "Tanpa mesin cetak audiobook",
+      "Tanpa jembatan ke komputer"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "per bulan",
+    "cuerda_periodo_anio": "per tahun",
+    "cuerda_periodo_vida": "sekali saja",
+    "cuerda_puntos": [
+      "Semua yang ada di atas",
+      "Rak tanpa dasar: dokumen sebanyak yang kamu mau",
+      "Mesin cetak: buku utuh jadi audiobook dengan bab",
+      "Jembatan: komputermu yang mengonversi dan mengembalikannya sendiri",
+      "Berhenti kapan saja"
+    ],
+    "cuerda_nota": "Tanpa uji coba gratis, dan itu memang disengaja: rak tiga dokumen <em>itulah</em> uji cobanya, tidak kedaluwarsa dan tidak menagih di kemudian hari. Harga yang tercantum adalah harga Spanyol; di toko di perangkatmu, angkanya akan tampil dalam mata uangmu.",
+    "cuerda_donde": "Langganannya ada di dalam aplikasi, di ruang belakang.",
+    "solo_ios": "Di komputer dan Android, semua fitur terbuka: langganan hanya ada di iPhone dan iPad.",
+    "comparacion_titulo": "Yang dipungut pesaing.",
+    "comparacion_entradilla": "Aplikasi suara berbasis cloud membayar server setiap kali kamu menekan play, makanya mereka menagih per jam atau per karakter. Yappy menyintesis suara langsung di perangkatmu, jadi biaya per pemutaran nol — dan karena itu Yappy bisa memilih untuk tidak menagih.",
+    "comparacion_nota": "Harga resmi yang dicek pada September 2026. Angkanya sering berubah: cek situs masing-masing sebelum memutuskan.",
+    "faq": [
+      {
+        "q": "Kenapa gratis?",
+        "a": "Karena tidak ada server yang harus dibayar. Suara disintesis di perangkatmu, jadi mendengarkan tidak mengeluarkan uang siapa pun dan tidak ada tagihan untuk dibagi. Aplikasi suara berbasis cloud membayar mesin setiap kali kamu menekan play, makanya mereka menagih per karakter atau per jam. Yappy tidak mungkin menagihmu untuk sesuatu yang tidak membebannya."
+      },
+      {
+        "q": "Bagaimana kalau tidak pernah membayar?",
+        "a": "Tidak terjadi apa-apa. Yappy tetap berjalan selamanya, dengan sepuluh suara, 31 bahasa, dan semua format — tanpa iklan, tanpa akun, tanpa penghitung menit. Satu-satunya perbedaan: di iPhone dan iPad, rak hanya memuat tiga dokumen sekaligus; keluarkan satu, masuk yang lain. Di komputer, batasan itu pun tidak ada."
+      },
+      {
+        "q": "Apakah ada uji coba gratis?",
+        "a": "Tidak, dan itu keputusan, bukan kelalaian. Rak tiga dokumen <em>itulah</em> uji cobanya: tidak kedaluwarsa, tidak meminta kartu kredit, dan tidak mulai menagih pada hari kedelapan. Tidak seorang pun seharusnya terbangun dengan tagihan yang tak diingat pernah disetujuinya."
+      },
+      {
+        "q": "Apakah saya bisa berhenti berlangganan kapan saja?",
+        "a": "Ya, lewat akun Apple-mu, seperti langganan lain pada umumnya. Semua diperpanjang otomatis di akhir setiap periode, kecuali kamu membatalkannya setidaknya 24 jam sebelumnya. Pembelian seumur hidup tidak pernah diperpanjang: dibayar sekali, selesai. Dan kalau kamu berhenti, tidak ada bagian gratis yang hilang: kamu kembali ke tenggeran tiga dokumen."
+      },
+      {
+        "q": "Mengapa versi komputer dan Android tidak berbayar?",
+        "a": "Karena mesin pembayarnya hanya terpasang di iPhone dan iPad. Di komputer, dan di versi Android begitu dirilis nanti, percetakan buku audio, tenggeran tanpa dasar, dan jembatan ke komputer sudah terbuka sejak awal. Ini bukan promo peluncuran: di sana memang tidak ada yang bisa ditagih."
+      }
+    ],
+    "una_a_una": "satu per satu, beserta datanya"
+  },
+  "voces": {
+    "title": "Suara-suara Yappy: sepuluh burung poliglot dalam 31 bahasa",
+    "description": "Sepuluh suara natural yang mengucapkan 31 bahasa tanpa berubah warna suara. Dengarkan contoh masing-masing dan pilih punyamu: suara yang kamu pilih mewarnai seluruh aplikasi.",
+    "h1": "Sepuluh burung, tiga puluh satu bahasa.",
+    "entradilla": "Semuanya poliglot: suara yang sama membaca bahasa Spanyol, Inggris, atau Jepang tanpa berubah warna suara. Dan teks yang berisi kutipan dalam bahasa lain berpindah bahasa dengan sendirinya, paragraf demi paragraf.",
+    "elige": "Ketuk seekor burung, ia akan memperdengarkan suaranya.",
+    "idiomas_titulo": "Bahasa yang dikuasainya.",
+    "idiomas_entradilla": "Tiga puluh satu, masing-masing dengan penulis naskahnya sendiri: ini bukan satu suara yang membaca dengan logat, melainkan setiap bahasa dengan aturannya sendiri."
+  },
+  "preguntas": {
+    "title": "Pertanyaan tentang Yappy: privasi, bahasa, harga, dan lisensi",
+    "description": "Jawaban lugas soal apa yang gratis, apa yang menyentuh internet, model apa yang dipakai Yappy, format apa saja yang diterima, dan apa yang harus dilakukan saat ada yang bermasalah.",
+    "h1": "Pertanyaan yang datang.",
+    "entradilla": "Dijawab lugas, tanpa berputar-putar.",
+    "grupos": [
+      {
+        "susurro": "uang dan kebebasan",
+        "titulo": "Gratis, sungguhan.",
+        "lista": [
+          {
+            "q": "Benarkah gratis?",
+            "a": "Ya. Yappy adalah kode terbuka dengan lisensi MIT. Bisa mendengarkan apa yang kita baca adalah soal aksesibilitas, dan alat aksesibilitas tidak seharusnya meminta kartu kredit. Di komputer tidak ada versi berbayar atau iklan. Di iPhone, beo uji coba membawa tiga dokumen sekaligus di tenggerannya, tanpa batas waktu. Kalau kamu mau tenggeran tanpa dasar, percetakan buku audio, dan jembatan ke komputer, bayar lewat Yappy Parlanchín: langganan, atau sekali bayar seumur hidup. Apa pun pilihanmu, tanpa akun dan tanpa iklan."
+          },
+          {
+            "q": "Apa triknya? Bagaimana pendanaannya?",
+            "a": "Tidak ada trik: tidak ada server yang harus dibayar. Sintesisnya berjalan di perangkatmu, jadi Yappy tidak punya biaya per pengguna. Ini proyek pribadi pembuatnya, dirilis karena memang sudah ada, dan siapa tahu berguna buat orang lain."
+          },
+          {
+            "q": "Ada uji coba gratis?",
+            "a": "Tidak, memang disengaja. Tenggeran tiga dokumen itulah uji cobanya, dan tidak kedaluwarsa atau berubah jadi tagihan di hari ketujuh. Kalau Yappy memang berguna buatmu, kamu akan tahu sendiri, tanpa ada yang menyodorkan jam."
+          },
+          {
+            "q": "Bolehkah audio yang saya hasilkan saya terbitkan, di podcast atau di video?",
+            "a": "Kode Yappy berlisensi MIT dan tidak menuntut apa pun darimu. Model suaranya, Supertonic 3, punya lisensi sendiri: lisensi terbuka jenis OpenRAIL-M, dengan klausul penggunaan. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Cek di halaman modelnya</a> sebelum dipakai secara komersial, karena bagian itu bukan urusan Yappy dan kami tidak bisa berjanji atas namanya."
+          }
+        ]
+      },
+      {
+        "susurro": "teks kamu tidak bepergian",
+        "titulo": "Privasi, dengan nama lengkap.",
+        "lista": [
+          {
+            "q": "Apakah teks saya dikirim ke server mana pun?",
+            "a": "Tidak. Sintesis, transkripsi, dan pengambilan artikel semuanya terjadi di dalam perangkat kamu. Apa yang kamu bagikan ke Yappy tidak dikirim ke mana pun: tidak ada akun, tidak ada salinan, dan tidak ada server Yappy tempat semuanya bisa disimpan. Yang benar-benar menyentuh jaringan hanya empat hal konkret, dan semuanya sudah diceritakan di kebijakan privasi."
+          },
+          {
+            "q": "Apakah Yappy mengumpulkan statistik penggunaan?",
+            "a": "Ya, dikumpulkan, dan ini perlu dikatakan tanpa basa-basi. Aplikasi ponsel mengirim statistik penggunaan anonim: aktif bawaan pabrik, dan bisa dimatikan di pengaturan. Yang dikirim hanyalah nama satu peristiwa dari daftar tertutup (aplikasi dibuka, langkah mana dari perkenalan awal yang sedang dilihat, paket mana yang disentuh, apakah satu sesi bacaan selesai), satu pengenal acak untuk instalasi, bahasa, dan versi. Tidak pernah nama kamu, alamat email kamu, teks yang kamu baca, judul dokumen, atau tautan, dan tanpa pengenal iklan apa pun. Dan semuanya tidak masuk ke Google, bukan ke Firebase, bukan ke perusahaan analitik mana pun: hanya ke Worker dan basis data D1 Cloudflare milik penulisnya sendiri. Di desktop tidak ada statistik apa pun."
+          },
+          {
+            "q": "Lalu, bagaimana dengan jembatan antara ponsel dan komputer?",
+            "a": "Ini koneksi langsung antara dua perangkat kamu, dengan enkripsi ujung ke ujung lewat QUIC, memakai protokol <a href=\"https://iroh.computer\">iroh</a>. Pemasangan dilakukan dengan mengarahkan kamera ke kode QR yang ditampilkan komputer kamu, dan kunci yang dihasilkan bisa dicabut dari sana kapan saja. Tidak ada server Yappy di tengah, karena memang tidak ada server Yappy."
+          },
+          {
+            "q": "Apakah bisa dipakai tanpa koneksi?",
+            "a": "Ya, selamanya. Setelah unduhan awal model — sekitar 200 MB di ponsel, sekitar 398 MB di komputer — kamu bisa memakai Yappy dalam mode pesawat: menempel teks, membuka dokumen, menyintesis, dan mengekspor. Hanya membagikan tautan baru yang butuh jaringan, dengan alasan yang jelas. Tidak ada juga sinkronisasi cloud: pustaka kamu tinggal di perangkat kamu, dan jembatan adalah hal yang paling dekat dengan memindahkan sesuatu dari satu mesin ke mesin lain."
+          }
+        ]
+      },
+      {
+        "susurro": "yang terdengar",
+        "titulo": "Suara dan bahasa.",
+        "lista": [
+          {
+            "q": "Model suara apa yang dipakai?",
+            "a": "Supertonic 3, model terbuka dari Supertone dengan sekitar 99 juta parameter, muat dalam 398 MB di komputer dan 200 MB di ponsel, dan menyintesis lebih cepat dari waktu nyata di laptop mana pun dari beberapa tahun terakhir. Bekerja di tingkat karakter: karena itulah ada penyusun naskah, yang mengubah angka, singkatan, dan simbol menjadi kata sebelum suara melihatnya."
+          },
+          {
+            "q": "Bahasa apa saja yang didukung?",
+            "a": "Jerman, Arab, Bulgaria, Ceko, Korea, Kroasia, Denmark, Slovakia, Slovenia, Spanyol, Estonia, Finlandia, Prancis, Yunani, Hindi, Hongaria, Indonesia, Inggris, Italia, Jepang, Latvia, Lituania, Belanda, Polandia, Portugis, Rumania, Rusia, Swedia, Turki, Ukraina, dan Vietnam. Tiga puluh satu. Dan kesepuluh suaranya poliglot: suara yang sama membacanya semua tanpa mengubah warna suara."
+          },
+          {
+            "q": "Bagaimana dengan dokumen yang mencampur beberapa bahasa?",
+            "a": "Yappy mendeteksi bahasa dokumen, dan paragraf demi paragraf, bahasa tiap bagiannya: kutipan berbahasa Inggris di dalam esai berbahasa Spanyol dibaca dalam bahasa Inggris, dengan suara yang sama, tanpa kamu menyentuh apa pun. Dan kalau deteksinya keliru, kamu bisa mengatur bahasa secara manual."
+          },
+          {
+            "q": "Apa bedanya dengan VoiceOver atau \"Baca Layar\"?",
+            "a": "Pembaca layar dari sistem membaca layar apa adanya, dengan prosodi bawaan sistem dan tanpa ingatan. Yappy menyiapkan teks sebelum mengucapkannya (membersihkan artikel, mengubah angka dan singkatan menjadi kata, menandai jeda), membacanya dengan suara yang natural, mengingat kamu tadi berhenti di mana, mengekspor buku audio, dan tetap berbunyi saat layar terkunci. Keduanya saudara, dengan tugas masing-masing, dan bisa dipakai bersamaan tanpa saling mengganggu: Yappy tidak menggantikan pembaca layar, dan tidak berniat begitu."
+          }
+        ]
+      },
+      {
+        "susurro": "yang masuk",
+        "titulo": "Dokumen.",
+        "lista": [
+          {
+            "q": "Format apa saja yang diterima?",
+            "a": "Artikel web (halamannya membersihkan diri sendiri), video lewat transkrip yang sudah dipublikasikan, PDF, EPUB, Word, ODT, RTF, Markdown, teks biasa, .pptx, .xlsx, .csv, dan catatan suara. Di ponsel, semuanya lewat lembar bagikan; di desktop, bisa juga dengan menyeret berkas atau memakai pintasan. Dan jika di komputer kamu terpasang pandoc, daftarnya bertambah: LaTeX, reStructuredText, Org, dan beberapa lainnya."
+          },
+          {
+            "q": "Dan PDF hasil pindai, yang tidak punya teks di dalamnya?",
+            "a": "Di desktop, mereka melewati OCR lokal sebelum dibaca, dan juga di situ tidak ada apa pun yang keluar dari komputer kamu. Di iPhone, belum bisa: kalau PDF-nya cuma foto dari kertas, ponsel tidak menemukan teks untuk dibaca. Pindaian yang miring atau buram akan memberi apa yang bisa diberikan OCR mana pun, tetapi yang cukup rapi terbaca utuh."
+          },
+          {
+            "q": "Apakah bisa membaca buku yang saya beli di toko?",
+            "a": "Hanya yang bisa kamu buka. EPUB tanpa proteksi dibaca utuh, lengkap dengan bab-babnya. Buku ber-DRM dari toko tidak bisa dibaca, di sini maupun di mana pun: gemboknya bukan milik Yappy, dan kami tidak akan pura-pura punya kuncinya."
+          },
+          {
+            "q": "Bagaimana cara menghapus sesuatu dari pustaka?",
+            "a": "Dari pustakanya sendiri: setiap dokumen punya opsi lupa, dan audionya ikut pergi. File hasil ekspor (.m4b, .mp3, .wav) milikmu dan tinggal di tempat kamu menyimpannya; menghapus atau memindahkannya urusan Finder atau Files."
+          }
+        ]
+      },
+      {
+        "susurro": "saat ada yang tidak beres",
+        "titulo": "Masalah dan bantuan.",
+        "lista": [
+          {
+            "q": "Mengapa sintesis pertama butuh beberapa detik lebih lama?",
+            "a": "Model perlu dimuat ke memori saat pertama kali. Setelah itu ia tetap hangat, dan kalimat-kalimat berikutnya keluar seketika. Kalau kamu baru memasang aplikasi di komputer, penantian pertama juga mencakup pengunduhan model suara."
+          },
+          {
+            "q": "Ada kata yang diucapkan salah. Bisakah diajari?",
+            "a": "Tidak ada kamus pelafalan untuk pengguna, jadi jalan pintasnya adalah menulis kata itu sesuai bunyinya di editor: model membaca karakter dan akan menurut. Kalau ini pola umum (singkatan kata, akronim, satuan), ceritakan di <a href=\"https://github.com/joseluissaorin/yappy/issues\">laman isu GitHub</a>: tabel di modul pengolah teks bertambah berkat kasus seperti itu."
+          },
+          {
+            "q": "Saya membagikan sebuah video, tapi tidak ada suara apa pun.",
+            "a": "Yappy memakai transkrip video yang sudah dipublikasikan, bukan mentranskripsi audionya. Kalau video itu tidak punya transkrip, tidak ada yang bisa dibacakan. Dan kalau videonya milikmu serta tersimpan sebagai file, bagikan saja file-nya: barulah pendengar lokal bisa mentranskripsinya."
+          },
+          {
+            "q": "Saya menemukan masalah. Ke mana harus melapor?",
+            "a": "Di <a href=\"https://github.com/joseluissaorin/yappy/issues\">laman isu GitHub</a>, atau kirim email ke <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Dengan teks yang bermasalah (kalau boleh dibagikan) dan sistem yang kamu pakai, masalah selesai lebih cepat."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Privasi Yappy: teks kamu tidak pergi ke mana-mana",
+    "description": "Apa yang keluar dan tidak keluar dari perangkatmu, dijelaskan terus terang: sintesis, transkripsi, dan pengambilan artikel terjadi di dalam; yang menyentuh jaringan hanya empat kasus, dan keempatnya kami ceritakan semua.",
+    "h1": "Teks kamu tidak pergi ke mana-mana.",
+    "actualizado": "Pembaruan terakhir: {fecha}. Penanggung jawab: José Luis Saorín Ferrer, Tenerife (Spanyol).",
+    "bloques": [
+      {
+        "titulo": "Tentang apa ini",
+        "texto": "Ini kebijakan privasi Yappy: aplikasi untuk iPhone, iPad, Mac, Windows, dan Linux, lengkap dengan widget dan ekstensinya. Pendek saja karena memang sedikit yang perlu diceritakan. Yappy tidak punya akun, tidak minta nama maupun email kamu, dan apa yang kamu berikan untuk dibaca tidak keluar dari perangkatmu. Yang benar-benar menyentuh jaringan hanya empat hal konkret, dan keempatnya ada di sini, satu per satu."
+      },
+      {
+        "titulo": "Tanpa akun, tanpa nama, tanpa teks",
+        "texto": "Yappy tidak punya pendaftaran maupun proses masuk. Kami tidak mengumpulkan nama, email, kontak, lokasi, atau pengenal iklan apa pun darimu. Artikel, PDF, EPUB, dokumen, catatan suara, dan teks yang kamu bagikan ke aplikasi diubah menjadi suara <strong>di dalam perangkatmu</strong>: sintesis, transkripsi, dan pembersihan halaman terjadi secara lokal dan tidak dikirim ke server kami maupun pihak ketiga. Tidak ada sinkronisasi awan juga: pustaka, progres, dan audiobookmu hidup di perangkatmu dan hilang saat aplikasinya dihapus."
+      },
+      {
+        "titulo": "Menyentuh jaringan (1): pengunduhan suara",
+        "texto": "Pertama kali, Yappy mengunduh model suara (sekitar 200 MB di ponsel, sekitar 398 MB di komputer) dari <code>modelos.yappy.joseluissaorin.com</code>, sebuah bucket R2 milik Cloudflare. Seperti pengunduhan apa pun, server melihat alamat IP-mu selama permintaan berlangsung. Kami tidak menyimpan catatan yang mengidentifikasimu. Setelah pengunduhan itu, sintesis bekerja dalam mode pesawat selamanya."
+      },
+      {
+        "titulo": "Menyentuh jaringan (2): tautan yang kamu bagikan",
+        "texto": "Kalau kamu membagikan tautan atau video, perangkatmu sendiri yang membuka alamat itu untuk mengambil teks atau transkripsinya, persis seperti yang dilakukan browser. Kunjungan itu dilakukan perangkatmu, bukan server Yappy, dan situs yang dikunjungi hanya menerima apa yang akan diterimanya dari sebuah browser: alamat IP dan jenis perangkatmu. Tidak ada riwayat yang disimpan di luar perangkatmu."
+      },
+      {
+        "titulo": "Menyentuh jaringan (3): statistik anonim",
+        "texto": "Ini perlu dijelaskan terus terang: <strong>ada analitik</strong>, hanya di aplikasi ponsel, dan sudah aktif secara bawaan. Bisa dimatikan kapan saja di pengaturan, di menu \"Statistik Anonim\". Yang dikirim hanyalah nama sebuah event dari daftar tertutup (aplikasi dibuka, tahap mana dari pengenalan awal yang sedang dilihat, paket mana yang disentuh, apakah sebuah pembacaan selesai), pengenal acak dari instalasi, bahasa aplikasi, dan versinya. <strong>Tidak pernah</strong> nama, email, teks yang dibaca, judul dokumen, tautan, atau pengenal iklan. Tidak ke Google Analytics, tidak ke Firebase, tidak ke perusahaan analitik mana pun: semuanya masuk ke Worker dan basis data D1 Cloudflare milik penulisnya sendiri, untuk mengetahui bagian mana dari aplikasi yang benar-benar dipakai dan mana yang bisa dibuang. Di desktop tidak ada statistik sama sekali."
+      },
+      {
+        "titulo": "Menyentuh jaringan (4): pembelian",
+        "texto": "Langganan dan pembelian seumur hidup Yappy Parlanchín ditangani Apple melalui App Store, dan hanya ada di iPhone dan iPad. Untuk memeriksa apakah langgananmu masih aktif, aplikasi memakai <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, sebuah pengelola langganan yang menerima pengenal anonim dari instalasi dan tanda terima dari Apple; tidak menerima nama atau emailmu. Apple menjelaskan datanya sendiri di <a href=\"https://www.apple.com/legal/privacy/\">kebijakan privasinya</a>."
+      },
+      {
+        "titulo": "Jembatan: dari iPhone ke komputer, dan sebaliknya",
+        "texto": "Kalau kamu memasangkan Yappy dengan Mac atau PC, dokumen yang dikirim untuk dikonversi melintas melalui koneksi langsung dan terenkripsi ujung ke ujung antara kedua perangkat, dengan pustaka <a href=\"https://iroh.computer\">iroh</a> di atas QUIC. Agar bisa saling menemukan, keduanya bisa bertumpu pada server relai, yang hanya melihat lalu lintas terenkripsi yang tidak bisa mereka baca. Yappy tidak punya server perantara yang menyimpan apa pun, karena memang tidak punya server."
+      },
+      {
+        "titulo": "Anak di bawah umur dan izin",
+        "texto": "Yappy tidak ditujukan untuk anak di bawah 13 tahun, dan tidak mengumpulkan data pribadi siapa pun, apa pun usianya. Izin yang diminta dari sistem hanya dipakai untuk tindakan itu, saat itu juga: papan klip saat menempel, kamera saat memindai QR jembatan, mikrofon di desktop saat mendikte. Tidak ada satu pun yang dipakai di latar belakang."
+      },
+      {
+        "titulo": "Hak kamu dan ke mana harus menulis",
+        "texto": "Karena kami tidak menyimpan data pribadi, tidak ada yang perlu diekspor atau dihapus di server kami: semua yang Yappy tahu tentang kamu hidup di perangkatmu dan hilang saat aplikasinya dihapus. Kalau kamu ingin kami berhenti menerima bahkan statistik anonim sekalipun, itu bisa dimatikan dari aplikasinya sendiri. Untuk pertanyaan apa pun, tulis ke <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> atau buka issue di <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a>. Kodenya terbuka, dengan lisensi MIT: semua hal di atas bisa dibuktikan dengan membacanya."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy untuk disleksia, ADHD, dan penglihatan rendah: mendengarkan yang tak bisa dibaca",
+    "description": "Alat text to speech yang tidak minta akun, tidak menagih per jam, dan bekerja tanpa koneksi internet. Untuk disleksia, ADHD, mata lelah, penglihatan rendah, dan untuk siapa saja yang membaca lebih baik dengan telinga.",
+    "h1": "Membaca dengan telinga.",
+    "entradilla": "Bisa mendengarkan apa yang dibaca itu soal aksesibilitas, dan alat aksesibilitas seharusnya tidak minta kartu kredit. Yappy tidak memintanya, tidak punya penghitung menit, dan tetap bekerja di dalam pesawat.",
+    "voiceover_titulo": "Yappy bukan pengganti VoiceOver",
+    "voiceover_texto": "Keduanya satu keluarga, tapi tugasnya beda. Screen reader menarasikan antarmuka supaya bisa dioperasikan; Yappy membaca isinya supaya bisa dinikmati. Dipakai bersamaan, keduanya tidak saling mengganggu.",
+    "casos": [
+      {
+        "titulo": "Disleksia",
+        "texto": "Membaca huruf demi huruf melelahkan, dan rasa lelah itu memangsa pemahaman jauh lebih dulu daripada waktu. Mendengarkan teks sementara teksnya menyala di layar membuat membaca dan mendengar terjadi bersamaan: mata mengikuti baris, telinga yang mengerjakan bagian berat. Yappy tidak menyembuhkan apa pun, tapi menyingkirkan dari tengah jalan bagian yang melelahkan."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "Halaman yang diam itu mengundang untuk pergi. Suara yang terus berjalan menjaga ritme dan menarik kembali ke paragraf saat pikiran sudah pergi jalan-jalan. Dan karena bisa didengarkan sambil berjalan atau sambil tangan sibuk, membaca tidak lagi menuntut untuk diam di tempat: bagi banyak orang, itu saja sudah seluruh perbedaannya."
+      },
+      {
+        "titulo": "Penglihatan rendah dan kelelahan mata",
+        "texto": "Saat huruf kecil bukan lagi pilihan, atau saat pukul tujuh malam mata sudah menyelesaikan jam kerjanya, teks tetap tersedia lewat telinga. Yappy membaca PDF, email, atau artikel utuh, dengan layar mati kalau perlu, dari layar kunci atau dari earphone."
+      },
+      {
+        "titulo": "Belajar bahasa",
+        "texto": "Mendengar sambil membaca adalah cara paling tua dan paling ampuh untuk belajar pelafalan. Kesepuluh suara ini poliglot dan membaca 31 bahasa dengan aturan masing-masing, sehingga teks berbahasa Jerman terdengar seperti bahasa Jerman, bukan bahasa Jerman dengan logat Inggris. Di 0,75×, tiap suku kata terdengar jelas; di 1,5×, telinga ikut dilatih."
+      },
+      {
+        "titulo": "Koreksi tulisanmu",
+        "texto": "Kalimat yang tidak sanggup diucapkan dengan suara keras juga tidak akan kuat saat tertulis. Mendengarkan teks sendiri akan membongkar pengulangan, koma yang salah tempat, dan sisipan yang tak kunjung selesai. Inilah koreksi yang dulu dikerjakan di percetakan, dan di sini gratis: buka .docx-nya, tekan play, lalu dengarkan apa yang benar-benar kamu tulis—bukan apa yang kamu kira sudah kamu tulis."
+      },
+      {
+        "titulo": "Belajar dengan telinga",
+        "texto": "Catatan kuliah, bab yang masuk ujian, artikel setebal dua ratus halaman. Kirim semuanya ke percetakan sebelum tidur; pagi harinya sudah jadi audiobook berbabul untuk didengarkan di bus. Fitur lanjut mengingat paragraf tepat di mana kamu berhenti: untuk melanjutkan, tidak perlu mencari apa-apa."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Apakah ini berfungsi saat VoiceOver atau TalkBack aktif?",
+        "a": "Ya, dan keduanya tidak saling mengganggu. Pembaca layar menarasikan antarmuka supaya bisa dioperasikan; Yappy membaca isinya supaya bisa dinikmati. Keduanya dipakai bersamaan: VoiceOver mengantarmu sampai ke tombol putar, dan dari situ suara Yappy yang membaca bukunya."
+      },
+      {
+        "q": "Bisakah dipakai tanpa melihat layar?",
+        "a": "Ya. Di iPhone ada pintasan Siri (\"Hei Siri, baca papan klip saya dengan Yappy\"), tombol tindakan, kontrol di layar kunci, dan kontrol di earphone. Di komputer, tiga pintasan papan ketik membaca teks terseleksi, papan klip, atau menjeda, dengan aplikasi tersembunyi di baki sistem."
+      },
+      {
+        "q": "Bisakah ia membaca PDF pelajaran dan buku yang sudah saya punya?",
+        "a": "PDF, EPUB, Word, atau ODT apa pun yang bisa kamu buka. Kalau PDF-nya hasil pindai tanpa teks, versi desktop menjalankannya lewat OCR lokal dulu sebelum membacanya; di ponsel fitur itu belum ada. Buku ber-DRM dari toko tidak bisa dibaca di mana pun, dan di sini juga tidak."
+      },
+      {
+        "q": "Berapa biaya pakainya sehari-hari?",
+        "a": "Gratis. Tidak ada penghitung menit atau karakter, tidak ada iklan, dan tidak perlu buat akun. Bisa didengarkan delapan jam sehari selama bertahun-tahun tanpa keluar sepeser pun, dan tanpa koneksi. Paket berbayar hanya menambah gantungan tanpa dasar, percetakan, dan jembatan—dan hanya di iPhone dan iPad."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Cerita untuk si Beo: teks domain publik untuk mencoba Yappy",
+    "description": "Cerita lengkap yang sudah masuk domain publik, siap dibagikan ke Yappy dan didengarkan sampai tuntas. Tanpa perlu mendaftar, tanpa perlu mengunduh apa pun.",
+    "h1": "Cerita untuk si Beo.",
+    "entradilla": "Teks utuh, domain publik. Bagikan halaman ini ke Yappy, dan si beo akan membacakannya untukmu.",
+    "dominio_publico": "Domain publik."
+  },
+  "blog": {
+    "title": "Blog Yappy: mendengarkan yang tertulis",
+    "description": "Cara mengubah PDF menjadi audio, mengapa pembaca teks seharusnya bisa berjalan tanpa koneksi, bagaimana angka-angka diucapkan dengan lantang, dan apa yang kami pelajari dari membuat aplikasi yang bisa bicara.",
+    "h1": "Mendengarkan yang tertulis.",
+    "entradilla": "Keahlian, trik, dan sedikit sejarah tentang membaca nyaring. Setiap artikel bisa didengarkan langsung di sini, dibacakan suara Yappy sendiri.",
+    "escuchame": "Dengarkan artikel ini",
+    "escuchame_nota": "Dibacakan Yappy, dengan suara {voz}, di browser kamu.",
+    "vacio": "Belum ada artikel dalam bahasa ini."
+  },
+  "convertir": {
+    "title": "Ubah teks apa pun jadi suara (text to speech): PDF, EPUB, Word, artikel, dan video",
+    "description": "Enam cara mengubah bacaanmu jadi suara natural, semuanya di perangkatmu sendiri: PDF, EPUB, Word, artikel internet, video, dan rekaman suara.",
+    "h1": "Konversi",
+    "entradilla": "Tidak masalah bentuknya: artikel, buku, dokumen, atau rekaman. Yappy mengubahnya jadi naskah bacaan dan membacakannya dengan suara keras, tanpa file itu pernah keluar dari perangkatmu.",
+    "pasos_titulo": "Tiga langkah.",
+    "faq_titulo": "Pertanyaan soal ini",
+    "otros_titulo": "Hal lain yang juga dibacakan",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "Konversi PDF ke audio: dengarkan PDF dibacakan, gratis",
+        "description": "Ubah PDF apa pun jadi suara natural, dengarkan sambil mengerjakan hal lain, atau simpan sebagai buku audio dengan bab. Tanpa diunggah ke cloud mana pun, tanpa batas halaman.",
+        "h1": "Dengarkan PDF-mu.",
+        "entradilla": "Artikel ilmiah, manual, catatan kuliah, kontrak. Yappy membuka PDF-nya, membuang header dan nomor halaman yang berulang, menemukan bab-babnya, lalu membacanya sampai habis dengan suara natural. File-nya tidak keluar dari perangkatmu.",
+        "pasos": [
+          {
+            "titulo": "Bagikan PDF",
+            "texto": "Dari File, email, atau Safari: ketuk Bagikan dan pilih Yappy. Di komputer, seret saja ke jendela."
+          },
+          {
+            "titulo": "Pilih suara",
+            "texto": "Sepuluh suara, 31 bahasa. Kalau PDF-nya dalam bahasa lain, Yappy mengenalinya sendiri."
+          },
+          {
+            "titulo": "Dengarkan atau simpan",
+            "texto": "Tekan play, atau titipkan ke percetakan dan kamu akan punya buku audio dengan bab."
+          }
+        ],
+        "extra_titulo": "PDF hasil pindai",
+        "extra_texto": "Kalau PDF-nya foto kertas tanpa teks di dalamnya, versi desktop melewatkannya lewat OCR lokal dulu sebelum membacanya. Di iPhone belum bisa.",
+        "faq": [
+          {
+            "q": "Ada batas halaman?",
+            "a": "Tidak. Artikel tiga halaman atau tesis empat ratus halaman: PDF-nya diproses utuh dan dibaca utuh. Karena semuanya terjadi di perangkatmu, tidak ada kuota karakter yang harus dihemat dan tidak ada tagihan yang membengkak di tengah bab tujuh."
+          },
+          {
+            "q": "Bagaimana kalau PDF-nya hasil pindai tanpa teks?",
+            "a": "Versi desktop melewatkannya lewat OCR lokal dulu sebelum membacanya, dan di situ pun tidak ada yang keluar dari komputermu. Di iPhone belum bisa: kalau PDF-nya foto kertas, ponsel tidak menemukan teks untuk dibaca."
+          },
+          {
+            "q": "Apakah header dan nomor halaman dibuang?",
+            "a": "Iya. Yappy mendeteksi apa yang berulang di semua halaman (header, footer, nomor halaman, nama jurnal) dan membuangnya dari naskah. Tidak ada yang merusak bacaan seperti mendengar \"Bab 3, halaman 47\" setiap satu setengah menit."
+          },
+          {
+            "q": "Bisakah saya mendengarkan satu bab saja?",
+            "a": "Bisa. Yappy mencari judul asli dalam dokumen dan menyusunnya menjadi daftar isi yang bisa dinavigasi. Dari perpustakaan, kamu pilih bab mana yang ingin didengarkan atau dikirim ke percetakan, dan audiobooknya keluar dengan bab-bab itu."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "Mengubah EPUB menjadi audiobook: bukumu, dibacakan dengan suara",
+        "description": "Ubah EPUB menjadi audiobook dengan bab sungguhan, dibuat di perangkatmu sendiri. Tanpa langganan per jam, tanpa mengunggah buku ke server mana pun.",
+        "h1": "EPUB-mu, jadi audiobook.",
+        "entradilla": "Buku-buku yang sudah kamu punya, lengkap dengan bab-babnya, dibacakan dengan suara alami. Jalankan rendernya sebelum tidur; besok pagi sudah ada di perpustakaanmu, sebagai berkas .m4b yang terbuka di pemutar apa pun.",
+        "pasos": [
+          {
+            "titulo": "Bagikan EPUB-nya",
+            "texto": "Dari File atau dari lokasi mana pun kamu menyimpannya. Bab-babnya sudah dikenali begitu masuk."
+          },
+          {
+            "titulo": "Pesan di percetakan",
+            "texto": "Kamu pilih bab, suara, dan kecepatannya. Si beo mencetaknya meski aplikasinya sudah ditutup."
+          },
+          {
+            "titulo": "Dengarkan di mana saja",
+            "texto": "Hasilnya tersimpan di perpustakaan sebagai .m4b dengan penanda; dari sana kamu membagikannya ke File, ke Buku, atau ke mana pun."
+          }
+        ],
+        "extra_titulo": "Buku dengan DRM",
+        "extra_texto": "Yappy membaca EPUB yang bisa kamu buka. Buku yang dikunci DRM dari sebuah toko tidak bisa dibaca — bukan di sini, bukan juga di tempat lain.",
+        "faq": [
+          {
+            "q": "Apakah bab-bab bukunya tetap terjaga?",
+            "a": "Ya, dan ini bab sungguhan, bukan penanda tiap sepuluh menit: semuanya diambil dari daftar isi EPUB itu sendiri. Berkas .m4b hasilnya bisa dinavigasi bab demi bab di pemutar audiobook mana pun, lengkap dengan sampul dan posisi terakhir yang diingat."
+          },
+          {
+            "q": "Berapa lama untuk satu buku utuh?",
+            "a": "Tergantung perangkat dan ukuran bukunya, tapi jawaban praktisnya: mulai sebelum tidur, dan besok pagi sudah beres. Kalau kamu punya jembatannya, komputermu menyintesis bukunya jauh lebih cepat dan mengirimkannya balik ke ponsel dalam keadaan selesai."
+          },
+          {
+            "q": "Bagaimana dengan buku yang dilindungi DRM?",
+            "a": "Yappy membaca EPUB yang bisa kamu buka. Buku yang dikunci DRM dari sebuah toko tidak bisa dibaca — bukan di sini, bukan juga di tempat lain: gemboknya bukan milik kami."
+          },
+          {
+            "q": "Di mana audiobooknya disimpan?",
+            "a": "Di perpustakaan Yappy, sebagai berkas .m4b sungguhan. Dari sana kamu membagikannya ke File, ke Buku, atau ke pemutar yang sudah kamu pakai. Berkasnya milikmu: kalau aplikasinya dihapus, yang sudah kamu ekspor tetap ada di tempat kamu menyimpannya."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Mendengarkan file Word dibacakan: DOCX, ODT, dan RTF jadi audio",
+        "description": "Mengubah dokumen Word, LibreOffice, dan teks biasa menjadi suara natural agar bisa dikoreksi lewat telinga. Semua terjadi di komputer atau ponsel Anda.",
+        "h1": "Koreksi dengan telinga.",
+        "entradilla": "Mendengarkan tulisan sendiri adalah koreksi terbaik yang ada: kalimat yang tak sanggup diucapkan lantang juga tak akan bertahan saat tertulis. Yappy membaca .docx, .odt, .rtf, .txt, dan Markdown, lengkap dengan judul dan ritmenya.",
+        "pasos": [
+          {
+            "titulo": "Buka dokumennya",
+            "texto": "Seret ke jendela komputer, atau bagikan dari ponsel."
+          },
+          {
+            "titulo": "Dengarkan paragraf demi paragraf",
+            "texto": "Teks menyala mengikuti suaranya; ketuk di mana saja untuk melompat."
+          },
+          {
+            "titulo": "Perbaiki yang terdengar canggung",
+            "texto": "Lalu dengarkan lagi. Di komputer, tiap paragraf bisa punya suara dan kecepatan masing-masing."
+          }
+        ],
+        "extra_titulo": "Termasuk spreadsheet dan presentasi",
+        "extra_texto": "Membaca .pptx, .xlsx, dan .csv. Di komputer, begitu pandoc terpasang, daftarnya bertambah: LaTeX, reStructuredText, Org, dan beberapa lagi.",
+        "faq": [
+          {
+            "q": "Format teks apa saja yang bisa dibaca?",
+            "a": ".docx, .odt, .rtf, .txt, dan Markdown, ditambah .pptx, .xlsx, dan .csv. Di komputer, begitu pandoc terpasang, daftarnya bertambah: LaTeX, reStructuredText, Org, dan beberapa lagi."
+          },
+          {
+            "q": "Apakah catatan kaki dan tabel juga ikut dibacakan?",
+            "a": "Isi dokumen dibaca utuh dengan judul dan urutannya. Tabel dibacakan baris demi baris, karena memang hanya itu yang bisa dilakukan pada tabel kalau dibaca nyaring, dan catatan kaki muncul di akhir bagiannya, bukan menyela kalimat di tengah."
+          },
+          {
+            "q": "Bisakah setiap paragraf diberi suara yang berbeda?",
+            "a": "Di komputer, bisa: editor per paragraf memungkinkan Anda menetapkan suara, kecepatan, dan jeda untuk masing-masing. Itu yang membuat dialog, wawancara, atau dokumen dwibahasa tetap enak didengarkan."
+          },
+          {
+            "q": "Apakah ini benar-benar berguna untuk mengoreksi tulisan?",
+            "a": "Ini koreksi terbaik yang ada. Telinga membongkar apa yang dimaafkan mata: kata yang terulang tiga baris di atasnya, anak kalimat yang tak kunjung selesai, sisipan yang menelan kata kerja. Turunkan kecepatan ke 0,9×, dengarkan satu bab, lalu catat bagian yang terdengar canggung."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Artikel",
+        "title": "Mendengarkan artikel dari internet: halaman web apa pun, dibacakan",
+        "description": "Bagikan halaman dari Safari dan Yappy membacakannya dalam keadaan bersih: tanpa menu, tanpa banner, tanpa footer. Yang mengunjungi halaman itu perangkat Anda, bukan server kami.",
+        "h1": "Dengarkan apa yang tadinya mau Anda baca nanti.",
+        "entradilla": "Tab yang Anda biarkan terbuka untuk nanti. Bagikan ke Yappy, lalu dengarkan sambil mencuci piring. Halaman membersihkan dirinya sendiri: menu, banner, dan footer dibuang. Yang tersisa prosanya, lengkap dengan judul dan ritmenya.",
+        "pasos": [
+          {
+            "titulo": "Ketuk Bagikan",
+            "texto": "Di Safari, di pembaca berita, di email: di mana pun ada lembar berbagi, di sanalah Yappy."
+          },
+          {
+            "titulo": "Bersih sendiri",
+            "texto": "Ekstraksi berlangsung di perangkatmu. Kalau kamu berlangganan sebuah media, yang diambil adalah artikel yang kamu lihat."
+          },
+          {
+            "titulo": "Masuk antrean",
+            "texto": "Lalu menunggu sampai tanganmu bebas."
+          }
+        ],
+        "extra_titulo": "Apa yang menyentuh jaringan",
+        "extra_texto": "Hanya kunjungan ke alamat yang kamu bagikan, dilakukan oleh perangkatmu sendiri, sama seperti yang dilakukan browser. Tidak ada server Yappy di tengah jalan, karena memang tidak ada server Yappy.",
+        "faq": [
+          {
+            "q": "Apakah bekerja dengan media yang saya langganan?",
+            "a": "Ekstraksi dilakukan oleh perangkatmu sendiri dengan sesimu, jadi yang diambil adalah artikel yang kamu lihat di browser. Kalau kamu bisa membacanya, Yappy bisa membacakannya untukmu. Tidak ada server perantara yang harus melewati paywall, karena memang tidak ada server."
+          },
+          {
+            "q": "Bagaimana dengan halaman yang hanya bisa dimuat dengan JavaScript?",
+            "a": "Ada yang bandel: kalau teksnya baru muncul setelah halaman menjalankan separuh pustakanya, Yappy bisa pulang dengan tangan kosong. Untuk kasus seperti itu, cara tercepat adalah memilih teksnya, menyalinnya, lalu membagikannya sebagai teks biasa."
+          },
+          {
+            "q": "Apakah ia menyimpan riwayat bacaan saya?",
+            "a": "Hanya di perangkatmu, supaya kamu bisa melanjutkan dari posisi terakhir. Tidak ada satu pun yang dikirim ke mana pun, dan setiap dokumen punya opsi untuk dilupakan di pustaka."
+          },
+          {
+            "q": "Apakah ia membaca menu, banner, dan komentar?",
+            "a": "Tidak. Halaman dibersihkan sebelum sampai ke pembaca: menu, banner, footer, tombol berbagi, dan kotak komentar dibuang. Yang tinggal hanya prosanya, lengkap dengan judul-judul dan ritmenya."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Video",
+        "title": "Mendengarkan video seolah itu artikel",
+        "description": "Yappy mengambil transkrip sebuah video dan membacakannya untukmu seperti artikel: tanpa menatap layar, secepat yang kamu mau, dan tanpa menghabiskan kuota video.",
+        "h1": "Video, seperti artikel.",
+        "entradilla": "Video setengah jam setara dengan sepuluh menit teks yang dibaca dengan tempo pas. Yappy menyimpan transkripnya dan membacakannya dengan suara natural, jadi kamu bisa mendengarkannya sambil jalan kaki dan tanpa menyalakan layar.",
+        "pasos": [
+          {
+            "titulo": "Bagikan tautannya",
+            "texto": "Dari aplikasi video atau dari browser, lewat lembar berbagi."
+          },
+          {
+            "titulo": "Kata-katanya saja yang diambil",
+            "texto": "Yappy mengambil transkrip video yang dipublikasikan, bukan audionya."
+          },
+          {
+            "titulo": "Kamu yang menentukan temponya",
+            "texto": "Dengan suara apa pun dan kecepatan apa pun, juga saat layar terkunci."
+          }
+        ],
+        "extra_titulo": "Kalau video tidak punya transkrip",
+        "extra_texto": "Berarti tidak ada yang bisa dibaca: Yappy memakai teks yang sudah dipublikasikan, bukan mentranskrip audio videonya. Di iPhone fitur ini ada; di Android belum.",
+        "faq": [
+          {
+            "q": "Apakah audio video ditranskrip?",
+            "a": "Tidak. Yappy mengambil transkrip video yang sudah dipublikasikan dan membacakannya seperti artikel. Cepat, tidak menghabiskan kuota video, dan tidak membuat ponsel panas; tapi artinya, kalau video tidak punya transkrip, tidak ada yang bisa dibaca."
+          },
+          {
+            "q": "Kalau video tidak punya transkrip?",
+            "a": "Berarti Yappy tidak bisa berbuat apa-apa dengan tautannya. Kalau videonya milikmu dan kamu punya filenya, bagikan sebagai audio: di situ pendengar lokal yang bekerja dan mentranskripnya di dalam perangkat."
+          },
+          {
+            "q": "Apakah ini bekerja di semua platform video?",
+            "a": "Di mana ada transkrip yang dipublikasikan dan bisa diakses. Di iPhone fitur ini ada; di versi Android belum."
+          },
+          {
+            "q": "Menghabiskan kuota?",
+            "a": "Sangat sedikit: yang diunduh teks, bukan video. Video setengah jam hanya beberapa puluh kilobyte transkrip, dan setelah itu semuanya dikerjakan perangkatmu."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Catatan suara",
+        "title": "Mengubah catatan suara menjadi teks di ponsel sendiri",
+        "description": "Yappy mentranskrip rekaman dan catatan suara di perangkatmu sendiri, tanpa mengunggahnya ke layanan mana pun, lalu bisa membacakannya untukmu.",
+        "h1": "Dari suara ke teks, dan kembali.",
+        "entradilla": "Rapat yang direkam, ide yang didikte di dalam mobil, pelajaran kemarin. Yappy mentranskripnya di dalam perangkatmu dengan pendengar lokal dan menyisakan teks untuk dibaca, diperbaiki, atau didengarkan lagi dengan suara lain.",
+        "pasos": [
+          {
+            "titulo": "Bagikan rekamannya",
+            "texto": "Dari Perekam Suara, File, atau aplikasi apa pun yang menyimpan audio."
+          },
+          {
+            "titulo": "Ditranskrip di dalam",
+            "texto": "Dengan model yang berjalan di perangkatmu. Audionya tidak keluar dari sana."
+          },
+          {
+            "titulo": "Baca atau dengarkan",
+            "texto": "Tersimpan seperti dokumen lain: bisa dibaca, dibagikan, dan dibacakan lagi dengan suara keras."
+          }
+        ],
+        "extra_titulo": "Pendengarnya diunduh terpisah",
+        "extra_texto": "Transkrip memakai model yang berbeda dari model suara, dan hanya diunduh kalau kamu memakainya.",
+        "faq": [
+          {
+            "q": "Model apa yang mentranskrip?",
+            "a": "Parakeet TDT 0.6B v3 dari NVIDIA, berlisensi CC-BY-4.0, berjalan di dalam perangkat Anda. Ini model yang berbeda dari model suaranya: yang satu mendengar, yang lain berbicara."
+          },
+          {
+            "q": "Apakah audio saya meninggalkan perangkat?",
+            "a": "Tidak. Rekaman ditranskripsi secara lokal, sama seperti suara yang disintesis secara lokal. Tidak ada layanan transkripsi di cloud, tidak ada akun, tidak ada unggahan."
+          },
+          {
+            "q": "Bahasa apa saja yang bisa ditranskripsi?",
+            "a": "Telinga tidak menguasai sebanyak bahasa seperti suara: ia mentranskripsi bahasa-bahasa utama Eropa, bukan 31 bahasa yang bisa dibaca Yappy. Untuk membaca dengan lantang, 31 bahasa; untuk mengubah suara menjadi teks, kelompok yang lebih pendek itu."
+          },
+          {
+            "q": "Apakah perlu mengunduh sesuatu lagi?",
+            "a": "Ya: telinga diunduh terpisah, dan hanya saat pertama kali Anda mentranskripsi sesuatu. Kalau tidak pernah mentranskripsi, ia tidak pernah memakan tempat di perangkat Anda."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Text to speech dalam {lengua}: bacakan teks apa pun dengan suara lantang",
+    "description": "Dengarkan PDF, EPUB, Word, dan artikel dalam {lengua} dengan suara natural, langsung di perangkat Anda, tanpa koneksi internet. Sepuluh suara, gratis, tanpa akun.",
+    "h1": "Text to speech dalam {lengua}.",
+    "entradilla": "Sepuluh suara membaca {lengua} menurut aturannya sendiri: angkanya, tanggalnya, bilangan urutnya, dan singkatannya — bukan aturan bahasa lain dengan logat pinjaman.",
+    "muestra": "Contoh suara",
+    "reglas_titulo": "Apa yang diketahui mesin pembaca tentang {lengua}",
+    "todas": "Tiga puluh bahasa lainnya"
+  },
+  "vs": {
+    "titulo": "Yappy vs {nombre}, sekilas pandang",
+    "caracteristica": "Apa",
+    "gratis": "Yang bisa dilakukan gratis",
+    "precio": "Harga mulai",
+    "local": "Suara dibuat di perangkat Anda",
+    "sin_cuenta": "Tanpa akun maupun email",
+    "sin_conexion": "Berfungsi tanpa koneksi internet",
+    "codigo_abierto": "Kode terbuka",
+    "tarifa": "Tarif per karakter atau per jam",
+    "idiomas": "Bahasa",
+    "formatos": "Format yang dibaca",
+    "audiolibro": "Audiobook dengan bab",
+    "escritorio": "Komputer",
+    "yappy_gratis": "Dengarkan tanpa batas; tiga dokumen sekaligus",
+    "yappy_precio": "0 €; paket berbayar mulai 3,99 € per bulan",
+    "gana_en": "Di mana {nombre} unggul",
+    "verificado": "Data publik dicek pada {fecha} di situs masing-masing produk.",
+    "sin_verificar": "Harga sering berubah: cek dulu sebelum memutuskan.",
+    "ver_web": "Situs resmi",
+    "frente_a": "Dibandingkan dengan {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Pertanyaan yang sering diajukan"
+  }
+}

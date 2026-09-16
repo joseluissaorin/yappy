@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "et",
+    "nombre": "Eesti",
+    "dir": "ltr",
+    "ogLocale": "et_EE",
+    "hreflang": "et",
+    "og_alt": "„Iga tekst, valjusti“ suurtes tähtedes kreemipaberil, kõrval korallpunane papagoi"
+  },
+  "slugs": {
+    "uso": "kuidas-kasutada",
+    "guionizador": "stsenarist",
+    "descargas": "allalaadimised",
+    "precios": "hinnad",
+    "voces": "haaled",
+    "preguntas": "kusimused",
+    "privacidad": "privaatsus",
+    "accesibilidad": "ligipaasetavus",
+    "cuentos": "muinasjutud",
+    "blog": "blogi",
+    "convertir": "teisenda",
+    "idiomas": "keeled",
+    "alternativas": "alternatiivid",
+    "formato_pdf": "pdf-heliks",
+    "formato_epub": "epub-audioraamatuks",
+    "formato_word": "word-haaleks",
+    "formato_articulos": "artiklid-heliks",
+    "formato_videos": "videod-heliks",
+    "formato_notas": "haalsoned-tekstiks"
+  },
+  "comunes": {
+    "saltar": "Liigu sisuni",
+    "marca_aria": "Yappy, avaleht",
+    "idioma": "Keel",
+    "menu": "Ava menüü",
+    "secciones": "Jaotised",
+    "descargar": "Laadi alla",
+    "descargar_gratis": "Laadi tasuta alla",
+    "en_app_store": "Laadi alla App Store'ist",
+    "escuchar_muestra": "Kuula näidist",
+    "probar": "Proovi kohe",
+    "leer_mas": "Loe edasi",
+    "volver": "Tagasi",
+    "inicio": "Avaleht",
+    "minutos": "{n} min lugemist",
+    "publicado": "Ilmus",
+    "actualizado": "uuendatud",
+    "por": "Autor",
+    "gratis": "tasuta",
+    "si": "Jah",
+    "no": "Ei",
+    "parcial": "Osaliselt",
+    "sin_datos": "andmeid pole"
+  },
+  "nav": {
+    "uso": "Kuidas kasutada",
+    "guionizador": "Skriptija",
+    "voces": "Hääled",
+    "precios": "Hinnad",
+    "descargas": "Allalaadimised",
+    "preguntas": "Küsimused",
+    "privacidad": "Privaatsus",
+    "accesibilidad": "Juurdepääsetavus",
+    "cuentos": "Jutud",
+    "blog": "Blogi"
+  },
+  "pie": {
+    "producto": "Toode",
+    "leer": "Lugemiseks",
+    "casa": "Kodu",
+    "codigo": "Kood",
+    "licencia": "MIT-i litsents",
+    "novedades": "Uudised",
+    "firma": "Yappy · käsitsi tehtud Tenerifel, autor <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · avatud lähtekoodiga (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Tekst kõneks: PDF-i, EPUB-i ja artiklite ettelugeja",
+    "description": "Muudab mis tahes teksti loomulikuks kõneks: PDF, EPUB, Word, artiklid ja videod – 31 keeles. Kõik toimub sinu telefoni või arvuti sees: pilveta, kontota ja märgitasuta. Tasuta ja avatud lähtekoodiga.",
+    "susurro": "tekst kõneks · 31 keelt · pilveta · avatud lähtekood",
+    "titular_1": "Mis tahes",
+    "titular_texto": "tekst",
+    "titular_2": ", ",
+    "titular_voz": "valju häälega",
+    "titular_3": ".",
+    "entradilla": "Jaga artiklit, PDF-i, EPUB-i, Wordi või videot, ja papagoi loeb selle sulle loomuliku häälega ette, kui sa süüa teed, kõnnid või silmad kinni paned. Mudel töötab tervenisti sinu seadmes: sealt ei välju midagi, mitte kunagi.",
+    "nota_acciones": "tasuta · kontota · märgitasuta",
+    "pegatina_sin_nube": "ilma\npilveta",
+    "pegatina_idiomas": "31\nkeelt",
+    "pegatina_gratis": "tasuta",
+    "pegatina_offline": "võrguühenduseta",
+    "demo_susurro": "vajuta ja kuula: seda ütleb seesama mootor, mis sul taskus juba töötab",
+    "demo_titulo": "Nii kõlab.",
+    "demo_nota": "Alakriipsutatud kohad loeb ette tekstinormaliseerija: „1492“ öeldakse „tuhat nelisada üheksakümmend kaks“, „15. sajand“ aga „viisteistkümnes sajand“ – iga keele enda reeglite järgi.",
+    "momentos_susurro": "millal see kasu teeb",
+    "momentos_titulo": "Kolm hetke, üks liigutus.",
+    "momentos": [
+      {
+        "titulo": "Kui sa kokkad",
+        "texto": "Jagad artikli, paned telefoni püsti ja hääl loeb pliidi ääres edasi."
+      },
+      {
+        "titulo": "Kõnnil",
+        "texto": "Eile õhtu raamat on nüüd peatükkidega audioraamat ja saadab sind ülesmäge."
+      },
+      {
+        "titulo": "Öö töötab",
+        "texto": "Jäted ööseks renderdama; ärgates on audioraamat taskus."
+      }
+    ],
+    "porque_susurro": "miks see on olemas",
+    "porque_titulo": "Ei pilve, ei kontot, ei hinda tähemärgi järgi.",
+    "porque_entradilla": "Teised rakendused, mis teksti kõneks teevad, saadavad selle, mida sa loed, serverisse ja arveldavad tähemärkide või kuulamistundide kaupa. Yappyl pole serverit, mida tasuda, ega ka midagi, mida kuulamise eest nõuda.",
+    "porque": [
+      {
+        "titulo": "Midagi ei lahku sinu seadmest",
+        "texto": "Hääl sünteesitakse sinu telefonis või arvutis avatud mudeli abil. Töötab ka võrguühenduseta: igaveseks."
+      },
+      {
+        "titulo": "31 päris keelt",
+        "texto": "Kümme häält, igaüks neist polüglott. Tekst, milles on võõrkeelseid tsitaate, vahetab keelt ise, lõigukaupa."
+      },
+      {
+        "titulo": "Ei tunde ega tähemärke",
+        "texto": "Kuulad, mida tahad, nii kaua kui tahad. Loendurit pole, sest pole arvet, mida jagada."
+      },
+      {
+        "titulo": "Avatud lähtekood (MIT)",
+        "texto": "Mootor, skriptikoostaja, rakendus ja ka see veebileht ise on avaldatud. Võid neid lugeda, kompileerida ja kontrollida."
+      }
+    ],
+    "formatos_susurro": "jagamine on uks",
+    "formatos_titulo": "Mida iganes sa loed.",
+    "formatos_entradilla": "Safarist, meilist, Failidest või ükskõik millisest rakendusest: puuduta Jaga ja vali Yappy. Leht koristab end ise – menüüd, bännerid ja jalused jäävad välja – ja järele jääb proosa, koos oma pealkirjade ja rütmiga.",
+    "guion_susurro": "see, mida keegi teine ei näita",
+    "guion_titulo": "Loeb nagu inimene, mitte nagu masin.",
+    "guion_entradilla": "Ette lugemine ei ole tähitamine: see on tõlgendamine. „1492“ öeldakse „tuhat nelisada üheksakümmend kaks“; „Henry VIII“ öeldakse „Henry kaheksas“, aga „Louis XIV“ on prantsuse keeles „Louis quatorze“; „EL CID“ ei ole rooma number; FBI öeldakse tähe haaval, NASA mitte. Enne ühegi silbi sünteesimist teeb Yappy tekstist <strong>lugemisskripti</strong>: partituuri sellest, mida hääl tõeliselt ütlema hakkab.",
+    "guion_pruebalo": "Proovi seda siin kohapeal: see on sama Rust, mis rakenduseski, kompileeritud sinu brauseri jaoks.",
+    "guion_boton": "Koosta skript",
+    "guion_ejemplo": "19. sajand lõppes 1900. aastal. Louis XIV valitses 72 aastat, kulutas jäätisele 3,50 € ja FBI ei saanud sellest kunagi teada.",
+    "guion_marcador": "Kirjuta midagi numbrite, lühendite, kuupäevade või sajanditega…",
+    "guion_espera": "Skript ilmub siia, teisendatud kohad allajoonituna.",
+    "guion_fallo": "Siin brauseris ei saanud skriptikoostajat laadida. Rakenduses on ta küll sees.",
+    "guion_mas": "Kuidas skriptikoostaja töötab",
+    "capturas_susurro": "nii näeb see välja, ilma retušita",
+    "capturas_titulo": "Ekraanipildid päris rakendusest.",
+    "capturas_entradilla": "Ühtki värvitud maketti ei ole: see on Yappy töös – pulgal päris tekstid, lugejal oma skript valmis.",
+    "precio_susurro": "raha, otse näkku",
+    "precio_titulo": "Tõeliselt tasuta, ja üks üleskeeratav papagoi.",
+    "precio_entradilla": "Katsepapagoi pulgal on korraga kolm dokumenti ja ta loeb neid ilma ajalimiidita. Võtad ühe ära, teine mahub järele. Kui tahad põhjatut pulka, audioraamatute trükikoda ja silda arvutiga, keerad papagoi üles.",
+    "cierre_titulo": "Papagoi taskus.",
+    "cierre_texto": "Tasuta, ilma kontota ja ilma midagi registreerimata. Paigaldad, jagad teksti ja see juba kõlab."
+  },
+  "uso": {
+    "title": "Kuidas Yappyt kasutada: jagamine, kuulamine ja rohkem ei olegi",
+    "description": "Täielik juhend: jagamine iPhone'ist, arvuti kiirklahvid, QR-sild telefoni ja Maci vahel, audioraamatud peatükkidega, Siri, vidinad ja seaded.",
+    "h1": "Jagad, ja see kõlab.",
+    "entradilla": "Yappyl on vaid üks liigutus: jagamine. Ülejäänu on üksikasjad, mis on juba paigas.",
+    "pasos": [
+      {
+        "titulo": "Jaga",
+        "texto": "Iga rakendusest: Safari, meil, Failid, diktofoni ülesvõte, PDF, mis sulle vestlusesse jõudis. Puudutad Jaga, valid Yappy, ja rakendus avaneb ise."
+      },
+      {
+        "titulo": "Vali hääl",
+        "texto": "Kümme häält, kõik mitmekeelsed. Kui tekst on teises keeles, tunneb Yappy keele ise ära ja loeb seda selle keele reeglite järgi, mitte laenatud aktsendiga."
+      },
+      {
+        "titulo": "Kuula",
+        "texto": "Lukustad ekraani ja jätab telefoni taskusse. Hääl jätkub: lukustusekraanil on kaas, pealkiri ja juhtnupud, ja kõrvaklapid käsivad."
+      },
+      {
+        "titulo": "Salvesta",
+        "texto": "Kui tahad seda homme jalutamiseks, annab trükikoda sulle .m4b audioraamatu koos peatükkidega, ja see avaneb igas mängijas."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "iPhone'il ja iPad'il",
+        "texto": "Jagamine on kogu kasutusjuhend. Iga rakendusest vajutad Jaga ja valid Yappy: ta võtab vastu linke, vaba teksti, PDF-i, EPUB-i, Wordi, ODT-d ja audiot. Yappy avaneb ise, kohe. Midagi ei jää jagamispaneelis keema, sest iOS lõikab laiendused 120 MB juures maha; Yappy kopeerib jagatu ja hüppab rakendusse, kus piiri pole. Hüpe on disain, mitte pleister. <strong>Kõik toimub seadmes</strong>: ainus võrk, mida Yappy puudutab, on külastus aadressile, mille jagasid, tehtud sinu enda telefonist.",
+        "puntos": [
+          "Järjekord teeb asjad valmis sinu pilgu all: artikkel puhastub, video toob oma transkriptsiooni kaasa, PDF saab leheküljed. Kui rakendus jääb silme ette, algab lugemine iseenesest, niipea kui asi on valmis.",
+          "Karaoke valgustab seda, mida parasjagu loetakse, lause kaupa. Peatamiseks puudutad suvalises kohas, lõigult lõigule hüppad pühkides, kiirust tõstad ja langetad servalt.",
+          "Lukustad ekraani ja hääl jätkub. AirPodsid peatavad ja jätkavad; süsteem kohtleb häält nagu iga teist mängijat.",
+          "Riidenagil mahub korraga kolm dokumenti: võtad ühe maha, ja teine tuleb järele. Maja enda jutud ei võta ruumi."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Mac'is, Windowsis ja Linuxis",
+        "texto": "Üks kiirklahv ja see, mida parasjagu vaatad, hakkab kõlama: valik, brauseri lehekülg või avatud dokument. Kõiki kolme kiirklahvi saab Eelistustes muuta, ja need töötavad ka siis, kui rakendus on süsteemisalvis peidus. Kiirklahvi kõrvalt pakub lauaarvuti ka seda, mis ühte kätt ei mahu.",
+        "puntos": [
+          "<strong>Raamatukogu.</strong> Kõik, mida avad või jagad, jääb esilehele koos edenemisega. Jätkad sealt, kus pooleli jäid – täpsest lõigust.",
+          "<strong>Redaktor lõigu kaupa.</strong> Igal lõigul võib olla oma hääl, oma kiirus ja oma paus. Dialoogide, tsitaatide või kahekeelsete dokumentide jaoks.",
+          "<strong>Kohalik transkriptsioon.</strong> Lohistad häälsalvestise või ülesvõtte, ja kohalik kõrv teeb sellest loetava teksti, midagi kuskile üles laadimata.",
+          "<strong>Audioraamatu eksport.</strong> Iga dokument tuleb välja päris .m4b-na, navigeeritavate peatükkidega, mis tulevad käsikirjast. Ka .wav- või .mp3-vormingus.",
+          "<strong>Silmadega PDF.</strong> Skaneeritud PDF-id läbivad enne lugemist kohaliku OCR-i. Digitaalselt sündinuid loetakse otse, lehekülje kaupa.",
+          "<strong>Teemad.</strong> Päeval kreemjas paber, öösel hele tint tumedal taustal, või otsustab süsteem ise.",
+          "<strong>Ilma lisatasuta.</strong> Töölaual on kõik lahti: trükikoda, põhjatu riidepuu ja sild on kohe olemas."
+        ]
+      },
+      {
+        "id": "puente",
+        "titulo": "Sild: arvuti renderdab, telefon kuulab",
+        "texto": "Terve raamatu sünteesimine võtab aega. Sild annab raske töö arvutile ja toob valmis audioraamatu tagasi taskusse. Kahe seadme vahel on otsene, otsast otsani krüpteeritud ühendus – ühtegi serverit vahele ei jää.",
+        "puntos": [
+          "Arvutis: Seaded → „Sild“. Yappy näitab QR-koodi, kus on sinu masina krüpteeritud aadress ja kutsevõti.",
+          "Suumi iPhone'i kaamera QR-koodile ja seadmed on seotud. Võti jääb salvestatuks, ja saad seda arvutis igal ajal kehtetuks teha.",
+          "Telefonis: „Konverteeri arvutis“. Valid dokumendi, arvuti sünteesib selle omas rütmis, ja .m4b ilmub telefoni raamatukokku koos peatükkidega. Öö töötab sinu homse jalutuskäigu nimel.",
+          "Sild on krüpteeritud QUIC-i peal ja kasutab protokolli nimega <a href=\"https://iroh.computer\">iroh</a>. Kui kahe seadme kohtumiseks on vaja vahesõlme, näeb vahesõlm ainult krüpteeritud liiklust, mida lugeda ei saa."
+        ]
+      },
+      {
+        "id": "audiolibros",
+        "titulo": "Audioraamatud: .m4b päris peatükkidega",
+        "texto": "Yappy ei eksporti „üht pikka heli“ – ta eksportib .m4b audioraamatuid, nagu need poest tulevad: peatükkidel on dokumendi päris pealkirjad, kaanepilt on kaasas ja kuulamine jätkub sealt, kus pooleli jäid. Kuulad neid Yappys – koos raamatukogu ja edenemisega – või ükskõik millis audioraamatute mängijas, mida juba kasutad. Ja stsenarist annab neile hingamise: paus pealkirjade järel, loendi rütm loendites.",
+        "puntos": [
+          "Telefonis tellitakse need raamatukogust, peatükk haaval: valid, mida trükkida ja millise häälega.",
+          "Papagoi trükib edasi, isegi kui rakenduse sulged või telefoni lukustad.",
+          "Raamatukogust jagad faili rakendusse Failid, rakendusse Raamatud või kuhu iganes tahad: fail on sinu oma.",
+          "Trükikoda kuulub Yappy Parlanchíni juurde iPhone'is ja iPadis. Arvutis on see kohe lahti."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, otseteed ja toimingunupp",
+        "texto": "„Hei Siri, loe minu lõikelaud Yappyga ette.“ Rakenduses on päris App Intents: need ilmuvad Otseteede rakendusse iseseisvalt, töötavad Siriga ja neid saab panna iPhone'i toimingunupule. Midagi kokku panna pole vaja.",
+        "puntos": [
+          "<strong>Loe minu lõikelaud.</strong> Kopeerid kuhu iganes, küsid Sirilt ja see kõlab.",
+          "<strong>Jätka lugemist.</strong> Võtab viimase, mis kõlas, ja jätkab täpselt sealt, kus pooleli jäi.",
+          "<strong>Kuula linki.</strong> Võtab vastu aadressi parameetrina: ideaalne lõpp sinu enda otseteedele.",
+          "Käsitsi automatiseerimiseks töötleb Yappy ka skeemi <code>yappy://</code>: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> ja <code>yappy://pair?d=…</code>.",
+          "Ja avakuval on vidin viimasega, mis kõlas: üks puudutus ja kuulamine jätkub."
+        ]
+      },
+      {
+        "id": "ajustes",
+        "titulo": "Seaded: rattaid vähe, aga kõik päris.",
+        "texto": "Yappyl pole paneeli saja lülitiga. Tal on vaid need, mis kõla tõesti muudavad.",
+        "puntos": [
+          "<strong>Hääl.</strong> Kümme häält, kõik mitmekeelsed: sama hääl loeb hispaania, inglise või jaapani keelt ilma tämbrit muutmata.",
+          "<strong>Kiirus.</strong> 0,5× kuni 2×. Hääl luuakse juba sellel kiirusel, seda ei kiirendata tagantjärele: toonkõrgus ei moondu.",
+          "<strong>Pausid.</strong> Kui palju lõikude vahel hingata. Pealkirjad ja loendid toovad oma rütmi juba sõnastajalt kaasas.",
+          "<strong>Keel.</strong> Automaatne tuvastus dokumendi ja lõigu kaupa või käsitsi määratud. Tsitaadid teises keeles vahetuvad iseenesest.",
+          "<strong>Anonüümne statistika.</strong> Mobiilis tulevad need sisselülitatult, siin tagaruumis saab need välja lülitada. Mis täpselt saadetakse, on privaatsuspoliitikas punkt haaval lahti kirjutatud."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Androidis",
+        "texto": "Sama liigutus: jagad lingi, teksti või dokumendi ja see maandub samas järjekorras – artikli väljavõte, karaoke ja hääl, kõik telefoni enda sees. Androidi versioon on perekonna noorim ja tal on veel kolm asja puudu, mis iPhone'il olemas on: juhtnupud lukustuskuval, videod ning .m4b audioraamatute mängija. Ja midagi olulisemat: <strong>see pole veel avaldatud</strong>. Google'i arendajakonto on veel kinnitamisel ja kuupäeva me ei pane, sest me ei tea seda. Kui see ilmub, teatatakse sellest siin ja repositooriumis. Üks on aga kindel: Androidis ei tule midagi peitu. Kõik on avatud."
+      }
+    ],
+    "atajo": "Otsetee",
+    "atajo_leer": "Loe seda, mida vaatad",
+    "atajo_portapapeles": "Loe lõikelaua sisu",
+    "atajo_pausar": "Paus",
+    "cierre": "See olig kogu käsiraamat."
+  },
+  "guionizador": {
+    "title": "Yappy sõnastaja: kirjutatust kõnelduks",
+    "description": "Kuidas Yappy muudab „1492“, „XV sajandi“, „3,50 €“ või „FBI“ räägitavateks sõnadeks iga keele omade reeglite järgi, kõigis 31 keeles. Töötav demo: sama Rust, mis rakenduseski, kompileeritud WebAssemblyks.",
+    "h1": "Kirjutatust kõnelduks.",
+    "oficios_titulo": "Kaksteist ametit ühe korruga.",
+    "oficios": [
+      {
+        "titulo": "Kuupäevad",
+        "texto": "„24/5/1533“ öeldakse välja tervenisti, iga keele järjestuse ja soo järgi."
+      },
+      {
+        "titulo": "Kellaajad",
+        "texto": "„14:05“ öeldakse nii, nagu inimene ütleks, mitte nii, nagu kell loeks."
+      },
+      {
+        "titulo": "Rahad",
+        "texto": "„3,50 €“ öeldakse „kolm eurot viiskümmend“ – õiges vormis."
+      },
+      {
+        "titulo": "Protsendid",
+        "texto": "„7%“ üteldakse „seitse protsenti“, aga „0,5%“ ei hääldu lihtsalt kui „null koma viis“."
+      },
+      {
+        "titulo": "Unidades",
+        "texto": "„230 °C“ üteldakse „kakssada kolmkümmend Celsiuse kraadi“."
+      },
+      {
+        "titulo": "Ordinales",
+        "texto": "„3.ª“ üteldakse „tercera“ – õiges soos ja käändes seal, kus keel neid eristab."
+      },
+      {
+        "titulo": "Rooma numbrid mõistusega",
+        "texto": "„siglo XX“ on kardinaalarv, „Enrique VIII“ ordinaalarv ja „EL CID“ pole üldse number."
+      },
+      {
+        "titulo": "Lühendid fonotaktika põhjal",
+        "texto": "FBI tähtlitakse; NASA loetakse sõnana. Reegli määrab see, kuidas lühend kõlab, mitte mõni nimekiri."
+      },
+      {
+        "titulo": "Abreviaturas",
+        "texto": "„jne“, „lk“, „19. saj“: igal keelel on oma tabel."
+      },
+      {
+        "titulo": "Números grandes",
+        "texto": "Unicode CLDR-i RBNF-grammatikad, sugu ja käänded kaasa arvatud."
+      },
+      {
+        "titulo": "31 idiomas",
+        "texto": "Samad reeglid, iga keele oma grammatikaga. Käsitsi kirjutatud nimekirju pole."
+      },
+      {
+        "titulo": "El ritmo",
+        "texto": "Pealkirjad hingavad pärast ütlemist; loendid löövad oma takti. Pausid on osa skriptist, mitte juhusest."
+      }
+    ],
+    "cierre": "Skript on pool loost; teist poolt kuulatakse.",
+    "faq": [
+      {
+        "q": "Mis on RBNF-grammatikad?",
+        "a": "RBNF on lühend nimetusest <em>Rule-Based Number Format</em>: reeglid, millega Unicode CLDR kirjeldab, kuidas iga keel arvu välja ütleb. See ei ole tuhandesõnaline tabel, vaid grammatika: seepärast teab ta, et hispaania keeles öeldakse „doscientas páginas“ ja mitte „doscientos páginas“, et vene keel numeraale käänab ja et prantsuse keel loeb üheksakümmendeni kahekümnetekaupa. Yappy tõlgendab neid reegleid puhtas Rustis, ilma käsitsi kirjutatud nimekirjadeta."
+      },
+      {
+        "q": "Miks on vaja skriptikoostajat? Kas hääl ei saa üksi hakkama?",
+        "a": "Ei, ja see on taotletud. Yappy häälemudel töötab märgitasandil: ta hääldab täpselt seda, mis talle kirjapanduna kohale jõuab. See teeb ta kiireks ja kergeks, aga tähendab, et kui talle jõuab „1492“, püüab ta just seda täht tähe haaval välja öelda. Sellises mudelis on normaliseerimine <em>ongi</em> hääldus. Skriptikoostaja on see osa, mis teisendab iga arvu, iga lühendi ja iga sümboli sõnadeks, mida inimene ütleks."
+      },
+      {
+        "q": "Mitmes keeles see töötab?",
+        "a": "Kõigis 31 keeles, mida hääl räägib, ja igal oma reeglid: kuupäevade järjekord, rahaühikute side, ordinaalarvud, lühendid ja rooma numbrid. XV sajand on hispaania keeles „siglo quince“ ja inglise keeles „fifteenth century“; „Louis XIV“ on „Louis quatorze“ ja mitte „Louis fourteenth“. Samad kaksteist ülesannet, kolmkümmend üks grammatika."
+      },
+      {
+        "q": "Miks tabab karaoké alati täpselt õiget sõna?",
+        "a": "Sest skript ei ole pelgalt teisendatud tekst: see hoiab vastavuse kirjutatu ja hääldatu vahel. Kui hääl loeb ette „tuhat nelisada üheksakümmend kaks“, teab skript, et need neli sõna tulevad arvu „1492“ neljast numbrist ja allajoon langeb täpselt kohale, ilma et midagi nihkuks. See on vahe selle vahel, kas teksti valgustatakse või püütakse ära arvata."
+      },
+      {
+        "q": "Sõna hääldatakse valesti. Kas ma saan seda parandada?",
+        "a": "Kasutajapoolset hääldussõnaraamatut praegu pole. Kuna mudel loeb tähti, on kiireim tee kirjutada sõna redaktoris nii, nagu ta kõlab, ja kuulata uuesti ära. Kui aga viga on üldises mustris (lühend, akronüüm või ühik), kirjuta sellest <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHubi issuesse</a>: skriptikoostaja tabelid kasvavad just selliste juhtumitega."
+      },
+      {
+        "q": "Kas selle lehe skriptikoostaja on sama, mis rakenduses?",
+        "a": "Sama kood, kompileeritud WebAssemblyks, et see töötaks sinu brauseris. See, mida siia kirjutad, ei lahku sinu vahelehelt. Ja kuna kogu projekt on avatud, võid reeglid ükshaaval läbi lugeda <a href=\"https://github.com/joseluissaorin/yappy\">repositooriumis</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Yappy allalaadimine: iPhone, iPad, Mac, Windows ja Linux",
+    "description": "Yappy on tasuta ja avatud lähtekoodiga. App Store'is iPhone'ile ja iPad'ile; töölauaversiooni kompileeritakse lähtekoodist või laaditakse alla GitHubist. Nõuded ja häälemudeli suurus.",
+    "h1": "Tasuta, avatud ja sinu oma.",
+    "entradilla": "Registreerimist pole, e-posti pole, aeguvat prooviversiooni pole. Laadid alla ja ongi kõik.",
+    "modelo_nota": "Esimesel korral laadib Yappy alla häälemudeli ({peso}). iPhone'il tuleb see juba installimisega kaasa; arvutil siis, kui rakenduse esimest korda avad. Pärast pole ühendust enam vaja.",
+    "android_titulo": "Android",
+    "android_texto": "See on kompileeritud ja töötab, kuid veel avaldamata: Google'i arendajakonto on veel kinnitamisel. Niipea, kui see ilmub, teatatakse sellest siin ja repositooriumis.",
+    "escritorio_aviso": "Töölauabinaarid avaldatakse GitHubis. Kui seal leitav versioon on vanem kui iPhone'i oma, pole viimast veel üles laaditud: kood on küll ajakohane ja kompileeritakse käsuga <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone ja iPad",
+        "texto": "App Store'is, tasuta ja ilma kontota. Hääled tulevad installimisega kaasa, nii et avad, jagad ühe teksti ja see juba kostub. See on kõige täielikum versioon: audioraamatud, Siri, widget, sild ja juhtelemendid lukustuskuval.",
+        "requisitos": "iOS või iPadOS 17 või uuem · häälemudel võtab umbes 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Laadi alla App Store'ist"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon ja Intel, notariseeritud .dmg-failis. Kolm globaalset kiirklahvi, lõikupõhine redaktor, skannitud PDF-ide OCR ja audioraamatute eksport. Siin pole lisatingimusi: kõik on avatud.",
+        "requisitos": "macOS 12 või uuem · häälemudel võtab umbes 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Vaata väljalaskesid GitHubis"
+      },
+      {
+        "nombre": "Windows",
+        "texto": ".exe- või .msi-paigaldusprogramm x64 jaoks, samade kiirklahvide ja funktsioonidega nagu Maci versioonis. Iga viimaste aastate sülearvuti sünteesib reaalajast kiiremini.",
+        "requisitos": "Windows 10 või uuem, x64 · umbes 398 MB häälemudelit",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Vaata versioone GitHubis"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage ja .deb x64 jaoks. Globaalsed otseteed sõltuvad sinu töölauakeskkonnast; kui sinu omad on juba hõivatud, saab neid Eelistustes teistega asendada.",
+        "requisitos": "x64 · umbes 398 MB häälemudelit",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Vaata versioone GitHubis"
+      },
+      {
+        "nombre": "Lähtekoodist",
+        "texto": "Kogu projekt on avaldatud: nii töölaua- kui mobiilirakendus (Tauri, Rust ja Svelte), sünteesimootor, skriptikoostaja koos kaasasolevate CLDR-grammatikatega ning ka see veebileht. Kui Rust ja Node on paigaldatud, annab <code>cargo tauri build</code> sulle isikliku koopia. Kui avaldatud binaarfailid jäävad iPhone'i versioonist maha, on see kiire tee: kood on alati ajakohane.",
+        "requisitos": "Rust ja Node · täielikud juhised README-s",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Vaata koodi GitHubis"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Yappy hinnad: igavesti tasuta, ilma märgitariifita",
+    "description": "Yappy on tasuta ja kuulamise piiranguta: kolm dokumenti korraga nagil. Yappy Parlanchín lisab nagi ilma põhjata, audioraamatute trükikoja ja silla, alates 3,99 € kuus või 59,99 € ühekordselt.",
+    "h1": "Raha, otseselt.",
+    "entradilla": "Võimalus kuulata seda, mida loed, on ligipääsetavuse küsimus – ja ligipääsetavus ei tohiks kaarti küsida. Seetõttu on oluline osa tasuta ja loendurit pole.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "igaveseks",
+    "gratis_puntos": [
+      "Kuulamine ilma minutite ja tähemärkide piiranguta",
+      "Kõik 31 keelt ja kümme häält",
+      "PDF, EPUB, Word, artiklid, videod ja hällesalvestised",
+      "Kolm dokumenti korraga nagil: võtad ühe maha ja teine mahub asemele",
+      "Ilma kontota, ilma e-postita, ilma reklaamita",
+      "Avatud lähtekood MIT-i litsentsi all"
+    ],
+    "gratis_no": [
+      "Pole audioraamatute trükikoda",
+      "Pole silda arvutiga"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "kuus",
+    "cuerda_periodo_anio": "aastas",
+    "cuerda_periodo_vida": "üks kord",
+    "cuerda_puntos": [
+      "Kõik ülaltoodu",
+      "Põhjatu riidepuu: nii palju dokumente, kui tahad",
+      "Trükikoda: terved raamatud audioraamatuks, koos peatükkidega",
+      "Sild: sinu arvuti teisendab dokumendi ja toob selle ise tagasi",
+      "Tühista iga ajal"
+    ],
+    "cuerda_nota": "Tasuta prooviperioodi pole — ja see on tahtlik: kolme dokumendiga riidepuu <em>on</em> proov, mis ei aegu ega hakka hiljem raha küsima. Hinnad on Hispaania omad; sinu poes kuvatakse need sinu valuutas.",
+    "cuerda_donde": "Riidepyy leiad rakenduse seest — poe tagaruumist.",
+    "solo_ios": "Arvutis ja Androidis on kõik avatud: riidepyyd on olemas ainult iPhone'il ja iPad'il.",
+    "comparacion_titulo": "Mida teised küsivad.",
+    "comparacion_entradilla": "Pilves töötavad kõnerakendused maksavad iga play-vajutuse pealt serveritele, seepärast küsivad nad tasu tundide või tähemärkide kaupa. Yappy sünteesib kõne sinu seadmes: ühe kuulamise hind on null — seepärast saab ta seda ka tasuta pakkuda.",
+    "comparacion_nota": "Avalikult kättesaadavad hinnad, kontrollitud 2026. aasta septembris. Need muutuvad sageli: enne otsustamist kontrolli üle iga teenuse veebilehelt.",
+    "faq": [
+      {
+        "q": "Miks on see tasuta?",
+        "a": "Sest pole servereid, mida tasuda. Kõne sünteesitakse sinu seadmes — kuulamine ei maksa kellelegi raha, pole arvet, mida kellelegi esitada. Pilves töötavad kõnerakendused maksavad masina eest iga kord, kui sa play vajutad, seepärast küsivad nad tasu tähemärgiti või tunniti. Yappy ei saa küsida raha selle eest, mis talle midagi ei maksa."
+      },
+      {
+        "q": "Mis saab, kui ma kunagi ei maksa?",
+        "a": "Ei midagi. Yappy töötab edasi igavesesti: kümme häält, 31 keelt, kõik vormingud — ilma reklaami, konto ja minutiloendita. Ainus, mis muutub: iPhone'il ja iPad'il mahub riidepuule korraga kolm dokumenti — võtad ühe maha, teine tuleb asemele. Arvutis pole seda piirangutgi."
+      },
+      {
+        "q": "Kas tasuta prooviperioodi on?",
+        "a": "Ei, ja see on otsus, mitte unustus. Kolme dokumendiga riidepuu <em>on</em> proov: see ei aegu, ei küsi kaarti ega hakka kaheksandal päeval raha võtma. Keegi ei tohiks ärgata ja avastada, et talt on võetud raha, mida ta ei mäleta kunagi lubanud olevat."
+      },
+      {
+        "q": "Kas saan selle iga ajal tühistada?",
+        "a": "Jah, oma Apple'i kontolt, nagu iga teinegi tellimus. Tellimused uuenevad ise iga perioodi lõpus, kui neid ei tühistata vähemalt 24 tundi varem. Eluaegset ostu ei uuendata kunagi: makstad ühe korra ja ongi kõik. Ja kui tühistad, ei kaota sa midagi tasulisest: naased lihtsalt kolme dokumendi nagile."
+      },
+      {
+        "q": "Miks ei pea arvutis ega Androidis maksma?",
+        "a": "Sest kogu see mehhanism on paigaldatud ainult iPhone'ile ja iPadile. Töölaual ja Androidi versioonis, kui see ilmub, on trükikoda, põhjatu nagi ja sild kohe lahti. See ei ole tutvustussoodustus: seal pole lihtsalt mitte midagi, mille eest tasu võtta."
+      }
+    ],
+    "una_a_una": "üks haaval, koos andmetega"
+  },
+  "voces": {
+    "title": "Yappy hääled: kümme mitmekeelset lindu 31 keeles",
+    "description": "Kümme loomulikku häält, mis räägivad kõiki 31 keelt ilma kõlavat muutmata. Kuula igaühe proovi ja vali oma: valitud hääl värvib kogu äpi.",
+    "h1": "Kümme lindu, 31 keelt.",
+    "entradilla": "Kõik on mitmekeelsed: sama hääl loeb hispaania, inglise või jaapani keelt ilma kõlavat muutmata. Ja tekst, milles on tsitaat teises keeles, vahetab keelt iseseisvalt, lõigu kaupa.",
+    "elige": "Puuduta lindu ja kuule, kuidas ta kõlab.",
+    "idiomas_titulo": "Keeled, mida nad räägivad.",
+    "idiomas_entradilla": "Kolmkümmend üks, igaühel oma stsenarist: ei ole sama hääl, mis võõra aktsendiga loeb, vaid iga keel oma reeglitega."
+  },
+  "preguntas": {
+    "title": "Küsimused Yappy kohta: privaatsus, keeled, hinnad ja litsentsid",
+    "description": "Otsesed vastused selle kohta, mis on tasuta, mis võrku läheb, milliseid mudeleid Yappy kasutab, milliseid vorminguid ta aktsepteerib ja mida teha, kui miski ei toimi.",
+    "h1": "Küsimused, mis peale tulevad.",
+    "entradilla": "Vastatud otse, ilma ümber ja ära käimata.",
+    "grupos": [
+      {
+        "susurro": "raha ja vabadus",
+        "titulo": "Tasuta, tõepoolest.",
+        "lista": [
+          {
+            "q": "Kas see on tõesti tasuta?",
+            "a": "Jah. Yappy on avatud lähtekoodiga ja MIT-litsentsi all. Võimalus kuulata seda, mida loed, on ligipääsetavuse küsimus, ja ligipääsetavuse vahendid ei tohiks kaarti küsida. Arvutis pole makseversiooni ega reklaame. iPhone'il kannab proovipapagoi korraga kolme dokumenti oma nagil, ilma ajapiirita; kui tahad põhjatut nagit, audioraamatute trükikoda ja silda arvutiga, kerid üles Yappy Parlanchíniga: kas tellimusena või ühekordse eluaegse maksega. Igal juhul ilma kontota ja ilma reklaamideta."
+          },
+          {
+            "q": "Kus on nipp? Kuidas teda rahastatakse?",
+            "a": "Nippi pole: pole servereid, mida tasuda. Süntees jookseb sinu seadmes, seega pole Yappyl kasutajakohast kulu. See on autori isiklik projekt, avaldatud seepärast, et ta juba oli olemas ja võiks veel kellelegi kasulik olla."
+          },
+          {
+            "q": "Kas tasuta prooviperioodi on?",
+            "a": "Ei, tahtlikult. Kolme dokumendi nagi ongi proov, ja ta ei aegu ega hakka seitsme päeva pärast raha küsima. Kui Yappy sulle kasu toob, tead seda isegi ilma, et keegi sulle stopperit ette paneks."
+          },
+          {
+            "q": "Kas tohin avaldada tekitatud heli, näiteks taskuhäälingus või videos?",
+            "a": "Yappy kood on MIT ja ei kehtesta sulle tingimusi. Häälemudelil Supertonic 3 on omaette litsents: avatud litsents OpenRAIL-M tüüpi, koos kasutustingimustega. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Vaata seda üle mudeli lehel</a> enne kommertskasutust, sest see osa ei sõltu Yappyst ja me ei saa selle eest midagi lubada."
+          }
+        ]
+      },
+      {
+        "susurro": "sinu tekstid ei liigu kusagile",
+        "titulo": "Privaatsus, ees- ja perekonnanimega.",
+        "lista": [
+          {
+            "q": "Kas minu tekstid lähevad kuhugi serverisse?",
+            "a": "Ei. Süntees, ümberkirjutus ja artiklite väljavõtmine toimuvad sinu seadmes. Seda, mida sa Yappiga jagad, ei saadeta kusagilegi: kontosid ei ole, koopiaid ei tehata ja ühtegi Yappy serverit, kuhu neid saaks salvestada, ei ole olemas. Võrguga puutuvad kokku neli konkreetset asja, ja kõik need on üles loetud privaatsuspoliitikas."
+          },
+          {
+            "q": "Kas Yappy kogub kasutusstatistikat?",
+            "a": "Jah, kogub, ja seda tuleb öelda otse. Mobiilirakendus saadab anonüümset kasutusstatistikat: see on tehases sisse lülitatud ja välja saab selle lülitada vaid seadete tagatoast. Teel käib ühe sündmuse nimi kinnisloendist (kas rakendus avati, millist esmakäigu sammu näidatakse, millist plaani katsutakse, kas lugemine lõpeb), juhuslik paigaldustunnus, keel ja versioon. Mitte kunagi sinu nimi, e-posti aadress, tekst, mida loed, dokumendi pealkiri ega link, ega ühtegi reklaamitunnust. Ja need ei lähe Google'ile, Firebase'ile ega ühelegi analüütikafirmale: need lähevad autori enda Workerisse ja Cloudflare'i D1 andmebaasi. Töölaual pole statistikat üldse."
+          },
+          {
+            "q": "Ja sild telefoni ja arvuti vahel?",
+            "a": "See on otsene ühendus sinu kahe seadme vahel, otsast lõpuni krüpteeritud QUIC-iga, kasutades protokolli <a href=\"https://iroh.computer\">iroh</a>. Sidumiseks suunad kaamera QR-koodile, mida sinu arvuti näitab, ja saadud võtme saab sealt igal ajal tühistada. Vahele ei jää ühtegi Yappy serverit, sest ühtegi Yappy serverit ei ole olemas."
+          },
+          {
+            "q": "Kas see töötab ilma võrguta?",
+            "a": "Jah, igaveseks. Kui mudel on korra alla laaditud — umbes 200 MB telefonis ja umbes 398 MB arvutis —, võid Yappit kasutada lennukirežiimis: kleebida teksti, avada dokumente, sünteesida ja eksportida. Ainult uute aadresside jagamiseks on vaja võrku, ilmselgetel põhjustel. Ka pilvesünkroniseeringut ei ole: sinu raamatukogu elab sinu seadmes, ja sild tuleb kõige lähemale sellele, kuidas midagi ühest masinast teise viiakse."
+          }
+        ]
+      },
+      {
+        "susurro": "mis kõlab",
+        "titulo": "Hääl ja keeled.",
+        "lista": [
+          {
+            "q": "Millist häälemudelit ta kasutab?",
+            "a": "Supertonic 3 — Supertone'i avatud mudel, umbes 99 miljonit parameetrit, mis mahub 398 MB arvutis ja 200 MB telefonis ning sünteesib igas viimaste aastate sülearvutis kiiremini kui reaalajas. Ta töötab tähtede kaupa: seepärast on olemas stsenarist, mis teeb numbrid, lühendid ja sümbolid sõnadeks enne, kui hääl neid näeb."
+          },
+          {
+            "q": "Milliseid keeli ta räägib?",
+            "a": "Saksa, araabia, bulgaaria, tšehhi, korea, horvaatia, taani, slovaki, sloveeni, hispaania, eesti, soome, prantsuse, kreeka, hindi, ungari, indoneesia, inglise, itaalia, jaapani, läti, leedu, hollandi, poola, portugali, rumeenia, vene, rootsi, türgi, ukraina ja vietnami keelt. Kolmkümmend üks. Ja kümme häält on kõik polüglotid: sama hääl loeb neid kõiki, kõlavat muutmata."
+          },
+          {
+            "q": "Mis juhtub, kui ühes dokumendis on mitu keelt?",
+            "a": "Yappy tuvastab dokumendi keele ja lõik haaval iga katke oma: ingliskeelne tsitaat eestikeelses essees loetakse inglise keeles, sama häälega, ilma et sa peaksid midagi puudutama. Ja kui tuvastus eksib, saad keele käsitsi paika panna."
+          },
+          {
+            "q": "Milles see erineb VoiceOverist või „Loe ekraani“ funktsioonist?",
+            "a": "Süsteemi ekraanilugerid loevad ekraani sellisena, nagu ta on, süsteemi prosoodiaga ja ilma mäluta. Yappy valmistab teksti enne etteütlust ette (puhastab artikli, teeb numbrid ja lühendid sõnadeks, märgib pausid), loeb seda loomuliku häälega, mäletab, kus pooleli jäid, eksportib audioraamatuid ja kõlab edasi ka siis, kui ekraan on lukus. Need on kaks sugulast, erineva ametiga, ja nad saavad korraga töötada, üksteist takistamata: Yappy ei asenda ekraanilugerit ega püüagi seda teha."
+          }
+        ]
+      },
+      {
+        "susurro": "mis sisse läheb",
+        "titulo": "Dokumendid.",
+        "lista": [
+          {
+            "q": "Milliseid vorminguid ta aktsepteerib?",
+            "a": "Veebiartiklid (leht puhastab end ise), videod avaldatud transkriptsiooni kaudu, PDF, EPUB, Word, ODT, RTF, Markdown, lihttekst, .pptx, .xlsx, .csv ja helimärkmed. Telefonis kõik jagamispaani kaudu; töölaual lisaks lohistades või kiirklahvidega. Ja kui arvutis on pandoc olemas, laieneb loend veel LaTeXile, reStructuredTextile, Orgile ja mõnele teisele."
+          },
+          {
+            "q": "Ja need skaneeritud PDF-id, mille sees teksti ei ole?",
+            "a": "Töölaual käivad need enne lugemist läbi kohaliku OCR-i, ja sealgi ei välju sinu arvutist midagi. iPhone'il veel mitte: kui PDF on paberist pildistatud foto, ei leia telefon teksti, mida lugeda. Vildakas või hägune skann annab selle, mida ükskõik milline OCR suudab, aga korralik skann loetakse otsast lõpuni läbi."
+          },
+          {
+            "q": "Kas ta loeb raamatuid, mis ma poest ostsin?",
+            "a": "Ainult need, mida sa avada saad. Kaitseta EPUB loetakse tervikuna läbi, koos peatükkidega. Poest ostetud DRM-iga raamatuid ei saa lugeda, ei siin ega kusagil mujal: see lukk ei ole Yappy oma, ega me ei hakka teesklema, et võtit oleks."
+          },
+          {
+            "q": "Kuidas raamatukogust midagi kustutada?",
+            "a": "Raamatukogust endast: igal dokumendil on oma unustamise valik, ja sellega kaob ka selle heli. Eksporditud failid (.m4b, .mp3, .wav) on sinu omad ja elavad seal, kuhu sa nad salvestasid; nende kustutamine ja liigutamine on Finderi või Failide asi."
+          }
+        ]
+      },
+      {
+        "susurro": "kui midagi läheb katki",
+        "titulo": "Rikked ja abi.",
+        "lista": [
+          {
+            "q": "Miks esimene süntees võtab paar sekundit rohkem aega?",
+            "a": "Esmakordselt laaditakse mudel mällu. Pärast on ta soe, ja järgmised laused tulevad käigu pealt. Kui sa just installisid rakenduse arvutisse, tuleb esimese ootamise sisse veel ka häältemudeli allalaadimine."
+          },
+          {
+            "q": "Üks sõna hääldatakse valesti. Kas teda saab õpetada?",
+            "a": "Kasutaja hääldussõnastikku pole, nii et kiire tee on kirjutada sõna redaktoris nii, nagu ta kõlab: mudel loeb tähemärke ja kuulab sind. Kui tegu on üldise mustriga (lühend, akronüüm, mõõtühik), räägi sellest <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHubi teemades</a>: hääldusreeglite tabelid kasvavad sellistest juhtumitest."
+          },
+          {
+            "q": "Jagasin ühe video, aga ta ei ütle midagi.",
+            "a": "Yappy kasutab video avaldatud transkriptsiooni, mitte selle heli transkriptsiooni. Kui sellel videol transkriptsiooni pole, pole seal midagi lugeda. Ja kui video on sinu enda ja sul on fail käes, jaga fail: siis transkribeerib ta kohalik kõrv."
+          },
+          {
+            "q": "Leidsin vea. Kus sellest rääkida?",
+            "a": "<a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHubi teemades</a> või kirjutades aadressile <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Kui saad kaasa teksti, mille peal viga ilmnes, ja mainid oma süsteemi, saab asja kiiremini korda."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Yappy privaatsus: sinu tekstid ei rändu kuhugi",
+    "description": "Mis sinu seadmest välja läheb ja mis mitte, öeldud otse välja: süntees, transkriptsioon ja artiklite eraldamine toimuvad seespool; võrku puudutab vaid neli juhtumit, ja me loeme kõik neli ära.",
+    "h1": "Sinu tekstid ei rändu.",
+    "actualizado": "Viimati uuendatud: {fecha}. Vastutav isik: José Luis Saorín Ferrer, Tenerife (Hispaania).",
+    "bloques": [
+      {
+        "titulo": "Millega siin tegu on",
+        "texto": "See on Yappy privaatsuspoliitika: iPhone'i, iPadi, Maci, Windowsi ja Linuxi rakendus, koos oma vidinate ja laiendustega. Ta on lühike, sest rääkida on vähe. Yappyl pole kontosid, ta ei küsi sinu nime ega postiaadressi, ja see, mille sa talle lugeda annad, ei välju sinu seadmest. Võrku puudutab küll neli konkreetset asja, ja siin nad kõik on, üks haaval."
+      },
+      {
+        "titulo": "Ei kontot, ei nime, ei tekste",
+        "texto": "Yappyl pole registreerimist ega sisselogimist. Ta ei kogu sinu nime, postiaadressi, kontakte, asukohta ega ühtegi reklaami-ID-d. Artiklid, PDF-id, EPUB-id, dokumendid, diktofoni salvestised ja tekstid, mida sa rakendusega jagad, muutuvad kõneks <strong>sinu seadme sees</strong>: süntees, transkriptsioon ja lehtede puhastus toimuvad kohapeal ega lähe ühelegi meie ega kolmandate osapoolte serverile. Pilve sünkroniseerimist ka pole: sinu raamatukogu, sinu edusammud ja sinu audioraamatud elavad sinu seadmes ja kaovad, kui rakenduse ära kustutad."
+      },
+      {
+        "titulo": "Võrku puudutab (1): häälte allalaadimine",
+        "texto": "Esmal korral laadib Yappy häältemudeli alla (telefonis umbes 200 MB, arvutis umbes 398 MB) aadressilt <code>modelos.yappy.joseluissaorin.com</code>, mis on Cloudflare'i R2 ladu. Nagu igal allalaadimisel, näeb server sinu IP-aadressi, seni kuni päring kestab. Me ei hoia ühtegi kirjet, mis sind tuvastaks. Pärast seda allalaadimist töötab süntees lennukirežiimis, igaveseks."
+      },
+      {
+        "titulo": "Võrgukäik (2): lingid, mida jagad",
+        "texto": "Kui jagad lingi või video, käib sinu seade sellel aadressil ja toob sealt teksti või transkriptsiooni — just nii, nagu teeks seda sinu brauser. Külastuse teeb sinu seade, mitte Yappy server, ja külastatav sait näeb seda, mida ta brauserilt saaks: sinu IP-aadressi ja seadme tüüpi. Ajalugu ei salvestata kuhugi mujale kui sinu seadmesse."
+      },
+      {
+        "titulo": "Võrgukäik (3): anonüümne statistika",
+        "texto": "Seda tuleb öelda otse: <strong>analüütikat on</strong>, ainult mobiilirakenduses, ja see on sisse lülitatud. Saad selle igal ajal välja lülitada seadetest, „Anonüümne statistika“ alt. Saadetakse sündmuse nimi suletud loendist (et rakendus avati, milline samm sissejuhatavast tutvustusest käsil on, millisele plaanile puudutati, kas lugemine lõppes), juhuslik paigaldustunnus, rakenduse keel ja versioon. <strong>Mitte kunagi</strong> sinu nimi, sinu e-post, loetav tekst, dokumendi pealkiri, link ega reklaamitunnus. Need ei lähe Google Analyticsesse, Firebasesse ega ühelegi analüütikafirmale: andmed lähevad autorile kuuluvasse Workerisse ja Cloudflare'i D1 andmebaasi, et näha, milliseid rakenduse osi kasutatakse ja millised on ülearused. Töölauaversioonis pole statistikat üldse."
+      },
+      {
+        "titulo": "Võrgukäik (4): ostud",
+        "texto": "Yappy Parlanchín-i tellimusi ja eluaegset ostu haldab Apple App Store'i kaudu, ja need on olemas ainult iPhone'is ja iPadis. Et teada, kas sinu tellimus kehtib, võtab rakendus kasutusele <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, tellimuste halduri, mis saab kätte anonüümse paigaldustunnuse ja Apple'i kviitungi; sinu nime ega e-posti ta ei saa. Apple seletab oma andmeid lahti <a href=\"https://www.apple.com/legal/privacy/\">oma privaatsuspoliitikas</a>."
+      },
+      {
+        "titulo": "Sild: sinu iPhone'ist arvutisse ja tagasi",
+        "texto": "Kui sidud Yappy oma Maci või PC-ga, liiguvad konverteerimiseks saadetud dokumendid otsese ja otsast otsani krüpteeritud ühenduse kaudu sinu kahe seadme vahel — abiks on <a href=\"https://iroh.computer\">iroh</a> teek, mis töötab QUIC-i peal. Üksteise leidmiseks võidakse kasutada relee-servereid, mis näevad vaid krüpteeritud liiklust ja ei suuda seda lugeda. Yappyl pole ühtegi vaheserverit, mis midagi alles hoiaks, sest Yappyl polegi servereid."
+      },
+      {
+        "titulo": "Alaealised ja loadid",
+        "texto": "Yappy ei ole mõeldud alla 13-aastastele ega kogu mitte kellegi isikuandmeid, olgu inimene mistahes vanuses. Süsteemilt küsitavaid lube kasutatakse vaid selleks üheks toiminguks ja sel hetkel: lõikelaud kleebimiseks, kaamera silla QR-koodi lugemiseks, mikrofon arvutis dikteerimiseks. Ükski neist ei tööta taustal."
+      },
+      {
+        "titulo": "Sinu õigused ja kelle poole pöörduda",
+        "texto": "Kuna me isikuandmeid ei salvesta, pole meie serveritel midagi eksportida ega kustutada: kõik, mida Yappy sinu kohta teab, elab sinu seadmes ja kaob rakenduse desinstallimisel. Kui tahad, et meideni ei jõuaks isegi anonüümne statistika, saab selle välja lülitada rakendusest enesest. Küsimuste korral kirjuta aadressile <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> või ava teema <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a>is. Kood on avatud, MIT litsentsiga: kõike ülaltoodut saab järele kontrollida, koodi lugedes."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy düsleksia, ADHD ja vaegnägemuse jaoks: kuulata, mida lugeda ei saa",
+    "description": "Ette loev vahend, mis ei nõua kontot, ei arvesta tunde ega vaja võrguühendust. Düsleksiale, ADHD-le, silmaväsimusele, vaegnägemusele ja neile, kes loevad lihtsalt paremini kõrvadega.",
+    "h1": "Loe kõrvadega.",
+    "entradilla": "Seda, mida loed, peaks saama kuulata — see on ligipääsetavuse küsimus, ja ligipääsetavuse vahendid ei tohiks maksekaarti nõuda. Yappy ei nõua, ei pea minutite arvestust ja töötab ka lennukis.",
+    "voiceover_titulo": "Yappy ei asenda VoiceOver'it",
+    "voiceover_texto": "Need on sugulasvahendid, kelle ametid on erinevad. Ekraanilugeja kirjeldab kasutajaliidest, et sellega toime tulla; Yappy loeb sisu, et seda nautida. Mõlemat saab korraga kasutada, ilma et üks teist segaks.",
+    "casos": [
+      {
+        "titulo": "Düsleksia",
+        "texto": "Tähti ükshaaval dekodeerida on väsitav, ja väsimus sööb arusaamise ära palju varem, kui aeg seda jõuab. Kui teksti saab kuulata samal ajal, kui see ekraanil helendab, saab lugeda ja kuulata korraga: silm jälgib rida, kõrv teeb raske töö. Yappy midagi ei paranda, aga tõstab kõrvale selle osa, mis väsitab."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "Vaikne lehekülg kutsub minema. Edasi liikuv hääl hoiab rütmi ja toob lõigu juurde tagasi, kui pea on jalutama läinud. Ja kuna kuulata saab ka kõndides või käed hõivatult, ei nõua lugemine enam paigal püsimist: paljude jaoks ongi see kogu vahe."
+      },
+      {
+        "titulo": "Vaegnägemus ja silmaväsimus",
+        "texto": "Kui väikese kirjaga enam arvestada ei saa, või kui seitsmeks õhtul on silmad oma päevatöö ära teinud, jääb tekst siiski kättesaadavaks — kõrva kaudu. Yappy loeb PDF-i, e-kirja või terve artikli ära, vajadusel kustunud ekraaniga, lukustuskuvalt või kõrvaklappidest."
+      },
+      {
+        "titulo": "Keelte õppimine",
+        "texto": "Kuulamine ja lugemine samal ajal on vanim ja tõhusaim viis häälduse õppimiseks. Kümme häält on polüglotid ja loevad kõiki 31 keelt iga keele enda reeglite järgi, nii et saksa tekst kõlab saksa keeles, mitte inglise aktsendiga. Kiirusel 0,75× on iga silp kuulda; kiirusel 1,5× saab kõrv harjutust."
+      },
+      {
+        "titulo": "Kirjutatu parandamine",
+        "texto": "Lause, mida ei saa valjusti öelda, ei pea kirjas ka vastu. Enda teksti kuulamine paljastab kordused, valesti pandud komad ja lisandid, mis ei lõpe kunagi. See on korrektuur, mida kunagi trükikodades tehti, ja see on tasuta: avad .docx-faili, vajutad esitust ja kuuled, mida tegelikult kirjutasid, mitte seda, mida arvasid kirjutanud olevat."
+      },
+      {
+        "titulo": "Õppimine kõrvadega",
+        "texto": "Aine konspekt, peatükk, mis eksamil küsitakse, kahesajaleheküljeline artikkel. Saadad need öösel trükki ja hommikuks on nad audioraamat peatükkidega, mida kuulad bussis. Jätkamine jätab meelde täpse lõigu: midagi ei pea otsima."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Kas see töötab siis, kui VoiceOver või TalkBack on sisselülitatud?",
+        "a": "Jah, ja need ei sega üksteist. Ekraanilugeja kirjeldab liidest, et saaksid sellega ringi liikuda; Yappy loeb sisu, et saaksid seda kuulata. Neid kasutatakse koos: VoiceOver viib taasesitusnupuni ja sealt edasi loeb raamatut Yappy hääl."
+      },
+      {
+        "q": "Kas seda saab kasutada ilma ekraanile vaatamata?",
+        "a": "Jah. iPhoneis on Siri otseteed („Hei Siri, loe mu lõikelaud Yappiga”), toimingunupp, lukustuskuva juhtnupud ja kõrvaklappide juhtnupud. Arvutis on kolm klaviatuuriotseteed: üks loeb valitud teksti, teine lõikelaua, kolmas peatab esituse — rakendus võib püsida tegumireal peidus."
+      },
+      {
+        "q": "Kas see loeb kooli-PDF-id ja raamatud, mis mul juba on?",
+        "a": "Iga PDF, EPUB, Word või ODT, mida avada saab. Kui PDF on skann ilma tekstita, ajab töölauaversioon selle enne ettelugemist läbi kohaliku OCR-i; mobiilil seda võimalust veel pole. Poe DRM-kaitsega raamatuid ei saa lugeda kusagil — siin ka mitte."
+      },
+      {
+        "q": "Kui palju maksab seda iga päev kasutada?",
+        "a": "Mitte midagi. Pole minutite ega tähemärkide loendurit, reklaame pole ja kontot pole vaja. Võib kuulata kaheksa tundi päevas aastaid järjest, ilma ühtegi senti maksmata ja ilma võrguta. Tasuline osa lisab ainult põhjeta áe, trükikoja ja silla — ja ainult iPhone'is ning iPadis."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Jutte papagoile: avaliku omandi tekste Yappi proovimiseks",
+    "description": "Terved avalikus omandis lood, valmis Yappiga jagamiseks ja otsast lõpuni kuulamiseks. Ei registreerimist ega allalaadimist.",
+    "h1": "Jutte papagoile.",
+    "entradilla": "Terved tekstid, avalikus omandis. Jaga seda lehte Yappiga ja papagoi loeb selle sulle ette.",
+    "dominio_publico": "Avalikus omandis."
+  },
+  "blog": {
+    "title": "Yappi blogi: kirjutatu kuulamine",
+    "description": "Kuidas PDF heliks teisendada, miks tekstilugeja peaks töötama ka ilma võrguta, kuidas numbreid valjusti öeldakse ja mida õppisime rakendust tehes, mis räägib.",
+    "h1": "Kirjutatu kuulamine.",
+    "entradilla": "Ametioskus, nipid ja veidi ajalugu valjusti lugemise kohta. Iga artiklit saab kuulata siinsamas, ette loetuna Yappi enda häälega.",
+    "escuchame": "Kuula seda artiklit",
+    "escuchame_nota": "Ette loeb Yappy häälega {voz}, otse sinu brauseris.",
+    "vacio": "Selles keeles pole veel ühtegi artiklit."
+  },
+  "convertir": {
+    "title": "Muuda mis tahes tekst kõneks: PDF, EPUB, Word, artiklid ja videod",
+    "description": "Kuus viisi muuta see, mida loed, loomulikuks kõneks — kõik sinu enda seadmes: PDF, EPUB, Word, veebiartiklid, videod ja helimärkmed.",
+    "h1": "Teisenda",
+    "entradilla": "Ei loe, mil kujul see tuleb: artikkel, raamat, dokument või salvestis. Yappy muudab selle loetavaks tekstiks ja loeb valjusti ette. Fail ei lahku sinu seadmest.",
+    "pasos_titulo": "Kolmes sammus.",
+    "faq_titulo": "Küsimused selle kohta",
+    "otros_titulo": "Muud, mida ta ka loeb",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "Teisenda PDF heliks: kuula PDF-i valjusti ette, tasuta",
+        "description": "Muuda mis tahes PDF loomuliku häälega kõneks ja kuula seda muu tegemise kõrval, või salvesta see peatükkidega audioraamatuks. Pilve ei lähe midagi ja lehekülgi pole piiratud.",
+        "h1": "Kuula oma PDF-faile.",
+        "entradilla": "Teadusartikkel, juhend, konspekt või leping. Yappy avab PDF-i, eemaldab päised ja korduvad leheküljenumbrid, leiab peatükid üles ja loeb selle loomuliku häälega tervikuna ette. Fail ei lahku sinu seadmest.",
+        "pasos": [
+          {
+            "titulo": "Jaga PDF-i",
+            "texto": "Failidest, e-postist või Safarist: puuduta Jaga ja vali Yappy. Arvutis lohista fail aknasse."
+          },
+          {
+            "titulo": "Vali hääl",
+            "texto": "Kümme häält, 31 keelt. Kui PDF on mõnes teises keeles, tunneb Yappy keele ise ära."
+          },
+          {
+            "titulo": "Kuula või salvesta",
+            "texto": "Vajuta esitusnupule või anna fail trükikotta — saad peatükkidega audioraamatu."
+          }
+        ],
+        "extra_titulo": "Skaneeritud PDF-id",
+        "extra_texto": "Kui PDF on lihtsalt paberi foto ja teksti pole sees, ajab töölauaversioon selle enne lugemist läbi kohaliku OCR-i. iPhone'il pole seda veel.",
+        "faq": [
+          {
+            "q": "Kas lehekülgede arv on piiratud?",
+            "a": "Ei. Kolmeleheküljeline artikkel või neljasajaleheküljeline väitekiri: PDF lehitsetakse tervenisti läbi ja loetakse tervenisti ette. Kuna kõik toimub sinu enda seadmes, pole ühtegi tähemärkide kvootti, mida kulutada, ega ühtegi arvet, mis seitsmenda peatüki poole peal käest ära jookseks."
+          },
+          {
+            "q": "Ja kui PDF on skann, milles teksti pole?",
+            "a": "Töölauaversioon ajab selle enne lugemist läbi kohaliku OCR-i, ja ka seal ei lahku sinu arvutist midagi. iPhone'il pole seda veel: kui PDF on paberi foto, ei leia telefon ühtegi teksti, mida lugeda."
+          },
+          {
+            "q": "Kas päised ja leheküljenumbrid jäetakse välja?",
+            "a": "Jah. Yappy tuvastab selle, mis kõigil lehekülgedel kordub (päis, jalus, leheküljenumber, ajakirja nimi), ja jätab selle lugemata. Mitte midagi ei riku kuulamist nii palju kui „Peatükk 3, lehekülg 47“ iga pooleteise minuti tagant."
+          },
+          {
+            "q": "Kas saan kuulata ainult üht peatükki?",
+            "a": "Jah. Yappy otsib dokumendist päris pealkirjad ja teeb nendest sirvitava sisukorra. Raamatukogus valid, milliseid peatükke kuulata tahad ja millised trükikotta saata, ning audioraamat tuleb just nendega."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "EPUB-i teisendamine audioraamatuks: sinu raamat, ette loetuna",
+        "description": "Teisenda EPUB audioraamatuks, millel on päris peatükid ja mis valmib sinu enda seadmes. Tunnipõhist tellimust pole, üleslaadimist ühelegi serverile pole.",
+        "h1": "Sinu EPUB, nüüd audioraamat.",
+        "entradilla": "Raamatud, mis sul juba olemas on, koos oma peatükkidega, ette loetud loomuliku häälega. Jätad ta õhtul magamamineku ajal renderdama ja hommikuks on ta raamatukogus: .m4b-fail, mis avaneb igas mängijas.",
+        "pasos": [
+          {
+            "titulo": "Jaga EPUB-i",
+            "texto": "Failidest või sealt, kus ta parasjagu on. Peatükid tulevad kaasa juba ära tundetuna."
+          },
+          {
+            "titulo": "Anna trükikojale tellimus",
+            "texto": "Valid peatükid, hääle ja kiiruse. Papagoi trükib töö valmis isegi siis, kui rakenduse kinni paned."
+          },
+          {
+            "titulo": "Kuula, kus tahad",
+            "texto": "Ta jääb raamatukokku .m4b-failina koos järjehoidjatega; sealt jagad ta Failidesse, Raamatutesse või kuhu iganes tahad."
+          }
+        ],
+        "extra_titulo": "DRM-kaitsega raamatud",
+        "extra_texto": "Yappy loeb neid EPUB-e, mida saad avada. Poodide DRM-iga kaitstud raamatuid ei saa lugeda – ei siin ega kuskil mujal.",
+        "faq": [
+          {
+            "q": "Kas raamatu peatükid säilivad?",
+            "a": "Jah, ja need on päris peatükid, mitte märgised iga kümne minuti tagant: need tulevad EPUB-i enda sisukorrast. Valminud .m4b sirvitakse peatükkide kaupa igas audioraamatute mängijas, koos kaanega ja jätkamisega sealt, kus pooleli jäid."
+          },
+          {
+            "q": "Kui kaua võtab terve raamat aega?",
+            "a": "Sõltub seadmest ja raamatu suurusest, aga praktiline vastus on: jäta ta enne magamaminekut tööle, hommikuks on valmis. Kui sul on sild, sünteesib sinu arvuti ta palju kiiremini ja toob telefoni juba valminud raamatuna tagasi."
+          },
+          {
+            "q": "Aga DRM-kaitsega raamatud?",
+            "a": "Yappy loeb neid EPUB-e, mida saad avada. Poodide DRM-iga kaitstud raamatuid ei saa lugeda – ei siin ega kuskil mujal: see lukk pole meie oma."
+          },
+          {
+            "q": "Kuhu audioraamat jääb?",
+            "a": "Yappy raamatukokku, päris .m4b-failina. Sealt jagad ta Failidesse, Raamatutesse või mängijasse, mida juba kasutad. Fail on sinu oma: kui rakenduse kustutad, jääb eksporditu sinna, kus sa selle hoidsid."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Wordi ettelugemine: DOCX, ODT ja RTF helifailiks",
+        "description": "Teisenda Wordi, LibreOffice'i ja lihttekstidokumendid loomulikuks kõneks, et neid kõrvaga üle kuulata. Kõik toimub sinu arvutis või telefonis.",
+        "h1": "Toimeta kõrvaga.",
+        "entradilla": "Oma kirjutatu kuulamine on parim toimetamine üldse: lause, mida valjusti öelda ei saa, ei pea vastu ka kirjas. Yappy loeb faile .docx, .odt, .rtf, .txt ja Markdown – koos pealkirjade ja rütmiga.",
+        "pasos": [
+          {
+            "titulo": "Ava dokument",
+            "texto": "Lohista see arvutiaknasse või jaga telefonist."
+          },
+          {
+            "titulo": "Kuula lõigu kaupa",
+            "texto": "Tekst helendab, kui ta kostab; puudutad, kuhu tahad, ja hüppad edasi."
+          },
+          {
+            "titulo": "Paranda see, mis kriuksub",
+            "texto": "Ja kuula uuesti. Arvutis võib igal lõigul olla oma hääl ja oma kiirus."
+          }
+        ],
+        "extra_titulo": "Ka arvutustabelid ja esitlused",
+        "extra_texto": "Loeb faile .pptx, .xlsx ja .csv. Arvutis, kui pandoc on paigaldatud, tuleb loendisse juurde veel LaTeX, reStructuredText, Org ja mõni muu.",
+        "faq": [
+          {
+            "q": "Milliseid tekstivorminguid ta täpselt loeb?",
+            "a": ".docx, .odt, .rtf, .txt ja Markdown, lisaks .pptx, .xlsx ja .csv. Arvutis, kui pandoc on paigaldatud, tuleb loendisse juurde veel LaTeX, reStructuredText, Org ja mõni muu."
+          },
+          {
+            "q": "Kas ta loeb ka allmärkusi ja tabeleid?",
+            "a": "Ta loeb dokumendi põhiteksti koos pealkirjade ja järjekorraga. Tabelid loetakse rea haaval – rohkem tabeliga valjusti teha ju ei oska – ja allmärkused jäävad oma jaotise lõppu, mitte lause keskele."
+          },
+          {
+            "q": "Kas igale lõigule saab anda erineva hääle?",
+            "a": "Arvutis jah: lõigupõhises redaktoris saab igale lõigule määrata hääle, kiiruse ja pausi. Just see teeb dialoogist, intervjuust või kahekeelsest dokumendist kuulatava."
+          },
+          {
+            "q": "Kas sellega saab tõesti toimetada?",
+            "a": "See on parim toimetamine, mis on. Kõrv paljastab, mida silm andestab: korduse kolme rea tagant, kõrvallause, mis ei lõpe, ja vahelelause, mis on verbi ära söönud. Võtad kiiruseks 0,9×, kuulad peatüki läbi ja kirjutad üles, mis kriuksub."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Artiklid",
+        "title": "Veebiartiklite kuulamine: mis tahes veebileht, valjusti ette loetuna",
+        "description": "Jaga leht Safarist ja Yappy loeb selle puhtalt ette: ilma menüüde, bännerite ja jalusteta. Lehe külastab ära sinu seade, mitte meie server.",
+        "h1": "Kuula, mida pidid hiljem lugema.",
+        "entradilla": "Kaart, mille sa hiljemaks lahti jäät. Jaga see Yappy'le ja kuula ära, kui nõusid pesed. Leht koristab ennast ise: menüüd, bännerid ja jalused välja. Järele jääb proosa koos pealkirjade ja rütmiga.",
+        "pasos": [
+          {
+            "titulo": "Puuduta jaga",
+            "texto": "Safaris, uudistelugejas, meilis: kus on jagamisaken, seal on ka Yappy."
+          },
+          {
+            "titulo": "Puhastub ise",
+            "texto": "Eraldamine toimub sinu seadmes. Kui mõni väljaanne on sinu tellitud, haarab see just selle artikli, mida sina näed."
+          },
+          {
+            "titulo": "Läheb järjekorda",
+            "texto": "Ja jääb ootama, kuni sul jälle käed vabad on."
+          }
+        ],
+        "extra_titulo": "Mis võrku läheb",
+        "extra_texto": "Ainult külastus aadressile, mille sa jagasid – teeb seda sinu enda seade, täpselt nagu brauser. Vahepeal pole ühtegi Yappy serverit, sest ühtegi Yappy serverit pole olemas.",
+        "faq": [
+          {
+            "q": "Kas see töötab väljaannetega, mida ma tellin?",
+            "a": "Eraldamise teeb sinu enda seade sinu sessiooniga, nii et võetakse just see artikkel, mida sina oma brauseris näed. Kui sina saad seda lugeda, saab Yappy selle ette lugeda. Maksemüüri ei pea ületama ükski vaheserver, sest ühtegi serverit pole."
+          },
+          {
+            "q": "Ja mis saab lehtedest, mis hakkavad tööle alles JavaScriptiga?",
+            "a": "Mõned teevad vastupanu: kui tekst ilmub alles siis, kui leht on poole raamatukogu tööle pannud, võib Yappy tühjade kätega jääda. Sellisel juhul on kiireim tekst üle valida, kopeerida ja tavalise tekstina jagada."
+          },
+          {
+            "q": "Kas see jätab ajalugu sellest, mida ma loen?",
+            "a": "Ainult sinu seadmes, et saaksid jätkata sealt, kust pooleli jäid. Mitte midagi sellest kuhugi ei reisi, ja igal dokumendil on raamatukogus oma unustamise valik."
+          },
+          {
+            "q": "Kas see loeb ette menüüd, bännereid ja kommentaare?",
+            "a": "Ei. Leht puhastatakse enne lugejani jõudmist: menüüd, bännerid, jalused, jagamisnupud ja kommentaarikastid välja. Alles jääb proosa – pealkirjad ja rütm kaasas."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Videod",
+        "title": "Kuulata videot, nagu see oleks artikkel",
+        "description": "Yappy võtab video transkriptsiooni ja loeb selle ette nagu artiklit: ekraanile vaatamata, sinu soovitud kiirusega ja ilma et videoandmed kuluksid.",
+        "h1": "Videod, nagu artiklid.",
+        "entradilla": "Pool tundi videot on kümme minutit heal tempos ette loetud teksti. Yappy jääb transkriptsiooni juurde ja loeb selle ette loomuliku häälega – saad seda kuulata kõndides ja ekraani põlema panemata.",
+        "pasos": [
+          {
+            "titulo": "Jaga link",
+            "texto": "Videorakendusest või brauserist, jagamisakna kaudu."
+          },
+          {
+            "titulo": "Jääb sõnade juurde",
+            "texto": "Yappy võtab video avaldatud transkriptsiooni, mitte heli."
+          },
+          {
+            "titulo": "Kuulad omas tempos",
+            "texto": "Iga häälega ja iga kiirusega, ka siis, kui ekraan on lukus."
+          }
+        ],
+        "extra_titulo": "Kui videol pole transkriptsiooni",
+        "extra_texto": "Siis pole midagi lugeda: Yappy töötab avaldatud tekstiga, ta ei transkribeeri video heli. iPhone'il see funktsioon on olemas; Androidil veel mitte.",
+        "faq": [
+          {
+            "q": "Kas see transkribeerib video heli?",
+            "a": "Ei. Yappy võtab video juba avaldatud transkriptsiooni ja loeb selle sulle ette nagu artiklit. See on kiire, ei tarbi videoandmeid ega kuumuta telefoni; aga see tähendab, et kui videol transkriptsiooni pole, pole ka midagi lugeda."
+          },
+          {
+            "q": "Aga kui videol pole transkriptsiooni?",
+            "a": "Siis ei saa Yappy lingiga midagi ette võtta. Kui video on sinu oma ja sul on fail olemas, jaga seda helina: siis tulebki kohalik kõrv appi ja transkribeerib selle seadmes endas."
+          },
+          {
+            "q": "Kas see töötab kõigil videoplatvormidel?",
+            "a": "Kus avaldatud ja kättesaadav transkriptsioon on olemas. iPhone'il see funktsioon on; Androidi versioonil veel ei ole."
+          },
+          {
+            "q": "Kas see tarbib andmeid?",
+            "a": "Väga vähe: alla laaditakse tekst, mitte video. Pool tundi videot on paarkümmend kilobaiti transkriptsiooni, ja kogu ülejäänud teeb sinu seade ära."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Helimärkmed",
+        "title": "Helimärkmete teisendamine tekstiks otse telefonis",
+        "description": "Yappy transkribeerib salvestised ja helimärkmed sinu enda seadmes, ilma et neid kuhugi üles laaditaks, ja loeb seejärel transkriptsiooni sulle ette.",
+        "h1": "Helist tekstiks – ja tagasi.",
+        "entradilla": "Salvestatud koosolek, autos dikteeritud mõte, eilne tund. Yappy transkribeerib selle sinu seadmes kohaliku kõrvaga ja jätab teksti sulle: loe seda, paranda või kuula uuesti teise häälega.",
+        "pasos": [
+          {
+            "titulo": "Jaga salvestist",
+            "texto": "Helimärkmetest, Failidest või mis tahes rakendusest, kus heli salvestub."
+          },
+          {
+            "titulo": "Transkribeeritakse seadmes",
+            "texto": "Mudeliga, mis jookseb sinu seadmes. Heli ei lahku sealt."
+          },
+          {
+            "titulo": "Loe või kuula",
+            "texto": "Jääb nagu iga teine dokument: seda saab lugeda, jagada ja uuesti ette lugeda."
+          }
+        ],
+        "extra_titulo": "Kõrv laaditakse alla eraldi",
+        "extra_texto": "Transkriptsioon kasutab teistsugust mudelit kui hääl ja laaditakse alla alles siis, kui seda kasutad.",
+        "faq": [
+          {
+            "q": "Milline mudel transkribeerib?",
+            "a": "Parakeet TDT 0.6B v3, NVIDIA mudel litsentsiga CC-BY-4.0, töötab sinu seadmes. See on teine mudel kui hääle oma: üks kuulab, teine räägib."
+          },
+          {
+            "q": "Kas heli läheb minu seadmest välja?",
+            "a": "Ei. Salvestis transkribeeritakse kohapeal, täpselt nagu hääl sünteesitakse kohapeal. Pilves töötavat transkriptsiooniteenust, kontot ega üleslaadimist ei ole."
+          },
+          {
+            "q": "Millistes keeltes ta transkribeerib?",
+            "a": "Kõrv ei räägi nii palju keeli kui hääl: ta transkribeerib peamised Euroopa keeled, mitte neid 31, mida Yappy oskab ette lugeda. Ette lugemiseks kõik 31; kõnest tekstiks tegemiseks see lühem hulk."
+          },
+          {
+            "q": "Kas tuleb veel midagi alla laadida?",
+            "a": "Jah: kõrv laaditakse eraldi alla ja ainult esimesel korral, mil midagi transkribeerid. Kui sa iial midagi ei transkribeeri, ei võta kõrv sinu seadmes kunagi ruumi."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Tekst kõneks {lengua} keeles: loe mis tahes teksti ette",
+    "description": "Kuula PDF-, EPUB- ja Word-faile ning artikleid {lengua} keeles loomuliku häälega, omaenda seadmes ja ilma võrguühenduseta. Kümme häält, tasuta ja ilma kontota.",
+    "h1": "Tekst kõneks {lengua} keeles.",
+    "entradilla": "Kümme häält loeb {lengua} keelt omaenda reeglite järgi: omad arvud, omad kuupäevad, omad järgarvud ja omad lühendid, mitte mõne teise keelega laenatud aktsendiga.",
+    "muestra": "Näidis",
+    "reglas_titulo": "Mida tähtede hääldaja teab {lengua} keele kohta",
+    "todas": "Ülejäänud kolmkümmend keelt"
+  },
+  "vs": {
+    "titulo": "Yappy ja {nombre} võrdlus ühe pilguga",
+    "caracteristica": "Mis",
+    "gratis": "Mida saab tasuta teha",
+    "precio": "Hind alates",
+    "local": "Hääl tekib sinu seadmes",
+    "sin_cuenta": "Ei kontot ega e-posti",
+    "sin_conexion": "Töötab võrguühenduseta",
+    "codigo_abierto": "Avatud lähtekood",
+    "tarifa": "Hind märgi või tundide kaupa",
+    "idiomas": "Keeled",
+    "formatos": "Loetavad formaadid",
+    "audiolibro": "Audioraamat peatükkidega",
+    "escritorio": "Arvuti",
+    "yappy_gratis": "Piiramatu kuulamine; kolm dokumenti korraga",
+    "yappy_precio": "0 €; tasuline versioon alates 3,99 € kuus",
+    "gana_en": "Kus {nombre} võidab",
+    "verificado": "Avalikud andmed on kontrollitud iga toote veebilehelt seisuga {fecha}.",
+    "sin_verificar": "Hinnad muutuvad sageli: kontrolli need üle enne otsustamist.",
+    "ver_web": "Ametlik koduleht",
+    "frente_a": "Võrdluses: {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Korduma kippuvad küsimused"
+  }
+}

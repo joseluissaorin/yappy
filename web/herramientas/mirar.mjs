@@ -79,7 +79,15 @@ for (const ruta of rutas.length ? rutas : POR_DEFECTO) {
       if (r.width === 0 && r.height === 0) continue;
       // Quien saca la página por la derecha, salvo lo que está pegado a
       // propósito (el collage sangra por los bordes y eso es intencionado).
-      if (r.right > vw + 1 && e.position !== "absolute") {
+      // Lo que vive dentro de un contenedor con scroll propio (la tabla
+      // comparativa, por ejemplo) se sale de la pantalla a propósito: se
+      // arrastra con el dedo. No es un desbordamiento, es un carrusel.
+      let enScroller = false;
+      for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+        const ea = getComputedStyle(a);
+        if (ea.overflowX === "auto" || ea.overflowX === "scroll") { enScroller = true; break; }
+      }
+      if (r.right > vw + 1 && e.position !== "absolute" && !enScroller) {
         fuera.push(`${el.tagName.toLowerCase()}.${(el.className || "").toString().split(" ")[0]} R=${Math.round(r.right)} W=${Math.round(r.width)}`);
       }
       // El collage sangra por los bordes a propósito: solo molesta si es mucho.

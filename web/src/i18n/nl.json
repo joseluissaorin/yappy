@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "nl",
+    "nombre": "Nederlands",
+    "dir": "ltr",
+    "ogLocale": "nl_NL",
+    "hreflang": "nl",
+    "og_alt": "„Elke tekst, hardop” in grote letters op crèmekleurig papier, met een koraalkleurige papegaai ernaast"
+  },
+  "slugs": {
+    "uso": "hoe-werkt-het",
+    "guionizador": "scriptgenerator",
+    "descargas": "downloads",
+    "precios": "prijzen",
+    "voces": "stemmen",
+    "preguntas": "veelgestelde-vragen",
+    "privacidad": "privacy",
+    "accesibilidad": "toegankelijkheid",
+    "cuentos": "verhalen",
+    "blog": "blog",
+    "convertir": "converteren",
+    "idiomas": "talen",
+    "alternativas": "alternatieven",
+    "formato_pdf": "pdf-naar-audio",
+    "formato_epub": "epub-naar-luisterboek",
+    "formato_word": "word-naar-spraak",
+    "formato_articulos": "artikelen-naar-audio",
+    "formato_videos": "video-naar-audio",
+    "formato_notas": "spraaknotities-naar-tekst"
+  },
+  "comunes": {
+    "saltar": "Naar de inhoud",
+    "marca_aria": "Yappy, homepage",
+    "idioma": "Taal",
+    "menu": "Menu openen",
+    "secciones": "Secties",
+    "descargar": "Downloaden",
+    "descargar_gratis": "Gratis downloaden",
+    "en_app_store": "Download in de App Store",
+    "escuchar_muestra": "Voorbeeld beluisteren",
+    "probar": "Nu uitproberen",
+    "leer_mas": "Lees verder",
+    "volver": "Terug",
+    "inicio": "Home",
+    "minutos": "{n} min leestijd",
+    "publicado": "Gepubliceerd op",
+    "actualizado": "bijgewerkt op",
+    "por": "door",
+    "gratis": "gratis",
+    "si": "Ja",
+    "no": "Nee",
+    "parcial": "Deels",
+    "sin_datos": "geen gegevens"
+  },
+  "nav": {
+    "uso": "Hoe het werkt",
+    "guionizador": "De scriptmaker",
+    "voces": "De stemmen",
+    "precios": "Prijzen",
+    "descargas": "Downloads",
+    "preguntas": "Veelgestelde vragen",
+    "privacidad": "Privacy",
+    "accesibilidad": "Toegankelijkheid",
+    "cuentos": "Verhalen",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "Het product",
+    "leer": "Lezen",
+    "casa": "Over ons",
+    "codigo": "De code",
+    "licencia": "MIT-licentie",
+    "novedades": "Nieuws",
+    "firma": "Yappy · met de hand gemaakt op Tenerife door <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · open source (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Text to speech: leest PDF, EPUB en artikelen hardop voor",
+    "description": "Zet elke tekst om in een natuurlijke stem: PDF, EPUB, Word, artikelen en video's, in 31 talen. Alles gebeurt op je telefoon of computer: geen cloud, geen account en geen kosten per teken. Gratis en open source.",
+    "susurro": "text to speech · 31 talen · geen cloud · open source",
+    "titular_1": "Elke",
+    "titular_texto": "tekst",
+    "titular_2": ", ",
+    "titular_voz": "hardop",
+    "titular_3": ".",
+    "entradilla": "Deel een artikel, een PDF, een EPUB, een Word-bestand of een video, en een papegaai leest het je voor met een natuurlijke stem terwijl je kookt, wandelt of je ogen sluit. Het model draait volledig op je apparaat: er gaat niets naar buiten, nooit.",
+    "nota_acciones": "gratis · geen account · geen kosten per teken",
+    "pegatina_sin_nube": "zonder\ncloud",
+    "pegatina_idiomas": "31\ntalen",
+    "pegatina_gratis": "gratis",
+    "pegatina_offline": "offline",
+    "demo_susurro": "tik en luister: dit zegt dezelfde engine die je in je zak hebt",
+    "demo_titulo": "Zo klinkt het.",
+    "demo_nota": "Het onderstreepte zet de engine zelf om in spraak: “1492” wordt “duizend vierhonderd tweeënnegentig” en “15e eeuw” wordt “vijftiende eeuw”, volgens de regels van elke taal.",
+    "momentos_susurro": "waarvoor het dient",
+    "momentos_titulo": "Drie momenten, één gebaar.",
+    "momentos": [
+      {
+        "titulo": "Tijdens het koken",
+        "texto": "Je deelt het artikel, zet de telefoon neer en de stem blijft voorlezen tussen de pannen."
+      },
+      {
+        "titulo": "Tijdens de wandeling",
+        "texto": "Het boek van gisteravond, inmiddels luisterboek met hoofdstukken, wandelt met je mee, ook heuvel op."
+      },
+      {
+        "titulo": "De nacht werkt",
+        "texto": "Je laat het renderen als je naar bed gaat; als je wakker wordt, ligt het luisterboek in je zak."
+      }
+    ],
+    "porque_susurro": "waarom het bestaat",
+    "porque_titulo": "Geen cloud, geen accounts, geen tarief per teken.",
+    "porque_entradilla": "Andere text to speech-apps sturen wat je leest naar een server en rekenen af per teken of per luisteruur. Yappy heeft geen server die betaald moet worden, dus er valt ook niets te berekenen voor het luisteren.",
+    "porque": [
+      {
+        "titulo": "Niets verlaat je apparaat",
+        "texto": "De stem wordt op je telefoon of computer gesynthetiseerd, met een open model. Ook offline werkt het: voor altijd."
+      },
+      {
+        "titulo": "31 echte talen",
+        "texto": "Tien stemmen, elke stem meertalig. Een tekst met citaten in een andere taal wisselt vanzelf van taal, alinea voor alinea."
+      },
+      {
+        "titulo": "Geen uren, geen tekens",
+        "texto": "Je luistert naar wat je wilt, zo lang je wilt. Er is geen teller, want er is geen rekening te verdelen."
+      },
+      {
+        "titulo": "Open source (MIT)",
+        "texto": "De engine, de scriptgenerator, de app en deze website zelf liggen open. Je kunt ze lezen, compileren en controleren."
+      }
+    ],
+    "formatos_susurro": "delen is de ingang",
+    "formatos_titulo": "Wat je ook leest.",
+    "formatos_entradilla": "Vanuit Safari, Mail, Bestanden of een andere app: tik op Deel en kies Yappy. De pagina ruimt zichzelf op – menu's, banners en voetteksten verdwijnen – en de tekst blijft, met zijn koppen en zijn ritme.",
+    "guion_susurro": "het stuk dat niemand anders laat zien",
+    "guion_titulo": "Voorlezen als een mens, niet als een machine.",
+    "guion_entradilla": "Voorlezen is geen letters spellen: het is interpreteren. '1492' zeg je 'veertienhonderd tweeënnegentig'; 'Hendrik VIII' zeg je 'Hendrik de Achtste', maar 'Louis XIV' zeg je in het Frans 'Louis quatorze'; 'EL CID' is geen Romeins cijfer; FBI spell je letter voor letter, NASA niet. Voordat er ook maar één lettergreep gesynthetiseerd wordt, zet Yappy de tekst om in een <strong>leesscript</strong>: de partituur van wat de stem echt gaat zeggen.",
+    "guion_pruebalo": "Probeer het hier meteen uit: dit is dezelfde Rust-code als in de app, gecompileerd voor je browser.",
+    "guion_boton": "Script maken",
+    "guion_ejemplo": "De 19e eeuw eindigde in 1900. Lodewijk XIV regeerde 72 jaar, gaf € 3,50 uit aan ijs en de FBI kreeg er nooit lucht van.",
+    "guion_marcador": "Schrijf iets met getallen, afkortingen, data of eeuwen…",
+    "guion_espera": "Het script verschijnt hier, met de omgezette stukken onderstreept.",
+    "guion_fallo": "De scriptgenerator laadt niet in deze browser. In de app zit hij gewoon.",
+    "guion_mas": "Hoe de scriptgenerator werkt",
+    "capturas_susurro": "zo ziet hij eruit, zonder retouches",
+    "capturas_titulo": "Screenshots van de echte app.",
+    "capturas_entradilla": "Geen gelikte mockups: dit is Yappy terwijl hij draait, met echte teksten op de stok en de voorlezer met zijn script klaar.",
+    "precio_susurro": "het geld, zonder omhaal",
+    "precio_titulo": "Echt gratis, en een papegaai die je kunt opwinden.",
+    "precio_entradilla": "De proefpapegaai houdt drie documenten tegelijk op zijn stok en leest ze onbeperkt lang voor. Haal er één af, en er past meteen weer een nieuwe op. Wil je een bodemloze stok, de luisterboekendrukkerij en de brug naar je computer, dan mag je hem opwinden.",
+    "cierre_titulo": "Een papegaai in je zak.",
+    "cierre_texto": "Gratis, geen account en niets in te vullen. Installeer hem, deel een tekst, en er klinkt een stem."
+  },
+  "uso": {
+    "title": "Zo gebruik je Yappy: delen, luisteren en weinig meer",
+    "description": "De complete gids: delen vanaf je iPhone, de sneltoetsen op de computer, de QR-brug tussen telefoon en Mac, luisterboeken met hoofdstukken, Siri, de widgets en de instellingen.",
+    "h1": "Je deelt, en het klinkt.",
+    "entradilla": "Yappy kent één gebaar: delen. De rest zijn details die al ingebouwd zitten.",
+    "pasos": [
+      {
+        "titulo": "Deel",
+        "texto": "Vanuit elke app: Safari, Mail, Bestanden, een spraakmemo, de PDF die je via een chat hebt gekregen. Je tikt op Deel, kiest Yappy en de app opent vanzelf."
+      },
+      {
+        "titulo": "Kies de stem",
+        "texto": "Tien stemmen, stuk voor stuk polyglot. Staat de tekst in een andere taal, dan herkent Yappy die vanzelf en leest hij volgens de regels van die taal, niet met een geleend accent."
+      },
+      {
+        "titulo": "Luister",
+        "texto": "Je vergrendelt het scherm en stopt de telefoon weg. De stem gaat door: omslag, titel en bediening staan op het vergrendelscherm, en de oortjes hebben het voor het zeggen."
+      },
+      {
+        "titulo": "Bewaar het",
+        "texto": "Wil je het voor de wandeling van morgen bewaren, dan levert de drukkerij het als .m4b-audioboek met hoofdstukken af, en het opent in elke speler."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "Op de iPhone en de iPad",
+        "texto": "Delen is de hele handleiding. Vanuit elke app tik je op Deel en kies je Yappy: hij accepteert links, losse tekst, PDF, EPUB, Word, ODT en audio. Yappy opent meteen vanzelf. Er blijft niets sudderen in het deelmenu, want iOS kapt extensies af bij 120 MB; Yappy kopieert wat je deelt en springt door naar de app, waar geen limiet geldt. Die sprong is het ontwerp, geen lapwerk. <strong>Alles gebeurt op het toestel</strong>: het enige netwerk dat Yappy aanraakt, is het bezoek aan het adres dat je deelde, vanaf je eigen telefoon.",
+        "puntos": [
+          "De wachtrij maakt alles klaar terwijl je kijkt: het artikel wordt opgeschoond, de video levert zijn transcriptie mee, de PDF wordt van pagina's voorzien. Blijf je naar de app kijken, dan start het voorlezen vanzelf zodra alles klaar is.",
+          "De karaoke kleurt wat er klinkt, zin voor zin. Tik ergens om te pauzeren, sleep om naar een andere alinea te springen en langs de rand zet je de snelheid hoger of lager.",
+          "Je vergrendelt het scherm en de stem gaat door. AirPods pauzeren en hervatten; het systeem behandelt Yappy als elke andere speler.",
+          "In de kapstok passen drie documenten tegelijk: haal er een af en er past meteen een nieuwe. De meegeleverde verhalen nemen geen ruimte in."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Op de Mac, op Windows en op Linux",
+        "texto": "Eén sneltoets en er klinkt wat je op het scherm hebt: de selectie, de browserpagina of het actieve document. Alle drie de sneltoetsen stel je in bij Voorkeuren, en ze werken ook als de app in het systeemvak verstopt zit. Naast de sneltoets heeft het bureau ook wat niet in één hand past.",
+        "puntos": [
+          "<strong>De bibliotheek.</strong> Alles wat je opent of deelt komt er te staan, met omslag en voortgang erbij. Je gaat verder waar je gebleven was, tot op de alinea precies.",
+          "<strong>De alinea-editor.</strong> Elke alinea kan zijn eigen stem, snelheid en pauze meekrijgen. Voor dialogen, citaten of documenten in twee talen.",
+          "<strong>Lokale transcriptie.</strong> Sleep een spraakmemo of opname in het venster en het lokale oor maakt er leesbare tekst van, zonder dat er ook maar iets wordt geüpload.",
+          "<strong>Audioboek exporteren.</strong> Elk document komt eruit als een echte .m4b, met navigeerbare hoofdstukken uit het script. Ook als .wav of .mp3.",
+          "<strong>PDF met ogen.</strong> Gescande PDF's gaan eerst door een lokale OCR voordat ze worden voorgelezen. Digitaal geboren PDF's worden meteen gelezen, pagina voor pagina.",
+          "<strong>Thema's.</strong> Overdag crèmekleurig papier, 's nachts lichte inkt op een donkere achtergrond, of laat het systeem het bepalen.",
+          "<strong>Geen touwtjes.</strong> Op de desktop staat alles open: de drukkerij, de stok zonder bodem en de brug zitten er standaard bij."
+        ]
+      },
+      {
+        "id": "brug",
+        "titulo": "De brug: je computer rendert, je telefoon luistert",
+        "texto": "Een heel boek duurt even om te synthetiseren. De brug schuift het zware werk door naar je computer en stopt het afgeronde luisterboek weer in je zak, via een directe, end-to-end versleutelde verbinding tussen je twee apparaten. Geen server van wie dan ook ertussenin.",
+        "puntos": [
+          "Op de computer: Voorkeuren, „De brug”. Yappy laat een QR-code zien met het versleutelde adres van je machine en een uitnodigingssleutel.",
+          "Richt de camera van je iPhone op de QR-code en ze zijn gekoppeld. De sleutel wordt opgeslagen en je kunt hem op elk moment vanaf de computer intrekken.",
+          "Op je telefoon: „Converteren op de computer”. Kies je document, de computer synthetiseert het in zijn eigen tempo en de .m4b verschijnt met hoofdstukken in de bibliotheek van je telefoon. De nacht werkt voor je ochtendwandeling.",
+          "De brug is versleuteld met QUIC, via het protocol van <a href=\"https://iroh.computer\">iroh</a>. Als de twee apparaten een doorgeefluik nodig hebben om elkaar te vinden, ziet dat doorgeefluik alleen versleuteld verkeer dat het niet kan lezen."
+        ]
+      },
+      {
+        "id": "luisterboeken",
+        "titulo": "Luisterboeken: .m4b met échte hoofdstukken",
+        "texto": "Yappy exporteert geen „lange audio”: het exporteert .m4b-luisterboeken zoals in de winkel, met hoofdstukken uit de echte koppen van het document, een omslag en de plek waar je was gebleven. Ze spelen in Yappy zelf, met de bijbehorende bibliotheek en voortgang, of in elke luisterboekenspeler die je al gebruikt. En de scripter zorgt voor de ademhaling: een pauze na elke kop, en lijsten die klinken als lijsten.",
+        "puntos": [
+          "Op je telefoon bestel je ze vanuit de bibliotheek, hoofdstuk voor hoofdstuk: jij kiest wat er gedrukt wordt, en in welke stem.",
+          "De papegaai drukt gewoon door, ook als je de app sluit of je telefoon vergrendelt.",
+          "Vanuit de bibliotheek deel je het naar Bestanden, naar Boeken of waar je maar wil: het bestand is van jou.",
+          "De drukkerij zit in Yappy Parlanchín op de iPhone en de iPad. Op de computer staat hij gewoon open."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, Opdrachten en de actieknop",
+        "texto": "„Hé Siri, lees mijn klembord voor met Yappy.” De app biedt echte App Intents: ze verschijnen vanzelf in Opdrachten, ze werken met Siri en je kunt ze aan de actieknop van de iPhone hangen. Er valt niets in elkaar te zetten.",
+        "puntos": [
+          "<strong>Lees mijn klembord voor.</strong> Kopieer iets waar dan ook, vraag het aan Siri en je hoort het.",
+          "<strong>Lees verder.</strong> Hervat wat het laatst speelde, precies waar het bleef.",
+          "<strong>Luister naar een link.</strong> Accepteert een adres als parameter: de perfecte afsluiter voor je eigen opdrachten.",
+          "Voor automatisering met de hand wordt het <code>yappy://</code>-schema ook verwerkt: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> en <code>yappy://pair?d=…</code>.",
+          "En er is een widget voor het beginscherm met wat het laatst speelde, klaar om met één tik verder te gaan."
+        ]
+      },
+      {
+        "id": "instellingen",
+        "titulo": "Instellingen: weinig knoppen, allemaal echt",
+        "texto": "Yappy heeft geen paneel met honderd schakelaars. Alleen de paar die werkelijk veranderen hoe het klinkt.",
+        "puntos": [
+          "<strong>De stem.</strong> Tien stemmen, allemaal meertalig: dezelfde stem leest Nederlands, Engels of Japans zonder dat de klankkleur verandert.",
+          "<strong>Het tempo.</strong> Van 0,5× tot 2×. De stem wordt op dat tempo gegenereerd, niet achteraf versneld: de toonhoogte vervormt niet.",
+          "<strong>De pauzes.</strong> Hoeveel adem er tussen alinea's zit. Koppen en lijsten krijgen hun ritme al van de stemregisseur.",
+          "<strong>De taal.</strong> Automatische herkenning per document en per alinea, of met de hand ingesteld. Citaten in een andere taal schakelen vanzelf.",
+          "<strong>Anonieme statistieken.</strong> Op de telefoon staan ze standaard aan; hier, achter de schermen, zet je ze uit. Precies wat er wordt verstuurd, staat punt voor punt in de privacyverklaring."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Op Android",
+        "texto": "Hetzelfde gebaar: je deelt een link, een tekst of een document en het belandt in dezelfde wachtrij, met artikelextractie, karaoke en stem, allemaal op de telefoon zelf. De Android-versie is de jongste van de familie en mist nog drie dingen die de iPhone wél heeft: de bediening op het vergrendelscherm, video's en de speler voor .m4b-audioboeken. En er is iets belangrijkers: <strong>de app is er nog niet</strong>. Het Google-ontwikkelaarsaccount wordt nog geverifieerd en we noemen geen datum, want die weten we niet. Zodra de app er is, lees je het hier en in de repository. Wél dit: op Android zit niets achter slot en grendel. Alles is open."
+      }
+    ],
+    "atajo": "Snelkoppeling",
+    "atajo_leer": "Lees voor wat je ziet",
+    "atajo_portapapeles": "Lees het klembord voor",
+    "atajo_pausar": "Pauzeer",
+    "cierre": "Dit is de hele handleiding."
+  },
+  "guionizador": {
+    "title": "De stemregisseur van Yappy: van geschreven naar gesproken",
+    "description": "Hoe Yappy „1492”, „15e eeuw”, „€ 3,50” of „FBI” omzet in woorden volgens de regels van elke taal, in 31 talen. Met een live demo: dezelfde Rust als in de app, gecompileerd naar WebAssembly.",
+    "h1": "Van geschreven naar gesproken.",
+    "oficios_titulo": "Twaalf klussen in één keer.",
+    "oficios": [
+      {
+        "titulo": "Data",
+        "texto": "„24/5/1533” wordt voluit gezegd, met de volgorde en het geslacht van elke taal."
+      },
+      {
+        "titulo": "Tijden",
+        "texto": "„14:05” wordt gezegd zoals een mens het zegt, niet zoals een klok het leest."
+      },
+      {
+        "titulo": "Bedragen",
+        "texto": "„€ 3,50” wordt gezegd als „drie euro vijftig”, met het meervoud dat erbij hoort."
+      },
+      {
+        "titulo": "Percentages",
+        "texto": "“7%” zeg je als “zeven procent”, en “0,5%” wordt geen “nul komma vijf”."
+      },
+      {
+        "titulo": "Eenheden",
+        "texto": "“230 °C” zeg je als “tweehonderddertig graden Celsius”."
+      },
+      {
+        "titulo": "Rangtelwoorden",
+        "texto": "“3e” wordt “derde”, met het juiste geslacht en de juiste verbuiging waar die er zijn."
+      },
+      {
+        "titulo": "Romeinse cijfers met beleid",
+        "texto": "“hoofdstuk IV” is een hoofdtelwoord, “Hendrik VIII” is een rangtelwoord, en “MIX” is geen getal."
+      },
+      {
+        "titulo": "Spellen of lezen",
+        "texto": "De FBI spreek je letter voor letter uit; NASA lees je als één woord. Hoe het klinkt bepaalt de regel, niet een lijst."
+      },
+      {
+        "titulo": "Afkortingen",
+        "texto": "“enz.”, “p.”, “19e eeuw”: elke taal heeft zijn eigen tabel."
+      },
+      {
+        "titulo": "Grote getallen",
+        "texto": "Met de RBNF-grammatica’s van Unicode CLDR, geslacht en verbuiging inbegrepen."
+      },
+      {
+        "titulo": "31 talen",
+        "texto": "Dezelfde regels, met de grammatica van elke taal. Zonder met de hand gemaakte lijsten."
+      },
+      {
+        "titulo": "Het ritme",
+        "texto": "Koppen ademen nadat ze zijn uitgesproken; lijsten slaan hun maat. Pauzes horen thuis in het script, niet in het toeval."
+      }
+    ],
+    "cierre": "Het script is de helft van het verhaal; de andere helft hoor je.",
+    "faq": [
+      {
+        "q": "Wat zijn RBNF-grammatica’s?",
+        "a": "RBNF staat voor <em>Rule-Based Number Format</em>: de regels waarmee Unicode CLDR beschrijft hoe een getal in elke taal wordt uitgesproken. Het is geen tabel van duizend woorden, maar een grammatica. Daarom weet het dat het Spaans “doscientas páginas” zegt en niet “doscientos páginas”, dat het Russisch telwoorden verbuigt en dat het Frans tot negentig telt in twintigtallen. Yappy interpreteert ze in puur Rust, zonder met de hand gemaakte lijsten."
+      },
+      {
+        "q": "Waarom heb je een scriptgenerator nodig? Doet de stem het niet gewoon zelf?",
+        "a": "Nee, en dat is opzettelijk. Het spraakmodel van Yappy werkt op tekenniveau: het spreekt precies uit wat er geschreven staat. Dat maakt het snel en licht, maar het betekent ook dat het “1492” cijfer voor cijfer zal proberen uit te spreken. In zo’n model <em>is</em> normalisatie de uitspraak. De scriptgenerator is het onderdeel dat elk getal, elke afkorting en elk symbool omzet in de woorden die een mens zou zeggen."
+      },
+      {
+        "q": "In hoeveel talen werkt het?",
+        "a": "In de 31 talen die de stem spreekt, elk met zijn eigen regels: de volgorde van datums, de verbinding tussen getal en valuta, de rangtelwoorden, de afkortingen en de Romeinse cijfers. “eeuw XV” heet in het Spaans “siglo quince” en in het Engels “fifteenth century”; “Louis XIV” is “Louis quatorze” en niet “Louis fourteenth”. Dezelfde twaalf taken, eenendertig grammatica’s."
+      },
+      {
+        "q": "Waarom valt de karaoke altijd precies op het juiste woord?",
+        "a": "Want het script is niet zomaar omgezette tekst: het bewaart de koppeling tussen wat er staat en wat er gezegd wordt. Als de stem “duizend vierhonderd tweeënnegentig” uitspreekt, weet het script dat die vier woorden uit de vier cijfers van “1492” komen, en de onderstreping valt er precies bovenop zonder te verschuiven. Dat is het verschil tussen de tekst belichten en hem raden."
+      },
+      {
+        "q": "Een woord wordt verkeerd uitgesproken. Kan ik dat corrigeren?",
+        "a": "Er is op dit moment nog geen gebruikerswoordenboek voor uitspraak. Omdat het model tekens leest, is de snelste oplossing het woord in de editor zo te schrijven als het klinkt en het daarna weer te beluisteren. Gaat het om een algemeen patroon (een afkorting, een acroniem, een eenheid), meld het dan in <a href=\"https://github.com/joseluissaorin/yappy/issues\">de issues op GitHub</a>: de tabellen van de scriptgenerator groeien met zulke gevallen."
+      },
+      {
+        "q": "Is de scriptgenerator op deze pagina dezelfde als die in de app?",
+        "a": "Precies dezelfde code, gecompileerd naar WebAssembly zodat die in je browser draait. Wat je hier typt, verlaat je tabblad niet. En omdat het hele project open is, kun je de regels één voor één nalezen in <a href=\"https://github.com/joseluissaorin/yappy\">de repository</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Yappy downloaden: iPhone, iPad, Mac, Windows en Linux",
+    "description": "Yappy is gratis en open source. In de App Store voor iPhone en iPad; de desktopversie compileer je vanuit de code of download je van GitHub. Systeemvereisten en de grootte van het spraakmodel.",
+    "h1": "Gratis, open en van jou.",
+    "entradilla": "Geen registratie, geen e-mailadres, geen proefversie die afloopt. Downloaden en klaar.",
+    "modelo_nota": "De eerste keer downloadt Yappy het spraakmodel ({peso}). Op de iPhone komt die mee met de installatie; op de computer bij de eerste keer dat je de app opent. Daarna heb je geen verbinding meer nodig.",
+    "android_titulo": "Android",
+    "android_texto": "De Android-versie is gecompileerd en werkt, maar is nog niet gepubliceerd: het ontwikkelaarsaccount bij Google wacht nog op goedkeuring. Zodra die uitkomt, kondigen we dat hier en in de repository aan.",
+    "escritorio_aviso": "De desktopbinaries worden op GitHub gepubliceerd. Als de versie die je daar vindt ouder is dan die op de iPhone, is de nieuwste nog niet geüpload: de code is wél up-to-date en te compileren met <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone en iPad",
+        "texto": "In de App Store, gratis en zonder account. De stemmen worden met de installatie meegeleverd, dus je opent de app, deelt een tekst en het klinkt meteen. Dit is de meest complete versie: audiobooks, Siri, widget, de brug en bediening op het vergrendelscherm.",
+        "requisitos": "iOS of iPadOS 17 of hoger · het spraakmodel is ongeveer 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Downloaden in de App Store"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon en Intel, in een .dmg met Apple-notarisering. Met de drie globale sneltoetsen, de alinea-editor, OCR voor gescande PDF’s en export van audiobooks. Hier zitten geen touwtjes aan: alles is open.",
+        "requisitos": "macOS 12 of hoger · spraakmodel van ongeveer 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Releases op GitHub bekijken"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "Installer als .exe of .msi voor x64, met dezelfde sneltoetsen en dezelfde functies als de Mac-versie. Elke laptop van de laatste jaren synthetiseert sneller dan realtime.",
+        "requisitos": "Windows 10 of hoger, x64 · stemmodel van zo'n 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Bekijk de versies op GitHub"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage en .deb voor x64. Globale sneltoetsen hangen af van je desktopomgeving; als de jouwe al bezet zijn, stel je in Voorkeuren andere in.",
+        "requisitos": "x64 · stemmodel van zo'n 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Bekijk de versies op GitHub"
+      },
+      {
+        "nombre": "Vanuit de broncode",
+        "texto": "Het hele project is openbaar: de desktop-app en de mobiele app (Tauri, Rust en Svelte), de synthese-engine, de scriptgenerator met zijn meegeleverde CLDR-grammatica's en deze website zelf. Met Rust en Node geïnstalleerd levert <code>cargo tauri build</code> je eigen kopie op. Lopen de gepubliceerde binaries achter op de iPhone-versie, dan is dit de snelste weg: de broncode is altijd actueel.",
+        "requisitos": "Rust en Node · volledige instructies in de README",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Bekijk de code op GitHub"
+      }
+    ]
+  },
+  "precios": {
+    "title": "De prijzen van Yappy: voor altijd gratis, geen tarief per teken",
+    "description": "Yappy is gratis en zonder luisterlimiet: drie documenten tegelijk in de kapstok. Yappy Parlanchín voegt een bodemloze kapstok toe, een luisterboekdrukkerij en de brug, vanaf € 3,99 per maand of eenmalig € 59,99.",
+    "h1": "Het geld, op tafel.",
+    "entradilla": "Dat je kunt luisteren naar wat je leest is een kwestie van toegankelijkheid, en toegankelijkheid hoort niet om je pinpas te vragen. Daarom is het deel dat ertoe doet gratis, en er loopt geen meter mee.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "€ 0",
+    "gratis_periodo": "voor altijd",
+    "gratis_puntos": [
+      "Luisteren zonder limiet aan minuten of tekens",
+      "De 31 talen en de tien stemmen",
+      "PDF, EPUB, Word, artikelen, video's en spraakmemo's",
+      "Drie documenten tegelijk in de kapstok: haal er een af en er past weer een",
+      "Geen account, geen e-mail, geen advertenties",
+      "Open source met MIT-licentie"
+    ],
+    "gratis_no": [
+      "Geen drukkerij voor luisterboeken",
+      "Geen brug naar je computer"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "per maand",
+    "cuerda_periodo_anio": "per jaar",
+    "cuerda_periodo_vida": "eenmalig",
+    "cuerda_puntos": [
+      "Alles hierboven",
+      "Een kapstok zonder bodem: zo veel documenten als je wilt",
+      "De drukkerij: hele boeken als luisterboek, met hoofdstukken",
+      "De brug: je computer zet het om en geeft het vanzelf terug",
+      "Opzeggen wanneer je wilt"
+    ],
+    "cuerda_nota": "Bewust geen gratis proefperiode: de kapstok met drie documenten <em>is</em> de proef. Die verloopt niet en begint later niet te factureren. De prijzen zijn die van Spanje; in jouw winkel staan ze in jouw eigen munt.",
+    "cuerda_donde": "Het abonnement sluit je af in de app zelf, achterin de winkel.",
+    "solo_ios": "Op de computer en op Android is alles open: het abonnement bestaat alleen op iPhone en iPad.",
+    "comparacion_titulo": "Wat anderen vragen.",
+    "comparacion_entradilla": "Spraak-apps in de cloud betalen voor servers, telkens als je op play drukt. Daarom rekenen zij per uur of per teken af. Yappy synthetiseert op je eigen apparaat: een luisterbeurt kost niets, dus Yappy hoeft er ook niets voor te vragen.",
+    "comparacion_nota": "De officiële prijzen, geraadpleegd in september 2026. Ze veranderen vaak: controleer ze op elke site voordat je beslist.",
+    "faq": [
+      {
+        "q": "Waarom is het gratis?",
+        "a": "Omdat er geen servers betaald moeten worden. De stem wordt op je eigen apparaat gesynthetiseerd, dus luisteren kost niemand geld en er is geen rekening te verdelen. Spraak-apps in de cloud huren elke keer dat je op play drukt een machine in, en daarom rekenen zij per teken of per uur. Yappy kan je niets aanrekenen wat het zelf niets kost."
+      },
+      {
+        "q": "Wat gebeurt er als ik nooit betaal?",
+        "a": "Niets. Yappy werkt gewoon voor altijd, met de tien stemmen, de 31 talen en alle formaten, zonder advertenties, zonder account en zonder minurenteller. Het enige verschil: op iPhone en iPad heeft de kapstok plek voor drie documenten tegelijk. Haal er één af, en er past weer een nieuwe op. Op de computer geldt die limiet niet eens."
+      },
+      {
+        "q": "Is er een gratis proefperiode?",
+        "a": "Nee, en dat is een keuze, geen vergeetachtigheid. De kapstok met drie documenten <em>is</em> de proef: hij verloopt niet, vraagt geen creditcard en schrijft op de achtste dag niet ineens geld af. Niemand zou wakker moeten worden met een afschrijving waarvan je niet meer weet dat je die hebt geaccepteerd."
+      },
+      {
+        "q": "Kan ik opzeggen wanneer ik wil?",
+        "a": "Ja, via je Apple-account, zoals elk ander abonnement. Ze verlengen vanzelf aan het einde van elke periode, tenzij je minstens 24 uur voor afloop opzegt. De levenslange aankoop verlengt nooit: één keer betalen en klaar. En zeg je op, dan verlies je niets van wat gratis is: je gaat terug naar de stok met drie."
+      },
+      {
+        "q": "Waarom hoef je op de computer en op Android niet te betalen?",
+        "a": "Omdat het opwindmechanisme alleen in de iPhone en de iPad zit. Op de computer, en in de Android-versie zodra die er is, staan de drukkerij, de bodemloze stok en de brug gewoon open. Dat is geen introductieaanbieding: er valt daar gewoon niets in rekening te brengen."
+      }
+    ],
+    "una_a_una": "één voor één, met hun eigen gegevens"
+  },
+  "voces": {
+    "title": "De stemmen van Yappy: tien polyglotte vogels in 31 talen",
+    "description": "Tien natuurlijke stemmen die alle 31 talen spreken zonder van klankkleur te veranderen. Luister naar een voorbeeld van elke stem en kies de jouwe: de stem die je kiest, kleurt de hele app.",
+    "h1": "Tien vogels, eenendertig talen.",
+    "entradilla": "Allemaal polyglot: dezelfde stem leest Spaans, Engels of Japans zonder van klankkleur te veranderen. En een tekst met een citaat in een andere taal wisselt vanzelf van taal, alinea voor alinea.",
+    "elige": "Tik op een vogel en hoor hoe hij klinkt.",
+    "idiomas_titulo": "De talen die hij spreekt.",
+    "idiomas_entradilla": "Eenendertig, elk met een eigen uitspraakschrijver: het is niet dezelfde stem die met een accent leest, maar elke taal met haar eigen regels."
+  },
+  "preguntas": {
+    "title": "Vragen over Yappy: privacy, talen, prijzen en licenties",
+    "description": "Rechte antwoorden over wat gratis is, wat er online gaat, welke modellen Yappy gebruikt, welke bestandstypen hij aankan en wat je doet als iets hapert.",
+    "h1": "Vragen die binnenkomen.",
+    "entradilla": "Beantwoord zonder om de pot te draaien.",
+    "grupos": [
+      {
+        "susurro": "het geld en de vrijheid",
+        "titulo": "Gratis, echt.",
+        "lista": [
+          {
+            "q": "Is het echt gratis?",
+            "a": "Ja. Yappy is open source onder de MIT-licentie. Kunnen luisteren naar wat je leest is een kwestie van toegankelijkheid, en toegankelijkheidshulpmiddelen horen geen pinpas te vragen. Op de computer is er geen betaalversie en geen reclame. Op de iPhone draagt de proefpapegaai drie documenten tegelijk op zijn stok, zonder tijdslimiet; wil je een bodemloze stok, de drukkerij voor audioboeken en de brug naar de computer, dan windt je hem op met Yappy Parlanchín, als abonnement of met één betaling voor altijd. In elk geval zonder account en zonder reclame."
+          },
+          {
+            "q": "Waar zit het addertje? Hoe wordt dit gefinancierd?",
+            "a": "Er is geen addertje: er zijn geen servers te betalen. De synthese draait op jouw toestel, dus Yappy kost niets per gebruiker. Het is een persoonlijk project van de maker, gepubliceerd omdat het er nu eenmaal was en vast nog iemand er iets aan zou hebben."
+          },
+          {
+            "q": "Is er een gratis proefperiode?",
+            "a": "Nee, met opzet. De stok met drie documenten is de proef, en die verloopt niet en verandert op dag zeven niet in een incasso. Als Yappy voor jou werkt, merk je dat vanzelf, zonder dat iemand een timer voor je neus houdt."
+          },
+          {
+            "q": "Mag ik de audio die ik genereer publiceren, in een podcast of video?",
+            "a": "De code van Yappy valt onder MIT en legt je geen voorwaarden op. Het stemmodel, Supertonic 3, heeft een eigen licentie: een open licentie van het type OpenRAIL-M, met gebruiksclausules. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Lees ze na op de pagina van het model</a> voordat je het commercieel inzet, want dat stuk hangt niet van Yappy af en daar kunnen we niet voor instaan."
+          }
+        ]
+      },
+      {
+        "susurro": "je teksten blijven waar ze zijn",
+        "titulo": "Privacy, met naam en toenaam.",
+        "lista": [
+          {
+            "q": "Gaan mijn teksten naar een server?",
+            "a": "Nee. De spraaksynthese, de transcriptie en het extraheren van artikelen gebeuren op je toestel. Wat je met Yappy deelt, wordt nergens heengestuurd: er zijn geen accounts, geen kopieën en er bestaat geen enkele Yappy-server waar ze bewaard zouden kunnen worden. Vier concrete dingen raken wél het netwerk, en alle vier staan ze in de privacyverklaring."
+          },
+          {
+            "q": "Verzamelt Yappy gebruiksstatistieken?",
+            "a": "Ja, dat gebeurt, en dat zeggen we zonder omhaal. De app op je telefoon stuurt anonieme gebruiksstatistieken: die staan standaard aan en in de instellingen kun je ze uitzetten. Wat er verstuurd wordt, is de naam van een gebeurtenis uit een vaste lijst (dat de app is opgestart, welke stap van de eerste rondleiding je te zien krijgt, welk pakket je aanraakt, of een voorleesbeurt is afgelopen), een willekeurige installatie-id, de taal en de versie. Nooit je naam, je e-mailadres, de tekst die je leest, de titel van een document of een link, en geen enkele advertentie-id. En ze gaan niet naar Google, niet naar Firebase en niet naar een analyticsbedrijf: ze belanden in een Worker en een D1-database op Cloudflare, van de auteur zelf. Op de desktop worden helemaal geen statistieken bijgehouden."
+          },
+          {
+            "q": "En die brug tussen telefoon en computer?",
+            "a": "Het is een directe verbinding tussen je twee toestellen, end-to-end versleuteld met QUIC, via het protocol van <a href=\"https://iroh.computer\">iroh</a>. Het koppelen gaat door je camera op de QR-code te richten die je computer laat zien, en de sleutel die eruit komt kun je daar op elk moment intrekken. Er zit geen Yappy-server tussen, want er bestaat geen enkele Yappy-server."
+          },
+          {
+            "q": "Werkt het ook offline?",
+            "a": "Ja, voor altijd. Na de eerste download van het model, zo'n 200 MB op je telefoon en zo'n 398 MB op je computer, kun je Yappy in vliegtuigmodus gebruiken: tekst plakken, documenten openen, spraak maken en exporteren. Alleen nieuwe adressen delen heeft netwerk nodig, om voor de hand liggende redenen. En er is ook geen cloudsynchronisatie: je bibliotheek staat op je toestel, en de brug komt het dichtst bij iets van de ene machine naar de andere overzetten."
+          }
+        ]
+      },
+      {
+        "susurro": "wat je hoort",
+        "titulo": "De stem en de talen.",
+        "lista": [
+          {
+            "q": "Welk stemmodel wordt er gebruikt?",
+            "a": "Supertonic 3, een open model van Supertone met zo'n 99 miljoen parameters. Het past in 398 MB op een computer en in 200 MB op een telefoon, en synthesiseert op elke laptop van de laatste jaren sneller dan realtime. Het werkt op tekenniveau: daarom bestaat de scriptschrijver, die getallen, afkortingen en symbolen omzet in woorden voordat de stem ze te zien krijgt."
+          },
+          {
+            "q": "Welke talen spreekt het?",
+            "a": "Duits, arabisch, bulgaars, tsjechisch, koreaans, kroatisch, deens, slowaaks, sloveens, spaans, estisch, fins, frans, grieks, hindi, hongaars, indonesisch, engels, italiaans, japans, lets, litouws, nederlands, pools, portugees, roemeens, russisch, zweeds, turks, oekraïens en vietnamees. Eenendertig. En alle tien stemmen zijn polyglot: dezelfde stem leest ze allemaal, zonder van timbre te wisselen."
+          },
+          {
+            "q": "Wat gebeurt er met een document waarin talen door elkaar staan?",
+            "a": "Yappy herkent de taal van het document en, alinea voor alinea, die van elk stuk: een Engels citaat in een Spaans essay wordt in het Engels voorgelezen, met dezelfde stem, zonder dat je iets hoeft te doen. En als de herkenning ernaast zit, kun je de taal met de hand vastzetten."
+          },
+          {
+            "q": "Wat is het verschil met VoiceOver of met “Lees scherm voor”?",
+            "a": "De screenreaders van het systeem lezen het scherm voor zoals het er staat, met de prosodie van het systeem en zonder geheugen. Yappy maakt de tekst eerst klaar voordat hij hem uitspreekt (maakt het artikel schoon, verwoordt getallen en afkortingen, markeert de pauzes), leest voor met een natuurlijke stem, onthoudt waar je was gebleven, exporteert luisterboeken en blijft doorspelen als het scherm vergrendeld is. Het zijn verwante gereedschappen met elk een eigen vak, en ze kunnen tegelijk werken zonder elkaar in de weg te zitten: Yappy vervangt geen screenreader en wil dat ook niet zijn."
+          }
+        ]
+      },
+      {
+        "susurro": "wat erin gaat",
+        "titulo": "De documenten.",
+        "lista": [
+          {
+            "q": "Welke formaten accepteert het?",
+            "a": "Webartikelen (de pagina maakt zichzelf schoon), video's aan de hand van het gepubliceerde transcript, PDF, EPUB, Word, ODT, RTF, Markdown, platte tekst, .pptx, .xlsx, .csv en spraakmemo's. Op je telefoon gaat alles via het deelmenu; op de computer ook door te slepen of met de sneltoetsen. En met pandoc op je computer komt daar LaTeX, reStructuredText, Org en nog een paar formaten bij."
+          },
+          {
+            "q": "En gescande PDF's zonder tekst erin?",
+            "a": "Op de computer gaat de tekst eerst door een lokale OCR voordat hij wordt voorgelezen, en ook dan blijft alles op je computer. Op de iPhone nog niet: als de PDF een foto van papier is, vindt de telefoon geen tekst om voor te lezen. Een scheve of wazige scan levert op wat elke OCR eruit kan halen; van een degelijke scan komt alles mee."
+          },
+          {
+            "q": "Kan de app boeken lezen die ik bij een winkel heb gekocht?",
+            "a": "Alleen de boeken die je zelf kunt openen. Een EPUB zonder beveiliging wordt volledig voorgelezen, met al zijn hoofdstukken. Boeken met DRM van een winkel zijn nergens te lezen, niet hier en niet elders: dat slot is niet van Yappy, en we doen niet alsof we de sleutel hebben."
+          },
+          {
+            "q": "Hoe verwijder ik iets uit de bibliotheek?",
+            "a": "In de bibliotheek zelf: elk document heeft een optie om te vergeten, en de audio verdwijnt mee. Geëxporteerde bestanden (.m4b, .mp3, .wav) zijn van jou en staan waar je ze hebt opgeslagen; verwijderen of verplaatsen is werk voor de Finder of voor Bestanden."
+          }
+        ]
+      },
+      {
+        "susurro": "als er iets misgaat",
+        "titulo": "Problemen en hulp.",
+        "lista": [
+          {
+            "q": "Waarom duurt de eerste spraaksynthese een paar seconden langer?",
+            "a": "De eerste keer wordt het model in het geheugen geladen. Daarna blijft het warm en komen de volgende zinnen meteen. Als je de app net op de computer hebt geïnstalleerd, wacht je de eerste keer bovendien op de download van het stemmodel."
+          },
+          {
+            "q": "Een woord wordt verkeerd uitgesproken. Is dat aan te leren?",
+            "a": "Er is geen gebruikerswoordenboek voor uitspraak, dus de snelste weg is het woord in de editor zo te schrijven als het klinkt: het model leest dan tekens en luistert naar je. Gaat het om een algemeen patroon (een afkorting, een acroniem, een eenheid), meld het dan bij <a href=\"https://github.com/joseluissaorin/yappy/issues\">de issues op GitHub</a>: de tabellen van de tokenizer groeien mee met zulke gevallen."
+          },
+          {
+            "q": "Ik heb een video gedeeld, maar hij zegt niets.",
+            "a": "Yappy gebruikt de gepubliceerde transcriptie van de video en transcribeert de audio niet. Heeft zo'n video geen transcriptie, dan valt er niets voor te lezen. En is de video van jou en heb je hem als bestand, deel dan het bestand: dan transcribeert het lokale oor hem wél."
+          },
+          {
+            "q": "Ik heb een fout gevonden. Waar kan ik die melden?",
+            "a": "Via <a href=\"https://github.com/joseluissaorin/yappy/issues\">de issues op GitHub</a>, of mail naar <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Met de tekst waar het misging, als je die kunt delen, en je systeem erbij, is het eerder opgelost."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Privacy bij Yappy: je teksten gaan nooit de deur uit",
+    "description": "Wat er wel en niet van je toestel afkomt, staat hier zwart op wit: de spraaksynthese, de transcriptie en het extraheren van artikelen gebeuren op het toestel zelf. Het netwerk wordt maar in vier gevallen aangeraakt, en die vertellen we allemaal.",
+    "h1": "Je teksten gaan nooit de deur uit.",
+    "actualizado": "Laatst bijgewerkt: {fecha}. Verantwoordelijke: José Luis Saorín Ferrer, Tenerife (Spanje).",
+    "bloques": [
+      {
+        "titulo": "Waar dit over gaat",
+        "texto": "Dit is de privacyverklaring van Yappy: de app voor iPhone, iPad, Mac, Windows en Linux, met zijn widgets en extensies. Hij is kort, want er valt weinig te vertellen. Yappy heeft geen accounts, vraagt niet om je naam of je e-mailadres, en wat je hem geeft om voor te lezen verlaat je toestel niet. Het netwerk wordt wel aangeraakt, voor vier concrete dingen, en hier staan die vier, één voor één."
+      },
+      {
+        "titulo": "Geen account, geen naam, geen teksten",
+        "texto": "Bij Yappy hoef je je niet te registreren en niet in te loggen. Yappy verzamelt geen naam, geen e-mailadres, geen contacten, geen locatie en geen advertentie-id. De artikelen, PDF's, EPUB's, documenten, spraaknotities en teksten die je met de app deelt, worden <strong>op je eigen toestel</strong> in spraak omgezet: de spraaksynthese, de transcriptie en het opschonen van pagina's gebeuren lokaal en gaan niet naar een server van ons of van derden. Er is ook geen cloudsynchronisatie: je bibliotheek, je voortgang en je luisterboeken staan op je toestel en verdwijnen als je de app verwijdert."
+      },
+      {
+        "titulo": "Wat online gaat (1): het downloaden van de stemmen",
+        "texto": "De eerste keer downloadt Yappy het stemmodel (zo'n 200 MB op de telefoon, zo'n 398 MB op de computer) van <code>modelos.yappy.joseluissaorin.com</code>, een R2-bucket van Cloudflare. Zoals bij elke download ziet de server je IP-adres, zolang het verzoek duurt. We bewaren geen logbestand waaraan je te identificeren bent. Na die download werkt de spraaksynthese voor altijd in vliegtuigmodus."
+      },
+      {
+        "titulo": "Wat het netwerk ziet (2): de links die je deelt",
+        "texto": "Deel je een link of een video, dan bezoekt je apparaat dat adres om de tekst of het transcript op te halen, precies zoals je browser dat zou doen. Het bezoek komt van jouw apparaat, niet van een server van Yappy. De site ziet wat een browser ook achterlaat: je IP-adres en je apparaattype. Een geschiedenis wordt nergens bewaard, alleen op je apparaat."
+      },
+      {
+        "titulo": "Wat het netwerk ziet (3): de anonieme statistieken",
+        "texto": "Dit zeggen we maar gewoon: <strong>er zit analytics in</strong>, alleen in de app op je telefoon, en hij staat standaard aan. Uitzetten kan altijd, in de instellingen, bij 'Anonieme statistieken'. Er wordt verstuurd: de naam van één event uit een vaste lijst (dat de app is opgestart, welke stap van de introductie te zien is, op welk abonnement wordt getikt, of een tekst is uitgelezen), een willekeurig installatie-id, de taal van de app en het versienummer. <strong>Nooit</strong> je naam, je e-mailadres, de tekst die je leest, de titel van een document, een link of een advertentie-id. Het gaat niet naar Google Analytics, niet naar Firebase, niet naar een analyticsbedrijf: het gaat naar een Worker en een D1-database van Cloudflare, eigendom van de maker zelf, en het dient om te weten welke delen van de app gebruikt worden en welke overbodig zijn. Op de desktop zijn er helemaal geen statistieken."
+      },
+      {
+        "titulo": "Wat het netwerk ziet (4): de aankopen",
+        "texto": "De abonnementen en de levenslange aankoop van Yappy Parlanchín worden door Apple afgehandeld via de App Store, en bestaan alleen op de iPhone en de iPad. Om te zien of je abonnement nog loopt, gebruikt de app <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, een dienst die abonnementen beheert en een anoniem installatie-id en het aankoopbewijs van Apple krijgt; je naam en je e-mailadres niet. Wat Apple zelf met gegevens doet, legt het uit in <a href=\"https://www.apple.com/legal/privacy/\">zijn privacybeleid</a>."
+      },
+      {
+        "titulo": "De brug: van je iPhone naar je computer en terug",
+        "texto": "Koppel je Yappy aan je Mac of pc, dan reizen de documenten die je laat omzetten via een directe, end-to-end versleutelde verbinding tussen je twee apparaten, met de bibliotheek <a href=\"https://iroh.computer\">iroh</a> bovenop QUIC. Om elkaar te vinden kunnen ze gebruikmaken van relayservers, die alleen versleuteld verkeer zien dat ze niet kunnen lezen. Yappy heeft geen tussenliggende servers die iets bewaren, want Yappy heeft helemaal geen servers."
+      },
+      {
+        "titulo": "Minderjarigen en machtigingen",
+        "texto": "Yappy is niet bedoeld voor kinderen onder de 13 en verzamelt van niemand persoonlijke gegevens, van welke leeftijd dan ook. De machtigingen die het systeem vraagt, gelden alleen voor die ene handeling op dat moment: het klembord bij het plakken, de camera bij het scannen van de QR-code van de brug, de microfoon op de desktop om te dicteren. Geen enkele werkt op de achtergrond."
+      },
+      {
+        "titulo": "Je rechten en waar je terechtkunt",
+        "texto": "We bewaren geen persoonlijke gegevens, dus op onze servers valt niets te exporteren of te wissen: alles wat Yappy van je weet, woont op je apparaat en verdwijnt zodra je de app verwijdert. Wil je dat zelfs de anonieme statistieken niet meer aankomen, dan zet je ze uit in de app zelf. Vragen? Mail naar <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> of open een issue op <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a>. De code is open, onder een MIT-licentie: alles hierboven is te controleren door het te lezen."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy bij dyslexie, ADHD en slechtziendheid: luisteren naar wat je niet kunt lezen",
+    "description": "Een voorlees-app die geen account vraagt, geen minuten afrekent en zonder internet werkt. Voor dyslexie, ADHD, oogvermoeidheid, slechtziendheid en voor wie nu eenmaal beter leest met de oren.",
+    "h1": "Lezen met je oren.",
+    "entradilla": "Kunnen luisteren naar wat je leest is een kwestie van toegankelijkheid, en toegankelijkheidstools horen geen creditcard te vragen. Yappy vraagt er geen, telt geen minuten en werkt in een vliegtuig.",
+    "voiceover_titulo": "Yappy vervangt VoiceOver niet",
+    "voiceover_texto": "Het zijn verwante tools, elk met een eigen vak. Een screenreader beschrijft de interface zodat je ermee kunt werken; Yappy leest de inhoud voor zodat je ervan kunt genieten. Tegelijk gebruiken kan: ze staan elkaar niet in de weg.",
+    "casos": [
+      {
+        "titulo": "Dyslexie",
+        "texto": "Letter voor letter ontcijferen is vermoeiend, en die vermoeidheid opeet je begrip lang voordat je tijd op is. De tekst horen terwijl hij op het scherm meelicht laat je lezen en luisteren tegelijk: je ogen volgen de regel, je oren doen het zware werk. Yappy lost niets op, maar haalt het deel dat uitput uit de weg."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "Een stille pagina nodigt uit om weg te lopen. Een stem die vooruit leest houdt het tempo vast en haalt je terug naar de alinea zodra je gedachten zijn weggelopen. En omdat je kunt luisteren tijdens het lopen of met je handen vol, vraagt lezen geen stilzitten meer. Voor veel mensen is dát het hele verschil."
+      },
+      {
+        "titulo": "Slechtziendheid en oogvermoeidheid",
+        "texto": "Als kleine letters geen optie meer zijn, of als je ogen om zeven uur 's avonds hun werkdag erop hebben zitten, blijft de tekst beschikbaar voor je oren. Yappy leest het PDF-bestand, de mail of het hele artikel voor, met het scherm uit als het moet, vanaf het vergrendelscherm of via de koptelefoon."
+      },
+      {
+        "titulo": "Talen leren",
+        "texto": "Luisteren én lezen tegelijk is de oudste en doeltreffendste manier om uitspraak te leren. De tien stemmen zijn polyglot en lezen de 31 talen volgens de regels van elke taal, dus een Duitse tekst klinkt Duits, niet als Duits met een Engels accent. Op 0,75× hoor je elke lettergreep; op 1,5× train je je oor."
+      },
+      {
+        "titulo": "Nalezen wat je schrijft",
+        "texto": "Een zin die je niet hardop kunt zeggen, houdt ook op papier geen stand. Je eigen tekst beluisteren verraadt de herhalingen, de komma's op de verkeerde plek en de haakzinnen die nooit eindigen. Het is de correctie zoals de drukkerij die vroeger deed, en het kost niets: je opent het .docx, drukt op play en hoort wat je echt geschreven hebt, niet wat je dacht geschreven te hebben."
+      },
+      {
+        "titulo": "Studeren met je oren",
+        "texto": "Je aantekeningen van het vak, het hoofdstuk dat voor het examen komt, het artikel van tweehonderd pagina's. 's Nachts naar de drukkerij gestuurd, en 's ochtends is het een luisterboek met hoofdstukken voor in de bus. Hervatten onthoudt de exacte alinea: verdergaan kost geen zoekwerk."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Werkt het met VoiceOver of TalkBack aan?",
+        "a": "Ja, en ze zitten elkaar niet in de weg. Een schermlezer leest de interface voor zodat je de app kunt bedienen; Yappy leest de inhoud zodat je ervan kunt genieten. Ze werken tegelijk: VoiceOver brengt je tot de afspeelknop en vanaf daar is het de stem van Yappy die het boek voorleest."
+      },
+      {
+        "q": "Kun je het gebruiken zonder naar het scherm te kijken?",
+        "a": "Ja. Op de iPhone zijn er Siri-snelkoppelingen (‘Hé Siri, lees mijn klembord voor met Yappy’), de actieknop, de knoppen op het vergrendelscherm en die op je oortjes. Op de computer lezen drie sneltoetsen de selectie of het klembord voor, of pauzeren ze, met de app weggestopt in de menubalk."
+      },
+      {
+        "q": "Kan het de PDF's van school lezen en de boeken die ik al heb?",
+        "a": "Elke PDF, EPUB, Word of ODT die je kunt openen. Is de PDF een scan zonder tekst, dan haalt de desktopversie er eerst lokaal OCR overheen voordat hij hem voorleest; op de telefoon bestaat dat nog niet. Boeken met DRM uit een winkel kun je nergens lezen, en hier ook niet."
+      },
+      {
+        "q": "Wat kost het om het dagelijks te gebruiken?",
+        "a": "Niets. Geen teller voor minuten of tekens, geen advertenties en geen account. Je kunt er acht uur per dag, jarenlang, naar luisteren zonder een cent te betalen, en zonder internet. De betaalmuur voegt alleen de bodemloze kapstok, de drukkerij en de brug toe, en alleen op de iPhone en de iPad."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Verhalen voor de papegaai: teksten in het publiek domein om Yappy uit te proberen",
+    "description": "Complete verhalen in het publiek domein, klaar om met Yappy te delen en in hun geheel te beluisteren. Zonder account en zonder iets te downloaden.",
+    "h1": "Verhalen voor de papegaai.",
+    "entradilla": "Hele teksten, in het publiek domein. Deel deze pagina met Yappy en de papegaai leest hem voor.",
+    "dominio_publico": "Publiek domein."
+  },
+  "blog": {
+    "title": "De blog van Yappy: luisteren naar het geschrevene",
+    "description": "Hoe je van een PDF audio maakt, waarom een voorlees-app offline zou moeten werken, hoe je getallen hardop uitspreekt en wat we leerden van het bouwen van een app die praat.",
+    "h1": "Luisteren naar het geschrevene.",
+    "entradilla": "Het vak, trucs en wat geschiedenis van het hardop voorlezen. Elk artikel kun je hier meteen beluisteren, gelezen door de stem van Yappy zelf.",
+    "escuchame": "Luister naar dit artikel",
+    "escuchame_nota": "Gelezen door Yappy, met de stem {voz}, in je browser.",
+    "vacio": "In deze taal zijn nog geen artikelen."
+  },
+  "convertir": {
+    "title": "Elke tekst omzetten in spraak: PDF, EPUB, Word, artikelen en video's",
+    "description": "Zes manieren om wat je leest om te zetten in natuurlijke spraak, allemaal op je eigen apparaat: PDF, EPUB, Word, artikelen van internet, video's en spraaknotities.",
+    "h1": "Omzetten",
+    "entradilla": "Maakt niet uit waar het vandaan komt: een artikel, een boek, een document of een opname. Yappy maakt er een leesbare tekst van en leest die voor, zonder dat het bestand je apparaat verlaat.",
+    "pasos_titulo": "In drie stappen.",
+    "faq_titulo": "Vragen hierover",
+    "otros_titulo": "Andere dingen die Yappy ook leest",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "PDF naar audio: een PDF voorlezen, gratis",
+        "description": "Zet elke PDF om naar natuurlijke spraak en luister terwijl je iets anders doet, of bewaar hem als luisterboek met hoofdstukken. Nergens uploaden, geen paginalimiet.",
+        "h1": "Luister naar je PDF's.",
+        "entradilla": "Een wetenschappelijk artikel, een handleiding, collegeaantekeningen, een contract. Yappy opent de PDF, haalt de kopteksten en de telkens terugkerende paginanummers eruit, vindt de hoofdstukken en leest alles voor met een natuurlijke stem. Het bestand verlaat je apparaat niet.",
+        "pasos": [
+          {
+            "titulo": "Deel de PDF",
+            "texto": "Vanuit Bestanden, je mail of Safari: tik op Deel en kies Yappy. Op de computer sleep je hem naar het venster."
+          },
+          {
+            "titulo": "Kies een stem",
+            "texto": "Tien stemmen, 31 talen. Zit de PDF in een andere taal? Yappy herkent die vanzelf."
+          },
+          {
+            "titulo": "Luister of bewaar",
+            "texto": "Druk op play, of geef hem bij de drukker in en je hebt een luisterboek met hoofdstukken."
+          }
+        ],
+        "extra_titulo": "Gescande PDF's",
+        "extra_texto": "Is de PDF een foto van papier zonder tekst erin, dan haalt de desktopversie er eerst lokaal OCR overheen. Op de iPhone nog niet.",
+        "faq": [
+          {
+            "q": "Zit er een limiet aan het aantal pagina's?",
+            "a": "Nee. Een artikel van drie pagina's of een proefschrift van vierhonderd: Yappy verwerkt de PDF volledig en leest hem volledig voor. Omdat alles op je apparaat gebeurt, is er geen tekenlimiet die opraakt en geen rekening die halverwege hoofdstuk zeven uit de hand loopt."
+          },
+          {
+            "q": "En als de PDF een scan zonder tekst is?",
+            "a": "De desktopversie haalt er eerst lokaal OCR overheen, en ook dan verlaat er niets je computer. Op de iPhone nog niet: is de PDF een foto van papier, dan vindt de telefoon geen tekst om voor te lezen."
+          },
+          {
+            "q": "Haalt Yappy de kopteksten en paginanummers weg?",
+            "a": "Ja. Yappy herkent wat op elke pagina terugkomt (koptekst, voettekst, paginanummer, naam van het tijdschrift) en laat dat buiten het script. Niets verpest het luisteren erger dan om de anderhalve minuut ‘Hoofdstuk 3, pagina 47’ te horen."
+          },
+          {
+            "q": "Kan ik ook alleen één hoofdstuk beluisteren?",
+            "a": "Ja. Yappy zoekt de echte titels in het document en bouwt er een navigeerbare index mee. In de bibliotheek kies je welke hoofdstukken je wilt beluisteren of welke je naar de drukkerij stuurt, en precies die komen in het luisterboek terecht."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "EPUB naar luisterboek: je boek, hardop gelezen",
+        "description": "Zet een EPUB om in een luisterboek met echte hoofdstukken, gemaakt op je eigen apparaat. Zonder uurabonnement en zonder het boek naar een server te sturen.",
+        "h1": "Je EPUB, als luisterboek.",
+        "entradilla": "De boeken die je al hebt, met hun hoofdstukken, voorgelezen met een natuurlijke stem. Je laat het 's avonds renderen voor je naar bed gaat en 's ochtends staat het in je bibliotheek, als een .m4b-bestand dat in elke speler opent.",
+        "pasos": [
+          {
+            "titulo": "Deel het EPUB",
+            "texto": "Vanuit Bestanden of vanaf waar je het ook hebt staan. Het komt binnen met de hoofdstukken al herkend."
+          },
+          {
+            "titulo": "Geef de drukopdracht",
+            "texto": "Je kiest de hoofdstukken, de stem en het tempo. De papegaai drukt het af, ook als je de app sluit."
+          },
+          {
+            "titulo": "Beluister het waar je wilt",
+            "texto": "Het staat in de bibliotheek als .m4b met bladwijzers; vanaf daar deel je het naar Bestanden, naar Boeken of waar je maar wilt."
+          }
+        ],
+        "extra_titulo": "Boeken met DRM",
+        "extra_texto": "Yappy leest de EPUB-bestanden die je kunt openen. Boeken met de DRM van een winkel kan niemand lezen, hier niet en nergens anders.",
+        "faq": [
+          {
+            "q": "Blijven de hoofdstukken van het boek bewaard?",
+            "a": "Ja, en het zijn echte hoofdstukken, geen markeringen om de tien minuten: ze komen uit de inhoudsopgave van de EPUB zelf. De .m4b is in elke luisterboekspeler hoofdstuk voor hoofdstuk te navigeren, met kaft en hervatting waar je was gebleven."
+          },
+          {
+            "q": "Hoe lang duurt een heel boek?",
+            "a": "Dat hangt af van je apparaat en van de dikte van het boek, maar het praktische antwoord is: laat het 's avonds lopen voor je naar bed gaat en 's ochtends is het klaar. Heb je de brug, dan synthetiseert je computer het een flink stuk sneller en krijgt je telefoon het kant-en-klaar terug."
+          },
+          {
+            "q": "En boeken met DRM?",
+            "a": "Yappy leest de EPUB-bestanden die je kunt openen. Boeken met de DRM van een winkel kunnen nergens gelezen worden, hier niet en elders ook niet: dat slot is niet van ons."
+          },
+          {
+            "q": "Waar komt het luisterboek terecht?",
+            "a": "In de bibliotheek van Yappy, als een echte .m4b. Vanaf daar deel je het naar Bestanden, naar Boeken of naar de speler die je al gebruikt. Het bestand is van jou: verwijder je de app, dan blijft alles wat je hebt geëxporteerd liggen waar je het opgeslagen hebt."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Een Word-document voorlezen: DOCX, ODT en RTF naar audio",
+        "description": "Zet Word-, LibreOffice- en plattekstdocumenten om naar natuurlijke spraak en controleer ze met je oren. Alles gebeurt op je computer of telefoon.",
+        "h1": "Controleer met je oren.",
+        "entradilla": "Voorlezen wat je geschreven hebt is de beste correctie die er is: een zin die je niet hardop kunt uitspreken, houdt op papier ook geen stand. Yappy leest .docx, .odt, .rtf, .txt en Markdown voor, met koppen en ritme en al.",
+        "pasos": [
+          {
+            "titulo": "Open het document",
+            "texto": "Sleep het naar het venster op je computer, of deel het vanaf je telefoon."
+          },
+          {
+            "titulo": "Luister alinea voor alinea",
+            "texto": "De tekst licht op tijdens het voorlezen; tik waar je heen wilt om daarheen te springen."
+          },
+          {
+            "titulo": "Corrigeer wat knarst",
+            "texto": "En luister opnieuw. Op de computer kan elke alinea zijn eigen stem en snelheid krijgen."
+          }
+        ],
+        "extra_titulo": "Ook spreadsheets en presentaties",
+        "extra_texto": "Leest .pptx, .xlsx en .csv. Op de computer wordt de lijst, als je pandoc hebt geïnstalleerd, uitgebreid met LaTeX, reStructuredText, Org en nog een paar.",
+        "faq": [
+          {
+            "q": "Welke tekstformaten leest Yappy precies?",
+            "a": ".docx, .odt, .rtf, .txt en Markdown, en daarnaast .pptx, .xlsx en .csv. Op de computer wordt de lijst, als je pandoc hebt geïnstalleerd, uitgebreid met LaTeX, reStructuredText, Org en nog een paar formaten."
+          },
+          {
+            "q": "Leest Yappy ook voetnoten en tabellen?",
+            "a": "Yappy leest de lopende tekst, met zijn koppen en in zijn oorspronkelijke volgorde. Tabellen worden rij voor rij voorgelezen, want meer kun je met een tabel hardop niet doen. Noten staan aan het eind van hun sectie en onderbreken dus geen zin halverwege."
+          },
+          {
+            "q": "Kan ik elke alinea een eigen stem geven?",
+            "a": "Op de computer wel: in de alinea-editor geef je elke alinea een eigen stem, snelheid en pauze. Dat is wat een dialoog, een interview of een tweetalig document verstaanbaar maakt."
+          },
+          {
+            "q": "Kun je er echt mee corrigeren?",
+            "a": "Het is de beste correctie die er is. Je oren verraden wat je ogen vergeven: de herhaling drie regels eerder, de bijzin die nergens op eindigt, de tussenzin die het werkwoord heeft opgegeten. Zet terug naar 0,9×, beluister het hoofdstuk en schrijf op wat knarst."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Artikelen",
+        "title": "Artikelen van internet voorlezen: elke webpagina, hardop",
+        "description": "Deel een pagina vanuit Safari en Yappy leest hem netjes voor: geen menu's, geen banners, geen voettekst. Jouw apparaat bezoekt de pagina, niet een server van ons.",
+        "h1": "Luister naar wat je toch al wilde lezen.",
+        "entradilla": "Het tabblad dat je openlaat voor later. Deel het met Yappy en luister er naartoe terwijl je de afwas doet. De pagina ruimt zichzelf op: menu's, banners en voetteksten verdwijnen. De proza blijft over, met zijn koppen en zijn ritme.",
+        "pasos": [
+          {
+            "titulo": "Tik op delen",
+            "texto": "In Safari, in de nieuwslezer, in de mail: overal waar een deelmenu verschijnt, is Yappy."
+          },
+          {
+            "titulo": "Ruimt zichzelf op",
+            "texto": "Het uitlezen gebeurt op jouw toestel. Heb je een abonnement op een nieuwsbron, dan pakt Yappy het artikel dat jij ziet."
+          },
+          {
+            "titulo": "Komt in de wachtrij",
+            "texto": "En wacht daar tot je handen weer vrij zijn."
+          }
+        ],
+        "extra_titulo": "Wat er online gebeurt",
+        "extra_texto": "Alleen een bezoek aan het adres dat je hebt gedeeld, gedaan door je eigen toestel, zoals je browser het zou doen. Er zit geen Yappy-server tussen, want er bestaat geen Yappy-server.",
+        "faq": [
+          {
+            "q": "Werkt het ook met media waarvan ik abonnee ben?",
+            "a": "Het uitlezen gebeurt op je eigen toestel, met jouw sessie erbij, dus Yappy pakt het artikel dat jij in je browser ziet. Als jij het kunt lezen, kan Yappy het voorlezen. Er is geen tussenliggende server die langs de betaalmuur moet, want er is geen server."
+          },
+          {
+            "q": "En pagina's die alleen met JavaScript laden?",
+            "a": "Sommige doen moeilijk: als de tekst pas verschijnt nadat de pagina een halve bibliotheek aan JavaScript heeft uitgevoerd, kan Yappy met lege handen blijven staan. Dan is het snelst: de tekst selecteren, kopiëren en delen als platte tekst."
+          },
+          {
+            "q": "Bewaart Yappy een geschiedenis van wat ik lees?",
+            "a": "Alleen op je toestel, zodat je verder kunt waar je was gebleven. Niets daarvan gaat ergens heen, en elk document heeft in de bibliotheek zijn eigen optie om vergeten te worden."
+          },
+          {
+            "q": "Leest Yappy de menu's, de banners en de reacties?",
+            "a": "Nee. De pagina wordt opgeschoond voordat die de voorlezer bereikt: weg met menu's, banners, voetteksten, deelknoppen en reactievakken. Overblijft het proza, met zijn koppen en zijn ritme."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Video's",
+        "title": "Naar een video luisteren alsof het een artikel is",
+        "description": "Yappy neemt het transcript van een video en leest het voor als een artikel: zonder naar het scherm te kijken, op het tempo dat jij wilt en zonder videodata te verbruiken.",
+        "h1": "Video's, als artikelen.",
+        "entradilla": "Een half uur video is tien minuten tekst, in een goed tempo voorgelezen. Yappy houdt het transcript over en leest het voor met een natuurlijke stem, zodat je wandelend kunt luisteren, met het scherm uit.",
+        "pasos": [
+          {
+            "titulo": "Deel de link",
+            "texto": "Vanuit de video-app of de browser, via het deelmenu."
+          },
+          {
+            "titulo": "Houdt alleen de woorden over",
+            "texto": "Yappy gebruikt het gepubliceerde transcript van de video, niet de audio."
+          },
+          {
+            "titulo": "Je luistert in je eigen tempo",
+            "texto": "Met de stem die je wilt en op de snelheid die je wilt. Ook met het scherm vergrendeld."
+          }
+        ],
+        "extra_titulo": "Als de video geen transcriptie heeft",
+        "extra_texto": "Dan is er niets te lezen: Yappy werkt met de gepubliceerde tekst en transcribeert de audio van de video niet. Op de iPhone bestaat deze functie; op Android nog niet.",
+        "faq": [
+          {
+            "q": "Transcribeert Yappy de audio van de video?",
+            "a": "Nee. Yappy pakt de transcriptie die al bij de video is gepubliceerd en leest die voor als een artikel. Dat gaat snel, kost geen videodata en warmt je telefoon niet op; maar zonder transcriptie is er ook niets te lezen."
+          },
+          {
+            "q": "En als de video geen transcriptie heeft?",
+            "a": "Dan kan Yappy met die link niets. Is de video van jezelf en heb je het bestand, deel het dan als audio: dan doet het lokale oor zijn werk en transcribeert alles op je toestel."
+          },
+          {
+            "q": "Werkt het op alle videoplatforms?",
+            "a": "Overal waar een gepubliceerde en toegankelijke transcriptie staat. Op de iPhone bestaat deze functie; in de Android-versie nog niet."
+          },
+          {
+            "q": "Kost het data?",
+            "a": "Heel weinig: er wordt een tekst gedownload, geen video. Een halfuur video is hooguit enkele tientallen kilobytes aan transcriptie, en daarna doet je toestel al het werk."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Spraaknotities",
+        "title": "Spraaknotities omzetten naar tekst op je eigen telefoon",
+        "description": "Yappy transcribeert opnames en spraaknotities op je eigen toestel, zonder ze naar een dienst te uploaden, en kan je de transcriptie daarna voorlezen.",
+        "h1": "Van spraak naar tekst, en terug.",
+        "entradilla": "Een opgenomen vergadering, een idee dat je in de auto dicteert, de les van gisteren. Yappy transcribeert het binnen je toestel, met het lokale oor, en laat je de tekst lezen, verbeteren of opnieuw beluisteren in een andere stem.",
+        "pasos": [
+          {
+            "titulo": "Deel de opname",
+            "texto": "Vanuit Dictafoon, Bestanden of elke app die audio opslaat."
+          },
+          {
+            "titulo": "Het wordt binnenin getranscribeerd",
+            "texto": "Met een model dat op je toestel draait. De audio verlaat het niet."
+          },
+          {
+            "titulo": "Lees het of beluister het",
+            "texto": "Het wordt een document als elk ander: leesbaar, deelbaar en opnieuw voor te lezen."
+          }
+        ],
+        "extra_titulo": "Het oor download je apart",
+        "extra_texto": "Transcriberen gebruikt een ander model dan de stem. Je downloadt het alleen als je het gebruikt.",
+        "faq": [
+          {
+            "q": "Welk model transcribeert?",
+            "a": "Parakeet TDT 0.6B v3 van NVIDIA, met een CC-BY-4.0-licentie, draait op je eigen apparaat. Het is een ander model dan dat van de stem: het ene luistert, het andere praat."
+          },
+          {
+            "q": "Verlaat de audio mijn apparaat?",
+            "a": "Nee. De opname wordt lokaal getranscribeerd, net zoals de stem lokaal wordt gesynthetiseerd. Geen transcriptiedienst in de cloud, geen account, geen upload."
+          },
+          {
+            "q": "In welke talen transcribeert het?",
+            "a": "Het oor spreekt minder talen dan de stem: het transcribeert de belangrijkste Europese talen, niet de 31 die Yappy kan voorlezen. Voorlezen kan in alle 31; spraak naar tekst in die kortere groep."
+          },
+          {
+            "q": "Moet ik nog iets extra downloaden?",
+            "a": "Ja: het oor wordt apart gedownload, en alleen de eerste keer dat je iets transcribeert. Transcribeer je nooit, dan neemt het ook nooit ruimte in op je apparaat."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Text to speech in het {lengua}: lees elke tekst voor",
+    "description": "Luister naar PDF, EPUB, Word en artikelen in het {lengua} met een natuurlijke stem, op je eigen apparaat en offline. Tien stemmen, gratis en zonder account.",
+    "h1": "Text to speech in het {lengua}.",
+    "entradilla": "Tien stemmen lezen {lengua} met de eigen regels: de eigen getallen, data, rangtelwoorden en afkortingen, niet die van een andere taal met een geleend accent.",
+    "muestra": "Een voorbeeld",
+    "reglas_titulo": "Wat de uitspraakmodule van het {lengua} weet",
+    "todas": "De andere dertig talen"
+  },
+  "vs": {
+    "titulo": "Yappy versus {nombre}, in één oogopslag",
+    "caracteristica": "Wat",
+    "gratis": "Wat gratis kan",
+    "precio": "Prijs vanaf",
+    "local": "De stem wordt op je apparaat gemaakt",
+    "sin_cuenta": "Geen account of e-mail",
+    "sin_conexion": "Werkt offline",
+    "codigo_abierto": "Open source",
+    "tarifa": "Tarief per teken of per uur",
+    "idiomas": "Talen",
+    "formatos": "Ondersteunde formaten",
+    "audiolibro": "Audioboek met hoofdstukken",
+    "escritorio": "Computer",
+    "yappy_gratis": "Luister onbeperkt; drie documenten tegelijk",
+    "yappy_precio": "€ 0; betaald vanaf € 3,99 per maand",
+    "gana_en": "Waar {nombre} wint",
+    "verificado": "Openbare gegevens, geraadpleegd op {fecha} via de website van elk product.",
+    "sin_verificar": "Prijzen veranderen vaak: controleer ze voor je beslist.",
+    "ver_web": "Officiële website",
+    "frente_a": "Vergeleken met {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Veelgestelde vragen"
+  }
+}

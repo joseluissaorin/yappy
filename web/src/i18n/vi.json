@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "vi",
+    "nombre": "Tiếng Việt",
+    "dir": "ltr",
+    "ogLocale": "vi_VN",
+    "hreflang": "vi",
+    "og_alt": "Dòng chữ “Văn bản nào cũng đọc thành tiếng” viết cỡ lớn trên nền giấy kem, bên cạnh là một con vẹt màu san hô"
+  },
+  "slugs": {
+    "uso": "cach-su-dung",
+    "guionizador": "viet-kich-ban",
+    "descargas": "tai-xuong",
+    "precios": "bang-gia",
+    "voces": "giong-doc",
+    "preguntas": "cau-hoi",
+    "privacidad": "quyen-rieng-tu",
+    "accesibilidad": "kha-tiep-can",
+    "cuentos": "truyen",
+    "blog": "blog",
+    "convertir": "chuyen-doi",
+    "idiomas": "ngon-ngu",
+    "alternativas": "lua-chon-thay-the",
+    "formato_pdf": "pdf-sang-audio",
+    "formato_epub": "epub-sang-sach-noi",
+    "formato_word": "word-sang-giong-doc",
+    "formato_articulos": "bai-viet-sang-audio",
+    "formato_videos": "video-sang-audio",
+    "formato_notas": "ghi-am-thanh-van-ban"
+  },
+  "comunes": {
+    "saltar": "Bỏ qua tới nội dung",
+    "marca_aria": "Yappy, trang chủ",
+    "idioma": "Ngôn ngữ",
+    "menu": "Mở menu",
+    "secciones": "Các mục",
+    "descargar": "Tải xuống",
+    "descargar_gratis": "Tải miễn phí",
+    "en_app_store": "Tải trên App Store",
+    "escuchar_muestra": "Nghe thử",
+    "probar": "Dùng thử ngay",
+    "leer_mas": "Đọc tiếp",
+    "volver": "Quay lại",
+    "inicio": "Trang chủ",
+    "minutos": "{n} phút đọc",
+    "publicado": "Đăng ngày",
+    "actualizado": "cập nhật ngày",
+    "por": "viết bởi",
+    "gratis": "miễn phí",
+    "si": "Có",
+    "no": "Không",
+    "parcial": "Một nửa",
+    "sin_datos": "không có dữ liệu"
+  },
+  "nav": {
+    "uso": "Cách dùng",
+    "guionizador": "Trình soạn kịch bản",
+    "voces": "Các giọng đọc",
+    "precios": "Giá",
+    "descargas": "Tải về",
+    "preguntas": "Câu hỏi",
+    "privacidad": "Quyền riêng tư",
+    "accesibilidad": "Trợ năng",
+    "cuentos": "Truyện",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "Sản phẩm",
+    "leer": "Để đọc",
+    "casa": "Nhà",
+    "codigo": "Mã nguồn",
+    "licencia": "Giấy phép MIT",
+    "novedades": "Tin mới",
+    "firma": "Yappy · làm thủ công tại Tenerife bởi <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · mã nguồn mở (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Chuyển văn bản thành giọng nói: trình đọc PDF, EPUB và bài viết thành tiếng",
+    "description": "Biến bất kỳ văn bản nào thành giọng đọc tự nhiên: PDF, EPUB, Word, bài viết và video, với 31 ngôn ngữ. Mọi thứ diễn ra ngay trên điện thoại hay máy tính của bạn: không đám mây, không tài khoản, không tính phí theo ký tự. Miễn phí và mã nguồn mở.",
+    "susurro": "chuyển văn bản thành giọng nói · 31 ngôn ngữ · không đám mây · mã nguồn mở",
+    "titular_1": "Mọi ",
+    "titular_texto": "văn bản",
+    "titular_2": ", ",
+    "titular_voz": "đọc thành tiếng",
+    "titular_3": ".",
+    "entradilla": "Chia sẻ một bài viết, một PDF, một EPUB, một file Word hay một video, và một con vẹt sẽ đọc cho bạn nghe bằng giọng tự nhiên trong lúc bạn nấu ăn, đi bộ hay nhắm mắt. Mô hình chạy trọn vẹn trên thiết bị của bạn: chẳng có gì rời khỏi đó, không bao giờ.",
+    "nota_acciones": "miễn phí · không cần tài khoản · không tính phí theo ký tự",
+    "pegatina_sin_nube": "không cần\nđám mây",
+    "pegatina_idiomas": "31\nngôn ngữ",
+    "pegatina_gratis": "miễn phí",
+    "pegatina_offline": "không cần mạng",
+    "demo_susurro": "chạm và nghe: câu này do chính bộ máy bạn mang theo trong túi đọc ra",
+    "demo_titulo": "Nghe thế này đây.",
+    "demo_nota": "Phần gạch chân do bộ đọc chuyển thành lời: “1492” đọc là “một nghìn bốn trăm chín mươi hai” và “thế kỷ XV” đọc là “thế kỷ mười lăm”, theo đúng quy tắc của từng ngôn ngữ.",
+    "momentos_susurro": "dành cho những lúc nào",
+    "momentos_titulo": "Ba khoảnh khắc, một thao tác.",
+    "momentos": [
+      {
+        "titulo": "Khi đang nấu ăn",
+        "texto": "Bạn chia sẻ bài báo, dựng điện thoại lên. Giọng đọc cứ đọc tiếp trong khi bạn đứng bếp."
+      },
+      {
+        "titulo": "Khi đi dạo",
+        "texto": "Cuốn sách của tối qua, giờ là sách nói có chia chương, đèo bạn trên từng con dốc."
+      },
+      {
+        "titulo": "Đêm làm việc thay bạn",
+        "texto": "Đi ngủ, bạn cứ để nó render; thức dậy, sách nói đã nằm trong túi bạn."
+      }
+    ],
+    "porque_susurro": "vì sao có nó",
+    "porque_titulo": "Không đám mây, không tài khoản, không tính phí theo ký tự.",
+    "porque_entradilla": "Các ứng dụng chuyển văn bản thành giọng nói khác đều gửi nội dung bạn đọc lên máy chủ rồi tính phí theo ký tự hoặc theo giờ nghe. Yappy không có máy chủ nào phải trả tiền, nên cũng chẳng có gì để tính tiền bạn vì nghe.",
+    "porque": [
+      {
+        "titulo": "Không có gì rời khỏi thiết bị của bạn",
+        "texto": "Giọng nói được tổng hợp ngay trên điện thoại hay máy tính của bạn bằng một mô hình mở. Không cần mạng vẫn chạy: mãi mãi."
+      },
+      {
+        "titulo": "31 ngôn ngữ thật sự",
+        "texto": "Mười giọng đọc, giọng nào cũng đa ngôn ngữ. Văn bản có trích dẫn bằng tiếng khác sẽ tự đổi ngôn ngữ, hết đoạn này đến đoạn khác."
+      },
+      {
+        "titulo": "Không đếm giờ, không đếm ký tự",
+        "texto": "Muốn nghe gì thì nghe, muốn bao lâu thì nghe. Không có bộ đếm, vì chẳng có hóa đơn nào để chia."
+      },
+      {
+        "titulo": "Mã nguồn mở (MIT)",
+        "texto": "Cả engine, bộ soạn kịch bản, ứng dụng lẫn chính trang web này đều công khai. Bạn có thể đọc, biên dịch và kiểm chứng."
+      }
+    ],
+    "formatos_susurro": "chia sẻ là cánh cửa",
+    "formatos_titulo": "Dù bạn đang đọc gì.",
+    "formatos_entradilla": "Từ Safari, Mail, Files hay bất kỳ ứng dụng nào: chạm Chia sẻ rồi chọn Yappy. Trang web tự dọn sạch: menu, banner, phần chân trang đều bay hết, chỉ còn lại văn xuôi với tiêu đề và nhịp của nó.",
+    "guion_susurro": "mảnh ghép mà không ai khác chỉ bạn",
+    "guion_titulo": "Đọc như người, không phải như máy.",
+    "guion_entradilla": "Đọc to không phải đánh vần, mà là diễn giải. “1492” đọc là “một nghìn bốn trăm chín mươi hai”; “Henry VIII” đọc là “Henry thứ tám”, nhưng “Louis XIV” tiếng Pháp lại đọc là “Louis mười bốn”; “EL CID” không phải số La Mã; FBI thì đánh vần từng chữ, NASA thì không. Trước khi tổng hợp nổi một âm tiết, Yappy đã chuyển văn bản thành <strong>kịch bản đọc</strong>: bản nhạc ghi đúng những gì giọng nói sắp đọc.",
+    "guion_pruebalo": "Thử ngay tại đây: vẫn là chính Rust của ứng dụng, biên dịch để chạy trong trình duyệt của bạn.",
+    "guion_boton": "Soạn kịch bản",
+    "guion_ejemplo": "Thế kỷ XIX kết thúc năm 1900. Louis XIV trị vì 72 năm, tiêu 3,50 € cho kem và FBI không hề hay biết.",
+    "guion_marcador": "Gõ vài chữ có số, viết tắt, ngày tháng hay thế kỷ…",
+    "guion_espera": "Kịch bản sẽ hiện ra ở đây, phần đã chuyển đổi được gạch chân.",
+    "guion_fallo": "Trình duyệt này không tải nổi bộ soạn kịch bản. Ứng dụng thì có sẵn bên trong.",
+    "guion_mas": "Bộ soạn kịch bản hoạt động ra sao",
+    "capturas_susurro": "trông đúng thế này, không hề chỉnh sửa",
+    "capturas_titulo": "Ảnh chụp ứng dụng thật.",
+    "capturas_entradilla": "Không có hình dựng trước: đây là Yappy đang chạy thật, văn bản thật trên cọc đậu, còn máy đọc thì kịch bản đã sẵn sàng.",
+    "precio_susurro": "chuyện tiền, nói thẳng",
+    "precio_titulo": "Miễn phí thật, và một con vẹt lên dây cót.",
+    "precio_entradilla": "Con vẹt dùng thử đậu cùng lúc ba tài liệu trên cọc và đọc không giới hạn thời gian. Dời một tài liệu đi là chỗ cho cái khác. Muốn cọc đậu không đáy, xưởng in sách nói và cây cầu nối sang máy tính, thì lên dây cót cho nó.",
+    "cierre_titulo": "Một con vẹt trong túi.",
+    "cierre_texto": "Miễn phí, không tài khoản, không thứ gì phải đăng ký. Cài vào, chia sẻ một văn bản, là có tiếng ngay."
+  },
+  "uso": {
+    "title": "Cách dùng Yappy: chia sẻ, nghe và chỉ có thế.",
+    "description": "Cẩm nang đầy đủ: chia sẻ từ iPhone, phím tắt trên máy tính, cầu nối QR giữa điện thoại với Mac, sách nói có chương, Siri, widget và phần cài đặt.",
+    "h1": "Bạn chia sẻ, là có tiếng.",
+    "entradilla": "Yappy chỉ có một thao tác: chia sẻ. Còn lại là những chi tiết đã được đặt sẵn.",
+    "pasos": [
+      {
+        "titulo": "Chia sẻ",
+        "texto": "Từ bất kỳ app nào: Safari, Thư, Tệp, một ghi chú thoại, hay bản PDF vừa nhận qua chat. Bạn chạm chia sẻ, chọn Yappy, và app tự mở."
+      },
+      {
+        "titulo": "Chọn giọng đọc",
+        "texto": "Mười giọng đọc, ai cũng biết nhiều thứ tiếng. Văn bản là tiếng nào, Yappy tự nhận ra và đọc theo quy tắc của tiếng đó, chứ không phải giọng mượn tạm."
+      },
+      {
+        "titulo": "Nghe",
+        "texto": "Khóa màn hình rồi cất điện thoại đi. Giọng đọc vẫn chạy: màn hình khóa có đủ bìa, tiêu đề và nút điều khiển, còn tai nghe là người ra lệnh."
+      },
+      {
+        "titulo": "Lưu lại",
+        "texto": "Cứ để dành cho buổi đi bộ sáng mai: xưởng in đóng gói thành sách nói .m4b có chương, mở được trong trình phát nào cũng được."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "Trên iPhone và iPad",
+        "texto": "Chia sẻ là toàn bộ hướng dẫn. Ở app nào cũng vậy: chạm chia sẻ, chọn Yappy. App nhận link, đoạn chữ, PDF, EPUB, Word, ODT và cả âm thanh. Yappy tự mở ngay tắp lự. Không có gì nằm âm ỉ trong bảng chia sẻ, vì iOS giới hạn extension ở 120 MB. Yappy chép nội dung được chia sẻ rồi nhảy sang app, nơi không có giới hạn đó. Cú nhảy ấy là thiết kế, không phải mối vá. <strong>Mọi thứ diễn ra ngay trên máy</strong>: mạng duy nhất Yappy đụng tới là lượt truy cập địa chỉ bạn vừa chia sẻ, thực hiện từ chính điện thoại của bạn.",
+        "puntos": [
+          "Hàng đợi kịp chuẩn bị trong lúc bạn còn đang xem: bài viết được làm sạch, video mang theo bản chép lời của nó, PDF được chia trang. Nếu bạn vẫn để app mở trước mặt, việc đọc tự chạy ngay khi mọi thứ sẵn sàng.",
+          "Karaoke tô sáng câu đang đọc, hết câu này đến câu khác. Chạm vào đâu cũng tạm dừng được, trượt để nhảy qua đoạn, kéo mép màn hình để tăng hay giảm tốc độ.",
+          "Khóa màn hình, giọng đọc vẫn chạy. AirPods dừng và phát lại được. Hệ thống đối xử với app như với bất kỳ trình phát nào.",
+          "Giá treo chứa được ba tài liệu cùng lúc: bỏ một cái ra là có chỗ cho cái khác. Còn truyện có sẵn thì không chiếm chỗ."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Trên Mac, Windows và Linux",
+        "texto": "Một phím tắt là nghe được thứ bạn đang xem: đoạn bôi đen, trang trong trình duyệt hay tài liệu đang mở. Cả ba phím tắt đổi được trong Tùy chọn, và chạy cả khi app nằm ẩn trong khay hệ thống. Ngoài phím tắt, bản máy tính còn có cả những thứ một bàn tay không chứa nổi.",
+        "puntos": [
+          "<strong>Thư viện.</strong> Mọi thứ bạn mở hay chia sẻ đều nằm trên trang chủ, kèm tiến độ. Quay lại đúng chỗ bỏ dở, chính xác từng đoạn.",
+          "<strong>Trình chỉnh sửa theo đoạn.</strong> Mỗi đoạn có thể có giọng đọc, tốc độ và khoảng lặng riêng. Hợp với hội thoại, trích dẫn hay tài liệu hai thứ tiếng.",
+          "<strong>Chép lời ngay trên máy.</strong> Kéo một ghi chú thoại hay bản ghi âm vào, đôi tai nằm ngay trên máy sẽ chép thành chữ đọc được, không gửi lên đâu cả.",
+          "<strong>Xuất sách nói.</strong> Tài liệu nào cũng ra .m4b đúng nghĩa, có chương điều hướng được rút ra từ kịch bản. Cũng ra được .wav hoặc .mp3.",
+          "<strong>PDF biết nhìn.</strong> PDF scan phải qua một lớp OCR chạy ngay trên máy rồi mới được đọc. Loại sinh ra đã là bản số thì đọc thẳng luôn, trang này sang trang khác.",
+          "<strong>Giao diện.</strong> Ban ngày nền giấy ngà, ban đêm chữ sáng trên nền tối, hoặc để hệ thống quyết định.",
+          "<strong>Không vướng dây nào.</strong> Trên máy tính thì mọi thứ đều mở: xưởng in, móc áo không đáy và cầu nối, cái nào cũng có sẵn."
+        ]
+      },
+      {
+        "id": "puente",
+        "titulo": "Cầu nối: máy tính tổng hợp, điện thoại nghe",
+        "texto": "Tổng hợp nguyên một cuốn sách thì lâu. Cầu nối chuyển phần việc nặng sang máy tính của bạn, rồi trả lại cuốn sách nói đã xong vào túi bạn — qua một kết nối trực tiếp, mã hóa đầu cuối giữa hai thiết bị, không có máy chủ của ai chen giữa.",
+        "puntos": [
+          "Trên máy tính, mở Tùy chọn, mục “Cầu nối”: Yappy hiện một mã QR chứa địa chỉ đã mã hóa của máy bạn và một khóa mời.",
+          "Hướng camera của iPhone vào mã QR là hai máy ghép cặp với nhau. Khóa được lưu lại, và bạn có thể thu hồi từ phía máy tính bất cứ lúc nào.",
+          "Trên điện thoại, chọn “Chuyển sang máy tính”: bạn chọn tài liệu, máy tính tổng hợp theo nhịp riêng của nó, và tập .m4b xuất hiện trong thư viện điện thoại, đầy đủ các chương. Đêm làm việc cho buổi đi bộ sáng mai của bạn.",
+          "Cầu nối được mã hóa bằng QUIC, dựa trên giao thức của <a href=\"https://iroh.computer\">iroh</a>. Nếu cần một máy tiếp sức để hai thiết bị tìm thấy nhau, máy đó chỉ thấy toàn lưu lượng mã hóa mà nó không đọc nổi."
+        ]
+      },
+      {
+        "id": "audiolibros",
+        "titulo": "Sách nói: .m4b có chương đúng nghĩa",
+        "texto": "Yappy không xuất ra “một bản ghi dài dằng”: nó xuất sách nói .m4b như hàng ngoài cửa hàng, chương lấy từ tiêu đề thật của tài liệu, có bìa và nhớ chỗ đang nghe. Nghe được ngay trong Yappy, với thư viện và tiến độ sẵn có, hoặc bằng bất cứ trình phát sách nói nào bạn đang dùng. Bộ soạn kịch cho chúng hơi thở: nghỉ sau tiêu đề, giữ nhịp danh sách khi gặp danh sách.",
+        "puntos": [
+          "Trên điện thoại, đặt in ngay từ thư viện, từng chương một: bạn chọn in chương nào và bằng giọng nào.",
+          "Con vẹt vẫn in tiếp, dù bạn đóng app hay khóa máy.",
+          "Từ thư viện, chia sẻ sang Files, sang Books hay đâu cũng được: tệp là của bạn.",
+          "Xưởng in nằm trong Yappy Parlanchín trên iPhone và iPad. Trên máy tính, nó là mã nguồn mở."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, phím tắt và nút hành động",
+        "texto": "“Này Siri, đọc bộ nhớ tạm của tôi bằng Yappy.” App khai báo App Intents thật sự: chúng tự xuất hiện trong ứng dụng Phím tắt, nhận lệnh từ Siri và gắn được lên nút hành động của iPhone. Không phải lắp gì cả.",
+        "puntos": [
+          "<strong>Đọc bộ nhớ tạm.</strong> Sao chép ở đâu cũng được, bảo Siri một câu, là phát luôn.",
+          "<strong>Đọc tiếp.</strong> Quay lại nội dung nghe gần nhất, đúng chỗ đang dở.",
+          "<strong>Nghe một đường dẫn.</strong> Nhận địa chỉ làm tham số: khâu cuối hoàn hảo cho phím tắt do chính bạn tạo.",
+          "Muốn dựng tự động hóa bằng tay, scheme <code>yappy://</code> cũng được xử lý: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> và <code>yappy://pair?d=…</code>.",
+          "Và còn một widget cho màn hình chính, hiện thứ vừa phát gần nhất, chạm một cái là nghe tiếp."
+        ]
+      },
+      {
+        "id": "ajustes",
+        "titulo": "Cài đặt: ít núm vặn, nhưng núm nào cũng thật.",
+        "texto": "Yappy không có bảng điều khiển với trăm công tắc. Chỉ có vài công tắc thật sự đổi được cách nghe.",
+        "puntos": [
+          "<strong>Giọng đọc.</strong> Mười giọng, tất cả đều đa ngôn ngữ: cùng một giọng đọc tiếng Tây Ban Nha, tiếng Anh hay tiếng Nhật mà âm sắc không đổi.",
+          "<strong>Tốc độ.</strong> Từ 0,5× đến 2×. Giọng đọc được tạo ra đúng với tốc độ đó chứ không tua nhanh lại sau: cao độ không bị méo.",
+          "<strong>Khoảng nghỉ.</strong> Nghỉ thở bao lâu giữa các đoạn văn. Tiêu đề và danh sách đã có sẵn nhịp riêng từ bộ soạn lời đọc.",
+          "<strong>Ngôn ngữ.</strong> Tự nhận theo từng tài liệu và từng đoạn, hoặc tự tay chọn. Trích đoạn bằng thứ tiếng khác tự đổi theo.",
+          "<strong>Thống kê ẩn danh.</strong> Trên điện thoại, chúng bật sẵn và tắt được tại đây, trong khu vực phía sau. Chính xác nó gửi những gì thì được kể từng điểm trong chính sách quyền riêng tư."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Trên Android",
+        "texto": "Cùng một cú chạm: bạn chia sẻ một liên kết, một đoạn chữ hay một tài liệu, nó rơi ngay vào cùng một hàng đợi, với trích xuất bài báo, karaoke và giọng đọc, tất cả ngay trên điện thoại. Bản Android là đứa trẻ nhất trong nhà và còn thiếu ba thứ mà iPhone đã có: nút điều khiển trên màn hình khóa, video và trình phát sách nói .m4b. Còn chuyện quan trọng hơn: <strong>chưa phát hành</strong>. Tài khoản nhà phát triển Google vẫn đang chờ xác minh, nên chúng tôi không nêu ngày, vì cũng không biết ngày nào. Khi ra mắt sẽ thông báo tại đây và trên kho mã nguồn. Trên Android không có gì để giấu. Tất cả đều mở."
+      }
+    ],
+    "atajo": "Lối tắt",
+    "atajo_leer": "Đọc những gì bạn đang xem",
+    "atajo_portapapeles": "Đọc bảng nhớ tạm",
+    "atajo_pausar": "Tạm dừng",
+    "cierre": "Hướng dẫn sử dụng chỉ có vậy."
+  },
+  "guionizador": {
+    "title": "Bộ soạn lời đọc của Yappy: từ chữ viết thành lời nói",
+    "description": "Cách Yappy biến “1492”, “thế kỷ XV”, “3,50 €” hay “FBI” thành lời đọc theo quy tắc của từng ngôn ngữ, trên cả 31 ngôn ngữ. Có demo chạy trực tiếp: chính phần Rust của app, biên dịch sang WebAssembly.",
+    "h1": "Từ chữ viết thành lời nói.",
+    "oficios_titulo": "Mười hai nghề trong một lượt.",
+    "oficios": [
+      {
+        "titulo": "Ngày tháng",
+        "texto": "“24/5/1533” được đọc trọn vẹn, theo đúng trật tự và cách nói của từng ngôn ngữ."
+      },
+      {
+        "titulo": "Giờ",
+        "texto": "“14:05” được đọc như người thật nói, chứ không như chiếc đồng hồ đọc."
+      },
+      {
+        "titulo": "Tiền tệ",
+        "texto": "“3,50 €” được đọc thành “ba euro năm mươi”, đúng cách tiếng đó gọi số tiền."
+      },
+      {
+        "titulo": "Phần trăm",
+        "texto": "“7%” đọc là “bảy phần trăm”, còn “0,5%” không biến thành “không phẩy năm”."
+      },
+      {
+        "titulo": "Đơn vị",
+        "texto": "“230 °C” đọc là “hai trăm ba mươi độ C”."
+      },
+      {
+        "titulo": "Số thứ tự",
+        "texto": "“3.ª” được đọc thành “tercera”, với đúng giống và biến cách nếu thứ tiếng đó có."
+      },
+      {
+        "titulo": "Số La Mã có nguyên tắc",
+        "texto": "“thế kỷ XX” đọc như số đếm, “Enrique VIII” đọc như số thứ tự, còn “EL CID” không phải là số."
+      },
+      {
+        "titulo": "Từ viết tắt theo phát âm",
+        "texto": "FBI thì đánh vần từng chữ, NASA thì đọc trọn một mạch. Quyết định là cách nó nghe, không phải một danh sách."
+      },
+      {
+        "titulo": "Chữ viết tắt",
+        "texto": "“v.v.”, “tr.”, “TK XIX”: mỗi thứ tiếng có bảng riêng của nó."
+      },
+      {
+        "titulo": "Số lớn",
+        "texto": "Bằng ngữ pháp RBNF của Unicode CLDR, có luôn cả giống và biến cách."
+      },
+      {
+        "titulo": "31 thứ tiếng",
+        "texto": "Cùng một bộ quy tắc, nhưng theo ngữ pháp của từng thứ tiếng. Không có danh sách viết tay."
+      },
+      {
+        "titulo": "Nhịp điệu",
+        "texto": "Tiêu đề nghỉ lấy hơi sau khi đọc xong; các danh sách giữ nhịp đều đặn. Khoảng nghỉ thuộc về kịch bản, không thuộc về tình cờ."
+      }
+    ],
+    "cierre": "Kịch bản là một nửa câu chuyện; nửa còn lại để nghe.",
+    "faq": [
+      {
+        "q": "Ngữ pháp RBNF là gì?",
+        "a": "RBNF là viết tắt của <em>Rule-Based Number Format</em>: bộ quy tắc mà Unicode CLDR dùng để mô tả cách đọc một con số trong từng thứ tiếng. Đó không phải bảng nghìn từ, mà là một ngữ pháp: nhờ vậy nó biết tiếng Tây Ban Nha nói “doscientas páginas” chứ không phải “doscientos páginas”, biết tiếng Nga biến cách số từ, và biết tiếng Pháp đếm tới chín mươi bằng từng chục hai mươi. Yappy diễn giải chúng bằng Rust thuần, không hề có danh sách viết tay."
+      },
+      {
+        "q": "Vì sao cần bộ soạn kịch bản? Giọng đọc tự lo không được à?",
+        "a": "Không, và đó là chủ ý. Mô hình giọng nói của Yappy làm việc ở cấp ký tự: nó đọc đúng y những gì được đưa vào. Nhờ vậy nó nhanh và nhẹ, nhưng cũng có nghĩa là nếu nhận “1492”, nó sẽ cố đọc y như vậy, từng ký tự một. Với mô hình kiểu này, chuẩn hoá <em>chính là</em> phát âm. Bộ soạn kịch bản là mảnh ghép biến mỗi con số, mỗi chữ viết tắt, mỗi ký hiệu thành những từ mà một con người sẽ nói."
+      },
+      {
+        "q": "Hoạt động với bao nhiêu thứ tiếng?",
+        "a": "Với cả 31 thứ tiếng mà giọng đọc hỗ trợ, mỗi thứ có luật riêng: thứ tự ngày tháng, cách nối tên đồng tiền, số thứ tự, chữ viết tắt và số La Mã. “Thế kỷ XV” đọc là “thế kỷ mười lăm” theo kiểu Tây Ban Nha, còn tiếng Anh thì “fifteenth century”; “Louis XIV” là “Louis quatorze” chứ không phải “Louis fourteenth”. Cùng mười hai đầu việc, ba mươi mốt bộ ngữ pháp."
+      },
+      {
+        "q": "Vì sao karaoke luôn rơi đúng vào từ đang đọc?",
+        "a": "Vì kịch bản không chỉ là văn bản đã biến đổi: nó lưu sơ đồ giữa chữ viết và lời đọc. Khi giọng đọc nói “một nghìn bốn trăm chín mươi hai”, kịch bản biết bốn từ đó đến từ bốn chữ số của “1492”, nên dấu gạch chân đậu lên đúng chỗ mà không bị lệch. Đó là khác biệt giữa rọi sáng văn bản và đoán mò."
+      },
+      {
+        "q": "Có từ bị phát âm sai. Tôi có thể sửa lại không?",
+        "a": "Tính đến hôm nay vẫn chưa có từ điển phát âm dành cho người dùng. Vì mô hình đọc theo từng ký tự, cách nhanh là viết từ đó theo đúng âm của nó trong trình soạn thảo rồi nghe lại. Còn nếu lỗi nằm ở một quy tắc chung (một từ viết tắt, một tên tắt, một đơn vị), hãy kể lại trong <a href=\"https://github.com/joseluissaorin/yappy/issues\">các issue trên GitHub</a>: các bảng của bộ kịch bản hóa lớn dần nhờ từng trường hợp như thế."
+      },
+      {
+        "q": "Bộ kịch bản hóa trên trang này có giống bộ trong ứng dụng không?",
+        "a": "Cùng một mã nguồn, được biên dịch sang WebAssembly để chạy ngay trong trình duyệt. Bạn gõ gì ở đây cũng không rời khỏi tab. Và vì cả dự án đều mở, bạn có thể đọc lần lượt từng quy tắc trong <a href=\"https://github.com/joseluissaorin/yappy\">kho mã nguồn</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Tải Yappy: iPhone, iPad, Mac, Windows và Linux",
+    "description": "Yappy miễn phí và mã nguồn mở. Có trên App Store cho iPhone và iPad; bản máy tính thì biên dịch từ mã nguồn hoặc tải từ GitHub. Yêu cầu hệ thống và dung lượng của mô hình giọng nói.",
+    "h1": "Miễn phí, mã nguồn mở, và của bạn.",
+    "entradilla": "Không cần đăng ký, không cần email, cũng không có bản dùng thử hết hạn. Tải xuống là xong.",
+    "modelo_nota": "Lần đầu tiên, Yappy sẽ tải mô hình giọng nói ({peso}). Trên iPhone, nó có sẵn trong bản cài đặt; trên máy tính, tải vào lần đầu bạn mở ứng dụng. Sau đó thì không cần mạng nữa.",
+    "android_titulo": "Android",
+    "android_texto": "Bản Android đã biên dịch xong và chạy tốt, nhưng chưa được phát hành: tài khoản nhà phát triển Google vẫn đang chờ xác minh. Khi ra mắt, sẽ có thông báo ở đây và trên kho mã nguồn.",
+    "escritorio_aviso": "Các file nhị phân cho máy tính được đăng trên GitHub. Nếu bản bạn thấy ở đó cũ hơn bản trên iPhone tức là bản mới nhất chưa được tải lên: mã nguồn thì luôn cập nhật, và bạn có thể tự biên dịch bằng <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone và iPad",
+        "texto": "Trên App Store, miễn phí và không cần tài khoản. Giọng đọc tải về cùng lúc với việc cài đặt, nên chỉ cần mở app, chia sẻ một đoạn văn bản là có tiếng ngay. Đây là bản đầy đủ nhất: sách nói, Siri, widget, cầu nối và nút điều khiển trên màn hình khóa.",
+        "requisitos": "iOS hoặc iPadOS 17 trở lên · mô hình giọng nói chiếm khoảng 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Tải xuống trên App Store"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Chạy trên Apple Silicon lẫn Intel, dưới dạng file .dmg đã được xác thực. Có đủ ba phím tắt toàn cục, trình soạn thảo theo đoạn, OCR cho file PDF scan và xuất sách nói. Ở đây không có dây ràng buộc: tất cả đều mở.",
+        "requisitos": "macOS 12 trở lên · mô hình giọng nói khoảng 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Xem các bản phát hành trên GitHub"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "File cài đặt .exe hoặc .msi cho x64, với y hệt các phím tắt và tính năng của bản Mac. Bất kỳ chiếc laptop nào của những năm gần đây cũng tổng hợp nhanh hơn thời gian thực.",
+        "requisitos": "Windows 10 trở lên, x64 · mô hình giọng nói khoảng 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Xem các bản phát hành trên GitHub"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage và .deb cho x64. Phím tắt toàn cục phụ thuộc môi trường desktop của bạn; nếu tổ hợp của bạn đã bị chiếm, vào Tùy chọn để đổi sang tổ hợp khác.",
+        "requisitos": "x64 · mô hình giọng nói khoảng 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Xem các bản phát hành trên GitHub"
+      },
+      {
+        "nombre": "Từ mã nguồn",
+        "texto": "Cả dự án đều được công khai: ứng dụng desktop và ứng dụng di động (Tauri, Rust và Svelte), bộ máy tổng hợp giọng nói, bộ soạn kịch bản cùng các ngữ pháp CLDR kèm sẵn, và chính trang web này. Đã cài Rust và Node là <code>cargo tauri build</code> tạo cho bạn một bản của riêng mình. Nếu các file binary phát hành chưa theo kịp phiên bản trên iPhone, đây là lối tắt: mã nguồn luôn được cập nhật mới nhất.",
+        "requisitos": "Rust và Node · hướng dẫn đầy đủ trong README",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Xem mã nguồn trên GitHub"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Giá Yappy: miễn phí mãi mãi, không thu phí theo ký tự",
+    "description": "Yappy miễn phí và không giới hạn thời gian nghe: ba tài liệu cùng lúc trên giá treo. Yappy Parlanchín thêm giá treo không đáy, xưởng in sách nói và cầu nối, từ 3,99 € một tháng hoặc 59,99 € trả một lần.",
+    "h1": "Chuyện tiền, nói thẳng.",
+    "entradilla": "Nghe được những gì mình đọc là chuyện của trợ năng, mà trợ năng thì không nên đòi quẹt thẻ. Vì thế phần quan trọng nhất được miễn phí, không có bộ đếm nào.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "mãi mãi",
+    "gratis_puntos": [
+      "Nghe không giới hạn số phút, cũng không giới hạn ký tự",
+      "Đủ 31 ngôn ngữ và 10 giọng đọc",
+      "PDF, EPUB, Word, bài báo, video và tin nhắn thoại",
+      "Ba tài liệu cùng lúc trên giá treo: bỏ bớt một cái là có chỗ cho cái khác",
+      "Không cần tài khoản, không cần email, không quảng cáo",
+      "Mã nguồn mở, giấy phép MIT"
+    ],
+    "gratis_no": [
+      "Không có xưởng in sách nói",
+      "Không có cầu nối với máy tính"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "mỗi tháng",
+    "cuerda_periodo_anio": "mỗi năm",
+    "cuerda_periodo_vida": "chỉ một lần",
+    "cuerda_puntos": [
+      "Mọi thứ ở trên",
+      "Móc treo không đáy: muốn treo bao nhiêu tài liệu cũng được",
+      "Xưởng in: nguyên cuốn sách thành sách nói có chương",
+      "Cây cầu: máy tính của bạn tự chuyển đổi rồi tự gửi kết quả lại cho bạn",
+      "Hủy bất kỳ lúc nào"
+    ],
+    "cuerda_nota": "Không có dùng thử miễn phí, và đó là chủ ý: cái móc ba tài liệu <em>chính là</em> bản dùng thử, không hết hạn và cũng không tự tính tiền sau đó. Giá là giá ở Tây Ban Nha; trong cửa hàng ứng dụng của bạn, chúng sẽ hiện theo đồng tiền của bạn.",
+    "cuerda_donde": "Gói này được mua ngay trong ứng dụng, ở gian hàng sau.",
+    "solo_ios": "Trên máy tính và Android thì tất cả đều mở: gói này chỉ có trên iPhone và iPad.",
+    "comparacion_titulo": "Những gì app khác thu phí.",
+    "comparacion_entradilla": "Các app giọng nói trên đám mây phải trả tiền máy chủ mỗi khi bạn bấm play, nên họ tính phí theo giờ hoặc theo ký tự. Yappy tổng hợp giọng ngay trên máy của bạn: mỗi lần nghe tốn đúng bằng không, nên nó mới có thể không thu tiền.",
+    "comparacion_nota": "Giá niêm yết lấy vào tháng 9 năm 2026. Giá thay đổi thường xuyên: hãy kiểm tra lại trên từng trang web trước khi quyết định.",
+    "faq": [
+      {
+        "q": "Vì sao miễn phí?",
+        "a": "Vì không có máy chủ nào phải trả tiền. Giọng được tổng hợp ngay trên máy của bạn, nên nghe không tốn của ai một đồng nào và cũng không có hóa đơn nào để chia. Các app giọng nói trên đám mây phải trả tiền cho một cái máy mỗi khi bạn bấm play, vì thế họ tính tiền theo ký tự hoặc theo giờ. Yappy không thể thu tiền bạn vì một thứ không tốn đồng nào."
+      },
+      {
+        "q": "Nếu tôi không bao giờ trả tiền thì sao?",
+        "a": "Không có gì. Yappy vẫn chạy mãi mãi, đủ mười giọng, 31 ngôn ngữ và mọi định dạng, không quảng cáo, không cần tài khoản, không bộ đếm phút. Thứ duy nhất thay đổi là trên iPhone và iPad, cái móc chỉ treo được ba tài liệu cùng lúc: gỡ một cái ra là có chỗ cho cái khác. Trên máy tính thì kể cả thế cũng không."
+      },
+      {
+        "q": "Có bản dùng thử miễn phí không?",
+        "a": "Không, và đó là chủ ý chứ không phải quên. Cái móc ba tài liệu <em>chính là</em> bản dùng thử: không hết hạn, không đòi thẻ và không bắt đầu tính tiền vào ngày thứ tám. Không ai nên thức dậy thấy tài khoản bị trừ một khoản mình chẳng nhớ đã đồng ý."
+      },
+      {
+        "q": "Tôi có thể hủy bất kỳ lúc nào không?",
+        "a": "Có, qua tài khoản Apple của bạn, như mọi gói đăng ký khác. Chúng tự gia hạn vào cuối mỗi kỳ, trừ khi bạn hủy trước ít nhất 24 giờ. Gói mua trọn đời không bao giờ gia hạn: trả một lần là xong. Còn nếu hủy, bạn không mất gì phần miễn phí: quay về lại cột đậu ba tài liệu."
+      },
+      {
+        "q": "Vì sao trên máy tính và Android lại không phải trả tiền?",
+        "a": "Vì cỗ lên dây chỉ được lắp trên iPhone và iPad. Trên máy tính, và trong bản Android khi ra mắt, xưởng in, cột đậu không đáy và cây cầu đều mở sẵn. Đây không phải khuyến mãi ra mắt: ở đó đơn giản là không có gì để thu tiền."
+      }
+    ],
+    "una_a_una": "từng giọng một, kèm dữ liệu"
+  },
+  "voces": {
+    "title": "Giọng đọc của Yappy: mười chú chim đa ngôn ngữ nói 31 thứ tiếng",
+    "description": "Mười giọng đọc tự nhiên nói được cả 31 thứ tiếng mà không đổi âm sắc. Nghe thử từng giọng rồi chọn giọng của bạn: chọn giọng nào, cả ứng dụng mang màu giọng đó.",
+    "h1": "Mười chú chim, ba mươi mốt thứ tiếng.",
+    "entradilla": "Cả mười đều đa ngôn ngữ: cùng một giọng đọc tiếng Tây Ban Nha, tiếng Anh hay tiếng Nhật mà vẫn nguyên âm sắc. Văn bản có trích dẫn bằng thứ tiếng khác thì tự đổi ngôn ngữ, từng đoạn một.",
+    "elige": "Chạm vào một chú chim, nó sẽ nói cho bạn nghe giọng của mình.",
+    "idiomas_titulo": "Những thứ tiếng chúng nói.",
+    "idiomas_entradilla": "Ba mươi mốt thứ tiếng, mỗi tiếng có bộ xử lý văn bản riêng: không phải một giọng đọc y nguyên mà mang giọng lệch, mà là mỗi ngôn ngữ nói theo đúng quy tắc của nó."
+  },
+  "preguntas": {
+    "title": "Câu hỏi về Yappy: quyền riêng tư, ngôn ngữ, giá và giấy phép",
+    "description": "Trả lời thẳng về phần nào miễn phí, phần nào cần mạng, Yappy dùng mô hình nào, nhận định dạng nào và phải làm gì khi có trục trặc.",
+    "h1": "Những câu hỏi hay được gửi tới.",
+    "entradilla": "Trả lời thẳng, không vòng vo.",
+    "grupos": [
+      {
+        "susurro": "tiền và tự do",
+        "titulo": "Miễn phí, thật đấy.",
+        "lista": [
+          {
+            "q": "Có thật là miễn phí không?",
+            "a": "Có. Yappy là mã nguồn mở theo giấy phép MIT. Được nghe những gì mình đọc là chuyện của khả năng tiếp cận, mà công cụ hỗ trợ tiếp cận không nên đòi quẹt thẻ. Trên máy tính không có bản trả phí, cũng không có quảng cáo. Trên iPhone, chú vẹt dùng thử cõng được ba tài liệu cùng lúc trên cột đậu của nó, không giới hạn thời gian; nếu muốn cột đậu không đáy, xưởng in sách nói và cây cầu nối với máy tính, bạn lên dây bằng Yappy Parlanchín, theo gói đăng ký hoặc trả một lần dùng trọn đời. Dù chọn cách nào cũng không cần tài khoản và không có quảng cáo."
+          },
+          {
+            "q": "Có bẫy gì không? Dự án sống bằng gì?",
+            "a": "Không có bẫy nào: không có máy chủ nào phải trả tiền. Việc tổng hợp giọng chạy ngay trên máy của bạn, nên Yappy không tốn gì cho từng người dùng. Đây là dự án cá nhân của tác giả, đăng lên vì nó đã có sẵn và chắc còn hữu ích với ai đó nữa."
+          },
+          {
+            "q": "Có bản dùng thử miễn phí không?",
+            "a": "Không, và là cố ý. Cột đậu ba tài liệu chính là bản dùng thử, không hết hạn và không biến thành khoản trừ tiền sau bảy ngày. Nếu Yappy có ích với bạn, bạn sẽ tự biết, không cần ai dí đồng hồ trước mặt."
+          },
+          {
+            "q": "Tôi có đăng được âm thanh mình tạo ra lên podcast hay video không?",
+            "a": "Mã của Yappy theo MIT và không đặt điều kiện gì. Riêng mô hình giọng nói, Supertonic 3, có giấy phép của nó: một giấy phép mở dạng OpenRAIL-M, kèm các điều khoản sử dụng. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Xem kỹ trên trang của mô hình</a> trước khi dùng cho mục đích thương mại, vì phần đó không thuộc Yappy và chúng tôi không thể hứa hộ."
+          }
+        ]
+      },
+      {
+        "susurro": "văn bản của bạn chẳng rời máy",
+        "titulo": "Quyền riêng tư, kể rõ từng chuyện",
+        "lista": [
+          {
+            "q": "Văn bản của tôi có bị gửi lên máy chủ nào không?",
+            "a": "Không. Tổng hợp giọng nói, chuyển thoại thành chữ và trích bài báo đều diễn ra ngay trên thiết bị của bạn. Mọi thứ bạn chia sẻ với Yappy không được gửi đi đâu cả: không có tài khoản, không có bản sao, và chẳng tồn tại máy chủ Yappy nào để chứa chúng. Việc chạm tới mạng chỉ có đúng bốn thứ, và cả bốn đều được kể trong chính sách quyền riêng tư."
+          },
+          {
+            "q": "Yappy có thu thập thống kê sử dụng không?",
+            "a": "Có, và nên nói thẳng luôn. Ứng dụng trên điện thoại gửi đi thống kê sử dụng ẩn danh: chúng bật sẵn từ nhà máy, muốn tắt thì phải vào tận ngóc ngách phần cài đặt. Cái đi ra ngoài chỉ là tên một sự kiện trong danh sách đóng (app được mở, đang xem tới bước nào của chuyến dạo đầu, gói nào được chạm vào, một lần đọc có kết thúc hay không), một mã cài đặt ngẫu nhiên, ngôn ngữ và phiên bản. Không bao giờ có tên bạn, email của bạn, văn bản bạn đang đọc, tiêu đề một tài liệu hay một đường dẫn, và chẳng có mã định danh quảng cáo nào. Và chúng không về Google, không về Firebase, không về bất kỳ công ty phân tích nào: chúng nằm ở một Worker và một cơ sở dữ liệu D1 trên Cloudflare của chính tác giả. Trên máy tính thì không có thống kê nào hết."
+          },
+          {
+            "q": "Còn cầu nối giữa điện thoại và máy tính thì sao?",
+            "a": "Đó là một kết nối trực tiếp giữa hai thiết bị của bạn, mã hóa từ đầu đến cuối bằng QUIC, dựa trên giao thức <a href=\"https://iroh.computer\">iroh</a>. Việc ghép đôi làm bằng cách chĩa camera vào mã QR mà máy tính của bạn hiển thị, và chìa khóa tạo ra sau đó có thể thu hồi ngay từ đó, lúc nào cũng được. Không có máy chủ Yappy nào đứng giữa, vì chẳng tồn tại máy chủ Yappy nào cả."
+          },
+          {
+            "q": "Chạy được khi không có mạng không?",
+            "a": "Có, và là mãi mãi. Sau lần tải mô hình đầu tiên — chừng 200 MB trên điện thoại, chừng 398 MB trên máy tính — bạn có thể để Yappy chạy trong chế độ máy bay: dán văn bản, mở tài liệu, tổng hợp giọng nói và xuất file. Chỉ có việc chia sẻ địa chỉ mới mới cần mạng, vì lý do ai cũng hiểu. Cũng không có gì đồng bộ lên mây: thư viện của bạn nằm trên thiết bị của bạn, còn cầu nối là điều gần nhất với việc trao một thứ từ máy này sang máy khác."
+          }
+        ]
+      },
+      {
+        "susurro": "thứ phát ra tiếng",
+        "titulo": "Giọng nói và các thứ tiếng",
+        "lista": [
+          {
+            "q": "Nó dùng mô hình giọng nói nào?",
+            "a": "Supertonic 3, một mô hình mở của Supertone chừng 99 triệu tham số, nằm gọn trong 398 MB trên máy tính và 200 MB trên điện thoại, và tổng hợp nhanh hơn thời gian thực trên bất kỳ chiếc laptop nào của mấy năm gần đây. Mô hình làm việc ở cấp ký tự: vì thế mới có bộ soạn lời đọc, kịp biến số, từ viết tắt và ký hiệu thành chữ trước khi giọng đọc nhìn thấy chúng."
+          },
+          {
+            "q": "Nó nói được những tiếng nào?",
+            "a": "Tiếng Đức, tiếng Ả Rập, tiếng Bulgaria, tiếng Séc, tiếng Hàn, tiếng Croatia, tiếng Đan Mạch, tiếng Slovak, tiếng Slovenia, tiếng Tây Ban Nha, tiếng Estonia, tiếng Phần Lan, tiếng Pháp, tiếng Hy Lạp, tiếng Hindi, tiếng Hungary, tiếng Indonesia, tiếng Anh, tiếng Ý, tiếng Nhật, tiếng Latvia, tiếng Litva, tiếng Hà Lan, tiếng Ba Lan, tiếng Bồ Đào Nha, tiếng Romania, tiếng Nga, tiếng Thụy Điển, tiếng Thổ Nhĩ Kỳ, tiếng Ukraina và tiếng Việt. Ba mươi mốt. Cả mười giọng đọc đều biết nhiều thứ tiếng: cùng một giọng đọc được tất cả mà không đổi âm sắc."
+          },
+          {
+            "q": "Còn tài liệu trộn lẫn nhiều thứ tiếng thì sao?",
+            "a": "Yappy nhận diện ngôn ngữ của tài liệu, và từng đoạn một, của từng mẩu: một trích dẫn tiếng Anh trong bài luận tiếng Tây Ban Nha sẽ được đọc bằng tiếng Anh, cùng một giọng, không cần bạn đụng vào cái gì. Nếu nhận diện bị nhầm, bạn có thể đặt lại ngôn ngữ bằng tay."
+          },
+          {
+            "q": "Nó khác VoiceOver hay “Đọc màn hình” ở chỗ nào?",
+            "a": "Trình đọc của hệ thống đọc màn hình nguyên trạng, theo ngữ điệu của hệ thống và chẳng có trí nhớ. Yappy chuẩn bị văn bản trước khi nói (dọn sạch bài báo, đọc thành lời các con số và từ viết tắt, đánh dấu chỗ ngắt nghỉ), đọc bằng một giọng tự nhiên, nhớ bạn đang đọc tới đâu, xuất được sách nói, và vẫn đọc tiếp khi khóa màn hình. Hai bên là họ hàng, mỗi bên một nghề, và dùng cùng lúc chẳng vướng víu gì: Yappy không thay thế trình đọc màn hình, và cũng chẳng có ý định làm thế."
+          }
+        ]
+      },
+      {
+        "susurro": "thứ được nạp vào",
+        "titulo": "Tài liệu",
+        "lista": [
+          {
+            "q": "Nó nhận những định dạng nào?",
+            "a": "Bài báo web (trang tự dọn sạch), video qua bản chép lời đã đăng tải, PDF, EPUB, Word, ODT, RTF, Markdown, văn bản thô, .pptx, .xlsx, .csv và ghi chú thoại. Trên điện thoại, tất cả qua bảng chia sẻ; trên máy tính, còn có thể kéo thả hoặc bấm phím tắt. Và nếu máy tính có sẵn pandoc, danh sách nới rộng thêm LaTeX, reStructuredText, Org cùng mấy loại nữa."
+          },
+          {
+            "q": "Còn PDF quét, bên trong không có chữ thì sao?",
+            "a": "Trên máy tính, chúng đi qua một bộ OCR chạy ngay trên máy trước khi được đọc, và ở đó cũng chẳng có gì rời khỏi máy của bạn. Trên iPhone thì chưa: nếu PDF là tấm ảnh chụp tờ giấy, điện thoại không tìm thấy chữ nào để đọc. Bản quét bị lệch hay nhòe sẽ cho ra đúng thứ mà OCR nào cũng cho nổi, còn bản quét tử tế thì đọc được trọn."
+          },
+          {
+            "q": "Yappy có đọc được sách tôi đã mua ở cửa hàng không?",
+            "a": "Chỉ đọc được những cuốn bạn tự mở nổi. EPUB không khóa bảo vệ thì đọc trọn vẹn, đủ cả các chương. Sách có DRM mua ở cửa hàng thì không đọc được, dù ở đây hay ở đâu khác: ổ khóa đó không phải của Yappy, và chúng tôi không định giả vờ rằng mình có chìa khóa."
+          },
+          {
+            "q": "Làm sao để xóa một mục khỏi thư viện?",
+            "a": "Ngay trong thư viện: mỗi tài liệu có tùy chọn xóa riêng của nó, và audio cũng biến mất theo. Các tệp đã xuất (.m4b, .mp3, .wav) là của bạn, nằm ở nơi bạn đã lưu; muốn xóa hay dời chỗ thì đó là việc của Finder hoặc ứng dụng Tệp."
+          }
+        ]
+      },
+      {
+        "susurro": "khi có trục trặc",
+        "titulo": "Sự cố và trợ giúp.",
+        "lista": [
+          {
+            "q": "Tại sao lần tổng hợp đầu tiên lại lâu hơn vài giây?",
+            "a": "Lần đầu, mô hình phải được nạp vào bộ nhớ. Sau đó nó nằm sẵn đó, nên những câu sau đọc ra ngay lập tức. Nếu bạn vừa cài ứng dụng trên máy tính, lần chờ đầu tiên còn cộng thêm cả việc tải mô hình giọng nói."
+          },
+          {
+            "q": "Có từ bị phát âm sai. Có dạy lại được không?",
+            "a": "Không có từ điển phát âm cho người dùng, nên lối tắt là viết lại từ đó theo đúng cách nó nghe, ngay trong trình soạn thảo: mô hình đọc theo ký tự và sẽ nghe lời bạn. Nếu đó là một quy luật chung (một từ viết tắt, một tên tắt, một đơn vị đo), hãy kể ở <a href=\"https://github.com/joseluissaorin/yappy/issues\">mục Issues trên GitHub</a>: các bảng quy tắc của bộ chuyển chữ thành âm sẽ lớn dần nhờ những trường hợp như thế."
+          },
+          {
+            "q": "Tôi chia sẻ một video mà nó không nói gì cả.",
+            "a": "Yappy chỉ lấy bản chép lời đã đăng của video, không tự nghe audio trong video. Video không có bản chép lời thì chẳng có gì để đọc. Còn nếu video là của bạn và bạn có tệp trong tay, hãy chia sẻ tệp: lúc đó chức năng nghe ngay trên máy mới phiên âm được."
+          },
+          {
+            "q": "Tôi gặp một lỗi. Báo ở đâu?",
+            "a": "Ở <a href=\"https://github.com/joseluissaorin/yappy/issues\">mục Issues trên GitHub</a>, hoặc viết thư về <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Kèm theo đoạn văn bản gây lỗi (nếu chia sẻ được) và hệ điều hành của bạn thì lỗi được sửa nhanh hơn."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Quyền riêng tư của Yappy: văn bản của bạn không đi đâu",
+    "description": "Cái gì ra khỏi thiết bị của bạn, cái gì không, nói rõ từng chữ: tổng hợp giọng nói, phiên âm và trích xuất bài báo đều diễn ra ngay trên máy. Chỉ có bốn việc đụng đến mạng, và cả bốn đều được kể ở đây.",
+    "h1": "Văn bản của bạn không đi đâu cả.",
+    "actualizado": "Cập nhật lần cuối: {fecha}. Người chịu trách nhiệm: José Luis Saorín Ferrer, Tenerife (Tây Ban Nha).",
+    "bloques": [
+      {
+        "titulo": "Trang này nói về điều gì",
+        "texto": "Đây là chính sách quyền riêng tư của Yappy: ứng dụng cho iPhone, iPad, Mac, Windows và Linux, cùng các widget và tiện ích mở rộng của nó. Chính sách ngắn vì chẳng có mấy chuyện để kể. Yappy không có tài khoản, không hỏi tên hay email của bạn, và những gì bạn đưa cho nó đọc không rời khỏi thiết bị. Những việc đụng đến mạng chỉ có bốn, và đây là cả bốn, lần lượt từng cái."
+      },
+      {
+        "titulo": "Không tài khoản, không tên, không văn bản",
+        "texto": "Yappy không có đăng ký hay đăng nhập. Không thu thập tên, email, danh bạ, vị trí hay bất kỳ mã định danh quảng cáo nào của bạn. Bài báo, PDF, EPUB, tài liệu, bản ghi âm và văn bản bạn chia sẻ cho ứng dụng được chuyển thành giọng nói <strong>ngay trên thiết bị của bạn</strong>: tổng hợp giọng nói, phiên âm và làm sạch nội dung trang đều chạy cục bộ, không gửi đến bất kỳ máy chủ nào của chúng tôi hay của bên thứ ba. Cũng không có đồng bộ trên đám mây: thư viện, tiến độ và sách nói của bạn nằm trong thiết bị và biến mất khi bạn gỡ ứng dụng."
+      },
+      {
+        "titulo": "Đụng đến mạng (1): tải các giọng đọc",
+        "texto": "Lần đầu, Yappy tải mô hình giọng nói (khoảng 200 MB trên điện thoại, khoảng 398 MB trên máy tính) từ <code>modelos.yappy.joseluissaorin.com</code>, một kho R2 của Cloudflare. Như mọi lần tải xuống khác, máy chủ nhìn thấy địa chỉ IP của bạn trong lúc nhận yêu cầu. Chúng tôi không lưu bản ghi nào định danh được bạn. Sau lần tải đó, tổng hợp giọng nói chạy trong chế độ máy bay vĩnh viễn."
+      },
+      {
+        "titulo": "Đụng đến mạng (2): những liên kết bạn chia sẻ",
+        "texto": "Khi bạn chia sẻ một liên kết hay một video, thiết bị của bạn sẽ tự truy cập địa chỉ đó để tải về văn bản hoặc bản chép lời, chẳng khác gì trình duyệt của bạn vẫn làm. Lượt truy cập do thiết bị của bạn thực hiện, không phải máy chủ của Yappy, và trang được truy cập cũng chỉ nhận những gì nó nhận từ một trình duyệt: địa chỉ IP và loại thiết bị của bạn. Không có lịch sử nào được lưu ở ngoài thiết bị của bạn."
+      },
+      {
+        "titulo": "Chạm vào mạng (3): Thống kê ẩn danh",
+        "texto": "Điều này nên nói thẳng: <strong>app có thu thập số liệu</strong>, nhưng chỉ trên bản điện thoại, và mặc định đang bật. Bạn tắt được bất cứ lúc nào trong khu cài đặt, mục “Thống kê ẩn danh”. Cái được gửi đi chỉ là tên một sự kiện thuộc danh sách cố định (app được mở, đang xem bước nào của phần làm quen ban đầu, gói nào được chạm vào, một buổi đọc có kết thúc hay không), cùng một mã ngẫu nhiên của bản cài đặt, ngôn ngữ của app và số phiên bản. <strong>Không bao giờ</strong> là tên, email, văn bản bạn đang đọc, tên tài liệu, liên kết hay mã định danh quảng cáo. Số liệu không về Google Analytics, không về Firebase, không về công ty phân tích nào: chúng về một Worker và một cơ sở dữ liệu D1 trên Cloudflare của chính tác giả, dùng để biết phần nào của app đang được dùng và phần nào thừa thãi. Trên máy tính không có bất kỳ số liệu nào."
+      },
+      {
+        "titulo": "Chạm vào mạng (4): Việc mua hàng",
+        "texto": "Gói đăng ký và lần mua trọn đời Yappy Parlanchín do Apple quản lý qua App Store, và chỉ có trên iPhone và iPad. Để biết gói của bạn còn hiệu lực hay không, app dùng <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, một dịch vụ quản lý gói đăng ký. Dịch vụ này nhận một mã ẩn danh của bản cài đặt và hóa đơn từ Apple; không nhận tên hay email của bạn. Apple giải thích về dữ liệu của riêng họ trong <a href=\"https://www.apple.com/legal/privacy/\">chính sách của mình</a>."
+      },
+      {
+        "titulo": "Cầu nối: từ iPhone sang máy tính, và ngược lại",
+        "texto": "Khi ghép nối Yappy với Mac hoặc PC, những tài liệu bạn gửi đi để chuyển đổi sẽ đi qua một kết nối trực tiếp, được mã hóa từ đầu đến cuối giữa hai thiết bị của bạn, nhờ thư viện <a href=\"https://iroh.computer\">iroh</a> chạy trên nền QUIC. Để tìm thấy nhau, hai máy có thể nhờ đến máy chủ tiếp sức, vốn chỉ nhìn thấy lưu lượng mã hóa mà không đọc được gì. Yappy không có máy chủ trung gian nào để giữ lại thứ gì, vì nó không có máy chủ."
+      },
+      {
+        "titulo": "Trẻ em và quyền truy cập",
+        "texto": "Yappy không nhắm đến trẻ dưới 13 tuổi, và không thu thập dữ liệu cá nhân của bất kỳ ai, bất kể tuổi tác. Các quyền mà hệ thống hỏi chỉ được dùng cho đúng việc đó, đúng lúc đó: bộ nhớ tạm khi dán, máy ảnh khi quét mã QR của cầu nối, micro trên máy tính khi đọc chính tả. Không có quyền nào chạy ngầm."
+      },
+      {
+        "titulo": "Quyền của bạn và địa chỉ liên hệ",
+        "texto": "Vì không lưu dữ liệu cá nhân nên máy chủ của chúng tôi chẳng có gì để xuất ra hay xóa đi: tất cả những gì Yappy biết về bạn nằm trong thiết bị của bạn và biến mất khi bạn gỡ app. Nếu muốn chúng tôi ngừng nhận luôn cả số liệu ẩn danh, bạn tự tắt ngay trong app. Mọi thắc mắc, viết thư về <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> hoặc mở một issue trên <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a>. Mã nguồn mở theo giấy phép MIT: mọi điều kể trên đều kiểm chứng được bằng cách đọc mã."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy cho chứng khó đọc, ADHD và thị lực kém: nghe những gì không thể đọc",
+    "description": "Công cụ chuyển văn bản thành giọng nói không đòi tài khoản, không tính phí theo giờ và hoạt động không cần mạng. Dành cho người khó đọc, người ADHD, người mỏi mắt, người thị lực kém, và cho ai đơn giản là nghe bằng tai thì hiểu hơn.",
+    "h1": "Đọc bằng tai.",
+    "entradilla": "Được nghe những gì mình đang đọc là chuyện khả năng tiếp cận, mà công cụ hỗ trợ tiếp cận thì không nên đòi thẻ. Yappy không đòi thẻ, không đếm phút, và chạy tốt cả trên máy bay.",
+    "voiceover_titulo": "Yappy không thay thế VoiceOver",
+    "voiceover_texto": "Hai công cụ này là họ hàng, mỗi cái một nghề riêng. Trình đọc màn hình mô tả giao diện để bạn thao tác được; Yappy đọc nội dung để bạn thưởng thức được. Bật cùng lúc cũng chẳng ai vướng ai.",
+    "casos": [
+      {
+        "titulo": "Chứng khó đọc",
+        "texto": "Đọc lần lượt từng chữ một gây mỏi, và sự mỏi ấy ăn mòn khả năng hiểu trước cả khi đồng hồ kịp làm điều đó. Nghe văn bản trong lúc chữ sáng dần trên màn hình cho phép vừa đọc vừa nghe: mắt bám theo dòng, tai gánh phần việc nặng. Yappy không chữa được gì, nhưng nó dọn cái phần gây mỏi ra khỏi đường."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "Trang giấy im lặng thì dễ khiến người ta bỏ đi. Một giọng nói tiến về phía trước giữ nhịp cho bạn và kéo bạn trở lại đoạn văn khi cái đầu đã lang thang đâu đó. Và vì có thể vừa nghe vừa đi bộ hay khi hai tay đang bận, đọc không còn đòi hỏi phải ngồi yên: với nhiều người, đó là toàn bộ sự khác biệt."
+      },
+      {
+        "titulo": "Thị lực kém và mỏi mắt",
+        "texto": "Khi chữ nhỏ không còn là một lựa chọn, hay khi đã bảy giờ tối và đôi mắt đã làm xong ca của mình, văn bản vẫn tới được với bạn qua cái tai. Yappy đọc trọn vẹn PDF, email hay bài viết, tắt màn hình nếu cần, ngay từ màn hình khóa hoặc qua tai nghe."
+      },
+      {
+        "titulo": "Học ngoại ngữ",
+        "texto": "Vừa nghe vừa đọc là cách cổ xưa nhất mà hiệu quả nhất để học phát âm. Cả mười giọng đều biết nhiều thứ tiếng và đọc 31 ngôn ngữ theo luật riêng của từng tiếng, nên một đoạn tiếng Đức nghe ra tiếng Đức, chứ không phải tiếng Đức với giọng Anh. Tốc độ 0,75× thì nghe rõ từng âm tiết; 1,5× thì luyện tai."
+      },
+      {
+        "titulo": "Soát lại những gì bạn viết",
+        "texto": "Câu không nói nổi thành tiếng thì đặt xuống giấy cũng không trụ nổi. Nghe lại chính bài của mình sẽ tố cáo ngay chỗ lặp từ, chỗ dấu phẩy đặt sai và những ý chen ngang không bao giờ dứt. Đó là kiểu hiệu đính mà ngày xưa các xưởng in vẫn làm, và làm miễn phí: mở tệp .docx, nhấn nút phát, rồi nghe xem mình thật sự đã viết gì, chứ không phải cái mình tưởng mình đã viết."
+      },
+      {
+        "titulo": "Học bằng đôi tai",
+        "texto": "Vở ghi của môn học, chương sắp thi, bài báo dài hai trăm trang. Tối gửi vào xưởng in, sáng ra đã là sách nói có chương mục, nghe được ngay trên xe buýt. Chức năng phát tiếp lưu đúng từng đoạn: muốn nghe tiếp, không phải đi tìm lại chỗ cũ."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Có hoạt động khi VoiceOver hoặc TalkBack đang bật không?",
+        "a": "Có, và chúng không vướng víu gì nhau. Trình đọc màn hình đọc giao diện để bạn điều khiển được; Yappy đọc nội dung để bạn thưởng thức được. Hai bên chạy song song: VoiceOver đưa bạn tới nút phát, từ đó trở đi là giọng của Yappy đọc sách."
+      },
+      {
+        "q": "Có dùng được mà không cần nhìn màn hình không?",
+        "a": "Có. Trên iPhone có các phím tắt Siri (“Này Siri, đọc clipboard của tôi bằng Yappy”), nút Hành động, các nút điều khiển trên màn hình khóa và trên tai nghe. Trên máy tính, ba phím tắt đọc phần đang chọn, đọc clipboard hoặc tạm dừng, trong khi ứng dụng nằm gọn trong khay hệ thống."
+      },
+      {
+        "q": "Có đọc được PDF bài giảng và những cuốn sách tôi đã có không?",
+        "a": "Bất kỳ tệp PDF, EPUB, Word hay ODT nào mà bạn mở được. Nếu PDF là bản scan không có lớp chữ, phiên bản trên máy tính sẽ chạy OCR ngay tại chỗ trước khi đọc; trên điện thoại thì chưa có tính năng này. Sách có DRM mua ở cửa hàng thì không đọc được ở đâu cả, kể cả ở đây."
+      },
+      {
+        "q": "Dùng hằng ngày tốn bao nhiêu?",
+        "a": "Không tốn gì. Không đếm phút, không đếm ký tự, không quảng cáo, không cần tài khoản. Nghe tám tiếng mỗi ngày trong nhiều năm vẫn không mất một xu, và cũng không cần mạng. Phần trả phí chỉ thêm mỗi cái móc áo không đáy, xưởng in và cây cầu — và chỉ có trên iPhone với iPad."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Truyện cho chú vẹt: văn bản thuộc phạm vi công cộng để dùng thử Yappy",
+    "description": "Những truyện hoàn chỉnh thuộc phạm vi công cộng, sẵn sàng chia sẻ cho Yappy để nghe trọn vẹn. Không cần đăng ký, không cần tải gì về.",
+    "h1": "Truyện cho chú vẹt.",
+    "entradilla": "Văn bản nguyên vẹn, thuộc phạm vi công cộng. Chia sẻ trang này với Yappy, chú vẹt sẽ đọc cho bạn nghe.",
+    "dominio_publico": "Phạm vi công cộng."
+  },
+  "blog": {
+    "title": "Blog của Yappy: nghe những gì đã viết",
+    "description": "Cách chuyển PDF thành audio, vì sao một trình đọc văn bản nên chạy được cả khi không có mạng, số được đọc thành tiếng ra sao, và chúng tôi học được gì khi làm một ứng dụng biết nói.",
+    "h1": "Nghe những gì đã viết.",
+    "entradilla": "Nghề, mẹo vặt và đôi chút lịch sử của việc đọc to. Mỗi bài đều nghe được ngay tại đây, do chính giọng của Yappy đọc.",
+    "escuchame": "Nghe bài viết này",
+    "escuchame_nota": "Do Yappy đọc, với giọng {voz}, ngay trên trình duyệt của bạn.",
+    "vacio": "Chưa có bài viết nào bằng ngôn ngữ này."
+  },
+  "convertir": {
+    "title": "Chuyển văn bản thành giọng nói: PDF, EPUB, Word, bài viết và video",
+    "description": "Sáu cách chuyển nội dung bạn đang đọc thành giọng nói tự nhiên, tất cả đều chạy ngay trên thiết bị của bạn: PDF, EPUB, Word, bài báo trên mạng, video và tin nhắn thoại.",
+    "h1": "Chuyển đổi",
+    "entradilla": "Bài báo, sách, tài liệu hay bản ghi âm thì cũng vậy. Yappy biến nó thành kịch bản đọc rồi đọc to lên, còn tệp thì không hề rời khỏi thiết bị của bạn.",
+    "pasos_titulo": "Ba bước là xong.",
+    "faq_titulo": "Câu hỏi về phần này",
+    "otros_titulo": "Những thứ khác nó cũng đọc",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "Chuyển PDF thành giọng nói: nghe PDF đọc to, miễn phí",
+        "description": "Chuyển PDF nào cũng thành giọng nói tự nhiên để vừa làm việc khác vừa nghe, hoặc lưu lại thành sách nói có chương mục. Không tải lên mây nào cả, cũng không giới hạn số trang.",
+        "h1": "Nghe PDF của bạn.",
+        "entradilla": "Bài báo khoa học, sách hướng dẫn, bản ghi chép, hợp đồng. Yappy mở file PDF, bỏ phần đầu trang và số trang lặp đi lặp lại, tìm ra các chương rồi đọc hết từ đầu đến cuối bằng giọng nói tự nhiên. Tệp không hề rời khỏi thiết bị của bạn.",
+        "pasos": [
+          {
+            "titulo": "Chia sẻ file PDF",
+            "texto": "Từ ứng dụng Tệp, email hay Safari: chạm vào nút chia sẻ rồi chọn Yappy. Trên máy tính, kéo thả file vào cửa sổ."
+          },
+          {
+            "titulo": "Chọn giọng đọc",
+            "texto": "10 giọng đọc, 31 ngôn ngữ. PDF viết bằng tiếng nào, Yappy tự nhận ra tiếng đó."
+          },
+          {
+            "titulo": "Nghe hoặc lưu lại",
+            "texto": "Bấm phát để nghe, hoặc giao việc cho xưởng in, bạn sẽ có ngay một cuốn sách nói có chương mục."
+          }
+        ],
+        "extra_titulo": "PDF bản scan",
+        "extra_texto": "Nếu PDF chỉ là ảnh chụp tờ giấy, bên trong không có chữ, thì bản trên máy tính sẽ chạy qua OCR ngay trên máy trước khi đọc. Trên iPhone thì chưa.",
+        "faq": [
+          {
+            "q": "Có giới hạn số trang không?",
+            "a": "Không. Bài báo ba trang hay luận án bốn trăm trang, PDF được chia trang hết và đọc hết. Vì mọi thứ diễn ra ngay trên thiết bị của bạn nên chẳng có hạn mức ký tự phải tiết kiệm, cũng chẳng có hóa đơn nào nhảy số giữa chừng chương bảy."
+          },
+          {
+            "q": "Còn nếu PDF là bản scan không có chữ thì sao?",
+            "a": "Bản trên máy tính sẽ chạy qua OCR ngay trên máy trước khi đọc, và cũng chẳng có gì thoát ra khỏi máy của bạn. Trên iPhone thì chưa: nếu PDF chỉ là ảnh chụp tờ giấy, điện thoại sẽ không tìm thấy chữ nào để đọc."
+          },
+          {
+            "q": "Nó có bỏ đầu trang và số trang không?",
+            "a": "Có. Yappy phát hiện những gì lặp lại ở mọi trang (đầu trang, chân trang, số trang, tên tạp chí) rồi loại chúng ra khỏi kịch bản. Chẳng gì phá hỏng buổi đọc bằng việc cứ tầm một phút rưỡi lại nghe “Chương 3, trang 47” cả."
+          },
+          {
+            "q": "Tôi có thể nghe riêng một chương không?",
+            "a": "Được. Yappy dò các tiêu đề thật trong tài liệu và dựng chúng thành mục lục điều hướng được. Trong thư viện, bạn chọn chương nào muốn nghe, chương nào gửi vào xưởng in, và sách nói ra đời đúng những chương ấy."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "Chuyển EPUB thành sách nói: cuốn sách của bạn, đọc thành tiếng",
+        "description": "Chuyển tệp EPUB thành sách nói có chương thật, thực hiện ngay trên thiết bị của bạn. Không thuê bao theo giờ, cũng không tải sách lên bất kỳ máy chủ nào.",
+        "h1": "EPUB của bạn, thành sách nói.",
+        "entradilla": "Những cuốn sách bạn đang có, nguyên các chương, được đọc bằng một giọng tự nhiên. Bạn để nó chạy lúc đi ngủ, sáng ra nó đã nằm trong thư viện, là một tệp .m4b mở được bằng bất cứ trình phát nào.",
+        "pasos": [
+          {
+            "titulo": "Chia sẻ tệp EPUB",
+            "texto": "Từ ứng dụng Tệp hoặc từ bất cứ đâu bạn đang giữ nó. Các chương đã được nhận diện sẵn khi đến."
+          },
+          {
+            "titulo": "Đặt hàng xưởng in",
+            "texto": "Bạn chọn chương, giọng đọc và tốc độ. Con vẹt cứ in, cho dù bạn đã đóng ứng dụng."
+          },
+          {
+            "titulo": "Nghe ở đâu cũng được",
+            "texto": "Sách nói nằm lại trong thư viện dưới dạng .m4b kèm dấu trang; từ đó bạn chia sẻ sang Tệp, sang Sách, hoặc đi đâu tùy ý."
+          }
+        ],
+        "extra_titulo": "Sách có DRM",
+        "extra_texto": "Yappy đọc được những tệp EPUB mà bạn mở được. Sách bị khóa bởi DRM của cửa hàng thì không đọc được, ở đây cũng như bất cứ nơi nào khác.",
+        "faq": [
+          {
+            "q": "Sách nói có giữ các chương của sách không?",
+            "a": "Có, và là những chương thật, không phải mốc chia mỗi mười phút: chúng lấy từ mục lục sẵn có của tệp EPUB. Tệp .m4b thành phẩm chuyển được từ chương này sang chương khác trong bất cứ trình phát sách nói nào, có đủ bìa và chỗ nghe dở."
+          },
+          {
+            "q": "Ghép giọng cả một cuốn sách mất bao lâu?",
+            "a": "Tùy thiết bị và độ dày sách, nhưng câu trả lời thực dụng là: để nó chạy lúc đi ngủ, sáng ra là xong. Nếu đã có “cây cầu”, máy tính của bạn sẽ tổng hợp nhanh hơn nhiều rồi trả về điện thoại cho bạn, hoàn chỉnh."
+          },
+          {
+            "q": "Còn sách có DRM thì sao?",
+            "a": "Yappy đọc được những tệp EPUB mà bạn mở được. Sách bị khóa bởi DRM của cửa hàng thì không đọc được, ở đây cũng như bất cứ đâu: chiếc khóa ấy không phải của chúng tôi."
+          },
+          {
+            "q": "Sách nói nằm ở đâu?",
+            "a": "Trong thư viện của Yappy, là một tệp .m4b thật sự. Từ đó bạn chia sẻ sang Tệp, sang Sách, hoặc sang trình phát bạn vẫn dùng. Tệp là của bạn: có gỡ ứng dụng đi nữa, phần bạn đã xuất vẫn nằm nguyên nơi bạn để nó."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Nghe tệp Word đọc thành tiếng: DOCX, ODT và RTF thành audio",
+        "description": "Chuyển tài liệu Word, LibreOffice và văn bản thô thành giọng nói tự nhiên để soát lại bằng tai. Mọi thứ diễn ra ngay trên máy tính hoặc điện thoại của bạn.",
+        "h1": "Soát bài bằng tai.",
+        "entradilla": "Đọc lại bài mình vừa viết là cách soát lỗi tốt nhất: câu mà không đọc nổi thành tiếng thì cũng chẳng đứng vững trên giấy. Yappy đọc được .docx, .odt, .rtf, .txt và Markdown, giữ nguyên tiêu đề và nhịp điệu.",
+        "pasos": [
+          {
+            "titulo": "Mở tài liệu",
+            "texto": "Kéo thả vào cửa sổ trên máy tính, hoặc chia sẻ từ điện thoại."
+          },
+          {
+            "titulo": "Nghe từng đoạn một",
+            "texto": "Đoạn nào đang đọc thì đoạn đó sáng lên; muốn nhảy tới đâu thì chạm vào đó."
+          },
+          {
+            "titulo": "Sửa những chỗ nghe gợn",
+            "texto": "Rồi nghe lại lần nữa. Trên máy tính, mỗi đoạn có thể dùng một giọng đọc và tốc độ riêng."
+          }
+        ],
+        "extra_titulo": "Bảng tính và bài thuyết trình cũng đọc được",
+        "extra_texto": "Đọc được .pptx, .xlsx và .csv. Trên máy tính, nếu đã cài pandoc, danh sách còn gồm cả LaTeX, reStructuredText, Org và vài định dạng nữa.",
+        "faq": [
+          {
+            "q": "Cụ thể đọc được những định dạng văn bản nào?",
+            "a": ".docx, .odt, .rtf, .txt và Markdown, cộng thêm .pptx, .xlsx và .csv. Trên máy tính, nếu đã cài pandoc, danh sách còn gồm cả LaTeX, reStructuredText, Org và vài định dạng nữa."
+          },
+          {
+            "q": "Có đọc cả chú thích chân trang và bảng biểu không?",
+            "a": "Phần thân tài liệu được đọc nguyên vẹn, đúng thứ tự và đủ tiêu đề. Bảng được đọc theo từng hàng, vì đọc to một cái bảng thì ngoài cách đó cũng chẳng còn cách nào khác; chú thích nằm ở cuối mục của nó, không chen vào giữa câu."
+          },
+          {
+            "q": "Tôi có thể gán mỗi đoạn một giọng đọc khác nhau không?",
+            "a": "Trên máy tính thì được: trình soạn thảo theo đoạn cho phép gán giọng, tốc độ và khoảng lặng riêng cho từng đoạn. Hội thoại, bài phỏng vấn hay tài liệu song ngữ nhờ vậy mà nghe thông suốt."
+          },
+          {
+            "q": "Giúp soát lỗi thật không?",
+            "a": "Đó là cách soát lỗi tốt nhất hiện có. Tai phát hiện ra những lỗi mà mắt bỏ qua: từ lặp lại cách ba dòng, mệnh đề phụ không khép lại nổi, câu chèn ngang nuốt mất động từ. Chỉnh về 0,9×, nghe cả chương, rồi ghi lại những chỗ nghe gợn."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Bài báo",
+        "title": "Nghe bài báo trên mạng: trang web nào cũng đọc thành tiếng được",
+        "description": "Chia sẻ một trang web từ Safari là Yappy đọc cho bạn bản sạch sẽ: không menu, không banner, không chân trang. Trang được truy cập từ thiết bị của bạn, chứ không phải máy chủ của chúng tôi.",
+        "h1": "Bài định để dành đọc sau, cứ nghe luôn đi.",
+        "entradilla": "Cái tab bạn mở ra để dành đọc sau. Chia sẻ cho Yappy rồi nghe trong lúc rửa bát. Trang tự dọn sạch: menu, banner, chân trang đều biến mất. Chỉ còn lại mạch văn, với tiêu đề và nhịp của nó.",
+        "pasos": [
+          {
+            "titulo": "Chạm vào Chia sẻ",
+            "texto": "Trong Safari, trong trình đọc tin, trong email: chỗ nào có bảng chia sẻ, chỗ đó có Yappy."
+          },
+          {
+            "titulo": "Tự dọn dẹp",
+            "texto": "Việc trích xuất diễn ra ngay trên thiết bị của bạn. Nếu bạn đang đăng ký một trang báo, nó lấy đúng bài bạn đang xem."
+          },
+          {
+            "titulo": "Xếp vào hàng đợi",
+            "texto": "Và đợi đến khi bạn rảnh tay."
+          }
+        ],
+        "extra_titulo": "Cái gì chạm tới mạng",
+        "extra_texto": "Chỉ là lượt truy cập địa chỉ bạn đã chia sẻ, do chính thiết bị của bạn thực hiện, y như trình duyệt vẫn làm. Không có máy chủ nào của Yappy đứng giữa, vì chẳng tồn tại máy chủ nào của Yappy cả.",
+        "faq": [
+          {
+            "q": "Có hoạt động với những trang mình đã đăng ký không?",
+            "a": "Thiết bị của bạn tự trích xuất bằng phiên đăng nhập của bạn, nên nó lấy đúng bài bạn thấy trên trình duyệt. Bạn đọc được thì Yappy đọc được cho bạn. Không có máy chủ trung gian nào phải vượt bức tường trả phí, vì không có máy chủ nào cả."
+          },
+          {
+            "q": "Còn những trang chỉ tải được bằng JavaScript thì sao?",
+            "a": "Một số trang cứng đầu: nếu chữ chỉ hiện ra sau khi trang chạy được một nửa thư viện, Yappy có thể về tay không. Khi đó, nhanh nhất là bôi đen đoạn chữ, sao chép rồi chia sẻ dưới dạng văn bản thường."
+          },
+          {
+            "q": "Ứng dụng có lưu lịch sử những gì mình đọc không?",
+            "a": "Chỉ lưu trên thiết bị của bạn, để bạn đọc tiếp chỗ đang dở. Không gì trong đó rời khỏi máy, và trong thư viện, mỗi tài liệu đều có tùy chọn quên riêng."
+          },
+          {
+            "q": "Có đọc cả menu, banner và bình luận không?",
+            "a": "Không. Trang được dọn sạch trước khi tới trình đọc: bỏ hết menu, banner, chân trang, nút chia sẻ và ô bình luận. Chỉ còn lại bài viết, với tiêu đề và nhịp điệu của nó."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Video",
+        "title": "Nghe một video như nghe một bài báo",
+        "description": "Yappy lấy bản chép lời của video và đọc cho bạn như một bài báo: không cần nhìn màn hình, tốc độ tùy ý và không tốn dữ liệu video.",
+        "h1": "Video, coi như bài báo.",
+        "entradilla": "Nửa giờ video chỉ ra mười phút chữ đọc với tốc độ vừa phải. Yappy giữ lại bản chép lời và đọc bằng giọng tự nhiên, nên bạn có thể vừa đi bộ vừa nghe, không cần bật màn hình.",
+        "pasos": [
+          {
+            "titulo": "Chia sẻ đường link",
+            "texto": "Từ ứng dụng video hoặc từ trình duyệt, qua bảng chia sẻ."
+          },
+          {
+            "titulo": "Giữ lại phần chữ",
+            "texto": "Yappy lấy bản chép lời công khai của video, không lấy âm thanh."
+          },
+          {
+            "titulo": "Nghe theo tốc độ của bạn",
+            "texto": "Giọng bạn muốn, tốc độ bạn muốn, kể cả khi màn hình đang khóa."
+          }
+        ],
+        "extra_titulo": "Nếu video không có bản chép lời",
+        "extra_texto": "Vậy thì chẳng có gì để đọc: Yappy làm việc với văn bản đã đăng, không chép lời âm thanh của video. Trên iPhone có tính năng này; trên Android thì chưa.",
+        "faq": [
+          {
+            "q": "Có chép lời âm thanh của video không?",
+            "a": "Không. Yappy lấy bản chép lời đã đăng của video và đọc cho bạn như một bài viết. Nhanh, không tốn dữ liệu video và không làm nóng điện thoại; nhưng cũng có nghĩa là nếu video không có bản chép lời thì chẳng có gì để đọc."
+          },
+          {
+            "q": "Còn nếu video không có bản chép lời thì sao?",
+            "a": "Thì Yappy không làm được gì với đường dẫn đó. Nếu video là của bạn và bạn còn tệp, hãy chia sẻ dưới dạng âm thanh: lúc đó chức năng nghe cục bộ mới vào việc và chép lời luôn trên máy."
+          },
+          {
+            "q": "Có chạy trên mọi nền tảng video không?",
+            "a": "Ở đâu có bản chép lời đã đăng và truy cập được thì chạy được ở đó. Trên iPhone có tính năng này; bản Android thì chưa."
+          },
+          {
+            "q": "Có tốn dữ liệu không?",
+            "a": "Rất ít: máy tải về văn bản, không phải video. Nửa giờ video chỉ tương đương vài chục kilobyte bản chép lời, phần còn lại thiết bị của bạn tự lo."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Ghi âm giọng nói",
+        "title": "Chuyển ghi âm giọng nói thành văn bản ngay trên điện thoại",
+        "description": "Yappy chép lời bản ghi âm và ghi chú thoại ngay trên thiết bị của bạn, không tải lên dịch vụ nào, rồi có thể đọc bản chép lời cho bạn nghe.",
+        "h1": "Từ giọng nói sang văn bản, rồi quay lại.",
+        "entradilla": "Buổi họp đã ghi âm, ý nghĩ vừa nói trên xe, bài giảng hôm qua. Yappy chép lời ngay trong thiết bị của bạn bằng chức năng nghe cục bộ, rồi để lại văn bản cho bạn đọc, sửa hoặc nghe lại bằng một giọng khác.",
+        "pasos": [
+          {
+            "titulo": "Chia sẻ bản ghi âm",
+            "texto": "Từ Ghi âm giọng nói, Tệp hoặc bất kỳ ứng dụng nào lưu âm thanh."
+          },
+          {
+            "titulo": "Chép lời ngay trong máy",
+            "texto": "Bằng một mô hình chạy trên thiết bị của bạn. Âm thanh không đi đâu cả."
+          },
+          {
+            "titulo": "Đọc hoặc nghe",
+            "texto": "Nó thành một tài liệu như mọi tài liệu khác: đọc được, chia sẻ được, và có thể đọc to lại."
+          }
+        ],
+        "extra_titulo": "Chức năng nghe tải về riêng",
+        "extra_texto": "Chép lời dùng một mô hình khác với mô hình giọng nói, và chỉ tải về khi bạn dùng đến.",
+        "faq": [
+          {
+            "q": "Mô hình nào chép lời?",
+            "a": "Parakeet TDT 0.6B v3 của NVIDIA, giấy phép CC-BY-4.0, chạy ngay trên thiết bị của bạn. Đây là mô hình khác với mô hình tạo giọng đọc: một bên nghe, một bên nói."
+          },
+          {
+            "q": "Âm thanh có ra khỏi thiết bị của tôi không?",
+            "a": "Không. Bản ghi âm được chép thành văn bản ngay trên máy, giống như giọng đọc được tổng hợp ngay trên máy. Không có dịch vụ chép trên đám mây, không có tài khoản, không có thao tác tải lên."
+          },
+          {
+            "q": "Nó chép được những ngôn ngữ nào?",
+            "a": "Cái tai chưa biết nhiều thứ tiếng bằng cái giọng: nó chép được những ngôn ngữ chính của châu Âu, chứ không phải cả 31 ngôn ngữ mà Yappy đọc được. Đọc to thì đủ 31; đổi giọng nói thành văn bản thì chỉ nhóm nhỏ hơn ấy."
+          },
+          {
+            "q": "Có phải tải thêm gì nữa không?",
+            "a": "Có: cái tai được tải riêng, và chỉ vào lần đầu tiên bạn chép giọng nói thành văn bản. Nếu không bao giờ dùng, nó cũng không bao giờ chiếm chỗ trên thiết bị của bạn."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Chuyển văn bản thành giọng nói bằng {lengua}: đọc to bất kỳ văn bản nào",
+    "description": "Nghe PDF, EPUB, Word và bài báo bằng {lengua} với giọng đọc tự nhiên, ngay trên thiết bị của bạn và không cần mạng. Mười giọng đọc, miễn phí, không cần tài khoản.",
+    "h1": "Chuyển văn bản thành giọng nói bằng {lengua}.",
+    "entradilla": "Mười giọng đọc đọc {lengua} theo đúng quy tắc của riêng nó: cách đọc số, ngày tháng, số thứ tự và từ viết tắt của chính ngôn ngữ ấy, chứ không phải của một thứ tiếng khác mang giọng mượn.",
+    "muestra": "Một đoạn mẫu",
+    "reglas_titulo": "Những gì bộ chuyển chữ thành âm biết về {lengua}",
+    "todas": "Ba mươi ngôn ngữ còn lại"
+  },
+  "vs": {
+    "titulo": "Yappy và {nombre} qua một cái nhìn nhanh",
+    "caracteristica": "Tiêu chí",
+    "gratis": "Những gì làm được miễn phí",
+    "precio": "Giá từ",
+    "local": "Giọng nói được tạo ngay trên thiết bị của bạn",
+    "sin_cuenta": "Không cần tài khoản hay email",
+    "sin_conexion": "Hoạt động không cần mạng",
+    "codigo_abierto": "Mã nguồn mở",
+    "tarifa": "Tính phí theo ký tự hoặc theo giờ",
+    "idiomas": "Ngôn ngữ",
+    "formatos": "Định dạng nó đọc được",
+    "audiolibro": "Sách nói có chương",
+    "escritorio": "Máy tính",
+    "yappy_gratis": "Nghe không giới hạn; ba tài liệu cùng lúc",
+    "yappy_precio": "0 €; gói trả phí từ 3,99 € mỗi tháng",
+    "gana_en": "{nombre} thắng ở đâu",
+    "verificado": "Dữ liệu công khai, tra cứu ngày {fecha} trên trang web của từng sản phẩm.",
+    "sin_verificar": "Giá thay đổi thường xuyên: hãy kiểm tra trước khi quyết định.",
+    "ver_web": "Trang web chính thức",
+    "frente_a": "So với {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Câu hỏi thường gặp"
+  }
+}

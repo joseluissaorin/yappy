@@ -445,7 +445,8 @@
         "q": "Dlaczego na komputerze i na Androidzie nic się nie płaci?",
         "a": "Bo mechanizm nakręcania zamontowano tylko w iPhonie i iPadzie. Na komputerze — i w wersji na Androida, kiedy się pojawi — drukarnia, grzęda bez dna i most są otwarte od razu. To nie jest oferta premierowa: po prostu nie ma tam nic, za co brać pieniądze."
       }
-    ]
+    ],
+    "una_a_una": "każda z osobna, wraz z danymi"
   },
   "voces": {
     "title": "Głosy Yappy: dziesięć wielojęzycznych ptaków w 31 językach",
@@ -970,8 +971,9 @@
     "yappy_precio": "0 €; abonament od 3,99 € miesięcznie",
     "gana_en": "Gdzie {nombre} wygrywa",
     "verificado": "Dane publiczne sprawdzone {fecha} na stronie każdego produktu.",
-    "sin_verificar": "Los precios cambian a menudo: compruébalos antes de decidir.",
-    "ver_web": "Oficjalna strona"
+    "sin_verificar": "Ceny często się zmieniają: sprawdź je, zanim podejmiesz decyzję.",
+    "ver_web": "Oficjalna strona",
+    "frente_a": "W porównaniu z {nombre}"
   },
   "preguntas_comunes": {
     "titulo": "Częste pytania"

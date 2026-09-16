@@ -46,6 +46,8 @@
 .marca {
   display: inline-flex;
   align-items: center;
+  direction: ltr;
+  unicode-bidi: isolate;
   gap: 11px;
   padding: 2px 0;
   text-decoration: none;
@@ -57,6 +59,8 @@
    pegada de una revista distinta. Igual que el membrete de la app. */
 .marca-palabra {
   display: inline-flex;
+  direction: ltr;
+  unicode-bidi: isolate;
   font-weight: 800;
   font-size: 1.7rem;
   letter-spacing: -0.03em;
@@ -70,11 +74,14 @@
 
 .nav-lineal {
   display: none;
-  gap: 4px;
+  gap: 2px;
   align-items: center;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 .nav-lineal a {
-  font-size: 0.93rem;
+  white-space: nowrap;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--tinta);
   text-decoration: none;
@@ -83,7 +90,7 @@
 }
 .nav-lineal a:hover { background: var(--superficie-2); }
 .nav-lineal a[aria-current="page"] { color: var(--voz); }
-@media (min-width: 1000px) { .nav-lineal { display: flex; } }
+@media (min-width: 1040px) { .nav-lineal { display: flex; } }
 
 /* Menú y selector de idioma: <details>, sin una línea de JavaScript. */
 .plegable { position: relative; }

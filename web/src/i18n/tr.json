@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "tr",
+    "nombre": "Türkçe",
+    "dir": "ltr",
+    "ogLocale": "tr_TR",
+    "hreflang": "tr",
+    "og_alt": "“Her metin, yüksek sesle” yazısı, krem renkli kâğıt üzerinde büyük harflerle; yanında mercan rengi bir papağan"
+  },
+  "slugs": {
+    "uso": "nasil-kullanilir",
+    "guionizador": "senaryo-yazici",
+    "descargas": "indirmeler",
+    "precios": "fiyatlar",
+    "voces": "sesler",
+    "preguntas": "sss",
+    "privacidad": "gizlilik",
+    "accesibilidad": "erisilebilirlik",
+    "cuentos": "masallar",
+    "blog": "blog",
+    "convertir": "donustur",
+    "idiomas": "diller",
+    "alternativas": "alternatifler",
+    "formato_pdf": "pdf-den-sese",
+    "formato_epub": "epub-sesli-kitap",
+    "formato_word": "word-den-sese",
+    "formato_articulos": "makaleler-sese",
+    "formato_videos": "videolar-sese",
+    "formato_notas": "sesli-not-yaziya"
+  },
+  "comunes": {
+    "saltar": "İçeriğe geç",
+    "marca_aria": "Yappy, ana sayfa",
+    "idioma": "Dil",
+    "menu": "Menüyü aç",
+    "secciones": "Bölümler",
+    "descargar": "İndir",
+    "descargar_gratis": "Ücretsiz indir",
+    "en_app_store": "App Store’dan indir",
+    "escuchar_muestra": "Örnek dinle",
+    "probar": "Şimdi dene",
+    "leer_mas": "Devamını oku",
+    "volver": "Geri",
+    "inicio": "Ana sayfa",
+    "minutos": "{n} dk okuma",
+    "publicado": "Yayın tarihi:",
+    "actualizado": "güncelleme tarihi:",
+    "por": "yazan",
+    "gratis": "ücretsiz",
+    "si": "Evet",
+    "no": "Hayır",
+    "parcial": "Kısmen",
+    "sin_datos": "veri yok"
+  },
+  "nav": {
+    "uso": "Nasıl kullanılır",
+    "guionizador": "Senaryocu",
+    "voces": "Sesler",
+    "precios": "Fiyatlar",
+    "descargas": "İndir",
+    "preguntas": "Sorular",
+    "privacidad": "Gizlilik",
+    "accesibilidad": "Erişilebilirlik",
+    "cuentos": "Öyküler",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "Ürün",
+    "leer": "Okumalık",
+    "casa": "Atölye",
+    "codigo": "Kod",
+    "licencia": "MIT Lisansı",
+    "novedades": "Yenilikler",
+    "firma": "Yappy · Tenerife'de <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> tarafından el yapımı · açık kaynak (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Metin okuma: PDF, EPUB ve makaleleri sesli okuyan uygulama",
+    "description": "Herhangi bir metni doğal bir sese dönüştürür: PDF, EPUB, Word, makaleler ve videolar — 31 dilde. Her şey telefonunda ya da bilgisayarında olur: bulut yok, hesap yok, karakter başına ücret yok. Ücretsiz ve açık kaynak.",
+    "susurro": "metin okuma · 31 dil · bulut yok · açık kaynak",
+    "titular_1": "Herhangi bir",
+    "titular_texto": "metin",
+    "titular_2": ", ",
+    "titular_voz": "yüksek sesle",
+    "titular_3": ".",
+    "entradilla": "Bir makale, PDF, EPUB, Word ya da video paylaş; papağan sana doğal bir sesle okur — yemek yaparken, yürürken ya da gözlerin kapalıyken. Model tamamen cihazında çalışır: içinden hiçbir şey çıkmaz, asla.",
+    "nota_acciones": "ücretsiz · hesap yok · karakter başına ücret yok",
+    "pegatina_sin_nube": "bulut\nyok",
+    "pegatina_idiomas": "31\ndil",
+    "pegatina_gratis": "ücretsiz",
+    "pegatina_offline": "çevrimdışı",
+    "demo_susurro": "dokun ve dinle: bunu söyleyen motor, cebinde taşıdığının aynısı",
+    "demo_titulo": "Böyle ses çıkıyor.",
+    "demo_nota": "Altı çizili kısmı okuma motoru sese çevirir: “1492” “bin dört yüz doksan iki”, “XV. yüzyıl” ise “on beşinci yüzyıl” diye okunur; her dil kendi kurallarına göre.",
+    "momentos_susurro": "hangi anlar için",
+    "momentos_titulo": "Üç an, tek hareket.",
+    "momentos": [
+      {
+        "titulo": "Yemek yaparken",
+        "texto": "Yazıyı paylaşırsın, telefonu tezgâha yaslanırsın; ses ocak başında okumaya devam eder."
+      },
+      {
+        "titulo": "Yürüyüşte",
+        "texto": "Dün geceki kitap, bölümleriyle sesli kitaba dönüşür; yokuşta yanında gelir."
+      },
+      {
+        "titulo": "Gece çalışır",
+        "texto": "Yatarken dönüştürmeyi çalışır bırakırsın; uyandığında sesli kitap cebindedir."
+      }
+    ],
+    "porque_susurro": "neden var",
+    "porque_titulo": "Bulut yok, hesap yok, karakter başı ücret yok.",
+    "porque_entradilla": "Öbür metin okuma uygulamaları okuduğunu bir sunucuya yollar; karakter ya da dinleme saati başına ücret ister. Yappy'nin bakacağı bir sunucusu yok, dolayısıyla dinlemenin karşılığında kesecek bir faturası da yok.",
+    "porque": [
+      {
+        "titulo": "Cihazından hiçbir şey çıkmaz",
+        "texto": "Ses, telefonunda ya da bilgisayarında, açık bir modelle sentezlenir. Çevrimdışı da çalışır: sonsuza dek."
+      },
+      {
+        "titulo": "31 gerçek dil",
+        "texto": "On ses, her biri çok dilli. Başka bir dilde alıntılar içeren metin, paragraf paragraf, kendi kendine dil değiştirir."
+      },
+      {
+        "titulo": "Ne saat ne karakter sınırı",
+        "texto": "Ne istersen dinlersin, istediğin kadar. Sayaç yok, çünkü bölüşülecek bir fatura yok."
+      },
+      {
+        "titulo": "Açık kaynak (MIT)",
+        "texto": "Motor, senaryo oluşturucu, uygulama ve bu web sitesinin kendisi yayımlandı. Hepsini okuyabilir, derleyebilir, kontrol edebilirsin."
+      }
+    ],
+    "formatos_susurro": "paylaşmak kapıdır",
+    "formatos_titulo": "Ne okuyorsan, o.",
+    "formatos_entradilla": "Safari'den, e-postadan, Dosyalar'dan ya da herhangi bir uygulamadan: Paylaş'a dokun, Yappy'yi seç. Sayfa kendiliğinden temizlenir — menüler, bannerlar ve alt bilgiler gider — geriye başlıkları ve ritmiyle düz yazı kalır.",
+    "guion_susurro": "başka kimsenin göstermediği parça",
+    "guion_titulo": "Makine gibi değil, insan gibi okur.",
+    "guion_entradilla": "Yüksek sesle okumak harf harf söylemek değildir: yorumlamaktır. “1492” diye okunur: “bin dört yüz doksan iki”. “VIII. Henry” diye okunur: “Sekizinci Henry”. Ama “Louis XIV” Fransızca okunur: “Louis quatorze”. “EL CID” bir Roma rakamı değildir. FBI harf harf söylenir; NASA söylenmez. Tek bir hece sentezlenmeden önce Yappy metni bir <strong>okuma senaryosuna</strong> çevirir: sesin gerçekten söyleyeceği şeyin partisyonu.",
+    "guion_pruebalo": "Burada hemen dene: bu, uygulamadaki aynı Rust; tarayıcın için derlendi.",
+    "guion_boton": "Senaryolaştır",
+    "guion_ejemplo": "XIX. yüzyıl 1900'de bitti. XIV. Louis 72 yıl hüküm sürdü, dondurmaya 3,50 € harcadı ve FBI bunu hiç öğrenmedi.",
+    "guion_marcador": "Sayı, kısaltma, tarih ya da yüzyıl içeren bir şey yaz…",
+    "guion_espera": "Senaryo burada görünecek; dönüştürülen kısımlar altı çizili olacak.",
+    "guion_fallo": "Senaryo oluşturucu bu tarayıcıda yüklenemedi. Uygulamanın içinde ise var.",
+    "guion_mas": "Senaryo oluşturucu nasıl çalışır",
+    "capturas_susurro": "rötuşsuz, böyle görünüyor",
+    "capturas_titulo": "Gerçek uygulamanın ekran görüntüleri.",
+    "capturas_entradilla": "Boyanmış maket yok: bu, çalışan Yappy; tünekte gerçek metinler, okuyucunun senaryosu hazır.",
+    "precio_susurro": "para meselesi, açık açık",
+    "precio_titulo": "Gerçekten ücretsiz; bir de kurmalı papağan var.",
+    "precio_entradilla": "Deneme papağanı tüneğinde aynı anda üç belge taşır ve hepsini süresiz okur. Birini çıkarırsın, yerine başkası sığar. Dipsiz bir tünek, sesli kitap matbaası ve bilgisayarla köprü istiyorsan, papağanı kurarsın.",
+    "cierre_titulo": "Cebinde bir papağan.",
+    "cierre_texto": "Ücretsiz, hesap yok, kayıt yok. Kurulur, bir metin paylaşılır, ses gelir."
+  },
+  "uso": {
+    "title": "Yappy nasıl kullanılır: paylaşırsın, dinlersin, o kadar",
+    "description": "Eksiksiz rehber: iPhone'dan paylaşmak, bilgisayar kısayolları, telefonla Mac'in arasındaki QR köprüsü, bölümlü sesli kitaplar, Siri, widget'lar ve ayarlar.",
+    "h1": "Paylaşırsın, çalmaya başlar.",
+    "entradilla": "Yappy'nin tek bir hareketi var: paylaşmak. Gerisi zaten yerli yerinde duran ayrıntılardır.",
+    "pasos": [
+      {
+        "titulo": "Paylaşın",
+        "texto": "Herhangi bir uygulamadan: Safari, e-posta, Dosyalar, bir sesli not, sohbetten gelmiş bir PDF. Paylaş'a dokunursunuz, Yappy'yi seçersiniz; uygulama kendi kendine açılır."
+      },
+      {
+        "titulo": "Sesi seçin",
+        "texto": "On ses, hepsi çok dilli. Metin başka bir dildeyse Yappy onu kendi kendine tanır ve o dilin kurallarıyla okur; ödünç aksanla değil."
+      },
+      {
+        "titulo": "Dinleyin",
+        "texto": "Ekranı kilitler, telefonu cebinize kaldırırsınız. Ses sürer: kilit ekranında kapak, başlık ve kontroller vardır; kumandayı kulaklık devralır."
+      },
+      {
+        "titulo": "Saklayın",
+        "texto": "Yarınki yürüyüş için isterseniz, matbaa onu bölümlü bir .m4b sesli kitap olarak teslim eder; herhangi bir oynatıcıda açılır."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "iPhone'da ve iPad'de",
+        "texto": "Kılavuzun tamamı tek cümle: paylaşmak. Herhangi bir uygulamada Paylaş'a dokunursunuz, Yappy'yi seçersiniz: bağlantı, düz metin, PDF, EPUB, Word, ODT ve ses kabul eder. Yappy anında, kendi kendine açılır. Paylaş menüsünde hiçbir şey kaynamaz, çünkü iOS eklentileri 120 MB'de keser; Yappy paylaşılanı kopyalar ve uygulamaya atlar, orada sınır yoktur. Bu atlama tasarımın kendisidir, bir yamama değil. <strong>Her şey cihazda olur</strong>: Yappy'nin dokunduğu tek ağ, paylaştığınız adresin kendi telefonunuzdan yapılan ziyaretidir.",
+        "puntos": [
+          "Siz bakınırken kuyruk hazırlığı yapar: makale temizlenir, video transkripsiyonuyla gelir, PDF sayfalanır. Uygulamada beklemeye devam ederseniz, okuma hazır olur olmaz kendiliğinden başlar.",
+          "Karaoke, okunan yeri cümle cümle aydınlatır. Duraklatmak için herhangi bir yere dokunur, paragraf atlamak için kaydırırsınız; hızı kenardan yükseltir ya da düşürürsünüz.",
+          "Ekranı kilitlersiniz, ses kesilmez. AirPods durdurur ve sürdürür; sistem ona herhangi bir oynatıcı gibi davranır.",
+          "Askıda aynı anda üç belge durur: birini çıkarırsınız, yerine yenisi sığar. Evin kendi masalları yer tutmaz."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Mac'te, Windows'ta ve Linux'ta",
+        "texto": "Bir kısayola basarsınız, baktığınız şey okunmaya başlar: seçim, tarayıcıdaki sayfa ya da etkin belge. Üç kısayol da Tercihler'den değiştirilir; uygulama tepside saklıyken de çalışırlar. Kısayol bir yana, masaüstünde avuca sığmayan işler de var.",
+        "puntos": [
+          "<strong>Kütüphane.</strong> Açtığınız ya da paylaştığınız her şey, ilerlemesiyle birlikte girişte durur. Kaldığınız yerden, tam o paragraftan devam edersiniz.",
+          "<strong>Paragraf editörü.</strong> Her paragraf kendi sesini, hızını ve duraklamasını taşıyabilir. Diyaloglar, alıntılar ya da iki dilli belgeler için.",
+          "<strong>Yerel transkripsiyon.</strong> Bir sesli not ya da kayıt sürüklersiniz; yerel kulak onu okunur bir metne çevirir. Hiçbir şey hiçbir yere yüklenmez.",
+          "<strong>Sesli kitap dışa aktarımı.</strong> Herhangi bir belge gerçek bir .m4b olarak çıkar; gezinilebilir bölümler metnin akışından gelir. İsterseniz .wav ya da .mp3 olarak da.",
+          "<strong>Gözlü PDF.</strong> Taranmış PDF'ler okunmadan önce yerel bir OCR'dan geçer. Dijital doğanlar ise doğrudan okunur, sayfa sayfa.",
+          "<strong>Temalar.</strong> Gündüz krem kâğıt; gece koyu zeminde açık mürekkep. Ya da kararı sisteme bırakın.",
+          "<strong>Tasmasız.</strong> Masaüstünde her şey açık: matbaa, dipsiz askı ve köprü kurulu gelir."
+        ]
+      },
+      {
+        "id": "puente",
+        "titulo": "Köprü: bilgisayar sentezler, telefon dinler",
+        "texto": "Kitabın tamamını sentezlemek zaman alır. Köprü ağır işi bilgisayarına verir, bitmiş sesli kitabı cebine geri koyar. İki aygıt arasında uçtan uca şifreli, doğrudan bir bağlantı üzerinden; arada kimsenin sunucusu yok.",
+        "puntos": [
+          "Bilgisayarda Tercihler, “Köprü” bölümü: Yappy sana makinenin şifreli adresini ve bir davet anahtarı içeren bir QR kodu gösterir.",
+          "iPhone'un kamerasını QR koda tutarsın, ikisi eşleşir. Anahtar kaydedilir; istediğin an bilgisayardan geçersiz kılabilirsin.",
+          "Telefonda “Bilgisayarda dönüştür”: belgeyi seçersin, bilgisayar kendi hızında sentezler, .m4b dosyası bölümleriyle birlikte telefonun kitaplığında belirir. Gece, yarın sabahki yürüyüşün için çalışır.",
+          "Köprü, <a href=\"https://iroh.computer\">iroh</a>'un protokolünü kullanarak QUIC üzerinden şifrelenir. İki aygıtın birbirini bulması için bir aktarıcı gerekirse, o aktarıcı yalnızca okuyamadığı şifreli trafiği görür."
+        ]
+      },
+      {
+        "id": "audiolibros",
+        "titulo": "Sesli kitaplar: gerçek bölümlü .m4b dosyaları",
+        "texto": "Yappy “tek parça uzun bir ses” dışa aktarmaz: mağazalardakiler gibi .m4b sesli kitaplar dışa aktarır. Bölümler belgenin gerçek başlıklarından çıkar; kapak ve kaldığın yerden devam da vardır. Bunları Yappy'nin içinde, kitaplığı ve ilerlemesiyle dinlersin; ya da hâlihazırda kullandığın herhangi bir sesli kitap oynatıcısında. Senaryocu onlara nefesini de verir: başlıklardan sonra duraklama, listelerde liste ritmi.",
+        "puntos": [
+          "Telefonda kitaplıktan, bölüm bölüm sipariş edilir: hangilerini basacağını ve hangi sesle basacağını seçersin.",
+          "Uygulamayı kapatıp telefonu kilitleysen bile papağan basmaya devam eder.",
+          "Kitaplıktan Dosyalar'a, Kitaplar'a ya da istediğin yere paylaşabilirsin: dosya senindir.",
+          "Matbaa, iPhone ve iPad'de Yappy Parlanchín'in bir parçasıdır. Bilgisayarda açık gelir."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, Kısayollar ve eylem düğmesi",
+        "texto": "“Hey Siri, panomu Yappy'yle oku.” Uygulama gerçek App Intents sunar: Kısayollar uygulamasında kendiliğinden görünürler, Siri'ye yanıt verirler ve iPhone'un eylem düğmesine takılabilirler. Kurulacak hiçbir şey yok.",
+        "puntos": [
+          "<strong>Panomu oku.</strong> Nerede istersen kopyalarsın, Siri'den istersin, çalar.",
+          "<strong>Okumayı sürdür.</strong> En son çalanı, tam kaldığı yerden sürdürür.",
+          "<strong>Bir bağlantıyı dinle.</strong> Parametre olarak bir adres kabul eder: kendi kısayollarının mükemmel finali.",
+          "Elle kurulan otomasyonlar için <code>yappy://</code> şeması da işlenir: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> ve <code>yappy://pair?d=…</code>.",
+          "Ana ekran için bir widget da var: en son çalanı gösterir, tek dokunuşla sürdürmeye hazır."
+        ]
+      },
+      {
+        "id": "ajustes",
+        "titulo": "Ayarlar: birkaç düğme, hepsi gerçek",
+        "texto": "Yappy'de yüz düğmeli bir panel yok. Sesi gerçekten değiştiren birkaç düğme var.",
+        "puntos": [
+          "<strong>Ses.</strong> On ses, hepsi çok dilli: aynı ses ispanyolcayı, ingilizceyi ya da japoncayı tınısı değişmeden okur.",
+          "<strong>Hız.</strong> 0,5× ile 2× arası. Ses o hızda üretilir, sonradan hızlandırılmaz: ton bozulmaz.",
+          "<strong>Molalar.</strong> Paragraflar arasında ne kadar nefes aldığı. Başlıklar ve listeler ritimlerini sözlendiriciden hazır alır.",
+          "<strong>Dil.</strong> Belge ve paragraf düzeyinde otomatik algılama ya da elle sabitleme. Farklı dildeki alıntılar kendiliğinden değişir.",
+          "<strong>Anonim istatistik.</strong> Telefonda açık gelir; buradan, arka odadan kapatılır. Tam olarak neyin gönderildiği, gizlilik politikasında madde madde anlatılıyor."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Android'de",
+        "texto": "Aynı hareket: bir bağlantı, bir metin ya da bir belge paylaşırsın; aynı kuyruğa düşer. Makale çıkarma, karaoke ve ses; hepsi telefonun kendi içinde. Android sürümü ailenin en genci; iPhone'da olan üç şey henüz eksik: kilit ekranı kontrolleri, videolar ve .m4b sesli kitap oynatıcısı. Bir de daha önemlisi var: <strong>henüz yayında değil</strong>. Google geliştirici hesabı hâlâ doğrulamada; tarih vermiyoruz, çünkü bilmiyoruz. Çıktığında burada ve depoda duyurulacak. Yalnız şu kesin: Android'de saklanacak bir şey olmayacak. Her şey açık."
+      }
+    ],
+    "atajo": "Kısayol",
+    "atajo_leer": "Baktığını oku",
+    "atajo_portapapeles": "Panoyu oku",
+    "atajo_pausar": "Duraklat",
+    "cierre": "Kılavuzun tamamı bu."
+  },
+  "guionizador": {
+    "title": "Yappy'nin sözlendiricisi: yazılı olandan söylenen olana",
+    "description": "Yappy “1492”yi, “XV. yüzyıl”ı, “3,50 €”yu ya da FBI'ı nasıl söze döker; her dilin kendi kurallarıyla, 31 dilin hepsinde. Canlı demo: uygulamadaki Rust'ın aynısı, WebAssembly'e derlenmiş.",
+    "h1": "Yazılı olandan söylenen olana.",
+    "oficios_titulo": "Tek geçişte on iki iş.",
+    "oficios": [
+      {
+        "titulo": "Tarihler",
+        "texto": "“24/5/1533” baştan sona söylenir; her dilin tarih sırasına ve dilbilgisine uygun biçimde."
+      },
+      {
+        "titulo": "Saatler",
+        "texto": "“14:05” bir insanın söyleyeceği gibi söylenir, bir saatin okuyacağı gibi değil."
+      },
+      {
+        "titulo": "Paralar",
+        "texto": "“3,50 €” “üç euro elli” diye söylenir; dilin gerektirdiği çekimle."
+      },
+      {
+        "titulo": "Yüzdeler",
+        "texto": "“%7”, “yüzde yedi” diye okunur; “%0,5” ise “sıfır virgül beş”te kalmaz."
+      },
+      {
+        "titulo": "Unidades",
+        "texto": "“230 °C”, “iki yüz otuz santigrat derece” diye okunur."
+      },
+      {
+        "titulo": "Ordinales",
+        "texto": "“3.” okunuşu “üçüncü”dür; dilde varsa cinsi ve çekimiyle birlikte."
+      },
+      {
+        "titulo": "Romen rakamları, akıllıca",
+        "texto": "İspanyolca “siglo XX” asıl sayıdır, “Enrique VIII” sıra sayısı; “El Cid” ise hiç sayı değildir."
+      },
+      {
+        "titulo": "Fonotaktiğe göre kısaltmalar",
+        "texto": "FBI harf harf okunur; NASA tek sözcük gibi. Kuralı bir liste değil, ses belirler."
+      },
+      {
+        "titulo": "Abreviaturas",
+        "texto": "“vb.”, “s.”, “XIX. yy.”: her dilin kendi tablosu var."
+      },
+      {
+        "titulo": "Números grandes",
+        "texto": "Unicode CLDR’nin RBNF gramerleriyle; cins ve çekim dâhil."
+      },
+      {
+        "titulo": "31 idiomas",
+        "texto": "Aynı kurallar, her dilin grameriyle. Elle yazılmış liste yok."
+      },
+      {
+        "titulo": "El ritmo",
+        "texto": "Başlıklar söylenince nefes alır; listeler tempoyu vurur. Duraklar senaryonun parçasıdır, tesadüfün değil."
+      }
+    ],
+    "cierre": "Senaryo hikâyenin yarısıdır; öteki yarısı duyulur.",
+    "faq": [
+      {
+        "q": "RBNF gramerleri nedir?",
+        "a": "RBNF, <em>Rule-Based Number Format</em> demektir: Unicode CLDR’nin, bir sayının her dilde nasıl söylendiğini tanımlayan kuralları. Bin sözcüklük tablo değil, gramerdir: Bu yüzden İspanyolcada “doscientas páginas” denildiğini, “doscientos páginas” değil; Rusçanın sayı adlarını çektiğini; Fransızcanın doksanı yirmi yirmi saydığını bilir. Yappy bunların hepsini elle yazılmış listeler olmadan, saf Rust ile yorumlar."
+      },
+      {
+        "q": "Neden bir senaryo hazırlayıcı gerekiyor? Ses tek başına yapmıyor mu?",
+        "a": "Hayır — ve kasıt budur. Yappy’nin ses modeli karakter düzeyinde çalışır: kendisine yazılı ne gelirse aynen onu söyler. Bu onu hızlı ve hafif tutar; ama “1492” gelirse aynısını harf harf söylemeye kalkacağı demektir. Böyle bir modelde normalleştirme <em>başlı başına</em> söyleyiştir. Senaryo hazırlayıcı, her sayıyı, her kısaltmayı ve her simgeyi bir insanın söyleyeceği sözcüklere çeviren parçadır."
+      },
+      {
+        "q": "Kaç dilde çalışır?",
+        "a": "Sesin konuştuğu 31 dilde; her biri kendi kurallarıyla: tarih sırası, para birimlerinin bağlacı, sıra sayıları, kısaltmalar ve Romen rakamları. “XV. yüzyıl” İspanyolcada “siglo quince”, İngilizcede “fifteenth century” diye okunur; “Louis XIV” “Louis quatorze” diye okunur, “Louis fourteenth” değil. Aynı on iki iş, otuz bir gramer."
+      },
+      {
+        "q": "Karaoke neden hep tam sözcüğe denk gelir?",
+        "a": "Çünkü senaryo yalnızca dönüştürülmüş metin değil: yazılanla söylenen arasındaki haritayı da saklar. Ses “bin dört yüz doksan iki” diye okuduğunda, senaryo bu dört kelimenin “1492”nin dört rakamından geldiğini bilir ve alt çizgi kaymadan tam yerine oturur. Metni aydınlatmakla tahmin etmek arasındaki fark budur."
+      },
+      {
+        "q": "Bir kelime yanlış okunuyor. Düzeltebilir miyim?",
+        "a": "Şu an için kullanıcıya ait bir telaffuz sözlüğü yok. Model harfleri okuduğu için kestirme yol şu: kelimeyi editörde söylendiği gibi yaz ve yeniden dinle. Sorun genel bir kalıpsa (bir kısaltma, bir akronim, bir ölçü birimi), bunu <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub'daki sorunlara</a> yaz: senaryo oluşturucunun tabloları bu tür örneklerle büyüyor."
+      },
+      {
+        "q": "Bu sayfadaki senaryo oluşturucu, uygulamadakinin aynısı mı?",
+        "a": "Aynı kod; tarayıcında çalışması için WebAssembly'ye derlenmiş. Buraya yazdığın şey sekmeni terk etmez. Projenin tamamı açık olduğu için kuralları tek tek <a href=\"https://github.com/joseluissaorin/yappy\">depoda</a> okuyabilirsin."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Yappy'yi indir: iPhone, iPad, Mac, Windows ve Linux",
+    "description": "Yappy ücretsiz ve açık kaynaklı. iPhone ve iPad için App Store'da; masaüstü sürümü koddan derlenir ya da GitHub'dan indirilir. Gereksinimler ve ses modelinin boyutu.",
+    "h1": "Ücretsiz, açık ve senin.",
+    "entradilla": "Kayıt yok, e-posta yok, süresi dolan deneme sürümü yok. İndirirsin, o kadar.",
+    "modelo_nota": "İlk seferinde Yappy ses modelini ({peso}) indirir. iPhone'da bu kurulumla birlikte gelir; bilgisayarda uygulamayı ilk açışında iner. Sonrasında bağlantı gerekmez.",
+    "android_titulo": "Android",
+    "android_texto": "Derlendi, çalışıyor; ama henüz yayında değil: Google geliştirici hesabı hâlâ doğrulanıyor. Çıktığında burada ve depoda duyurulur.",
+    "escritorio_aviso": "Masaüstü ikili dosyaları GitHub'da yayınlanır. Orada bulduğun sürüm iPhone'dakinden eskiyse, son sürüm henüz yüklenmemiş demektir: kod günceldir ve <code>cargo tauri build</code> ile derlenir.",
+    "plataformas": [
+      {
+        "nombre": "iPhone ve iPad",
+        "texto": "App Store'da; ücretsiz ve hesapsız. Sesler kurulumla iner: uygulamayı açarsın, bir metin paylaşırsın, ses başlar. En eksiksiz sürüm bu: sesli kitaplar, Siri, widget, köprü ve kilit ekranı kontrolleri.",
+        "requisitos": "iOS veya iPadOS 17 ve üzeri · ses modeli yaklaşık 200 MB yer kaplar",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "App Store'dan indir"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon ve Intel; notarize edilmiş bir .dmg olarak. Üç global kısayol, paragraf editörü, taranmış PDF'lerde OCR ve sesli kitap dışa aktarma dahil. Burada gizli kapak yok: her şey açık.",
+        "requisitos": "macOS 12 ve üzeri · yaklaşık 398 MB ses modeli",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "GitHub'daki sürümleri gör"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "x64 için .exe veya .msi kurulum dosyası; Mac sürümüyle aynı kısayollar, aynı işlevler. Son yılların herhangi bir dizüstü bilgisayarı, sesi gerçek zamandan hızlı sentezler.",
+        "requisitos": "Windows 10 ve üzeri, x64 · yaklaşık 398 MB ses modeli",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "GitHub'daki sürümleri gör"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "x64 için AppImage ve .deb. Genel kısayollar masaüstü ortamınıza bağlıdır; sizinkiler zaten doluysa Tercihler'den başka tuşlara atanır.",
+        "requisitos": "x64 · yaklaşık 398 MB ses modeli",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "GitHub'daki sürümleri gör"
+      },
+      {
+        "nombre": "Kaynak koddan",
+        "texto": "Projenin tamamı yayımda: masaüstü ve mobil uygulama (Tauri, Rust ve Svelte), sentez motoru, CLDR dilbilgilerini paketinde taşıyan betikleyici ve bu web sitesi. Rust ve Node kuruluysa <code>cargo tauri build</code> kendi kopyanızı derler. Yayımlanan ikili dosyalar iPhone sürümünün gerisinde kaldıysa en kestirme yol budur: kod her zaman günceldir.",
+        "requisitos": "Rust ve Node · eksiksiz talimatlar README'de",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Kaynak kodu GitHub'da gör"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Yappy fiyatları: sonsuza dek ücretsiz, karakter başına ücret yok",
+    "description": "Yappy ücretsizdir, dinleme sınırı yoktur: askıda aynı anda üç belge. Yappy Parlanchín dibi olmayan askı, sesli kitap presi ve köprü ekler. Aylık 3,99 €'dan başlar; 59,99 € ödeyerek bir kez de alınabilir.",
+    "h1": "Para konusu, açık açık.",
+    "entradilla": "Okuduğunu dinleyebilmek bir erişilebilirlik meselesi; erişilebilirlikse kredi kartı istememeli. O yüzden işin asıl kısmı ücretsiz ve sayacı yok.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "sonsuza dek",
+    "gratis_puntos": [
+      "Dakika ya da karakter sınırı olmadan dinleme",
+      "31 dil ve 10 ses",
+      "PDF, EPUB, Word, makaleler, videolar ve sesli notlar",
+      "Askıda aynı anda üç belge: birini çıkarınca bir tane daha sığar",
+      "Hesap yok, e-posta yok, reklam yok",
+      "MIT lisansıyla açık kaynak"
+    ],
+    "gratis_no": [
+      "Sesli kitap matbaası yok",
+      "Bilgisayarla köprü yok"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "aylık",
+    "cuerda_periodo_anio": "yıllık",
+    "cuerda_periodo_vida": "tek seferlik",
+    "cuerda_puntos": [
+      "Yukarıdakilerin tümü",
+      "Dipsiz askı: istediğin kadar belge",
+      "Matbaa: bütün kitabı, bölümlü sesli kitaba dönüştürür",
+      "Köprü: bilgisayarın dönüştürür, sonucu kendiliğinden geri getirir",
+      "İstediğin zaman iptal edersin"
+    ],
+    "cuerda_nota": "Ücretsiz deneme yok, bu da bir tercih: üç belgelik askı denemenin <em>ta kendisidir</em>; süresi dolmaz, sonradan ücret çekmez. Fiyatlar İspanya fiyatlarıdır; senin mağazanda kendi para biriminle görünür.",
+    "cuerda_donde": "İp, uygulamanın içindeki arka depoda satılır.",
+    "solo_ios": "Bilgisayarda ve Android'de her şey açık: ip yalnızca iPhone ve iPad'de var.",
+    "comparacion_titulo": "Diğerleri ne alıyor.",
+    "comparacion_entradilla": "Buluttaki ses uygulamaları, oynat'a her bastığında sunuculara para öder; bu yüzden saat ya da karakter başına ücret isterler. Yappy sesi senin cihazında üretir: dinleme başına maliyeti sıfırdır, bu yüzden ücret almamayı göze alabilir.",
+    "comparacion_nota": "Eylül 2026'da kontrol edilmiş, herkese açık fiyatlar. Sık sık değişirler; karar vermeden önce her web sitesinde yeniden kontrol et.",
+    "faq": [
+      {
+        "q": "Neden ücretsiz?",
+        "a": "Çünkü ödenecek sunucu yok. Ses senin cihazında üretilir; dinlemek kimseye paraya mal olmaz, bölüşülecek fatura da yoktur. Buluttaki ses uygulamaları, oynat'a her bastığında bir makineye para öder; bu yüzden karakter ya da saat başına ücret alırlar. Yappy, kendisine masrafı olmayan bir şey için senden ücret alamaz."
+      },
+      {
+        "q": "Hiç ödeme yapmazsam ne olur?",
+        "a": "Hiçbir şey. Yappy sonsuza dek çalışır: on ses, 31 dil, tüm biçimler; reklamsız, hesapsız, dakika sayacısız. Değişen tek şey şu: iPhone ve iPad'de askı aynı anda üç belge taşır; birini çıkarırsın, yenisi sığar. Bilgisayarda o bile yok."
+      },
+      {
+        "q": "Ücretsiz deneme var mı?",
+        "a": "Hayır, ve bu bir karardır, bir unutkanlık değil. Üç belgelik askı denemenin <em>ta kendisidir</em>: süresi dolmaz, kart istemez ve sekizinci gün ücret almaya başlamaz. Kimse, kabul ettiğini hatırlamadığı bir kesintiyle uyanmamalı."
+      },
+      {
+        "q": "Ne zaman istesem iptal edebilir miyim?",
+        "a": "Evet, Apple hesabından, başka her abonelik gibi. Her dönem sonunda kendiliğinden yenilenir; en az 24 saat önce iptal etmezsen. Ömür boyu satın alma hiç yenilenmez: bir kez ödersin, biter. İptal edersen ücretsiz olandan hiçbir şey kaybetmezsin: üç belgelik tüneğe geri dönersin."
+      },
+      {
+        "q": "Bilgisayarda ve Android'de neden para ödenmiyor?",
+        "a": "Çünkü kurma kolu yalnızca iPhone ve iPad'de takılı. Masaüstünde —yayımlandığında Android sürümünde de— matbaa, dipsiz tünek ve köprü açık gelir. Bu bir lansman kampanyası değil: orada faturalanacak bir şey yok."
+      }
+    ],
+    "una_a_una": "tek tek, verileriyle birlikte"
+  },
+  "voces": {
+    "title": "Yappy'nin sesleri: 31 dilde on çok dilli kuş",
+    "description": "31 dilin hepsini tınısı değişmeden konuşan on doğal ses. Her birinden bir örnek dinle, kendi sesini seç: seçtiğin ses, uygulamanın bütününü boyar.",
+    "h1": "On kuş, otuz bir dil.",
+    "entradilla": "Hepsi çok dilli: aynı ses İspanyolca'yı, İngilizce'yi ya da Japonca'yı tınısı değişmeden okur. Ve başka dilde bir alıntı içeren metin kendi kendine dil değiştirir, paragraf paragraf.",
+    "elige": "Bir kuşa dokun, sana nasıl ses verdiğini söyler.",
+    "idiomas_titulo": "Konuştuğu diller.",
+    "idiomas_entradilla": "Otuz bir tane, her birinin kendi senaristi var: aynı sesin aksanla okuması değil bu; her dil kendi kurallarıyla okunur."
+  },
+  "preguntas": {
+    "title": "Yappy hakkında sorular: gizlilik, diller, fiyatlar ve lisanslar",
+    "description": "Şunlara dolambaçsız cevaplar: neyin ücretsiz olduğu, neyin internete dokunduğu, Yappy'nin hangi modelleri kullandığı, hangi biçimleri kabul ettiği ve bir şey ters gittiğinde ne yapılacağı.",
+    "h1": "Gelen sorular.",
+    "entradilla": "Hepsi açık açık, lafı dolandırmadan cevaplanmış.",
+    "grupos": [
+      {
+        "susurro": "para ve özgürlük",
+        "titulo": "Ücretsiz, gerçekten.",
+        "lista": [
+          {
+            "q": "Gerçekten ücretsiz mi?",
+            "a": "Evet. Yappy, MIT lisanslı açık kaynak. Okuduğunu duyabilmek erişilebilirlik meselesidir ve erişilebilirlik araçları kart istememeli. Bilgisayarda ne ücretli sürüm var ne reklam. iPhone'da deneme papağanı tüneğinde aynı anda üç belge taşır, süre sınırı yok; dipsiz tüneği, sesli kitap matbaasını ve bilgisayar köprüsünü istersen, kurma kolunu Yappy Parlanchín'le çevirirsin: abonelikle ya da tek seferlik ömür boyu ödemeyle. Her durumda hesap yok, reklam yok."
+          },
+          {
+            "q": "İşin altında ne var? Nasıl finanse ediliyor?",
+            "a": "Altında bir şey yok: ödenecek sunucu da yok. Sentez senin aygıtında çalışır, dolayısıyla Yappy'nin kullanıcı başına maliyeti yok. Yazarının kişisel bir projesi; zaten vardı ve birinin daha işine yarayacağı için yayımlandı."
+          },
+          {
+            "q": "Ücretsiz deneme var mı?",
+            "a": "Yok, bilerek. Üç belgelik tünek denemenin ta kendisi; süresi de dolmaz, yedinci gününde bir tahsilata da dönüşmez. Yappy işine yarıyorsa bunu, önüne kimse saat koymadan öğrenirsin."
+          },
+          {
+            "q": "Ürettiğim sesi, bir podcast'te ya da videoda yayımlayabilir miyim?",
+            "a": "Yappy'nin kodu MIT; sana koşul dayatmaz. Ses modelinin, Supertonic 3'ün, kendi lisansı var: kullanım maddeleri taşıyan, OpenRAIL-M türünden açık bir lisans. Ticari kullanımdan önce <a href=\"https://huggingface.co/Supertone/supertonic-3\">modelin sayfasından gözden geçir</a>; o kısım Yappy'ye bağlı değil, adına söz de veremeyiz."
+          }
+        ]
+      },
+      {
+        "susurro": "metinlerin yola çıkmaz",
+        "titulo": "Gizlilik, adıyla soyadıyla.",
+        "lista": [
+          {
+            "q": "Metinlerim bir sunucuya gidiyor mu?",
+            "a": "Hayır. Ses sentezi, transkripsiyon ve makale ayıklama cihazının içinde gerçekleşir. Yappy ile paylaştığın hiçbir şey bir yere gönderilmez: hesap yok, kopya yok, saklanabilecekleri bir Yappy sunucusu da yok. Ağa dokunan yalnızca dört somut şey vardır; hepsi gizlilik politikasında tek tek anlatılmıştır."
+          },
+          {
+            "q": "Yappy kullanım istatistiği topluyor mu?",
+            "a": "Evet, topluyor; bunu dolanmadan söylemek gerekir. Telefon uygulaması anonim kullanım istatistikleri gönderir: varsayılan olarak açıktır, ayarlardan kapatılır. Giden şey, kapalı bir listeden bir olay adı (uygulamanın açılması, tanıtım turunun hangi adımının görülmesi, bir plana dokunulması, bir okumanın bitmesi), kurulum için rastgele bir tanıtıcı, dil ve sürümdür. Adın, e-postan, okuduğun metin, bir belgenin başlığı ya da bir bağlantı asla gönderilmez; reklam tanıtıcısı da yoktur. Bunlar Google'a da, Firebase'e de, hiçbir analitik şirketine de gitmez: gittikleri yer, yazarın kendi Cloudflare Worker'ı ve D1 veritabanıdır. Masaüstünde hiçbir tür istatistik tutulmaz."
+          },
+          {
+            "q": "Ya telefonla bilgisayar arasındaki köprü?",
+            "a": "İki cihazın arasındaki doğrudan bir bağlantıdır; <a href=\"https://iroh.computer\">iroh</a> protokolünü kullanır ve QUIC ile uçtan uca şifrelenir. Eşleştirme, bilgisayarının gösterdiği QR koduna kamerayı çevirerek yapılır; ortaya çıkan anahtar yine oradan her an iptal edilebilir. Arada Yappy sunucusu yoktur, çünkü Yappy sunucusu diye bir şey zaten yoktur."
+          },
+          {
+            "q": "İnternetsiz çalışır mı?",
+            "a": "Evet, sonsuza dek. Modeli ilk indirdikten sonra (telefonda 200 MB, bilgisayarda 398 MB civarı) Yappy'yi uçak modunda kullanabilirsin: metni yapıştır, belgeyi aç, sentezle, dışa aktar. Ağa yalnızca yeni adresler paylaşırken gerekir; nedeni ortada. Bulutta eşitleme de yoktur: kütüphanen cihazında yaşar; köprü, bir şeyi bir makineden öbürüne geçirmeye en çok benzeyen şeydir."
+          }
+        ]
+      },
+      {
+        "susurro": "kulağa gelen",
+        "titulo": "Ses ve diller.",
+        "lista": [
+          {
+            "q": "Hangi ses modelini kullanıyor?",
+            "a": "Supertonic 3, Supertone'un yaklaşık 99 milyon parametreli açık bir modeli; bilgisayarda 398 MB'a, telefonda 200 MB'a sığar ve son yılların herhangi bir dizüstü bilgisayarında gerçek zamandan hızlı sentez yapar. Karakter düzeyinde çalışır: bu yüzden arada bir senarist vardır; ses onları görmeden önce sayıları, kısaltmaları ve simgeleri sözcüklere çevirir."
+          },
+          {
+            "q": "Hangi dilleri konuşuyor?",
+            "a": "Almanca, Arapça, Bulgarca, Çekçe, Korece, Hırvatça, Danca, Slovakça, Slovence, İspanyolca, Estonca, Fince, Fransızca, Yunanca, Hintçe, Macarca, Endonezce, İngilizce, İtalyanca, Japonca, Letonca, Litvanca, Felemenkçe, Lehçe, Portekizce, Romence, Rusça, İsveççe, Türkçe, Ukraynaca ve Vietnamca. Otuz biri. Ve on ses de çok dillidir: aynı ses, tınısını değiştirmeden hepsini okur."
+          },
+          {
+            "q": "Diller karışık geçen bir belgede ne olur?",
+            "a": "Yappy belgenin dilini, paragraf paragraf da her parçanın dilini saptar: Türkçe bir yazının içindeki İngilizce bir alıntı, hiçbir şeye dokunmadan, aynı sesle İngilizce okunur. Saptama yanılırsa dili elle sabitleyebilirsin."
+          },
+          {
+            "q": "VoiceOver'dan ya da “Ekranı Oku” özelliğinden farkı ne?",
+            "a": "Sistemin okuyucuları ekranı olduğu gibi okur: sistemin prosodisiyle, hafızası olmadan. Yappy metni söylemeden önce hazırlar (makaleyi temizler, sayıları ve kısaltmaları sözcüğe çevirir, durakları işaretler), doğal bir sesle okur, nerede kaldığını hatırlar, sesli kitapları dışa aktarır ve ekran kilitliyken de okumayı sürdürür. İkisi kuzen sayılır, işleri ayrıdır; aynı anda kullanılır, birbirine karışmaz: Yappy bir ekran okuyucusunun yerine geçmez, geçmeyi de amaçlamaz."
+          }
+        ]
+      },
+      {
+        "susurro": "içeri giren",
+        "titulo": "Belgeler.",
+        "lista": [
+          {
+            "q": "Hangi biçimleri kabul eder?",
+            "a": "Web makaleleri (sayfa kendi kendini temizler), yayımlanmış transkripti üzerinden videolar, PDF, EPUB, Word, ODT, RTF, Markdown, düz metin, .pptx, .xlsx, .csv ve sesli notlar. Telefonda her şey paylaşım sayfasından gelir; masaüstünde üstelik sürükleyerek ya da kısayollarla. Bilgisayarında pandoc kuruluysa liste LaTeX, reStructuredText, Org ve birkaç biçime daha genişler."
+          },
+          {
+            "q": "Peki taranmış, içinde metin olmayan PDF'ler?",
+            "a": "Masaüstünde belgeler okunmadan önce yerel bir OCR'dan geçer; bu sırada da bilgisayarından hiçbir şey dışarı çıkmaz. iPhone'da bu henüz yok: PDF kâğıdın fotoğrafıysa telefon okuyacak metin bulamaz. Eğri ya da bulanık bir tarama, herhangi bir OCR'ın verebileceğini verir; düzgün bir tarama ise baştan sona okunur."
+          },
+          {
+            "q": "Bir mağazadan satın aldığım kitapları okuyabiliyor mu?",
+            "a": "Sadece açabildiklerini. Korumasız bir EPUB, bölümleriyle birlikte baştan sona okunur. Mağazaların DRM'li kitapları okunamaz; ne burada ne başka bir yerde. O kilit Yappy'nin değil ve anahtarı da elimizdeymiş gibi yapmayacağız."
+          },
+          {
+            "q": "Kitaplıktan bir şeyi nasıl silerim?",
+            "a": "Kitaplığın içinden: her belgenin kendi silme seçeneği var, sesi de onunla birlikte gider. Dışa aktardığın dosyalar (.m4b, .mp3, .wav) senindir ve nereye kaydettiysen orada durur; silmek ya da taşımak Finder'ın ya da Dosyalar'ın işidir."
+          }
+        ]
+      },
+      {
+        "susurro": "bir şey ters gittiğinde",
+        "titulo": "Sorunlar ve yardım.",
+        "lista": [
+          {
+            "q": "İlk seslendirme neden birkaç saniye daha uzun sürüyor?",
+            "a": "Model ilk seferde belleğe yükleniyor. Sonra ısınmış kalır; sıradaki cümleler anında gelir. Uygulamayı bilgisayara yeni kurduysan, ilk bekleme ayrıca ses modelinin indirilmesini de içerir."
+          },
+          {
+            "q": "Bir kelime yanlış okunuyor. Öğretmek mümkün mü?",
+            "a": "Kullanıcıya ait telaffuz sözlüğü yok; kestirme yol, kelimeyi editörde söylendiği gibi yazmak: model karakterleri okur, dediğin olur. Sorun genel bir kalıptaysa (bir kısaltma, bir akronim, bir birim), <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub'daki konulara</a> yaz: seslendirme tabloları bu tür vakalarla büyür."
+          },
+          {
+            "q": "Bir video paylaştım, hiçbir şey söylemiyor.",
+            "a": "Yappy, videonun yayımlanmış transkriptini alır; videosunun sesini kendisi yazıya dökmez. Videonun transkripti yoksa, okuyacak metin de yoktur. Video seninse ve dosyası elindeyse dosyayı paylaş: o zaman yerel kulak gerçekten yazıya döker."
+          },
+          {
+            "q": "Bir hata buldum. Nereye yazmalıyım?",
+            "a": "<a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub'daki konulara</a>, ya da <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> adresine yazarak. Sorun çıkaran metni (paylaşabilirsen) ve sistemini de eklersen çözüm hızlanır."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Yappy'de gizlilik: metinlerin yola çıkmaz",
+    "description": "Cihazından neyin çıktığını, neyin çıkmadığını açık açık söylüyoruz: seslendirme, transkripsiyon ve makale çekme işi içeride olur; ağa dokunan yalnızca dört durum var ve dördünü de anlatıyoruz.",
+    "h1": "Metinlerin yola çıkmaz.",
+    "actualizado": "Son güncelleme: {fecha}. Sorumlu: José Luis Saorín Ferrer, Tenerife (İspanya).",
+    "bloques": [
+      {
+        "titulo": "Bu işin konusu ne",
+        "texto": "Bu, Yappy'nin gizlilik politikası: iPhone, iPad, Mac, Windows ve Linux uygulaması; widget'ları ve uzantıları dahil. Kısa, çünkü anlatılacak şey az. Yappy'de hesap yok; adını da e-postanı da istemez, okuması için verdiğin metin cihazından çıkmaz. Ağa dokunan dört somut şey var ve dördünü de burada, teker teker sayıyoruz."
+      },
+      {
+        "titulo": "Ne hesap, ne ad, ne metin",
+        "texto": "Yappy'de kayıt da oturum açma da yok. Adını, e-postanı, kişilerini, konumunu, hiçbir reklam tanımlayıcısını toplamaz. Uygulamayla paylaştığın makaleler, PDF, EPUB, belgeler, sesli notlar ve metinler sese <strong>cihazının içinde</strong> dönüşür: seslendirme, transkripsiyon ve sayfa temizliği yerelde çalışır; ne bizim ne üçüncü tarafların hiçbir sunucusuna gönderilmez. Bulut senkronizasyonu da yok: kitaplığın, ilerlemen ve sesli kitapların cihazında yaşar; uygulamayı silersen onlar da gider."
+      },
+      {
+        "titulo": "Ağa dokunan şey (1): seslerin indirilmesi",
+        "texto": "İlk seferde Yappy ses modelini <code>modelos.yappy.joseluissaorin.com</code> adresinden indirir (telefonda yaklaşık 200 MB, bilgisayarda yaklaşık 398 MB); adres, Cloudflare'ın bir R2 deposu. Her indirmede olduğu gibi, sunucu istek sürdüğü sürece IP adresini görür. Seni tanımlayan bir kayıt tutmuyoruz. O indirmeden sonra seslendirme, ömür boyu uçak modunda çalışır."
+      },
+      {
+        "titulo": "Ağ erişimi (2): paylaştığınız bağlantılar",
+        "texto": "Bir bağlantı ya da video paylaştığınızda cihazınız, metni ya da transkripti almak üzere o adresi ziyaret eder; tıpkı tarayıcınızın yapacağı gibi. Ziyareti yapan sizin cihazınızdır, Yappy'nin bir sunucusu değil. Ziyaret edilen site de bir tarayıcıdan alacağını alır: IP adresinizi ve cihaz türünüzü. Cihazınızın dışında hiçbir geçmiş tutulmaz."
+      },
+      {
+        "titulo": "Ağ erişimi (3): anonim istatistikler",
+        "texto": "Bu açıkça söylenmeli: <strong>analitik vardır</strong>; yalnızca mobil uygulamadadır ve açık gelir. İstediğiniz an, ayarlar bölümündeki “Anonim İstatistikler” seçeneğinden kapatılır. Gönderilenler: kapalı bir listeden seçilmiş bir olay adı (uygulamanın açılması, ilk tanıtım turunun hangi adımının görüntülendiği, hangi plana dokunulduğu, bir okumanın bitip bitmediği), kurulum için rastgele bir tanımlayıcı, uygulamanın dili ve sürümü. <strong>Asla</strong> adınız, e-postanız, okuduğunuz metin, bir belgenin başlığı, bir bağlantı ya da reklam tanımlayıcısı gönderilmez. Google Analytics'e de, Firebase'e de, hiçbir analitik şirketine de gitmezler; gidecekleri yer yazarın kendi Cloudflare Worker'ı ve D1 veritabanıdır, amaç uygulamanın hangi bölümlerinin kullanıldığını, hangilerinin gereksiz olduğunu bilmektir. Masaüstünde hiçbir tür istatistik yoktur."
+      },
+      {
+        "titulo": "Ağ erişimi (4): satın alımlar",
+        "texto": "Abonelikler ile Yappy Parlanchín'in ömür boyu satın almasını Apple, App Store üzerinden yönetir; bunlar yalnızca iPhone ve iPad'de vardır. Aboneliğinizin halen aktif olup olmadığını anlamak için uygulama, bir abonelik yöneticisi olan <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>'i kullanır; RevenueCat kurulum için anonim bir tanımlayıcı ile Apple makbuzunu alır; adınızı ya da e-postanızı almaz. Apple kendi verilerini <a href=\"https://www.apple.com/legal/privacy/\">politikasında</a> açıklar."
+      },
+      {
+        "titulo": "Köprü: iPhone'dan bilgisayara ve geri",
+        "texto": "Yappy'yi Mac'inizle ya da PC'nizle eşleştirdiğinizde, dönüştürülmek üzere gönderdiğiniz belgeler iki cihaz arasında uçtan uca şifrelenmiş, doğrudan bir bağlantıyla yol alır; bunu QUIC üzerine kurulu <a href=\"https://iroh.computer\">iroh</a> kitaplığı sağlar. Birbirini bulabilmek için aktarma sunucularına yaslanabilirler; bu sunucular yalnızca okuyamadıkları şifreli trafiği görür. Yappy'nin hiçbir şey saklamayan ara sunucuları yoktur; çünkü hiçbir sunucusu yoktur."
+      },
+      {
+        "titulo": "Çocuklar ve izinler",
+        "texto": "Yappy 13 yaşından küçüklere yönelik değildir ve kimseye ait kişisel veriyi, yaşı ne olursa olsun, toplamaz. Sistemin istediği izinler yalnızca o iş ve o an için kullanılır: yapıştırırken pano, köprünün QR kodunu taratırken kamera, masaüstünde sesle yazı yazdırırken mikrofon. Hiçbiri arka planda kullanılmaz."
+      },
+      {
+        "titulo": "Haklarınız ve yazılacak adres",
+        "texto": "Kişisel veri saklamadığımız için sunucularımızda dışa aktarılacak ya da silinecek bir şey yok: Yappy'nin sizinle ilgili bildiği her şey cihazınızda durur, uygulamayı kaldırdığınızda kaybolur. Anonim istatistiklerin bile bize ulaşmasını istemiyorsanız, uygulamanın içinden kapatılır. Herhangi bir soru için <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> adresine yazın ya da <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a>'ta bir konu açın. Kod açıktır, MIT lisanslıdır: yukarıda yazılanların hepsi okuyarak doğrulanabilir."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Disleksi, DEHB ve düşük görme için Yappy: okunamayanı dinlemek",
+    "description": "Hesap istemeyen, saat başı ücret almayan, çevrimdışı çalışan bir sesli okuma aracı. Disleksi, DEHB, göz yorgunluğu ve düşük görme için; ayrıca sırf kulağıyla daha iyi okuyanlar için.",
+    "h1": "Kulakla okumak.",
+    "entradilla": "Okuduğunuzu duyabiliyor olmak bir erişilebilirlik meselesidir; erişilebilirlik araçları da kart istememeli. Yappy istemez, dakika sayacı tutmaz, uçakta bile çalışır.",
+    "voiceover_titulo": "Yappy, VoiceOver'ın yerine geçmez",
+    "voiceover_texto": "İkisi akraba araçlar; zanaatları farklı. Ekran okuyucu, arayüzü kullanabilmek için anlatır; Yappy, içeriğin tadını çıkarabilmek için okur. İkisi aynı anda kullanılır, biri diğerini engellemeden.",
+    "casos": [
+      {
+        "titulo": "Disleksi",
+        "texto": "Harf harf çözmek yorar; yorgunluk da anlamayı, süre bitmeden çok önce yer bitirir. Metni, ekranda vurgulanırken dinlemek aynı anda hem okuyup hem duymayı sağlar: göz satırı izler, ağır işi kulak üstlenir. Yappy hiçbir şeyi düzeltmez; ama yoran kısmı aradan çeker."
+      },
+      {
+        "titulo": "DEHB",
+        "texto": "Sessiz bir sayfa gitmeye davet eder. İlerleyen bir ses ritmi ayakta tutar; kafa gezintiye çıktığında sizi paragrafa geri götürür. Üstelik yürürken ya da eller meşgulken de dinlenebildiği için okumak hareketsiz durmayı gerektirmez: birçok kişi için farkın tamamı budur."
+      },
+      {
+        "titulo": "Düşük görme ve göz yorgunluğu",
+        "texto": "Küçük punto bir seçenek olmaktan çıktığında ya da akşam yedide gözler gününü bitirdiğinde, metin kulaktan okunmaya devam eder. Yappy PDF'i, e-postayı ya da yazının tamamını okur; gerekirse ekran kapalıyken, kilit ekranından ya da kulaklıktan."
+      },
+      {
+        "titulo": "Dil öğrenmek",
+        "texto": "Aynı anda dinlemek ve okumak, telaffuz öğrenmenin en eski ve en işe yarar yolu. On sesin hepsi çok dilli: 31 dili kendi kurallarıyla okur. Almanca bir metin Almanca duyulur, İngiliz aksanıyla değil. 0,75× hızda her heceyi duyarsınız; 1,5× hızda kulağınız alışır."
+      },
+      {
+        "titulo": "Yazdığınızı düzeltmek",
+        "texto": "Yüksek sesle söylenemeyen cümle, yazıda da ayakta duramaz. Kendi metninizi dinlemek, tekrarları, yanlış yere konmuş virgülleri ve bir türlü bitmeyen ara cümleleri ele verir. Eskiden matbaada düzeltmeyi böyle yaparlardı; üstelik bedava. .docx dosyasını açarsınız, oynat’a basarsınız ve gerçekten yazdıklarınızı duyarsınız; yazdığınızı sandıklarınızı değil."
+      },
+      {
+        "titulo": "Kulakla ders çalışmak",
+        "texto": "Ders notları, sınavda çıkacak bölüm, ikiyüz sayfalık makale. Gece matbaaya gönderilir; sabah bölümlü bir sesli kitap olurlar, otobüste dinlersiniz. Devam ettirme, kaldığınız paragrafı aynen tutar: geri dönmek için aramak yok."
+      }
+    ],
+    "faq": [
+      {
+        "q": "VoiceOver veya TalkBack açıkken çalışır mı?",
+        "a": "Evet; birbirlerine bulaşmazlar. Ekran okuyucu arayüzü anlatır; o sayede uygulamayı kullanırsınız. Yappy içeriği okur; o sayede dinlersiniz. İkisi aynı anda çalışır: VoiceOver sizi oynat düğmesine götürür, kitabı ise Yappy’nin sesi okur."
+      },
+      {
+        "q": "Ekrana bakmadan kullanılabilir mi?",
+        "a": "Evet. iPhone’da Siri kısayolları var (“Hey Siri, panomu Yappy ile oku”), eylem düğmesi, kilit ekranı kontrolleri ve kulaklık kontrolleri. Bilgisayarda üç klavye kısayolu iş görür: biri seçili metni okur, biri panoyu okur, biri durdurur; uygulama tepside saklıdır."
+      },
+      {
+        "q": "Ders PDF’lerini ve elinizdeki kitapları okur mu?",
+        "a": "Açabildiğiniz her PDF, EPUB, Word ve ODT. PDF taranmışsa ve metni yoksa, masaüstü sürümü okumadan önce yerel bir OCR’dan geçirir; mobilde bu henüz yok. Mağazadan alınmış DRM’li kitaplar hiçbir yerde okunamaz; burada da olmaz."
+      },
+      {
+        "q": "Her gün kullanmanın bedeli ne?",
+        "a": "Hiçbir şey. Dakika sayacı da yok, karakter sayacı da yok; reklam yok, hesap da gerekmiyor. Günde sekiz saat, yıllarca, bir kuruş ödemeden dinleyebilirsiniz; üstelik çevrimdışı. Ödeme duvarının arkasında yalnızca üç şey var: dibisiz askı, matbaa ve köprü. Onlar da yalnızca iPhone ve iPad’de."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Papağana masallar: Yappy’yi denemek için kamuya mal olmuş metinler",
+    "description": "Baştan sona kamuya mal olmuş öyküler; Yappy ile paylaşmaya ve sonuna kadar dinlemeye hazır. Kayıt yok, indirme yok.",
+    "h1": "Papağana masallar.",
+    "entradilla": "Bütün metinler, kamuya mal olmuş. Bu sayfayı Yappy ile paylaşın; papağan size okur.",
+    "dominio_publico": "Kamuya mal olmuş."
+  },
+  "blog": {
+    "title": "Yappy’nin blogu: yazılanı dinlemek",
+    "description": "PDF’i sese nasıl çevirirsiniz, bir metin okuyucu neden çevrimdışı çalışmalı, sayılar yüksek sesle nasıl okunur ve konuşan bir uygulama yaparken ne öğrendik.",
+    "h1": "Yazılanı dinlemek.",
+    "entradilla": "Yüksek sesle okumanın zanaatı, püf noktaları ve biraz tarihi. Her yazıyı buradan dinleyebilirsiniz; okuyan ses Yappy’nin kendisi.",
+    "escuchame": "Bu yazıyı dinleyin",
+    "escuchame_nota": "Yappy’nin {voz} sesiyle, tarayıcınızda okunuyor.",
+    "vacio": "Bu dilde henüz yazı yok."
+  },
+  "convertir": {
+    "title": "Metni sese çevirme: PDF, EPUB, Word, makaleler ve videolar",
+    "description": "Okuduğunu doğal bir sese çevirmenin altı yolu; hepsi kendi cihazında kalır: PDF, EPUB, Word, web'deki makaleler, videolar ve sesli notlar.",
+    "h1": "Dönüştür",
+    "entradilla": "Nereden girerse girsin fark etmez: makale, kitap, belge ya da kayıt. Yappy onu okunacak bir metne çevirip yüksek sesle okur; dosya cihazından hiç çıkmaz.",
+    "pasos_titulo": "Üç adımda.",
+    "faq_titulo": "Bununla ilgili sorular",
+    "otros_titulo": "Okuduğu başka şeyler",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "PDF'i sese çevirme: PDF'i yüksek sesle dinle, ücretsiz",
+        "description": "Herhangi bir PDF'i doğal bir sese çevir, başka bir işle uğraşırken dinle ya da bölümlü bir sesli kitap olarak kaydet. Buluta yükleme yok, sayfa sınırı yok.",
+        "h1": "PDF'lerini dinle.",
+        "entradilla": "Bilimsel bir makale, bir kılavuz, ders notları, bir sözleşme. Yappy PDF'i açar, üst başlıkları ve tekrar eden sayfa numaralarını ayıklar, bölümleri bulur ve doğal bir sesle baştan sona okur. Dosya cihazından çıkmaz.",
+        "pasos": [
+          {
+            "titulo": "PDF'i paylaş",
+            "texto": "Dosyalar'dan, e-postadan ya da Safari'den: Paylaş'a dokun, Yappy'yi seç. Bilgisayarda pencereye sürükle."
+          },
+          {
+            "titulo": "Sesi seç",
+            "texto": "10 ses, 31 dil. PDF başka bir dildeyse, Yappy dili kendiliğinden anlar."
+          },
+          {
+            "titulo": "Dinle ya da kaydet",
+            "texto": "Play'e bas, ya da işi matbaaya bırak: elinde bölümlü bir sesli kitap olur."
+          }
+        ],
+        "extra_titulo": "Taranmış PDF'ler",
+        "extra_texto": "PDF, kâğıdın fotoğrafıysa ve içinde metin yoksa masaüstü sürümü dosyayı okumadan önce yerel bir OCR'dan geçirir. iPhone'da henüz yok.",
+        "faq": [
+          {
+            "q": "Sayfa sınırı var mı?",
+            "a": "Hayır. Üç sayfalık bir makale ya da dört yüz sayfalık bir tez: PDF tamamen işlenir, tamamen okunur. Her şey senin cihazında döndüğü için harcayacak karakter kotası da, yedinci bölümün ortasında tavan yapan bir fatura da yok."
+          },
+          {
+            "q": "Peki ya PDF metinsiz bir taramaysa?",
+            "a": "Masaüstü sürümü okumadan önce dosyayı yerel bir OCR'dan geçirir; orada da hiçbir şey bilgisayarından çıkmaz. iPhone'da henüz yok: PDF, kâğıdın fotoğrafıysa telefon okuyacak metin bulamaz."
+          },
+          {
+            "q": "Başlıkları ve sayfa numaralarını ayıklıyor mu?",
+            "a": "Evet. Yappy, her sayfada tekrarlanan şeyi (üst bilgi, alt bilgi, sayfa numarası, derginin adı) bulur ve metnin dışında bırakır. Bir okuyuşu en çok bozan şey, her bir buçuk dakikada bir “3. Bölüm, 47. sayfa” duymaktır."
+          },
+          {
+            "q": "Sadece bir bölümü dinleyebilir miyim?",
+            "a": "Evet. Yappy, belgedeki gerçek başlıkları bulur ve onlardan gezilebilir bir içindekiler oluşturur. Kitaplıktan hangi bölümleri dinleyeceğinizi ya da hangilerini matbaaya yollayacağınızı seçersiniz; sesli kitap yalnız seçilenlerle çıkar."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "EPUB'u sesli kitaba dönüştürün: kitabınız, yüksek sesle okunur",
+        "description": "Bir EPUB'u, gerçek bölümleri olan bir sesli kitaba dönüştürür; iş kendi cihazınızda yapılır. Saatlik abonelik yok, kitap hiçbir sunucuya yüklenmez.",
+        "h1": "EPUB'unuz, sesli kitaba dönüşmüş.",
+        "entradilla": "Zaten elinizde olan kitaplar, bölümleriyle birlikte doğal bir sesle okunur. Yatarken dönüştürmeye bırakırsınız; sabah kitaplığınızda durur. Her oynatıcının açabildiği bir .m4b dosyası olarak.",
+        "pasos": [
+          {
+            "titulo": "EPUB'u paylaşın",
+            "texto": "Dosyalar'dan ya da dosyanın durduğu herhangi bir yerden. Bölümleri baştan tanınmış olarak gelir."
+          },
+          {
+            "titulo": "Matbaaya sipariş verin",
+            "texto": "Bölümleri, sesi ve hızı seçersiniz. Uygulamayı kapatsanız bile papağan basar."
+          },
+          {
+            "titulo": "İstediğiniz yerde dinleyin",
+            "texto": "Kitaplıkta, yer imleriyle birlikte bir .m4b olarak kalır; oradan Dosyalar'a, Kitaplar'a ya da istediğiniz herhangi bir yere paylaşabilirsiniz."
+          }
+        ],
+        "extra_titulo": "DRM'li kitaplar",
+        "extra_texto": "Yappy, açabildiğiniz EPUB'ları okur. Bir mağazanın DRM'iyle korunan kitaplar okunamaz; burada da, başka hiçbir yerde de.",
+        "faq": [
+          {
+            "q": "Kitabın bölümlerini korur mu?",
+            "a": "Evet. Üstelik bunlar gerçek bölümler; her on dakikada bir atılan işaretler değil: doğrudan EPUB'un kendi içindekilerinden gelirler. Ortaya çıkan .m4b, herhangi bir sesli kitap oynatıcısında bölüm bölüm gezilir; kapağı ve kaldığınız yerden devam özelliğiyle."
+          },
+          {
+            "q": "Kitabın tamamı ne kadar sürer?",
+            "a": "Cihaza ve kitabın büyüklüğüne bağlı; ama pratik cevap şu: yatarken bırakırsınız, sabah hazırdır. Köprüyü kullanıyorsanız, bilgisayarınız sentezi çok daha hızlı yapar ve bitmiş dosyayı telefonunuza geri yollar."
+          },
+          {
+            "q": "Ya DRM'li kitaplar?",
+            "a": "Yappy, açabildiğiniz EPUB'ları okur. Mağaza DRM'iyle korunan kitaplar okunamaz; burada da, başka hiçbir yerde de: o kilit bizim değil."
+          },
+          {
+            "q": "Sesli kitap nereye kaydediliyor?",
+            "a": "Yappy'nin kitaplığında, gerçek bir .m4b olarak. Oradan Dosyalar'a, Kitaplar'a ya da zaten kullandığınız oynatıcıya gönderebilirsiniz. Dosya sizindir: uygulamayı kaldırsanız bile, dışa aktardıklarınız nereye kaydettiyseniz orada kalır."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Word belgesini sesli dinlemek: DOCX, ODT ve RTF'yi sese dönüştürme",
+        "description": "Word, LibreOffice ve düz metin belgelerini doğal bir sese çevirin; yazınızı kulakla denetleyin. Her şey sizin bilgisayarınızda ya da telefonunuzda olur.",
+        "h1": "Kulakla düzelt.",
+        "entradilla": "Yazdıklarınızı dinlemek, var olan en iyi düzeltme yöntemidir: yüksek sesle söylenemeyen cümle yazıda da ayakta kalmaz. Yappy .docx, .odt, .rtf, .txt ve Markdown belgelerini okur; başlıkları ve ritmiyle birlikte.",
+        "pasos": [
+          {
+            "titulo": "Belgeyi açın",
+            "texto": "Bilgisayarda pencereye sürükleyin, telefondan paylaşın."
+          },
+          {
+            "titulo": "Paragraf paragraf dinleyin",
+            "texto": "Metin okunurken aydınlanır; atlamak için istediğiniz yere dokunun."
+          },
+          {
+            "titulo": "Kulağa küs geleni düzeltin",
+            "texto": "Sonra yeniden dinleyin. Bilgisayarda her paragrafa ayrı ses ve ayrı hız verilebilir."
+          }
+        ],
+        "extra_titulo": "Hesap tabloları ve sunumlar da",
+        "extra_texto": ".pptx, .xlsx ve .csv dosyalarını okur. Bilgisayarda pandoc kuruluysa liste büyür: LaTeX, reStructuredText, Org ve birkaç tane daha.",
+        "faq": [
+          {
+            "q": "Tam olarak hangi metin formatlarını okur?",
+            "a": ".docx, .odt, .rtf, .txt ve Markdown; buna .pptx, .xlsx ve .csv de dahil. Bilgisayarda pandoc kuruluysa liste büyür: LaTeX, reStructuredText, Org ve birkaç tane daha."
+          },
+          {
+            "q": "Dipnotları ve tabloları da okur mu?",
+            "a": "Belgenin gövdesini okur, başlıklarıyla ve kendi sırasıyla. Tablolar satır satır okunur; yüksek sesle bir tabloya yapılabilecek başka şey zaten yok. Notlar kendi bölümünün sonunda kalır, cümlenin ortasına girmez."
+          },
+          {
+            "q": "Her paragrafa ayrı bir ses verebilir miyim?",
+            "a": "Bilgisayarda evet: paragraf editörü her birine ses, hız ve duraklama atamanızı sağlar. Diyaloğu, röportajı ya da iki dilli belgeyi dinlenebilir kılan şey de budur."
+          },
+          {
+            "q": "Düzeltmeye gerçekten yarıyor mu?",
+            "a": "Var olan en iyi düzeltme budur. Dinlemek, gözün hoş gördüğünü ele verir: üç satır ötedeki tekrarı, kapanmayan yan cümleyi, fiili yutan ara cümleyi. Hızı 0,9×'e indirin, bölümü dinleyin, kulağa tırmalayan yeri not alın."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Makaleler",
+        "title": "İnternet makalelerini sesli dinlemek: herhangi bir web sayfası",
+        "description": "Safari'den bir sayfa paylaşın; Yappy onu tertemiz okur: menüsüz, bannersız, altbilgisiz. Sayfayı ziyaret eden sizin cihazınız, bizim sunucumuz değil.",
+        "h1": "Sonraya bıraktığınızı dinleyin.",
+        "entradilla": "Sonraya sakladığınız sekme. Yappy ile paylaşın, bulaşık yıkarken dinleyin. Sayfa kendiliğinden temizlenir: menüler, bannerlar, altbilgiler gider. Geriye düzyazı kalır; başlıkları ve ritmiyle.",
+        "pasos": [
+          {
+            "titulo": "Paylaş'a dokun",
+            "texto": "Safari'de, haber okuyucuda, e-postada: paylaş menüsü olan her yerde Yappy var."
+          },
+          {
+            "titulo": "Kendiliğinden temizlenir",
+            "texto": "Çıkarma işlemi senin cihazında yapılır. Bir yayına abonaysan, senin gördüğün makaleyi alır."
+          },
+          {
+            "titulo": "Sıraya girer",
+            "texto": "Ve ellerin boşalana kadar sırada bekler."
+          }
+        ],
+        "extra_titulo": "Ağa ne gidiyor",
+        "extra_texto": "Yalnızca paylaştığın adresin ziyaret edilmesi; bunu da kendi cihazın yapar, tarayıcının yapacağı gibi. Ortada Yappy sunucusu yok, çünkü Yappy diye bir sunucu zaten yok.",
+        "faq": [
+          {
+            "q": "Abone olduğum yayınlar için de çalışır mı?",
+            "a": "Çıkarma işlemini kendi cihazın, kendi oturumunla yapar; bu yüzden tarayıcında gördüğün makaleyi alır. Sen okuyabiliyorsan, Yappy da sana okuyabilir. Ortada ödeme duvarından geçmesi gereken bir aracı sunucu yok, çünkü sunucu yok."
+          },
+          {
+            "q": "Peki yalnızca JavaScript'le yüklenen sayfalar?",
+            "a": "Bazıları direnir: metin, sayfa kütüphanesinin yarısını çalıştırdıktan sonra belirmişse, Yappy boş elle kalabilir. Böyle durumlarda en hızlı yol şu: metni seç, kopyala, düz metin olarak paylaş."
+          },
+          {
+            "q": "Okuduklarımın kaydını tutuyor mu?",
+            "a": "Yalnızca senin cihazında, kaldığın yerden devam edebilmen için. Bunların hiçbiri hiçbir yere gitmez; üstelik kitaplıkta her belgenin kendi “unut” seçeneği var."
+          },
+          {
+            "q": "Menüleri, bannerları ve yorumları da okuyor mu?",
+            "a": "Hayır. Sayfa, okuyucuya ulaşmadan temizlenir: menüler, bannerlar, altbilgiler, paylaş düğmeleri ve yorum kutuları dışarı. Geriye düzyazı kalır; başlıkları ve ritmiyle."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Videolar",
+        "title": "Bir videoyu makale gibi dinlemek",
+        "description": "Yappy videonun transkriptini alır ve sana makale gibi okur: ekrana bakmadan, istediğin hızda, video verisi harcamadan.",
+        "h1": "Videolar, makale gibi.",
+        "entradilla": "Yarım saatlik video, iyi bir temposla okununca on dakikalık metindir. Yappy transkripti alıp doğal bir sesle sana okur; böylece yürürken, ekranı açmadan dinleyebilirsin.",
+        "pasos": [
+          {
+            "titulo": "Bağlantıyı paylaş",
+            "texto": "Video uygulamasından ya da tarayıcıdan; paylaş menüsüyle."
+          },
+          {
+            "titulo": "Sözleri alır",
+            "texto": "Yappy videonun yayınlanmış transkriptini alır; sesini değil."
+          },
+          {
+            "titulo": "Kendi hızında dinlersin",
+            "texto": "İstediğin sesle, istediğin hızda; ekran kilitliyken de."
+          }
+        ],
+        "extra_titulo": "Videoda transkript yoksa",
+        "extra_texto": "O zaman okuyacak bir şey yok: Yappy yayınlanmış metinle çalışır, videonun sesini yazıya dökmez. Bu özellik iPhone'da var; Android'de henüz yok.",
+        "faq": [
+          {
+            "q": "Videonun sesini yazıya döküyor mu?",
+            "a": "Hayır. Yappy videonun yayında duran transkriptini alır ve sana bir makale gibi okur. Hızlıdır, video verisi harcamaz, telefonu da ısıtmaz; ama videoda transkript yoksa okuyacak bir şey yok demektir."
+          },
+          {
+            "q": "Peki ya videoda transkript yoksa?",
+            "a": "O zaman Yappy bağlantıyla bir şey yapamaz. Video seninse ve dosyası elindeyse, ses olarak paylaş: o zaman yerel kulak devreye girer ve dosyayı cihazın içinde yazıya döker."
+          },
+          {
+            "q": "Her video platformunda çalışıyor mu?",
+            "a": "Transkript yayınlanmış ve erişilebilir olduğu her yerde. Bu özellik iPhone'da var; Android sürümünde henüz yok."
+          },
+          {
+            "q": "Veri harcar mı?",
+            "a": "Çok az: inen şey metindir, video değil. Yarım saatlik video, onlarca kilobaytlık bir transkript demektir; gerisini senin cihazın yapar."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Sesli notlar",
+        "title": "Sesli notları kendi telefonunda yazıya çevirmek",
+        "description": "Yappy, kayıtları ve sesli notları senin kendi cihazında yazıya döker, hiçbir servise yüklemez; sonra da transkripti sana okuyabilir.",
+        "h1": "Sesten yazıya, oradan geriye.",
+        "entradilla": "Kaydedilmiş bir toplantı, arabada dikte edilmiş bir fikir, dünkü ders. Yappy onu, cihazının içindeki yerel kulakla yazıya döker ve metni sana bırakır: okursun, düzeltirsin ya da başka bir sesle yeniden dinlersin.",
+        "pasos": [
+          {
+            "titulo": "Kaydı paylaş",
+            "texto": "Sesli Notlar'dan, Dosyalar'dan ya da ses kaydeden herhangi bir uygulamadan."
+          },
+          {
+            "titulo": "Yazıya dökme cihazın içinde",
+            "texto": "Cihazında çalışan bir modelle. Ses oradan dışarı çıkmaz."
+          },
+          {
+            "titulo": "Oku ya da dinle",
+            "texto": "Herhangi bir belge gibi kalır: okunur, paylaşılır ve yeniden sesli okunabilir."
+          }
+        ],
+        "extra_titulo": "Kulak ayrı indirilir",
+        "extra_texto": "Yazıya dökme, ses için kullanılandan farklı bir model kullanır; yalnızca onu kullanırsan indirilir.",
+        "faq": [
+          {
+            "q": "Hangi model yazıya döküyor?",
+            "a": "Parakeet TDT 0.6B v3; NVIDIA'dan, CC-BY-4.0 lisanslı, cihazınızın içinde çalışıyor. Sesi sentezleyen modelden farklı: biri dinler, öteki konuşur."
+          },
+          {
+            "q": "Ses cihazımdan çıkıyor mu?",
+            "a": "Hayır. Kayıt cihazda yazıya dökülür; tıpkı sesin cihazda sentezlenmesi gibi. Bulutta yazıya dökme yok, hesap yok, yükleme yok."
+          },
+          {
+            "q": "Hangi dillerde yazıya döküyor?",
+            "a": "Kulak, ses kadar çok dil bilmiyor: başlıca Avrupa dillerini yazıya döküyor; Yappy'nin okuyabildiği 31 dili değil. Yüksek sesle okuma için 31 dil; sesten yazıya için daha kısa bir grup."
+          },
+          {
+            "q": "Başka bir şey indirmek gerekiyor mu?",
+            "a": "Evet: kulak ayrıca iner; yalnızca ilk kez bir şey yazıya döktüğünüzde. Hiç döküm yapmazsanız, cihazınızda hiç yer kaplamaz."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "{lengua} için metinden sese (text to speech): herhangi bir metni yüksek sesle okur",
+    "description": "PDF, EPUB, Word ve makaleleri {lengua} dilinde doğal bir sesle dinleyin: kendi cihazınızda, çevrimdışı. On ses; ücretsiz ve hesapsız.",
+    "h1": "{lengua} için metinden sese.",
+    "entradilla": "On ses, {lengua} dilini kendi kurallarıyla okur: kendi sayıları, kendi tarihleri, kendi sıra sayıları, kendi kısaltmaları. Başka bir dilin ödünç aksanıyla değil.",
+    "muestra": "Bir örnek",
+    "reglas_titulo": "Okunuş motorunun {lengua} dilinden bildikleri",
+    "todas": "Diğer otuz dil"
+  },
+  "vs": {
+    "titulo": "Yappy mi, {nombre} mi? Bir bakışta",
+    "caracteristica": "Özellik",
+    "gratis": "Ücretsiz yapılabilecekler",
+    "precio": "Başlangıç fiyatı",
+    "local": "Ses cihazınızda üretilir",
+    "sin_cuenta": "Hesap yok, e-posta yok",
+    "sin_conexion": "Çevrimdışı çalışır",
+    "codigo_abierto": "Açık kaynak",
+    "tarifa": "Karakter başına ya da saatlik ücret",
+    "idiomas": "Diller",
+    "formatos": "Okuduğu biçimler",
+    "audiolibro": "Bölümlü sesli kitap",
+    "escritorio": "Bilgisayar",
+    "yappy_gratis": "Sınırsız dinleme; aynı anda üç belge",
+    "yappy_precio": "0 €; ücretli plan ayda 3,99 €'dan başlar",
+    "gana_en": "{nombre} nerede öne çıkıyor",
+    "verificado": "Herkese açık veriler {fecha} tarihinde her ürünün web sitesinden kontrol edildi.",
+    "sin_verificar": "Fiyatlar sık değişir: karar vermeden önce kontrol edin.",
+    "ver_web": "Resmî site",
+    "frente_a": "{nombre} ile karşılaştırma"
+  },
+  "preguntas_comunes": {
+    "titulo": "Sık sorulan sorular"
+  }
+}

@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "sk",
+    "nombre": "Slovenčina",
+    "dir": "ltr",
+    "ogLocale": "sk_SK",
+    "hreflang": "sk",
+    "og_alt": "„Ľubovoľný text nahlas“ veľkými písmenami na krémovom papieri, vedľa koralový papagáj"
+  },
+  "slugs": {
+    "uso": "ako-pouzivat",
+    "guionizador": "scenarista",
+    "descargas": "stiahnutie",
+    "precios": "cennik",
+    "voces": "hlasy",
+    "preguntas": "otazky",
+    "privacidad": "sukromie",
+    "accesibilidad": "pristupnost",
+    "cuentos": "rozpravky",
+    "blog": "blog",
+    "convertir": "prevod",
+    "idiomas": "jazyky",
+    "alternativas": "alternativy",
+    "formato_pdf": "pdf-na-audio",
+    "formato_epub": "epub-na-audioknihu",
+    "formato_word": "word-na-rec",
+    "formato_articulos": "clanky-na-audio",
+    "formato_videos": "video-na-audio",
+    "formato_notas": "hlasove-poznamky-na-text"
+  },
+  "comunes": {
+    "saltar": "Preskočiť na obsah",
+    "marca_aria": "Yappy, domovská stránka",
+    "idioma": "Jazyk",
+    "menu": "Otvoriť menu",
+    "secciones": "Sekcie",
+    "descargar": "Stiahnuť",
+    "descargar_gratis": "Stiahnuť zadarmo",
+    "en_app_store": "Stiahnuť v App Store",
+    "escuchar_muestra": "Prehrať ukážku",
+    "probar": "Vyskúšať teraz",
+    "leer_mas": "Čítať ďalej",
+    "volver": "Späť",
+    "inicio": "Domov",
+    "minutos": "{n} min čítania",
+    "publicado": "Zverejnené",
+    "actualizado": "aktualizované",
+    "por": "od",
+    "gratis": "zadarmo",
+    "si": "Áno",
+    "no": "Nie",
+    "parcial": "Čiastočne",
+    "sin_datos": "bez údajov"
+  },
+  "nav": {
+    "uso": "Ako sa používa",
+    "guionizador": "Skriptovač",
+    "voces": "Hlasy",
+    "precios": "Cenník",
+    "descargas": "Na stiahnutie",
+    "preguntas": "Časté otázky",
+    "privacidad": "Súkromie",
+    "accesibilidad": "Prístupnosť",
+    "cuentos": "Rozprávky",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "Produkt",
+    "leer": "Na čítanie",
+    "casa": "O nás",
+    "codigo": "Zdrojový kód",
+    "licencia": "Licencia MIT",
+    "novedades": "Novinky",
+    "firma": "Yappy · ručne robené na Tenerife, autor <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · otvorený kód (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Prevod textu na reč: čítanie PDF, EPUB a článkov nahlas",
+    "description": "Prevádza akýkoľvek text na prirodzenú reč: PDF, EPUB, Word, články aj videá. Vo 31 jazykoch. Všetko beží v tvojom telefóne či počítači: žiadny cloud, žiadny účet, žiadna platba za znak. Zadarmo a s otvoreným kódom.",
+    "susurro": "prevod textu na reč · 31 jazykov · bez cloudu · otvorený kód",
+    "titular_1": "Akýkoľvek",
+    "titular_texto": "text",
+    "titular_2": ", ",
+    "titular_voz": "nahlas",
+    "titular_3": ".",
+    "entradilla": "Zdieľaj článok, PDF, EPUB, Word alebo video a papagáj ti to prečíta prirodzeným hlasom, kým varíš, kráčaš alebo zavrieš oči. Celý model beží v tvojom zariadení: nič z neho nevyjde. Nikdy.",
+    "nota_acciones": "zadarmo · bez účtu · bez platby za znak",
+    "pegatina_sin_nube": "bez\ncloudu",
+    "pegatina_idiomas": "31\njazykov",
+    "pegatina_gratis": "zdarma",
+    "pegatina_offline": "bez pripojenia",
+    "demo_susurro": "ťukni a počuj: toto povedal ten istý motor, ktorý máš vo vrecku",
+    "demo_titulo": "Takto to znie.",
+    "demo_nota": "Podčiarknuté prečíta normalizátor textu: „1492“ sa povie „tisíc štyristo deväťdesiatdva“ a „XV. storočie“ sa povie „pätné storočie“, vždy podľa pravidiel daného jazyka.",
+    "momentos_susurro": "na čo to je",
+    "momentos_titulo": "Tri okamihy, jedno gesto.",
+    "momentos": [
+      {
+        "titulo": "Kým varíš",
+        "texto": "Zdieľaš článok, oprieš telefón a hlas číta ďalej medzi hrncami."
+      },
+      {
+        "titulo": "Na prechádzke",
+        "texto": "Kniha z včerajšieho večera je teraz audiokniha s kapitolami a sprevádza ťa do kopca."
+      },
+      {
+        "titulo": "Noc pracuje",
+        "texto": "Pred spaním to necháš prevádzať; keď sa zobudíš, audiokniha je vo vrecku."
+      }
+    ],
+    "porque_susurro": "prečo existuje",
+    "porque_titulo": "Bez cloudu, bez účtov, bez tarify za znaky.",
+    "porque_entradilla": "Ostatné aplikácie na prevod textu na reč posielajú, čo čítaš, na server a účtujú znaky alebo hodiny počúvania. Yappy nemá server, ktorý by trebalo platiť, a tak nemá ani čo účtovať za počúvanie.",
+    "porque": [
+      {
+        "titulo": "Nič neopúšta tvoje zariadenie",
+        "texto": "Hlas sa syntetizuje v telefóne či počítači pomocou otvoreného modelu. Funguje aj bez pripojenia: navždy."
+      },
+      {
+        "titulo": "31 plnohodnotných jazykov",
+        "texto": "Desať hlasov, každý polyglot. Text s citátmi v inom jazyku prepne jazyk sám, odsek za odsekom."
+      },
+      {
+        "titulo": "Žiadne hodiny, žiadne znaky",
+        "texto": "Počúvaš, čo chceš, a ako dlho chceš. Počítadlo niet, lebo niet faktúry, ktorú by trebalo rozdeliť."
+      },
+      {
+        "titulo": "Otvorený kód (MIT)",
+        "texto": "Motor, scenárizátor, aplikácia aj táto webstránka sú zverejnené. Môžeš si ich prečítať, skompilovať a overiť."
+      }
+    ],
+    "formatos_susurro": "zdieľanie je brána",
+    "formatos_titulo": "Čokoľvek čítaš.",
+    "formatos_entradilla": "Z Safari, Pošty, Súborov alebo ľubovoľnej aplikácie: klepni na zdieľanie a vyber Yappy. Stránka sa očistí sama – preč ponuky, bannery a pätičky – a zostane próza so svojimi nadpismi a rytmom.",
+    "guion_susurro": "časť, ktorú nikto iný neukazuje",
+    "guion_titulo": "Číta ako človek, nie ako stroj.",
+    "guion_entradilla": "Hlasné čítanie nie je hláskovanie, ale interpretácia. „1492“ sa povie „tisícštyristodeväťdesiatdva“; „Henrich VIII.“ sa povie „Henrich ôsmy“, ale „Louis XIV“ sa po francúzsky povie „Louis quatorze“; „EL CID“ nie je rímska číslica; FBI sa číta po písmenách a NASA nie. Skôr, než syntetizuje jedinú slabiku, Yappy premení text na <strong>čítací scenár</strong>: partitúru toho, čo hlas naozaj povie.",
+    "guion_pruebalo": "Vyskúšaj si to priamo tu: je to ten istý Rust, čo má aplikácia, skompilovaný do prehliadača.",
+    "guion_boton": "Scenárizovať",
+    "guion_ejemplo": "19. storočie skončilo v roku 1900. Ľudovít XIV. kraľoval 72 rokov, utratil 3,50 € za zmrzlinu a FBI sa to nikdy nedozvedelo.",
+    "guion_marcador": "Napíš niečo s číslami, skratkami, dátumami alebo storočiami…",
+    "guion_espera": "Tu sa objaví scenár, premenené časti budú podčiarknuté.",
+    "guion_fallo": "Scenárizátor sa v tomto prehliadači nepodarilo načítať. V aplikácii je však zabudovaný.",
+    "guion_mas": "Ako funguje scenárizátor",
+    "capturas_susurro": "takto to vyzerá, bez úprav",
+    "capturas_titulo": "Snímky skutočnej aplikácie.",
+    "capturas_entradilla": "Žiadne namaľované makety: toto je Yappy v chode, s pravými textmi na bidle a čítačom, ktorý má scenár pripravený.",
+    "precio_susurro": "peniaze, narovinu",
+    "precio_titulo": "Naozaj zdarma, a papagáj na natiahnutie.",
+    "precio_entradilla": "Skúšobný papagáj udrží na bidle tri dokumenty naraz a číta ich bez časového limitu. Jeden odoberieš a zmestí sa ďalší. Ak chceš bidlo bez dna, tlačiareň audiokníh a most k počítaču, natiahneš ho.",
+    "cierre_titulo": "Papagáj vo vrecku.",
+    "cierre_texto": "Zadarmo, bez účtu a bez ničoho na registráciu. Inštalácia, zdieľanie textu – a znie to."
+  },
+  "uso": {
+    "title": "Ako používať Yappy: zdieľať, počúvať a nič viac",
+    "description": "Kompletný sprievodca: zdieľanie z iPhonu, klávesové skratky na počítači, QR most medzi telefónom a tvojím Macom, audioknihy s kapitolami, Siri, widgety a nastavenia.",
+    "h1": "Zdieľaš – a znie to.",
+    "entradilla": "Yappy pozná jediné gesto: zdieľanie. Všetko ostatné sú detaily, ktoré sú už doladené.",
+    "pasos": [
+      {
+        "titulo": "Zdieľajte",
+        "texto": "Z akejkoľvek aplikácie: Safari, Pošta, Súbory, hlasová poznámka, PDF, ktorý vám prišiel cez chat. Klepnete na zdieľanie, vyberiete Yappy a aplikácia sa otvorí sama."
+      },
+      {
+        "titulo": "Vyberte si hlas",
+        "texto": "Desať hlasov, všetky viacjazyčné. Ak je text v inom jazyku, Yappy ho spozná sám a prečíta ho podľa pravidiel daného jazyka, nie s požičaným prízvukom."
+      },
+      {
+        "titulo": "Počúvajte",
+        "texto": "Uzamknete obrazovku a telefón odložíte. Hlas ide ďalej: na zamknutej obrazovke je obal, názov aj ovládanie a slúchadlá majú hlavné slovo."
+      },
+      {
+        "titulo": "Uložte si to",
+        "texto": "Ak ho chcete na zajtrajšiu prechádzku, tlač z neho spraví audioknihu .m4b s kapitolami a tá sa otvorí v ľubovoľnom prehrávači."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "Na iPhonu a iPade",
+        "texto": "Zdieľanie je celý návod. V akejkoľvek aplikácii klepnete na zdieľanie a vyberiete Yappy: prijme odkazy, voľný text, PDF, EPUB, Word, ODT aj audio. Yappy sa otvorí sám, hneď. V zdieľacom paneli nič nevarí donekonečna, lebo iOS pri 120 MB rozšírenia odrazí; Yappy si zdieľané skopíruje a preskočí do aplikácie, kde žiadny limit neplatí. Tento skok je zámerný, nie záplata. <strong>Všetko sa deje v zariadení</strong>: jediná sieť, ktorej sa Yappy dotkne, je návšteva adresy, ktorú ste zdieľali, a robí ju váš vlastný telefón.",
+        "puntos": [
+          "Poradie to pripravuje, kým sa pozeráte: článok sa očistí, video si prinesie vlastný prepis, PDF sa rozstránkuje. Ak máte aplikáciu stále pred sebou, čítanie sa spustí samé, akonáhle je hotové.",
+          "Karaoke rozsvieti to, čo práve znie, veta po vete. Klepnete kamkoľvek a pozastavíte, potiahnutím preskočíte na iný odsek a rýchlosť meníte prstom pri okraji.",
+          "Uzamknete obrazovku a hlas ide ďalej. AirPods ho pozastavia a spustia; systém sa k nemu správa ako ku každému inému prehrávaču.",
+          "Na vešiak sa zmestia tri dokumenty naraz: jeden zložíte a miesto má ďalší. Domáce rozprávky miesto nezaberajú."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Na Macu, vo Windows a v Linuxe",
+        "texto": "Jedna klávesová skratka a znie to, čo práve sledujete: výber, stránka v prehliadači alebo aktívny dokument. Všetky tri skratky zmeníte v nastaveniach a fungujú aj vtedy, keď je aplikácia schovaná v systémovej lište. Okrem skratiek má stolný počítač aj to, čo sa do dlane nezmestí.",
+        "puntos": [
+          "<strong>Knižnica.</strong> Všetko, čo otvoríte alebo zdieľate, zostáva na úvodnej obrazovke aj s priebehom. Vrátite sa presne tam, kde ste skončili – na ten istý odsek.",
+          "<strong>Editor odsekov.</strong> Každý odsek môže mať vlastný hlas, vlastnú rýchlosť a vlastnú pauzu. Na dialógy, citáty alebo dvojjazyčné dokumenty.",
+          "<strong>Miestny prepis.</strong> Pretiahnete hlasovú poznámku alebo nahrávku a miestne ucho z nej spraví čitateľný text – nič sa nikam neposiela.",
+          "<strong>Export audioknihy.</strong> Každý dokument vyjde ako pravá audiokniha .m4b s kapitolami na preklikávanie; vezmú sa zo scenára. Prípadne vyjde aj ako .wav alebo .mp3.",
+          "<strong>PDF s očami.</strong> Naskenované PDF prejdú miestnym OCR, kým sa začnú čítať. Tie, čo sa narodili digitálne, sa čítajú rovno, strana po strane.",
+          "<strong>Témy.</strong> Cez deň krémový papier, v noci svetlá tinta na tmavom pozadí, alebo nechajte rozhodnúť systém.",
+          "<strong>Bez povrázku.</strong> V počítači je všetko otvorené: tlačiareň, bidlo bez dna aj most sú v základnej výbave."
+        ]
+      },
+      {
+        "id": "most",
+        "titulo": "Most: počítač syntetizuje, telefón počúva",
+        "texto": "Celá kniha so syntézou chvíľu trvá. Most prenesie ťažkú prácu na počítač a hotovú audioknihu ti vráti do vrecka — po priamom šifrovanom spojení medzi tvojimi dvomi zariadeniami, od konca po koniec, a server nikoho tretieho medzi tým nie je.",
+        "puntos": [
+          "V počítači, Predvoľby, „Most“: Yappy ti ukáže QR kód so šifrovanou adresou tvojho stroja a pozývacím kľúčom.",
+          "Namieriš kameru iPhonu na QR kód a zariadenia sú spárované. Kľúč sa uloží a kedykoľvek ho môžeš v počítači zrušiť.",
+          "V telefóne: „Previesť v počítači“. Vyberieš dokument, počítač ho syntetizuje vlastným tempom a .m4b sa objaví v knižnici telefónu, aj s kapitolami. Noc pracuje na tvojej zajtrajšej prechádzke.",
+          "Most je šifrovaný cez QUIC a používa protokol <a href=\"https://iroh.computer\">iroh</a>. Ak zariadenia na svoje stretnutie potrebujú sprostredkovateľa, ten vidí len šifrovanú prevádzku, ktorú nedokáže prečítať."
+        ]
+      },
+      {
+        "id": "audioknihy",
+        "titulo": "Audioknihy: .m4b s naozajstnými kapitolami",
+        "texto": "Yappy neexportuje „jednu dlhú nahrávku“: exportuje audioknihy .m4b ako z obchodov, s kapitolami z reálnych nadpisov dokumentu, s obálkou a uloženou pozíciou. Počúvajú sa v Yappy, s jeho knižnicou a priebehom, alebo v ľubovoľnom prehrávači audiokníg, ktorý už používaš. A o dych sa postará scenárista: pauza po nadpisoch, rytmus zoznamu v zoznamoch.",
+        "puntos": [
+          "V telefóne si ich objednáš z knižnice, kapitolu po kapitole: vyberieš, ktoré vytlačiť a ktorým hlasom.",
+          "Papagáj tlačí ďalej, aj keď zavrieš aplikáciu alebo uzamkneš telefón.",
+          "Z knižnice ju zdieľaš do Súborov, do Kníh alebo kamkoľvek chceš: súbor je tvoj.",
+          "Tlačiareň je súčasťou Yappy Parlanchín na iPhone a iPade. V počítači je otvorená."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, Skratky a tlačidlo akcie",
+        "texto": "„Hey Siri, prečítaj mi schránku cez Yappy.“ Aplikácia vystavuje naozajstné App Intents: samé sa objavia v aplikácii Skratky, fungujú so Siri a dajú sa zavesiť na tlačidlo akcie iPhonu. Nič nie je treba nastavovať.",
+        "puntos": [
+          "<strong>Prečítaj mi schránku.</strong> Skopíruješ kdekoľvek čokoľvek, poprosíš Siri a znie to.",
+          "<strong>Pokračuj v čítaní.</strong> Vráti sa k poslednému, čo hralo, presne tam, kde skončilo.",
+          "<strong>Vypočuj si odkaz.</strong> Prijme adresu ako parameter: dokonalý záver pre tvoje vlastné skratky.",
+          "Pre vlastnoručné automatizácie sa spracúva aj schéma <code>yappy://</code>: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> a <code>yappy://pair?d=…</code>.",
+          "A na domovskej obrazovke je widget s poslednou vecou, ktorá hrala — pripravený na pokračovanie jedným klepnutím."
+        ]
+      },
+      {
+        "id": "nastavenia",
+        "titulo": "Nastavenia: málo koliesok, ale každé je pravé",
+        "texto": "Yappy nemá panel so stovkou prepínačov. Má len tých pár, ktoré naozaj menia, ako to znie.",
+        "puntos": [
+          "<strong>Hlas.</strong> Desať hlasov, všetky viacjazyčné: ten istý hlas číta španielčinu, angličtinu či japončinu bez zmeny zafarbenia.",
+          "<strong>Rýchlosť.</strong> Od 0,5× do 2×. Hlas sa generuje priamo touto rýchlosťou, nezrýchľuje sa dodatočne: výška tónu sa neskresľuje.",
+          "<strong>Pauzy.</strong> Koľko dychu si berie medzi odsekmi. Nadpisy a zoznamy dostávajú rytmus už od scenáristu.",
+          "<strong>Jazyk.</strong> Detekuje sa automaticky podľa dokumentu aj odseku, alebo sa nastaví ručne. Citácie v inom jazyku sa prepnú samy.",
+          "<strong>Anonymná štatistika.</strong> V mobile je zapnutá a vypnúť sa dá tu, v zázemí. Čo presne sa odosiela, je vypísané bod po bode v zásadách ochrany súkromia."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "V Androide",
+        "texto": "Ten istý pohyb: zdieľate odkaz, text alebo dokument a ocitne sa v rovnakej rade – s extrakciou článku, karaoke aj hlasom, všetko v samotnom telefóne. Verzia pre Android je v rodine najmladšia a ešte jej chýbajú tri veci, ktoré iPhone má: ovládanie na uzamknutej obrazovke, videá a prehrávač audiokníh .m4b. A potom je tu niečo dôležitejšie: <strong>ešte nie je zverejnená</strong>. Vývojársky účet u Googlu sa stále overuje a dátum nedávame, lebo ho nepoznáme. Keď vyjde, oznámime to tu a v repozitári. Jedno však: v Androide nie je žiadna obrátka. Všetko je otvorené."
+      }
+    ],
+    "atajo": "Skratka",
+    "atajo_leer": "Prečítať, čo máte pred očami",
+    "atajo_portapapeles": "Prečítať schránku",
+    "atajo_pausar": "Pozastaviť",
+    "cierre": "To je celý návod."
+  },
+  "guionizador": {
+    "title": "Scenárista Yappy: od písaného k povedanému",
+    "description": "Ako Yappy mení „1492“, „15. storočie“, „3,50 €“ či „FBI“ na vyslovené slová podľa pravidiel každého jazyka – vo 31 jazykoch. So živou ukážkou: ten istý Rust ako v aplikácii, skompilovaný do WebAssembly.",
+    "h1": "Od písaného k povedanému.",
+    "oficios_titulo": "Dvanásť remesiel v jednom ťahu.",
+    "oficios": [
+      {
+        "titulo": "Dátumy",
+        "texto": "„24. 5. 1533“ sa povie celý – so slovosledom a rodom každého jazyka."
+      },
+      {
+        "titulo": "Čas",
+        "texto": "„14:05“ sa povie tak, ako by to povedal človek, a nie tak, ako by to prečítali hodiny."
+      },
+      {
+        "titulo": "Meny",
+        "texto": "„3,50 €“ sa povie „tri eurá päťdesiat“ – s množným číslom, aké sa patrí."
+      },
+      {
+        "titulo": "Percentá",
+        "texto": "„7 %“ sa povie „sedem percent“ a „0,5 %“ nie je „nula celá päť“, ale „pol percenta“."
+      },
+      {
+        "titulo": "Unidades",
+        "texto": "„230 °C“ sa povie „dvesto tridsať stupňov Celzia“."
+      },
+      {
+        "titulo": "Ordinales",
+        "texto": "„3.“ sa povie „tretia“, so správnym rodom a skloňovaním tam, kde patria."
+      },
+      {
+        "titulo": "Rímske číslice s rozumom",
+        "texto": "„XX. storočie“ sa číta „dvadsiate storočie“, „Henrich VIII.“ sa číta „Henrich ôsmy“ a „EL CID“ nie je číslo."
+      },
+      {
+        "titulo": "Skratky podľa fonotaxie",
+        "texto": "FBI sa hláskuje; NASA sa číta. O pravidle rozhoduje zvuk, nie zoznam."
+      },
+      {
+        "titulo": "Abreviaturas",
+        "texto": "„atď.“, „str.“, „19. st.“: každý jazyk má svoju tabuľku."
+      },
+      {
+        "titulo": "Números grandes",
+        "texto": "S gramatikami RBNF z Unicode CLDR, vrátane rodu a skloňovania."
+      },
+      {
+        "titulo": "31 idiomas",
+        "texto": "Rovnaké pravidlá, s gramatikou každého jazyka. Žiadne ručne písané zoznamy."
+      },
+      {
+        "titulo": "El ritmo",
+        "texto": "Nadpisy si po vyslovení oddýchnu; zoznamy si držia svoj takt. Pauzy sú súčasťou scenára, nie náhody."
+      }
+    ],
+    "cierre": "Scenár je polovica príbehu; druhú polovicu počujete.",
+    "faq": [
+      {
+        "q": "Čo sú gramatiky RBNF?",
+        "a": "RBNF je skratka pre <em>Rule-Based Number Format</em>: pravidlá, ktorými Unicode CLDR popisuje, ako sa v každom jazyku povie číslo. Nie je to tabuľka tisíc slov, ale gramatika: preto vie, že v španielčine sa povie „doscientas páginas“ a nie „doscientos páginas“, že ruština skloňuje číslovky a že francúzština počíta do deväťdesiatich po dvadsiatkach. Yappy ich interpretuje v čistom Ruste, bez ručne písaných zoznamov."
+      },
+      {
+        "q": "Prečo je potrebný scenárista? Nespraví to hlas sám?",
+        "a": "Nie, a je to zámerné. Hlasový model Yappy pracuje na úrovni znakov: vysloví presne to, čo mu príde napísané. To ho robí rýchlym a ľahkým, ale znamená to, že keď mu príde „1492“, pokúsi sa povedať práve to, písmeno po písmene. V takomto modeli normalizácia <em>je</em> výslovnosť. Scenárista je časť, ktorá premení každé číslo, každú skratku a každý symbol na slová, aké by povedal človek."
+      },
+      {
+        "q": "V koľkých jazykoch funguje?",
+        "a": "V 31 jazykoch, ktoré hlas ovláda, a každý má vlastné pravidlá: poradie častí dátumu, spájanie mien, radové číslovky, skratky a rímske číslice. 15. storočie sa v španielčine povie „siglo quince“ a v angličtine „fifteenth century“; „Louis XIV“ je „Louis quatorze“ a nie „Louis fourteenth“. Rovnakých dvanásť úloh, tridsaťjeden gramatík."
+      },
+      {
+        "q": "Prečo karaoke vždy padne presne na slovo?",
+        "a": "Pretože skript nie je len pretvorený text: uchováva mapu medzi tým, čo je napísané, a tým, čo sa vysloví. Keď hlas povie „tisíc štyristo deväťdesiat dva“, skript vie, že týchto štyri slová pochádzajú zo štyroch číslic „1492“, a podčiarknutie sa na ne položí bez posunu. Je to rozdiel medzi osvetleným textom a hádaním."
+      },
+      {
+        "q": "Nejaké slovo sa vysloví zle. Môžem ho opraviť?",
+        "a": "Používateľský slovník výslovnosti zatiaľ neexistuje. Keďže model číta znaky, najrýchlejšia cesta je napísať slovo v editore tak, ako znie, a znova si ho vypočuť. A keď zlyháva celý vzor (skratka, akronym, jednotka), napíš o tom do <a href=\"https://github.com/joseluissaorin/yappy/issues\">issues na GitHube</a>: tabuľky skriptovača rastú s takýmito prípadmi."
+      },
+      {
+        "q": "Je skriptovač na tejto stránke ten istý ako v aplikácii?",
+        "a": "Ten istý kód, skompilovaný do WebAssembly, aby bežal v tvojom prehliadači. Čo tu napíšeš, neopustí tvoju kartu. A keďže je celý projekt otvorený, pravidlá si môžeš prečítať jedno po druhom v <a href=\"https://github.com/joseluissaorin/yappy\">repozitári</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Stiahnuť Yappy: iPhone, iPad, Mac, Windows a Linux",
+    "description": "Yappy je zdarma a s otvoreným kódom. V App Store pre iPhone a iPad; desktop sa skompiluje zo zdrojového kódu alebo stiahne z GitHubu. Požiadavky a veľkosť hlasového modelu.",
+    "h1": "Zadarmo, otvorené a tvoje.",
+    "entradilla": "Žiadna registrácia, žiadny e-mail, žiadna skúšobná verzia, ktorá vyprší. Stiahneš a hotovo.",
+    "modelo_nota": "Pri prvom spustení Yappy stiahne hlasový model ({peso}). Na iPone príde spolu s inštaláciou; na počítači pri prvom otvorení aplikácie. Pripojenie potom už netreba.",
+    "android_titulo": "Android",
+    "android_texto": "Verzia pre Android je skompilovaná a funguje, ale ešte nie je vydaná: Google stále overuje vývojársky účet. Keď vyjde, oznámime to tu a v repozitári.",
+    "escritorio_aviso": "Desktopové binárky sa zverejňujú na GitHube. Ak je verzia, ktorú tam nájdeš, staršia než verzia pre iPhone, najnovšia ešte nebola nahraná: kód je aktuálny a skompiluješ ho príkazom <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone a iPad",
+        "texto": "V App Store, zdarma a bez účtu. Hlasy sa stiahnu spolu s inštaláciou, takže stačí otvoriť, zdieľať text a znie to. Je to najúplnejšia verzia: audioknihy, Siri, widget, most a ovládanie na zamknutej obrazovke.",
+        "requisitos": "iOS alebo iPadOS 17 a novší · hlasový model zaberá približne 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Stiahnuť v App Store"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon a Intel, v notarizovanom .dmg. S tromi globálnymi skratkami, editorom po odstavcoch, OCR naskenovaných PDF a exportom audiokníh. Tu žiadne háčiky: všetko je otvorené.",
+        "requisitos": "macOS 12 a novší · približne 398 MB hlasového modelu",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Pozrieť vydania na GitHube"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "Inštalátor .exe alebo .msi pre x64, s rovnakými skratkami a rovnakými funkciami ako verzia pre Mac. Každý notebook z posledných rokov syntetizuje rýchlejšie, ako plynie reálny čas.",
+        "requisitos": "Windows 10 alebo novší, x64 · hlasový model zaberá zhruba 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Zobraziť vydania na GitHube"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage a .deb pre x64. Globálne skratky závisia od tvojho desktopového prostredia; keď sú tvoje už obsadené, v Nastaveniach si nastavíš iné.",
+        "requisitos": "x64 · hlasový model zaberá zhruba 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Zobraziť vydania na GitHube"
+      },
+      {
+        "nombre": "Zo zdrojového kódu",
+        "texto": "Celý projekt je zverejnený: desktopová aj mobilná aplikácia (Tauri, Rust a Svelte), syntetizačný engine, skriptovač s pribalenými gramatikami CLDR a táto webová stránka. Keď máš nainštalované Rust a Node, <code>cargo tauri build</code> vytvorí tvoju vlastnú kópiu. Ak zverejnené binárky zaostávajú za verziou pre iPhone, toto je rýchla cesta: kód je vždy aktuálny.",
+        "requisitos": "Rust a Node · kompletné inštrukcie v README",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Zobraziť kód na GitHube"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Ceny aplikácie Yappy: navždy zadarmo, bez poplatku za znak",
+    "description": "Yappy je zadarmo a počúvanie nemá žiadny limit: tri dokumenty naraz na vešáku. Yappy Parlanchín pridá vešák bez dna, tlačiareň audiokníh a most, od 3,99 € mesačne alebo 59,99 € jednorazovo.",
+    "h1": "Peniaze bez okolkov.",
+    "entradilla": "Možnosť počúvať, čo si čítaš, je otázkou prístupnosti. A prístupnosť by nemala žiadať kartu. Preto je tá dôležitá časť zadarmo a nemá počítadlo.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "navždy",
+    "gratis_puntos": [
+      "Počúvanie bez limitu minút a znakov",
+      "Všetkých 31 jazykov a desať hlasov",
+      "PDF, EPUB, Word, články, videá a hlasové poznámky",
+      "Tri dokumenty naraz na vešáku: odložíš jeden a vojde ďalší",
+      "Bez účtu, bez e-mailu, bez reklám",
+      "Odprta koda z licenco MIT"
+    ],
+    "gratis_no": [
+      "Brez tiskarne zvočnih knjig",
+      "Brez mostu do računalnika"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "na mesec",
+    "cuerda_periodo_anio": "na leto",
+    "cuerda_periodo_vida": "samo enkrat",
+    "cuerda_puntos": [
+      "Vse zgoraj našteto",
+      "Vesa brez dna: toliko dokumentov, kot jih želiš",
+      "Tiskarna: cele knjige postanejo zvočne knjige s poglavji",
+      "Most: tvoj računalnik ga pretvori in ti ga sam vrne",
+      "Prekličeš jo, kadar hočeš"
+    ],
+    "cuerda_nota": "Brez brezplačnega preizkusa – in to namerno: vesa s tremi dokumenti <em>je</em> preizkus. Ne poteče in pozneje ne zaračuna ničesar. Cene so španske; v tvoji trgovini bodo prikazane v tvoji valuti.",
+    "cuerda_donde": "Vrvico kupiš v aplikaciji, v zalogovniku.",
+    "solo_ios": "Na računalniku in Androidu je vse odprto: vrvica obstaja samo na iPhoneu in iPadu.",
+    "comparacion_titulo": "Kaj zaračunajo drugi.",
+    "comparacion_entradilla": "Aplikacije za govor v oblaku plačujejo strežnike vsakič, ko pritisneš predvajaj, zato zaračunavajo po urah ali po znakih. Yappy sintetizira na tvoji napravi: poslušanje ne stane nič, zato ga lahko sploh ne zaračuna.",
+    "comparacion_nota": "Objavljene cene, preverjene septembra 2026. Pogosto se spreminjajo: pred odločitvijo jih preveri na vsaki spletni strani.",
+    "faq": [
+      {
+        "q": "Zakaj je brezplačno?",
+        "a": "Ker ni strežnikov za plačevanje. Glas se sintetizira na tvoji napravi, zato poslušanje nikogar ne stane nič in ni računa, ki bi ga bilo treba deliti. Aplikacije za govor v oblaku plačajo stroj vsakič, ko pritisneš predvajaj, zato zaračunavajo po znakih ali po urah. Yappy ti ne more zaračunati ničesar, kar je ne stane."
+      },
+      {
+        "q": "Kaj se zgodi, če nikoli ne plačam?",
+        "a": "Nič. Yappy deluje za vedno, z desetimi glasovi, 31 jezikii in vsemi formati, brez oglasov, brez uporabniškega računa in brez števca minut. Edino, kar se spremeni: na iPhoneu in iPadu vesa drži tri dokumente hkrati. Enega odstraniš in drugi gre noter. Na računalniku niti tega."
+      },
+      {
+        "q": "Ali obstaja brezplačen preizkus?",
+        "a": "Ne, in to je odločitev, ne pozaba. Vesa s tremi dokumenti <em>je</em> preizkus: ne poteče, ne prosi za kartico in na osmi dan ne začne zaračunavati. Nihče se ne bi smel zbuditi z bremenitvijo, za katero se ne spomni, da bi jo kdaj odobril."
+      },
+      {
+        "q": "Ali lahko prekličem, kadar hočem?",
+        "a": "Áno, z účtu Apple, ako každé iné predplatné. Na konci obdobia sa samo obnoví, pokiaľ ho nezrušíš aspoň 24 hodín vopred. Doživotný nákup sa neobnovuje nikdy: zaplatíš raz a hotovo. A keď predplatné zrušíš, o nič zadarmo neprídeš: vrátiš sa na trojmiestne bidlo."
+      },
+      {
+        "q": "Prečo sa na počítači a v Androide neplatí?",
+        "a": "Pretože natahovací mechanizmus je osadený len v iPhone a iPade. Na desktope – aj v androidovej verzii, keď raz vyjde – sú tlačiareň, bidlo bez dna aj most hneď otvorené. Nie je to štartovná ponuka: prosto tam niet čo účtovať."
+      }
+    ],
+    "una_a_una": "jedna po druhej, s ich dátami"
+  },
+  "voces": {
+    "title": "Hlasy Yappy: desať viacjazyčných vtákov v 31 jazykoch",
+    "description": "Desať prirodzených hlasov ovláda všetkých 31 jazykov bez zmeny farby hlasu. Vypočuj si ukážku každého a vyber si svoj: hlas, ktorý si vyberieš, ofarbí celú aplikáciu.",
+    "h1": "Desať vtákov, tridsaťjeden jazykov.",
+    "entradilla": "Všetky viacjazyčné: ten istý hlas číta španielsky, anglicky či japonsky a farbu hlasu nemení. A keď je v texte citácia v inom jazyku, jazyk sa vymení sám, odsek za odsekom.",
+    "elige": "Ťukni na vtáka a povie ti, ako znie.",
+    "idiomas_titulo": "Jazyky, ktorými hovorí.",
+    "idiomas_entradilla": "Tridsaťjeden, každý s vlastným motorčekom na výslovnosť: nejde o ten istý hlas čítajúci s prízvukom, ale o každý jazyk s jeho vlastnými pravidlami."
+  },
+  "preguntas": {
+    "title": "Otázky o Yappy: súkromie, jazyky, ceny a licencie",
+    "description": "Priame odpovede na to, čo je zadarmo, čo siaha po internete, aké modely Yappy používa, ktoré formáty prijíma a čo robiť, keď niečo zlyhá.",
+    "h1": "Otázky, ktoré chodia.",
+    "entradilla": "Odpovedané priamo, bez okolkov.",
+    "grupos": [
+      {
+        "susurro": "peniaze a sloboda",
+        "titulo": "Zadarmo. Vážne.",
+        "lista": [
+          {
+            "q": "Je to naozaj zadarmo?",
+            "a": "Áno. Yappy má otvorený kód pod licenciou MIT. Počúvať, čo si čítaš, je otázka prístupnosti, a nástroje prístupnosti by nemali žiadať kartu. Na počítači nie je platená verzia ani reklamy. V iPhone nesie skúšobný papagáj na svojom bidle naraz tri dokumenty, bez časového limitu. Ak chceš bidlo bez dna, tlačiareň audiokníh a most do počítača, natiahneš ho Yappy Parlanchínom – predplatným alebo jednorazovou doživotnou platbou. Tak či onak: bez účtu a bez reklám."
+          },
+          {
+            "q": "V čom je háčik? Ako sa to financuje?",
+            "a": "Háčik žiadny: netreba platiť žiadne servery. Syntéza beží na tvojom prístroji, takže Yappy nemá náklady na používateľa. Je to autorov súkromný projekt, vydaný preto, že už existoval a mohol by poslúžiť aj niekomu ďalšiemu."
+          },
+          {
+            "q": "A skúšobná verzia?",
+            "a": "Nie, a to zámerne. Skúškou je bidlo s tromi dokumentmi – nevyprší a po siedmich dňoch sa nezmení na faktúru. Ak ti Yappy poslúži, prídeš na to sám, bez toho, aby ti niekto strkal stopky pod nos."
+          },
+          {
+            "q": "Môžem zverejniť vygenerované audio, napríklad v podcaste alebo vo videu?",
+            "a": "Kód Yappy má licenciu MIT a neprikazuje ti nič. Model hlasu, Supertonic 3, má vlastnú licenciu: otvorenú licenciu typu OpenRAIL-M s doložkami o použití. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Pozri si ju na stránke modelu</a> pred komerčným použitím: táto časť nezávisí od Yappy a nemôžeme za ňu nič sľúbiť."
+          }
+        ]
+      },
+      {
+        "susurro": "tvoje texty nikam necestujú",
+        "titulo": "Súkromie, a to s menom a priezviskom.",
+        "lista": [
+          {
+            "q": "Idú moje texty niekam na server?",
+            "a": "Nie. Syntéza, prepis aj získavanie článkov prebieha priamo vo tvojom zariadení. To, čo zdieľaš s Yappy, sa nikam neposiela: niet účtov, niet kópií a server Yappy, kde by sa to mohlo uložiť, vôbec neexistuje. Na sieť predsa len zasiahnu štyri konkrétne veci, a všetky sú rozpísané v zásadách ochrany súkromia."
+          },
+          {
+            "q": "Zbiera Yappy štatistiky používania?",
+            "a": "Áno, zbiera, a treba to povedať napriamo. Mobilná aplikácia posiela anonymné štatistiky používania: z výroby prichádzajú zapnuté a vypínajú sa v zákulisí. Cestuje len názov udalosti z uzavretého zoznamu (že sa spustila aplikácia, ktorý krok úvodnej prehliadky je vidieť, ktorý plán sa klepne, či čítanie skončí), náhodný identifikátor inštalácie, jazyk a verzia. Nikdy tvoje meno, tvoj e-mail, text, ktorý čítaš, názov dokumentu ani odkaz, a žiadny reklamný identifikátor. A neidú ku Googlu, ani ku Firebase, ani k žiadnej analytickej firme: idú do Workera a do databázy D1 u Cloudflare, ktoré prevádzkuje sám autor. Na počítači žiadne štatistiky nie sú."
+          },
+          {
+            "q": "A most medzi mobilom a počítačom?",
+            "a": "Je to priame spojenie medzi tvojimi dvomi zariadeniami, šifrované end-to-end pomocou QUIC, postavené na protokole <a href=\"https://iroh.computer\">iroh</a>. Párovanie prebehne tak, že namieriš kameru na QR kód, ktorý ti ukáže počítač, a vzniknutý kľúč môžeš kedykoľvek odvolať priamo tam. Server Yappy v strede nie je, lebo žiadny server Yappy neexistuje."
+          },
+          {
+            "q": "Funguje aj bez pripojenia?",
+            "a": "Áno, navždy. Po prvom stiahnutí modelu – zhruba 200 MB v mobile a zhruba 398 MB v počítači – môžeš Yappy používať v leteckom režime: vložiť text, otvoriť dokumenty, syntetizovať aj exportovať. Sieť potrebuje len zdieľanie nových adries, a to z pochopiteľných dôvodov. Ani synchronizácia do cloudu tu nie je: tvoja knižnica žije vo tvojom zariadení a most je najbližšie k tomu, keď niečo prenesieš z jedného stroja na druhý."
+          }
+        ]
+      },
+      {
+        "susurro": "to, čo znie",
+        "titulo": "Hlas a jazyky.",
+        "lista": [
+          {
+            "q": "Aký model hlasu používa?",
+            "a": "Supertonic 3, otvorený model od Supertone s približne 99 miliónmi parametrov. Na počítači zaberá 398 MB, v mobile 200 MB. A na akomkoľvek notebooku z posledných rokov syntetizuje rýchlejšie, než trvá výsledný zvuk. Pracuje na úrovni znakov: preto existuje skriptovač, ktorý premení čísla, skratky a symboly na slová skôr, než ich hlas uvidí."
+          },
+          {
+            "q": "Akými jazykmi hovorí?",
+            "a": "Angličtina, arabčina, bulharčina, čeština, dánčina, estónčina, fínčina, francúzština, gréčtina, hindčina, holandčina, chorvátčina, indonézština, japončina, kórejčina, litovčina, lotyština, maďarčina, nemčina, poľština, portugalčina, rumunčina, ruština, slovenčina, slovinčina, španielčina, švédčina, taliančina, turečtina, ukrajinčina a vietnamčina. Tridsaťjeden. A všetkých desať hlasov je polyglotných: ten istý hlas im prečíta všetky bez zmeny zafarbenia."
+          },
+          {
+            "q": "A čo dokument, v ktorom sa mieša viac jazykov?",
+            "a": "Yappy zistí jazyk dokumentu a odsekok po odseku aj jazyk jednotlivých častí: anglická citácia vnútri eseje v španielčine sa prečíta po anglicky, tým istým hlasom, a ty na nič nesiahneš. A keby sa detekcia pomýlila, jazyk môžeš nastaviť ručne."
+          },
+          {
+            "q": "Čím sa líši od VoiceOver alebo od funkcie „Prečítať obrazovku“?",
+            "a": "Systémové čítačky prečítajú obrazovku takú, aká je, so systémovou prozódiou a bez pamäti. Yappy si text pred vyslovením pripraví (vyčistí článok, prevedie čísla a skratky na slová, vyznačí pauzy), prečíta ho prirodzeným hlasom, pamätá si, kde si skončil, exportuje audioknihy a hrá ďalej aj s uzamknutou obrazovkou. Sú to príbuzné nástroje, každý s iným remeslom, a dajú sa používať naraz bez vzájomného prekážania: Yappy nenahrádza čítačku obrazovky a ani to neslieva."
+          }
+        ]
+      },
+      {
+        "susurro": "to, čo vstúpi",
+        "titulo": "Dokumenty.",
+        "lista": [
+          {
+            "q": "Ktoré formáty prijíma?",
+            "a": "Webové články (stránka sa vyčistí sama), videá cez ich zverejnený prepis, PDF, EPUB, Word, ODT, RTF, Markdown, čistý text, .pptx, .xlsx, .csv a hlasové poznámky. V mobile všetko cez zdieľací panel; v počítači navyše ťahaním alebo cez klávesové skratky. A ak máš v počítači nainštalovaný pandoc, zoznam sa rozšíri o LaTeX, reStructuredText, Org a niekoľko ďalších."
+          },
+          {
+            "q": "A naskenované PDF bez textu vo vnútri?",
+            "a": "Na počítači sa každé PDF skôr, než sa začne čítať, prehne cez lokálne OCR a ani tam nič neopustí tvoj počítač. V iPhone to ešte nejde: ak je PDF fotkou papiera, telefón nenájde text, ktorý by mohol čítať. Krivo naskenovaný alebo rozmazaný sken dá, čo dá ktorékoľvek OCR, ale slušný kus sa prečíta celý."
+          },
+          {
+            "q": "Dokáže čítať knihy kúpené v obchode?",
+            "a": "Iba tie, ktoré dokážeš otvoriť. EPUB bez ochrany sa prečíta celý, aj so svojimi kapitolami. Knihy s DRM z obchodu sa nedajú čítať – ani tu, ani nikde inde: ten zámok nepatrí Yappy a predstierať, že kľúč máme, nebudeme."
+          },
+          {
+            "q": "Ako zmažem niečo z knižnice?",
+            "a": "Priamo v knižnici: každý dokument má svoju voľbu „zabudnúť“ a spolu s ním mizne aj jeho audio. Exportované súbory (.m4b, .mp3, .wav) sú tvoje a ležia tam, kde ich máš uložené; vymazať ich alebo ich presunúť je vec pre Finder alebo Súbory."
+          }
+        ]
+      },
+      {
+        "susurro": "keď niečo zlyhá",
+        "titulo": "Problémy a pomoc.",
+        "lista": [
+          {
+            "q": "Prečo prvá syntéza trvá o pár sekúnd dlhšie?",
+            "a": "Model sa pri prvom použití načíta do pamäte. Potom je už zahriaty a ďalšie vety idú za pochodu. Po čerstvej inštalácii v počítači sa k prvému čakaniu pridáva navyše aj sťahovanie hlasového modelu."
+          },
+          {
+            "q": "Nejaké slovo sa vyslovuje zle. Dá sa to naučiť?",
+            "a": "Používateľský slovník výslovnosti tu nie je, takže najrýchlejšia cesta je napísať slovo v editore tak, ako sa vyslovuje: model číta znaky a poslúchni ťa. Ak ide o všeobecný jav (skratku, akronym, jednotku), napíš o tom do <a href=\"https://github.com/joseluissaorin/yappy/issues\">diskusií na GitHube</a>: tabuľky normalizátora rastú s každým takým prípadom."
+          },
+          {
+            "q": "Zdieľam video a nič nehovorí.",
+            "a": "Yappy si vezme len zverejnený prepis videa, zvuk neprepisuje. Ak video prepis nemá, nie je čo čítať. A ak je video tvoje a máš ho v súbore, zdieľaj súbor: ten už prepíše lokálne ucho."
+          },
+          {
+            "q": "Našla sa mi chyba. Kde ju nahlásim?",
+            "a": "V <a href=\"https://github.com/joseluissaorin/yappy/issues\">diskusiách na GitHube</a> alebo na <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Ak priložíš aj text, pri ktorom to zlyhalo – ak ho môžeš zdieľať – a svoj systém, opraví sa to skôr."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Súkromie Yappy: tvoje texty necestujú",
+    "description": "Čo odchádza z tvojho zariadenia a čo nie, povedané na rovinu: syntéza, prepis aj extrakcia článkov sa dejú vnútri; na sieť odchádzajú len štyri prípady a vypísané sú všetky.",
+    "h1": "Tvoje texty necestujú.",
+    "actualizado": "Posledná aktualizácia: {fecha}. Prevádzkovateľ: José Luis Saorín Ferrer, Tenerife (Španielsko).",
+    "bloques": [
+      {
+        "titulo": "O čom je reč",
+        "texto": "Toto je politika súkromia Yappy: aplikácie pre iPhone, iPad, Mac, Windows a Linux, vrátane widgetov a rozšírení. Je krátka, lebo na rozprávanie nie je veľa. Yappy nemá účty, nežiada tvoje meno ani e-mail a to, čo mu dáš na prečítanie, neopustí tvoje zariadenie. Na sieť odchádzajú štyri konkrétne veci a tu sú všetky štyri, jedna za druhou."
+      },
+      {
+        "titulo": "Žiadny účet, žiadne meno, žiadne texty",
+        "texto": "Yappy nemá registráciu ani prihlásenie. Nezbiera tvoje meno, e-mail, kontakty, polohu ani žiadny reklamný identifikátor. Články, PDF, EPUB, dokumenty, hlasové poznámky a texty, ktoré aplikácii dáš na prečítanie, sa menia na hlas <strong>vo vnútri tvojho zariadenia</strong>: syntéza, prepis aj čistenie stránok sa dejú lokálne a neposielajú sa na žiadny náš server ani na servery tretích strán. Ani synchronizácia v cloude tu nie je: tvoja knižnica, tvoj pokrok aj tvoje audioknihy žijú v zariadení a keď aplikáciu odinštaluješ, zmiznú."
+      },
+      {
+        "titulo": "Čo odchádza na sieť (1): sťahovanie hlasov",
+        "texto": "Prvýkrát Yappy stiahne hlasový model (okolo 200 MB v telefóne, okolo 398 MB v počítači) z <code>modelos.yappy.joseluissaorin.com</code>, úložiska R2 od Cloudflare. Ako pri každom sťahovaní server vidí tvoju IP adresu, kým žiadosť trvá. Nevedeme žiadny záznam, podľa ktorého by ťa bolo možné identifikovať. Po tomto sťahovaní funguje syntéza navždy, aj v režime lietadla."
+      },
+      {
+        "titulo": "Dotyk so sieťou (2): odkazy, ktoré zdieľaš",
+        "texto": "Keď zdieľaš odkaz alebo video, tvoje zariadenie túto adresu navštívi a prinesie si text alebo prepis – presne ako tvoj prehliadač. Navštívi to tvoje zariadenie, nie server Yappy. Navštívená stránka dostane to isté, čo by dostala od prehliadača: tvoju IP adresu a typ zariadenia. Mimo tvojho zariadenia sa neuchováva žiadna história."
+      },
+      {
+        "titulo": "Dotyk so sieťou (3): anonymné štatistiky",
+        "texto": "To treba povedať nahlas: <strong>analytika tu je</strong>, len v mobilnej aplikácii a hneď od inštalácie zapnutá. Vypneš ju kedykoľvek v nastaveniach, v sekcii „Anonymné štatistiky“. Odosiela sa názov udalosti z uzavretého zoznamu (že sa aplikácia spustila, ktorý krok úvodného sprievodu je na obrazovke, ktorý plán sa klepne, či čítanie skončilo), náhodný identifikátor inštalácie, jazyk aplikácie a jej verzia. <strong>Nikdy</strong> nie tvoje meno, e-mail, čítaný text, názov dokumentu, odkaz ani reklamný identifikátor. Neidú ku Google Analytics, ani k Firebase, ani žiadnej analytickej firme: idú na Worker a do databázy D1 v Cloudflare, ktoré má sám autor, a slúžia na jednoduchú vec – vedieť, ktoré časti aplikácie sa používajú a ktoré sú navyše. Na desktope nie je žiadna štatistika."
+      },
+      {
+        "titulo": "Dotyk so sieťou (4): nákupy",
+        "texto": "Predplatné aj doživotný nákup Yappy Parlanchín spravuje Apple cez App Store a existujú len na iPhone a iPade. Aby aplikácia zistila, či ti predplatné stále beží, používa <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, správcu predplatných. Ten dostane anonymný identifikátor inštalácie a účtenku od Apple; tvoje meno a e-mail nie. Apple popisuje svoje údaje vo <a href=\"https://www.apple.com/legal/privacy/\">vlastnej politike</a>."
+      },
+      {
+        "titulo": "Most: z iPhone do počítača a späť",
+        "texto": "Ak spáruješ Yappy s Macom alebo PC, dokumenty poslané na prevod idú priamym spojením medzi tvojimi dvoma zariadeniami, šifrovaným od konca po koniec, cez knižnicu <a href=\"https://iroh.computer\">iroh</a> nad QUIC. Na nájdenie sa môžu použiť relay servery, ktoré vidia len šifrovanú prevádzku a nedokážu ju prečítať. Yappy nemá medziľahlé servery, ktoré by niečo uchovávali, lebo nemá žiadne servery."
+      },
+      {
+        "titulo": "Deti a povolenia",
+        "texto": "Yappy nie je určená deťom mladším ako 13 rokov a nezhromažďuje osobné údaje od nikoho, nech má koľko rokov koľko chce. Povolenia, o ktoré systém požiada, sa využijú len na tú jednu vec a v ten moment: schránka pri vkladaní, kamera pri skenení QR kódu mostu, mikrofón na desktope na diktovanie. V pozadí sa nepoužíva ani jedno."
+      },
+      {
+        "titulo": "Tvoje práva a komu napísať",
+        "texto": "Keďže neuchovávame osobné údaje, na našich serveroch niet čo exportovať ani mazať: všetko, čo Yappy o tebe vie, žije v tvojom zariadení a po odinštalovaní zmizne. Ak nechceš, aby sme dostávali aj anonymné štatistiky, vypneš ich priamo v aplikácii. S otázkou napíš na <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> alebo otvor tému na <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a>. Kód je verejný, pod licenciou MIT: všetko uvedené sa dá overiť prečítaním."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy pri dyslexii, ADHD a slabom zraku: počúvať, čo sa nedá čítať",
+    "description": "Nástroj na čítanie nahlas, ktorý nežiada účet, neúčtuje hodiny a funguje aj bez pripojenia. Na dyslexiu, ADHD, únavu očí, slabý zrak a pre všetkých, ktorí jednoducho čítajú lepšie ušami.",
+    "h1": "Čítať ušami.",
+    "entradilla": "Počúvať to, čo si čítaš, je otázka prístupnosti a nástroje prístupnosti by nemali žiadať platobnú kartu. Yappy ju nežiada, nemá počítadlo minút a funguje aj v lietadle.",
+    "voiceover_titulo": "Yappy nenahrádza VoiceOver",
+    "voiceover_texto": "Sú to príbuzné nástroje s odlišným remeslom. Čítačka obrazovky popisuje rozhranie, aby sa dalo ovládať; Yappy číta obsah, aby sa dal vychutnať. Používajú sa súčasne a navzájom si neprekážajú.",
+    "casos": [
+      {
+        "titulo": "Dyslexia",
+        "texto": "Rozlúštenie písmeno po písmene unavuje a únava zožerie porozumenie oveľa skôr než čas. Počúvať text, ktorý sa zároveň zvýrazňuje na obrazovke, znamená čítať a počuť naraz: zrak sleduje riadok, ucho robí náročnú prácu. Yappy nič nevylieči, ale odstráni tú časť, ktorá vyčerpáva."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "Tichá stránka láka odísť. Hlas, ktorý sa posúva ďalej, drží rytmus a vracia k odseku, keď sa hlava vydá na vandroch. A keďže počúvať sa dá aj pri chôdzi alebo so zamestnanými rukami, čítanie už nevyžaduje sedieť v pokoji: pre mnohých ľudí je v tom celý rozdiel."
+      },
+      {
+        "titulo": "Slabý zrak a únava očí",
+        "texto": "Keď malé písmo prestáva byť možnosťou, alebo keď majú oči o siedmej večer odrobené, text zostáva dostupný cez ucho. Yappy prečíta PDF, mail alebo celý článok – aj s vypnutou obrazovkou, z uzamknutej obrazovky alebo do slúchadiel."
+      },
+      {
+        "titulo": "Učenie sa jazykov",
+        "texto": "Počúvať a čítať súčasne je najstarší a najúčinnejší spôsob, ako sa naučiť výslovnosť. Každý z desiatich hlasov je poliglot a číta všetkých 31 jazykov podľa ich vlastných pravidiel, takže nemecký text znie po nemecky, nie po nemecky s anglickým prízvukom. Pri 0,75× počujete každú slabiku; pri 1,5× sa cvičí ucho."
+      },
+      {
+        "titulo": "Opraviť, čo napíšete",
+        "texto": "Veta, ktorú nedokážete povedať nahlas, neobstojí ani napísaná. Počúvanie vlastného textu prezradí opakovania, zle umiestnené čiarky a vsuvky, ktoré sa nikdy nekončia. Je to korektúra, akú robili v kníhtlačiach, a je zadarmo: otvoríte .docx, stlačíte play a počujete, čo ste naozaj napísali, nie to, čo ste si mysleli, že ste napísali."
+      },
+      {
+        "titulo": "Učiť sa ušami",
+        "texto": "Poznámky z predmetu, kapitola, ktorá bude na skúške, článok na dvesto strán. Večer ich pošlete do kníhtlače a ráno je z nich audiokniha s kapitolami na počúvanie v autobuse. Pokračovanie si pamätá presný odsek: vrátiť sa do neho neznamená nič hľadať."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Funguje so zapnutým VoiceOverom alebo TalkBackom?",
+        "a": "Áno, a neprekážajú si. Čítačka obrazovky rozpráva rozhranie, aby ste s ním mohli pracovať; Yappy číta obsah, aby ste si ho mohli vychutnať. Používajú sa spolu: VoiceOver vás dovedie k tlačidlu prehrať a od tej chvíle knihu číta hlas Yappy."
+      },
+      {
+        "q": "Dá sa používať bez pohľadu na obrazovku?",
+        "a": "Áno. Na iPhone sú skratky Siri („Čau Siri, prečítaj moju schránku pomocou Yappy“), tlačidlo akcie, ovládanie na uzamknutej obrazovke aj na slúchadlách. V počítači trojica klávesových skratiek prečíta výber alebo schránku, prípadne pozastaví prehrávanie, a aplikácia pritom zostáva schovaná v paneli."
+      },
+      {
+        "q": "Dokáže čítať školské PDF a knihy, ktoré už mám?",
+        "a": "Akýkoľvek PDF, EPUB, Word či ODT, ktorý dokážete otvoriť. Ak je PDF len sken bez textu, verzia pre počítač ho pred čítaním preženie cez lokálne OCR; v telefóne to zatiaľ nie je. Knihy s DRM z obchodu sa nedajú čítať nikde, ani tu."
+      },
+      {
+        "q": "Koľko stojí každodenné používanie?",
+        "a": "Nič. Žiadne počítadlo minút ani znakov, žiadne reklamy a nie je treba účet. Môžete počúvať osem hodín denne roky, bez jediného centu a bez pripojenia. Platená verzia len pridáva vešiak bez dna, kníhtlač a most, a to len na iPhone a iPade."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Rozprávky pre papagája: voľné texty na vyskúšanie Yappy",
+    "description": "Kompletné príbehy z voľného díla, pripravené na zdieľanie s Yappy a na počúvanie celé. Bez registrácie a bez sťahovania.",
+    "h1": "Rozprávky pre papagája.",
+    "entradilla": "Celé texty, voľné dielo. Zdieľajte túto stránku s Yappy a papagáj vám ju prečíta.",
+    "dominio_publico": "Voľné dielo."
+  },
+  "blog": {
+    "title": "Blog Yappy: počúvať napísané",
+    "description": "Ako premeniť PDF na audio, prečo má čítačka textov fungovať aj bez pripojenia, ako sa čísla hovoria nahlas a čo sme sa naučili pri tvorbe aplikácie, ktorá rozpráva.",
+    "h1": "Počúvať napísané.",
+    "entradilla": "Remeslo, triky a kúsok histórie čítania nahlas. Každý článok si môžete vypočuť priamo tu — číta ho vlastný hlas Yappy.",
+    "escuchame": "Vypočujte si tento článok",
+    "escuchame_nota": "Číta Yappy hlasom {voz}, priamo vo vašom prehliadači.",
+    "vacio": "V tomto jazyku zatiaľ nie sú žiadne články."
+  },
+  "convertir": {
+    "title": "Prevod akéhokoľvek textu na reč: PDF, EPUB, Word, články a videá",
+    "description": "Šesť spôsobov, ako pretvoriť to, čo čítate, na prirodzený hlas. Všetky bežia priamo vo vašom zariadení: PDF, EPUB, Word, články z internetu, videá a hlasové poznámky.",
+    "h1": "Prevod",
+    "entradilla": "Nevadí, odkiaľ text príde: článok, kniha, dokument alebo nahrávka. Yappy z neho spraví text na čítanie a prečíta ho nahlas. Súbor pritom neopustí vaše zariadenie.",
+    "pasos_titulo": "V troch krokoch.",
+    "faq_titulo": "Časté otázky",
+    "otros_titulo": "Ďalšie veci, ktoré tiež číta",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "Prevod PDF na audio: počúvajte PDF nahlas, zadarmo",
+        "description": "Pretvorte ľubovoľný PDF na prirodzený hlas a počúvajte ho, kým robíte niečo iné. Alebo si z neho uložte audioknihu s kapitolami. Bez odosielania do cloudu a bez obmedzenia počtu strán.",
+        "h1": "Počúvajte svoje PDF.",
+        "entradilla": "Vedecký článok, manuál, poznámky z prednášok, zmluva. Yappy otvorí PDF, vyhodí hlavičky a opakujúce sa čísla strán, nájde kapitoly a prečíta všetko prirodzeným hlasom. Súbor neopustí vaše zariadenie.",
+        "pasos": [
+          {
+            "titulo": "Zdieľať PDF",
+            "texto": "Z aplikácie Súbory, pošty alebo Safari: klepnite na Zdieľať a vyberte Yappy. V počítači ho pretiahnite do okna."
+          },
+          {
+            "titulo": "Vybrať hlas",
+            "texto": "Desať hlasov, 31 jazykov. Ak je PDF v inom jazyku, Yappy ho rozpozná sám."
+          },
+          {
+            "titulo": "Počúvať alebo uložiť",
+            "texto": "Stlačte prehrávanie, alebo si ho objednajte v tlačiarni a dostanete audioknihu s kapitolami."
+          }
+        ],
+        "extra_titulo": "Skenované PDF",
+        "extra_texto": "Ak je PDF fotkou papiera a text v ňom nie je, desktopová verzia ho pred čítaním preženie cez lokálne OCR. Na iPhone to zatiaľ nejde.",
+        "faq": [
+          {
+            "q": "Existuje limit počtu strán?",
+            "a": "Nie. Článok na tri strany alebo dizertácia na štyri stovky strán: PDF sa spracuje od prvej do poslednej strany a prečíta sa celé. Keďže sa všetko odohráva vo vašom zariadení, tu nie je kvóta znakov na míňanie ani faktúra, ktorá vystrelí v polovici siedmej kapitoly."
+          },
+          {
+            "q": "A čo ak je PDF sken bez textu?",
+            "a": "Desktopová verzia ho pred čítaním preženie cez lokálne OCR a ani tam nič neopustí váš počítač. Na iPhone to zatiaľ nejde: ak je PDF fotkou papiera, telefón nenájde text na prečítanie."
+          },
+          {
+            "q": "Odstráni hlavičky a čísla strán?",
+            "a": "Áno. Yappy zistí, čo sa opakuje na každej strane (hlavička, pätička, číslo strany, názov časopisu), a nechá to mimo skriptu. Nič nepokazí čítanie viac ako počuť „Kapitola 3, strana 47“ každú minútu a pol."
+          },
+          {
+            "q": "Môžem počúvať len jednu kapitolu?",
+            "a": "Áno. Yappy nájde skutočné názvy v dokumente a spraví z nich prehľadný obsah. V knižnici si vyberieš, ktoré kapitoly chceš počúvať a ktoré poslať do tlačiarne, a audiokniha vyjde s týmito."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "Previesť EPUB na audioknihu: tvoja kniha, prečítaná nahlas",
+        "description": "Preveď EPUB na audioknihu so skutočnými kapitolami, hotovú vo vlastnom zariadení. Bez predplatného na hodiny a bez nahrávania knihy na server.",
+        "h1": "Tvoj EPUB ako audiokniha.",
+        "entradilla": "Knihy, ktoré už máš, aj s kapitolami, čítané prirodzeným hlasom. Necháš ich večer prevádzať a ráno sú v knižnici – ako súbor .m4b, ktorý otvorí každý prehrávač.",
+        "pasos": [
+          {
+            "titulo": "Zdieľaj EPUB",
+            "texto": "Z aplikácie Súbory alebo odkiaľkoľvek, kde ho máš. Príde s už rozpoznanými kapitolami."
+          },
+          {
+            "titulo": "Objednaj tlač",
+            "texto": "Vyberieš kapitoly, hlas a rýchlosť. Papagáj to vytlačí, aj keď aplikáciu zavrieš."
+          },
+          {
+            "titulo": "Počúvaj, kde chceš",
+            "texto": "Zostane v knižnici ako .m4b so záložkami; odtiaľ ho zdieľaš do Súborov, do Kníh alebo kamkoľvek chceš."
+          }
+        ],
+        "extra_titulo": "Knihy s DRM",
+        "extra_texto": "Yappy prečíta tie EPUB, ktoré dokážeš otvoriť. Knihy chránené DRM z obchodu sa nedajú čítať – ani tu, ani nikde inde.",
+        "faq": [
+          {
+            "q": "Zostanú zachované kapitoly z knihy?",
+            "a": "Áno, a sú to poriadne kapitoly, nie značky každých desať minút: vychádzajú z obsahu samotného EPUB. Výsledný .m4b sa dá v ľubovoľnom prehrávači audiokníh listovať kapitolu po kapitole, s obálkou a s pokračovaním od posledného miesta."
+          },
+          {
+            "q": "Ako dlho trvá celá kniha?",
+            "a": "Závisí to od zariadenia a od veľkosti knihy, ale praktická odpoveď znie: zapneš to pred spaním a ráno je hotové. Ak máš mostík, počítač to prevedie oveľa rýchlejšie a hotový súbor ti vráti do telefónu."
+          },
+          {
+            "q": "A knihy s DRM?",
+            "a": "Yappy prečíta tie EPUB, ktoré dokážeš otvoriť. Knihy chránené DRM z obchodu sa nedajú čítať – ani tu, ani nikde inde: ten zámok nie je náš."
+          },
+          {
+            "q": "Kde nájdem audioknihu?",
+            "a": "V knižnici Yappy, ako poriadny .m4b. Odtiaľ ho zdieľaš do Súborov, do Kníh alebo do prehrávača, ktorý už používaš. Súbor je tvoj: keď aplikáciu odinštaluješ, vyexportované zostane tam, kde ho máš uložené."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Počúvať Word nahlas: DOCX, ODT a RTF ako audio",
+        "description": "Premeňte dokumenty z Wordu, LibreOffice a obyčajný text na prirodzenú reč a kontrolujte ich počúvaním. Všetko sa deje vo vašom počítači alebo mobile.",
+        "h1": "Kontrolujte ušami.",
+        "entradilla": "Počúvať, čo ste napísali, je najlepšia korektúra, aká existuje: veta, ktorú nedokážete povedať nahlas, neobstojí ani napísaná. Yappy prečíta .docx, .odt, .rtf, .txt a Markdown, vrátane nadpisov a rytmu.",
+        "pasos": [
+          {
+            "titulo": "Otvorte dokument",
+            "texto": "Pretiahnite ho do okna v počítači alebo ho zdieľajte z mobilu."
+          },
+          {
+            "titulo": "Počúvajte odsek po odseku",
+            "texto": "Text sa zvýrazňuje, kým znie; ťuknite kamkoľvek a preskočíte."
+          },
+          {
+            "titulo": "Opravte, čo vrzá",
+            "texto": "A potom si to vypočujte znova. V počítači môže mať každý odsek vlastný hlas aj rýchlosť."
+          }
+        ],
+        "extra_titulo": "Aj tabuľky a prezentácie",
+        "extra_texto": "Prečíta .pptx, .xlsx a .csv. V počítači, ak máte nainštalovaný pandoc, sa zoznam rozšíri o LaTeX, reStructuredText, Org a pár ďalších.",
+        "faq": [
+          {
+            "q": "Ktoré textové formáty presne číta?",
+            "a": ".docx, .odt, .rtf, .txt a Markdown, navyše .pptx, .xlsx a .csv. V počítači, ak máte nainštalovaný pandoc, sa zoznam rozšíri o LaTeX, reStructuredText, Org a pár ďalších."
+          },
+          {
+            "q": "Číta aj poznámky pod čiarou a tabuľky?",
+            "a": "Prečíta hlavný text dokumentu aj s nadpismi a v pôvodnom poradí. Tabuľky číta riadok po riadku – inak sa tabuľka nahlas čítať nedá – a poznámky ostanú na konci svojej časti, takže neprestrihnú vetu v polovici."
+          },
+          {
+            "q": "Môžem dať každému odseku iný hlas?",
+            "a": "V počítači áno: editor odsekov umožní priradiť každému hlas, rýchlosť aj pauzu. Práve vďaka tomu je dialóg, rozhovor alebo dvojjazyčný dokument zrozumiteľný."
+          },
+          {
+            "q": "Pomôže to naozaj pri korektúre?",
+            "a": "Je to najlepšia korektúra, aká existuje. Ucho prezradí, čo oko prepasie: opakovanie o tri riadky nižšie, vedľajšiu vetu, ktorá sa nezatvára, vsuvku, ktorá prehltla sloveso. Znížte rýchlosť na 0,9×, vypočujte si kapitolu a poznačte si, čo vrzá."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Články",
+        "title": "Počúvať články z internetu: ľubovoľná webová stránka nahlas",
+        "description": "Zdieľajte stránku zo Safari a Yappy vám ju prečíta v čistej podobe: bez menu, bez bannerov a bez pätičky. Stránku navštívi vaše zariadenie, nie náš server.",
+        "h1": "Vypočujte si, čo ste odkladali na neskôr.",
+        "entradilla": "Tab, ktorý nechávate otvorený na neskôr. Zdieľajte ho s Yappym a vypočujte si ho pri umývaní riadu. Stránka sa vyčistí sama: zmiznú menu, bannery a pätičky. Ostane próza – s nadpismi a rytmom.",
+        "pasos": [
+          {
+            "titulo": "Klepnite na Zdieľať",
+            "texto": "V Safari, v čítačke správ, v pošte: kde je ponuka Zdieľať, tam je aj Yappy."
+          },
+          {
+            "titulo": "Vyčistí sa to samo",
+            "texto": "Extrahuje sa to priamo vo vašom zariadení. Ak máte predplatené médium, vezme si článok presne taký, aký vidíte vy."
+          },
+          {
+            "titulo": "Zaradí sa do poradia",
+            "texto": "A čaká, kým budete mať voľné ruky."
+          }
+        ],
+        "extra_titulo": "Čo ide po sieti",
+        "extra_texto": "Iba návšteva adresy, ktorú ste zdieľali, a urobí ju vaše vlastné zariadenie, rovnako ako by to spravil prehliadač. Server Yappy medzi tým nie je, lebo žiadny server Yappy neexistuje.",
+        "faq": [
+          {
+            "q": "Funguje to s médiami, na ktoré mám predplatné?",
+            "a": "Extrahovanie robí vaše vlastné zariadenie s vaším prihlásením, takže si vezme presne ten článok, ktorý vidíte vo svojom prehliadači. Ak ho viete vy čítať, Yappy vám ho vie prečítať. Medzi tým nestojí žiadny server, ktorý by musel preliezať cez paywall, lebo žiadny server tam nie je."
+          },
+          {
+            "q": "A čo stránky, ktoré sa načítajú iba pomocou JavaScriptu?",
+            "a": "Niektoré sa bránia: ak sa text objaví až potom, čo stránka spustí polovicu svojich knižníc, Yappy môže ostať s prázdnymi rukami. V takých prípadoch je najrýchlejšie označiť text, skopírovať ho a zdieľať ako obyčajný text."
+          },
+          {
+            "q": "Ukladá si históriu toho, čo čítam?",
+            "a": "Iba vo vašom zariadení, aby ste mohli pokračovať tam, kde ste skončili. Nič z toho nikam necestuje a každý dokument má v knižnici vlastné „zabudnúť“."
+          },
+          {
+            "q": "Číta aj ponuky, bannery a komentáre?",
+            "a": "Nie. Stránka sa vyčistí skôr, než sa dostane k čítačke: preč s ponukami, bannermi, pätami, tlačidlami na zdieľanie a poľami na komentáre. Ostane sama próza so svojimi nadpismi a svojím rytmom."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Videá",
+        "title": "Počúvajte video, ako keby to bol článok",
+        "description": "Yappy vezme transkript videa a prečíta vám ho ako článok: bez pozerania sa na obrazovku, rýchlosťou, akú chcete, a bez míňania dát na video.",
+        "h1": "Videá – ako články.",
+        "entradilla": "Polhodina videa je desať minút textu prečítaného dobrým tempom. Yappy si vezme transkript a prečíta vám ho prirodzeným hlasom, takže ho môžete počúvať pri chôdzi a bez zapnutej obrazovky.",
+        "pasos": [
+          {
+            "titulo": "Zdieľajte odkaz",
+            "texto": "Z videoaplikácie alebo z prehliadača, cez ponuku Zdieľať."
+          },
+          {
+            "titulo": "Vezme si slová",
+            "texto": "Yappy vezme zverejnený transkript videa, nie zvuk."
+          },
+          {
+            "titulo": "Počúvaš vlastným tempom",
+            "texto": "Akýkoľvek hlas, akákoľvek rýchlosť. Aj s uzamknutou obrazovkou."
+          }
+        ],
+        "extra_titulo": "Ak video nemá prepis",
+        "extra_texto": "Potom nie je čo čítať: Yappy pracuje s publikovaným textom, neprepisuje zvuk videa. Na iPhone táto funkcia existuje; na Androide ešte nie.",
+        "faq": [
+          {
+            "q": "Prepisuje zvuk videa?",
+            "a": "Nie. Yappy použije prepis, ktorý už pri videu je, a prečíta ti ho ako článok. Je to rýchle, nesťahuje video a telefón sa nezohreje. To ale znamená, že ak video prepis nemá, nie je čo čítať."
+          },
+          {
+            "q": "A čo keď video prepis nemá?",
+            "a": "Vtedy nemá Yappy s odkazom čo robiť. Ak je video tvoje a máš aj súbor, zdieľaj ho ako zvuk: tam už nastúpi lokálne ucho a prepíše ho priamo v zariadení."
+          },
+          {
+            "q": "Funguje to na všetkých videoplatformách?",
+            "a": "Tam, kde je zverejnený a dostupný prepis. Na iPhone táto funkcia je; vo verzii pre Android ešte nie."
+          },
+          {
+            "q": "Spotrebuje to dáta?",
+            "a": "Len málo: stiahne sa text, nie video. Polhodina videa je zopár desiatok kilobajtov prepisu a odtiaľ už všetko robí tvoje zariadenie."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Hlasové poznámky",
+        "title": "Prepis hlasových poznámok na text priamo v telefóne",
+        "description": "Yappy prepisuje nahrávky a hlasové poznámky priamo v tvojom zariadení a nikam ich neodosiela. Potom ti vie prepis aj prečítať.",
+        "h1": "Z hlasu na text a späť.",
+        "entradilla": "Nahraná porada, myšlienka nahovorená v aute, včerajšia prednáška. Yappy ju prepíše priamo v tvojom zariadení pomocou lokálneho ucha a text ti nechá: môžeš si ho prečítať, opraviť alebo si ho znova vypočuť iným hlasom.",
+        "pasos": [
+          {
+            "titulo": "Zdieľaj nahrávku",
+            "texto": "Z Hlasových poznámok, Súborov alebo akejkoľvek aplikácie, ktorá ukladá zvuk."
+          },
+          {
+            "titulo": "Prepíše sa to priamo v zariadení",
+            "texto": "Model beží priamo na tvojom zariadení. Zvuk odtiaľ nikam neodíde."
+          },
+          {
+            "titulo": "Prečítaj si ho alebo vypočuj",
+            "texto": "Zostane ako každý iný dokument: dá sa čítať, zdieľať a znova prečítať nahlas."
+          }
+        ],
+        "extra_titulo": "Ucho sa sťahuje zvlášť",
+        "extra_texto": "Prepis používa iný model než hlas a stiahne sa len vtedy, keď ho použiješ.",
+        "faq": [
+          {
+            "q": "Ktorý model prepisuje?",
+            "a": "Parakeet TDT 0.6B v3 od NVIDIA, licencia CC-BY-4.0, beží vo vašom zariadení. Je to iný model než ten na tvorbu hlasu: jeden počúva, druhý hovorí."
+          },
+          {
+            "q": "Odchádza zvuk z môjho zariadenia?",
+            "a": "Nie. Nahrávka sa prepisuje lokálne, rovnako ako sa lokálne tvorí hlas. Žiadna cloudová služba na prepis, žiadny účet, žiadne odosielanie."
+          },
+          {
+            "q": "V ktorých jazykoch prepisuje?",
+            "a": "Ucho nepozná toľko jazykov ako hlas: prepisuje hlavné európske jazyky, nie tých 31, ktoré Yappy vie čítať. Na čítanie nahlas tých 31; na prevod reči na text len tá kratšia skupina."
+          },
+          {
+            "q": "Treba si niečo stiahnuť navyše?",
+            "a": "Áno: ucho sa stiahne zvlášť, a to len pri prvom prepise. Ak nikdy nič neprepíšete, nikdy nezaberie miesto vo vašom zariadení."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Prevod textu na reč v jazyku {lengua}: prečítajte akýkoľvek text nahlas",
+    "description": "Počúvajte PDF, EPUB, Word a články v jazyku {lengua} prirodzeným hlasom, priamo vo vašom zariadení a bez pripojenia. Desať hlasov, zadarmo a bez účtu.",
+    "h1": "Prevod textu na reč v jazyku {lengua}.",
+    "entradilla": "Desať hlasov číta texty v jazyku {lengua} podľa jeho vlastných pravidiel: jeho čísla, dátumy, radové číslovky a skratky – nie tie z iného jazyka s požičaným prízvukom.",
+    "muestra": "Ukážka",
+    "reglas_titulo": "Čo modul výslovnosti vie o jazyku {lengua}",
+    "todas": "Ostatných tridsať jazykov"
+  },
+  "vs": {
+    "titulo": "Yappy verzus {nombre} v skratke",
+    "caracteristica": "Čo",
+    "gratis": "Čo môžete robiť zadarmo",
+    "precio": "Cena od",
+    "local": "Hlas vzniká vo vašom zariadení",
+    "sin_cuenta": "Bez účtu ani e-mailu",
+    "sin_conexion": "Funguje bez pripojenia",
+    "codigo_abierto": "Otvorený kód",
+    "tarifa": "Tarifa za znak alebo za hodiny",
+    "idiomas": "Jazyky",
+    "formatos": "Formáty, ktoré číta",
+    "audiolibro": "Audiokniha s kapitolami",
+    "escritorio": "Počítač",
+    "yappy_gratis": "Neobmedzené počúvanie; tri dokumenty naraz",
+    "yappy_precio": "0 €; predplatné od 3,99 € mesačne",
+    "gana_en": "Kde {nombre} vyhráva",
+    "verificado": "Verejné údaje skontrolované {fecha} na webe každého produktu.",
+    "sin_verificar": "Ceny sa často menia. Skontroluj si ich pred rozhodnutím.",
+    "ver_web": "Oficiálny web",
+    "frente_a": "Oproti {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Časté otázky"
+  }
+}

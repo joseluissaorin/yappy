@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "hu",
+    "nombre": "Magyar",
+    "dir": "ltr",
+    "ogLocale": "hu_HU",
+    "hreflang": "hu",
+    "og_alt": "„Bármilyen szöveg, hangosan” felirat nagy betűkkel krémszínű papíron, mellette egy korallszínű papagáj"
+  },
+  "slugs": {
+    "uso": "hasznalat",
+    "guionizador": "szovegiras",
+    "descargas": "letoltesek",
+    "precios": "arak",
+    "voces": "hangok",
+    "preguntas": "gyik",
+    "privacidad": "adatvedelem",
+    "accesibilidad": "akadalymentesseg",
+    "cuentos": "mesek",
+    "blog": "blog",
+    "convertir": "konvertalas",
+    "idiomas": "nyelvek",
+    "alternativas": "alternativak",
+    "formato_pdf": "pdf-hanggá",
+    "formato_epub": "epub-hangoskonyv",
+    "formato_word": "word-hang",
+    "formato_articulos": "cikkek-hang",
+    "formato_videos": "videok-hang",
+    "formato_notas": "hangjegyzet-szoveg"
+  },
+  "comunes": {
+    "saltar": "Ugrás a tartalomra",
+    "marca_aria": "Yappy, kezdőlap",
+    "idioma": "Nyelv",
+    "menu": "Menü megnyitása",
+    "secciones": "Részek",
+    "descargar": "Letöltés",
+    "descargar_gratis": "Ingyenes letöltés",
+    "en_app_store": "Letöltés az App Store-ból",
+    "escuchar_muestra": "Minta meghallgatása",
+    "probar": "Kipróbálom most",
+    "leer_mas": "Tovább olvasom",
+    "volver": "Vissza",
+    "inicio": "Kezdőlap",
+    "minutos": "{n} perces olvasás",
+    "publicado": "Megjelent:",
+    "actualizado": "frissítve:",
+    "por": "Írta:",
+    "gratis": "ingyen",
+    "si": "Igen",
+    "no": "Nem",
+    "parcial": "Részben",
+    "sin_datos": "nincs adat"
+  },
+  "nav": {
+    "uso": "Használat",
+    "guionizador": "A szövegkönyvíró",
+    "voces": "A hangok",
+    "precios": "Árak",
+    "descargas": "Letöltések",
+    "preguntas": "Kérdések",
+    "privacidad": "Adatvédelem",
+    "accesibilidad": "Akadálymentesítés",
+    "cuentos": "Mesék",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "A termék",
+    "leer": "Olvasnivaló",
+    "casa": "A műhely",
+    "codigo": "A kód",
+    "licencia": "MIT-licenc",
+    "novedades": "Újdonságok",
+    "firma": "Yappy · kézzel készült Tenerifén, alkotója: <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · nyílt forráskód (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · szövegfelolvasó: PDF, EPUB és cikkek hangos felolvasása",
+    "description": "Bármilyen szöveget természetes hangú beszéddé alakít: PDF, EPUB, Word, cikkek és videók, 31 nyelven. Minden a telefonodon vagy a számítógépeden zajlik: nincs felhő, nincs fiók, nincs karakterenkénti díj. Ingyenes és nyílt forráskódú.",
+    "susurro": "szövegfelolvasó · 31 nyelv · felhő nélkül · nyílt forráskód",
+    "titular_1": "Bármilyen",
+    "titular_texto": "szöveget",
+    "titular_2": " felolvas",
+    "titular_voz": "hangosan",
+    "titular_3": ".",
+    "entradilla": "Ossz meg egy cikket, egy PDF-fájlt, egy EPUB-fájlt, egy Word-dokumentumot vagy egy videót, és egy papagáj természetes hangon felolvassa neked, amíg főzöl, sétálsz vagy lehunyod a szemed. A modell teljes egészében a készülékeden fut: semmi nem jut ki belőle, soha.",
+    "nota_acciones": "ingyenes · fiók nélkül · karakterenkénti díj nélkül",
+    "pegatina_sin_nube": "felhő\nnélkül",
+    "pegatina_idiomas": "31\nnyelv",
+    "pegatina_gratis": "ingyen",
+    "pegatina_offline": "offline",
+    "demo_susurro": "Nyomd meg, és hallgasd: ezt ugyanaz a motor mondta, amelyik a zsebedben lapul.",
+    "demo_titulo": "Így hangzik.",
+    "demo_nota": "A kiemelt részeket a normalizáló mondja ki: a „1492” szóban „ezernégyszázkilencvenkettő”, a „15. század” pedig „tizenötödik század” – mindezt az adott nyelv szabályai szerint.",
+    "momentos_susurro": "mire való",
+    "momentos_titulo": "Három pillanat, egy mozdulat.",
+    "momentos": [
+      {
+        "titulo": "Főzés közben",
+        "texto": "Megosztod a cikket, leteszed a telefont, és a hang tovább olvas a tűzhely mellett."
+      },
+      {
+        "titulo": "Séta közben",
+        "texto": "A tegnap esti könyv hangoskönyvvé alakult, fejezetekkel, és elkísér az úton – felfelé is."
+      },
+      {
+        "titulo": "Éjjel dolgozik",
+        "texto": "Lefekvés előtt elindítod a renderelést; mire felébredsz, a hangoskönyv ott van a zsebedben."
+      }
+    ],
+    "porque_susurro": "miért létezik",
+    "porque_titulo": "Nincs felhő, nincs fiók, nincs karakterenkénti díj.",
+    "porque_entradilla": "A többi szövegfelolvasó alkalmazás a szervernek küldi, amit olvasol, és karakterenként vagy hallgatási órák után fizettet. A Yappynak nincs fenntartandó szervere, így a hallgatásért nincs mit felszámolnia.",
+    "porque": [
+      {
+        "titulo": "Semmi nem hagyja el a készüléked",
+        "texto": "A hang a telefonodon vagy a számítógépeden készül, nyílt modellel. Offline is működik: örökre."
+      },
+      {
+        "titulo": "31 igazi nyelv",
+        "texto": "Tíz hang, mindegyik poliglott. Ha a szöveg más nyelvű idézetet tartalmaz, magától vált nyelvet, bekezdésről bekezdésre."
+      },
+      {
+        "titulo": "Nincs óraszám, nincs karakterszám",
+        "texto": "Hallgatod, amit akarsz, ameddig akarod. Nincs számláló, mert nincs számla, amit el kellene osztani."
+      },
+      {
+        "titulo": "Nyílt forráskód (MIT)",
+        "texto": "A motor, a forgatókönyvkészítő, az app és maga ez a weboldal is közzé van téve. Elolvashatod, lefordíthatod, ellenőrizheted."
+      }
+    ],
+    "formatos_susurro": "a megosztás az ajtó",
+    "formatos_titulo": "Amit csak éppen olvasol.",
+    "formatos_entradilla": "Safariból, a Levelezésből, a Fájlokból vagy bármelyik appból: koppints a Megosztásra, és válaszd a Yappyt. Az oldal magától megtisztul – a menük, a bannerek és a láblécek kint maradnak –, és csak a próza marad, a címeivel, a ritmusával.",
+    "guion_susurro": "amit más senki sem mutat meg",
+    "guion_titulo": "Úgy olvas, mint egy ember, nem mint egy gép.",
+    "guion_entradilla": "A felolvasás nem betűzés: értelmezés. Az „1492” szóban „ezer-négyszázkilencvenkettő”; a „VIII. Henrik” inkább „nyolcadik Henrik”, de a „Louis XIV” franciául „Louis quatorze”; az „EL CID” nem római szám; az FBI-t betűzzük, a NASA-t nem. Mielőtt egyetlen szótagot is szintetizálna, a Yappy <strong>felolvasási forgatókönyvvé</strong> alakítja a szöveget: ez a partitúra annak, amit a hang valóban kimond.",
+    "guion_pruebalo": "Próbáld ki itt: ugyanaz a Rust fut benne, mint az appban, a böngésződre fordítva.",
+    "guion_boton": "Forgatókönyvkészítés",
+    "guion_ejemplo": "A 19. század 1900-ban ért véget. XIV. Lajos 72 évig uralkodott, 3,50 €-t költött fagyira, és ezt az FBI sosem tudta meg.",
+    "guion_marcador": "Írj valamit számokkal, rövidítésekkel, dátumokkal vagy évszázadokkal…",
+    "guion_espera": "Itt jelenik meg a forgatókönyv, az átalakított részek aláhúzva.",
+    "guion_fallo": "A forgatókönyvkészítőt ebben a böngészőben nem sikerült betölteni. Az appban viszont benne van.",
+    "guion_mas": "Így működik a forgatókönyvkészítő",
+    "capturas_susurro": "így néz ki, retus nélkül",
+    "capturas_titulo": "Képernyőképek az igazi appról.",
+    "capturas_entradilla": "Semmi kifestett makett: ez itt a Yappy futás közben, igazi szövegekkel a rúdon, és a felolvasó a kész forgatókönyvével.",
+    "precio_susurro": "a pénz, egyenesen",
+    "precio_titulo": "Tényleg ingyenes, és egy felhúzós papagáj.",
+    "precio_entradilla": "A próbapapagáj három dokumentumot tart egyszerre a rúdon, és időkorlát nélkül felolvassa őket. Kiveszel egyet, jöhet a következő. Ha olyan rudat akarsz, aminek nincs alja, hangoskönyv-nyomdát és hidat a számítógépedhez, felhúzod.",
+    "cierre_titulo": "Egy papagáj, a zsebedben.",
+    "cierre_texto": "Ingyenes, fiók nélkül, és nincs mit regisztrálni. Telepíted, megosztasz egy szöveget, és már szól is."
+  },
+  "uso": {
+    "title": "Így használod a Yappyt: megosztás, hallgatás, ennyi",
+    "description": "A teljes útmutató: megosztás iPhone-ról, gyorsbillentyűk a számítógépen, QR-híd a telefonod és a Macked között, fejezetes hangoskönyvek, Siri, widgetek és beállítások.",
+    "h1": "Megosztod, és szól.",
+    "entradilla": "A Yappy tud egyet: megosztani. A többi csak részlet, és már a helyén van.",
+    "pasos": [
+      {
+        "titulo": "Osszd meg",
+        "texto": "Bármelyik alkalmazásból: Safari, Levelezés, Fájlok, egy hangjegyzet, a chaten kapott PDF. Megnyomod a Megosztást, kiválasztod a Yappy-t, és az app magától megnyílik."
+      },
+      {
+        "titulo": "Válassz hangot",
+        "texto": "Tíz hang, és mindegyik több nyelven beszél. Ha a szöveg más nyelven íródott, a Yappy magától felismeri, és annak a nyelvnek a szabályai szerint olvassa fel – nem kölcsönzött akcentussal."
+      },
+      {
+        "titulo": "Hallgasd",
+        "texto": "Zárolod a kijelzőt, és elteszed a telefont. A hang megy tovább: a zárolt képernyőn ott a borító, a cím és a vezérlők, a fülhallgató pedig parancsol."
+      },
+      {
+        "titulo": "Mentsd el",
+        "texto": "Ha a holnapi sétádra tartod, a nyomda .m4b audiokönyvet ad ki belőle, fejezetekkel együtt, és bármelyik lejátszó megnyitja."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "iPhone-on és iPaden",
+        "texto": "A megosztás az egész kézikönyv. Bármelyik alkalmazásban megnyomod a Megosztást, és kiválasztod a Yappy-t: elfogad linkeket, sima szöveget, PDF-et, EPUB-ot, Wordöt, ODT-t és hangot. A Yappy magától, azonnal megnyílik. Semmi nem fő a megosztópanelben, mert az iOS 120 MB-nál megvágja a bővítményeket. A Yappy átmásolja, amit kaptál, és átugrik az appba, ahol nincs korlát. Az átugrás a tervezés része, nem foltozat. <strong>Minden a készüléken zajlik</strong>: a Yappy egyetlen hálózati lépése a megosztott cím felkeresése, és azt is a saját telefonod végzi.",
+        "puntos": [
+          "A sor készül, miközben nézed: a cikk megtisztul, a videó hozza magával az átiratát, a PDF lapokra rendeződik. Ha az app marad elöl, a felolvasás magától indul, amint minden kész.",
+          "A karaoke kivilágítja, ami épp megszólal, mondatról mondatra. Bárhol megérinted a képernyőt, megáll. Húzással ugrasz bekezdést, a szélén pedig állítod a sebességet.",
+          "Zárolod a kijelzőt, és a hang tovább szól. Az AirPodsról szüneteltetsz és folytatsz, a rendszer pedig rendes lejátszóként kezeli.",
+          "A fogas egyszerre három dokumentumot tart: leveszel egyet, és jöhet a következő. A ház saját meséi úgysem foglalnak helyet."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Macon, Windowson és Linuxon",
+        "texto": "Egy billentyűparancs, és megszólal, amit épp nézel: a kijelölés, a böngésző oldala vagy az aktív dokumentum. A három parancs a Beállításokban cserélhető, és akkor is működik, ha az app a tálcán rejtőzik. A parancsokon túl az asztali változatban ott minden, ami egy kézbe nem fér.",
+        "puntos": [
+          "<strong>A könyvtár.</strong> Amit megnyitsz vagy megosztasz, borítóként sorakozik, az állapotával együtt. Pontosan ott folytatod, ahol hagytad: ugyanannál a bekezdésnél.",
+          "<strong>A bekezdésenkénti szerkesztő.</strong> Minden bekezdés kaphat saját hangot, saját sebességet és saját szünetet. Párbeszédekhez, idézetekhez, kétnyelvű dokumentumokhoz.",
+          "<strong>Helyi átirat.</strong> Húzz be egy hangjegyzetet vagy felvételt, és a gépben lapuló fül olvasható szöveggé alakítja – semmit nem tölt fel sehová.",
+          "<strong>Audiokönyv-mentés.</strong> Bármelyik dokumentum valódi .m4b-ként jön ki, navigálható fejezetekkel, amelyek a szövegből vannak kirakva. .wav-ként vagy .mp3-ként is kiadható.",
+          "<strong>PDF szemekkel.</strong> A szkennelt PDF-eken helyi OCR néz végig, mielőtt felolvasnák őket. A digitálisan születetteket egyből olvassa, oldalról oldalra.",
+          "<strong>Témák.</strong> Nappal krémszínű papír, éjjel világos betű sötét háttéren, vagy dönt a rendszer.",
+          "<strong>Póráz nélkül.</strong> Asztali gépen minden nyitva van: a nyomda, a feneketlen papagájrúd és a híd gyárilag benne van."
+        ]
+      },
+      {
+        "id": "puente",
+        "titulo": "A híd: a géped renderel, a telefonod hallgatja",
+        "texto": "Egy egész könyv eltart, mire elkészül. A híd a nehéz munkát átdobja a gépednek, és a kész hangoskönyvet visszateszi a zsebedbe: a két készülék között közvetlen, végponttól végpontig titkosított kapcsolaton, középen senki szervere nélkül.",
+        "puntos": [
+          "Gépen: Beállítások, „Híd”. A Yappy QR-kódot mutat, a géped titkosított címével és egy meghívókulccsal.",
+          "Az iPhone kameráját a QR-kódra irányítod, és összepárosodnak. A kulcs elmentődik, a gépről bármikor visszavonhatod.",
+          "Mobilon az „Átalakítás a gépen” pont: kiválasztod a dokumentumot, a gép a maga tempójában szintetizálja, és a .m4b megjelenik a telefon könyvtárában, fejezetekkel együtt. Az éjszaka a reggeli sétádra dolgozik.",
+          "A híd QUIC-ot használ titkosításhoz, az <a href=\"https://iroh.computer\">iroh</a> protokolljára építve. Ha kell egy relé, hogy a két készülék egymásra találjon, a relé csak titkosított forgalmat lát, amit nem tud elolvasni."
+        ]
+      },
+      {
+        "id": "audiolibros",
+        "titulo": "Hangoskönyvek: .m4b igazi fejezetekkel",
+        "texto": "A Yappy nem „egy hosszú hangot” exportál: valódi .m4b hangoskönyveket exportál, olyanokat, mint az üzleteké, fejezetekkel a dokumentum valódi címsoraiból, borítóval és folytatással. A Yappyban hallgathatod őket, a saját könyvtárával és előrehaladásával, vagy bármelyik hangoskönyv-lejátszóban, amit amúgy is használsz. És a dramaturg adja meg a légzésüket: szünet a címek után, listatempó a listáknál.",
+        "puntos": [
+          "Mobilon a könyvtárból rendelhetők meg, fejezetről fejezetre: kiválasztod, melyeket nyomtassa ki és melyik hangon.",
+          "A papagáj akkor is nyomtat tovább, ha bezárod az appot, vagy ha lezárod a telefont.",
+          "A könyvtárból megosztod a Fájlokba, a Könyvekbe vagy oda, ahová csak akarod: a fájl a tiéd.",
+          "A nyomda az iPhone-on és az iPaden a Yappy Parlanchín része. A gépen alapból nyitva van."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, parancsok és a Művelet gomb",
+        "texto": "„Siri, olvasd fel a vágólapomat a Yappy-val.” Az app valódi App Intents funkciókat kínál: maguktól megjelennek a Parancsok appban, válaszolnak a Sirinek, és az iPhone Művelet gombjára akaszthatók. Nincs összeraknivaló.",
+        "puntos": [
+          "<strong>Olvasd fel a vágólapomat.</strong> Bárhol másolsz, megkéred a Sirit, és megszólal.",
+          "<strong>Folytasd a felolvasást.</strong> Ami utoljára szólt, pontosan onnan megy tovább, ahol abbamaradt.",
+          "<strong>Egy link meghallgatása.</strong> Címet fogad paraméterként: a saját parancsaid tökéletes utolsó lépése.",
+          "Kézi automatizálásokhoz a <code>yappy://</code> séma is működik: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> és <code>yappy://pair?d=…</code>.",
+          "És van widget a kezdőképernyőre is: az utoljára szólót mutatja, egyetlen koppintással folytatható."
+        ]
+      },
+      {
+        "id": "ajustes",
+        "titulo": "Beállítások: kevés tekerőgomb, de mindegyik valódi",
+        "texto": "A Yappy nem kínál száz kapcsolót. Azt a pár kapcsolót, amelyik tényleg megváltoztatja, hogyan szól.",
+        "puntos": [
+          "<strong>A hang.</strong> Tíz hang, mindegyik többnyelvű: ugyanaz a hang olvas spanyolul, angolul vagy japánul, anélkül, hogy a hangszíne változna.",
+          "<strong>A sebesség.</strong> 0,5×-től 2×-ig. A hang ennél a sebességnél készül, nem gyorsítjuk fel utána: a hangmagasság nem torzul.",
+          "<strong>A szünetek.</strong> Mennyi levegő marad a bekezdések között. A címek és a listák ritmusát a szkriptkészítő adja.",
+          "<strong>A nyelv.</strong> Automatikus felismerés dokumentumonként és bekezdésenként, vagy kézi beállítás. Az idegen nyelvű idézetek maguktól átváltanak.",
+          "<strong>Névtelen statisztika.</strong> Mobilon bekapcsolva érkezik, és itt, a kulisszák mögött lehet kikapcsolni. Pontosan mit küld el, azt pontról pontra az adatvédelmi tájékoztató sorolja fel."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "En Android",
+        "texto": "Ugyanaz a mozdulat: megosztasz egy hivatkozást, egy szöveget vagy egy dokumentumot, és az ugyanabba a sorba kerül – a cikk kinyerésével, a karaokéval és a hanggal, minden magán a telefonon belül. Az Android-verzió a család legfiatalabb tagja, és még három dolog hiányzik belőle, amit az iPhone tud: a vezérlők a zárolási képernyőn, a videók és a .m4b hangoskönyv-lejátszó. És van fontosabb is: <strong>egyelőre nincs közzétéve</strong>. A Google fejlesztői fiókja még ellenőrzés alatt áll, dátumot nem adunk, mert nincs. Amikor megjelenik, itt és a repóban jelentjük be. Viszont: az Androidon nem lesz csavar. Minden nyitva van."
+      }
+    ],
+    "atajo": "Atajo",
+    "atajo_leer": "Leer lo que miras",
+    "atajo_portapapeles": "Vágólap felolvasása",
+    "atajo_pausar": "Pausar",
+    "cierre": "A kézikönyv ennyi."
+  },
+  "guionizador": {
+    "title": "A Yappy forgatókönyvírója: az írottól a kimondottig",
+    "description": "Hogyan alakítja a Yappy a „1492”, a „15. század”, a „3,50 €” vagy az „FBI” jelöléseit kimondott szavakká, minden nyelv saját szabályai szerint, 31 nyelven. Élő demóval: ugyanaz a Rust, mint az appban, WebAssemblyre fordítva.",
+    "h1": "Az írottól a kimondottig.",
+    "oficios_titulo": "Tizenkét mesterség egy menetben.",
+    "oficios": [
+      {
+        "titulo": "Fechas",
+        "texto": "A „24/5/1533” teljes egészében elhangzik, minden nyelv saját sorrendjében és nyelvtani nemében."
+      },
+      {
+        "titulo": "Horas",
+        "texto": "A „14:05” úgy hangzik, ahogy egy ember mondaná, nem úgy, ahogy egy óra olvasná."
+      },
+      {
+        "titulo": "Monedas",
+        "texto": "A „3,50 €” így hangzik: „három euró ötven”, a kellő többes számmal."
+      },
+      {
+        "titulo": "Porcentajes",
+        "texto": "A „7%” kiejtve „hét százalék” – a „0,5%” pedig nem „nulla egész nulla öt” lesz."
+      },
+      {
+        "titulo": "Mértékegységek",
+        "texto": "A „230 °C” kiejtve „kétszázharminc Celsius-fok”."
+      },
+      {
+        "titulo": "Sorszámnevek",
+        "texto": "A „3.” kimondva „harmadik” – a maga nemével és ragozásával, ott, ahol a nyelv ismer ilyet."
+      },
+      {
+        "titulo": "Római számok, józan ésszel",
+        "texto": "A spanyol „siglo XX” tőszámnév, a „VIII. Henrik” sorszámnév, az „EL CID” pedig nem szám."
+      },
+      {
+        "titulo": "Betűszók a fonotaktika szerint",
+        "texto": "Az FBI-t betűzzük, a NASA-t pedig kimondjuk, mint egy szót. A szabályt az dönti el, hogyan hangzik – nem egy lista."
+      },
+      {
+        "titulo": "Rövidítések",
+        "texto": "„stb.”, „old.”, „XIX. sz.”: minden nyelvnek megvan a maga táblája."
+      },
+      {
+        "titulo": "Nagy számok",
+        "texto": "A Unicode CLDR RBNF-nyelvtanaival, nemmel és ragozással együtt."
+      },
+      {
+        "titulo": "31 nyelv",
+        "texto": "Ugyanazok a szabályok, mindegyik nyelv a saját nyelvtanával. Kézzel írt listák nélkül."
+      },
+      {
+        "titulo": "A ritmus",
+        "texto": "A címek kimondásuk után megpihennek; a felsorolások ütemet tartanak. A szünet a forgatókönyv része, nem a véletlen műve."
+      }
+    ],
+    "cierre": "A forgatókönyv a történet fele; a másik felét hallani.",
+    "faq": [
+      {
+        "q": "Mik azok az RBNF-nyelvtanok?",
+        "a": "Az RBNF a <em>Rule-Based Number Format</em> rövidítése: azok a szabályok, amelyekkel a Unicode CLDR leírja, hogyan hangzik el egy szám az egyes nyelvekben. Nem ezer szavas tábla, hanem nyelvtan: ezért tudja, hogy spanyolul „doscientas páginas” és nem „doscientos páginas”; hogy az orosz ragozza a számneveket; és hogy a francia kilencvenig húszasával számol. A Yappy tisztán Rustban értelmezi őket, kézzel írt listák nélkül."
+      },
+      {
+        "q": "Miért kell hozzá forgatókönyvíró? Nem megoldja ezt egyedül a hang?",
+        "a": "Nem, és ez szándékos. A Yappy hangmodellje karakterenként dolgozik: pontosan azt mondja ki, ami szövegként hozzáérkezik. Ez gyorssá és könnyűvé teszi – viszont ha „1492” érkezik, megpróbálja éppen azt kimondani, betűnként. Egy ilyen modellnél a normalizálás <em>maga</em> a kiejtés. A forgatókönyvíró az az alkatrész, amely minden számot, betűszót és jelet olyan szavakká alakít, amelyeket egy ember kimondana."
+      },
+      {
+        "q": "Hány nyelven működik?",
+        "a": "Mind a 31 nyelven, amelyet a hang beszél, és mindegyik a maga szabályaival él: a dátumok sorrendje, a pénzösszegek kötőszava, a sorszámnevek, a rövidítések és a római számok. A XV. század spanyolul „siglo quince”, angolul „fifteenth century”; a „Louis XIV” pedig „Louis quatorze”, és nem „Louis fourteenth”. Ugyanaz a tizenkét feladat, harmincegy nyelvtan."
+      },
+      {
+        "q": "Miért esik a karaoke mindig pontosan a kimondott szóra?",
+        "a": "Mert a szkript nemcsak az átalakított szöveg: őrzi a leírt és a kimondott alak közti hozzárendelést. Amikor a hang kimondja, hogy „ezernégyszázkilencvenkettő”, a szkript tudja, hogy ez az egy hosszú szó a „1492” négy számjegyéből jön, és az aláhúzás mozdulás nélkül ül a helyén. Ez a különbség aközött, hogy megvilágítod a szöveget, vagy találgatod."
+      },
+      {
+        "q": "Egy szót rosszul ejt. Kijavíthatom?",
+        "a": "Felhasználói kiejtési szótár egyelőre nincs. Mivel a modell karakterenként olvas, a leggyorsabb megoldás, ha a szerkesztőben úgy írod le a szót, ahogy hangzik, és meghallgatod újra. Ha pedig nem egy konkrét szó, hanem általános minta hibás (egy rövidítés, mozaikszó, mértékegység), számolj be róla a <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub issue-kban</a>: a szkriptkészítő táblái ilyen esetekből bővülnek."
+      },
+      {
+        "q": "Ugyanaz a szkriptkészítő fut ezen az oldalon, mint az appban?",
+        "a": "Ugyanaz a kód, WebAssembly-re fordítva, hogy a böngésződben fusson. Amit ide írsz, nem hagyja el a lapfüledet. És mivel az egész projekt nyílt, a szabályokat egyesével elolvashatod <a href=\"https://github.com/joseluissaorin/yappy\">a repóban</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Yappy letöltése: iPhone, iPad, Mac, Windows és Linux",
+    "description": "A Yappy ingyenes és nyílt forráskódú. App Store-ból iPhone-ra és iPadra. Az asztali változat forráskódból fordítható, vagy letölthető a GitHubról. Követelmények és a hangmodell mérete.",
+    "h1": "Ingyenes, nyílt és a tiéd.",
+    "entradilla": "Nincs regisztráció, nincs e-mail-cím, nincs lejáró próbaverzió. Letöltöd, és kész.",
+    "modelo_nota": "Első használatkor a Yappy letölti a hangmodellt ({peso}). iPhone-on a telepítés része; számítógépen az app első megnyitásakor jön le. Utána már nincs szükség internetkapcsolatra.",
+    "android_titulo": "Android",
+    "android_texto": "Lefordítva és működik, de még nincs közzétéve: a Google fejlesztői fiókja továbbra is hitelesítés alatt áll. Amint megjelenik, itt és a repóban bejelentjük.",
+    "escritorio_aviso": "Az asztali binárisok a GitHubon jelennek meg. Ha az ott található verzió régebbi, mint az iPhone-é, akkor a legfrissebb még nincs feltöltve: a kód viszont naprakész, és <code>cargo tauri build</code> paranccsal fordítható.",
+    "plataformas": [
+      {
+        "nombre": "iPhone és iPad",
+        "texto": "Az App Store-ból, ingyen és fiók nélkül. A hangok magával a telepítéssel jönnek le, így megnyitod, megosztasz egy szöveget, és már szól is. Ez a legteljesebb változat: hangoskönyvek, Siri, widget, átjáró és vezérlők a zárolási képernyőn.",
+        "requisitos": "iOS vagy iPadOS 17-től · a hangmodell nagyjából 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Letöltés az App Store-ból"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon és Intel, notarizált .dmg-ben. Benne a három globális gyorsbillentyű, a bekezdésenkénti szerkesztő, a szkennelt PDF-ek OCR-je és a hangoskönyv-exportálás. Itt nincs madzag: minden nyitva van.",
+        "requisitos": "macOS 12-től · a hangmodell nagyjából 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Kiadások megtekintése a GitHubon"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "Telepítő .exe vagy .msi x64-re, a Mac-változattal megegyező gyorsbillentyűkkel és funkciókkal. Az utóbbi évek bármelyik laptopja valós időnél gyorsabban szintetizál.",
+        "requisitos": "Windows 10 vagy újabb, x64 · kb. 398 MB-os hangmodell",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "A kiadások megtekintése a GitHubon"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage és .deb x64-re. A globális gyorsbillentyűk az asztali környezettől függenek; ha a tiéid már foglaltak, a Beállításokban másra cserélheted őket.",
+        "requisitos": "x64 · kb. 398 MB-os hangmodell",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "A kiadások megtekintése a GitHubon"
+      },
+      {
+        "nombre": "Forráskódból",
+        "texto": "A teljes projekt nyilvános: az asztali és a mobilos alkalmazás (Tauri, Rust és Svelte), a szintézismotor, a szkriptkészítő a becsomagolt CLDR-nyelvtanokkal, és ez a web is. Ha a Rust és a Node fent van, a <code>cargo tauri build</code> elkészíti a saját példányodat. Ha a közzétett binárisok le vannak maradva az iPhone-verzióhoz képest, ez a gyors út: a kód mindig naprakész.",
+        "requisitos": "Rust és Node · a teljes leírás a README-ben",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "A kód megtekintése a GitHubon"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Yappy árak: örökre ingyen, karakterenkénti díj nélkül",
+    "description": "A Yappy ingyenes, a hallgatásnak nincs korlátja: három dokumentum egyszerre a fogason. A Yappy Parlanchín végtelen fogast, hangoskönyv-nyomdát és a hidat adja hozzá, havonta 3,99 €-tól vagy egyszeri áron 59,99 €-ért.",
+    "h1": "A pénz, egyenesen.",
+    "entradilla": "Amit az ember olvas, azt hallani is akadálymentesítés kérdése, az akadálymentesítésnek pedig nem kellene bankkártyát kérnie. Ezért az a rész, ami számít, ingyenes, és nincs rajta számláló.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "örökre",
+    "gratis_puntos": [
+      "Hallgatás perckorlát és karakterszám-korlát nélkül",
+      "A 31 nyelv és a tíz hang",
+      "PDF, EPUB, Word, cikkek, videók és hangjegyzetek",
+      "Három dokumentum egyszerre a fogason: kiveszel egyet, és befér egy másik",
+      "Nincs fiók, nincs e-mail, nincs hirdetés",
+      "Nyílt forráskód, MIT-licenccel"
+    ],
+    "gratis_no": [
+      "Nincs nyomda: nincs hangoskönyv",
+      "Nincs híd a géphez"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "havonta",
+    "cuerda_periodo_anio": "évente",
+    "cuerda_periodo_vida": "csak egyszer",
+    "cuerda_puntos": [
+      "Minden, ami fentebb",
+      "Feneketlen fogas: annyi dokumentum, amennyit csak akarsz",
+      "A nyomda: egész könyvekből hangoskönyv, fejezetekkel",
+      "A híd: a géped átalakítja, és magától visszaadja",
+      "Bármikor lemondható"
+    ],
+    "cuerda_nota": "Nincs ingyenes próba, és ez szándékos: a háromdokumentumos fogas <em>maga</em> a próba, nem jár le, és később nem indít számlázást. Az árak spanyolországiak; a boltodban a te pénznemedben jelennek meg.",
+    "cuerda_donde": "A zsinór az alkalmazáson belül vehető meg, a bolt hátsó szobájában.",
+    "solo_ios": "Számítógépen és Androidon minden nyitott: a zsinór csak iPhone-on és iPaden létezik.",
+    "comparacion_titulo": "Amit a többiek kérnek.",
+    "comparacion_entradilla": "A felhőben dolgozó felolvasóalkalmazások minden lejátszásnál szervert fizetnek, ezért órában vagy karakterben számláznak. A Yappy a készülékeden szintetizál: egy meghallgatásnak nulla a költsége, ezért engedheti meg, hogy ne kérjen érte pénzt.",
+    "comparacion_nota": "A nyilvános árakat 2026 szeptemberében néztük meg. Gyakran változnak: döntés előtt ellenőrizd őket az egyes oldalakon.",
+    "faq": [
+      {
+        "q": "Miért ingyenes?",
+        "a": "Mert nincs szerver, amit fizetni kellene. A hang a készülékeden születik, így a hallgatás senkinek sem kerül pénzbe, és nincs számla, amit elosztani kellene. A felhős alkalmazások minden lejátszásnál gépet bérelnek, ezért kérnek pénzt karakterenként vagy óránként. A Yappy nem kérhet pénzt olyanért, ami neki semmibe sem kerül."
+      },
+      {
+        "q": "Mi van, ha sosem fizetek?",
+        "a": "Semmi. A Yappy örökre működik tovább, a tíz hanggal, a 31 nyelvvel és az összes formátummal, hirdetés, fiók, percszámláló nélkül. Az egyetlen változás, hogy iPhone-on és iPaden a fogas egyszerre három dokumentumot tart: kiveszel egyet, és jöhet helyette egy másik. A számítógépen még ennyi sem."
+      },
+      {
+        "q": "Van ingyenes próba?",
+        "a": "Nem, és ez döntés, nem feledékenység. A háromdokumentumos fogas <em>maga</em> a próba: nem jár le, nem kér bankkártyát, és a nyolcadik napon nem kezd el számlázni. Senki ne ébredjen olyan terhelésre, amelyről nem emlékszik, hogy elfogadta volna."
+      },
+      {
+        "q": "Bármikor lemondhatom?",
+        "a": "Igen, az Apple-fiókodból, mint bármely más előfizetés. Minden időszak végén magától megújul, hacsak nem mondod le legalább 24 órával korábban. Az élethosszig szóló vásárlás sosem újul meg: egyszer kifizeted, kész. És ha lemondod, az ingyenesből semmit nem veszítesz: visszakerülsz a három dokumentumos ülőkára."
+      },
+      {
+        "q": "Miért ingyenes a számítógépen és Androidon?",
+        "a": "Mert a felhúzómechanizmus csak az iPhone-ba és az iPadbe van beépítve. Az asztali gépen – és az Android-változatban is, ha egyszer megjelenik – a nyomda, a feneketlen ülőka és a híd nyitva van. Ez nem bemutatkozó akció: ott egyszerűen nincs mit felszámolni."
+      }
+    ],
+    "una_a_una": "egyenként, a saját adataikkal"
+  },
+  "voces": {
+    "title": "A Yappy hangjai: tíz soknyelvű madár 31 nyelven",
+    "description": "Tíz természetes hang beszéli mind a 31 nyelvet, hangszínváltás nélkül. Hallgass meg mindegyiktől egy mintát, és válaszd ki a tiédet: a választott hang az egész appot átszínezi.",
+    "h1": "Tíz madár, harmincegy nyelv.",
+    "entradilla": "Mind többnyelvű: ugyanaz a hang spanyolul, angolul vagy japánul olvas, hangszínváltás nélkül. És ha a szövegben más nyelvű idézet áll, magától átvált arra a nyelvre, bekezdésről bekezdésre.",
+    "elige": "Érints meg egy madarat, és megtudod, hogyan szól.",
+    "idiomas_titulo": "A nyelvek, amelyeket beszél.",
+    "idiomas_entradilla": "Harmincegy, mindegyikhez a saját kiejtési szabályai: nem ugyanaz a hang olvas idegen akcentussal, hanem minden nyelv a maga szabályai szerint szólal meg."
+  },
+  "preguntas": {
+    "title": "Kérdések a Yappyról: adatvédelem, nyelvek, árak és licencek",
+    "description": "Egyenes válaszok arra, mi ingyenes, mi nyúl a hálózathoz, milyen modelleket használ a Yappy, milyen formátumokat fogad el, és mit érdemes tenni, ha valami nem működik.",
+    "h1": "Kérdések, amelyek érkeznek.",
+    "entradilla": "Egyenesen megválaszolva, kertelés nélkül.",
+    "grupos": [
+      {
+        "susurro": "a pénz és a szabadság",
+        "titulo": "Ingyen, komolyan.",
+        "lista": [
+          {
+            "q": "Tényleg ingyenes?",
+            "a": "Igen. A Yappy nyílt forráskódú, MIT-licenc alatt. Az, hogy valaki meghallgathassa, amit olvas, akadálymentesítés kérdése, az akadálymentesítő eszközöknek pedig nem kellene bankkártyát kérniük. A számítógépen nincs fizetős változat és nincs reklám. Az iPhone-on a próbapapagáj egyszerre három dokumentumot tart az ülőkáján, időkorlát nélkül; ha feneketlen ülőkát, hangoskönyv-nyomdát és hidat a számítógéphez szeretnél, a Yappy Parlanchínnal húzod fel: előfizetéssel vagy egyetlen, élethosszig szóló fizetéssel. Fiók nélkül és reklám nélkül, minden esetben."
+          },
+          {
+            "q": "Mi a trükk? Miből tartja fenn magát?",
+            "a": "Nincs trükk: nincs kiszolgáló, amit fizetni kell. A felolvasás a te készülékeden fut, így a Yappynak nincsenek felhasználónkénti költségei. Ez a szerző magánprojektje, amelyet azért adott ki, mert már egyszer elkészült, és másnak is hasznára válhat."
+          },
+          {
+            "q": "Van ingyenes próbaidőszak?",
+            "a": "Nem, ez szándékos. A három dokumentumos ülőka maga a próba, és nem jár le, hét nap múlva sem lesz belőle számla. Ha a Yappy hasznára van, azt úgyis észreveszed, anélkül, hogy bárki visszaszámlálót tartana a szemed előtt."
+          },
+          {
+            "q": "Közzétehetem a legenerált hangot, mondjuk egy podcastban vagy egy videóban?",
+            "a": "A Yappy kódja MIT-licenc, feltételeket nem szab. A hangmodellnek, a Supertonic 3-nak, saját licence van: egy OpenRAIL-M típusú nyílt licenc, használati záradékokkal. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Nézd meg a modell oldalán</a>, mielőtt üzleti célra használnád, mert ez a rész nem a Yappytól függ, és nem ígérhetünk helyette semmit."
+          }
+        ]
+      },
+      {
+        "susurro": "a szövegeid nem utaznak el",
+        "titulo": "Az adatvédelem, név szerint.",
+        "lista": [
+          {
+            "q": "Felkerül a szövegem valamilyen szerverre?",
+            "a": "Nem. A beszédszintézis, az átírás és a cikkek kinyerése az eszközödön zajlik. Amit a Yappyval megosztasz, az nem megy sehova: nincsenek fiókok, nincsenek másolatok, és olyan Yappy-szerver sem létezik, ahol el lehetne tárolni. Amit tényleg érint a hálózat, az négy konkrét dolog, és mind a négy le van írva az adatkezelési tájékoztatóban."
+          },
+          {
+            "q": "Gyűjt a Yappy használati statisztikákat?",
+            "a": "Igen, gyűjt, és ezt érdemes egyenesen kimondani. A mobilos app névtelen használati statisztikákat küld: gyárilag be van kapcsolva, a beállítások mélyén viszont ki lehet kapcsolni. Ami utazik: egy zárt listáról vett eseménynév (megnyílt az app, a bevezető kör melyik lépésénél tartasz, melyik csomaghoz nyúltál hozzá, befejeződött-e egy felolvasás), egy véletlenszerű telepítési azonosító, a nyelv és a verzió. Nem a neved, nem az e-mail-címed, nem az a szöveg, amit olvasol, nem egy dokumentum címe, nem egy link – és reklámazonosító egyetlen egy sem. És nem a Googlehöz mennek, sem a Firebasehez, sem elemzőcégekhez: a szerző saját Cloudflare-Workerébe és D1-adatbázisába íródnak. Az asztali gépen nincs statisztika, egyik fajtája sem."
+          },
+          {
+            "q": "És mi a helyzet a telefon és a gép közötti híddal?",
+            "a": "Két eszközöd közötti egyenes kapcsolat, QUIC-kal végponttól végpontig titkosítva, az <a href=\"https://iroh.computer\">iroh</a> protokolljával. A párosítás úgy megy, hogy a telefonod kameráját a gép által mutatott QR-kódra irányítod; a keletkező kulcsot onnan bármikor visszavonhatod. Yappy-szerver nem ül középen, mert Yappy-szerver nincs is."
+          },
+          {
+            "q": "Működik internet nélkül?",
+            "a": "Igen, örökre. Az első modellletöltés után – mobilon kb. 200 MB, gépen kb. 398 MB – repülőgépes üzemmódban is megy minden: szöveget illesztesz be, dokumentumot nyitsz meg, felolvasást készítesz, exportálsz. Csak az új címek megosztása kér hálózatot, nyilvánvaló okból. Felhőszinkron sincs: a könyvtárad az eszközödön lakik, és a híd a legközelebbi dolog ahhoz, hogy valamit egyik gépről a másikra vigyünk."
+          }
+        ]
+      },
+      {
+        "susurro": "ami megszólal",
+        "titulo": "A hang és a nyelvek.",
+        "lista": [
+          {
+            "q": "Milyen hangmodellt használ?",
+            "a": "Supertonic 3: a Supertone nyílt modellje, mintegy 99 millió paraméterrel. Gépen 398 MB, mobilon 200 MB, és az elmúlt évek bármelyik laptopján valós időnél gyorsabban szintetizál. Karakterszinten dolgozik: ezért létezik a normalizáló, amely a számokat, a mozaikszavakat és a szimbólumokat szavakká alakít, mielőtt a hang meglátná őket."
+          },
+          {
+            "q": "Milyen nyelveken beszél?",
+            "a": "Német, arab, bolgár, cseh, koreai, horvát, dán, szlovák, szlovén, spanyol, észt, finn, francia, görög, hindi, magyar, indonéz, angol, olasz, japán, lett, litván, holland, lengyel, portugál, román, orosz, svéd, török, ukrán és vietnámi. Harmincegy. És a tíz hang mind poliglott: ugyanaz a hang mindet felolvassa, hangszínváltás nélkül."
+          },
+          {
+            "q": "És ha egy dokumentumban több nyelv keveredik?",
+            "a": "A Yappy felismeri a dokumentum nyelvét, és bekezdésenként az egyes darabokét is: egy magyar esszébe ágyazott angol idézet angolul szólal meg, ugyanazon a hangon, anélkül, hogy hozzányúlnál. Ha téved a felismerés, a nyelvet kézzel is beállíthatod."
+          },
+          {
+            "q": "Miben különbözik a VoiceOvertól vagy a „Képernyőfelolvasás” funkciótól?",
+            "a": "A rendszer felolvasói úgy olvassák fel a képernyőt, ahogy épp van: a rendszer proszódiájával, emlékezet nélkül. A Yappy előkészíti a szöveget, mielőtt kimondaná (kitisztítja a cikket, kimondhatóvá teszi a számokat és a mozaikszavakat, megjelöli a szüneteket), aztán természetes hangon olvassa fel, emlékszik, hol tartottál, hangoskönyvet exportál, és zárt képernyő mellett is szól. Két rokon eszköz ez, más-más hivatással, és egyszerre is használhatók, útban nem állnak egymásnak: a Yappy nem helyettesíti a képernyőfelolvasót, és nem is akarja."
+          }
+        ]
+      },
+      {
+        "susurro": "ami bejön",
+        "titulo": "A dokumentumok.",
+        "lista": [
+          {
+            "q": "Milyen formátumokat fogad?",
+            "a": "Webes cikkek (a lap magától megtisztul), videók a közzétett átiratukon át, PDF, EPUB, Word, ODT, RTF, Markdown, sima szöveg, .pptx, .xlsx, .csv és hangjegyzetek. Mobilon minden a megosztópanelen át; gépen ezen felül behúzással vagy billentyűparanccsal. És ha a gépen fent van a pandoc, a listához jön a LaTeX, a reStructuredText, az Org és még néhány társuk."
+          },
+          {
+            "q": "És a szkennelt PDF-ek, amelyekben nincs szöveg?",
+            "a": "Asztali gépen a fájlok felolvasás előtt helyi OCR-en mennek át, és ott sem hagyja el semmi a gépet. iPhone-on ez még nincs meg: ha a PDF a papír fotója, a telefon nem talál szöveget, amit fel tudna olvasni. A ferde vagy elmosódott szkennelés annyit ad, amennyit bármelyik OCR tud, egy rendes szkennelés viszont elejétől a végéig olvasható."
+          },
+          {
+            "q": "Fel tudja olvasni a boltban vett könyveimet?",
+            "a": "Csak azokat, amiket meg tudsz nyitni. Egy védelem nélküli EPUB fejezeteivel együtt, elejétől a végéig felolvasható. A boltok DRM-es könyveit sem itt, sem máshol nem lehet felolvasni: az a zár nem a Yappyé, és nem fogjuk úgy tenni, mintha lenne kulcsunk hozzá."
+          },
+          {
+            "q": "Hogyan törölhetek valamit a könyvtárból?",
+            "a": "Közvetlenül a könyvtárból: minden dokumentumnál ott a felejtés lehetősége, és vele együtt a hangja is eltűnik. Az exportált fájlok (.m4b, .mp3, .wav) a tiéid, és ott élnek, ahova mentetted őket; törlésük vagy mozgatásuk a Finder vagy a Fájlok dolga."
+          }
+        ]
+      },
+      {
+        "susurro": "ha valami elromlik",
+        "titulo": "Hibák és segítség.",
+        "lista": [
+          {
+            "q": "Miért tart néhány másodperccel tovább az első felolvasás?",
+            "a": "Az első alkalommal a modell betöltődik a memóriába. Utána bemelegszik, és a következő mondatok szinte rögtön jönnek. Ha most telepítetted az appot a gépre, az első várakozáshoz még a hangmodell letöltése is hozzátartozik."
+          },
+          {
+            "q": "Egy szót rosszul ejt ki. Meg lehet tanítani?",
+            "a": "Felhasználói kiejtési szótár nincs, így a leggyorsabb út: írd a szót a szerkesztőbe úgy, ahogy hangzik. A modell karaktereket olvas, és hallgat rád. Ha általános szabályról van szó (rövidítés, mozaikszó, mértékegység), írd meg <a href=\"https://github.com/joseluissaorin/yappy/issues\">a GitHub témái között</a>: a felolvasó szabálytáblái ilyen esetekkel bővülnek."
+          },
+          {
+            "q": "Megosztottam egy videót, és nem mond semmit.",
+            "a": "A Yappy a videó közzétett átírását veszi át, a hangját nem írja át. Ha annak a videónak nincs átírása, nincs mit felolvasni. Ha viszont a videó a tiéd, és megvan fájlban, oszd meg a fájlt: azt a helyi fül tényleg átírja."
+          },
+          {
+            "q": "Hibát találtam. Hol számolhatok be róla?",
+            "a": "<a href=\"https://github.com/joseluissaorin/yappy/issues\">A GitHub témái között</a>, vagy írd meg a <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> címre. Ha meg tudod osztani a hibás szöveget, és megírod a rendszered, hamarabb megjavítjuk."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "A Yappy adatvédelme: a szövegeid nem mozdulnak el",
+    "description": "Mi hagyja el a készülékedet és mi nem, kimondva, szépségítés nélkül: a felolvasás, az átírás és a cikkmentés bent történik; a hálózathoz csak négy dolog nyúl, és mind a négyet elmeséljük.",
+    "h1": "A szövegeid nem mozdulnak el.",
+    "actualizado": "Utolsó frissítés: {fecha}. Adatkezelő: José Luis Saorín Ferrer, Tenerife (Spanyolország).",
+    "bloques": [
+      {
+        "titulo": "Miről szól ez",
+        "texto": "Ez a Yappy adatvédelmi tájékoztatója: az iPhone, iPad, Mac, Windows és Linux alatti appé, a widgetjeivel és a bővítményeivel együtt. Rövid, mert kevés a mesélnivaló. A Yappynak nincsenek fiókjai, nem kér nevet és e-mailt, és ami olvasásra adsz neki, az nem hagyja el a készüléked. Ami viszont hozzányúl a hálózathoz, az négy konkrét dolog, és itt van mind a négy, egyenként."
+      },
+      {
+        "titulo": "Se fiók, se név, se szövegek",
+        "texto": "A Yappyban nincs regisztráció és bejelentkezés. Nem gyűjt nevet, e-mailcímet, névjegyeket, tartózkodási helyet vagy bármilyen hirdetési azonosítót. Az appal megosztott cikkek, PDF-ek, EPUB-ok, dokumentumok, hangjegyzetek és szövegek <strong>a készülékedben</strong> válnak hanggá: a felolvasás, az átírás és az oldalak megtisztítása helyben történik, sem a mi szerverünkre, sem harmadik fél szerverére nem kerül fel semmi. Felhőszinkron nincs: a könyvtárad, az előrehaladásod és a hangoskönyveid a készülékedben élnek, és eltűnnek, ha törlöd az appot."
+      },
+      {
+        "titulo": "Hálózathoz nyúl (1): a hangok letöltése",
+        "texto": "Első alkalommal a Yappy letölti a hangmodellt (mobilon kb. 200 MB, gépen kb. 398 MB) a <code>modelos.yappy.joseluissaorin.com</code> címről, ami a Cloudflare egyik R2-tárolója. Ahogy minden letöltésnél, a kérés idejére a szerver látja az IP-címedet. Nem vezetünk olyan naplót, amely beazonosítana. A letöltés után a felolvasás örökre repülőgépmódban működik."
+      },
+      {
+        "titulo": "Amikor a hálózathoz nyúl (2): a megosztott linkek",
+        "texto": "Ha linket vagy videót osztasz meg, a készüléked felkeresi azt a címet, hogy letöltse a szöveget vagy az átiratot – pontosan úgy, ahogy a böngésződ tenné. A látogatást a te készüléked teszi, nem a Yappy szervere, és a felkeresett oldal ugyanazt kapja, amit egy böngészőtől kapna: az IP-címedet és a készüléked típusát. Előzmény a készülékedön kívül semmi sem tárolódik."
+      },
+      {
+        "titulo": "Amikor a hálózathoz nyúl (3): a névtelen statisztikák",
+        "texto": "Ezt érdemes világosan kimondani: <strong>igen, van analitika</strong>, csak a mobilos appban, és alapból be van kapcsolva. Bármikor kikapcsolható a beállításokban, a „Névtelen statisztikák” pontnál. Amit elküld: egy zárt listáról vett eseménynév (megnyílt az app, a bevezető túra melyik lépésénél tartanak, melyik csomagra koppintanak, befejeződött-e egy felolvasás), egy véletlen telepítési azonosító, az app nyelve és verziója. <strong>Soha</strong> nem a neved, nem az e-mail-címed, nem az olvasott szöveg, nem egy dokumentum címe, nem egy link, és nem egy hirdetési azonosító. Nem a Google Analyticsbe, nem a Firebasebe, nem is egyetlen elemzőcéghez mennek: a szerző saját Cloudflare Workerje és D1-adatbázisa fogadja őket, és arra szolgálnak, hogy kiderüljön, az app mely részeit használják, és melyek feleslegesek. Az asztali változatban nincs statisztika, egyik fajtája sem."
+      },
+      {
+        "titulo": "Amikor a hálózathoz nyúl (4): a vásárlások",
+        "texto": "Az előfizetéseket és a Yappy Parlanchín életre szóló megvásárlását az Apple kezeli az App Store-on keresztül, és csak iPhone-on és iPaden léteznek. Hogy az app megtudja, aktív-e az előfizetésed, a <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a> nevű előfizetéskezelőt használja, amely egy névtelen telepítési azonosítót és az Apple vásárlási bizonylatát kapja meg; a nevedet és az e-mail-címedet nem. Az Apple a saját adatait <a href=\"https://www.apple.com/legal/privacy/\">a maga tájékoztatójában</a> ismerteti."
+      },
+      {
+        "titulo": "A híd: az iPhone-odtól a számítógépedig és vissza",
+        "texto": "Ha összepárosítod a Yappyt a Mac-eddel vagy a PC-ddel, a konvertálásra küldött dokumentumok közvetlen, végponttól végpontig titkosított kapcsolaton utaznak a két készüléked között, a <a href=\"https://iroh.computer\">iroh</a> könyvtárral, QUIC fölé építve. Ahhoz, hogy megtalálják egymást, relészerverekre is támaszkodhatnak; ezek csak titkosított forgalmat látnak, amelyet nem tudnak elolvasni. A Yappynak nincs köztes szervere, ami bármit is tárolna, mert nincs szervere."
+      },
+      {
+        "titulo": "Kiskorúak és engedélyek",
+        "texto": "A Yappy nem 13 év alattiaknak készült, és senkitől nem gyűjt személyes adatot, akárhány éves is. A rendszer által kért engedélyek mindig csak arra a dologra és arra a pillanatra kellnek: a vágólap a beillesztéshez, a kamera a híd QR-kódjának beolvasásához, a mikrofon az asztali gépen a diktáláshoz. Egyiket sem használja az app a háttérben."
+      },
+      {
+        "titulo": "A jogaid és az elérhetőség",
+        "texto": "Mivel nem tárolunk személyes adatokat, a szervereinken nincs semmi, amit exportálni vagy törölni kellene: minden, amit a Yappy rólad tud, a készülékededen él, és az app törlésekor eltűnik. Ha azt szeretnéd, hogy a névtelen statisztikákat se kapjuk meg, az is kikapcsolható magából az appból. Kérdéseddel írj a <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> címre, vagy nyiss egy bejelentést a <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHubon</a>. A kód nyílt, MIT-licencű: a fentiek ellenőrizhetők, elég elolvasni."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy diszlexiára, ADHD-ra és gyengénlátásra: meghallgatni, amit nem lehet elolvasni",
+    "description": "Egy hangos felolvasó, amely nem kér fiókot, nem számláz az idő után, és internet nélkül is működik. Diszlexiára, ADHD-ra, szemfáradtságra, gyengénlátásra, és mindenkinek, akinek egyszerűen a füle jobb olvasó, mint a szeme.",
+    "h1": "Olvasás a fülekkel.",
+    "entradilla": "Azt meghallgatni, amit olvasol, akadálymentesítés kérdése – és az akadálymentesítő eszközöknek nem lenne szabad bankkártyát kérniük. A Yappy nem kér, nincs percszámlálója, és repülőgépen is működik.",
+    "voiceover_titulo": "A Yappy nem váltja fel a VoiceOver-t",
+    "voiceover_texto": "Két rokon eszköz, más-más hivatással. A képernyőolvasó a felületet mondja el, hogy kezelni tudd; a Yappy a tartalmat olvassa fel, hogy élvezni tudd. Együtt is használhatók, anélkül, hogy útban lennének egymásnak.",
+    "casos": [
+      {
+        "titulo": "Diszlexia",
+        "texto": "Betűnként kiböngészni a szöveget kimerít, és a fáradtság a megértést jóval korábban falja fel, mint az idő. Ha a szöveget hallgatod, miközben a képernyőn világít, egyszerre olvasol és hallasz: a szemed követi a sort, a füled végzi a nehéz munkát. A Yappy semmit nem javít meg, de eltakarítja az útból azt, ami kimerít."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "A néma oldal arra csábít, hogy menj el innen. Egy előrehaladó hang tartja a ritmust, és visszatereli a bekezdéshez, amikor a fej már elment sétálni. Mivel sétálva vagy elfoglalt kezekkel is lehet hallgatni, az olvasás nem követeli meg a mozdulatlanságot: sokaknál ebben áll az egész különbség."
+      },
+      {
+        "titulo": "Gyengénlátás és szemfáradtság",
+        "texto": "Ha az apró betű már nem opció, vagy ha este hétkorra a szemed már ledolgozta a napi műszakját, a szöveg a füleden át továbbra is elérhető. A Yappy felolvassa a PDF-et, a levelet vagy a teljes cikket – szükség szerint kikapcsolt képernyővel, a zárolt képernyőről vagy fülhallgatóból."
+      },
+      {
+        "titulo": "Nyelvtanulás",
+        "texto": "Hallani és olvasni egyszerre: ez a kiejtés megtanulásának legrégibb és leghatékonyabb módja. A tíz hang poliglott: mind a 31 nyelvet a saját szabályai szerint olvassa, így egy német szöveg németül szólal meg, nem angol akcentussal. 0,75×-os sebességnél minden szótag hallható; 1,5×-esnél edződik a fül."
+      },
+      {
+        "titulo": "Amit írsz, javítsd",
+        "texto": "Amit hangosan nem lehet kimondani, az leírva sem állja meg a helyét. A saját szöveg felolvasása leleplezi az ismétlődéseket, a rossz helyre tett vesszőket és a soha le nem záruló közbevetéseket. Ez a nyomdai korrektúra, és itt ingyen jár: megnyitod a .docx-fájlt, megnyomod a lejátszás gombot, és azt hallod, amit tényleg írtál, nem azt, amiről azt hitted, hogy írtad."
+      },
+      {
+        "titulo": "Tanulás füllel",
+        "texto": "A tárgy jegyzetei, a vizsgára kerülő fejezet, a kétszáz oldalas cikk. Este mennek a nyomdába, reggelre fejezetekkel ellátott hangoskönyv lesz belőlük, és a buszon hallgatja őket az ember. A folytatás megjegyzi a pontos bekezdést: a visszatéréshez nem kell semmit keresni."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Működik, ha a VoiceOver vagy a TalkBack be van kapcsolva?",
+        "a": "Igen, és nem is zavarják egymást. A képernyőolvasó a felületet mondja fel, hogy kezelni tudd; a Yappy a tartalmat olvassa fel, hogy élvezni tudd. Együtt használhatók: a VoiceOver elvisz a lejátszás gombig, onnantól pedig a Yappy hangja olvassa a könyvet."
+      },
+      {
+        "q": "Használható anélkül, hogy a képernyőt nézni kellene?",
+        "a": "Igen. Az iPhone-on vannak Siri-parancsok („Hé Siri, olvasd fel a vágólapomat a Yappyval”), a Művelet gomb, a zárolási képernyő vezérlői és a fülhallgató vezérlői. Számítógépen három billentyűparancs olvassa fel a kijelölést vagy a vágólapot, illetve szüneteltet, miközben az app a tálcában rejtőzik."
+      },
+      {
+        "q": "Felolvassa a tananyag PDF-jeit és a már meglévő könyveimet?",
+        "a": "Minden PDF, EPUB, Word vagy ODT, amit meg tudsz nyitni. Ha a PDF szöveg nélküli szkennelt kép, az asztali változat felolvasás előtt egy helyi OCR-en engedi át; mobilon ez még nincs. Az üzletből vett, DRM-es könyveket sehol sem lehet felolvastatni, itt sem."
+      },
+      {
+        "q": "Mennyibe kerül a mindennapi használat?",
+        "a": "Semmit. Nincs percszámláló és karakterszámláló, nincs reklám, és fiók sem kell. Napi nyolc órát lehet hallgatni éveken át, anélkül, hogy valaki egy fillért is fizetne, és netkapcsolat nélkül is. A fizetős változat csak a feneketlen fogast, a nyomdát meg a hidat adja hozzá, és az is csak iPhone-on meg iPaden van."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Történetek a papagájnok: közkincományi szövegek a Yappy kipróbálásához",
+    "description": "Teljes, közkincományi történetek, készen arra, hogy megoszd őket a Yappyval, és végighallgasd. Nincs regisztráció, nincs letöltés.",
+    "h1": "Történetek a papagájnok.",
+    "entradilla": "Teljes szövegek, közkincományból. Oszd meg ezt az oldalt a Yappyval, és a papagáj felolvassa neked.",
+    "dominio_publico": "Közkincomány."
+  },
+  "blog": {
+    "title": "A Yappy blogja: az írott szó meghallgatása",
+    "description": "Hogyan legyen egy PDF-ből hang, miért kellene egy szövegfelolvasónak kapcsolat nélkül is működnie, hogyan mondjuk fel a számokat, és mit tanultunk egy beszélő app készítése közben.",
+    "h1": "Az írott szó meghallgatása.",
+    "entradilla": "Szakma, trükkök és egy kis történelem a felolvasásról. Minden cikk meghallgatható itt magán az oldalon, a Yappy saját hangján felolvasva.",
+    "escuchame": "Hallgasd meg a cikket",
+    "escuchame_nota": "Felolvassa a Yappy, {voz} hangján, a böngésződben.",
+    "vacio": "Ezen a nyelven még nincsenek cikkek."
+  },
+  "convertir": {
+    "title": "Bármilyen szöveg felolvasása: PDF, EPUB, Word, cikkek és videók",
+    "description": "Hat mód, ahogy a szöveget természetes hanggá alakíthatod: PDF, EPUB, Word, internetes cikkek, videók és hangjegyzetek. Mindegyik a saját készülékedben fut.",
+    "h1": "Átalakítás",
+    "entradilla": "Mindegy, honnan jön: cikk, könyv, dokumentum vagy felvétel. A Yappy kivonja belőle a felolvasandó szöveget, és hangosan felolvassa – a fájl nem hagyja el a készülékedet.",
+    "pasos_titulo": "Három lépésben.",
+    "faq_titulo": "Kérdések és válaszok",
+    "otros_titulo": "Amit még felolvas",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "PDF átalakítása hanggá: PDF felolvasása hangosan, ingyen",
+        "description": "Bármilyen PDF-et természetes hangú felolvasássá alakít: hallgasd, miközben mást csinálsz, vagy mentsd el hangoskönyvként, fejezetekkel. Semmi feltöltés a felhőbe, és nincs oldalszám-korlát.",
+        "h1": "Hallgasd meg a PDF-eidet.",
+        "entradilla": "Tudományos cikk, kézikönyv, jegyzet, szerződés. A Yappy megnyitja a PDF-et, kidobja a fejléceket és az ismétlődő oldalszámokat, megkeresi a fejezeteket, és az egészet természetes hangon felolvassa. A fájl nem hagyja el a készülékedet.",
+        "pasos": [
+          {
+            "titulo": "Oszd meg a PDF-et",
+            "texto": "Fájlokból, e-mailből vagy Safariból: koppints a Megosztásra, és válaszd a Yappyt. Számítógépen húzd be az ablakba."
+          },
+          {
+            "titulo": "Válassz hangot",
+            "texto": "Tíz hang, 31 nyelv. Ha a PDF más nyelvű, a Yappy magától felismeri."
+          },
+          {
+            "titulo": "Hallgasd meg, vagy mentsd el",
+            "texto": "Nyomj playt, vagy add ki a nyomdába – és kész is a hangoskönyved, fejezetekkel együtt."
+          }
+        ],
+        "extra_titulo": "Szkennelt PDF-ek",
+        "extra_texto": "Ha a PDF a papír fotója, és nincs benne szöveg, az asztali verzió előbb helyi OCR-en engedi át, és csak utána olvassa fel. iPhone-on ez még nincs.",
+        "faq": [
+          {
+            "q": "Van oldalszám-korlát?",
+            "a": "Nem. Háromoldalas cikk vagy négyszáz oldalas szakdolgozat: a Yappy végigmegy az összes oldalon, és az egészet felolvassa. Mivel minden a készülékedben zajlik, nincs karakterkeret, amit el kellene költeni, és nincs számla, ami a hetedik fejezet közepén elszáll."
+          },
+          {
+            "q": "És ha a PDF szöveg nélküli szkennelt anyag?",
+            "a": "Az asztali verzió előbb helyi OCR-en engedi át, mielőtt felolvasná – ott sem kerül ki semmi a gépedről. iPhone-on ez még nincs: ha a PDF a papír fotója, a telefon nem talál szöveget, amit felolvashatna."
+          },
+          {
+            "q": "Kidobja a fejléceket és az oldalszámokat?",
+            "a": "Igen. A Yappy észreveszi, mi ismétlődik meg minden oldalon (fejléc, lábléc, oldalszám, a magazin neve), és kihagyja a felolvasásból. Semmi nem töri meg jobban a hallgatást, mint ha másfél percenként azt hallod: „3. fejezet, 47. oldal”."
+          },
+          {
+            "q": "Tudok csak egy fejezetet meghallgatni?",
+            "a": "Igen. A Yappy megkeresi a dokumentum valódi címeket, és belőlük böngészhető tartalomjegyzéket rak össze. A könyvtárban kiválasztod, mely fejezeteket szeretnéd meghallgatni vagy a nyomdába küldeni, és a hangoskönyv pontosan ezekből készül el."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "EPUB konvertálása hangoskönyvvé: a könyved, hangosan felolvasva",
+        "description": "EPUB-ból hangoskönyvet készíthetsz, valódi fejezetekkel, a saját készülékeden. Nincs óránkénti előfizetés, és a könyvet nem töltöd fel egyetlen szerverre sem.",
+        "h1": "Az EPUB-od, hangoskönyvként.",
+        "entradilla": "A könyvek, amelyek már megvannak, a saját fejezetükkel együtt, természetes hangon felolvasva. Lefekvés előtt elindítod a renderelést, reggelre a könyvtáradban van: egy .m4b fájl, amelyet bármelyik lejátszó megnyit.",
+        "pasos": [
+          {
+            "titulo": "Oszd meg az EPUB-ot",
+            "texto": "A Fájlok appból vagy onnan, ahol épp tárolod. A fejezetek már felismerve érkeznek."
+          },
+          {
+            "titulo": "Add fel a nyomdába",
+            "texto": "Kiválasztod a fejezeteket, a hangot és a sebességet. A papagáj akkor is kinyomtatja, ha bezárod az appot."
+          },
+          {
+            "titulo": "Hallgasd, ahol akarod",
+            "texto": "A könyvtárban marad, .m4b fájlként, könyvjelzőkkel; onnan át tudod küldeni a Fájlokba, a Könyvekbe vagy oda, ahová szeretnéd."
+          }
+        ],
+        "extra_titulo": "DRM-es könyvek",
+        "extra_texto": "A Yappy azokat az EPUB-okat olvassa fel, amelyeket meg tudsz nyitni. Az áruházi DRM-mel védett könyveket nem lehet olvasni, sem itt, sem máshol.",
+        "faq": [
+          {
+            "q": "Megmaradnak a könyv fejezetei?",
+            "a": "Igen, és ezek valódi fejezetek, nem tízpercenként bedobott jelölések: az EPUB saját tartalomjegyzékéből jönnek. Az elkészült .m4b fájl bármelyik hangoskönyv-lejátszóban fejezetenként navigálható, a borítójával és a folytatási pontjával együtt."
+          },
+          {
+            "q": "Mennyi ideig tart egy egész könyv?",
+            "a": "A készüléktől és a könyv méretétől függ, de a gyakorlati válasz ez: lefekvés előtt elindítod, reggelre készen van. Ha megvan a híd, a géped jóval gyorsabban szintetizálja, és készen küldi vissza a telefonodra."
+          },
+          {
+            "q": "És a DRM-es könyvek?",
+            "a": "A Yappy azokat az EPUB-okat olvassa fel, amelyeket meg tudsz nyitni. Az áruházi DRM-mel védett könyveket nem lehet olvasni, sem itt, sem máshol: ez a zár nem a miénk."
+          },
+          {
+            "q": "Hol marad a hangoskönyv?",
+            "a": "A Yappy könyvtárában, valódi .m4b fájlként. Onnan át tudod küldeni a Fájlokba, a Könyvekbe vagy a lejátszóba, amit amúgy is használsz. A fájl a tiéd: ha törölöd az appot, ami exportálva lett, ott marad, ahová tetted."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Word-dokumentum hangos felolvasása: DOCX, ODT és RTF hangfájlként",
+        "description": "Word-, LibreOffice- és sima szöveges dokumentumokat olvas fel természetes hangon, hogy füllel javíthasd őket. Minden a saját gépeden vagy telefonodon történik.",
+        "h1": "Javíts füllel.",
+        "entradilla": "Amit leírtál, a legjobb úgy javítani, ha hangosan meghallgatod: ami hangosan nem mondható ki, az írásban sem állja meg a helyét. A Yappy felolvassa a .docx, .odt, .rtf, .txt és Markdown formátumokat, a címsorokkal és a ritmusukkal együtt.",
+        "pasos": [
+          {
+            "titulo": "Nyisd meg a dokumentumot",
+            "texto": "Húzd be a gép ablakába, vagy oszd meg a mobilodról."
+          },
+          {
+            "titulo": "Hallgasd bekezdésenként",
+            "texto": "Felolvasás közben kigyullad a szöveg; koppints oda, ahová ugrani akarsz."
+          },
+          {
+            "titulo": "Javítsd, ahol akadozik",
+            "texto": "Aztán hallgasd újra. Számítógépen minden bekezdés kaphat saját hangot és saját sebességet."
+          }
+        ],
+        "extra_titulo": "Táblázatok és prezentációk is",
+        "extra_texto": "Felolvassa a .pptx, .xlsx és .csv fájlokat. Számítógépen, ha telepítve van a pandoc, a lista bővül: LaTeX, reStructuredText, Org és még néhány további.",
+        "faq": [
+          {
+            "q": "Milyen szövegformátumokat olvas pontosan?",
+            "a": "Felolvassa a .docx, .odt, .rtf, .txt és Markdown formátumokat, továbbá a .pptx, .xlsx és .csv fájlokat. Számítógépen, ha telepítve van a pandoc, a lista bővül: LaTeX, reStructuredText, Org és még néhány további."
+          },
+          {
+            "q": "A lábjegyzeteket és a táblázatokat is felolvassa?",
+            "a": "A dokumentum törzsét a címsoraival és a saját sorrendjében olvassa fel. A táblázatokat soronként olvassa – hangosan ez az egyetlen lehetőség –, a jegyzetek pedig a saját szakaszuk végére kerülnek, nem vágják félbe a mondatot."
+          },
+          {
+            "q": "Adhatok minden bekezdésnek más hangot?",
+            "a": "Számítógépen igen: a bekezdésenkénti szerkesztőben mindegyikhez beállíthatsz hangot, sebességet és szünetet. Ez teszi hallgathatóvá a párbeszédet, az interjút vagy a kétnyelvű dokumentumot."
+          },
+          {
+            "q": "Tényleg jó javításra?",
+            "a": "A legjobb javítási módszer, ami létezik. A fül leleplezi, amit a szem megbocsát: az ismétlődést három soron belül, a mellékmondatot, amely nem zárul le, a közbevetést, amely felfalta az igét. Leveszed a sebességet 0,9×-re, meghallgatod a fejezetet, és feljegyzed, ami akadozik."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Cikkek",
+        "title": "Internetes cikkek felolvasása: bármely weboldal, hangosan",
+        "description": "Ossz meg egy oldalt Safariból, és a Yappy tisztán felolvassa: menü, banner és lábléc nélkül. Az oldalt a saját eszközöd keresi fel, nem a mi szerverünk.",
+        "h1": "Hallgasd meg, amit amúgy is később olvastál volna.",
+        "entradilla": "Az a böngészőfül, amit későbbre nyitva hagysz. Osd meg a Yappyvel, és hallgatod, miközben mosogatsz. Az oldal magától megtisztul: eltűnnek a menük, a bannerek és a láblécek. Marad a próza, a címsoraival és a ritmusával.",
+        "pasos": [
+          {
+            "titulo": "Koppints a megosztásra",
+            "texto": "Safariban, a hírolvasóban, a levelezőben: ahol megosztás menü van, ott Yappy is."
+          },
+          {
+            "titulo": "Megtisztítja magát",
+            "texto": "A kinyerés a saját készülékeden történik. Ha előfizetsz egy lapra, azt a cikket szerzi be, amelyiket te látsz."
+          },
+          {
+            "titulo": "Sorba áll",
+            "texto": "És addig vár, amíg kezed szabaddá nem válik."
+          }
+        ],
+        "extra_titulo": "Mi megy át a hálózaton",
+        "extra_texto": "Csak egyetlen látogatás a megosztott címen, a saját készülékedtől, pontosan úgy, ahogy a böngésző tenné. Nincs Yappy-szerver a közben, mert nincs is Yappy-szerver.",
+        "faq": [
+          {
+            "q": "Működik azoknál a lapoknál, amelyekre előfizettem?",
+            "a": "A kinyerést a saját készüléked végzi, a saját bejelentkezéseddel, ezért azt a cikket szerzi meg, amelyet a böngésződben látsz. Ha te el tudod olvasni, Yappy fel tudja olvasni neked. Nincs köztes szerver, amelynek át kellene kelnie a fizetőfalon, mert nincs szerver."
+          },
+          {
+            "q": "És mi van a lapokkal, amelyek csak JavaScripttel töltődnek be?",
+            "a": "Néhány ellenáll: ha a szöveg csak azután jelenik meg, hogy a lap a szkriptkönyvtára felét lefuttatta, Yappy üres kézzel maradhat. Ilyenkor a leggyorsabb út: kijelölöd a szöveget, kimásolod, és megosztod sima szövegként."
+          },
+          {
+            "q": "Megjegyzi, mit olvasok?",
+            "a": "Csak a készülékeden, hogy ott folytathasd, ahol abbahagytad. Semmi ebből nem jut sehova, és a könyvtárban minden dokumentum mellett ott az elfelejtés lehetősége."
+          },
+          {
+            "q": "Felolvassa a menüket, a bannereket és a hozzászólásokat?",
+            "a": "Nem. A lap megtisztítva érkezik a felolvasóhoz: menük, bannerek, láblécek, megosztás gombok és hozzászólásdobozok kifelé. Megmarad a próza, a címsoraival és a ritmusával."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Videók",
+        "title": "Videó hallgatása, mintha cikk lenne",
+        "description": "Yappy elolvassa neked a videó átiratát, akár egy cikket: a képernyőt nem kell nézni, a tempót te szabod meg, és videóadatot sem fogyaszt.",
+        "h1": "Videók, mint a cikkek.",
+        "entradilla": "Fél óra videó tíz perc szöveg, jó tempóban felolvasva. Yappy megtartja az átiratot, és természetes hangon olvassa fel, úgyhogy sétálás közben is meghallgathatod, kikapcsolt képernyővel.",
+        "pasos": [
+          {
+            "titulo": "Oszd meg a linket",
+            "texto": "A videós appból vagy a böngészőből, a megosztás menüjén át."
+          },
+          {
+            "titulo": "Megtartja a szavakat",
+            "texto": "Yappy a videó közzétett átiratát veszi, nem a hangját."
+          },
+          {
+            "titulo": "Saját tempódban hallgatod",
+            "texto": "Bármilyen hanggal, bármilyen sebességgel – zárolt kijelzővel is."
+          }
+        ],
+        "extra_titulo": "Ha a videóhoz nincs leirat",
+        "extra_texto": "Akkor nincs mit olvasni: a Yappy a közzétett szövegből dolgozik, a videó hangját nem írja át. Ez a funkció iPhone-on létezik; Androidon még nem.",
+        "faq": [
+          {
+            "q": "Átírja a videó hangját?",
+            "a": "Nem. A Yappy a videóhoz már közzétett leiratot veszi, és úgy olvassa fel, mint egy cikket. Gyors, nem kell hozzá videót letölteni, és nem is melegíti fel a telefont; ám ez azt jelenti: ha a videóhoz nincs leirat, nincs mit olvasni."
+          },
+          {
+            "q": "És ha a videóhoz nincs leirat?",
+            "a": "Akkor a Yappy nem tud mit kezdeni a linkkel. Ha a videó a tiéd, és megvan a fájl, oszd meg hangfájlként: ilyenkor lép képbe a helyi felismerő, és az a készüléken belül végzi az átírást."
+          },
+          {
+            "q": "Minden videós platformon működik?",
+            "a": "Ott, ahol van közzétett és elérhető leirat. Ez a funkció iPhone-on létezik; az Android-változatban még nem."
+          },
+          {
+            "q": "Fogyaszt adatot?",
+            "a": "Alig: szöveget tölt le, nem videót. Fél óra videó néhány tíz kilobájt leirat, minden továbbit pedig a te készüléked végez el."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Hangjegyzetek",
+        "title": "Hangjegyzetek szöveggé alakítása a saját telefonodon",
+        "description": "A Yappy a hangfelvételeket és a hangjegyzeteket a saját készülékededen írja át, egyetlen szolgáltatásra sem tölti fel őket, utána pedig fel is olvassa neked a leiratot.",
+        "h1": "Hangból szöveg, és vissza.",
+        "entradilla": "Egy felvett megbeszélés, egy diktált ötlet a kocsiban, a tegnapi előadás. A Yappy a készülékedben, helyi felismerővel írja át, és megkapod a szöveget, hogy elolvasd, kijavítsd vagy másik hanggal visszahallgasd.",
+        "pasos": [
+          {
+            "titulo": "Oszd meg a felvételt",
+            "texto": "A Hangjegyzetekből, a Fájlokból vagy bármelyik, hangot tároló alkalmazásból."
+          },
+          {
+            "titulo": "A készüléken íródik át",
+            "texto": "Egy olyan modell végzi, amely a készülékededen fut. A hang nem mozdul ki onnan."
+          },
+          {
+            "titulo": "Olvasd el vagy hallgasd meg",
+            "texto": "Olyan, mint bármelyik másik dokumentum: elolvashatod, megoszthatod, és bármikor újra meghallgathatod."
+          }
+        ],
+        "extra_titulo": "A felismerőt külön kell letölteni",
+        "extra_texto": "Az átíráshoz más modell kell, mint a felolvasáshoz, és csak akkor töltődik le, ha tényleg használod.",
+        "faq": [
+          {
+            "q": "Melyik modell végzi az átírást?",
+            "a": "Parakeet TDT 0.6B v3, az NVIDIA modellje, CC-BY-4.0 licenccel, és a saját készülékedben fut. Ez más modell, mint a hangot adó: az egyik hall, a másik beszél."
+          },
+          {
+            "q": "Elhagyja a hang a készülékemet?",
+            "a": "Nem. A felvétel helyben íródik át, éppúgy, ahogy a hang is helyben készül. Nincs felhőalapú átírószolgáltatás, nincs fiók, nincs feltöltés."
+          },
+          {
+            "q": "Milyen nyelveken ír át?",
+            "a": "A fül kevesebb nyelvet tud, mint a hang: a főbb európai nyelveket írja át, nem mind a 31-et, amelyet a Yappy fel tud olvasni. Hangos felolvasáshoz mind a 31; hangról szövegre ez a rövidebb kör."
+          },
+          {
+            "q": "Kell még valamit letölteni?",
+            "a": "Igen: a fül külön töltődik le, és csak akkor, amikor először írsz át valamit. Ha sosem írsz át semmit, sosem foglal helyet a készülékedben."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Szövegfelolvasó {lengua} nyelven: olvass fel bármilyen szöveget",
+    "description": "PDF-, EPUB- és Word-fájlokat, valamint cikkeket hallgathatsz {lengua} nyelven, természetes hangon, a saját készülékedről, internet nélkül. Tíz hang, ingyen, fiók nélkül.",
+    "h1": "Szövegfelolvasó {lengua} nyelven.",
+    "entradilla": "Tíz hang {lengua} nyelven olvas, a nyelv saját szabályai szerint: a maga számaival, dátumaival, sorszámaival és rövidítéseivel, nem pedig egy másik nyelvével, kölcsönzött akcentussal.",
+    "muestra": "Egy minta",
+    "reglas_titulo": "Amit a fonetizáló tud {lengua} nyelvről",
+    "todas": "A többi harminc nyelv"
+  },
+  "vs": {
+    "titulo": "Yappy és {nombre}, egyetlen pillantásra",
+    "caracteristica": "Jellemző",
+    "gratis": "Amit ingyen megtehetsz",
+    "precio": "Kezdőár",
+    "local": "A hang a készülékedben készül",
+    "sin_cuenta": "Fiók és e-mail-cím nélkül",
+    "sin_conexion": "Internet nélkül is működik",
+    "codigo_abierto": "Nyílt forráskód",
+    "tarifa": "Díjszabás karakterenként vagy óránként",
+    "idiomas": "Nyelvek",
+    "formatos": "Olvasható formátumok",
+    "audiolibro": "Hangoskönyv fejezetekkel",
+    "escritorio": "Számítógép",
+    "yappy_gratis": "Korlátlan hallgatás; egyszerre három dokumentum",
+    "yappy_precio": "0 €; a póráz havonta 3,99 €-tól",
+    "gana_en": "Miben erős {nombre}",
+    "verificado": "Nyilvános adatok az egyes termékek weboldaláról; lekérdezve: {fecha}.",
+    "sin_verificar": "Az árak gyakran változnak: ellenőrizd őket, mielőtt döntesz.",
+    "ver_web": "Hivatalos weboldal",
+    "frente_a": "Összehasonlítás: {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Gyakori kérdések"
+  }
+}

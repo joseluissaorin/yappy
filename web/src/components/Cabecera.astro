@@ -6,7 +6,7 @@
  * funcionar sin scripts.
  */
 import { IDIOMAS, nombreDe, slug, t, type Idioma } from "../i18n";
-import { rutaPagina, type Alternativa } from "../lib/rutas";
+import { rutaPagina, ALCANCE, type Alternativa } from "../lib/rutas";
 import { ENLACES } from "../lib/datos";
 import Loro from "./Loro.svelte";
 
@@ -14,8 +14,14 @@ interface Props { lang: Idioma; ruta: string; alternativas: Alternativa[] }
 const { lang, ruta, alternativas } = Astro.props;
 
 const porIdioma = new Map(alternativas.map((a) => [a.lang, a.ruta]));
-const secciones = ["uso", "guionizador", "voces", "precios", "preguntas"] as const;
+// La fila de arriba lleva cuatro: en ruso o en alemán, cinco no caben.
+// El menú plegado lleva todas, y el pie también.
+const secciones = ["uso", "guionizador", "voces", "precios"] as const;
+const enElMenu = ["preguntas", "descargas", "accesibilidad"] as const;
 const esActual = (r: string) => (ruta === r ? "page" : undefined);
+// El blog solo existe en los idiomas donde hay artículos escritos. Enlazar
+// a una portada de blog vacía es peor que no enlazarla.
+const hayBlog = (ALCANCE.blog as readonly string[]).includes(lang);
 ---
 
 <header class="cabecera">
@@ -34,7 +40,7 @@ const esActual = (r: string) => (ruta === r ? "page" : undefined);
           {t(lang, `nav.${s}`)}
         </a>
       ))}
-      <a href={rutaPagina(lang, "blog")}>{t(lang, "nav.blog")}</a>
+      {hayBlog && <a href={rutaPagina(lang, "blog")}>{t(lang, "nav.blog")}</a>}
     </nav>
 
     <a class="tecla tecla-cabecera" href={ENLACES.appStore} style="padding:9px 18px;font-size:0.95rem">
@@ -51,9 +57,6 @@ const esActual = (r: string) => (ruta === r ? "page" : undefined);
         <a href={ENLACES.appStore} style="color:var(--voz);font-weight:800">{t(lang, "comunes.descargar_gratis")}</a>
         <div class="separador"></div>
         {secciones.map((s) => <a href={rutaPagina(lang, s)}>{t(lang, `nav.${s}`)}</a>)}
-        <a href={rutaPagina(lang, "blog")}>{t(lang, "nav.blog")}</a>
-        <a href={rutaPagina(lang, "descargas")}>{t(lang, "nav.descargas")}</a>
-        <a href={rutaPagina(lang, "accesibilidad")}>{t(lang, "nav.accesibilidad")}</a>
         <div class="separador"></div>
         <a href={ENLACES.github} rel="noopener">GitHub</a>
       </nav>

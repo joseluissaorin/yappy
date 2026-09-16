@@ -33,7 +33,7 @@ const idiomas = readdirSync(I18N).filter((f) => f.endsWith(".json")).map((f) => 
 
 // Los marcadores tienen que sobrevivir a la traducción: si {n} se convierte
 // en {número}, la interpolación deja de funcionar y sale el literal.
-const marcadores = (s) => (String(s).match(/\{\w+\}/g) ?? []).sort().join(",");
+const marcadores = (s) => [...new Set(String(s).match(/\{\w+\}/g) ?? [])].sort().join(",");
 
 console.log(`Original: es.json, ${claves.length} claves. ${idiomas.length} idiomas.\n`);
 let malos = 0;

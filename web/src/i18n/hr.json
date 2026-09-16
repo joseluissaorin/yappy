@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "hr",
+    "nombre": "Hrvatski",
+    "dir": "ltr",
+    "ogLocale": "hr_HR",
+    "hreflang": "hr",
+    "og_alt": "„Svaki tekst, naglas” velikim slovima na krem papiru, uz njega papiga koraljne boje"
+  },
+  "slugs": {
+    "uso": "kako-se-koristi",
+    "guionizador": "scenarist",
+    "descargas": "preuzimanja",
+    "precios": "cijene",
+    "voces": "glasovi",
+    "preguntas": "pitanja",
+    "privacidad": "privatnost",
+    "accesibilidad": "pristupacnost",
+    "cuentos": "price",
+    "blog": "blog",
+    "convertir": "pretvori",
+    "idiomas": "jezici",
+    "alternativas": "alternative",
+    "formato_pdf": "pdf-u-audio",
+    "formato_epub": "epub-u-audioknjiga",
+    "formato_word": "word-u-glas",
+    "formato_articulos": "clanci-u-audio",
+    "formato_videos": "video-u-audio",
+    "formato_notas": "glasovne-biljeske-u-tekst"
+  },
+  "comunes": {
+    "saltar": "Prijeđi na sadržaj",
+    "marca_aria": "Yappy, naslovnica",
+    "idioma": "Jezik",
+    "menu": "Otvori izbornik",
+    "secciones": "Odjeljci",
+    "descargar": "Preuzmi",
+    "descargar_gratis": "Preuzmi besplatno",
+    "en_app_store": "Preuzmi u App Storeu",
+    "escuchar_muestra": "Poslušaj uzorak",
+    "probar": "Isprobaj odmah",
+    "leer_mas": "Nastavi čitati",
+    "volver": "Natrag",
+    "inicio": "Početna",
+    "minutos": "{n} min čitanja",
+    "publicado": "Objavljeno",
+    "actualizado": "ažurirano",
+    "por": "Autor:",
+    "gratis": "besplatno",
+    "si": "Da",
+    "no": "Ne",
+    "parcial": "Djelomično",
+    "sin_datos": "nema podataka"
+  },
+  "nav": {
+    "uso": "Kako se koristi",
+    "guionizador": "Scenarist",
+    "voces": "Glasovi",
+    "precios": "Cijene",
+    "descargas": "Preuzimanja",
+    "preguntas": "Pitanja",
+    "privacidad": "Privatnost",
+    "accesibilidad": "Pristupačnost",
+    "cuentos": "Priče",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "Proizvod",
+    "leer": "Za čitanje",
+    "casa": "O nama",
+    "codigo": "Kôd",
+    "licencia": "MIT licenca",
+    "novedades": "Novosti",
+    "firma": "Yappy · ručno rađeno na Tenerifi, od <a href=\"https://joseluissaorin.com\">Joséa Luisa Saorína</a> · otvoreni kôd (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Text to speech: čitanje PDF-a, EPUB-a i članaka na glas",
+    "description": "Pretvori bilo koji tekst u prirodan glas: PDF, EPUB, Word, članke i videozapise, na 31 jeziku. Sve se događa na tvom telefonu ili računalu: bez oblaka, bez računa i bez naplate po znaku. Besplatno i otvorenog koda.",
+    "susurro": "text to speech · 31 jezik · bez oblaka · otvoreni kôd",
+    "titular_1": "Svaki",
+    "titular_texto": "tekst",
+    "titular_2": ", ",
+    "titular_voz": "na glas",
+    "titular_3": ".",
+    "entradilla": "Podijeli članak, PDF, EPUB, Word ili video, i papiga ti to pročita prirodnim glasom dok kuhaš, šetaš ili zatvoriš oči. Model se izvodi u cijelosti na tvom uređaju: ništa iz njega ne izlazi. Nikad.",
+    "nota_acciones": "besplatno · bez računa · bez naplate po znaku",
+    "pegatina_sin_nube": "bez\noblaka",
+    "pegatina_idiomas": "31\njezik",
+    "pegatina_gratis": "besplatno",
+    "pegatina_offline": "bez interneta",
+    "demo_susurro": "pritisni i poslušaj: ovo je izgovorio isti motor koji nosiš u džepu",
+    "demo_titulo": "Ovako zvuči.",
+    "demo_nota": "Podcrtano verbalizira normalizator teksta: „1492“ kaže se „tisuću četiristo devedeset i dva“, a „XV. stoljeće“ kaže se „petnaesto stoljeće“, po pravilima svakog jezika.",
+    "momentos_susurro": "čemu sve služi",
+    "momentos_titulo": "Tri trenutka, jedan potez.",
+    "momentos": [
+      {
+        "titulo": "Dok kuhaš",
+        "texto": "Podijeliš članak, prisloniš telefon uz šporet i glas čita dalje."
+      },
+      {
+        "titulo": "Na šetnji",
+        "texto": "Jučerašnja knjiga, pretvorena u audioknjigu s poglavljima, prati te uzbrdo."
+      },
+      {
+        "titulo": "Noć radi",
+        "texto": "Pustiš ga da renderira prije spavanja; ujutro je audioknjiga već u džepu."
+      }
+    ],
+    "porque_susurro": "zašto postoji",
+    "porque_titulo": "Bez oblaka, bez računa, bez naplate po znaku.",
+    "porque_entradilla": "Druge aplikacije za text to speech šalju ono što čitaš na server i naplaćuju svaki znak ili svaki sat slušanja. Yappy nema server koji bi trebalo plaćati, pa nema ni čega naplatiti za slušanje.",
+    "porque": [
+      {
+        "titulo": "Ništa ne izlazi iz tvog uređaja",
+        "texto": "Glas se sintetizira na tvom telefonu ili računalu otvorenim modelom. Radi i bez interneta: zauvijek."
+      },
+      {
+        "titulo": "31 pravi jezik",
+        "texto": "Deset glasova, svaki poliglot. Tekst s citatima na drugom jeziku sam od sebe prebacuje jezik, odlomak po odlomak."
+      },
+      {
+        "titulo": "Bez sati ni znakova",
+        "texto": "Slušaš što hoćeš, koliko hoćeš. Nema brojača, jer nema računa koji treba podijeliti."
+      },
+      {
+        "titulo": "Otvoreni kod (MIT)",
+        "texto": "Motor, scenarist, aplikacija i ova sama web-stranica objavljeni su. Možeš ih čitati, kompajlirati i provjeriti."
+      }
+    ],
+    "formatos_susurro": "dijeljenje je ulaz",
+    "formatos_titulo": "Što god čitaš.",
+    "formatos_entradilla": "Iz Safarija, Pošte, Datoteka ili bilo koje aplikacije: dodirni Dijeli i odaberi Yappy. Stranica se očisti sama – bez izbornika, banera i podnožja – i ostane samo proza, sa svojim naslovima i svojim ritmom.",
+    "guion_susurro": "dio koji nitko drugi ne pokazuje",
+    "guion_titulo": "Čita kao čovjek, ne kao stroj.",
+    "guion_entradilla": "Čitati naglas nije slovo po slovo: to je interpretacija. „1492“ se čita „tisuću četiristo devedeset dva“; „Henrik VIII“ se čita „Henrik Osmi“; „Louis XIV“ se na francuskom izgovara „Louis quatorze“; „EL CID“ nije rimski broj; FBI se izgovara slovo po slovo, a NASA ne. Prije nego što sintetizira ijedan slog, Yappy pretvara tekst u <strong>scenarij čitanja</strong>: partituru onoga što će glas doista reći.",
+    "guion_pruebalo": "Isprobaj ovdje: to je isti Rust iz aplikacije, kompajliran za tvoj preglednik.",
+    "guion_boton": "Izradi scenarij",
+    "guion_ejemplo": "XIX. stoljeće završilo je 1900. godine. Luj XIV. vladao je 72 godine, potrošio 3,50 € na sladoled, a FBI nikad nije saznao.",
+    "guion_marcador": "Napiši nešto s brojevima, kraticama, datumima ili stoljećima…",
+    "guion_espera": "Scenarij će se pojaviti ovdje, s podcrtanim pretvorbama.",
+    "guion_fallo": "Scenarist se nije mogao učitati u ovom pregledniku. Aplikacija ga ima ugrađenog.",
+    "guion_mas": "Kako radi scenarist",
+    "capturas_susurro": "ovako izgleda, bez retuša",
+    "capturas_titulo": "Snimke zaslona prave aplikacije.",
+    "capturas_entradilla": "Nema nacrtanih maketa: ovo je Yappy u radu, sa stvarnim tekstovima na štagalju i čitačem s pripremljenim scenarijem.",
+    "precio_susurro": "novac, bez uvijanja",
+    "precio_titulo": "Stvarno besplatno, a papiga na navijanje.",
+    "precio_entradilla": "Probna papiga nosi tri dokumenta odjednom na svom štagalju i čita ih bez vremenskog ograničenja. Makneš jedan, stane drugi. Ako želiš štagalj bez dna, tiskaru audioknjiga i most do računala, papigu treba naviti.",
+    "cierre_titulo": "Papiga, u džepu.",
+    "cierre_texto": "Besplatno, bez računa i bez ičega za prijavu. Instaliraš, podijeliš tekst i već se čuje."
+  },
+  "uso": {
+    "title": "Kako se koristi Yappy: dijeli, slušaj i to je to",
+    "description": "Potpuni vodič: dijeljenje s iPhonea, tipkovničke kratice na računalu, QR-most između mobitela i tvog Maca, audioknjige s poglavljima, Siri, widgeti i postavke.",
+    "h1": "Podijeliš – i govori.",
+    "entradilla": "Yappy ima samo jedan pokret: dijeljenje. Sve ostalo su detalji koji već stoje na mjestu.",
+    "pasos": [
+      {
+        "titulo": "Podijeli",
+        "texto": "Iz bilo koje aplikacije: Safari, pošta, Datoteke, glasovna bilješka, PDF koji ti je stigao u chatu. Dodirneš Dijeli, odabereš Yappy i aplikacija se otvori sama."
+      },
+      {
+        "titulo": "Odaberi glas",
+        "texto": "Deset glasova, svi su poligloti. Ako je tekst na drugom jeziku, Yappy ga prepozna sam i čita ga po pravilima tog jezika, a ne s posuđenim naglaskom."
+      },
+      {
+        "titulo": "Slušaj",
+        "texto": "Zaključaš ekran i odložiš telefon u džep. Glas se nastavlja: na zaključanom ekranu su naslovnica, naslov i kontrole, a slušalice vode glavnu riječ."
+      },
+      {
+        "titulo": "Spremi ga",
+        "texto": "Ako ga želiš za šetnju sutra, tiskara ti ga izbaci kao audioknjigu .m4b s poglavljima, a otvara se u svakom reproduktoru."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "Na iPhoneu i iPadu",
+        "texto": "Dijeljenje je cijeli priručnik. Iz bilo koje aplikacije dodirneš Dijeli i odabereš Yappy: prima poveznice, običan tekst, PDF, EPUB, Word, ODT i zvuk. Yappy se odmah otvori sam. Ništa ne ostaje da se kuha u listu za dijeljenje, jer iOS reže proširenja na 120 MB; Yappy kopira ono što je podijeljeno i skoči u aplikaciju, gdje nema ograničenja. Taj skok je dio dizajna, ne zakrpa. <strong>Sve se događa na uređaju</strong>: jedina mreža koju Yappy dotakne jest posjeta adresi koju si podijelio, i to sa svog vlastitog telefona.",
+        "puntos": [
+          "Red čekanja sve priprema dok gledaš: članak se očisti, video donese svoj prijepis, PDF se slaže u stranice. Ako ostaneš s aplikacijom pred očima, čitanje krene samo čim je spremno.",
+          "Karaoke ističe ono što zvuči, rečenicu po rečenicu. Dodirneš bilo gdje za pauzu, povučeš za skok na drugi odlomak, a brzinu podižeš ili spuštaš uz rub.",
+          "Zaključaš ekran i glas se nastavlja. AirPods pauziraju i nastavljaju; sustav s njim postupa kao s bilo kojim reproduktorem.",
+          "Na vješalici ima mjesta za tri dokumenta odjednom: skineš jedan i objesiš drugi. Priložene priče ne zauzimaju mjesta."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Na Macu, Windowsu i Linuxu",
+        "texto": "Jedna kratica i čuje se ono što gledaš: odabrani tekst, stranica u pregledniku ili aktivni dokument. Sve tri kratice mijenjaš u Postavkama, a rade i kad je aplikacija skrivena u sistemskoj traci. Uz kratice, stolna inačica ima i ono što ne stane u jednu ruku.",
+        "puntos": [
+          "<strong>Knjižnica.</strong> Sve što otvoriš ili podijeliš ostaje na naslovnici, sa svojim napretkom. Vraćaš se točno tamo gdje si stao, u točno onaj odlomak.",
+          "<strong>Uređivač po odlomcima.</strong> Svaki odlomak može imati svoj glas, svoju brzinu i svoju pauzu. Za dijaloge, citate ili dokumente na dva jezika.",
+          "<strong>Lokalni prijepis.</strong> Prevučeš glasovnu bilješku ili snimku, a lokalno uho pretvori je u čitljiv tekst, a ništa se ne šalje nikamo.",
+          "<strong>Izvoz audioknjige.</strong> Svaki dokument izađe kao pravi .m4b, s poglavljima po kojima se može listati, izvučenima iz teksta. A može i kao .wav ili .mp3.",
+          "<strong>PDF s očima.</strong> Skenirani PDF-ovi prvo prođu kroz lokalni OCR, pa se tek onda čitaju. Digitalno rođeni čitaju se izravno, stranicu po stranicu.",
+          "<strong>Teme.</strong> Danju kremasti papir, noću svijetla tinta na tamnoj pozadini, ili neka odluči sustav.",
+          "<strong>Bez uzice.</strong> Na računalu je sve otvoreno: tiskara, stalak bez dna i most dolaze postavljeni."
+        ]
+      },
+      {
+        "id": "puente",
+        "titulo": "Most: tvoje računalo renderira, tvoj mobitel sluša",
+        "texto": "Cijela knjiga dugo se sintetizira. Most prebaci najdeblji dio posla na tvoje računalo, a gotovu audioknjigu vrati ti u džep. Veza je izravna i kriptirana od kraja do kraja, između tvojih dvaju uređaja, bez tuđeg poslužitelja u sredini.",
+        "puntos": [
+          "Na računalu, Postavke, „Most”: Yappy ti pokaže QR kod s kriptiranom adresom tvog računala i pozivnim ključem.",
+          "Usmjeri kameru iPhonea na QR kod i uređaji se upare. Ključ se spremi, a možeš ga opozvati s računala kad god hoćeš.",
+          "Na mobitelu, „Pretvori na računalu”: odabereš dokument, računalo ga sintetizira svojim tempom, a .m4b se pojavi u biblioteci na telefonu, s poglavljima. Noć radi za tvoju sutrašnju šetnju.",
+          "Most je kriptiran pomoću QUIC-a, koristeći protokol <a href=\"https://iroh.computer\">iroh</a>. Ako uređajima treba posrednik da bi se našli, taj posrednik vidi samo kriptirani promet koji ne može pročitati."
+        ]
+      },
+      {
+        "id": "audiolibros",
+        "titulo": "Audioknjige: .m4b sa stvarnim poglavljima",
+        "texto": "Yappy ne izvozi „jedan dugi audio”: izvozi audioknjige u .m4b formatu, kao one iz trgovina, s poglavljima iz stvarnih naslova dokumenta, s naslovnicom i nastavkom slušanja. Slušaju se u Yappyju, s njegovom bibliotekom i napretkom, ili u bilo kojem reproduktoru audioknjiga koji već koristiš. A scenarist im daje dah: pauza nakon naslova, ritam popisa na popisima.",
+        "puntos": [
+          "Na mobitelu se naručuju iz biblioteke, poglavlje po poglavlje: biraš koja ćeš isprintati i kojim glasom.",
+          "Papiga i dalje tiska i kad zatvoriš aplikaciju ili zaključaš telefon.",
+          "Iz biblioteke ga dijeliš u Datoteke, u Knjige ili kamo god hoćeš: datoteka je tvoja.",
+          "Tiskara je dio aplikacije Yappy Parlanchín na iPhoneu i iPadu. Na računalu dolazi otvorena."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, prečaci i gumb radnje",
+        "texto": "„Hej Siri, pročitaj mi međuspremnik s Yappyjem.” Aplikacija izlaže prave App Intents: sami se pojavljuju u aplikaciji Prečaci, odazivaju se na Siri i mogu se zakačiti za gumb radnje na iPhoneu. Ništa ne treba postavljati.",
+        "puntos": [
+          "<strong>Pročitaj moj međuspremnik.</strong> Kopiraš bilo gdje, zamoliš Siri, i zasviri.",
+          "<strong>Nastavi čitanje.</strong> Pokreće zadnje što se čulo, točno odakle je stalo.",
+          "<strong>Poslušaj poveznicu.</strong> Prima adresu kao parametar: savršen završetak za tvoje vlastite prečace.",
+          "Za ručne automatizacije obrađuje se i shema <code>yappy://</code>: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> i <code>yappy://pair?d=…</code>.",
+          "A ima i widget za početni zaslon s onim što se zadnje čulo, spremnim za nastavak jednim dodirom."
+        ]
+      },
+      {
+        "id": "ajustes",
+        "titulo": "Postavke: malo točkića, svi pravi",
+        "texto": "Yappy nema ploču sa stotinu prekidača. Ima samo one koji stvarno mijenjaju kako zvuči.",
+        "puntos": [
+          "<strong>Glas.</strong> Deset glasova, svi višejezični: isti glas čita španjolski, engleski ili japanski bez promjene boje glasa.",
+          "<strong>Brzina.</strong> Od 0,5× do 2×. Glas se generira tom brzinom, ne ubrzava se poslije: visina tona se ne krivi.",
+          "<strong>Pauze.</strong> Koliko diše između odlomaka. Naslovi i popisi već nose svoj ritam iz scenarista.",
+          "<strong>Jezik.</strong> Automatsko prepoznavanje po dokumentu i po odlomku, ili ručno postavljeno. Citati na drugom jeziku prebacuju se sami.",
+          "<strong>Anonimna statistika.</strong> Na mobitelu je uključena, a isključuje se ovdje, u pozadini. Točno što se šalje opisano je u pravilima o privatnosti, točka po točka."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Na Androidu",
+        "texto": "Isti potez: podijeliš poveznicu, tekst ili dokument i on slijeće u isti red — izdvajanje članka, karaoke i glas, sve unutar samog telefona. Android verzija je najmlađa u obitelji i još joj nedostaju tri stvari koje iPhone ima: kontrole na zaključanom zaslonu, videozapisi i reproduktor audioknjiga .m4b. A ima i nešto važnije: <strong>još nije objavljena</strong>. Googleov račun za razvojne programere još je u provjeri, pa ne navodimo datum jer ga ne znamo. Kad izađe, objavit ćemo to ovdje i u repozitoriju. Ali mirno: na Androidu neće biti kvake. Sve je otvoreno."
+      }
+    ],
+    "atajo": "Prečac",
+    "atajo_leer": "Čitaj ono što gledaš",
+    "atajo_portapapeles": "Čitaj međuspremnik",
+    "atajo_pausar": "Pauziraj",
+    "cierre": "To je cijeli priručnik."
+  },
+  "guionizador": {
+    "title": "Yappyjev scenarist: od napisanog do izgovorenog",
+    "description": "Kako Yappy pretvara „1492”, „15. stoljeće”, „3,50 €” ili „FBI” u izgovorene riječi, po pravilima svakoga jezika, na 31 jeziku. Uz demo uživo: isti Rust kao u aplikaciji, kompajliran u WebAssembly.",
+    "h1": "Od napisanog do izgovorenog.",
+    "oficios_titulo": "Dvanaest zanata u jednom prolazu.",
+    "oficios": [
+      {
+        "titulo": "Datumi",
+        "texto": "„24. 5. 1533.” izgovara se u cijelosti, s redoslijedom i rodom svakoga jezika."
+      },
+      {
+        "titulo": "Vrijeme",
+        "texto": "„14:05” izgovara se kako bi to rekao čovjek, ne kako bi ga pročitao sat."
+      },
+      {
+        "titulo": "Valute",
+        "texto": "„3,50 €” izgovara se „tri eura i pedeset”, s množinom kakva treba."
+      },
+      {
+        "titulo": "Postoci",
+        "texto": "„7 %“ se čita „sedam posto“, a „0,5 %“ se ne pretvara u „nula zarez pet“."
+      },
+      {
+        "titulo": "Unidades",
+        "texto": "„230 °C“ se čita „dvjesto trideset stupnjeva po Celziju“."
+      },
+      {
+        "titulo": "Ordinales",
+        "texto": "„3.“ se čita „treća“, s rodom i padežom gdje ih ima."
+      },
+      {
+        "titulo": "Rimski brojevi s glavom",
+        "texto": "„XX. stoljeće“ čita se „dvadeseto stoljeće“, „Elizabeta II.“ glasi „Elizabeta Druga“, a „XL“ na etiketi nije broj."
+      },
+      {
+        "titulo": "Krative po fonotaktici",
+        "texto": "FBI se čita slovo po slovo, NASA kao riječ. Pravilo određuje kako zvuči, a ne popis."
+      },
+      {
+        "titulo": "Abreviaturas",
+        "texto": "„itd.“, „str.“, „19. st.“: svaki jezik ima svoju tablicu."
+      },
+      {
+        "titulo": "Números grandes",
+        "texto": "S RBNF-gramatikama iz Unicode CLDR-a, uključujući rod i padeže."
+      },
+      {
+        "titulo": "31 idiomas",
+        "texto": "Ista pravila, s gramatikom svakog jezika. Bez ručno pisanih popisa."
+      },
+      {
+        "titulo": "El ritmo",
+        "texto": "Naslovi odahnu nakon što se izgovore; popisi drže svoj takt. Pauze su dio scenarija, a ne slučajnosti."
+      }
+    ],
+    "cierre": "Scenarij je pola priče; druga se polovica sluša.",
+    "faq": [
+      {
+        "q": "Što su RBNF-gramatike?",
+        "a": "RBNF je kratica za <em>Rule-Based Number Format</em>: pravila kojima Unicode CLDR opisuje kako se broj izgovara u svakom jeziku. Nije tablica od tisuću riječi, nego gramatika: zato zna da se kaže „dvadeset i dvije stranice“, a ne „dvadeset i dva stranice“, da ruski deklinira brojeve i da francuski do devedeset broji dvadeseticama. Yappy ih interpretira u čistom Rustu, bez ručno pisanih popisa."
+      },
+      {
+        "q": "Zašto treba scenarist? Zar to ne napravi sam glas?",
+        "a": "Ne, i to je namjerno. Model glasa u Yappyju radi na razini znakova: izgovara točno ono što mu stigne napisano. To ga čini brzim i laganim, ali znači da će, ako mu dođe „1492“, pokušati reći baš to, znak po znak. U takvom modelu normalizacija <em>je</em> izgovor. Scenarist je dio koji svaki broj, svaku kraticu i svaki simbol pretvara u riječi koje bi rekao čovjek."
+      },
+      {
+        "q": "Na koliko jezika radi?",
+        "a": "Na svih 31 jezik koji glas govori, svaki sa svojim pravilima: redoslijed datuma, veza broja i valute, ordinali, krative i rimski brojevi. Španjolski za XV. stoljeće kaže „siglo quince“, engleski „fifteenth century“; „Louis XIV“ je „Louis quatorze“, a ne „Louis fourteenth“. Dvanaest istih zadataka, trideset i jedna gramatika."
+      },
+      {
+        "q": "Zašto karaoke uvijek padne na točnu riječ?",
+        "a": "Jer zapis nije samo pretvoreni tekst: on čuva preslikavanje između napisanoga i izgovorenoga. Kad glas izgovori „tisuću četiristo devedeset i dva“, zapis zna da te četiri riječi dolaze od četiri znamenke broja „1492“, pa se podcrtaj položi točno na njih, bez pomaka. To je razlika između osvjetljavanja teksta i pogađanja."
+      },
+      {
+        "q": "Riječ se izgovara krivo. Mogu li je ispraviti?",
+        "a": "Korisnički rječnik izgovora zasad ne postoji. Budući da model čita znakove, najbrži je put da riječ u uređivaču napišeš onako kako zvuči i ponovno je poslušaš. A ako ne radi opći obrazac (kratica, sigla, mjerna jedinica), prijavi to u <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub temama</a>: tablice zapisivača rastu upravo tim slučajevima."
+      },
+      {
+        "q": "Je li zapisivač na ovoj stranici isti kao onaj u aplikaciji?",
+        "a": "Isti je kod, kompajliran u WebAssembly da radi u tvom pregledniku. Ono što ovdje napišeš ne napušta tvoju karticu. A budući da je cijeli projekt otvoren, pravila možeš čitati jedno po jedno u <a href=\"https://github.com/joseluissaorin/yappy\">repozitoriju</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Preuzmi Yappy: iPhone, iPad, Mac, Windows i Linux",
+    "description": "Yappy je besplatan i otvorenog koda. Za iPhone i iPad u App Storeu; verzija za računalo kompajlira se iz koda ili preuzima s GitHuba. Zahtjevi i veličina modela glasa.",
+    "h1": "Besplatan, otvoren i tvoj.",
+    "entradilla": "Nema registracije, ni e-pošte, ni probne verzije koja istječe. Preuzmeš je i to je to.",
+    "modelo_nota": "Prvi put Yappy preuzima model glasa ({peso}). Na iPhoneu stiže uz instalaciju; na računalu, kod prvog otvaranja aplikacije. Poslije veza više nije potrebna.",
+    "android_titulo": "Android",
+    "android_texto": "Kompajlirana je i radi, ali još nije objavljena: Googleov razvojni račun još je u provjeri. Kad izađe, najavit ćemo to ovdje i u repozitoriju.",
+    "escritorio_aviso": "Binarne datoteke za računalo objavljuju se na GitHubu. Ako je verzija koju tamo nađeš starija od one za iPhone, najnovija još nije prenesena: kod jest ažuran i kompajlira se naredbom <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone i iPad",
+        "texto": "U App Storeu, besplatno i bez računa. Glasovi se preuzimaju uz samu instalaciju, pa otvoriš aplikaciju, podijeliš tekst i on već govori. To je najpotpunija verzija: audioknjige, Siri, widget, most i kontrole na zaključanom zaslonu.",
+        "requisitos": "iOS ili iPadOS 17 ili noviji · model glasa zauzima oko 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Preuzmi u App Storeu"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon i Intel, u obliku notarizirane .dmg datoteke. Ima sva tri globalna prečaca, uređivač po odlomcima, OCR skeniranih PDF-ova i izvoz audioknjiga. Ovdje nema skrivenih obveza: sve je otvoreno.",
+        "requisitos": "macOS 12 ili noviji · model glasa od oko 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Pogledaj verzije na GitHubu"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "Instalacijski program .exe ili .msi za x64, s istim prečacima i istim funkcijama kao verzija za Mac. Svaki prijenosnik posljednjih godina sintetizira brže od stvarnog vremena.",
+        "requisitos": "Windows 10 ili noviji, x64 · model glasa od oko 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Pogledaj verzije na GitHubu"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage i .deb za x64. Globalne kratice ovise o tvom desktop okruženju; u Postavkama ih možeš zamijeniti drugima ako su ti već zauzete.",
+        "requisitos": "x64 · model glasa od oko 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Pogledaj verzije na GitHubu"
+      },
+      {
+        "nombre": "Iz koda",
+        "texto": "Cijeli je projekt objavljen: aplikacija za računalo i za mobitel (Tauri, Rust i Svelte), motor za sintezu, scenarist s ugrađenim CLDR gramatikama i ovaj web. Uz instaliran Rust i Node, naredba <code>cargo tauri build</code> napravit će ti vlastitu kopiju. Ako objavljeni binarni paketi kasne za verzijom za iPhone, ovo je brzi put: kôd je uvijek ažuran.",
+        "requisitos": "Rust i Node · potpune upute u README-u",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Pogledaj kôd na GitHubu"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Cijene u Yappyju: besplatno zauvijek, bez naplate po znaku",
+    "description": "Yappy je besplatan i bez ograničenja slušanja: tri dokumenta istovremeno na polici. Yappy Parlanchín dodaje policu bez dna, tiskaru audioknjiga i most, od 3,99 € mjesečno ili 59,99 € jednokratno.",
+    "h1": "Novac, bez uvijanja.",
+    "entradilla": "Slušati ono što čitaš pitanje je pristupačnosti, a pristupačnost ne bi trebala tražiti karticu. Zato je bitni dio besplatan i nema brojača.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "zauvijek",
+    "gratis_puntos": [
+      "Slušanje bez ograničenja minuta i znakova",
+      "31 jezik i deset glasova",
+      "PDF, EPUB, Word, članci, videozapisi i glasovne bilješke",
+      "Tri dokumenta istovremeno na polici: makneš jedan, stane drugi",
+      "Bez računa, bez e-maila, bez reklama",
+      "Otvoreni izvorni kod pod licencom MIT"
+    ],
+    "gratis_no": [
+      "Bez tiskare za audioknjige",
+      "Bez mosta prema računalu"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "mjesečno",
+    "cuerda_periodo_anio": "godišnje",
+    "cuerda_periodo_vida": "samo jednom",
+    "cuerda_puntos": [
+      "Sve navedeno",
+      "Vješalica bez dna: koliko god dokumenata želiš",
+      "Tiskara: cijele knjige postaju audioknjige s poglavljima",
+      "Most: tvoje računalo sve pretvori i samo od sebe ti vrati datoteke",
+      "Otkazuješ kad god hoćeš"
+    ],
+    "cuerda_nota": "Bez besplatne probe – namjerno: vješalica s tri dokumenta <em>jest</em> proba. Ne istječe i poslije ništa ne naplaćuje. Cijene su španjolske – u trgovini će se prikazati u tvojoj valuti.",
+    "cuerda_donde": "Kanap se kupuje unutar aplikacije, u zadnjoj sobi trgovine.",
+    "solo_ios": "Na računalu i Androidu sve je otvoreno: kanap postoji samo na iPhoneu i iPadu.",
+    "comparacion_titulo": "Koliko naplaćuju drugi.",
+    "comparacion_entradilla": "Aplikacije koje sintetiziraju govor u oblaku plaćaju poslužitelje svaki put kad pritisneš play, pa ti naplaćuju po satu ili po znaku. Yappy sve sintetizira na tvom uređaju: slušanje ne košta ništa, pa ga ne mora ni naplaćivati.",
+    "comparacion_nota": "Javno objavljene cijene, provjerene u rujnu 2026. Često se mijenjaju: provjeri ih na svakoj stranici prije odluke.",
+    "faq": [
+      {
+        "q": "Zašto je besplatno?",
+        "a": "Jer nema poslužitelja koje treba plaćati. Glas se sintetizira na tvom uređaju, pa slušanje nikoga ništa ne košta i nema računa koji bi se dijelio. Aplikacije koje pretvaraju tekst u govor u oblaku plaćaju stroj svaki put kad pritisneš play, pa ti naplaćuju po znaku ili po satu. Yappy ne može naplatiti ono što ga ne košta."
+      },
+      {
+        "q": "Što ako nikad ne platim?",
+        "a": "Ništa. Yappy radi zauvijek: svih deset glasova, 31 jezik, svi formati, bez reklama, bez korisničkog računa i bez brojača minuta. Jedina je razlika što vješalica na iPhoneu i iPadu nosi tri dokumenta istodobno: makneš jedan, stane drugi. Na računalu čak ni to."
+      },
+      {
+        "q": "Ima li besplatne probe?",
+        "a": "Ne, i to je odluka, ne zaborav. Vješalica s tri dokumenta <em>jest</em> proba: ne istječe, ne traži karticu i osmog dana ništa ne počinje naplaćivati. Nitko se ne bi smio probuditi s troškom koji ne pamti da je prihvatio."
+      },
+      {
+        "q": "Mogu li otkazati kad god hoću?",
+        "a": "Da, sa svog Apple računa, kao i svaka druga pretplata. Obnavljaju se same na kraju svakog razdoblja, osim ako ih otkažeš barem 24 sata prije. Doživotna kupnja se nikad ne obnavlja: platiš jednom i to je to. A ako otkažeš, ne gubiš ništa od besplatnoga: vraćaš se na vješalicu za tri."
+      },
+      {
+        "q": "Zašto se na računalu i na Androidu ne plaća?",
+        "a": "Jer je navijanje ugrađeno samo u iPhone i iPad. Na računalu, i u inačici za Android kad izađe, tiskara, vješalica bez dna i most dolaze otvoreni. Nije to lansirna ponuda: tamo jednostavno nema ničega za naplatiti."
+      }
+    ],
+    "una_a_una": "jednu po jednu, sa svojim podacima"
+  },
+  "voces": {
+    "title": "Glasovi Yappyja: deset poliglotnih ptica na 31 jezika",
+    "description": "Deset prirodnih glasova koji govore svih 31 jezik bez promjene boje glasa. Poslušaj uzorak svakoga i odaberi svoj: glas koji odabereš obojit će cijelu aplikaciju.",
+    "h1": "Deset ptica, trideset i jedan jezik.",
+    "entradilla": "Sve su poligloti: isti glas čita španjolski, engleski ili japanski bez promjene boje glasa. A tekst s citatom na drugom jeziku sam mijenja jezik, odlomak po odlomak.",
+    "elige": "Dodirni pticu i reći će ti kako zvuči.",
+    "idiomas_titulo": "Jezici koje govore.",
+    "idiomas_entradilla": "Trideset i jedan, sa svojim scenaristom: nije to isti glas koji čita s naglaskom, nego svaki jezik sa svojim pravilima."
+  },
+  "preguntas": {
+    "title": "Pitanja o Yappyju: privatnost, jezici, cijene i licence",
+    "description": "Ravni odgovori na pitanja što je besplatno, što poseže za mrežom, koje modele Yappy koristi, koje formate prihvaća i što raditi kad nešto ne štima.",
+    "h1": "Pitanja koja stižu.",
+    "entradilla": "Odgovoreno ravno, bez zaobilaznica.",
+    "grupos": [
+      {
+        "susurro": "novac i sloboda",
+        "titulo": "Besplatno, zaista.",
+        "lista": [
+          {
+            "q": "Je li stvarno besplatno?",
+            "a": "Da. Yappy je otvorenog koda pod MIT licencom. Mogućnost da čuješ ono što čitaš pitanje je pristupačnosti, a alati za pristupačnost ne bi smjeli tražiti karticu. Na računalu nema ni plaćene inačice ni reklama. Na iPhoneu probna papiga na svojoj vješalici nosi tri dokumenta odjednom, bez ograničenja vremena; ako želiš vješalicu bez dna, tiskaru audioknjiga i most prema računalu, naviješ je uz Yappy Parlanchín — pretplatom ili jednokratnim plaćanjem za cijeli život. U svakom slučaju bez računa i bez reklama."
+          },
+          {
+            "q": "U čemu je kvaka? Kako se financira?",
+            "a": "Nema kvake: nema poslužitelja koje treba plaćati. Sinteza se vrti na tvom uređaju, pa Yappy po korisniku ne košta ništa. To je autorov osobni projekt, objavljen zato što je već postojao i jer bi mogao poslužiti još nekome."
+          },
+          {
+            "q": "Ima li besplatne probe?",
+            "a": "Ne, namjerno. Vješalica s tri dokumenta jest proba — ne istječe i ne pretvara se u naplatu nakon sedam dana. Ako ti Yappy koristi, to ćeš znati i bez da ti itko stavi sat pred nos."
+          },
+          {
+            "q": "Mogu li zvuk koji generiram objaviti u podcastu ili videu?",
+            "a": "Yappijev kod je pod MIT licencom i ne nameće ti uvjete. Model glasa, Supertonic 3, ima vlastitu licencu: otvorenu licencu tipa OpenRAIL-M, s odredbama o uporabi. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Pregledaj je na stranici modela</a> prije komercijalne uporabe, jer taj dio ne ovisi o Yappyju i za njega ne možemo ništa obećati."
+          }
+        ]
+      },
+      {
+        "susurro": "tvoji tekstovi ne putuju",
+        "titulo": "Privatnost, imenom i prezimenom.",
+        "lista": [
+          {
+            "q": "Idu li moji tekstovi na neki poslužitelj?",
+            "a": "Ne. Sinteza, transkripcija i izdvajanje članaka odvijaju se na tvom uređaju. Ono što dijeliš s Yappyjem ne šalje se nikamo: nema računa, nema kopija i ne postoji nijedan Yappyjev poslužitelj na kojem bi se to moglo spremiti. Mrežu dodiruju četiri konkretne stvari, i sve su nabrojane u pravilima o privatnosti."
+          },
+          {
+            "q": "Prikuplja li Yappy statistiku korištenja?",
+            "a": "Da, prikuplja ih, i treba to reći bez uvijanja. Mobilna aplikacija šalje anonimne statistike korištenja: uključene su iz tvornice, a isključuješ ih u postavkama. Putuje samo naziv događaja s zatvorenog popisa (da je aplikacija otvorena, koji se korak uvodne šetnje prikazuje, koji se plan dotakne, završava li čitanje), nasumični identifikator instalacije, jezik i verzija. Nikad tvoje ime, tvoj e-mail, tekst koji čitaš, naslov dokumenta ni poveznica, i nijedan identifikator za oglašavanje. Ne idu ni Googleu ni Firebaseu ni nijednoj analitičkoj tvrtki: idu u Worker i bazu podataka D1 na Cloudflareu, u vlasništvu samog autora. Na računalu nema statistika, nikakvih."
+          },
+          {
+            "q": "A most između mobitela i računala?",
+            "a": "To je izravna veza između tvoja dva uređaja, šifrirana od kraja do kraja pomoću QUIC-a, koristeći protokol <a href=\"https://iroh.computer\">iroh</a>. Uparivanje se obavi tako da kameru uperiš u QR kod koji ti prikaže računalo, a dobiveni ključ možeš odatle opozvati u svakom trenutku. Nema Yappyjeva poslužitelja u sredini, jer ne postoji nijedan Yappyjev poslužitelj."
+          },
+          {
+            "q": "Radi li bez interneta?",
+            "a": "Da, zauvijek. Nakon početnog preuzimanja modela, oko 200 MB na mobitelu i oko 398 MB na računalu, Yappy možeš koristiti u zrakoplovnom načinu rada: zalijepiti tekst, otvoriti dokumente, sintetizirati i izvoziti. Samo dijeljenje novih adresa treba mrežu, iz očitih razloga. Nema ni sinkronizacije s oblakom: tvoja biblioteka živi na tvom uređaju, a most je najbliže prenošenju nečega s jednog stroja na drugi."
+          }
+        ]
+      },
+      {
+        "susurro": "ono što zvuči",
+        "titulo": "Glas i jezici.",
+        "lista": [
+          {
+            "q": "Koji model glasa koristi?",
+            "a": "Supertonic 3, otvoreni model tvrtke Supertone s oko 99 milijuna parametara. Stane u 398 MB na računalu i 200 MB na mobitelu, a sintetizira brže od realnog vremena na svakom prijenosnom računalu posljednjih godina. Radi na razini znakova: zato postoji scenarist, koji brojeve, kratice i simbole pretvara u riječi prije nego što ih glas ugleda."
+          },
+          {
+            "q": "Koje jezike govori?",
+            "a": "Njemački, arapski, bugarski, češki, korejski, hrvatski, danski, slovački, slovenski, španjolski, estonski, finski, francuski, grčki, hindski, mađarski, indonezijski, engleski, talijanski, japanski, latvijski, litavski, nizozemski, poljski, portugalski, rumunjski, ruski, švedski, turski, ukrajinski i vijetnamski. Trideset i jedan. A svih deset glasova su poligloti: isti ih glas sve čita, a da ne promijeni boju."
+          },
+          {
+            "q": "Što s dokumentom u kojem se miješaju jezici?",
+            "a": "Yappy prepozna jezik dokumenta i, odlomak po odlomak, jezik svakog dijela: citat na engleskom u eseju na španjolskom čita se na engleskom, istim glasom, a da ne diraš ništa. A ako se prepoznavanje prevari, jezik možeš namjestiti ručno."
+          },
+          {
+            "q": "Po čemu se razlikuje od VoiceOvera ili opcije „Pročitaj zaslon”?",
+            "a": "Sistemski čitači čitaju zaslon onakav kakav jest, sa sustavnom prozodijom i bez pamćenja. Yappy tekst priprema prije no što ga izgovori (očisti članak, pretvori brojeve i kratice u riječi, označi stanke), čita ga prirodnim glasom, pamti gdje si stao, izvozi audioknjige i i dalje zvuči sa zaključanim zaslonom. To su alati-rođaci, svaki sa svojim obrtom, i koriste se istovremeno a da se ne smetaju: Yappy ne zamjenjuje čitač zaslona i ne namjerava to učiniti."
+          }
+        ]
+      },
+      {
+        "susurro": "ono što uđe",
+        "titulo": "Dokumenti.",
+        "lista": [
+          {
+            "q": "Koje formate prihvaća?",
+            "a": "Web-članke (stranica se očisti sama), videozapise preko objavljene transkripcije, PDF, EPUB, Word, ODT, RTF, Markdown, običan tekst, .pptx, .xlsx, .csv i glasovne bilješke. Na mobitelu sve preko lista za dijeljenje; na računalu, uz to, povlačenjem ili prečacima. A ako na računalu imaš instaliran pandoc, popis se širi na LaTeX, reStructuredText, Org i još neke."
+          },
+          {
+            "q": "A skenirani PDF-ovi, bez teksta unutra?",
+            "a": "Na računalu prolaze kroz lokalni OCR prije čitanja, pa ni tada ništa ne napušta tvoje računalo. Na iPhoneu to zasad ne postoji: ako je PDF fotografija papira, mobitel ne nalazi tekst za čitanje. Nakošen ili mutan sken dat će onoliko koliko svaki OCR može, ali solidan se sken čita do kraja."
+          },
+          {
+            "q": "Može li čitati knjige kupljene u trgovini?",
+            "a": "Samo one koje možeš otvoriti. EPUB bez zaštite čita se u cijelosti, sa svojim poglavljima. Knjige s DRM-om iz trgovine ne mogu se čitati, ni ovdje ni nigdje drugdje: ta brava nije Yappyjeva i nećemo se pretvarati da imamo ključ."
+          },
+          {
+            "q": "Kako nešto izbrišem iz biblioteke?",
+            "a": "Iz same biblioteke: svaki dokument ima svoju opciju „zaboravi“, a s njom odlazi i njegov zvuk. Izvezene datoteke (.m4b, .mp3, .wav) tvoje su i žive ondje gdje ih spremiš; brisanje i premještanje posao su Findera ili Datoteka."
+          }
+        ]
+      },
+      {
+        "susurro": "kad nešto ne radi",
+        "titulo": "Kvarovi i pomoć.",
+        "lista": [
+          {
+            "q": "Zašto prva sinteza traje nekoliko sekundi dulje?",
+            "a": "Model se prvi put učitava u memoriju. Nakon toga ostaje topao i sljedeće rečenice nastaju u hodu. Ako je aplikacija na računalu tek instalirana, u prvo čekanje spada i preuzimanje modela glasa."
+          },
+          {
+            "q": "Riječ se izgovara pogrešno. Može li se naučiti?",
+            "a": "Nema korisničkog rječnika izgovora, pa je najbrži put da riječ u uređivaču napišeš onako kako se izgovara: model čita znakove i poslušat će te. Ako je riječ o općem obrazcu (kratica, akronim, mjerna jedinica), prijavi to u <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub teme</a>: tablice za izgovor rastu uz takve slučajeve."
+          },
+          {
+            "q": "Podijelim video, a on ne progovara.",
+            "a": "Yappy uzima objavljenu transkripciju videa, a ne transkribira njegov zvuk. Ako taj video nema transkripciju, nema što čitati. A ako je video tvoj i imaš ga kao datoteku, podijeli datoteku: tada ga transkribira lokalno uho."
+          },
+          {
+            "q": "Našao/la sam grešku. Gdje da je ispričam?",
+            "a": "U <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub temama</a> ili na <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Ako možeš podijeliti tekst kod kojega je zapelo i svoj sustav, rješava se prije."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Privatnost aplikacije Yappy: tvoji tekstovi ne putuju",
+    "description": "Što izlazi iz tvog uređaja, a što ne, rečeno crno na bijelo: sinteza, transkripcija i izdvajanje članaka odvijaju se unutra; mrežu dodiruju samo četiri slučaja, i sve ih četiri ovdje opisujemo.",
+    "h1": "Tvoji tekstovi ne putuju.",
+    "actualizado": "Zadnja izmjena: {fecha}. Odgovorna osoba: José Luis Saorín Ferrer, Tenerife (Španjolska).",
+    "bloques": [
+      {
+        "titulo": "O čemu se radi",
+        "texto": "Ovo je pravilnik o privatnosti aplikacije Yappy: aplikacije za iPhone, iPad, Mac, Windows i Linux, sa svojim widgetima i proširenjima. Kratak je jer nema mnogo za reći. Yappy nema korisničke račune, ne traži tvoje ime ni tvoju adresu e-pošte, a ono što mu daš da pročita ne izlazi iz tvog uređaja. Ono što mrežu ipak dodiruje četiri su konkretne stvari, i evo sve četiri, jedna po jedna."
+      },
+      {
+        "titulo": "Ni račun, ni ime, ni tekstovi",
+        "texto": "Yappy nema registraciju ni prijavu. Ne prikuplja tvoje ime, tvoju adresu e-pošte, kontakte, lokaciju ni nijedan identifikator za oglašavanje. Članci, PDF-ovi, EPUB-ovi, dokumenti, glasovne bilješke i tekstovi koje podijeliš s aplikacijom pretvaraju se u govor <strong>unutar tvog uređaja</strong>: sinteza, transkripcija i čišćenje stranica odvijaju se lokalno i ne šalju se nijednom našem ni tuđem poslužitelju. Nema ni sinkronizacije s oblakom: tvoja biblioteka, tvoj napredak i tvoje audioknjige žive u tvom uređaju i nestaju ako deinstaliraš aplikaciju."
+      },
+      {
+        "titulo": "Dodiruje mrežu (1): preuzimanje glasova",
+        "texto": "Prvi put Yappy preuzima model glasa (oko 200 MB na mobitelu, oko 398 MB na računalu) s <code>modelos.yappy.joseluissaorin.com</code>, R2-spremišta tvrtke Cloudflare. Kao i kod svakog preuzimanja, poslužitelj vidi tvoju IP-adresu dok traje zahtjev. Ne vodimo evidenciju koja bi te identificirala. Nakon tog preuzimanja sinteza zauvijek radi u zrakoplovnom načinu rada."
+      },
+      {
+        "titulo": "Dodir s mrežom (2): poveznice koje dijeliš",
+        "texto": "Ako podijeliš poveznicu ili video, tvoj uređaj posjetit će tu adresu da donese tekst ili transkripciju, isto kao što bi to učinio tvoj preglednik. Posjet čini tvoj uređaj, a ne Yappyjev poslužitelj, a posjećena stranica dobije ono što bi dobila od preglednika: tvoju IP adresu i vrstu uređaja. Nikakva se povijest ne sprema izvan tvog uređaja."
+      },
+      {
+        "titulo": "Dodir s mrežom (3): anonimna statistika",
+        "texto": "To bolje reći odmah: <strong>analitika postoji</strong>, samo u mobilnoj aplikaciji, i dolazi uključena. Isključuješ je kad god hoćeš, u postavkama, pod „Anonimna statistika“. Šalje se naziv događaja iz zatvorenog popisa (da se aplikacija otvorila, koji se korak uvodne šetnje prikazuje, koji se plan otvori, završava li čitanje), slučajni identifikator instalacije, jezik aplikacije i njezina inačica. <strong>Nikad</strong> tvoje ime, tvoja e-pošta, tekst koji čitaš, naslov dokumenta, poveznica niti identifikator za oglašavanje. Ne odlaze u Google Analytics, ni u Firebase, ni u nijednu tvrtku za analitiku: odlaze u Worker i D1 bazu na Cloudflareu, u vlasništvu samog autora, i služe da se vidi koji se dijelovi aplikacije koriste, a koji su višak. Na računalu nema statistike, nikakve."
+      },
+      {
+        "titulo": "Dodir s mrežom (4): kupnja",
+        "texto": "Pretplate i doživotnu kupnju Yappy Parlanchín vodi Apple preko App Storea, i postoje samo na iPhoneu i iPadu. Da zna je li ti pretplata aktivna, aplikacija koristi <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, upravitelj pretplatama: on prima anoniman identifikator instalacije i potvrdu o kupnji od Applea, a ne prima tvoje ime ni tvoju e-poštu. Apple objašnjava svoje podatke u <a href=\"https://www.apple.com/legal/privacy/\">svojim pravilima o privatnosti</a>."
+      },
+      {
+        "titulo": "Most: s tvog iPhonea na računalo i natrag",
+        "texto": "Ako upariš Yappy sa svojim Macom ili PC-jem, dokumenti koje pošalješ na pretvorbu putuju izravnom vezom šifriranom od kraja do kraja, između tvojih dvaju uređaja, uz knjižnicu <a href=\"https://iroh.computer\">iroh</a> preko QUIC-a. Da se pronađu, mogu se poslužiti i relejnih poslužitelja, koji vide samo šifrirani promet koji ne umiju pročitati. Yappy nema posredničkih poslužitelja koji bi što čuvali, jer nema poslužitelja."
+      },
+      {
+        "titulo": "Maloljetnici i dopuštenja",
+        "texto": "Yappy nije namijenjena osobama mlađim od 13 godina i ne prikuplja nikakve osobne podatke, bez obzira na dob. Dopuštenja koja traži sustav koriste se samo za tu radnju i u tom trenutku: međuspremnik kod lijepljenja, kamera kod skeniranja QR-koda mosta, mikrofon na računalu za diktiranje. Ništa se od toga ne koristi u pozadini."
+      },
+      {
+        "titulo": "Tvoja prava i kome pisati",
+        "texto": "Kako ne čuvamo osobne podatke, na našim poslužiteljima nema ničega za izvoz ili brisanje: sve što Yappy zna o tebi živi na tvom uređaju i nestaje kad je deinstaliraš. Ako želiš da prestanemo primati i anonimnu statistiku, isključi je u samoj aplikaciji. Za bilo kakva pitanja, piši na <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> ili otvori temu na <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHubu</a>. Kôd je otvoren, pod MIT licencom: sve navedeno možeš provjeriti tako da ga pročitaš."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy za disleksiju, ADHD i slabovidnost: slušati ono što se ne može pročitati",
+    "description": "Alat za čitanje naglas koji ne traži korisnički račun, ne naplaćuje sate i radi bez interneta. Za disleksiju, ADHD, umor očiju, slabovidnost i za sve koji jednostavno bolje čitaju ušima.",
+    "h1": "Čitati ušima.",
+    "entradilla": "Mogućnost da slušaš ono što čitaš pitanje je pristupačnosti, a alati za pristupačnost ne bi smjeli tražiti karticu. Yappy je ne traži, ne broji minute i radi i u avionu.",
+    "voiceover_titulo": "Yappy ne zamjenjuje VoiceOver",
+    "voiceover_texto": "To su srodni alati, svaki sa svojim zanatom. Čitač zaslona najavljuje sučelje da bi se njime upravljalo; Yappy čita sadržaj da bi se uživalo u njemu. Koriste se istovremeno i ne smetaju se.",
+    "casos": [
+      {
+        "titulo": "Disleksija",
+        "texto": "Dešifriranje slovo po slovo umara, a umor pojede razumijevanje davno prije nego što ponestane vremena. Slušati tekst dok ga zaslon ističe znači čitati i slušati u isto vrijeme: oko prati redak, uho radi teški posao. Yappy ništa ne rješava, ali uklanja s puta ono što iscrpljuje."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "Tiha stranica poziva na odlazak. Glas koji napreduje drži ritam i vraća u odlomak kad je glava otišla u šetnju. A kako se može slušati u hodu ili dok su ruke zauzete, čitanje više ne traži mirovanje: za mnoge je u tome cijela razlika."
+      },
+      {
+        "titulo": "Slabovidnost i umor očiju",
+        "texto": "Kad sitna slova više ne dolaze u obzir, ili kad u sedam navečer oči već odraade svoju smjenu, tekst je i dalje dostupan ušima. Yappy čita PDF, mail ili cijeli članak, sa zgašenim zaslonom ako treba, sa zaključanog zaslona ili sa slušalicama."
+      },
+      {
+        "titulo": "Učenje jezika",
+        "texto": "Slušati i čitati istovremeno najstariji je i najučinkovitiji način učenja izgovora. Svaki od deset glasova je poliglot i čita svih 31 jezik, svaki po svojim pravilima, pa njemački tekst zvuči kao njemački, a ne kao njemački s engleskim naglaskom. Na 0,75× čuje se svaki slog; na 1,5× vježba se uho."
+      },
+      {
+        "titulo": "Ispravi ono što pišeš",
+        "texto": "Rečenica koja se ne može izgovoriti naglas ne opstaje ni napisana. Slušanje vlastitog teksta razotkriva ponavljanja, zareze na krivim mjestima i uzgredne rečenice koje nikad ne završavaju. To je korektura kakvu su nekad radile tiskare, a dobiješ je besplatno: otvoriš .docx, pritisneš play i čuješ što doista piše, a ne što misliš da piše."
+      },
+      {
+        "titulo": "Uči ušima",
+        "texto": "Bilješke s predavanja, poglavlje koje ulazi na ispit, članak od dvjesto stranica. Noću se pošalju u tiskaru, a ujutro su audioknjiga s poglavljima koju slušaš u autobusu. Nastavljanje pamti točan odlomak: za nastavak ne treba ništa tražiti."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Radi li s uključenim VoiceOverom ili TalkBackom?",
+        "a": "Da, i ne smetaju jedno drugome. Čitač zaslona opisuje sučelje kako bi se njime upravljalo; Yappy čita sadržaj kako bi se uživalo u njemu. Koriste se istovremeno: VoiceOver te dovede do gumba za reprodukciju, a odatle knjigu čita Yappyjev glas."
+      },
+      {
+        "q": "Može li se koristiti bez gledanja u zaslon?",
+        "a": "Da. Na iPhoneu postoje Siri prečaci („Hej Siri, neka Yappy pročita moj međuspremnik“), akcijski gumb, kontrole na zaključanom zaslonu i one na slušalicama. Na računalu tri tipkovnička prečaca čitaju odabrani tekst, međuspremnik ili pauziraju, dok aplikacija sjedi skrivena u traci sustava."
+      },
+      {
+        "q": "Može li čitati PDF-ove s nastave i knjige koje već imam?",
+        "a": "Bilo koji PDF, EPUB, Word ili ODT koji možeš otvoriti. Ako je PDF skenirana slika bez teksta, verzija za računalo provuče ga kroz lokalni OCR prije čitanja; na mobitelu toga još nema. Knjige s DRM-om iz trgovina ne možeš čitati nigdje, pa ni ovdje."
+      },
+      {
+        "q": "Koliko košta svakodnevna upotreba?",
+        "a": "Ništa. Nema brojača minuta ni znakova, nema reklama i ne treba nikakav račun. Možeš slušati osam sati dnevno, godinama, a ne platiti ni centa – i bez interneta. Plaćena opcija dodaje samo vješalicu bez dna, tiskaru i most, i samo na iPhoneu i iPadu."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Priče za papigu: tekstovi u javnoj domeni za isprobavanje Yappya",
+    "description": "Cijele priče u javnoj domeni, spremne za dijeljenje u Yappyu i slušanje do kraja. Bez registracije, bez preuzimanja.",
+    "h1": "Priče za papigu.",
+    "entradilla": "Cijeli tekstovi, u javnoj domeni. Podijeli ovu stranicu u Yappyu i papiga ti je čita.",
+    "dominio_publico": "Javna domena."
+  },
+  "blog": {
+    "title": "Yappyjev blog: slušati napisano",
+    "description": "Kako pretvoriti PDF u zvuk, zašto čitač teksta treba raditi bez interneta, kako se brojevi izgovaraju naglas i što smo naučili radeći aplikaciju koja govori.",
+    "h1": "Slušati napisano.",
+    "entradilla": "Zanat, trikovi i malo povijesti čitanja naglas. Svaki članak možeš poslušati odmah ovdje, pročitan Yappyjevim glasom.",
+    "escuchame": "Poslušaj ovaj članak",
+    "escuchame_nota": "Čita Yappy, glasom {voz}, u tvom pregledniku.",
+    "vacio": "Na ovom jeziku još nema članaka."
+  },
+  "convertir": {
+    "title": "Pretvori bilo koji tekst u govor: PDF, EPUB, Word, članci i videi",
+    "description": "Šest načina da ono što čitaš pretvoriš u prirodan glas, a svi rade na tvom uređaju: PDF, EPUB, Word, članci s interneta, videi i glasovne bilješke.",
+    "h1": "Pretvaranje",
+    "entradilla": "Nije važno što ulazi: članak, knjiga, dokument ili snimka. Yappy od toga napravi tekst za čitanje i izgovori ga naglas, a datoteka ne napušta tvoj uređaj.",
+    "pasos_titulo": "U tri koraka.",
+    "faq_titulo": "Pitanja o tome",
+    "otros_titulo": "Ostale stvari koje također čita",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "Pretvori PDF u audio: slušaj PDF naglas, besplatno",
+        "description": "Pretvori bilo koji PDF u prirodan glas i slušaj ga dok radiš nešto drugo, ili ga spremi kao audioknjigu s poglavljima. Bez slanja u oblak i bez ograničenja broja stranica.",
+        "h1": "Slušaj svoje PDF-ove.",
+        "entradilla": "Znanstveni rad, priručnik, bilješke, ugovor. Yappy otvori PDF, makne zaglavlja i brojeve stranica koji se ponavljaju, pronađe poglavlja i pročita sve do kraja prirodnim glasom. Datoteka ne napušta tvoj uređaj.",
+        "pasos": [
+          {
+            "titulo": "Podijeli PDF",
+            "texto": "Iz Datoteka, e-pošte ili Safarija: dodirni Podijeli i odaberi Yappy. Na računalu ga povuci u prozor."
+          },
+          {
+            "titulo": "Odaberi glas",
+            "texto": "Deset glasova, 31 jezik. Ako je PDF na drugom jeziku, Yappy ga prepozna sam."
+          },
+          {
+            "titulo": "Slušaj ili spremi",
+            "texto": "Pritisni play, ili ga pošalji u tiskaru: dobit ćeš audioknjigu s poglavljima."
+          }
+        ],
+        "extra_titulo": "Skenirani PDF-ovi",
+        "extra_texto": "Ako je PDF fotografija papira i nema teksta unutra, verzija za računalo prvo provuče datoteku kroz lokalni OCR pa je pročita. Na iPhoneu to još ne radi.",
+        "faq": [
+          {
+            "q": "Ima li ograničenje broja stranica?",
+            "a": "Ne. Članak od tri stranice ili disertacija od četiristo: PDF se obradi do zadnje stranice i pročita do kraja. Kako se sve događa na tvom uređaju, nema kvote znakova koju treba potrošiti ni računa koji poleti na polovini sedmog poglavlja."
+          },
+          {
+            "q": "Što ako je PDF sken bez teksta?",
+            "a": "Verzija za računalo prvo provuče datoteku kroz lokalni OCR pa je pročita, i ni tada ništa ne napušta tvoje računalo. Na iPhoneu to još ne radi: ako je PDF fotografija papira, mobitel ne pronalazi tekst za čitanje."
+          },
+          {
+            "q": "Uklanja li zaglavlja i brojeve stranica?",
+            "a": "Da. Yappy prepozna što se ponavlja na svim stranicama (zaglavlje, podnožje, broj stranice, ime časopisa) i to izbaci iz teksta. Ništa ne kvari slušanje više nego „Poglavlje 3, stranica 47“ svaku minutu i pol."
+          },
+          {
+            "q": "Mogu li slušati samo jedno poglavlje?",
+            "a": "Da. Yappy nađe prave naslove u dokumentu i od njih složi sadržaj kojim se može listati. U biblioteci biraš koja ćeš poglavlja slušati, a koja poslati u tiskaru, i audioknjiga izađe s odabranima."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "Pretvori EPUB u audioknjigu: tvoja knjiga, pročitana naglas",
+        "description": "Pretvori EPUB u audioknjigu s pravim poglavljima, napravljenu na tvom uređaju. Bez satne pretplate i bez učitavanja knjige na ijedan server.",
+        "h1": "Tvoj EPUB kao audioknjiga.",
+        "entradilla": "Knjige koje već imaš, sa svojim poglavljima, čitane prirodnim glasom. Pokreneš renderiranje prije spavanja, a ujutro je u tvojoj biblioteci, kao .m4b datoteka koja se otvara u bilo kojem playeru.",
+        "pasos": [
+          {
+            "titulo": "Podijeli EPUB",
+            "texto": "Iz Datoteka ili odakle ga već imaš. Dolazi s već prepoznatim poglavljima."
+          },
+          {
+            "titulo": "Pošalji u tiskaru",
+            "texto": "Biraš poglavlja, glas i brzinu. Papiga sve otisne, čak i ako zatvoriš aplikaciju."
+          },
+          {
+            "titulo": "Slušaj gdje god hoćeš",
+            "texto": "Ostaje u biblioteci kao .m4b s oznakama; odatle ga dijeliš u Datoteke, u Knjige ili kamo god hoćeš."
+          }
+        ],
+        "extra_titulo": "Knjige s DRM-om",
+        "extra_texto": "Yappy čita EPUB-ove koje možeš otvoriti. Knjige zaštićene DRM-om iz trgovine ne mogu se pročitati, ni ovdje ni nigdje drugdje.",
+        "faq": [
+          {
+            "q": "Zadržava li poglavlja iz knjige?",
+            "a": "Da, i to su prava poglavlja, a ne oznake na svakih deset minuta: dolaze iz sadržaja samog EPUB-a. Nastali .m4b može se listati poglavlje po poglavlje u svakom playeru za audioknjige, s naslovnicom i nastavkom tamo gdje si stao."
+          },
+          {
+            "q": "Koliko traje cijela knjiga?",
+            "a": "Ovisi o uređaju i veličini knjige, ali praktičan odgovor glasi: pustiš ga prije spavanja, a ujutro je gotovo. Ako imaš most, računalo to sintetizira puno brže i na telefon ti vraća knjigu već gotovu."
+          },
+          {
+            "q": "A knjige s DRM-om?",
+            "a": "Yappy čita EPUB-ove koje možeš otvoriti. Knjige zaključane DRM-om neke trgovine ne mogu se pročitati, ni ovdje ni nigdje drugdje: ta brava nije naša."
+          },
+          {
+            "q": "Gdje završava audioknjiga?",
+            "a": "U Yappyjevoj biblioteci, kao pravi .m4b. Odatle ga dijeliš u Datoteke, u Knjige ili u player koji već koristiš. Datoteka je tvoja: ako ukloniš aplikaciju, ono što si izvezao ostaje tamo gdje si ga spremio."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Slušanje Worda naglas: DOCX, ODT i RTF u audio",
+        "description": "Pretvori dokumente iz Worda, LibreOfficea i običan tekst u prirodan govor pa ih provjeri uhom. Sve se događa na tvom računalu ili mobitelu.",
+        "h1": "Provjeri uhom.",
+        "entradilla": "Slušanje onoga što si napisao najbolja je korektura: rečenica koju ne možeš izgovoriti naglas ne opstaje ni na papiru. Yappy čita .docx, .odt, .rtf, .txt i Markdown, s naslovima i ritmom.",
+        "pasos": [
+          {
+            "titulo": "Otvori dokument",
+            "texto": "Povuci ga u prozor na računalu ili ga podijeli s mobitela."
+          },
+          {
+            "titulo": "Slušaj odlomak po odlomak",
+            "texto": "Tekst se istakne dok zvuči; dodirni bilo gdje da preskočiš."
+          },
+          {
+            "titulo": "Ispravi ono što škripi",
+            "texto": "I poslušaj ga opet. Na računalu svaki odlomak može dobiti svoj glas i svoju brzinu."
+          }
+        ],
+        "extra_titulo": "I proračunske tablice i prezentacije",
+        "extra_texto": "Čita .pptx, .xlsx i .csv. Na računalu, ako imaš instaliran pandoc, popis se širi na LaTeX, reStructuredText, Org i još ponešto.",
+        "faq": [
+          {
+            "q": "Koje formate teksta točno čita?",
+            "a": ".docx, .odt, .rtf, .txt i Markdown, uz .pptx, .xlsx i .csv. Na računalu, ako imaš instaliran pandoc, popis se širi na LaTeX, reStructuredText, Org i još ponešto."
+          },
+          {
+            "q": "Čita li i fusnote i tablice?",
+            "a": "Čita tijelo dokumenta, s naslovima i njihovim redoslijedom. Tablice čita redak po redak, što je jedino što se s tablicom može naglas, a bilješke ostaju na kraju svog poglavlja umjesto da prekinu rečenicu na pola."
+          },
+          {
+            "q": "Mogu li svakom odlomku dati drugi glas?",
+            "a": "Na računalu da: uređivač odlomaka omogućuje da svakomu dodijeliš glas, brzinu i pauzu. To čini dijalog, intervju ili dvojezični dokument čitkim."
+          },
+          {
+            "q": "Je li to stvarno dobra korektura?",
+            "a": "To je najbolja korektura koja postoji. Uho izda ono što oko prašta: ponavljanje tri retka niže, zavisnu rečenicu koja se ne može zatvoriti, umetak koji je progutao glagol. Spusti brzinu na 0,9×, poslušaj poglavlje i zapiši što škripi."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Članci",
+        "title": "Slušanje članaka s interneta: bilo koja web-stranica naglas",
+        "description": "Podijeli stranicu iz Safarija i Yappy ti je čita očišćenu: bez izbornika, bez bannera i bez podnožja. Stranicu posjećuje tvoj uređaj, a ne naš poslužitelj.",
+        "h1": "Poslušaj ono što si ostavio za kasnije.",
+        "entradilla": "Kartica koju ostaviš otvorenu za kasnije. Podijeli je s Yappyjem i slušaj dok pereš suđe. Stranica se očisti sama: nestanu izbornici, banneri i podnožja. Ostane proza, sa svojim naslovima i ritmom.",
+        "pasos": [
+          {
+            "titulo": "Dodirni „Podijeli”",
+            "texto": "U Safariju, u čitaču vijesti, u pošti: gdje god ima izbornika za dijeljenje, tu je i Yappy."
+          },
+          {
+            "titulo": "Sama se počisti",
+            "texto": "Izdvajanje se odvija na tvom uređaju. Ako si pretplaćen na neki medij, uzme onaj članak koji ti vidiš."
+          },
+          {
+            "titulo": "Ide u red",
+            "texto": "I čeka da ti se oslobode ruke."
+          }
+        ],
+        "extra_titulo": "Što dolazi do mreže",
+        "extra_texto": "Samo posjeta adresi koju si podijelio, a izvodi je tvoj vlastiti uređaj, onako kako bi to učinio preglednik. Nema Yappyjeva poslužitelja u sredini, jer takav poslužitelj uopće ne postoji.",
+        "faq": [
+          {
+            "q": "Radi li s medijima na koje sam pretplaćen?",
+            "a": "Izdvajanje obavlja tvoj vlastiti uređaj, s tvojom sesijom, pa uzme članak koji vidiš u svom pregledniku. Ako ga ti možeš pročitati, Yappy ti ga može pročitati. Nema posrednog poslužitelja koji bi morao proći kroz paywall, jer poslužitelja nema."
+          },
+          {
+            "q": "A stranice koje se učitavaju samo uz JavaScript?",
+            "a": "Neke se opiru: ako se tekst pojavi tek nakon što stranica izvrši pola JavaScript-knjižnice, Yappy može ostati praznih ruku. Tada je najbrže označiti tekst, kopirati ga i podijeliti ga kao običan tekst."
+          },
+          {
+            "q": "Čuva li povijest onoga što čitam?",
+            "a": "Samo na tvom uređaju, da možeš nastaviti odakle si stao. Ništa od toga nigdje ne putuje, a svaki dokument ima u knjižnici svoju opciju zaborava."
+          },
+          {
+            "q": "Čita li izbornike, banere i komentare?",
+            "a": "Ne. Stranica se počisti prije nego što tekst dođe do čitača: van su izbornici, baneri, podnožja, gumbi za dijeljenje i kutije s komentarima. Ostaje proza, sa svojim naslovima i svojim ritmom."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Videozapisi",
+        "title": "Slušaj videozapis kao da je članak",
+        "description": "Yappy uzme transkript videozapisa i čita ti ga kao članak: bez pogleda u zaslon, brzinom kakvu želiš i bez trošenja podatkovnog prometa.",
+        "h1": "Videozapisi, kao članci.",
+        "entradilla": "Pola sata videozapisa je deset minuta teksta pročitanog ugodnim tempom. Yappy zadrži transkript i čita ti ga prirodnim glasom, pa ga možeš slušati u hodu i s ugašenim zaslonom.",
+        "pasos": [
+          {
+            "titulo": "Podijeli poveznicu",
+            "texto": "Iz aplikacije za video ili iz preglednika, preko izbornika za dijeljenje."
+          },
+          {
+            "titulo": "Uzme samo riječi",
+            "texto": "Yappy uzima objavljeni transkript videozapisa, a ne zvuk."
+          },
+          {
+            "titulo": "Slušaš ga svojim tempom",
+            "texto": "S kojim god glasom i kojom god brzinom želiš, radi i uz zaključan zaslon."
+          }
+        ],
+        "extra_titulo": "Ako video nema transkripciju",
+        "extra_texto": "Onda nema ništa za čitati: Yappy radi s objavljenim tekstom, ne transkribira zvuk s videa. Na iPhoneu ta funkcija postoji; na Androidu je još nema.",
+        "faq": [
+          {
+            "q": "Transkribira li se zvuk videa?",
+            "a": "Ne. Yappy uzme već objavljenu transkripciju videa i pročita ti je kao članak. Brzo je, ne troši podatke za video i ne pregrijava telefon; ali to znači da, ako video nema transkripciju, nema ništa za čitati."
+          },
+          {
+            "q": "A što ako video nema transkripciju?",
+            "a": "Onda Yappy s poveznicom ne može ništa. Ako je video tvoj i imaš datoteku, podijeli je kao zvuk: tada se uključi lokalno uho i transkribira sve na samom uređaju."
+          },
+          {
+            "q": "Radi li na svim platformama za video?",
+            "a": "Tamo gdje postoji objavljena i dostupna transkripcija. Na iPhoneu funkcija postoji; u verziji za Android je još nema."
+          },
+          {
+            "q": "Troši li podatke?",
+            "a": "Vrlo malo: preuzme se tekst, ne video. Pola sata videa jest nekoliko desetaka kilobajta transkripcije, a od tada sve radi tvoj uređaj."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Snimke glasa",
+        "title": "Pretvori snimke glasa u tekst na vlastitom mobitelu",
+        "description": "Yappy transkribira snimke i glasovne bilješke na tvom uređaju, bez učitavanja na bilo koji servis, a zatim ti može pročitati transkripciju.",
+        "h1": "Od glasa do teksta, i natrag.",
+        "entradilla": "Snimani sastanak, ideja izdiktirana u autu, jučerašnji sat. Yappy ih transkribira unutar tvog uređaja lokalnim uhom i ostavi ti tekst da ga pročitaš, ispraviš ili ponovno poslušaš drugim glasom.",
+        "pasos": [
+          {
+            "titulo": "Podijeli snimku",
+            "texto": "Iz Dikafona, Datoteka ili bilo koje aplikacije koja čuva zvuk."
+          },
+          {
+            "titulo": "Transkribira se na uređaju",
+            "texto": "Modelom koji radi na tvom uređaju. Zvuk odatle ne izlazi."
+          },
+          {
+            "titulo": "Pročitaj ga ili poslušaj",
+            "texto": "Ostaje kao svaki drugi dokument: čita se, dijeli i može se ponovno naglas pročitati."
+          }
+        ],
+        "extra_titulo": "Uho se preuzima zasebno",
+        "extra_texto": "Za transkripciju se koristi drugi model nego za glas, i preuzima se samo ako je koristiš.",
+        "faq": [
+          {
+            "q": "Koji model transkribira?",
+            "a": "Parakeet TDT 0.6B v3 tvrtke NVIDIA, pod licencom CC-BY-4.0, radi na tvom uređaju. Model nije isti kao onaj za glas: jedan sluša, drugi govori."
+          },
+          {
+            "q": "Odlazi li zvuk s mog uređaja?",
+            "a": "Ne. Snimka se transkribira lokalno, isto kao što se i glas sintetizira lokalno. Nema transkripcije u oblaku, ni računa, ni učitavanja."
+          },
+          {
+            "q": "Na kojim jezicima transkribira?",
+            "a": "Uho ne govori toliko jezika kao glas: transkribira glavne europske jezike, a ne svih 31 koje Yappy zna čitati. Za čitanje naglas svih 31; za pretvorbu govora u tekst taj uži skup."
+          },
+          {
+            "q": "Treba li se još nešto preuzeti?",
+            "a": "Da: uho se preuzima odvojeno, i to samo prvi put kad nešto transkribiraš. Ako nikad ne transkribiraš, nikad ne zauzima prostor na tvom uređaju."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Tekst u govor na {lengua}: čitajte bilo koji tekst naglas",
+    "description": "Slušajte PDF, EPUB, Word i članke na {lengua} prirodnim glasom, na vlastitom uređaju i bez interneta. Deset glasova, besplatno i bez računa.",
+    "h1": "Tekst u govor na {lengua}.",
+    "entradilla": "Deset glasova čita {lengua} prema njegovim vlastitim pravilima: njegove brojeve, datume, redne brojeve i kratice, a ne one drugoga jezika s posuđenim naglaskom.",
+    "muestra": "Uzorak",
+    "reglas_titulo": "Što pretvarač slova u glasove zna o {lengua}",
+    "todas": "Ostalih trideset jezika"
+  },
+  "vs": {
+    "titulo": "Yappy naspram {nombre}, na prvi pogled",
+    "caracteristica": "Značajka",
+    "gratis": "Što možete besplatno",
+    "precio": "Cijena od",
+    "local": "Glas nastaje na tvom uređaju",
+    "sin_cuenta": "Bez računa i e-maila",
+    "sin_conexion": "Radi bez interneta",
+    "codigo_abierto": "Otvoreni kod",
+    "tarifa": "Naknada po znaku ili po satu",
+    "idiomas": "Jezici",
+    "formatos": "Formati koje čita",
+    "audiolibro": "Audioknjiga s poglavljima",
+    "escritorio": "Računalo",
+    "yappy_gratis": "Slušaj bez ograničenja; tri dokumenta istovremeno",
+    "yappy_precio": "0 €; uzica od 3,99 € mjesečno",
+    "gana_en": "Gdje {nombre} pobjeđuje",
+    "verificado": "Javno dostupni podaci provjereni {fecha} na web-stranicama svakog proizvoda.",
+    "sin_verificar": "Cijene se često mijenjaju: provjeri ih prije odluke.",
+    "ver_web": "Službene stranice",
+    "frente_a": "Nasuprot {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Najčešća pitanja"
+  }
+}

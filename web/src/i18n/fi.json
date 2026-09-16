@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "fi",
+    "nombre": "Suomi",
+    "dir": "ltr",
+    "ogLocale": "fi_FI",
+    "hreflang": "fi",
+    "og_alt": "“Mikä tahansa teksti, ääneen luettuna” suurilla kirjaimilla kermanvärisellä paperilla, vieressä korallinpunainen papukaija."
+  },
+  "slugs": {
+    "uso": "kayttoohje",
+    "guionizador": "kasikirjoittaja",
+    "descargas": "lataukset",
+    "precios": "hinnat",
+    "voces": "aanet",
+    "preguntas": "ukk",
+    "privacidad": "tietosuoja",
+    "accesibilidad": "saavutettavuus",
+    "cuentos": "tarinat",
+    "blog": "blogi",
+    "convertir": "muunna",
+    "idiomas": "kielet",
+    "alternativas": "vaihtoehdot",
+    "formato_pdf": "pdf-aaneksi",
+    "formato_epub": "epub-aanikirjaksi",
+    "formato_word": "word-aaneksi",
+    "formato_articulos": "artikkelit-aaneksi",
+    "formato_videos": "videot-aaneksi",
+    "formato_notas": "aani-tekstiksi"
+  },
+  "comunes": {
+    "saltar": "Siirry sisältöön",
+    "marca_aria": "Yappy, etusivu",
+    "idioma": "Kieli",
+    "menu": "Avaa valikko",
+    "secciones": "Osiot",
+    "descargar": "Lataa",
+    "descargar_gratis": "Lataa ilmaiseksi",
+    "en_app_store": "Lataa App Storesta",
+    "escuchar_muestra": "Kuuntele näyte",
+    "probar": "Kokeile nyt",
+    "leer_mas": "Lue lisää",
+    "volver": "Takaisin",
+    "inicio": "Etusivu",
+    "minutos": "{n} min lukuaika",
+    "publicado": "Julkaistu",
+    "actualizado": "päivitetty",
+    "por": "tekijänä",
+    "gratis": "ilmainen",
+    "si": "Kyllä",
+    "no": "Ei",
+    "parcial": "Osittain",
+    "sin_datos": "ei tietoa"
+  },
+  "nav": {
+    "uso": "Näin se toimii",
+    "guionizador": "Käsikirjoittaja",
+    "voces": "Äänet",
+    "precios": "Hinnat",
+    "descargas": "Lataukset",
+    "preguntas": "UKK",
+    "privacidad": "Yksityisyys",
+    "accesibilidad": "Saavutettavuus",
+    "cuentos": "Sadut",
+    "blog": "Blogi"
+  },
+  "pie": {
+    "producto": "Tuote",
+    "leer": "Luettavaa",
+    "casa": "Koti",
+    "codigo": "Koodi",
+    "licencia": "MIT-lisenssi",
+    "novedades": "Uutiset",
+    "firma": "Yappy · tehty käsin Teneriffalla, tekijänä <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · avoin lähdekoodi (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Teksti puheeksi: lukee PDF:t, EPUB:t ja artikkelit ääneen",
+    "description": "Muuntaa minkä tahansa tekstin luonnolliseksi puheeksi 31 kielellä: PDF, EPUB, Word, artikkelit ja videot. Kaikki tapahtuu puhelimessasi tai tietokoneessasi: ei pilveä, ei tiliä eikä merkkikohtaista maksua. Ilmainen ja avoin lähdekoodi.",
+    "susurro": "teksti puheeksi · 31 kieltä · ei pilveä · avoin lähdekoodi",
+    "titular_1": "Mikä tahansa",
+    "titular_texto": "teksti",
+    "titular_2": ", ",
+    "titular_voz": "ääneen luettuna",
+    "titular_3": ".",
+    "entradilla": "Jaa artikkeli, PDF, EPUB, Word-tiedosto tai video, niin papukaija lukee sen sinulle luonnollisella äänellä, kun kokkaat, kävelet tai suljet silmäsi. Malli pyörii kokonaan laitteellasi: mitään ei lähde siitä, koskaan.",
+    "nota_acciones": "ilmainen · ei tiliä · ei merkkikohtaista maksua",
+    "pegatina_sin_nube": "ei\npilveä",
+    "pegatina_idiomas": "31\nkieltä",
+    "pegatina_gratis": "ilmainen",
+    "pegatina_offline": "toimii ilman verkkoa",
+    "demo_susurro": "paina ja kuuntele: tämän puhuu sama moottori, jota kannat taskussasi",
+    "demo_titulo": "Näin se kuulostaa.",
+    "demo_nota": "Alleviivatut kohdat muuntaa sanoiksi tekstinkäsittelijä: ”1492” sanotaan ”tuhat neljäsataa yhdeksänkymmentäkaksi” ja ”luku XV” luetaan ”luku viisitoista”, kunkin kielen omien sääntöjen mukaan.",
+    "momentos_susurro": "mihin se sopii",
+    "momentos_titulo": "Kolme hetkeä, yksi ele.",
+    "momentos": [
+      {
+        "titulo": "Kun kokkaat",
+        "texto": "Jaat artikkelin, asetat puhelimen tiskille ja ääni jatkaa lukemista hellan ääressä."
+      },
+      {
+        "titulo": "Kävelyllä",
+        "texto": "Eilisillan kirja on nyt äänikirja lukuineen ja kulkee mukanasi ylämäkeen."
+      },
+      {
+        "titulo": "Yö tekee työtä",
+        "texto": "Jätät renderöinnin käyntiin nukkumaan mennessäsi; herätessäsi äänikirja on taskussasi."
+      }
+    ],
+    "porque_susurro": "miksi tämä on olemassa",
+    "porque_titulo": "Ei pilveä, ei tunnuksia, ei merkkikohtaista hintaa.",
+    "porque_entradilla": "Muut tekstistä puheeksi -sovellukset lähettävät lukemasi tekstin palvelimelle ja veloittavat merkeistä tai kuuntelutunneista. Yappylla ei ole palvelinta maksettavanaan, joten kuuntelusta ei ole mitään laskutettavaa.",
+    "porque": [
+      {
+        "titulo": "Mitään ei lähde laitteeltasi",
+        "texto": "Äänen muodostaa avoin malli puhelimellasi tai tietokoneellasi. Toimii myös ilman verkkoa: ikuisesti."
+      },
+      {
+        "titulo": "31 aitoa kieltä",
+        "texto": "Kymmenen ääntä, kukin monikielinen. Teksti, jossa on lainauksia toisella kielellä, vaihtaa kieltä itsestään, kappale kappaleelta."
+      },
+      {
+        "titulo": "Ei tunteja eikä merkkejä",
+        "texto": "Kuuntelet mitä haluat ja niin kauan kuin haluat. Mittaria ei ole, koska ei ole laskuakaan, joka pitäisi jakaa."
+      },
+      {
+        "titulo": "Avoin lähdekoodi (MIT)",
+        "texto": "Moottori, käsikirjoitin, sovellus ja tämäkin sivusto ovat julkisia. Voit lukea ne, kääntää ne ja tarkistaa ne."
+      }
+    ],
+    "formatos_susurro": "jakaminen on ovi",
+    "formatos_titulo": "Mitä ikinä luetkaan.",
+    "formatos_entradilla": "Safarista, sähköpostista, Tiedostoista tai mistä tahansa sovelluksesta: napauta Jaa ja valitse Yappy. Sivu siivoaa itsensä – valikot, bannerit ja alatunnisteet katoavat – ja jäljelle jää proosa otsikoineen ja rytmeineen.",
+    "guion_susurro": "se osa, jonka kukaan muu ei näytä",
+    "guion_titulo": "Lukee kuin ihminen, ei kuin kone.",
+    "guion_entradilla": "Ääneen lukeminen ei ole kirjainten luettelointia: se on tulkintaa. ”1492” luetaan ”tuhat neljäsataa yhdeksänkymmentäkaksi”; ”Kaarle XII” luetaan ”Kaarle kahdestoista”, mutta ”Louis XIV” on ranskaksi ”Louis quatorze”; MIDI ei ole roomalainen numero; FBI lausutaan kirjain kerrallaan, NASA ei. Ennen kuin yhtään tavua on syntetisoitu, Yappy muuttaa tekstin <strong>lukukäsikirjoitukseksi</strong>: partituuriksi siitä, mitä ääni oikeasti sanoo.",
+    "guion_pruebalo": "Kokeile heti tässä: sama Rust kuin sovelluksessa, käännettynä selaimeesi.",
+    "guion_boton": "Käsikirjoita",
+    "guion_ejemplo": "1800-luku päättyi vuonna 1900. Ludvig XIV hallitsi 72 vuotta, kulutti 3,50 € jäätelöön, eikä FBI saanut siitä koskaan tietää.",
+    "guion_marcador": "Kirjoita jotain, jossa on numeroita, lyhenteitä, päivämääriä tai vuosisatoja…",
+    "guion_espera": "Käsikirjoitus ilmestyy tähän, muunnetut kohdat alleviivattuina.",
+    "guion_fallo": "Käsikirjoitinta ei saatu ladattua tähän selaimeen. Sovelluksessa se on kyllä mukana.",
+    "guion_mas": "Näin käsikirjoitin toimii",
+    "capturas_susurro": "näin se näyttää, retusoimattomana",
+    "capturas_titulo": "Kuvakaappauksia oikeasta sovelluksesta.",
+    "capturas_entradilla": "Ei maalattuja maketteja: tämä on Yappy toiminnassa, oikeat tekstit orrella ja lukijalla käsikirjoitus valmiina.",
+    "precio_susurro": "rahat, suoraan",
+    "precio_titulo": "Aidosti ilmainen, ja väännettävä papukaija.",
+    "precio_entradilla": "Kokeilupapukaija pitää orrellaan kerrallaan kolmea dokumenttia ja lukee niitä ilman aikarajaa. Siirrät yhden pois ja tilalle mahtuu uusi. Jos haluat orren, joka ei koskaan täyty, äänikirjapainon ja sillan tietokoneeseen, väännät papukaijan käyntiin.",
+    "cierre_titulo": "Papukaija taskussa.",
+    "cierre_texto": "Ilmainen, ei tiliä, ei rekisteröitymistä. Asennat, jaat tekstin, ja ääni käy."
+  },
+  "uso": {
+    "title": "Näin Yappy toimii: jaat, kuuntelet ja siinä se",
+    "description": "Koko opas: jakaminen iPhonesta, pikanäppäimet tietokoneella, QR-silta puhelimen ja Macin välillä, äänikirjat lukuineen, Siri, widgetit ja asetukset.",
+    "h1": "Jaat, ja ääni käy.",
+    "entradilla": "Yappylla on yksi ele: jakaminen. Loput ovat yksityiskohtia, jotka ovat jo paikoillaan.",
+    "pasos": [
+      {
+        "titulo": "Jaa",
+        "texto": "Mistä tahansa sovelluksesta: Safari, sähköposti, Tiedostot, äänimuistio tai chatissa saapunut PDF. Painat Jaa, valitset Yappyn, ja sovellus avautuu itsestään."
+      },
+      {
+        "titulo": "Valitse ääni",
+        "texto": "Kymmenen ääntä, kaikki monikielisiä. Jos teksti on toisella kielellä, Yappy tunnistaa kielen itse ja lukee tekstin sen kielen säännöillä, ei lainatulla aksentilla."
+      },
+      {
+        "titulo": "Kuuntele",
+        "texto": "Lukitset näytön ja laitat puhelimen taskuun. Ääni jatkuu: lukitusnäytillä on kansi, otsikko ja säätimet, ja kuulokkeet ohjaavat toistoa."
+      },
+      {
+        "titulo": "Tallenna",
+        "texto": "Jos haluat sen mukaan huomiselle kävelylle, kirjapaino toimittaa sen .m4b-äänikirjana lukuineen, ja se aukeaa missä tahansa soittimessa."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "iPhonessa ja iPadissa",
+        "texto": "Jakaminen on koko käyttöohje. Mistä tahansa sovelluksesta painat Jaa ja valitset Yappyn: se ottaa vastaan linkkejä, pelkkää tekstiä, PDF-, EPUB-, Word- ja ODT-tiedostoja sekä ääntä. Yappy aukeaa heti, itsestään. Mikään ei jää hautumaan jakonäkymään, koska iOS katkaisee laajennukset 120 megatavuun; Yappy kopioi jaetun sisällön ja hyppää sovellukseen, jossa ei ole rajaa. Hyppy on tarkoituksellinen, ei korjausliike. <strong>Kaikki tapahtuu laitteessa</strong>: ainoa verkko, johon Yappy koskee, on käynti jakamassasi osoitteessa, ja senkin tekee oma puhelimesi.",
+        "puntos": [
+          "Jono valmistelee sisällön sillä välin kun katsot: artikkelista siivotaan turhat pois, video tuo mukanaan transkription, PDF sivutetaan. Jos pidät sovelluksen näkyvissä, lukeminen käynnistyy itsestään heti kun aineisto on valmista.",
+          "Karaoke valaisee sen, mikä soi, lause kerrallaan. Kosketat mihin tahansa pysäyttääksesi, pyyhkäisät siirtyäksesi kappaleesta toiseen, ja reunasta nostat tai lasket nopeutta.",
+          "Lukitset näytön, ja ääni jatkuu. AirPodsit keskeyttävät ja jatkavat; järjestelmä kohtelee sitä kuten mitä tahansa soitinta.",
+          "Naulakkoon mahtuu kerralla kolme asiakirjaa: otat yhden pois, niin toinen mahtuu tilalle. Ohjelman omat sadut eivät vie tilaa."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Macilla, Windowsilla ja Linuxilla",
+        "texto": "Yksi pikanäppäin, ja se, mitä katsot, alkaa soida: valinta, selaimen sivu tai avoinna oleva asiakirja. Kaikki kolme pikanäppäintä vaihtuvat asetuksista, ja ne toimivat, vaikka sovellus olisi piilossa ilmoitusalueella. Pikanäppäimen lisäksi työpöydällä on tilaa sille, mikä ei mahdu yhteen käteen.",
+        "puntos": [
+          "<strong>Kirjasto.</strong> Kaikki, mitä avaat tai jaat, jää kanteen, edistymisineen. Jatkat siitä, mihin jäit: oikeasta kappaleesta.",
+          "<strong>Kappaletieditori.</strong> Jokainen kappale voi saada oman äänen, oman nopeuden ja oman taukon. Dialogeja, sitaatteja ja kaksikielisiä asiakirjoja varten.",
+          "<strong>Paikallinen transkriptio.</strong> Raahaat äänimuistion tai tallenteen paikalleen, ja paikallinen korva tekee siitä luettavaa tekstiä. Mitään ei lähetetä minnekään.",
+          "<strong>Äänikirjan vienti.</strong> Mikä tahansa asiakirja syntyy aidoksi .m4b-äänikirjaksi: luvut poimitaan tekstistä, ja niitä voi selata. Myös .wav- tai .mp3-muodossa.",
+          "<strong>PDF näkevin silmin.</strong> Skannatut PDF:t käyvät paikallisessa OCR:ssa ennen lukemista. Digitaalisesti syntyneet luetaan suoraan, sivu kerrallaan.",
+          "<strong>Teemat.</strong> Kermanvärinen paperi päivällä, vaalea muste tummalla pohjalla yöllä, tai sitten järjestelmä päättää.",
+          "<strong>Ei lankoja.</strong> Tietokoneella kaikki on valmiiksi auki: painokone, pohjaton naulakko ja silta kuuluvat pakettiin."
+        ]
+      },
+      {
+        "id": "silta",
+        "titulo": "Silta: tietokone tekee äänet, puhelin kuuntelee",
+        "texto": "Koko kirjan muuntaminen vie aikansa. Silta siirtää raskaan työn tietokoneellesi ja palauttaa valmiin äänikirjan taskuusi. Yhteys kulkee suoraan laitteeltasi toiselle, päästä päähän salattuna, ilman kenenkään palvelinta välissä.",
+        "puntos": [
+          "Tietokoneella: avaa Asetukset ja valitse ”Silta”. Yappy näyttää QR-koodin, jossa on koneesi salattu osoite ja kutsuavain.",
+          "Suuntaa iPhonen kamera QR-koodiin, ja paritus on valmis. Avain tallentuu, ja voit mitätöidä sen tietokoneella milloin tahansa.",
+          "Puhelimessa: ”Muunna tietokoneella”. Valitset asiakirjan, tietokone muuntaa sen omaan tahtiinsa, ja .m4b ilmestyy puhelimen kirjastoon lukuineen. Yö tekee työtä huomista kävelyäsi varten.",
+          "Silta on salattu QUIC:llä ja käyttää <a href=\"https://iroh.computer\">irohin</a> protokollaa. Jos kaksi laitetta tarvitsee välittäjän löytääkseen toisensa, välittäjä näkee vain salattua liikennettä, jota se ei pysty lukemaan."
+        ]
+      },
+      {
+        "id": "aanikirjat",
+        "titulo": "Äänikirjat: .m4b oikeilla luvuilla",
+        "texto": "Yappy ei vie ulos ”yhtä pitkää ääntä”: se tekee .m4b-äänikirjoja niin kuin kaupan äänikirjat, lukuina asiakirjan oikeat otsikot, mukana kansikuva ja muisti siitä, mihin jäit. Niitä voi kuunnella Yappyssa, joka pitää kirjaa kirjastosta ja kuuntelukohdasta, tai missä tahansa äänikirjasoittimessa, jota jo käytät. Ja käsikirjoittaja antaa niille hengityksen: tauko otsikoiden jälkeen, listatahti listoille.",
+        "puntos": [
+          "Puhelimessa ne tilataan kirjastosta luku kerrallaan: valitset, mitkä painetaan ja millä äänellä.",
+          "Papukaija painaa edelleen, vaikka suljet sovelluksen tai lukitset puhelimen.",
+          "Kirjastosta jaat tiedoston Tiedostoihin, Kirjoihin tai minne haluat: tiedosto on sinun.",
+          "Painokone kuuluu Yappy Parlanchíniin iPhonessa ja iPadissa. Tietokoneella se on auki valmiiksi."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, pikakomennot ja toimintopainike",
+        "texto": "”Hei Siri, lue leikepöytäni Yappylla.” Sovellus tarjoaa oikeita App Intents -toimintoja: ne ilmestyvät itsestään Pikakomennot-sovellukseen, ne toimivat Sirin kanssa ja ne voi kiinnittää iPhonen toimintopainikkeeseen. Mitään ei tarvitse koota.",
+        "puntos": [
+          "<strong>Lue leikepöytäni.</strong> Kopioit mistä vain, pyydät Siriä, ja ääni soi.",
+          "<strong>Jatka lukemista.</strong> Jatkaa viimeksi soivaa täsmälleen siitä, mihin se jäi.",
+          "<strong>Kuuntele linkki.</strong> Hyväksyy osoitteen parametrina: täydellinen lopetus omiin pikakomentoihisi.",
+          "Käsin tehtyihin automaatioihin toimii myös <code>yappy://</code>-skeema: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> ja <code>yappy://pair?d=…</code>.",
+          "Ja aloitusnäytölle on widget, jossa on viimeksi sovinut – valmis jatkamaan yhdellä napautuksella."
+        ]
+      },
+      {
+        "id": "asetukset",
+        "titulo": "Asetukset: nuppeja vähän, kaikki aitoja.",
+        "texto": "Yappyssa ei ole paneelia sadalla kytkimellä. Siinä on ne harvat säädöt, jotka oikeasti muuttavat sitä, miltä kuulostaa.",
+        "puntos": [
+          "<strong>Ääni.</strong> Kymmenen ääntä, jokainen monikielinen: sama ääni lukee espanjaa, englantia tai japania, eikä äänenväri muutu.",
+          "<strong>Nopeus.</strong> 0,5×–2×. Puhe tuotetaan valitulla nopeudella, ei nopeuteta jälkikäteen: sävelkorkeus ei vääristy.",
+          "<strong>Tauot.</strong> Kuinka pitkä hengähdys kappaleiden välissä. Otsikot ja luettelot saavat rytminsä jo käsikirjoittajalta.",
+          "<strong>Kieli.</strong> Automaattinen tunnistus asiakirjan ja kappaleen tasolla tai manuaalinen asetus. Vieraskieliset sitaatit vaihtuvat itsestään.",
+          "<strong>Anonyymit tilastot.</strong> Puhelimessa ne ovat oletuksena päällä; täällä, takahuoneessa, ne saa pois päältä. Tietosuojaselosteessa lukee yksitellen, mitä tarkalleen lähetetään."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Androidilla",
+        "texto": "Sama ele: jaat linkin, tekstin tai asiakirjan, ja se päätyy samaan jonoon. Artikkelin poiminta, karaoke ja ääni – kaikki tapahtuu puhelimessa. Android-versio on perheen nuorin, ja siitä puuttuu vielä kolme asiaa, jotka iPhonessa on: lukitusnäytön ohjaimet, videot ja .m4b-äänikirjasoitin. Ja sitten se tärkeämpi asia: <strong>versiota ei ole vielä julkaistu</strong>. Googlen kehittäjätili on edelleen vahvistettavana, emmekä anna päivämäärää, koska emme tiedä sitä. Kun julkaisu tulee, siitä kerrotaan täällä ja repositoriossa. Mutta yksi asia on varma: Androidilla ei pidetä ketään narussa. Kaikki on auki."
+      }
+    ],
+    "atajo": "Pikakomento",
+    "atajo_leer": "Lue, mitä katsot",
+    "atajo_portapapeles": "Lue leikepöytä",
+    "atajo_pausar": "Tauko",
+    "cierre": "Siinä oli koko ohje."
+  },
+  "guionizador": {
+    "title": "Yappyn käsikirjoittaja: kirjoitetusta puhutuksi",
+    "description": "Miten Yappy muuntaa merkinnät ”1492”, ”1400-luku”, ”3,50 €” ja ”FBI” puhutuiksi sanoiksi kunkin kielen säännöillä, kaikilla 31 kielellä. Mukana live-demo: sama Rust kuin sovelluksessa, käännettynä WebAssemblyksi.",
+    "h1": "Kirjoitetusta puhutuksi.",
+    "oficios_titulo": "Kaksitoista ammattia yhdellä kierroksella.",
+    "oficios": [
+      {
+        "titulo": "Päivämäärät",
+        "texto": "”24.5.1533” sanotaan kokonaan, kunkin kielen omassa järjestyksessä ja muodossa."
+      },
+      {
+        "titulo": "Kellonajat",
+        "texto": "”14.05” sanotaan niin kuin ihminen sen sanoisi, ei niin kuin kello lukisi."
+      },
+      {
+        "titulo": "Rahamäärät",
+        "texto": "”3,50 €” luetaan muodossa ’kolme euroa viisikymmentä’, monikko oikein."
+      },
+      {
+        "titulo": "Prosentit",
+        "texto": "”7 %” luetaan ”seitsemän prosenttia”, eikä ”0,5 %” muutu muotoon ”nolla pilkku viisi”."
+      },
+      {
+        "titulo": "Yksiköt",
+        "texto": "”230 °C” luetaan ”kaksisataakolmekymmentä celsiusastetta”."
+      },
+      {
+        "titulo": "Ordinaaliluvut",
+        "texto": "”3.ª” luetaan ”tercera”, omine sukineen ja taivutuksineen siellä, missä niitä on."
+      },
+      {
+        "titulo": "Roomalaiset numerot harkiten",
+        "texto": "”siglo XX” on kardinaaliluku, ”Enrique VIII” ordinaaliluku, eikä ”EL CID” ole numero lainkaan."
+      },
+      {
+        "titulo": "Lyhennesanat fonotaktiikan mukaan",
+        "texto": "FBI luetaan kirjain kirjaimelta, NASA sanana. Säännön päättää ääntämys, ei lista."
+      },
+      {
+        "titulo": "Lyhenteet",
+        "texto": "”jne.”, ”s.”, ”1800-luku”: jokaisella kielellä on oma taulukkonsa."
+      },
+      {
+        "titulo": "Suuret luvut",
+        "texto": "Unicode CLDR:n RBNF-kieliopit, sukuineen ja taivutuksineen."
+      },
+      {
+        "titulo": "31 kieltä",
+        "texto": "Samat säännöt, kunkin kielen kieliopilla. Ei käsin kirjoitettuja listoja."
+      },
+      {
+        "titulo": "Rytmi",
+        "texto": "Otsikon jälkeen hengitetään; luettelot lyövät tahtiaan. Tauot kuuluvat käsikirjoitukseen, eivät sattumaan."
+      }
+    ],
+    "cierre": "Käsikirjoitus on puolet tarinasta; toinen puoli kuuluu korviin.",
+    "faq": [
+      {
+        "q": "Mitä ovat RBNF-kieliopit?",
+        "a": "RBNF on lyhenne sanoista <em>Rule-Based Number Format</em>: säännöt, joilla Unicode CLDR kuvaa, miten luku lausutaan kullakin kielellä. Kyse ei ole tuhannen sanan taulukosta vaan kieliopista: siksi se tietää, että espanjaksi sanotaan ”doscientas páginas”, ei ”doscientos páginas”, että venäjä taivuttaa lukusanat ja että ranskan yhdeksänkymmentä on neljä kertaa kaksikymmentä ja kymmenen. Yappy tulkitsee ne puhtaalla Rustilla, ilman käsin kirjoitettuja listoja."
+      },
+      {
+        "q": "Miksi käsikirjoittaja tarvitaan? Eikö pelkkä ääni hoida tätä itse?",
+        "a": "Ei, ja se on tahallaan. Yappyn äänimalli toimii merkkitasolla: se lausuu täsmälleen sen, mikä sille saapuu kirjoitettuna. Se tekee mallista nopean ja kevyen, mutta tarkoittaa myös, että luvun ”1492” se yrittää lausua juuri sellaisenaan, merkki merkiltä. Tällaisessa mallissa normalisointi <em>on</em> lausuminen. Käsikirjoittaja on se pala, joka muuttaa jokaisen luvun, lyhennesanan ja symbolin sanoiksi, jotka ihminen sanoisi."
+      },
+      {
+        "q": "Kuinka monella kielellä se toimii?",
+        "a": "Niillä 31:llä, joita ääni puhuu, ja jokainen omilla säännöillään: päivämäärien järjestys, valuuttojen sidesana, ordinaaliluvut, lyhenteet ja roomalaisluvut. Vuosisata XV on espanjaksi ”siglo quince”, englanniksi ”fifteenth century”; ”Louis XIV” on ”Louis quatorze”, ei ”Louis fourteenth”. Samat kaksitoista tehtävää, kolmekymmentäyksi kielioppi."
+      },
+      {
+        "q": "Miksi karaoke osuu aina täsmälleen oikeaan sanaan?",
+        "a": "Koska skripti ei ole pelkkää muunnettua tekstiä: se tallentaa yhteyden kirjoitetun ja puhutun välille. Kun ääni lausuu ”tuhat neljäsataa yhdeksänkymmentäkaksi”, skripti tietää, että ne neljä sanaa tulevat luvun 1492 neljästä numerosta, ja alleviivaus asettuu kohdalleen liukumatta. Siinä ero tekstin valaisemisen ja arvaamisen välillä."
+      },
+      {
+        "q": "Sana ääntyy väärin. Voinko korjata sen?",
+        "a": "Käyttäjän omaa ääntämissanakirjaa ei toistaiseksi ole. Koska malli lukee merkkejä, nopein keino on kirjoittaa sana editoriin niin kuin se kuulostaa ja kuunnella se uudestaan. Jos vika on yleisempi kaava (lyhenne, akronyymi, mittayksikkö), kerro siitä <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHubin issues-listalla</a>: skriptigeneraattorin taulukot kasvavat tällaisten tapausten myötä."
+      },
+      {
+        "q": "Onko tämän sivun skriptigeneraattori sama kuin sovelluksessa?",
+        "a": "Sama koodi, käännettynä WebAssemblyksi, jotta se toimii selaimessasi. Mitä tänne kirjoitat, jää välilehdellesi. Ja koska koko projekti on avoin, voit lukea säännöt yksi kerrallaan <a href=\"https://github.com/joseluissaorin/yappy\">repositoriosta</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Lataa Yappy: iPhone, iPad, Mac, Windows ja Linux",
+    "description": "Yappy on ilmainen ja avoimen lähdekoodin. App Storesta iPhonelle ja iPadille; työpöytäversion voi kääntää koodista tai ladata GitHubista. Järjestelmävaatimukset ja äänimallin koko.",
+    "h1": "Ilmainen, avoin ja omasi.",
+    "entradilla": "Ei rekisteröitymistä, ei sähköpostia, ei vanhenevaa kokeiluversiota. Lataat, ja siinä se.",
+    "modelo_nota": "Ensimmäisellä käyttökerralla Yappy lataa äänimallin ({peso}). iPhonessa se tulee asennuksen mukana; tietokoneella se latautuu, kun avaat sovelluksen ensimmäistä kertaa. Sen jälkeen verkkoyhteyttä ei tarvita.",
+    "android_titulo": "Android",
+    "android_texto": "Sovellus on käännetty ja toimii, mutta sitä ei ole vielä julkaistu: Googlen kehittäjätili odottaa yhä hyväksyntää. Kun julkaisu ilmestyy, siitä kerrotaan täällä ja repositoriossa.",
+    "escritorio_aviso": "Työpöytäbinäärit julkaistaan GitHubissa. Jos sieltä löytyvä versio on vanhempi kuin iPhonen versio, uusinta ei ole vielä ehtinyt sinne: koodi on kyllä ajan tasalla, ja sen kääntää komennolla <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone ja iPad",
+        "texto": "App Storessa, ilmaiseksi ja ilman tiliä. Äänet tulevat asennuksen mukana, joten avaat sovelluksen, jaat tekstin, ja se jo puhuu. Tämä on kattavin versio: äänikirjat, Siri, widgetti, silta ja lukitusnäytön ohjaimet.",
+        "requisitos": "iOS tai iPadOS 17 tai uudempi · äänimalli vie noin 200 Mt",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Lataa App Storesta"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon ja Intel, notaroitu .dmg. Mukana kolme järjestelmänlaajuista pikanäppäintä, kappalepohjainen editori, skannattujen PDF-tiedostojen OCR ja äänikirjojen vienti. Tässä ei ole piiloviiksiä: kaikki on auki.",
+        "requisitos": "macOS 12 tai uudempi · äänimalli vie noin 398 Mt",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Katso julkaisut GitHubissa"
+      },
+      {
+        "nombre": "Windows",
+        "texto": ".exe- tai .msi-asennusohjelma x64:lle, samat pikanäppäimet ja samat ominaisuudet kuin Mac-versiossa. Mikä tahansa viime vuosien kannettava syntetisoi nopeammin kuin reaaliaika.",
+        "requisitos": "Windows 10 tai uudempi, x64 · äänimalli noin 398 Mt",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Katso julkaisut GitHubissa"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage ja .deb x64:lle. Järjestelmänlaajuiset pikanäppäimet riippuvat työpöytäympäristöstäsi. Jos ne ovat jo varattuja, Asetuksista voi vaihtaa tilalle toiset.",
+        "requisitos": "x64 · äänimalli noin 398 Mt",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Katso julkaisut GitHubissa"
+      },
+      {
+        "nombre": "Lähdekoodista",
+        "texto": "Koko projekti on julkista: työpöytä- ja mobiilisovellus (Tauri, Rust ja Svelte), synteesimoottori, käsikirjoitin mukanaan paketoidut CLDR-kieliopit sekä tämäkin verkkosivu. Kun Rust ja Node on asennettuna, <code>cargo tauri build</code> kääntää sinulle oman kopion. Jos julkaistut binäärit jäävät iPhonen versiosta jälkeen, tämä on nopein tie: koodi on aina ajan tasalla.",
+        "requisitos": "Rust ja Node · tarkemmat ohjeet README:ssä",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Katso koodi GitHubissa"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Yappyn hinnat: ikuisesti ilmainen, ei merkkikohtaista hinnoittelua",
+    "description": "Yappy on ilmainen, eikä kuuntelussa ole rajoja: kolme asiakirjaa kerrallaan naulakossa. Yappy Parlanchín lisää pohjattoman naulakon, äänikirjapainon ja sillan, alkaen 3,99 € kuukaudessa tai 59,99 € kertamaksulla.",
+    "h1": "Rahasta suoraan.",
+    "entradilla": "Se, että saa kuunnella lukemaansa, on esteettömyyskysymys, eikä esteettömyyden pitäisi pyytää maksukorttia. Siksi olennainen osa on ilmainen, eikä mittari pyöri.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "ikuisesti",
+    "gratis_puntos": [
+      "Kuuntelu ilman minuutti- tai merkkirajoja",
+      "Kaikki 31 kieltä ja kymmenen ääntä",
+      "PDF, EPUB, Word, artikkelit, videot ja äänimuistiinpanot",
+      "Kolme asiakirjaa kerrallaan naulakossa: poista yksi, niin toinen mahtuu tilalle",
+      "Ei tiliä, ei sähköpostia, ei mainoksia",
+      "Avoin lähdekoodi MIT-lisenssillä"
+    ],
+    "gratis_no": [
+      "Ei äänikirjapainoa",
+      "Ei siltaa tietokoneeseen"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "kuukaudessa",
+    "cuerda_periodo_anio": "vuodessa",
+    "cuerda_periodo_vida": "vain kerran",
+    "cuerda_puntos": [
+      "Kaikki yllä mainittu",
+      "Rajaton hylly: niin monta dokumenttia kuin huvittaa",
+      "Kirjapaino: kokonaiset kirjat äänikirjoiksi lukuineen",
+      "Silta: tietokoneesi muuntaa ja palauttaa tiedoston itsestään",
+      "Voit lopettaa milloin tahansa"
+    ],
+    "cuerda_nota": "Ilmaiskokeilua ei ole, eikä se ole vahinko: kolmen dokumentin hylly <em>on</em> itse kokeilu, eikä se vanhene eikä ala laskuttaa jälkikäteen. Hinnat ovat Espanjan hintoja; oma kauppasi näyttää ne omassa valuutassasi.",
+    "cuerda_donde": "Tilaus ostetaan sovelluksen sisältä, takahuoneesta.",
+    "solo_ios": "Tietokoneella ja Androidilla kaikki on avointa: tilaus on vain iPhonessa ja iPadissa.",
+    "comparacion_titulo": "Mitä muut perivät.",
+    "comparacion_entradilla": "Pilvessä toimivat puhesovellukset maksavat palvelinkuluja joka kerta, kun painat toista, joten ne laskuttavat tunteittain tai merkeittäin. Yappy syntetisoi puheen laitteessasi: kuunteleminen ei maksa sille mitään, ja siksi Yappy voi jättää sen laskuttamatta.",
+    "comparacion_nota": "Julkiset hinnat tarkistettu syyskuussa 2026. Ne muuttuvat usein: tarkista ne jokaisen palvelun omilta sivuilta ennen päätöstä.",
+    "faq": [
+      {
+        "q": "Miksi tämä on ilmainen?",
+        "a": "Koska palvelimia ei tarvitse maksaa. Puhe syntetisoidaan laitteessasi, joten kuunteleminen ei maksa kenellekään mitään, eikä laskua ole jaettavana. Pilvessä toimivat puhesovellukset maksavat koneesta joka kerta, kun painat toista, ja siksi ne laskuttavat merkeittäin tai tunteittain. Yappy ei voi veloittaa sinulta sitä, mikä ei maksa sille mitään."
+      },
+      {
+        "q": "Mitä tapahtuu, jos en koskaan maksa?",
+        "a": "Ei mitään. Yappy toimii ikuisesti kaikilla kymmenellä äänellä, kaikilla 31 kielellä ja kaikilla tiedostomuodoilla, ilman mainoksia, ilman tiliä ja ilman minuutilaskuria. Ainoa ero on, että iPhonessa ja iPadissa hyllyyn mahtuu kerrallaan kolme dokumenttia: poista yksi, niin tilalle mahtuu uusi. Tietokoneella ei edes sitä."
+      },
+      {
+        "q": "Onko ilmaiskokeilua?",
+        "a": "Ei ole, ja se on valinta, ei unohdus. Kolmen dokumentin hylly <em>on</em> itse kokeilu: se ei vanhene, ei pyydä korttia eikä ala laskuttaa kahdeksantena päivänä. Kenenkään ei pitäisi herätä maksuun, jota ei muista hyväksyneensä."
+      },
+      {
+        "q": "Voinko lopettaa milloin tahansa?",
+        "a": "Kyllä, Apple-tililtäsi, kuten mikä tahansa muukin tilaus. Ne uusiutuvat itse jakson lopussa, ellet peruuta niitä vähintään 24 tuntia ennen jakson päättymistä. Elinikäinen ostos ei uusiudu koskaan: maksetaan kerran, ja sillä hyvä. Jos peruutat, et menetä mitään ilmaista: palaat kolmen poijulle."
+      },
+      {
+        "q": "Miksi tietokoneella ja Androidilla ei makseta?",
+        "a": "Koska naru on kiinnitetty vain iPhoneen ja iPadiin. Työpöytäversiossa – ja Android-versiossa, kun se ilmestyy – äänikirjapaino, pohjaton poiju ja silta ovat auki valmiiksi. Tämä ei ole lanseeraustarjous: siellä ei yksinkertaisesti ole mitään laskutettavaa."
+      }
+    ],
+    "una_a_una": "yksi kerrallaan, tiedot mukanaan"
+  },
+  "voces": {
+    "title": "Yappyn äänet: kymmenen monikielistä lintua 31 kielellä",
+    "description": "Kymmenen luonnollista ääntä, jotka puhuvat kaikkia 31 kieltä vaihtamatta sävyään. Kuuntele näyte jokaisesta ja valitse omasi: valitsemasi ääni värjää koko sovelluksen.",
+    "h1": "Kymmenen lintua, 31 kieltä.",
+    "entradilla": "Kaikki ovat monikielisiä: sama ääni lukee espanjaa, englantia tai japania vaihtamatta sävyään. Ja teksti, jossa on lainaus toisella kielellä, vaihtaa kieltä itsekseen kappaleittain.",
+    "elige": "Napauta lintua, niin se kertoo, miltä se kuulostaa.",
+    "idiomas_titulo": "Kielet, joita se puhuu.",
+    "idiomas_entradilla": "Kaikkiaan 31, ja kullakin on oma käsikirjoittajansa. Kyse ei ole samasta äänestä, joka lukee aksentilla, vaan jokaisen kielen omista säännöistä."
+  },
+  "preguntas": {
+    "title": "Kysymyksiä Yappysta: yksityisyys, kielet, hinnat ja lisenssit",
+    "description": "Suoria vastauksia: mikä on ilmaista, mikä liikennöi verkkoon, mitä malleja Yappy käyttää, mitä tiedostomuotoja se hyväksyy ja mitä tehdä, kun jokin ei toimi.",
+    "h1": "Näitä kysytään.",
+    "entradilla": "Vastattu suoraan, mutkitta.",
+    "grupos": [
+      {
+        "susurro": "raha ja vapaus",
+        "titulo": "Ilmaista, tosissaan.",
+        "lista": [
+          {
+            "q": "Onko tämä oikeasti ilmaista?",
+            "a": "Kyllä. Yappy on avointa koodia MIT-lisenssillä. Mahdollisuus kuunnella lukemaansa on esteettömyyskysymys, eikä esteettömyystyökalujen pitäisi pyytää maksukorttia. Tietokoneella ei ole maksuversiota eikä mainoksia. iPhonessa kokeiluloru kantaa poijullaan kerrallaan kolmea dokumenttia, ilman aikarajaa; jos haluat pohjattoman poijun, äänikirjapainon ja sillan tietokoneeseen, vedät narusta Yappy Parlanchínilla: tilauksella tai elinikäisellä kertamaksulla. Ei tiliä, ei mainoksia, kummassakin tapauksessa."
+          },
+          {
+            "q": "Mikä on temppu? Miten tätä rahoitetaan?",
+            "a": "Temppua ei ole: palvelimia ei tarvitse maksaa. Synteesi pyörii laitteessasi, joten Yappylle ei tule kustannusta käyttäjää kohden. Se on tekijänsä henkilökohtainen projekti, joka julkaistiin, koska se oli jo olemassa ja voisi hyödyttää muitakin."
+          },
+          {
+            "q": "Onko ilmainen kokeilujakso?",
+            "a": "Ei, tahallaan. Kolmen dokumentin poiju on se kokeilu, eikä se vanhene eikä muutu seitsemän päivän kuluttua veloitukseksi. Jos Yappy on sinulle hyödyksi, huomaat sen ilman kelloa niskassa."
+          },
+          {
+            "q": "Saanko julkaista tuottamani äänen podcastissa tai videossa?",
+            "a": "Yappyn koodi on MIT-lisenssiä, eikä se aseta sinulle ehtoja. Äänimallilla, Supertonic 3:lla, on oma lisenssinsä: avoin OpenRAIL-M-tyyppinen lisenssi käyttöehtoineen. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Tarkista se mallin sivulta</a> ennen kaupallista käyttöä, sillä se osa ei ole Yappyn hallinnassa, emmekä voi luvata sen puolesta."
+          }
+        ]
+      },
+      {
+        "susurro": "tekstisi eivät lähde kotoa",
+        "titulo": "Yksityisyys, nimeltä mainiten.",
+        "lista": [
+          {
+            "q": "Lähtevätkö tekstin millekään palvelimelle?",
+            "a": "Eivät. Syntetisointi, transkriptio ja artikkelien poiminta tapahtuvat laitteessasi. Yappylle jakamaasi ei lähetetä mihinkään: tilejä ei ole, kopioita ei tehdä, eikä Yappyn palvelinta, johon ne voisivat jäädä, ole olemassakaan. Verkkoa koskee vain neljä konkreettista asiaa, ja ne kaikki on kerrottu tietosuojakäytännössä."
+          },
+          {
+            "q": "Kerääkö Yappy käyttötilastoja?",
+            "a": "Kyllä kerää, ja sen voi sanoa suoraan. Puhelinsovellus lähettää nimettömiä käyttötilastoja: ne tulevat päälle tehtaasta ja ne voi kytkeä pois takahuoneesta. Matkaan lähtee tapahtuman nimi suljetusta listasta (avattiinko sovellus, mikä vaihe aloituskierroksesta näkyy, mitä tilaa naputellaan, päättyykö lukeminen), satunnainen asennustunniste, kieli ja versio. Ei koskaan nimeäsi, sähköpostiosoitettasi, lukemaasi tekstiä, dokumentin otsikkoa eikä linkkiä, eikä myöskään mitään mainontatunnistetta. Eikä ne mene Googlelle, Firebaselle tai millekään analytiikkayritykselle: ne menevät tekijän omaan Cloudflaren Workeriin ja D1-tietokantaan. Työpöytäversiossa ei ole tilastoja laisinkaan."
+          },
+          {
+            "q": "Entä silta puhelimen ja tietokoneen välillä?",
+            "a": "Se on suora yhteys kahden laitteesi välillä, päästä päähän QUIC:llä salattu, ja se käyttää <a href=\"https://iroh.computer\">iroh</a>-protokollaa. Pariliitos tehdään osoittamalla kamera siihen QR-koodiin, jonka tietokoneesi näyttää, ja syntyneen avaimen voi perua sieltä koska tahansa. Välissä ei ole Yappyn palvelinta, koska Yappyn palvelinta ei ole olemassa."
+          },
+          {
+            "q": "Toimiiko ilman verkkoa?",
+            "a": "Kyllä, ikuisesti. Kun mallin on kerran ladannut, puhelimeen noin 200 Mt ja tietokoneeseen noin 398 Mt, Yappy toimii lentokonetilassa: liitä tekstiä, avaa dokumentteja, syntetisoi ja vie. Vain uusien osoitteiden jakaminen tarvitsee verkon, ilmeisistä syistä. Pilvisynkronointia ei myöskään ole: kirjastosi elää laitteessasi, ja silta on lähimpänä sitä, että kantaa jotain koneelta toiselle."
+          }
+        ]
+      },
+      {
+        "susurro": "mikä soi",
+        "titulo": "Ääni ja kielet.",
+        "lista": [
+          {
+            "q": "Mitä äänimallia se käyttää?",
+            "a": "Supertonic 3, Supertonen avoin malli, noin 99 miljoonaa parametria. Se mahtuu 398 Mt:een tietokoneessa ja 200 Mt:een puhelimessa ja syntetisoi nopeammin kuin reaaliajassa millä tahansa viime vuosien kannettavalla. Se toimii merkkitasolla: siksi on olemassa käsikirjoittaja, joka muuttaa numerot, lyhenteet ja symbolit sanoiksi ennen kuin ääni näkee ne."
+          },
+          {
+            "q": "Mitä kieliä se puhuu?",
+            "a": "Saksa, arabia, bulgaria, tšekki, korea, kroaatti, tanska, slovakki, sloveeni, espanja, viro, suomi, ranska, kreikka, hindi, unkari, indonesia, englanti, italia, japani, latvia, liettua, hollanti, puola, portugali, romania, venäjä, ruotsi, turkki, ukraina ja vietnam. Kolmekymmentäyks. Ja kaikki kymmenen ääntä ovat monikielisiä: sama ääni lukee ne kaikki vaihtamatta äänenväriään."
+          },
+          {
+            "q": "Mitä tapahtuu, jos dokumentti sekoittaa kieliä?",
+            "a": "Yappy tunnistaa dokumentin kielen ja kappale kappaleelta jokaisen osan kielen: englanninkielinen sitaatti espanjankielisessä esseessä luetaan englanniksi, samalla äänellä, ilman että kosketat mitään. Ja jos tunnistus erehtyy, kielen voi asettaa käsin."
+          },
+          {
+            "q": "Miten se eroaa VoiceOverista tai ”Lue näyttö” -toiminnosta?",
+            "a": "Järjestelmän lukijat lukevat näytön sellaisenaan, järjestelmän prosodialla ja ilman muistia. Yappy valmistelee tekstin ennen kuin sanoo sen (siivoaa artikkelin, sanoo numerot ja lyhenteet sanoin, merkitsee tauot), lukee sen luonnollisella äänellä, muistaa missä olit, vie äänikirjoja ulos ja soi edelleen, kun näyttö on lukittu. Ne ovat serkkuja, kummankin ammatti oma, ja niitä käyttää yhtä aikaa kesken hankalamatta: Yappy ei korvaa ruudunlukijaa eikä aja siihen."
+          }
+        ]
+      },
+      {
+        "susurro": "mikä menee sisään",
+        "titulo": "Dokumentit.",
+        "lista": [
+          {
+            "q": "Mitä tiedostomuotoja se hyväksyy?",
+            "a": "Verkkoartikkelit (sivu siivoaa itsensä), videot niiden julkaistun transkription kautta, PDF, EPUB, Word, ODT, RTF, Markdown, pelkkä teksti, .pptx, .xlsx, .csv ja äänimuistiinpanot. Puhelimessa kaikki jakovalikon kautta; työpöydällä lisäksi raahaamalla tai pikanäppäimillä. Ja jos tietokoneeseen on asennettu pandoc, lista laajenee LaTeXiin, reStructuredTextiin, Orgiin ja muutamaan muuhun."
+          },
+          {
+            "q": "Entä skannatut PDF:t, joissa ei ole tekstiä?",
+            "a": "Työpöydällä ne käyvät ensin paikallisen OCR:n läpi, eikä tietokoneeltasi siinäkään lähde mitään. iPhonessa tämä ei vielä onnistu: jos PDF on paperin valokuva, puhelin ei löydä luettavaa tekstiä. Vinosti skannattu tai epätarkka kuva antaa sen, mitä mikä tahansa OCR antaa, mutta kunnollinen skannaus luetaan kokonaan."
+          },
+          {
+            "q": "Lukeeko se kaupasta ostamani kirjat?",
+            "a": "Vain ne, jotka saat auki. Suojaamaton EPUB luetaan kokonaan, lukuineen. Kaupan DRM-suojatut kirjat eivät mene läpi, ei täällä eikä missään muuallakaan: se lukko ei ole Yappyn, emmekä lähde esittämään, että meillä olisi avain."
+          },
+          {
+            "q": "Miten poistan jotain kirjastosta?",
+            "a": "Kirjastosta itsestään: jokaisella asiakirjalla on oma unohda-valintansa, ja sen mukana häviää myös ääni. Vietetyt tiedostot (.m4b, .mp3, .wav) ovat sinun ja asuvat siellä, minne ne tallensit; niiden poistaminen tai siirtäminen on Finderin tai Tiedostot-sovelluksen homma."
+          }
+        ]
+      },
+      {
+        "susurro": "kun jokin ei toimi",
+        "titulo": "Viavat ja apu.",
+        "lista": [
+          {
+            "q": "Miksi ensimmäinen syntetisointi kestää muutamia sekunteja pidempään?",
+            "a": "Malli ladataan muistiin ensimmäisellä kerralla. Sen jälkeen se pysyy lämpimänä, ja seuraavat lauseet syntyvät lennossa. Jos olet juuri asentanut sovelluksen tietokoneelle, ensimmäiseen odotukseen sisältyy lisäksi äänimallin lataaminen."
+          },
+          {
+            "q": "Sana ääntyy väärin. Voiko sitä opettaa?",
+            "a": "Käyttäjän ääntämysanakirjaa ei ole, joten nopein keino on kirjoittaa sana editoriin niin kuin se kuuluu: malli lukee merkit ja tottelee. Jos kyse on yleisestä säännöstä (lyhenne, kirjainlyhenne, mittayksikkö), kerro siitä <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHubin issueissa</a>: lukijan sääntötaulut kasvavat tällaisten tapausten myötä."
+          },
+          {
+            "q": "Jaoin videon, eikä se sano mitään.",
+            "a": "Yappy nojaa videon julkaistuun tekstitykseen, se ei transkriboi videon ääntä. Jos videolla ei ole tekstitystä, luettavaa ei ole. Ja jos video on sinun ja sinulla on se tiedostona, jaa tiedosto: silloin sen kyllä kuuntelee paikallinen korva."
+          },
+          {
+            "q": "Löysin viavan. Missä siitä kerrotaan?",
+            "a": "<a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHubin issueissa</a> tai kirjoittamalla osoitteeseen <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Korjaus etenee nopeammin, jos voit jakaa myös tekstin, jossa vika ilmeni, ja kerrot järjestelmäsi."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Yappyn tietosuoja: tekstisi eivät lähde matkaan",
+    "description": "Mitä laitteesta lähtee ja mitä ei, kerrotaan mustaa valkoisella: syntetisointi, transkriptio ja artikkelien poiminta tapahtuvat sisällä. Verkkoon menee vain neljä asiaa, ja ne kaikki luetellaan.",
+    "h1": "Tekstisi eivät lähde matkaan.",
+    "actualizado": "Päivitetty viimeksi: {fecha}. Rekisterinpitäjä: José Luis Saorín Ferrer, Tenerife (Espanja).",
+    "bloques": [
+      {
+        "titulo": "Mistä tässä on kyse",
+        "texto": "Tämä on Yappyn tietosuojaseloste: iPhone-, iPad-, Mac-, Windows- ja Linux-sovellus, widgetteineen ja laajennuksineen. Seloste on lyhyt, koska kerrottavaa on vähän. Yappyssa ei ole tilejä, se ei kysy nimeäsi eikä sähköpostiasi, eikä luettavaksi annettu lähde laitteeltasi. Verkkoon menee kuitenkin neljä asiaa, ja tässä ne ovat, yksi kerrallaan."
+      },
+      {
+        "titulo": "Ei tiliä, ei nimeä, ei tekstejä",
+        "texto": "Yappyssa ei ole rekisteröitymistä eikä kirjautumista. Se ei kerää nimeäsi, sähköpostiosoitettasi, yhteystietojasi, sijaintiasi eikä mitään mainontatunnistetta. Artikkelit, PDF- ja EPUB-tiedostot, asiakirjat, äänimuistiinpanot ja tekstit, jotka jaat sovellukselle, muuttuvat puheeksi <strong>laitteessasi</strong>: syntetisointi, transkriptio ja sivujen siivous tapahtuvat paikallisesti, eikä mitään lähetetä meille eikä kolmansille osapuolille. Pilvisynkronointiakaan ei ole: kirjastosi, edistymisesi ja äänikirjasi elävät laitteessasi ja katoavat, jos poistat sovelluksen."
+      },
+      {
+        "titulo": "Verkkoon menee (1): äänien lataus",
+        "texto": "Ensimmäisellä kerralla Yappy lataa äänimallin (noin 200 Mt puhelimessa, noin 398 Mt tietokoneessa) osoitteesta <code>modelos.yappy.joseluissaorin.com</code>, Cloudflaren R2-varastosta. Kuten missä tahansa latauksessa, palvelin näkee IP-osoitteesi pyynnön ajan. Emme pidä rekisteriä, joka tunnistaisi sinut. Tuon latauksen jälkeen syntetisointi toimii lentokonetilassa ikuisesti."
+      },
+      {
+        "titulo": "Kosketus verkkoon (2): jakamasi linkit",
+        "texto": "Jos jaat linkin tai videon, laitteesi käy kyseisessä osoitteessa hakemassa tekstin tai litteroinnin, aivan niin kuin selaimesi tekisi. Käynnin tekee laitteesi, ei Yappyn palvelin, ja käyty sivusto saa sen, minkä saisi selaimelta: IP-osoitteesi ja laitteen tyypin. Historiaa ei tallenneta mihinkään laitteen ulkopuolelle."
+      },
+      {
+        "titulo": "Kosketus verkkoon (3): anonyymit tilastot",
+        "texto": "Tämä kannattaa sanoa suoraan: <strong>analytiikkaa on</strong>, vain puhelinsovelluksessa, ja se on päällä valmiiksi. Sen saa pois päältä milloin tahansa asetuksista, kohdasta ”Anonyymit tilastot”. Lähetettävä tieto on tapahtuman nimi suljetulta listalta (sovellus avattiin, mikä aloitusopastuksen vaihe on näkyvissä, mitä tilausta kosketetaan, päättyykö lukeminen), satunnainen asennustunniste, sovelluksen kieli ja sen versio. <strong>Ei koskaan</strong> nimeäsi, sähköpostiasi, lukemaasi tekstiä, asiakirjan otsikkoa, linkkiä eikä mainostunnistetta. Tieto ei mene Google Analyticsille, Firebaselle eikä millekään analytiikkafirmalle: se menee tekijän omaan Cloudflare Workeriin ja D1-tietokantaan, ja sen avulla näkee, mitä sovelluksen osia käytetään ja mitkä ovat turhia. Työpöytäversiossa ei ole tilastoja millään lailla."
+      },
+      {
+        "titulo": "Kosketus verkkoon (4): ostokset",
+        "texto": "Apple hoitaa tilaukset ja Yappy Parlanchínin elinikäisen oston App Storen kautta, ja ne ovat olemassa vain iPhonessa ja iPadissa. Selvittääkseen, onko tilauksesi voimassa, sovellus käyttää <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>-tilaustenhallintaa, joka saa anonyymin asennustunnisteen ja Applen kuitin; ei nimeäsi etkä sähköpostiasi. Apple kertoo omista tiedoistaan <a href=\"https://www.apple.com/legal/privacy/\">tietosuojakäytännössään</a>."
+      },
+      {
+        "titulo": "Silta: iPhonesta tietokoneeseen ja takaisin",
+        "texto": "Jos yhdistät Yappyn Maciisi tai PC:hen, muunnettavaksi lähettämäsi asiakirjat kulkevat suorassa, päästä päähän -salatussa yhteydessä laitteidesi välillä <a href=\"https://iroh.computer\">iroh</a>-kirjastolla QUIC:n päällä. Löytääkseen toisensa laitteet voivat nojata välityspalvelimiin, jotka näkevät vain salattua liikennettä, jota eivät osaa lukea. Yappylla ei ole väliin kytkettyjä palvelimia, jotka tallentaisivat mitään, koska sillä ei ole palvelimia."
+      },
+      {
+        "titulo": "Alaikäiset ja käyttöluvat",
+        "texto": "Yappy ei ole suunnattu alle 13-vuotiaille, eikä se kerää henkilötietoja keneltäkään, iästä riippumatta. Järjestelmältä pyydetyt luvat ovat käytössä vain sen toimen ajan ja juuri sillä hetkellä: leikepöytä liittämisen yhteydessä, kamera sillan QR-koodin lukemisessa, mikrofoni työpöydällä diktoimista varten. Mitään niistä ei käytetä taustalla."
+      },
+      {
+        "titulo": "Oikeutesi ja kenelle kirjoittaa",
+        "texto": "Koska emme tallenna henkilötietoja, palvelimillamme ei ole mitään vietävää eikä poistettavaa: kaikki, mitä Yappy sinusta tietää, asuu laitteellasi ja katoaa, kun sovellus poistetaan. Jos haluat, että lakkaamme vastaanottamasta jopa anonyymejä tilastoja, ne saa pois päältä itse sovelluksesta. Jos jotain jää mietityttämään, kirjoita osoitteeseen <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> tai avaa issuen osoitteessa <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a>. Koodi on avointa, MIT-lisenssillä: kaiken edellä sanotun voi tarkistaa lukemalla."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy dysleksiaan, ADHD:hen ja heikkonäköisyyteen: kuuntele, mitä ei voi lukea",
+    "description": "Ääneen lukemisen työkalu, joka ei vaadi tiliä, ei peri maksua tunteittain eikä tarvitse verkkoyhteyttä. Dysleksiaan, ADHD:hen, näköväsymykseen, heikkonäköisyyteen ja kaikille, jotka vain lukevat paremmin korvillaan.",
+    "h1": "Lukeminen korvilla.",
+    "entradilla": "Sen kuunteleminen, mitä lukee, on saavutettavuuskysymys, eikä saavutettavuustyökalujen pitäisi pyytää luottokorttia. Yappy ei pyydä sitä, ei pidä minuittilaskuria ja toimii lentokoneessakin.",
+    "voiceover_titulo": "Yappy ei korvaa VoiceOveria",
+    "voiceover_texto": "Ne ovat serkuksia, kummankin ammatti eri. Ruudunlukija lukee käyttöliittymän, jotta sillä voi toimia; Yappy lukee sisällön, jotta siitä voi nauttia. Niitä voi käyttää yhdessä ilman, että ne haittaavat toisiaan.",
+    "casos": [
+      {
+        "titulo": "Dysleksia",
+        "texto": "Kirjain kirjaimelta purkaminen väsyttää, ja väsymys syö ymmärtämisen paljon ennen kuin aika ehtii. Kun tekstin kuulee samalla, kun se korostuu näytöllä, voi lukea ja kuulla yhtä aikaa: silmä seuraa riviä, korva tekee raskaan työn. Yappy ei korjaa mitään, mutta poistaa tieltä sen osan, joka uuvuttaa."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "Hiljainen sivu kutsuu lähtemään. Eteenpäin kulkeva ääni pitää rytmin yllä ja palauttaa kappaleen äärelle, kun pää on lähtenyt kävelylle. Ja koska kuunnella voi kävellessä tai käsien ollessa muussa käytössä, lukemisen ei enää tarvitse vaatia paikallaan pysymistä: monelle siinä on koko ero."
+      },
+      {
+        "titulo": "Heikkonäköisyys ja näköväsymys",
+        "texto": "Kun pieni teksti ei enää ole vaihtoehto, tai kun illan seitsemän aikoihin silmät ovat jo tehneet päivätyönsä, teksti on yhä saatavilla korvien kautta. Yappy lukee PDF:n, sähköpostin tai koko artikkelin, tarvittaessa näyttö sammutettuna, lukitusnäytöltä tai kuulokkeista."
+      },
+      {
+        "titulo": "Kielten oppiminen",
+        "texto": "Yhtä aikaa kuunteleminen ja lukeminen on vanhin ja tehokkain tapa oppia ääntämään. Kymmenen ääntä on monikielisiä ja lukee kaikki 31 kieltä kunkin omilla säännöillään, joten saksankielinen teksti kuulostaa saksalta – ei saksalta englannin aksentilla. Nopeudella 0,75× joka tavu erottuu; nopeudella 1,5× korvat harjaantuvat."
+      },
+      {
+        "titulo": "Korjaa omaa tekstiäsi",
+        "texto": "Virke, jota ei voi sanoa ääneen, ei pidä paikkaansa kirjoitettunakaan. Oman tekstin kuunteleminen paljastaa toistot, väärin sijoitetut pilkut ja lisäykset, jotka eivät lopu koskaan. Samaa korjausta tehtiin ennen kirjapainoissa, ja se on ilmaista: avaat .docx-tiedoston, painat toiston ja kuulet, mitä oikeasti kirjoitit – et sitä, mitä luulit kirjoittaneesi."
+      },
+      {
+        "titulo": "Opiskele korvakuulolla",
+        "texto": "Kurssin muistiinpanot, kokeeseen tuleva kappale, kaksisataasivuinen artikkeli. Ne lähetetään iltaisin kirjapainoon, ja aamulla niistä on valmis äänikirja lukuineen bussimatkaa varten. Jatkokohta tietää täsmälleen oikean kappaleen: jatkamisessa ei tarvitse etsiä mitään."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Toimiiko, kun VoiceOver tai TalkBack on käytössä?",
+        "a": "Kyllä, eikä toinen haittaa toista. Näytönlukija lukee käyttöliittymän, jotta sovellusta voi käyttää; Yappy lukee sisällön, jotta siitä voi nauttia. Niitä voi käyttää yhtä aikaa: VoiceOver vie toistopainikkeelle asti, ja siitä eteenpäin Yappyn ääni lukee kirjan."
+      },
+      {
+        "q": "Voiko sitä käyttää katsomatta näyttöä?",
+        "a": "Kyllä. iPhonessa on Siri-oikoteitä (”Hei Siri, lue leikepöytäni Yappyllä”), toimintopainike, lukitusnäytön säätimet ja kuulokkeiden säätimet. Tietokoneella kolme pikanäppäintä lukee valinnan tai leikepöydän tai pysäyttää toiston – sovellus on sillä välin piilossa ilmoitusalueella."
+      },
+      {
+        "q": "Lukeeko se kurssimateriaalin PDF:t ja kirjat, jotka minulla jo on?",
+        "a": "Mikä tahansa PDF, EPUB, Word tai ODT, jonka saat auki. Jos PDF on skannaus ilman tekstiä, työpöytäversio ajaa sen ensin paikallisen OCR:n läpi ennen lukemista; mobiilissa tuo ei vielä onnistu. Kaupasta saatavat DRM-suojatut kirjat eivät aukea missään, eivät täälläkään."
+      },
+      {
+        "q": "Paljonko päivittäinen käyttö maksaa?",
+        "a": "Ei mitään. Minuutteja tai merkkejä ei lasketa, mainoksia ei ole eikä tiliä tarvita. Voi kuunnella kahdeksan tuntia päivässä vuodesta toiseen maksamatta senttiäkään – eikä verkkoyhteyttä tarvita. Maksullinen osa lisää vain pohjattoman naulakon, kirjapainon ja sillan, ja vain iPhonessa ja iPadissa."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Tarinoita papukaijalle: tekijänoikeudesta vapaita tekstejä Yappyn kokeiluun",
+    "description": "Kokonaisia tekijänoikeudesta vapaita kertomuksia, valmiita jaettaviksi Yappyn kanssa ja kuunneltaviksi loppuun asti. Ei rekisteröitymistä, ei ladattavaa.",
+    "h1": "Tarinoita papukaijalle.",
+    "entradilla": "Kokonaisia tekstejä, tekijänoikeudesta vapaita. Jaa tämä sivu Yappylle, niin papukaija lukee sen.",
+    "dominio_publico": "Tekijänoikeudesta vapaa."
+  },
+  "blog": {
+    "title": "Yappyn blogi: kirjoitetun kuunteleminen",
+    "description": "Miten PDF muutetaan ääneksi, miksi tekstilukijan pitäisi toimia ilman verkkoyhteyttä, miten luvut lausutaan ääneen ja mitä opimme tehdessämme sovellusta, joka puhuu.",
+    "h1": "Kirjoitetun kuunteleminen.",
+    "entradilla": "Käsityötaitoa, niksejä ja vähän historiaa ääneen lukemisesta. Jokaisen artikkelin voi kuunnella suoraan täältä, Yappyn omalla äänellä luettuna.",
+    "escuchame": "Kuuntele tämä artikkeli",
+    "escuchame_nota": "Lukijana Yappy, äänenä {voz}, selaimessasi.",
+    "vacio": "Tällä kielellä ei vielä ole yhtään artikkelia."
+  },
+  "convertir": {
+    "title": "Muunna mikä tahansa teksti puheeksi: PDF, EPUB, Word, artikkelit ja videot",
+    "description": "Kuusi tapaa muuntaa lukemasi luonnolliseksi puheeksi, kaikki omassa laitteessasi: PDF, EPUB, Word, verkon artikkelit, videot ja äänimuistiinpanot.",
+    "h1": "Muunna",
+    "entradilla": "Ei väliä, mitä sinulla on: artikkeli, kirja, asiakirja tai äänite. Yappy muuttaa sen luettavaan muotoon ja lukee sen ääneen – tiedosto ei poistu laitteeltasi.",
+    "pasos_titulo": "Kolmessa vaiheessa.",
+    "faq_titulo": "Kysymyksiä tästä",
+    "otros_titulo": "Muutakin se lukee",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "Muunna PDF äänitiedostoksi: kuuntele PDF ääneen ilmaiseksi",
+        "description": "Muunna mikä tahansa PDF luonnolliseksi puheeksi ja kuuntele sitä samalla kun teet muuta, tai tallenna se äänikirjaksi, jossa luvut ovat mukana. Mikään ei lähde pilveen, eikä sivurajoitusta ole.",
+        "h1": "Kuuntele PDF-tiedostosi.",
+        "entradilla": "Tieteellinen artikkeli, käyttöohje, luentomuistiinpanot, sopimus. Yappy avaa PDF:n, poistaa ylätunnisteet ja toistuvat sivunumerot, löytää luvut ja lukee dokumentin loppuun asti luonnollisella äänellä. Tiedosto ei poistu laitteeltasi.",
+        "pasos": [
+          {
+            "titulo": "Jaa PDF-tiedosto",
+            "texto": "Tiedostot-sovelluksesta, sähköpostista tai Safarista: napauta Jaa ja valitse Yappy. Tietokoneella raahaa se ikkunaan."
+          },
+          {
+            "titulo": "Valitse ääni",
+            "texto": "Kymmenen ääntä, 31 kieltä. Jos PDF on jollakin toisella kielellä, Yappy tunnistaa kielen itse."
+          },
+          {
+            "titulo": "Kuuntele tai tallenna",
+            "texto": "Käynnistä toisto tai anna kirjapainon hoitaa loput, niin saat äänikirjan lukuineen."
+          }
+        ],
+        "extra_titulo": "Skannatut PDF:t",
+        "extra_texto": "Jos PDF on paperin kuva eikä sisällä tekstiä, työpöytäversio ajaa sen paikallisen OCR:n läpi ennen lukemista. iPhonessa ei vielä.",
+        "faq": [
+          {
+            "q": "Onko sivurajoitusta?",
+            "a": "Ei ole. Kolmen sivun artikkeli tai neljäsatasivuinen väitöskirja: PDF sivutetaan kokonaan ja luetaan kokonaan. Koska kaikki tapahtuu omalla laitteellasi, merkkikiintiötä ei ole, eikä lasku karkaa keskellä seitsemättä lukua."
+          },
+          {
+            "q": "Entä jos PDF on skannaus ilman tekstiä?",
+            "a": "Työpöytäversio ajaa tiedoston paikallisen OCR:n läpi ennen lukemista, eikä silloinkaan mikään lähde tietokoneeltasi. iPhonessa ei vielä: jos PDF on paperin kuva, puhelin ei löydä luettavaa tekstiä."
+          },
+          {
+            "q": "Poistaako se ylätunnisteet ja sivunumerot?",
+            "a": "Kyllä. Yappy tunnistaa, mikä toistuu kaikilla sivuilla (ylätunniste, alatunniste, sivunumero, lehden nimi), ja jättää sen pois käsikirjoituksesta. Mikään ei pilaa kuuntelua pahemmin kuin ”Luku 3, sivu 47” 90 sekunnin välein."
+          },
+          {
+            "q": "Voinko kuunnella vain yhden luvun?",
+            "a": "Kyllä. Yappy etsii asiakirjan oikeat otsikot ja rakentaa niistä selattavan sisällysluettelon. Kirjastosta valitset, mitkä luvut haluat kuunnella ja mitkä lähettää painoon, ja äänikirja valmistuu juuri niistä."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "Muunna EPUB äänikirjaksi: oma kirjasi luettuna ääneen",
+        "description": "Muunna EPUB äänikirjaksi, jossa on oikeat luvut – työhön kuluu vain oma laitteesi. Ei tuntikohtaista tilausta, eikä kirjaa lähetetä millekään palvelimelle.",
+        "h1": "Oma EPUB äänikirjaksi.",
+        "entradilla": "Kirjat, jotka sinulla jo on, luetaan ääneen luonnollisella äänellä, luvut mukanaan. Käynnistät renderöinnin ennen nukkumaanmenoa, ja aamulla kirja odottaa kirjastossasi .m4b-tiedostona, jonka avaa mikä tahansa soitin.",
+        "pasos": [
+          {
+            "titulo": "Jaa EPUB",
+            "texto": "Tiedostot-sovelluksesta tai mistä tahansa, missä tiedosto on. Se saapuu luvut jo valmiiksi tunnistettuina."
+          },
+          {
+            "titulo": "Lähetä painoon",
+            "texto": "Valitset luvut, äänen ja nopeuden. Papukaija painaa kirjan, vaikka suljet sovelluksen."
+          },
+          {
+            "titulo": "Kuuntele missä haluat",
+            "texto": "Kirja jää kirjastoon .m4b-tiedostona kirjanmerkkeineen; sieltä jaat sen Tiedostot-sovellukseen, Kirjat-sovellukseen tai mihin haluat."
+          }
+        ],
+        "extra_titulo": "DRM-suojatut kirjat",
+        "extra_texto": "Yappy lukee ne EPUB-tiedostot, jotka osaat avata. Kaupoissa myytävät DRM-suojatut kirjat eivät avaudu, ei täällä eikä missään muuallakaan.",
+        "faq": [
+          {
+            "q": "Säilyvätkö kirjan luvut?",
+            "a": "Kyllä, ja ne ovat oikeita lukuja, eivät pelkkiä aikamerkkejä kymmenen minuutin välein: ne tulevat suoraan EPUB-tiedoston sisällysluettelosta. Valmista .m4b:tä voi selata luku kerrallaan missä tahansa äänikirjasoittimessa, ja mukana ovat kansikuva sekä kohta, johon jäit."
+          },
+          {
+            "q": "Miten kauan kokonaisen kirjan tekeminen kestää?",
+            "a": "Riippuu laitteesta ja kirjan koosta, mutta käytännön vastaus kuuluu: anna työn pyöriä nukkumaan mennessä, ja aamulla se on valmis. Jos sinulla on silta, tietokoneesi tekee synteesin paljon nopeammin ja palauttaa valmiin äänikirjan puhelimeesi."
+          },
+          {
+            "q": "Entä DRM-suojatut kirjat?",
+            "a": "Yappy lukee ne EPUB-tiedostot, jotka osaat avata. Kaupoissa myytävät DRM-suojatut kirjat eivät avaudu, ei täällä eikä missään muuallakaan: se lukko ei ole meidän."
+          },
+          {
+            "q": "Minne äänikirja jää?",
+            "a": "Yappyn kirjastossa, oikeana .m4b-tiedostona. Sieltä jaat sen Tiedostot-sovellukseen, Kirjat-sovellukseen tai siihen soittimeen, jota jo käytät. Tiedosto on sinun: jos poistat sovelluksen, viemäsi tiedosto jää sinne, minne sen tallensit."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Kuuntele Word-asiakirja ääneen: DOCX, ODT ja RTF äänitiedostoksi",
+        "description": "Muuntaa Word- ja LibreOffice-asiakirjat sekä tavalliset tekstitiedostot luonnolliseksi puheeksi oikolukemista varten. Kaikki tapahtuu omalla tietokoneellasi tai puhelimellasi.",
+        "h1": "Oikolue korvalla.",
+        "entradilla": "Oman tekstin kuunteleminen on paras oikoluku: lause, jota ei voi sanoa ääneen, ei kestä paperillakaan. Yappy lukee .docx-, .odt-, .rtf-, .txt- ja Markdown-tiedostot otsikoineen ja rytmeineen.",
+        "pasos": [
+          {
+            "titulo": "Avaa asiakirja",
+            "texto": "Raahaa asiakirja tietokoneen ikkunaan tai jaa se puhelimella."
+          },
+          {
+            "titulo": "Kuuntele kappale kerrallaan",
+            "texto": "Teksti valaistuu, kun se ääntyy; napautat minne haluat siirtyä."
+          },
+          {
+            "titulo": "Korjaa, mikä natisee",
+            "texto": "Ja kuuntele uudestaan. Tietokoneella jokaisella kappaleella voi olla oma ääni ja oma vauhti."
+          }
+        ],
+        "extra_titulo": "Myös taulukot ja esitykset",
+        "extra_texto": "Lukee .pptx-, .xlsx- ja .csv-tiedostot. Tietokoneella lista laajenee, jos pandoc on asennettuna: LaTeX, reStructuredText, Org ja muutama muu.",
+        "faq": [
+          {
+            "q": "Mitä tekstimuotoja ohjelma lukee?",
+            "a": ".docx, .odt, .rtf, .txt ja Markdown sekä .pptx, .xlsx ja .csv. Tietokoneella lista laajenee, jos pandoc on asennettuna: LaTeX, reStructuredText, Org ja muutama muu."
+          },
+          {
+            "q": "Lukeeko ohjelma myös alaviitteet ja taulukot?",
+            "a": "Ohjelma lukee asiakirjan runkotekstin otsikoineen ja alkuperäisessä järjestyksessä. Taulukot luetaan rivi kerrallaan – muuta tapaa lukea taulukko ääneen ei ole – ja alaviitteet kuuluvat oman osionsa loppuun, eivät lauseen keskelle."
+          },
+          {
+            "q": "Voinko antaa jokaiselle kappaleelle oman äänen?",
+            "a": "Tietokoneella onnistuu: kappalekohtaisessa editorissa jokaiselle voi asettaa äänen, vauhdin ja tauon. Juuri siksi dialogi, haastattelu tai kaksikielinen asiakirja pysyy kuunneltavana."
+          },
+          {
+            "q": "Onko tästä oikeasti apua oikolukuun?",
+            "a": "Se on paras oikoluku, joka on. Kuuleminen paljastaa, minkä silmä antaa anteeksi: toiston kolmen rivin takaa, kesken jäävän sivulauseen, verbin nielaissun lisäyksen. Hidastat vauhdin arvoon 0,9×, kuuntelet luvun ja kirjaat ylös, mikä natisee."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Artikkelit",
+        "title": "Kuuntele verkkoartikkeleita: mikä tahansa verkkosivu ääneen",
+        "description": "Jaa sivu Safarista, niin Yappy lukee sen siivottuna: ei valikkoja, ei banneria, ei alatunnistetta. Sivun lataa oma laitteesi, ei palvelimemme.",
+        "h1": "Kuuntele nyt, minkä aioit lukea myöhemmin.",
+        "entradilla": "Välilehti, jonka jätät auki myöhemmäksi. Jaa se Yappylle ja kuuntele samalla, kun tiskaat. Sivu siivoaa itsensä: valikot, bannerit ja alatunnisteet pois. Jäljelle jää proosa otsikoineen ja rytmeineen.",
+        "pasos": [
+          {
+            "titulo": "Napauta Jaa",
+            "texto": "Safarissa, uutislukijassa, sähköpostissa: missä on Jaa-valikko, siellä on Yappy."
+          },
+          {
+            "titulo": "Siistiytyy itsestään",
+            "texto": "Poiminta tapahtuu omassa laitteessasi. Jos olet lehden tilaaja, Yappy noutaa juuri sen artikkelin, jonka sinä näet."
+          },
+          {
+            "titulo": "Menee jonoon",
+            "texto": "Ja jää odottamaan, kunnes sinulla on taas kädet vapaana."
+          }
+        ],
+        "extra_titulo": "Mitä verkko saa nähdä",
+        "extra_texto": "Vain käynti jakamaasi osoitteeseen, ja sen tekee oma laitteesi, samaan tapaan kuin selaimesikin. Välissä ei ole Yappyn palvelinta, koska Yappyn palvelinta ei ole olemassakaan.",
+        "faq": [
+          {
+            "q": "Toimiiko se medioissa, joiden tilaaja olen?",
+            "a": "Poiminnan tekee oma laitteesi omalla istunnollasi, joten Yappy saa juuri sen artikkelin, jonka näet selaimessasi. Jos sinä voit lukea sen, Yappy voi lukea sen sinulle. Välissä ei ole palvelinta, jonka pitäisi päästä maksumuurin ohi, koska palvelinta ei ole."
+          },
+          {
+            "q": "Entä sivut, jotka latautuvat vain JavaScriptilla?",
+            "a": "Osa vastustaa: jos teksti ilmestyy vasta, kun sivu ehtii ajaa puolet kirjastostaan, Yappy saattaa jäädä tyhjin käsin. Silloin nopeinta on maalata teksti, kopioida se ja jakaa se pelkkänä tekstinä."
+          },
+          {
+            "q": "Säilyttääkö se historiaa siitä, mitä luen?",
+            "a": "Vain laitteessasi, jotta voit jatkaa siitä, mihin jäit. Mikään näistä tiedoista ei lähde minnekään, ja jokaisen dokumentin voi unohtaa kirjastosta."
+          },
+          {
+            "q": "Lukeeko se valikot, bannerit ja kommentit?",
+            "a": "Ei. Sivu siistitään ennen kuin se päätyy lukijalle: valikot, bannerit, alatunnisteet, Jaa-napit ja kommenttiboksit pois. Jäljelle jää proosa otsikoineen ja rytmeineen."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Videot",
+        "title": "Kuuntele video kuin se olisi artikkeli",
+        "description": "Yappy ottaa videon tekstityksen ja lukee sen sinulle artikkelin tavoin: ruutua ei tarvitse katsoa, nopeuden saat valita itse, eikä videodataa kulu.",
+        "h1": "Videot, artikkelin lailla.",
+        "entradilla": "Puoli tuntia videota on kymmenen minuuttia tekstiä reippaassa lukutahdissa. Yappy ottaa tekstityksen ja lukee sen sinulle luonnollisella äänellä, joten voit kuunnella sen kävellessä ja ilman että näyttö on päällä.",
+        "pasos": [
+          {
+            "titulo": "Jaa linkki",
+            "texto": "Videonsovelluksesta tai selaimesta, Jaa-valikon kautta."
+          },
+          {
+            "titulo": "Sanat talteen",
+            "texto": "Yappy käyttää videon valmista tekstitystä, ei ääniraitaa."
+          },
+          {
+            "titulo": "Kuuntelet omaan tahtiisi",
+            "texto": "Millä äänellä haluat, millä nopeudella haluat. Toimii myös silloin, kun näyttö on lukittu."
+          }
+        ],
+        "extra_titulo": "Jos videolla ei ole transkriptiota",
+        "extra_texto": "Silloin ei ole mitään luettavaa: Yappy käyttää videon mukana julkaistua tekstiä, se ei tunnista videon ääntä. IPhonessa toiminto on olemassa; Androidilla ei vielä.",
+        "faq": [
+          {
+            "q": "Muuntaako Yappy videon äänen tekstiksi?",
+            "a": "Ei. Yappy poimii videon valmiiksi julkaistun transkription ja lukee sen sinulle kuin artikkelin. Se on nopeaa, ei kuluta videodataa eikä kuumenna puhelinta. Mutta se tarkoittaa, että jos transkriptiota ei ole, ei ole luettavaakaan."
+          },
+          {
+            "q": "Entä jos videolla ei ole transkriptiota?",
+            "a": "Silloin Yappy ei saa linkistä mitään irti. Jos video on omasi ja tiedosto on sinulla, jaa se äänitiedostona: silloin paikallinen korva pääsee töihin ja tunnistaa puheen itse laitteessa."
+          },
+          {
+            "q": "Toimiiko se kaikissa videopalveluissa?",
+            "a": "Siellä, missä transkriptio on julkaistu ja saatavilla. IPhonessa toiminto on olemassa; Android-versiossa ei vielä."
+          },
+          {
+            "q": "Kuluttaako se dataa?",
+            "a": "Vähän: ladataan tekstiä, ei videota. Puolen tunnin videon transkriptio on vain muutamia kymmeniä kilotavuja, ja sen jälkeen tekee kaiken muun laitteesi."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Äänimuistiinpanot",
+        "title": "Muunna äänimuistiinpanot tekstiksi suoraan puhelimessa",
+        "description": "Yappy muuntaa äänitykset ja äänimuistiinpanot tekstiksi omassa laitteessasi, ilman että mitään lähetetään millekään palvelulle. Sen jälkeen Yappy lukee sinulle tekstin, jos haluat.",
+        "h1": "Puheesta tekstiin, ja takaisin.",
+        "entradilla": "Tallennettu kokous, autossa sanelettu idea, eilinen luento. Yappy tunnistaa puheen laitteessasi paikallisella korvalla ja jättää tekstin sinulle: lue se, korjaa se tai kuuntele se uudelleen toisella äänellä.",
+        "pasos": [
+          {
+            "titulo": "Jaa äänitys",
+            "texto": "Äänimuistiinpanoista, Tiedostoista tai mistä tahansa sovelluksesta, joka tallentaa ääntä."
+          },
+          {
+            "titulo": "Tunnistus tapahtuu laitteessa",
+            "texto": "Mallilla, joka toimii laitteellasi. Ääni ei lähde sieltä minnekään."
+          },
+          {
+            "titulo": "Lue tai kuuntele",
+            "texto": "Säilyy kuin mikä tahansa muu asiakirja: sitä voi lukea, jakaa ja lukea uudelleen ääneen."
+          }
+        ],
+        "extra_titulo": "Korva ladataan erikseen",
+        "extra_texto": "Tunnistus käyttää eri mallia kuin äänet, ja se ladataan vain, jos sitä käyttää.",
+        "faq": [
+          {
+            "q": "Mikä malli tekee tunnistuksen?",
+            "a": "Parakeet TDT 0.6B v3, NVIDIA:lta, CC-BY-4.0-lisenssillä. Malli toimii laitteessasi. Se on eri malli kuin äänessä: toinen kuuntelee, toinen puhuu."
+          },
+          {
+            "q": "Lähteekö ääni laitteestani?",
+            "a": "Ei. Nauhoite muunnetaan tekstiksi paikallisesti, samoin kuin puhekin syntetisoidaan paikallisesti. Ei pilvitunnistusta, ei tiliä, ei lähetystä."
+          },
+          {
+            "q": "Mitä kieliä se tunnistaa?",
+            "a": "Korva ei puhu yhtä monta kieltä kuin ääni: se tunnistaa tärkeimmät eurooppalaiset kielet, ei kuitenkaan kaikkia niitä 31 kieltä, jotka Yappy osaa lukea. Ääneen lukemiseen kaikki 31; puheesta tekstiksi tämä pienempi joukko."
+          },
+          {
+            "q": "Pitääkö ladata jotain muuta?",
+            "a": "Kyllä: korva ladataan erikseen, ja vain ensimmäisellä kerralla. Jos et koskaan tunnista mitään, se ei koskaan vie tilaa laitteessasi."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Teksti puheeksi kielellä {lengua}: lue mikä tahansa teksti ääneen",
+    "description": "Kuuntele PDF-, EPUB- ja Word-tiedostoja sekä artikkeleita kielellä {lengua} luonnollisella äänellä, omalla laitteellasi ja ilman verkkoyhteyttä. Kymmenen ääntä, ilmaiseksi ja ilman tiliä.",
+    "h1": "Teksti puheeksi kielellä {lengua}.",
+    "entradilla": "Kymmenen ääntä lukee kielellä {lengua} sen omilla säännöillä: omilla numeroilla, päivämäärillä, järjestysluvuilla ja lyhenteillä – ei toisen kielen säännöillä eikä lainatulla aksentilla.",
+    "muestra": "Näyte",
+    "reglas_titulo": "Mitä tekstinkäsittely tietää kielestä {lengua}",
+    "todas": "Muut kolmekymmentä kieltä"
+  },
+  "vs": {
+    "titulo": "Yappy vastaan {nombre} yhdellä silmäyksellä",
+    "caracteristica": "Mitä",
+    "gratis": "Mitä saa ilmaiseksi",
+    "precio": "Hinta alkaen",
+    "local": "Ääni syntyy laitteellasi",
+    "sin_cuenta": "Ei tiliä, ei sähköpostia",
+    "sin_conexion": "Toimii ilman verkkoyhteyttä",
+    "codigo_abierto": "Avoin lähdekoodi",
+    "tarifa": "Veloitus merkeittäin tai tunteittain",
+    "idiomas": "Kielet",
+    "formatos": "Tuetut tiedostomuodot",
+    "audiolibro": "Äänikirja lukuineen",
+    "escritorio": "Tietokone",
+    "yappy_gratis": "Kuuntele rajattomasti – kolme asiakirjaa kerrallaan",
+    "yappy_precio": "0 €, kuukausimaksu alkaen 3,99 €/kk",
+    "gana_en": "Missä {nombre} voittaa",
+    "verificado": "Julkiset tiedot tarkistettu {fecha} kunkin tuotteen verkkosivuilta.",
+    "sin_verificar": "Hinnat muuttuvat usein: tarkista ne ennen päätöstä.",
+    "ver_web": "Virallinen sivusto",
+    "frente_a": "Vastassa {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Usein kysytyt kysymykset"
+  }
+}

@@ -1,0 +1,981 @@
+{
+  "meta": {
+    "codigo": "ro",
+    "nombre": "Română",
+    "dir": "ltr",
+    "ogLocale": "ro_RO",
+    "hreflang": "ro",
+    "og_alt": "„Orice text, cu voce tare” scris cu litere mari pe hârtie de culoarea cremei, cu un papagal coraliu alături"
+  },
+  "slugs": {
+    "uso": "cum-se-foloseste",
+    "guionizador": "scenarist",
+    "descargas": "descarcari",
+    "precios": "preturi",
+    "voces": "voci",
+    "preguntas": "intrebari",
+    "privacidad": "confidentialitate",
+    "accesibilidad": "accesibilitate",
+    "cuentos": "povesti",
+    "blog": "blog",
+    "convertir": "conversie",
+    "idiomas": "limbi",
+    "alternativas": "alternative",
+    "formato_pdf": "pdf-in-audio",
+    "formato_epub": "epub-in-audiolibru",
+    "formato_word": "word-in-vorbire",
+    "formato_articulos": "articole-in-audio",
+    "formato_videos": "video-in-audio",
+    "formato_notas": "note-vocale-in-text"
+  },
+  "comunes": {
+    "saltar": "Sari la conținut",
+    "marca_aria": "Yappy, pagina principală",
+    "idioma": "Limbă",
+    "menu": "Deschide meniul",
+    "secciones": "Secțiuni",
+    "descargar": "Descarcă",
+    "descargar_gratis": "Descarcă gratuit",
+    "en_app_store": "Descarcă din App Store",
+    "escuchar_muestra": "Ascultă o mostră",
+    "probar": "Încearcă acum",
+    "leer_mas": "Continuă lectura",
+    "volver": "Înapoi",
+    "inicio": "Acasă",
+    "minutos": "{n} min de citire",
+    "publicado": "Publicat pe",
+    "actualizado": "actualizat pe",
+    "por": "de",
+    "gratis": "gratuit",
+    "si": "Da",
+    "no": "Nu",
+    "parcial": "Parțial",
+    "sin_datos": "fără date"
+  },
+  "nav": {
+    "uso": "Cum se folosește",
+    "guionizador": "Scenaristul",
+    "voces": "Voicile",
+    "precios": "Prețuri",
+    "descargas": "Descărcări",
+    "preguntas": "Întrebări",
+    "privacidad": "Confidențialitate",
+    "accesibilidad": "Accesibilitate",
+    "cuentos": "Povești",
+    "blog": "Blog"
+  },
+  "pie": {
+    "producto": "Produsul",
+    "leer": "De citit",
+    "casa": "Casa",
+    "codigo": "Codul",
+    "licencia": "Licența MIT",
+    "novedades": "Noutăți",
+    "firma": "Yappy · făcut de mână în Tenerife de <a href=\"https://joseluissaorin.com\">José Luis Saorín</a> · sursă deschisă (MIT)"
+  },
+  "portada": {
+    "title": "Yappy · Text to speech: citește PDF, EPUB și articole cu voce tare",
+    "description": "Transformă orice text în voce naturală: PDF, EPUB, Word, articole și videoclipuri, în 31 de limbi. Totul se întâmplă pe telefonul sau computerul tău: fără cloud, fără cont, fără tarif pe caracter. Gratuit și cu sursă deschisă.",
+    "susurro": "text to speech · 31 de limbi · fără cloud · sursă deschisă",
+    "titular_1": "Orice",
+    "titular_texto": "text",
+    "titular_2": ", cu",
+    "titular_voz": "voce tare",
+    "titular_3": ".",
+    "entradilla": "Partajezi un articol, un PDF, un EPUB, un Word sau un videoclip, și un papagal ți-l citește cu o voce naturală în timp ce gătești, te plimbi sau închizi ochii. Modelul rulează în întregime pe dispozitivul tău: nimic nu iese din el, niciodată.",
+    "nota_acciones": "gratuit · fără cont · fără tarif pe caracter",
+    "pegatina_sin_nube": "fără\ncloud",
+    "pegatina_idiomas": "31 de\nlimbi",
+    "pegatina_gratis": "gratuit",
+    "pegatina_offline": "fără conexiune",
+    "demo_susurro": "apasă și ascultă: ce auzi vine de la același motor pe care îl ai în buzunar",
+    "demo_titulo": "Așa sună.",
+    "demo_nota": "Secvențele subliniate le verbalizează motorul de normalizare a textului: „1492” se spune „o mie patru sute nouăzeci și doi”, iar „secolul XV” se spune „secolul al cincisprezecelea”, după regulile fiecărei limbi.",
+    "momentos_susurro": "când îți trebuie",
+    "momentos_titulo": "Trei momente, un gest.",
+    "momentos": [
+      {
+        "titulo": "Cât timp gătești",
+        "texto": "Partajezi articolul, lași telefonul pe blat și vocea continuă să citească printre oale."
+      },
+      {
+        "titulo": "La plimbare",
+        "texto": "Cartea de aseară, transformată în audiobook cu capitole, te însoțește în urcuș."
+      },
+      {
+        "titulo": "Noaptea lucrează",
+        "texto": "Îl lași să randeze la culcare; dimineața, audiobook-ul e în buzunarul tău."
+      }
+    ],
+    "porque_susurro": "de ce există",
+    "porque_titulo": "Fără cloud, fără conturi, fără tarif pe caracter.",
+    "porque_entradilla": "Celelalte aplicații text to speech trimit către un server ce citești și te taxează după caractere sau după ore de ascultare. Yappy nu are niciun server de plătit, deci nu are ce să-ți factureze pentru ascultare.",
+    "porque": [
+      {
+        "titulo": "Nimic nu părăsește dispozitivul tău",
+        "texto": "Vocea se sintetizează pe telefonul sau pe calculatorul tău, cu un model deschis. Funcționează și fără conexiune: pentru totdeauna."
+      },
+      {
+        "titulo": "31 de limbi, pe bune",
+        "texto": "Zece voci, fiecare poliglotă. Un text cu citate în altă limbă își schimbă singur limba, de la paragraf la paragraf."
+      },
+      {
+        "titulo": "Fără ore, fără caractere",
+        "texto": "Asculți ce vrei, cât timp vrei. Nu există contor, pentru că nu există factură de împărțit."
+      },
+      {
+        "titulo": "Cod deschis (MIT)",
+        "texto": "Totul este public: motorul, scenarizatorul, aplicația și chiar acest site. Le poți citi, compila și verifica."
+      }
+    ],
+    "formatos_susurro": "partajarea e ușa",
+    "formatos_titulo": "Orice ai citi.",
+    "formatos_entradilla": "Din Safari, din Mail, din Fișiere sau din orice altă aplicație: apeși Partajare și alegi Yappy. Pagina se curăță singură — afară cu meniurile, bannerele și subsolurile — și rămâne proza, cu titlurile și ritmul ei.",
+    "guion_susurro": "partea pe care nimeni altcineva nu o arată",
+    "guion_titulo": "Citește ca o persoană, nu ca o mașină.",
+    "guion_entradilla": "Cititul cu voce tare nu înseamnă a litera: înseamnă a interpreta. „1492” se citește „o mie patru sute nouăzeci și doi”; „Henric VIII” se citește „Henric al optulea”, dar „Louis XIV” în franceză se citește „Louis quatorze”; „EL CID” nu e un număr roman; FBI-ul se citește pe litere, NASA nu. Înainte să sintetizeze o singură silabă, Yappy transformă textul într-un <strong>scenariu de lectură</strong>: partitura a ceea ce vocea va spune cu adevărat.",
+    "guion_pruebalo": "Încearcă-l chiar aici: e același Rust din aplicație, compilat pentru browserul tău.",
+    "guion_boton": "Scenarizează",
+    "guion_ejemplo": "Secolul al XIX-lea s-a terminat în 1900. Ludovic al XIV-lea a domnit 72 de ani, a cheltuit 3,50 € pe o înghețată și FBI-ul nu a aflat niciodată.",
+    "guion_marcador": "Scrie ceva cu numere, acronime, date sau secole…",
+    "guion_espera": "Aici va apărea scenariul, cu părțile transformate subliniate.",
+    "guion_fallo": "Scenarizatorul nu s-a putut încărca în acest browser. Aplicația îl include oricum.",
+    "guion_mas": "Cum funcționează scenarizatorul",
+    "capturas_susurro": "așa arată, fără retușuri",
+    "capturas_titulo": "Capturi de ecran din aplicația reală.",
+    "capturas_entradilla": "Fără machete desenate: e chiar Yappy în funcțiune, cu texte reale pe raft și cititorul cu scenariul pregătit.",
+    "precio_susurro": "banii, pe șleau",
+    "precio_titulo": "Gratis pe bune și un papagal cu cheiță.",
+    "precio_entradilla": "Papagalul de probă ține trei documente deodată pe raft și le citește fără limită de timp. Scoți unul și încape altul. Dacă vrei un raft fără fund, tipografia de cărți audio și puntea cu calculatorul, îi dai cheiță.",
+    "cierre_titulo": "Un papagal, în buzunar.",
+    "cierre_texto": "Gratis, fără cont și fără nimic de înregistrat. Se instalează, partajezi un text și deja se aude."
+  },
+  "uso": {
+    "title": "Cum se folosește Yappy: partajezi, asculți și cam atât",
+    "description": "Ghida complet: partajare de pe iPhone, scurtături pe calculator, puntea prin QR dintre telefon și Mac-ul tău, cărți audio cu capitole, Siri, widgeturile și setările.",
+    "h1": "Partajezi, și se aude.",
+    "entradilla": "Yappy are un singur gest: partajarea. Restul sunt detalii deja rezolvate.",
+    "pasos": [
+      {
+        "titulo": "Partajează",
+        "texto": "Din orice aplicație: Safari, mailul, Fișiere, o înregistrare vocală, PDF-ul primit pe chat. Apeși partajare, alegi Yappy și aplicația se deschide singură."
+      },
+      {
+        "titulo": "Alege vocea",
+        "texto": "Zece voci, toate poliglote. Dacă textul e într-o altă limbă, Yappy recunoaște singur limba și o citește după regulile ei, nu cu accent împrumutat."
+      },
+      {
+        "titulo": "Ascultă",
+        "texto": "Blochezi ecranul și îți pui telefonul în buzunar. Vocea merge mai departe: pe ecranul de blocare apar coperta, titlul și butoanele, iar de la căști se dau comenzile."
+      },
+      {
+        "titulo": "Păstrează-l",
+        "texto": "Dacă îl vrei pentru plimbarea de mâine, tipografia îl lasă gata ca audiobook .m4b, cu capitole, și se deschide în orice player."
+      }
+    ],
+    "secciones": [
+      {
+        "id": "iphone",
+        "titulo": "Pe iPhone și iPad",
+        "texto": "Partajarea e tot manualul. Din orice aplicație apeși partajare și alegi Yappy: acceptă linkuri, text liber, PDF, EPUB, Word, ODT și audio. Yappy se deschide singur, imediat. Nimic nu rămâne să fiarbă în foaia de partajare, pentru că iOS taie extensiile la 120 MB; Yappy copiază ce ai partajat și sare în aplicație, unde nu există limită. Saltul e design, nu cârpeală. <strong>Totul se întâmplă pe aparat</strong>: singura rețea pe care o atinge Yappy e vizita la adresa pe care ai partajat-o, făcută chiar din telefonul tău.",
+        "puntos": [
+          "Coada îl pregătește sub ochii tăi: articolul se curăță, videoul vine cu transcrierea lui, PDF-ul se așază în pagini. Dacă stai cu aplicația deschisă, lectura pornește singură imediat ce e gata.",
+          "Karaoke-ul aprinde ce se aude, frază cu frază. Apeși oriunde ca să pui pauză, glisezi ca să sari dintr-un paragraf în altul și reglezi viteza de pe marginea ecranului.",
+          "Blochezi ecranul și vocea merge mai departe. AirPods pun pauză și reiau redarea; sistemul o tratează ca pe orice player.",
+          "Pe cuier încape trei documente deodată: scoți unul și încape altul. Poveștile casei nu ocupă loc."
+        ]
+      },
+      {
+        "id": "ordenador",
+        "titulo": "Pe Mac, Windows și Linux",
+        "texto": "O scurtătură și se aude ce ai în față: selecția, pagina din browser sau documentul activ. Cele trei scurtături se schimbă în Preferințe și funcționează și cu aplicația ascunsă în tava de sistem. Pe lângă scurtături, varianta de desktop are și ce nu încape într-o mână.",
+        "puntos": [
+          "<strong>Biblioteca.</strong> Tot ce deschizi sau partajezi rămâne pe prima pagină, cu progresul lui. Reluiezi de unde ai rămas, la paragraful exact.",
+          "<strong>Editorul pe paragrafe.</strong> Fiecare paragraf își poate avea vocea, viteza și pauza lui. Pentru dialoguri, citate sau documente în două limbi.",
+          "<strong>Transcriere locală.</strong> Tragi în fereastră o înregistrare vocală și urechea locală o transformă în text lizibil, fără să încarce nimic nicăieri.",
+          "<strong>Export de audiobook.</strong> Orice document iese un .m4b adevărat, cu capitole navigabile luate chiar din text. Și ca .wav sau .mp3.",
+          "<strong>PDF cu ochi.</strong> PDF-urile scanate trec pe la un OCR local înainte să fie citite. Cele născute digitale se citesc direct, pagină cu pagină.",
+          "<strong>Teme.</strong> Hârtie cremă ziua, cerneală deschisă pe fundal închis noaptea, sau lasă sistemul să hotărască.",
+          "<strong>Fără lesă.</strong> Pe desktop, totul e deschis de la început: tipografia, cuierul fără fund și podul vin de serie."
+        ]
+      },
+      {
+        "id": "puente",
+        "titulo": "Podul: calculatorul tău randează, telefonul tău ascultă",
+        "texto": "O carte întreagă se sintetizează încet. Podul dă treaba grea calculatorului tău și îți trimite înapoi audiocartea terminată, în buzunar, printr-o conexiune directă, criptată de la un capăt la altul, între cele două aparate, fără niciun server la mijloc.",
+        "puntos": [
+          "La calculator, în Preferințe, „Podul”: Yappy îți arată un cod QR cu adresa criptată a mașinii tale și o cheie de invitație.",
+          "Îndrepți camera iPhone-ului spre cod și se împerechează. Cheia rămâne salvată și o poți revoca oricând de la calculator.",
+          "Pe telefon, „Convertește la calculator”: alegi documentul, calculatorul îl sintetizează în ritmul lui, iar fișierul .m4b apare în biblioteca telefonului, cu capitolele lui. Noaptea muncește pentru plimbarea de mâine.",
+          "Podul e criptat cu QUIC și folosește protocolul <a href=\"https://iroh.computer\">iroh</a>. Dacă e nevoie de un releu ca cele două aparate să se găsească, releul vede doar trafic criptat, pe care nu-l poate citi."
+        ]
+      },
+      {
+        "id": "audiolibros",
+        "titulo": "Audiocărți: .m4b cu capitole adevărate",
+        "texto": "Yappy nu exportă „un audio lung”: exportă audiocărți .m4b ca cele din magazine, cu capitole luate din titlurile reale ale documentului, cu copertă și reluare de unde ai rămas. Se ascultă în Yappy, cu biblioteca și progresul lui, sau în orice player de audiocărți pe care îl folosești deja. Iar scenaristul le dă respirația: pauză după titluri, ritm de listă în liste.",
+        "puntos": [
+          "Pe telefon le comenzi din bibliotecă, capitol cu capitol: alegi care se tipăresc și cu ce voce.",
+          "Papagalul continuă să tipărească chiar dacă închizi aplicația sau blochezi telefonul.",
+          "Din bibliotecă îl trimiți mai departe în Fișiere, în Cărți sau oriunde vrei: fișierul e al tău.",
+          "Tipografia face parte din Yappy Parlanchín pe iPhone și iPad. La calculator e deschisă din start."
+        ]
+      },
+      {
+        "id": "siri",
+        "titulo": "Siri, comenzi rapide și butonul de acțiune",
+        "texto": "„Hei Siri, citește-mi clipboardul cu Yappy.” Aplicația expune App Intents adevărate: apar de la sine în Comenzi rapide, răspund la Siri și se pot agăța de butonul de acțiune al iPhone-ului. Nu ai nimic de montat.",
+        "puntos": [
+          "<strong>Citește-mi clipboardul.</strong> Copiezi de oriunde, îi ceri lui Siri și sună.",
+          "<strong>Reia lectura.</strong> Reluează ce a sunat ultima oară, exact de unde rămăsese.",
+          "<strong>Ascultă un link.</strong> Primește o adresă ca parametru: finalul perfect pentru propriile tale comenzi rapide.",
+          "Pentru automatizări manuale, se procesează și schema <code>yappy://</code>: <code>yappy://action/read-clipboard</code>, <code>yappy://action/resume</code>, <code>yappy://action/open</code>, <code>yappy://library?path=…</code> și <code>yappy://pair?d=…</code>.",
+          "Și există un widget pentru ecranul de start, cu ultimul lucru care a sunat, gata de reluat dintr-o atingere."
+        ]
+      },
+      {
+        "id": "ajustes",
+        "titulo": "Setări: puține roțițe, toate pe bune",
+        "texto": "Yappy nu are un panou cu o sută de comutatoare. Are doar câteva, dar alea chiar schimbă cum sună.",
+        "puntos": [
+          "<strong>Vocea.</strong> Zece voci, toate poliglote: aceeași voce citește spaniolă, engleză sau japoneză fără să-și schimbe timbrul.",
+          "<strong>Viteza.</strong> De la 0,5× la 2×. Vocea se generează direct la viteza aceea, nu se accelerează după: tonul nu se deformează.",
+          "<strong>Pauzele.</strong> Cât respiră între paragrafe. Titlurile și listele își aduc deja ritmul de la scenarist.",
+          "<strong>Limba.</strong> Detectare automată pe document și pe paragraf, sau fixată manual. Citatele în altă limbă se schimbă singure.",
+          "<strong>Statistici anonime.</strong> Pe mobil vin pornite și se opresc aici, în culise. Ce se trimite, exact, e descris, punct cu punct, în politica de confidențialitate."
+        ]
+      },
+      {
+        "id": "android",
+        "titulo": "Pe Android",
+        "texto": "Același gest: distribui un link, un text sau un document și ajunge în aceeași coadă, cu extragerea articolului, karaoke-ul și vocea, totul în chiar telefon. Versiunea de Android e cea mai tânără din familie și încă îi lipsesc trei lucruri pe care iPhone-ul le are: comenzile de pe ecranul de blocare, videoclipurile și playerul de cărți audio .m4b. Și mai e ceva mai important: <strong>încă nu a fost publicată</strong>. Contul de dezvoltator Google e încă în verificare și nu dăm o dată, pentru că nu o știm. Când apare, se anunță aici și în repozitoriu. Un lucru însă e sigur: pe Android nu se trag sfori. Totul e deschis."
+      }
+    ],
+    "atajo": "Comandă rapidă",
+    "atajo_leer": "Citește ce vezi",
+    "atajo_portapapeles": "Citește clipboardul",
+    "atajo_pausar": "Pauză",
+    "cierre": "Asta e tot manualul."
+  },
+  "guionizador": {
+    "title": "Scenaristul Yappy: de la scris la spus",
+    "description": "Cum transformă Yappy „1492”, „secolul XV”, „3,50 €” sau „FBI” în cuvinte rostite după regulile fiecărei limbi, în toate cele 31 de limbi. Cu demo live: același Rust din aplicație, compilat în WebAssembly.",
+    "h1": "De la scris la spus.",
+    "oficios_titulo": "Douăsprezece meserii, dintr-o singură trecere.",
+    "oficios": [
+      {
+        "titulo": "Date",
+        "texto": "„24/5/1533” se rostește în întregime, cu ordinea și genul fiecărei limbi."
+      },
+      {
+        "titulo": "Ore",
+        "texto": "„14:05” se spune cum ar spune-o cineva, nu cum l-ar citi un ceas."
+      },
+      {
+        "titulo": "Monede",
+        "texto": "„3,50 €” se spune „trei euro cincizeci”, cu pluralul care trebuie."
+      },
+      {
+        "titulo": "Procente",
+        "texto": "„7%” se spune „șapte la sută”, iar „0,5%” nu devine „zero virgulă cinci”."
+      },
+      {
+        "titulo": "Unități",
+        "texto": "„230 °C” se spune „două sute treizeci de grade Celsius”."
+      },
+      {
+        "titulo": "Ordinalele",
+        "texto": "„a 3-a” se spune „a treia”, cu genul și cu declinarea ei, acolo unde e cazul."
+      },
+      {
+        "titulo": "Cifre romane cu cap",
+        "texto": "„secolul XX” e cardinal, „Henric VIII” e ordinal, iar „EL CID” nu e niciun număr."
+      },
+      {
+        "titulo": "Sigle după fonotactică",
+        "texto": "FBI se spune literă cu literă; NASA, ca un cuvânt. Regula o stabilește felul în care sună, nu o listă."
+      },
+      {
+        "titulo": "Abrevieri",
+        "texto": "„etc.”, „p.”, „sec. XIX”: fiecare limbă are tabelul ei."
+      },
+      {
+        "titulo": "Numere mari",
+        "texto": "Cu gramaticile RBNF din Unicode CLDR, gen și declinare incluse."
+      },
+      {
+        "titulo": "31 de limbi",
+        "texto": "Aceleași reguli, cu gramatica fiecărei limbi. Fără liste scrise de mână."
+      },
+      {
+        "titulo": "Ritmul",
+        "texto": "Titlurile respiră după ce sunt rostite; listele își bat compasul. Pauzele fac parte din scenariu, nu din întâmplare."
+      }
+    ],
+    "cierre": "Scenariul e jumătate din poveste; cealaltă jumătate se aude.",
+    "faq": [
+      {
+        "q": "Ce sunt gramaticile RBNF?",
+        "a": "RBNF vine de la <em>Rule-Based Number Format</em>: regulile prin care Unicode CLDR descrie cum se spune un număr în fiecare limbă. Nu e un tabel cu o mie de cuvinte, ci o gramatică: de asta știe că în spaniolă se spune „doscientas páginas”, nu „doscientos páginas”, că rusa declină numeralele și că franceza numără în douăzeci până la nouăzeci. Yappy le interpretează în Rust pur, fără liste scrise de mână."
+      },
+      {
+        "q": "De ce e nevoie de un scenarist? Nu face vocea totul singură?",
+        "a": "Nu, și e intenționat. Modelul vocal al lui Yappy lucrează la nivel de caracter: pronunță exact ce primește scris. Asta îl face rapid și ușor, dar înseamnă că, dacă primește „1492”, va încerca să spună exact asta, literă cu literă. La un asemenea model, normalizarea <em>este</em> pronunțarea. Scenaristul e piesa care transformă fiecare cifră, fiecare siglă și fiecare simbol în cuvintele pe care le-ar spune un om."
+      },
+      {
+        "q": "În câte limbi funcționează?",
+        "a": "În cele 31 pe care le vorbește vocea, fiecare cu regulile ei: ordinea datelor, cuvântul de legătură dintre număr și valută, numeralele ordinale, abrevierile și cifrele romane. „Secolul XV” se spune „secolul cincisprezece” în spaniolă și „fifteenth century” în engleză; „Louis XIV” e „Louis quatorze”, nu „Louis fourteenth”. Aceleași doisprezece sarcini, treizeci și una de gramatici."
+      },
+      {
+        "q": "De ce karaoke-ul cade mereu pe cuvântul exact?",
+        "a": "Pentru că fonetizarea nu e doar textul transformat: ea păstrează harta dintre ceea ce e scris și ceea ce se rostește. Când vocea pronunță „o mie patru sute nouăzeci și doi”, fonetizarea știe că cele patru cuvinte vin de la cele patru cifre ale lui „1492”, iar sublinierea se așază peste ele fără să alunece. E diferența dintre a lumina textul și a-l ghici."
+      },
+      {
+        "q": "Un cuvânt se pronunță greșit. Îl pot corecta?",
+        "a": "Nu există, deocamdată, un dicționar de pronunție al utilizatorului. Cum modelul citește caractere, calea rapidă e să scrii cuvântul așa cum sună, direct în editor, și să-l asculți din nou. Iar dacă problema e un tipar general (o abreviere, un acronim, o unitate de măsură), spune-ne în <a href=\"https://github.com/joseluissaorin/yappy/issues\">discuțiile de pe GitHub</a>: tabelele fonetizatorului cresc cu astfel de cazuri."
+      },
+      {
+        "q": "Fonetizatorul din această pagină e același cu cel din aplicație?",
+        "a": "Același cod, compilat în WebAssembly ca să ruleze în browserul tău. Ce scrii aici nu iese din tabul tău. Și cum tot proiectul e deschis, poți citi regulile una câte una în <a href=\"https://github.com/joseluissaorin/yappy\">repositoriul proiectului</a>."
+      }
+    ]
+  },
+  "descargas": {
+    "title": "Descarcă Yappy: iPhone, iPad, Mac, Windows și Linux",
+    "description": "Yappy e gratuit și cu cod deschis. În App Store pentru iPhone și iPad; varianta de desktop se compilează din cod sau se descarcă de pe GitHub. Cerințe și mărimea modelului de voce.",
+    "h1": "Gratuit, deschis și al tău.",
+    "entradilla": "Fără înregistrare, fără e-mail, fără versiune de probă care să expire. O descarci și gata.",
+    "modelo_nota": "Prima dată, Yappy descarcă modelul de voce ({peso}). Pe iPhone vine odată cu instalarea; pe calculator, prima dată când deschizi aplicația. După aceea nu mai e nevoie de conexiune.",
+    "android_titulo": "Android",
+    "android_texto": "E compilată și funcționează, dar nu a fost încă publicată: contul de dezvoltator de la Google e încă în verificare. Când va apărea, se va anunța aici și în repositoriu.",
+    "escritorio_aviso": "Binarele pentru desktop se publică pe GitHub. Dacă versiunea pe care o găsești acolo e mai veche decât cea pentru iPhone, înseamnă că ultima încă nu a fost urcată: codul însă e la zi și se compilează cu <code>cargo tauri build</code>.",
+    "plataformas": [
+      {
+        "nombre": "iPhone și iPad",
+        "texto": "În App Store, gratuit și fără cont. Vocile se descarcă odată cu instalarea, așa că deschizi aplicația, partajezi un text și deja se aude. E cea mai completă versiune: audiobookuri, Siri, widget, punte și comenzi pe ecranul de blocare.",
+        "requisitos": "iOS sau iPadOS 17 sau mai recent · modelul de voce ocupă circa 200 MB",
+        "enlace": "https://apps.apple.com/app/id6773110015",
+        "cta": "Descarcă din App Store"
+      },
+      {
+        "nombre": "macOS",
+        "texto": "Apple Silicon și Intel, într-un .dmg notarizat. Cu cele trei comenzi rapide globale, editorul pe paragrafe, OCR-ul PDF-urilor scanate și exportul de audiobookuri. Aici nu te leagă nimic: totul e deschis.",
+        "requisitos": "macOS 12 sau mai recent · un model de voce de circa 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Vezi versiunile pe GitHub"
+      },
+      {
+        "nombre": "Windows",
+        "texto": "Instalator .exe sau .msi pentru x64, cu aceleași comenzi rapide și aceleași funcții ca versiunea de Mac. Orice laptop din ultimii ani sintetizează mai repede decât timpul real.",
+        "requisitos": "Windows 10 sau mai nou, x64 · un model de voce de circa 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Vezi versiunile pe GitHub"
+      },
+      {
+        "nombre": "Linux",
+        "texto": "AppImage și .deb pentru x64. Scurtăturile globale depind de mediul tău desktop; dacă sunt deja ocupate, le poți schimba din Preferințe.",
+        "requisitos": "x64 · un model de voce de circa 398 MB",
+        "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
+        "cta": "Vezi versiunile pe GitHub"
+      },
+      {
+        "nombre": "Din sursă",
+        "texto": "Tot proiectul e publicat: aplicația de desktop și cea de mobil (Tauri, Rust și Svelte), motorul de sinteză, scripterul cu gramaticile CLDR înglobate și chiar acest site. Cu Rust și Node instalate, <code>cargo tauri build</code> îți construiește propria copie. Dacă binarele publicate rămân în urmă față de versiunea pentru iPhone, aceasta e calea rapidă: codul e mereu la zi.",
+        "requisitos": "Rust și Node · instrucțiuni complete în README",
+        "enlace": "https://github.com/joseluissaorin/yappy",
+        "cta": "Vezi codul pe GitHub"
+      }
+    ]
+  },
+  "precios": {
+    "title": "Prețuri Yappy: gratis pentru totdeauna, fără tarif pe caracter",
+    "description": "Yappy e gratis și fără limită de ascultare: trei documente deodată în cuier. Yappy Parlanchín adaugă un cuier fără fund, tiparniță de audiolibre și podul, de la 3,99 € pe lună sau 59,99 € o singură dată.",
+    "h1": "Banii, pe față.",
+    "entradilla": "Să poți asculta ce citești e o chestiune de accesibilitate, iar accesibilitatea nu ar trebui să-ți ceară cardul. De asta partea care contează e gratis și nu are contor.",
+    "gratis_titulo": "Yappy",
+    "gratis_precio": "0 €",
+    "gratis_periodo": "pentru totdeauna",
+    "gratis_puntos": [
+      "Ascultare fără limită de minute sau de caractere",
+      "Cele 31 de limbi și cele zece voci",
+      "PDF, EPUB, Word, articole, videouri și note vocale",
+      "Trei documente deodată în cuier: scoți unul și încape altul",
+      "Fără cont, fără e-mail, fără reclame",
+      "Cod sursă deschis cu licență MIT"
+    ],
+    "gratis_no": [
+      "Fără tipografia de audiobook-uri",
+      "Fără podul către calculator"
+    ],
+    "cuerda_titulo": "Yappy Parlanchín",
+    "cuerda_periodo_mes": "pe lună",
+    "cuerda_periodo_anio": "pe an",
+    "cuerda_periodo_vida": "o singură dată",
+    "cuerda_puntos": [
+      "Tot ce e mai sus",
+      "Cuier fără fund: documentele pe care vrei tu",
+      "Tipografia: cărți întregi în audiobook, cu capitole",
+      "Podul: calculatorul tău convertește și ți-l dă înapoi de unul singur",
+      "Poți anula oricând vrei"
+    ],
+    "cuerda_nota": "Fără perioadă de probă, din principiu: cuierul cu trei documente <em>este</em> proba, și nici nu expiră, nici nu te taxează după aceea. Prețurile sunt cele din Spania; în magazinul tău vor apărea în moneda ta.",
+    "cuerda_donde": "Abonamentul se cumpără din aplicație, în camera din spate.",
+    "solo_ios": "Pe calculator și pe Android, totul e deschis: abonamentul există doar pe iPhone și iPad.",
+    "comparacion_titulo": "Cât percep ceilalți.",
+    "comparacion_entradilla": "Aplicațiile de voce în cloud plătesc servere de fiecare dată când apeși play, așa că te taxează pe ore sau pe caractere. Yappy sintetizează pe dispozitivul tău: costul unei ascultări e zero, și tocmai de asta poate să nu-l perceapă.",
+    "comparacion_nota": "Prețuri publice, verificate în septembrie 2026. Se schimbă des: verifică-le pe fiecare site înainte să decizi.",
+    "faq": [
+      {
+        "q": "De ce e gratuit?",
+        "a": "Pentru că nu sunt servere de plătit. Vocea se sintetizează pe dispozitivul tău, așa că ascultatul nu costă pe nimeni nimic și nu există nicio factură de împărțit. Aplicațiile de voce în cloud plătesc o mașină de fiecare dată când apeși play, și de asta te taxează pe caractere sau pe ore. Yappy nu poate să te taxeze pentru ceva ce nu-l costă nimic."
+      },
+      {
+        "q": "Ce se întâmplă dacă nu plătesc niciodată?",
+        "a": "Nimic. Yappy continuă să funcționeze pentru totdeauna, cu cele zece voci, cele 31 de limbi și toate formatele, fără reclame, fără cont și fără contor de minute. Singurul lucru care se schimbă e că pe iPhone și iPad cuierul ține trei documente odată: scoți unul și încape altul. Pe calculator nici măcar asta."
+      },
+      {
+        "q": "Există o perioadă de probă gratuită?",
+        "a": "Nu, și e o decizie, nu o uitare. Cuierul cu trei documente <em>este</em> proba: nu expiră, nu cere card și nu începe să perceapă în a opta zi. Nimeni n-ar trebui să se trezească cu o taxare pe care nu-și amintește că a acceptat-o."
+      },
+      {
+        "q": "Pot anula oricând vreau?",
+        "a": "Da, din contul tău Apple, ca orice alt abonament. Se reînnoiesc singure la finalul fiecărei perioade, dacă nu le anulezi cu cel puțin 24 de ore înainte. Achiziția pe viață nu se reînnoiește niciodată: plătești o singură dată și gata. Iar dacă anulezi, nu pierzi nimic din ce e gratuit: te întorci la popica de trei."
+      },
+      {
+        "q": "De ce pe calculator și pe Android nu se plătește?",
+        "a": "Pentru că coarda e montată doar pe iPhone și iPad. Pe calculator – și în versiunea de Android, când va apărea – tiparnița, popica fără fund și puntea vin deblocate. Nu e o ofertă de lansare: acolo pur și simplu nu e nimic de încasat."
+      }
+    ],
+    "una_a_una": "una câte una, cu datele lor"
+  },
+  "voces": {
+    "title": "Vocile Yappy: zece păsări poliglote în 31 de limbi",
+    "description": "Zece voci naturale care vorbesc toate cele 31 de limbi fără să-și schimbe timbrul. Ascultă câte o mostră din fiecare și alege-o pe a ta: vocea pe care o alegi colorează toată aplicația.",
+    "h1": "Zece păsări, treizeci și una de limbi.",
+    "entradilla": "Toate sunt poliglote: aceeași voce citește spaniolă, engleză sau japoneză fără să-și schimbe timbrul. Iar un text cu un citat în altă limbă schimbă limba singur, de la paragraf la paragraf.",
+    "elige": "Atinge o pasăre și auzi cum sună.",
+    "idiomas_titulo": "Limbile pe care le vorbește.",
+    "idiomas_entradilla": "Treizeci și una, fiecare cu propriul motor de pronunție: nu e aceeași voce care citește cu accent, ci fiecare limbă cu regulile ei."
+  },
+  "preguntas": {
+    "title": "Întrebări despre Yappy: confidențialitate, limbi, prețuri și licențe",
+    "description": "Răspunsuri directe despre ce e gratuit, ce atinge rețeaua, ce modele folosește Yappy, ce formate acceptă și ce faci când ceva nu merge.",
+    "h1": "Întrebări care apar.",
+    "entradilla": "Răspunse pe șleau, fără ocoliri.",
+    "grupos": [
+      {
+        "susurro": "banii și libertatea",
+        "titulo": "Gratuit, pe bune.",
+        "lista": [
+          {
+            "q": "Chiar e gratuit?",
+            "a": "Da. Yappy e open-source, cu licență MIT. Să poți asculta ce citești e o chestiune de accesibilitate, iar instrumentele de accesibilitate nu ar trebui să ceară card. Pe calculator nu există versiune plătită și nici reclame. Pe iPhone, papagalul de probă ține trei documente odată pe popica lui, fără limită de timp; dacă vrei popica fără fund, tiparnița de cărți audio și puntea spre calculator, îi dai coardă cu Yappy Parlanchín: abonament sau o singură plată pe viață. Fără cont și fără reclame, în orice caz."
+          },
+          {
+            "q": "Care e trucul? Cum se finanțează?",
+            "a": "Nu e niciun truc: nu există servere de plătit. Sinteza rulează pe dispozitivul tău, deci Yappy nu are costuri per utilizator. E un proiect personal al autorului, publicat pentru că deja exista și ar mai fi fost de folos cuiva."
+          },
+          {
+            "q": "Există probă gratuită?",
+            "a": "Nu, intenționat. Popica cu trei documente e proba, și nu expiră și nici nu se transformă în taxare după șapte zile. Dacă Yappy îți e de folos, vei ști singur, fără să-ți pună nimeni un ceas în față."
+          },
+          {
+            "q": "Pot publica audio-ul generat într-un podcast sau într-un videoclip?",
+            "a": "Codul Yappy e MIT și nu-ți impune nicio condiție. Modelul de voce, Supertonic 3, are propria licență: una deschisă, de tip OpenRAIL-M, cu clauze de utilizare. <a href=\"https://huggingface.co/Supertone/supertonic-3\">Consult-o pe pagina modelului</a> înainte de orice utilizare comercială, pentru că partea asta nu ține de Yappy și nu putem promite în numele ei."
+          }
+        ]
+      },
+      {
+        "susurro": "textele tale nu călătoresc",
+        "titulo": "Confidențialitatea, pe nume și prenume.",
+        "lista": [
+          {
+            "q": "Ajung textele mele pe vreun server?",
+            "a": "Nu. Sinteza, transcrierea și extragerea articolelor au loc în dispozitivul tău. Ce partajezi cu Yappy nu se trimite nicăieri: nu există conturi, nu există copii și nu există niciun server Yappy unde ar putea fi păstrate. Ce atinge rețeaua se reduce la patru lucruri concrete, toate descrise în politica de confidențialitate."
+          },
+          {
+            "q": "Yappy colectează statistici de utilizare?",
+            "a": "Da, le colectează, și e de spus pe șleau. Aplicația de telefon trimite statistici anonime de utilizare: vin pornite din fabrică și se opresc din culise. Ce pleacă sunt numele unui eveniment dintr-o listă închisă (că s-a deschis aplicația, ce pas din plimbarea inițială e pe ecran, ce plan s-a atins, dacă o citire ajunge la capăt), un identificator aleatoriu al instalării, limba și versiunea. Niciodată numele tău, adresa ta de mail, textul pe care îl citești, titlul unui document sau un link, și niciun identificator de publicitate. Și nu ajung la Google, la Firebase sau la vreo firmă de analitică: ajung la un Worker și la o bază de date D1 de Cloudflare ale autorului însuși. Pe desktop nu există statistici de niciun fel."
+          },
+          {
+            "q": "Și puntea dintre mobil și calculator?",
+            "a": "E o conexiune directă între cele două dispozitive ale tale, criptată de la capăt la capăt cu QUIC, prin protocolul <a href=\"https://iroh.computer\">iroh</a>. Împerecherea se face îndreptând camera către codul QR pe care ți-l arată calculatorul, iar cheia rezultată poate fi revocată de acolo oricând. Nu există server Yappy la mijloc, pentru că nu există niciun server Yappy."
+          },
+          {
+            "q": "Funcționează fără conexiune?",
+            "a": "Da, pentru totdeauna. După descărcarea inițială a modelului — vreo 200 MB pe mobil, vreo 398 MB pe calculator — poți folosi Yappy în mod avion: lipești text, deschizi documente, sintetizezi, exporți. Doar partajarea unor adrese noi cere rețea, din motive evidente. Nici de sincronizare în cloud nu e vorba: biblioteca ta trăiește pe dispozitivul tău, iar cu puntea e ca și cum ai duce ceva dintr-o mașină în alta."
+          }
+        ]
+      },
+      {
+        "susurro": "ce se aude",
+        "titulo": "Vocea și limbile.",
+        "lista": [
+          {
+            "q": "Ce model de voce folosește?",
+            "a": "Supertonic 3, un model deschis de la Supertone, de vreo 99 de milioane de parametri, care încape în 398 MB pe calculator și în 200 MB pe mobil și sintetizează mai repede decât timpul real pe orice laptop din ultimii ani. Lucrează la nivel de caracter: de asta există scenaristul, care transformă numerele, siglele și simbolurile în cuvinte înainte să le vadă vocea."
+          },
+          {
+            "q": "Ce limbi vorbește?",
+            "a": "germană, arabă, bulgară, cehă, coreeană, croată, daneză, slovacă, slovenă, spaniolă, estonă, finlandeză, franceză, greacă, hindi, maghiară, indoneziană, engleză, italiană, japoneză, letonă, lituaniană, neerlandeză, poloneză, portugheză, română, rusă, suedeză, turcă, ucraineană și vietnameză. Treizeci și una. Și cele zece voci sunt poliglote: aceeași voce le citește pe toate fără să-și schimbe timbrul."
+          },
+          {
+            "q": "Ce se întâmplă cu un document care amestecă limbi?",
+            "a": "Yappy detectează limba documentului și, paragraf cu paragraf, pe cea a fiecărei bucăți: un citat în engleză într-un eseu în română se citește în engleză, cu aceeași voce, fără să atingi nimic. Iar dacă detecția greșește, poți fixa limba manual."
+          },
+          {
+            "q": "Ce diferență e față de VoiceOver sau de „Citire ecran”?",
+            "a": "Cititoarele de ecran ale sistemului citesc ecranul ca atare, cu prosodia sistemului și fără memorie. Yappy pregătește textul înainte să-l rostească (curăță articolul, verbalizează numerele și siglele, marchează pauzele), îl citește cu o voce naturală, își amintește unde ai rămas, exportă cărți audio și continuă să sune cu ecranul blocat. Sunt unelte surori, cu meserii diferite, și se folosesc în același timp fără să se încurce: Yappy nu înlocuiește un cititor de ecran și nici nu are pretenția asta."
+          }
+        ]
+      },
+      {
+        "susurro": "ce intră",
+        "titulo": "Documentele.",
+        "lista": [
+          {
+            "q": "Ce formate acceptă?",
+            "a": "Articole web (pagina se curăță singură), videoclipuri după transcripția publicată, PDF, EPUB, Word, ODT, RTF, Markdown, text simplu, .pptx, .xlsx, .csv și note vocale. Pe mobil, totul prin meniul de partajare; pe desktop, în plus, prin drag and drop sau cu comenzile rapide. Iar dacă ai pandoc instalat pe calculator, lista se lărgește cu LaTeX, reStructuredText, Org și încă câteva."
+          },
+          {
+            "q": "Și PDF-urile scanate, fără text înăuntru?",
+            "a": "Pe desktop trec printr-un OCR local înainte să fie citite, și nici acolo nu pleacă nimic din calculatorul tău. Pe iPhone, deocamdată nu: dacă PDF-ul e o fotografie a hârtiei, telefonul nu găsește text de citit. O scanare strâmbă sau neclară va da ce poate da orice OCR, dar una decentă se citește integral."
+          },
+          {
+            "q": "Poate citi cărțile pe care le-am cumpărat dintr-un magazin?",
+            "a": "Doar cele pe care le poți deschide. Un EPUB fără protecție se citește integral, cu capitolele lui. Cărțile cu DRM din magazine nu se pot citi, nici aici, nici în altă parte: lacătul acela nu e al lui Yappy și nu avem de gând să ne prefacem că avem cheia."
+          },
+          {
+            "q": "Cum șterg ceva din bibliotecă?",
+            "a": "Tot din bibliotecă: fiecare document are opțiunea lui de a fi uitat, iar odată cu ea dispare și audioul lui. Fișierele exportate (.m4b, .mp3, .wav) îți aparțin și trăiesc acolo unde le-ai salvat; a le șterge sau muta e treaba Finderului sau a aplicației Fișiere."
+          }
+        ]
+      },
+      {
+        "susurro": "când ceva nu merge",
+        "titulo": "Probleme și ajutor.",
+        "lista": [
+          {
+            "q": "De ce prima sinteză durează câteva secunde în plus?",
+            "a": "Modelul se încarcă în memorie prima dată. Apoi rămâne cald, și propozițiile următoare ies pe loc. Dacă tocmai ai instalat aplicația pe calculator, prima așteptare include și descărcarea modelului de voce."
+          },
+          {
+            "q": "Un cuvânt se pronunță greșit. Se poate învăța?",
+            "a": "Nu există dicționar de pronunție al utilizatorului, așa că drumul scurt e să scrii cuvântul așa cum sună, în editor: modelul citește caractere și te va asculta. Dacă e un tipar general (o abreviere, un acronim, o unitate de măsură), spune-ne în <a href=\"https://github.com/joseluissaorin/yappy/issues\">problemele de pe GitHub</a>: tabelele normalizatorului cresc cu astfel de cazuri."
+          },
+          {
+            "q": "Am partajat un videoclip și nu spune nimic.",
+            "a": "Yappy rămâne la transcrierea publicată a videoclipului, nu transcrie audioul lui. Dacă videoclipul nu are transcriere, nu are ce citi. Iar dacă videoclipul e al tău și îl ai într-un fișier, partajează fișierul: atunci da, îl transcrie urechea locală."
+          },
+          {
+            "q": "Am găsit o problemă. Unde o raportez?",
+            "a": "În <a href=\"https://github.com/joseluissaorin/yappy/issues\">problemele de pe GitHub</a> sau scriind la <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a>. Cu textul care dădea greș, dacă îl poți partaja, și cu sistemul tău, se rezolvă mai repede."
+          }
+        ]
+      }
+    ]
+  },
+  "privacidad": {
+    "title": "Confidențialitatea Yappy: textele tale nu pleacă nicăieri",
+    "description": "Ce pleacă și ce nu pleacă de pe dispozitivul tău, spus negru pe alb: sinteza, transcrierea și extragerea articolelor se întâmplă înăuntru; ce atinge rețeaua sunt doar patru cazuri, și le povestim pe toate.",
+    "h1": "Textele tale nu pleacă nicăieri.",
+    "actualizado": "Ultima actualizare: {fecha}. Responsabil: José Luis Saorín Ferrer, Tenerife (Spania).",
+    "bloques": [
+      {
+        "titulo": "Despre ce e vorba",
+        "texto": "Aceasta este politica de confidențialitate a aplicației Yappy: aplicația de iPhone, iPad, Mac, Windows și Linux, cu widgeturile și extensiile ei. E scurtă pentru că are puțin de povestit. Yappy nu are conturi, nu-ți cere numele nici adresa de e-mail, iar ce îi dai de citit nu pleacă de pe aparatul tău. Ce atinge totuși rețeaua sunt patru lucruri concrete, și iată-le pe toate patru, unul câte unul."
+      },
+      {
+        "titulo": "Nici cont, nici nume, nici texte",
+        "texto": "Yappy nu are înregistrare nici autentificare. Nu colectează numele tău, adresa ta de e-mail, contactele, locația și niciun identificator de publicitate. Articolele, PDF-urile, EPUB-urile, documentele, notele vocale și textele pe care le dai aplicației se transformă în voce <strong>în interiorul dispozitivului tău</strong>: sinteza, transcrierea și curățarea paginilor se întâmplă local și nu se trimit niciunui server, nici al nostru, nici al terților. Nu există nici sincronizare în cloud: biblioteca ta, progresul tău și audiocărțile tale trăiesc în aparatul tău și dispar dacă dezinstalezi aplicația."
+      },
+      {
+        "titulo": "Atinge rețeaua (1): descărcarea vocilor",
+        "texto": "Prima dată, Yappy descarcă modelul de voce (circa 200 MB pe telefon, circa 398 MB pe calculator) de la <code>modelos.yappy.joseluissaorin.com</code>, un depozit R2 Cloudflare. Ca la orice descărcare, serverul îți vede adresa IP cât durează cererea. Nu păstrăm niciun registru care să te identifice. După descărcarea aceea, sinteza funcționează pentru totdeauna în modul avion."
+      },
+      {
+        "titulo": "Rețeaua intră în joc (2): linkurile pe care le distribui",
+        "texto": "Dacă distribui un link sau un videoclip, dispozitivul tău vizitează adresa respectivă ca să aducă textul sau transcrierea, exact cum ar face-o browserul tău. Vizita o face aparatul tău, nu un server Yappy, iar site-ul vizitat primește ce ar primi de la orice browser: adresa ta IP și tipul de dispozitiv. Nu se păstrează niciun istoric în afara aparatului tău."
+      },
+      {
+        "titulo": "Rețeaua intră în joc (3): statisticile anonime",
+        "texto": "Asta merită spus limpede: <strong>da, există statistici de utilizare</strong>, doar în aplicația de telefon, și vin pornite. Se dezactivează oricând din setări, la „Statistici anonime”. Se trimite doar numele unui eveniment dintr-o listă închisă (s-a deschis aplicația, ce pas din turul de bun venit se vede, ce plan se apasă, dacă o citire se termină), un identificator aleatoriu al instalării, limba aplicației și versiunea ei. <strong>Niciodată</strong> numele tău, adresa ta de e-mail, textul pe care îl citești, titlul unui document, un link sau un identificator de publicitate. Nu ajung la Google Analytics, nici la Firebase, nici la nicio firmă de analitică: ajung la un Worker și la o bază de date D1 de Cloudflare care aparțin autorului, și servesc ca să se vadă ce părți din aplicație se folosesc și care sunt de prisos. Pe desktop nu există statistici de niciun fel."
+      },
+      {
+        "titulo": "Rețeaua intră în joc (4): cumpărăturile",
+        "texto": "Abonamentele și achiziția pe viață a lui Yappy Parlanchín sunt gestionate de Apple prin App Store și există doar pe iPhone și iPad. Ca să afle dacă abonamentul tău e activ, aplicația folosește <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, un administrator de abonamente, care primește un identificator anonim al instalării și chitanța de la Apple; nu primește numele tău și nici adresa ta de e-mail. Apple explică propriile practici privind datele în <a href=\"https://www.apple.com/legal/privacy/\">politica sa</a>."
+      },
+      {
+        "titulo": "Podul: de la iPhone la calculator și înapoi",
+        "texto": "Dacă asociezi Yappy cu Mac-ul sau PC-ul tău, documentele pe care le trimiți la conversie circulă printr-o conexiune directă, criptată de la capăt la capăt, între cele două aparate, cu biblioteca <a href=\"https://iroh.computer\">iroh</a> peste QUIC. Ca să se găsească, se pot sprijini pe servere de releu, care văd doar trafic criptat, pe care nu îl pot citi. Yappy nu are servere intermediare care să păstreze ceva, pentru că nu are servere."
+      },
+      {
+        "titulo": "Minori și permisiuni",
+        "texto": "Yappy nu se adresează persoanelor sub 13 ani și nu colectează date personale de la nimeni, indiferent de vârstă. Permisiunile cerute de sistem se folosesc doar pentru acea acțiune și doar atunci: clipboardul la lipire, camera la scanarea codului QR al podului, microfonul pe desktop pentru dictat. Niciunul nu se folosește în fundal."
+      },
+      {
+        "titulo": "Drepturile tale și cui poți scrie",
+        "texto": "Deoarece nu păstrăm date personale, nu există nimic de exportat sau de șters din serverele noastre: tot ce știe Yappy despre tine trăiește în aparatul tău și dispare când dezinstalezi aplicația. Dacă vrei să nu mai primim nici măcar statisticile anonime, se dezactivează chiar din aplicație. Pentru orice întrebare, scrie la <a href=\"mailto:jl@joseluissaorin.com\">jl@joseluissaorin.com</a> sau deschide un issue pe <a href=\"https://github.com/joseluissaorin/yappy/issues\">GitHub</a>. Codul e deschis, cu licență MIT: tot ce e scris mai sus se poate verifica citindu-l."
+      }
+    ]
+  },
+  "accesibilidad": {
+    "title": "Yappy pentru dislexie, ADHD și vedere slabă: să asculți ce nu se poate citi",
+    "description": "Un instrument care citește cu voce tare, nu cere cont, nu ia bani pe ore și funcționează offline. Pentru dislexie, ADHD, oboseală vizuală, vedere slabă și pentru oricine pur și simplu citește mai bine cu urechile.",
+    "h1": "Citit cu urechile.",
+    "entradilla": "Să poți asculta ce citești e o chestiune de accesibilitate, iar uneltele de accesibilitate n-ar trebui să ceară cardul tău. Yappy nu îl cere, nu are contor de minute și merge și în avion.",
+    "voiceover_titulo": "Yappy nu înlocuiește VoiceOver",
+    "voiceover_texto": "Sunt unelte înrudite, cu meserii diferite. Un cititor de ecran povestește interfața, ca să o poți folosi; Yappy citește conținutul, ca să te poți bucura de el. Se folosesc împreună, fără să se incomodeze.",
+    "casos": [
+      {
+        "titulo": "Dislexie",
+        "texto": "Să descifrezi literă cu literă obosește, iar oboseala mănâncă înțelegerea cu mult înainte să-ți mănânce timpul. Când asculți textul în timp ce se luminează pe ecran, citești și auzi deodată: ochii urmăresc rândul, urechea face munca grea. Yappy nu repară nimic, dar scoate din cale partea care istovește."
+      },
+      {
+        "titulo": "ADHD",
+        "texto": "O pagină tăcută te îndeamnă să pleci. O voce care merge înainte ține ritmul și te aduce înapoi la paragraf când mintea a ieșit la plimbare. Iar pentru că poți asculta mergând sau cu mâinile ocupate, cititul nu-ți mai cere să stai locului: pentru mulți oameni, asta e toată diferența."
+      },
+      {
+        "titulo": "Vedere slabă și oboseală vizuală",
+        "texto": "Când litera mică nu mai e o opțiune, sau când la șapte seara ochii și-au terminat tura, textul încă se poate asculta. Yappy citește PDF-ul, mailul sau articolul întreg, cu ecranul stins dacă e nevoie, de pe ecranul blocat sau din căști."
+      },
+      {
+        "titulo": "Să înveți limbi străine",
+        "texto": "Să auzi și să citești în același timp e cel mai vechi și mai eficient mod de a învăța pronunția. Cele zece voci sunt poliglote și citesc cele 31 de limbi după regulile fiecăreia, așa că un text în germană sună în germană, nu în germană cu accent englezesc. La 0,75× auzi fiecare silabă; la 1,5× îți antrenezi urechea."
+      },
+      {
+        "titulo": "Corectează ce scrii",
+        "texto": "Fraza pe care n-o poți spune cu voce tare nu ține nici în scris. Dacă asculți propriul text, te trădează repetările, virgulele puse prost și incisele care nu se mai termină. E corectura de la tipografii, și iese gratis: deschizi fișierul .docx, apeși play și auzi ce ai scris de fapt, nu ce credeai că ai scris."
+      },
+      {
+        "titulo": "Studiază cu urechile",
+        "texto": "Notițele de la curs, capitolul care intră la examen, articolul de două sute de pagini. Le trimiți noaptea la tiparniță și dimineața ai o carte audio cu capitole, de asculți în autobuz. Reluarea își amintește paragraful exact: la întoarcere nu cauți nimic."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Funcționează cu VoiceOver sau TalkBack pornite?",
+        "a": "Da, și nu se încurcă. Un cititor de ecran descrie interfața, ca să o poți folosi; Yappy citește conținutul, ca să te bucuri de el. Se folosesc împreună: VoiceOver te duce până la butonul de redare, iar de acolo cartea o citește vocea Yappy."
+      },
+      {
+        "q": "Se poate folosi fără să te uiți la ecran?",
+        "a": "Da. Pe iPhone ai comenzi rapide Siri („Hei Siri, citește-mi clipboardul cu Yappy”), butonul de acțiune, comenzile de pe ecranul de blocare și cele de pe căști. Pe calculator, trei comenzi rapide de la tastatură citesc selecția, clipboardul sau pun pauză, cu aplicația ascunsă în zona de notificare."
+      },
+      {
+        "q": "Poate citi PDF-urile de la curs și cărțile pe care le am deja?",
+        "a": "Orice PDF, EPUB, Word sau ODT pe care îl poți deschide. Dacă PDF-ul e o scanare fără text, versiunea de desktop îl trece printr-un OCR local înainte să-l citească; pe mobil, încă nu există. Cărțile cu DRM dintr-un magazin nu se pot citi nicăieri, deci nici aici."
+      },
+      {
+        "q": "Cât costă să-l folosești zilnic?",
+        "a": "Nimic. Nu există contor de minute sau de caractere, nu există reclame și nu e nevoie de cont. Poți asculta opt ore pe zi, ani în șir, fără să dai un leu și fără conexiune. Sfoara de plată adaugă doar umerașul fără fund, tiparnița și podul, și doar pe iPhone și iPad."
+      }
+    ]
+  },
+  "cuentos": {
+    "title": "Povești pentru papagal: texte din domeniul public ca să testezi Yappy",
+    "description": "Povești complete din domeniul public, gata de partajat cu Yappy și de ascultat până la capăt. Fără cont și fără să descarci nimic.",
+    "h1": "Povești pentru papagal.",
+    "entradilla": "Texte întregi, în domeniul public. Partajezi pagina cu Yappy și papagalul ți-o citește.",
+    "dominio_publico": "Domeniu public."
+  },
+  "blog": {
+    "title": "Blogul Yappy: a asculta scrisul",
+    "description": "Cum transformi un PDF în audio, de ce un cititor de texte ar trebui să funcționeze fără conexiune, cum se spun numerele cu voce tare și ce am învățat făcând o aplicație care vorbește.",
+    "h1": "A asculta scrisul.",
+    "entradilla": "Meșteșug, trucuri și puțină istorie a lecturii cu voce tare. Fiecare articol se poate asculta aici, citit de chiar vocea Yappy.",
+    "escuchame": "Ascultă acest articol",
+    "escuchame_nota": "Citit de Yappy, cu vocea {voz}, în browserul tău.",
+    "vacio": "Încă nu există articole în această limbă."
+  },
+  "convertir": {
+    "title": "Transformă orice text în vorbire (text to speech): PDF, EPUB, Word, articole și videoclipuri",
+    "description": "Șase moduri de a transforma ce citești în vorbire naturală, toate pe propriul tău dispozitiv: PDF, EPUB, Word, articole de pe internet, videoclipuri și note vocale.",
+    "h1": "Conversie",
+    "entradilla": "Nu contează pe unde vine: articol, carte, document sau înregistrare. Yappy îl transformă într-un scenariu de lectură și îl citește cu voce tare, fără ca fișierul să-ți părăsească dispozitivul.",
+    "pasos_titulo": "În trei pași.",
+    "faq_titulo": "Întrebări despre asta",
+    "otros_titulo": "Alte lucruri pe care le citește la fel de bine",
+    "formatos": {
+      "pdf": {
+        "nombre": "PDF",
+        "title": "Transformă PDF în audio: ascultă un PDF cu voce tare, gratis",
+        "description": "Transformă orice PDF în vorbire naturală și ascultă-l cât timp faci altceva, ori salvează-l ca audiobook cu capitole. Fără să-l încarci în vreun cloud și fără limită de pagini.",
+        "h1": "Ascultă-ți PDF-urile.",
+        "entradilla": "Un articol științific, un manual, niște notițe, un contract. Yappy deschide PDF-ul, scoate antetele și numărul de pagină care se repetă, găsește capitolele și îl citește în întregime, cu o voce naturală. Fișierul nu iese din dispozitiv.",
+        "pasos": [
+          {
+            "titulo": "Partajează PDF-ul",
+            "texto": "Din Fișiere, din mail sau din Safari: apeși Partajare și alegi Yappy. Pe calculator, îl tragi în fereastră."
+          },
+          {
+            "titulo": "Alege vocea",
+            "texto": "Zece voci, 31 de limbi. Dacă PDF-ul e într-o altă limbă, Yappy o recunoaște singur."
+          },
+          {
+            "titulo": "Ascultă sau salvează",
+            "texto": "Dă play sau dă-l la tipar și ai un audiobook cu capitole."
+          }
+        ],
+        "extra_titulo": "PDF-uri scanate",
+        "extra_texto": "Dacă PDF-ul e o poză a hârtiei și nu are text în el, versiunea de desktop îl trece printr-un OCR local înainte să-l citească. Pe iPhone, încă nu.",
+        "faq": [
+          {
+            "q": "Există vreo limită de pagini?",
+            "a": "Nu. Un articol de trei pagini sau o teză de patru sute de pagini: PDF-ul se paginează tot și se citește tot. Cum totul se întâmplă pe dispozitivul tău, nu ai o cotă de caractere de cheltuit și nici o factură care să explodeze la mijlocul capitolului șapte."
+          },
+          {
+            "q": "Dar dacă PDF-ul e o scanare fără text?",
+            "a": "Versiunea de desktop îl trece printr-un OCR local înainte să-l citească, și nici acolo nu pleacă nimic din calculatorul tău. Pe iPhone, încă nu: dacă PDF-ul e o poză a hârtiei, telefonul nu găsește niciun text de citit."
+          },
+          {
+            "q": "Scoate antetele și numerele de pagină?",
+            "a": "Da. Yappy detectează ce se repetă pe toate paginile (antet, subsol, numărul paginii, numele revistei) și îl scoate din text. Nimic nu strică mai mult o lectură decât să auzi „Capitolul 3, pagina 47” la fiecare minut și jumătate."
+          },
+          {
+            "q": "Pot asculta doar un capitol?",
+            "a": "Da. Yappy caută titlurile reale din document și face din ele un cuprins prin care poți naviga. Din bibliotecă alegi ce capitole vrei să asculți sau care să meargă la tipar, iar audiobook-ul iese cu acelea."
+          }
+        ]
+      },
+      "epub": {
+        "nombre": "EPUB",
+        "title": "Convertește EPUB în audiobook: cartea ta, citită cu voce tare",
+        "description": "Transformă un EPUB într-un audiobook cu capitole adevărate, făcut chiar pe aparatul tău. Fără abonament pe ore și fără să încarci cartea pe niciun server.",
+        "h1": "EPUB-ul tău, făcut audiobook.",
+        "entradilla": "Cărțile pe care le ai deja, cu capitolele lor, citite cu o voce naturală. Îl lași să randeze înainte de culcare și dimineața e în biblioteca ta, într-un fișier .m4b care se deschide în orice player.",
+        "pasos": [
+          {
+            "titulo": "Partajează EPUB-ul",
+            "texto": "Din Fișiere sau de oriunde ai cartea. Ajunge cu capitolele deja recunoscute."
+          },
+          {
+            "titulo": "Comandă tiparul",
+            "texto": "Alegi capitolele, vocea și viteza. Papagalul tipărește chiar dacă închizi aplicația."
+          },
+          {
+            "titulo": "Ascultă-l oriunde vrei",
+            "texto": "Rămâne în bibliotecă ca .m4b cu marcaje; de acolo îl partajezi în Fișiere, în Cărți sau oriunde vrei."
+          }
+        ],
+        "extra_titulo": "Cărți cu DRM",
+        "extra_texto": "Yappy citește EPUB-urile pe care le poți deschide. Cărțile protejate cu DRM de magazin nu se pot citi, nici aici, nici în altă parte.",
+        "faq": [
+          {
+            "q": "Păstrează capitolele cărții?",
+            "a": "Da, și sunt capitole adevărate, nu marcaje din zece în zece minute: vin chiar din cuprinsul EPUB-ului. Fișierul .m4b rezultat se navighează capitol cu capitol în orice player de cărți audio, cu coperta lui și cu reluare de unde ai rămas."
+          },
+          {
+            "q": "Cât durează o carte întreagă?",
+            "a": "Depinde de aparat și de mărimea cărții, dar răspunsul practic e: îl lași înainte de culcare și dimineața e gata. Dacă ai puntea, calculatorul tău îl sintetizează mult mai repede și ți-l trimite la telefon, deja terminat."
+          },
+          {
+            "q": "Dar cărțile cu DRM?",
+            "a": "Yappy citește EPUB-urile pe care le poți deschide. Cărțile protejate cu DRM-ul unui magazin nu se pot citi, nici aici, nici în altă parte: lacătul acela nu e al nostru."
+          },
+          {
+            "q": "Unde rămâne audiobook-ul?",
+            "a": "În biblioteca Yappy, ca un .m4b adevărat. De acolo îl partajezi în Fișiere, în Cărți sau în playerul pe care îl folosești deja. Fișierul e al tău: dacă dezinstalezi aplicația, ce ai exportat rămâne unde l-ai pus."
+          }
+        ]
+      },
+      "word": {
+        "nombre": "Word",
+        "title": "Ascultă un Word cu voce tare: DOCX, ODT și RTF în audio",
+        "description": "Transformă documente Word, LibreOffice și text simplu în voce naturală, ca să le verifici cu urechea. Totul se întâmplă pe calculatorul sau pe telefonul tău.",
+        "h1": "Verifică cu urechea.",
+        "entradilla": "Să asculți ce ai scris e cea mai bună corectură care există: propoziția pe care n-o poți spune cu voce tare nu se ține nici pe hârtie. Yappy citește .docx, .odt, .rtf, .txt și Markdown, cu titlurile și ritmul lor.",
+        "pasos": [
+          {
+            "titulo": "Deschide documentul",
+            "texto": "Trage-l în fereastra de pe calculator sau partajează-l din telefon."
+          },
+          {
+            "titulo": "Ascultă paragraf cu paragraf",
+            "texto": "Textul se luminează în timp ce sună; atingi unde vrei ca să sari."
+          },
+          {
+            "titulo": "Corectează ce scârțâie",
+            "texto": "Și ascultă-l din nou. Pe calculator, fiecare paragraf poate avea propria voce și propria viteză."
+          }
+        ],
+        "extra_titulo": "Și foi de calcul, și prezentări",
+        "extra_texto": "Citește .pptx, .xlsx și .csv. Pe calculator, dacă ai pandoc instalat, lista se lărgește cu LaTeX, reStructuredText, Org și încă câteva.",
+        "faq": [
+          {
+            "q": "Ce formate de text citește, mai exact?",
+            "a": ".docx, .odt, .rtf, .txt și Markdown, plus .pptx, .xlsx și .csv. Pe calculator, dacă ai pandoc instalat, lista se lărgește cu LaTeX, reStructuredText, Org și încă câteva."
+          },
+          {
+            "q": "Citește și notele de subsol și tabelele?",
+            "a": "Citește corpul documentului, cu titlurile și ordinea lui. Tabelele le citește rând cu rând — altfel nu se poate cu o tabelă cu voce tare — iar notele rămân la capătul secțiunii lor, fără să întrerupă fraza pe jumătate."
+          },
+          {
+            "q": "Pot da o voce diferită fiecărui paragraf?",
+            "a": "Pe calculator, da: editorul pe paragrafe îți permite să dai fiecăruia voce, viteză și pauză. Exact asta face ca un dialog, un interviu sau un document în două limbi să sune cum trebuie."
+          },
+          {
+            "q": "Chiar e bun de corectură?",
+            "a": "E cea mai bună corectură care există. Urechea trădează ce îți iartă ochiul: repetarea de trei rânduri mai sus, subordonata care nu se încheie, incisa care și-a înghițit verbul. Dai viteza pe 0,9×, asculți capitolul și notezi ce scârțâie."
+          }
+        ]
+      },
+      "articulos": {
+        "nombre": "Articole",
+        "title": "Ascultă articole de pe internet: orice pagină web, cu voce tare",
+        "description": "Partajezi o pagină din Safari și Yappy ți-o citește curată: fără meniuri, fără bannere, fără subsol. Pagina o vizitează dispozitivul tău, nu un server al nostru.",
+        "h1": "Ascultă ce amânai să citești.",
+        "entradilla": "Tabul pe care îl lași deschis pe mai târziu. Îl trimiți la Yappy și îl asculți în timp ce faci curat. Pagina se curăță singură: afară meniurile, bannerele și subsolul. Rămâne proza, cu titlurile și ritmul ei.",
+        "pasos": [
+          {
+            "titulo": "Apasă „Distribuire”",
+            "texto": "În Safari, în cititorul de știri, în mail: unde există meniu de distribuire, există și Yappy."
+          },
+          {
+            "titulo": "Se curăță singur",
+            "texto": "Extragerea are loc pe aparatul tău. Dacă ai abonament la o publicație, ia articolul exact cum îl vezi tu."
+          },
+          {
+            "titulo": "Intră în coadă",
+            "texto": "Și așteaptă până ai mâinile libere."
+          }
+        ],
+        "extra_titulo": "Ce atinge rețeaua",
+        "extra_texto": "Doar vizitarea adresei pe care ai distribuit-o, făcută chiar de dispozitivul tău, exact cum ar face-o navigatorul. Nu există niciun server Yappy la mijloc, pentru că nu există niciun server Yappy.",
+        "faq": [
+          {
+            "q": "Funcționează cu publicațiile la care am abonament?",
+            "a": "Extragerea o face chiar dispozitivul tău, cu sesiunea ta, deci ia articolul exact cum îl vezi în navigator. Dacă tu îl poți citi, Yappy ți-l poate citi. Nu există niciun server intermediar care să treacă de paywall, pentru că nu există server."
+          },
+          {
+            "q": "Dar paginile care se încarcă doar cu JavaScript?",
+            "a": "Unele se opun: dacă textul apare abia după ce pagina rulează o jumătate de bibliotecă, Yappy poate rămâne cu mâinile goale. În acele cazuri, cel mai repede e să selectezi textul, să-l copiezi și să-l distribui ca text simplu."
+          },
+          {
+            "q": "Păstrează un istoric al lecturilor mele?",
+            "a": "Doar pe aparatul tău, ca să poți relua de unde ai rămas. Nimic din asta nu pleacă nicăieri, iar fiecare document are în bibliotecă opțiunea lui de a fi uitat."
+          },
+          {
+            "q": "Citește meniurile, bannerele și comentariile?",
+            "a": "Nu. Pagina se curăță înainte să ajungă la cititor: afară meniuri, bannere, subsoluri, butoane de distribuire și casete de comentarii. Rămâne proza, cu titlurile și cu ritmul ei."
+          }
+        ]
+      },
+      "videos": {
+        "nombre": "Videoclipuri",
+        "title": "Ascultă un videoclip ca și cum ar fi un articol",
+        "description": "Yappy ia transcrierea unui videoclip și ți-o citește ca pe un articol: fără să te uiți la ecran, cu viteza pe care o vrei și fără să consumi date de video.",
+        "h1": "Videoclipurile, ca articolele.",
+        "entradilla": "O jumătate de oră de video înseamnă zece minute de text citit într-un ritm bun. Yappy rămâne cu transcrierea și ți-o citește cu voce naturală, așa că o poți asculta mergând pe jos și fără ecranul aprins.",
+        "pasos": [
+          {
+            "titulo": "Distribuie linkul",
+            "texto": "Din aplicația de video sau din navigator, cu meniul de distribuire."
+          },
+          {
+            "titulo": "Rămâne cu cuvintele",
+            "texto": "Yappy ia transcrierea publicată a videoclipului, nu sunetul."
+          },
+          {
+            "titulo": "Îl asculți în ritmul tău",
+            "texto": "Cu vocea pe care o vrei și la viteza pe care o vrei, chiar și cu ecranul blocat."
+          }
+        ],
+        "extra_titulo": "Dacă videoclipul nu are transcriere",
+        "extra_texto": "Atunci nu e nimic de citit: Yappy lucrează cu textul publicat, nu transcrie sunetul videoclipului. Pe iPhone funcția există; pe Android, încă nu.",
+        "faq": [
+          {
+            "q": "Transcrie sunetul videoclipului?",
+            "a": "Nu. Yappy ia transcrierea deja publicată a videoclipului și ți-o citește ca pe un articol. E rapid, nu consumă date video și nu încălzește telefonul; doar că, dacă videoclipul nu are transcriere, nu e nimic de citit."
+          },
+          {
+            "q": "Dar dacă videoclipul nu are transcriere?",
+            "a": "Atunci Yappy nu poate face nimic cu linkul. Dacă videoclipul e al tău și ai fișierul, partajează-l ca fișier audio: acolo da, intră în joc urechea locală și transcrie totul în dispozitiv."
+          },
+          {
+            "q": "Funcționează pe toate platformele video?",
+            "a": "Unde există o transcriere publicată și accesibilă. Pe iPhone funcția există; în versiunea pentru Android, încă nu."
+          },
+          {
+            "q": "Consumă date?",
+            "a": "Foarte puține: se descarcă un text, nu un video. O jumătate de oră de video înseamnă câteva zeci de kiloocteți de transcriere, iar de acolo face totul dispozitivul tău."
+          }
+        ]
+      },
+      "notas": {
+        "nombre": "Note vocale",
+        "title": "Transformă notele vocale în text chiar pe telefon",
+        "description": "Yappy transcrie înregistrările și notele vocale chiar pe dispozitivul tău, fără să le încarce vreunui serviciu, și apoi îți poate citi transcrierea.",
+        "h1": "De la voce la text, și înapoi.",
+        "entradilla": "O ședință înregistrată, o idee dictată în mașină, lecția de ieri. Yappy o transcrie în dispozitivul tău cu urechea locală și îți lasă textul ca să-l citești, să-l corectezi sau să-l asculți din nou cu altă voce.",
+        "pasos": [
+          {
+            "titulo": "Partajează înregistrarea",
+            "texto": "Din Note vocale, Fișiere sau din orice altă aplicație care salvează audio."
+          },
+          {
+            "titulo": "Se transcrie local",
+            "texto": "Cu un model care rulează pe dispozitivul tău. Sunetul nu iese de acolo."
+          },
+          {
+            "titulo": "Citește-l sau ascultă-l",
+            "texto": "Rămâne ca orice alt document: se citește, se partajează și se poate citi din nou cu voce tare."
+          }
+        ],
+        "extra_titulo": "Urechea se descarcă separat",
+        "extra_texto": "Transcrierea folosește un model diferit de cel al vocii și se descarcă doar dacă o folosești.",
+        "faq": [
+          {
+            "q": "Ce model transcrie?",
+            "a": "Parakeet TDT 0.6B v3, de la NVIDIA, cu licență CC-BY-4.0, care rulează pe aparatul tău. E alt model decât cel al vocii: unul ascultă, celălalt vorbește."
+          },
+          {
+            "q": "Iese audio-ul de pe dispozitivul meu?",
+            "a": "Nu. Înregistrarea se transcrie local, exact cum vocea se sintetizează local. Nu există serviciu de transcriere în cloud, nici cont, nici încărcare."
+          },
+          {
+            "q": "În ce limbi transcrie?",
+            "a": "Urechea nu știe atâtea limbi câte știe vocea: transcrie principalele limbi europene, nu toate cele 31 pe care Yappy le poate citi. Pentru citit cu voce tare, toate cele 31; pentru voce în text, grupul mai restrâns."
+          },
+          {
+            "q": "Trebuie descărcat ceva în plus?",
+            "a": "Da: urechea se descarcă separat și doar prima dată când transcrii ceva. Dacă nu transcrii niciodată, nu ocupă niciodată loc pe aparatul tău."
+          }
+        ]
+      }
+    }
+  },
+  "idioma_pagina": {
+    "title": "Text to speech în {lengua}: citește orice text cu voce tare",
+    "description": "Ascultă PDF, EPUB, Word și articole în {lengua} cu o voce naturală, pe propriul aparat și fără conexiune. Zece voci, gratis și fără cont.",
+    "h1": "Text to speech în {lengua}.",
+    "entradilla": "Zece voci citesc {lengua} după regulile ei: numerele, datele, ordonalele și abrevierile ei, nu ale unei alte limbi cu accent împrumutat.",
+    "muestra": "O mostră",
+    "reglas_titulo": "Ce știe fonetizatorul despre {lengua}",
+    "todas": "Celelalte treizeci de limbi"
+  },
+  "vs": {
+    "titulo": "Yappy față de {nombre}, dintr-o privire",
+    "caracteristica": "Ce",
+    "gratis": "Ce se poate face gratis",
+    "precio": "Preț de la",
+    "local": "Vocea se face pe aparatul tău",
+    "sin_cuenta": "Fără cont și fără e-mail",
+    "sin_conexion": "Funcționează fără conexiune",
+    "codigo_abierto": "Cod deschis",
+    "tarifa": "Tarifă pe caracter sau pe ore",
+    "idiomas": "Limbi",
+    "formatos": "Formate pe care le citește",
+    "audiolibro": "Carte audio cu capitole",
+    "escritorio": "Calculator",
+    "yappy_gratis": "Ascultare nelimitată; trei documente simultan",
+    "yappy_precio": "0 €; planul plătit, de la 3,99 € pe lună",
+    "gana_en": "Unde câștigă {nombre}",
+    "verificado": "Date publice, verificate pe {fecha} pe site-ul fiecărui produs.",
+    "sin_verificar": "Prețurile se schimbă des: verifică-le înainte să te hotărăști.",
+    "ver_web": "Site oficial",
+    "frente_a": "Față de {nombre}"
+  },
+  "preguntas_comunes": {
+    "titulo": "Întrebări frecvente"
+  }
+}
