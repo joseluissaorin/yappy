@@ -65,3 +65,7 @@ web/node_modules/
 web/dist/
 web/.astro/
 web/.wrangler/
+
+# Los recursos que el empaquetador de Android copia al compilar: son copias
+# de yappy-app/resources/, no fuentes.
+yappy-app/src-tauri/gen/android/app/src/main/assets/_up_/
