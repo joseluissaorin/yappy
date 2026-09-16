@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Ingen gratis provperiod, förresten: hyllan med tre dokument <em>är</em> provet, och den går aldrig ut och tar aldrig betalt i efterhand. Priserna är de spanska. I din butik visas de i din valuta.",
     "cuerda_donde": "Prenumerationen tecknas inne i appen, i bakrummet.",
-    "solo_ios": "På datorn och Android är allt öppet: prenumerationen finns bara på iPhone och iPad.",
+    "solo_movil": "Repet sitter fast i mobilen: på iPhone, iPad och Android. På datorn är allt öppet.",
     "comparacion_titulo": "Vad andra tar betalt.",
     "comparacion_entradilla": "Molnbaserade talsyntesappar betalar servrar varje gång du trycker på play, så de tar betalt per timme eller per tecken. Yappy syntetiserar i din enhet: kostnaden per lyssning är noll, och därför kan appen slippa ta betalt.",
     "comparacion_nota": "Officiella priser, uppslagna i september 2026. De ändras ofta: kontrollera dem på respektive webbplats innan du bestämmer dig.",
@@ -442,8 +442,8 @@
         "a": "Ja, via ditt Apple-konto, som vilken annan prenumeration som helst. De förnyas av sig själva när perioden tar slut, om du inte säger upp dem minst 24 timmar i förväg. Livstidsköpet förnyas aldrig: du betalar en gång, punkt. Och avslutar du prenumerationen tappar du inget av det som är gratis: du är tillbaka på trespinnen."
       },
       {
-        "q": "Varför kostar det inget på datorn och på Android?",
-        "a": "För att uppdraget bara sitter i iPhone och iPad. På datorn, och i Android-versionen när den släpps, är tryckeriet, den oändliga pinnen och bron öppna från början. Det är ingen lanseringskampanj: det finns bara inget att ta betalt för."
+        "q": "Varför betalar man inte på datorn?",
+        "a": "För att repet sitter fast i mobilen, inte på datorn. Där är tryckeriet, pinnen utan botten och bron öppna. Det är inget lanseringserbjudande: datorn är maskinen som gör det tunga jobbet, och att ta betalt för att din egen dator får jobba på natten vore obegripligt."
       }
     ],
     "una_a_una": "en i taget, med sina uppgifter"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Vanliga frågor"
+  },
+  "aspecto": {
+    "titulo": "Utseende",
+    "papel": "Papper",
+    "noche": "Natt",
+    "sistema": "Som systemet"
   }
 }

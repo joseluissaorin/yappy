@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Sem teste gratuito, de propósito: o cabide de três documentos <em>é</em> o teste, e não caduca nem é cobrado depois. Os preços são os de Espanha; na tua loja aparecerão na tua moeda.",
     "cuerda_donde": "A corda compra-se dentro da app, no fundo da loja.",
-    "solo_ios": "No computador e no Android está tudo aberto: a corda só existe no iPhone e no iPad.",
+    "solo_movil": "A trela é do telemóvel: no iPhone, no iPad e no Android. No computador está tudo aberto.",
     "comparacion_titulo": "O que os outros cobram.",
     "comparacion_entradilla": "As apps de voz na nuvem pagam servidores cada vez que carregas em play, por isso cobram-te por horas ou por caracteres. A Yappy sintetiza no teu aparelho: o custo por audição é zero, e por isso pode não a cobrar.",
     "comparacion_nota": "Preços públicos consultados em setembro de 2026. Mudam com frequência: confirma-os no site de cada app antes de decidir.",
@@ -442,8 +442,8 @@
         "a": "Sim, pela sua conta Apple, como qualquer outra subscrição. Renovam-se sozinhas no fim de cada período, a menos que cancele pelo menos 24 horas antes. A compra vitalícia nunca se renova: paga-se uma vez e pronto. E se cancelar, não perde nada do que é gratuito: volta ao poleiro de três."
       },
       {
-        "q": "Porque é que no computador e no Android não se paga?",
-        "a": "Porque a corda só está montada no iPhone e no iPad. No computador, e na versão Android quando for publicada, a tipografia, o poleiro sem fundo e a ponte vêm abertos. Não é uma oferta de lançamento: é que aí não há nada a cobrar."
+        "q": "Porque é que no computador não se paga?",
+        "a": "Porque a trela está presa ao telemóvel, e ao computador não. Ali, a imprenta, o cabide sem fundo e a ponte vêm abertos. Não é uma oferta de lançamento: é o computador que faz o trabalho pesado, e cobrar por deixar a tua própria máquina trabalhar de noite não fazia sentido."
       }
     ],
     "una_a_una": "uma a uma, com os respetivos dados"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Perguntas frequentes"
+  },
+  "aspecto": {
+    "titulo": "Aspeto",
+    "papel": "Papel",
+    "noche": "Noite",
+    "sistema": "Como o sistema"
   }
 }

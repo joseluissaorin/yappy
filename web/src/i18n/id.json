@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Tanpa uji coba gratis, dan itu memang disengaja: rak tiga dokumen <em>itulah</em> uji cobanya, tidak kedaluwarsa dan tidak menagih di kemudian hari. Harga yang tercantum adalah harga Spanyol; di toko di perangkatmu, angkanya akan tampil dalam mata uangmu.",
     "cuerda_donde": "Langganannya ada di dalam aplikasi, di ruang belakang.",
-    "solo_ios": "Di komputer dan Android, semua fitur terbuka: langganan hanya ada di iPhone dan iPad.",
+    "solo_movil": "Talinya milik ponsel: di iPhone, di iPad, dan di Android. Di komputer, semuanya terbuka.",
     "comparacion_titulo": "Yang dipungut pesaing.",
     "comparacion_entradilla": "Aplikasi suara berbasis cloud membayar server setiap kali kamu menekan play, makanya mereka menagih per jam atau per karakter. Yappy menyintesis suara langsung di perangkatmu, jadi biaya per pemutaran nol — dan karena itu Yappy bisa memilih untuk tidak menagih.",
     "comparacion_nota": "Harga resmi yang dicek pada September 2026. Angkanya sering berubah: cek situs masing-masing sebelum memutuskan.",
@@ -442,8 +442,8 @@
         "a": "Ya, lewat akun Apple-mu, seperti langganan lain pada umumnya. Semua diperpanjang otomatis di akhir setiap periode, kecuali kamu membatalkannya setidaknya 24 jam sebelumnya. Pembelian seumur hidup tidak pernah diperpanjang: dibayar sekali, selesai. Dan kalau kamu berhenti, tidak ada bagian gratis yang hilang: kamu kembali ke tenggeran tiga dokumen."
       },
       {
-        "q": "Mengapa versi komputer dan Android tidak berbayar?",
-        "a": "Karena mesin pembayarnya hanya terpasang di iPhone dan iPad. Di komputer, dan di versi Android begitu dirilis nanti, percetakan buku audio, tenggeran tanpa dasar, dan jembatan ke komputer sudah terbuka sejak awal. Ini bukan promo peluncuran: di sana memang tidak ada yang bisa ditagih."
+        "q": "Mengapa di komputer gratis?",
+        "a": "Karena talinya memang dipasang di ponsel, bukan di komputer. Di sana, percetakan, percha tanpa dasar, dan jembatan terbuka sejak awal. Ini bukan promo peluncuran: desktoplah mesin yang mengerjakan pekerjaan berat, dan menagih biaya hanya karena membiarkan komputermu sendiri bekerja semalaman tidak masuk akal."
       }
     ],
     "una_a_una": "satu per satu, beserta datanya"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Pertanyaan yang sering diajukan"
+  },
+  "aspecto": {
+    "titulo": "Tampilan",
+    "papel": "Kertas",
+    "noche": "Malam",
+    "sistema": "Ikuti sistem"
   }
 }

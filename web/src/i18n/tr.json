@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Ücretsiz deneme yok, bu da bir tercih: üç belgelik askı denemenin <em>ta kendisidir</em>; süresi dolmaz, sonradan ücret çekmez. Fiyatlar İspanya fiyatlarıdır; senin mağazanda kendi para biriminle görünür.",
     "cuerda_donde": "İp, uygulamanın içindeki arka depoda satılır.",
-    "solo_ios": "Bilgisayarda ve Android'de her şey açık: ip yalnızca iPhone ve iPad'de var.",
+    "solo_movil": "Paranın ipleri mobilde: iPhone'da, iPad'te ve Android'de. Bilgisayarda her şey açık.",
     "comparacion_titulo": "Diğerleri ne alıyor.",
     "comparacion_entradilla": "Buluttaki ses uygulamaları, oynat'a her bastığında sunuculara para öder; bu yüzden saat ya da karakter başına ücret isterler. Yappy sesi senin cihazında üretir: dinleme başına maliyeti sıfırdır, bu yüzden ücret almamayı göze alabilir.",
     "comparacion_nota": "Eylül 2026'da kontrol edilmiş, herkese açık fiyatlar. Sık sık değişirler; karar vermeden önce her web sitesinde yeniden kontrol et.",
@@ -442,8 +442,8 @@
         "a": "Evet, Apple hesabından, başka her abonelik gibi. Her dönem sonunda kendiliğinden yenilenir; en az 24 saat önce iptal etmezsen. Ömür boyu satın alma hiç yenilenmez: bir kez ödersin, biter. İptal edersen ücretsiz olandan hiçbir şey kaybetmezsin: üç belgelik tüneğe geri dönersin."
       },
       {
-        "q": "Bilgisayarda ve Android'de neden para ödenmiyor?",
-        "a": "Çünkü kurma kolu yalnızca iPhone ve iPad'de takılı. Masaüstünde —yayımlandığında Android sürümünde de— matbaa, dipsiz tünek ve köprü açık gelir. Bu bir lansman kampanyası değil: orada faturalanacak bir şey yok."
+        "q": "Bilgisayarda neden para ödenmiyor?",
+        "a": "Çünkü paranın ipleri mobilin elinde, bilgisayarın değil. Orada matbaa, dipsiz sepet ve köprü açık geliyor. Bu bir lansman indirimi değil: ağır işi masaüstü yapar. Kendi bilgisayarının gece boyu çalışması için para istemenin bir anlamı yoktu."
       }
     ],
     "una_a_una": "tek tek, verileriyle birlikte"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Sık sorulan sorular"
+  },
+  "aspecto": {
+    "titulo": "Görünüm",
+    "papel": "Kağıt",
+    "noche": "Gece",
+    "sistema": "Sistem gibi"
   }
 }

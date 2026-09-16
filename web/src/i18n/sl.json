@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Brez brezplačnega preizkusa, namerno: veshalka s tremi dokumenti <em>je</em> preizkus. Ne poteče in kasneje ne zaračuna nič. Cene veljajo za Španijo; v tvoji trgovini se prikažejo v tvoji valuti.",
     "cuerda_donde": "Naročnina se kupi znotraj aplikacije, v zaledju trgovine.",
-    "solo_ios": "Na računalniku in Androidu je vse odprto: naročnina obstaja samo za iPhone in iPad.",
+    "solo_movil": "Vrvica je za telefon: na iPhoneu, na iPadu in Androidu. Na računalniku je vse odprto.",
     "comparacion_titulo": "Kaj si zaračunajo drugi.",
     "comparacion_entradilla": "Aplikacije z govorom v oblaku vsakič, ko pritisneš predvajaj, plačajo strežnik, zato zaračunajo po urah ali po znakih. Yappy govor ustvari na tvoji napravi: poslušanje ne stane nič, zato ga ne zaračuna.",
     "comparacion_nota": "Javne cene, preverjene septembra 2026. Pogosto se spremenijo: pred odločitvijo jih preveri na vsaki spletni strani.",
@@ -442,8 +442,8 @@
         "a": "Da, iz svojega Apple računa, tako kot vsaka druga naročnina. Obnovijo se same na koncu vsakega obdobja, razen če jih prekličeš vsaj 24 ur prej. Nakup za vedno se nikoli ne obnovi: plačaš enkrat in to je to. Če pa prekličeš, ne izgubiš nič od brezplačnega: vrneš se na pletko za tri."
       },
       {
-        "q": "Zakaj se na računalniku in Androidu ne plača?",
-        "a": "Ker je vrv napeta samo na iPhonu in iPadu. Na namizju – in v različici za Android, ko bo izšla – so tiskarna, pletka brez dna in most odprti. To ni uvodna ponudba: preprosto ni nič, česar bi lahko zaračunali."
+        "q": "Zakaj se na računalniku ne plača?",
+        "a": "Ker je vrvica nameščena na telefonu, na računalniku pa ne. Tam so tiskarna, obešalnik brez dna in most odprti. To ni uvodna ponudba: namizni računalnik je stroj, ki opravi težko delo, in zaračunati za to, da tvoj lastni računalnik dela ponoči, ni imelo smisla."
       }
     ],
     "una_a_una": "ena za drugo, s svojimi podatki"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Pogosta vprašanja"
+  },
+  "aspecto": {
+    "titulo": "Videz",
+    "papel": "Papir",
+    "noche": "Noč",
+    "sistema": "Kot sistem"
   }
 }

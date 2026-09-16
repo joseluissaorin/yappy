@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "No free trial, on purpose: the three-document perch <em>is</em> the trial, and it neither expires nor starts charging later. Prices shown are the Spanish ones; your store will show yours.",
     "cuerda_donde": "You wind it up inside the app, in the back room.",
-    "solo_ios": "On the computer and on Android everything is unlocked: the wind-up key only exists on iPhone and iPad.",
+    "solo_movil": "The paywall lives on mobile: on iPhone, on iPad, and on Android. On the computer, everything is open.",
     "comparacion_titulo": "What the others charge.",
     "comparacion_entradilla": "Cloud voice apps pay for servers every time you press play, so they charge you by the hour or by the character. Yappy synthesises on your device: its cost per listen is zero, which is why it can leave listening free.",
     "comparacion_nota": "Public prices checked in September 2026. They change often: check each site before deciding.",
@@ -442,8 +442,8 @@
         "a": "Yes, from your Apple account, like any other subscription. They renew at the end of each period unless you cancel at least 24 hours before. The lifetime purchase never renews: you pay once and that is it. And if you cancel you lose nothing that was free: you go back to the perch of three."
       },
       {
-        "q": "Why is it free on the computer and on Android?",
-        "a": "Because the wind-up key only exists on iPhone and iPad. On the desktop, and on the Android build when it ships, the press, the bottomless perch and the bridge come unlocked. That is not a launch offer: there is simply nothing to charge for there."
+        "q": "Why is the desktop free?",
+        "a": "Because the paywall was built on mobile, and not on the computer. There, the printing press, the bottomless hanger, and the bridge come free. It's not a launch offer: the desktop is the machine that does the heavy lifting, and charging you to let your own computer work overnight made no sense."
       }
     ],
     "una_a_una": "one by one, with their numbers"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Frequently asked questions"
+  },
+  "aspecto": {
+    "titulo": "Appearance",
+    "papel": "Paper",
+    "noche": "Night",
+    "sistema": "Match the system"
   }
 }

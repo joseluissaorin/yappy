@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Ingen gratis prøveperiode – med vilje: bøjlen med tre dokumenter <em>er</em> prøven. Den udløber ikke, og der trækkes ikke penge bagefter. Priserne er de spanske. I din butik dukker de op i din valuta.",
     "cuerda_donde": "Abonnementet købes inde i appen, i baglokalet.",
-    "solo_ios": "På computeren og Android er alt åbent: abonnementet findes kun på iPhone og iPad.",
+    "solo_movil": "Snoren sidder på mobilen: på iPhone, iPad og Android. På computeren er alt åbent.",
     "comparacion_titulo": "Hvad de andre tager betalt.",
     "comparacion_entradilla": "Taleapps i skyen betaler for servere, hver gang du trykker play. Derfor regner de efter timer eller tegn. Yappy syntetiserer på din enhed: en lytning koster nul, og derfor kan Yappy lade være med at tage betalt.",
     "comparacion_nota": "Offentlige priser, tjekket i september 2026. De ændrer sig tit: tjek dem på hver hjemmeside, før du beslutter dig.",
@@ -442,8 +442,8 @@
         "a": "Ja, via din Apple-konto, som ethvert andet abonnement. De fornyer sig selv, når en periode udløber, medmindre du opsiger dem mindst 24 timer i forvejen. Livstidskøbet fornyes aldrig: man betaler én gang, og så er det. Og opsigør du, mister du ingenting af det gratis: du ryger tilbage til knagen med de tre."
       },
       {
-        "q": "Hvorfor betaler man ikke på computer og Android?",
-        "a": "Fordi snoren kun er monteret på iPhone og iPad. På computeren – og i Android-versionen, når den udkommer – er trykkeriet, knagen uden bund og broen åbne fra start. Det er ikke et lanceringstilbud: der er bare intet at opkræve."
+        "q": "Hvorfor skal man ikke betale på computeren?",
+        "a": "Fordi snoren sidder på mobilen, og ikke på computeren. Dér er trykkeriet, den bundløse knage og broen åbne fra start. Det er ikke et lanceringstilbud: desktoppen er maskinen, der klarer det tunge arbejde, og at tage betaling for at lade din egen computer arbejde om natten gav ingen mening."
       }
     ],
     "una_a_una": "én ad gangen, med tilhørende data"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Ofte stillede spørgsmål"
+  },
+  "aspecto": {
+    "titulo": "Udseende",
+    "papel": "Papir",
+    "noche": "Nat",
+    "sistema": "Som systemet"
   }
 }

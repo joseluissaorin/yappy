@@ -40,7 +40,7 @@ const conMuestra = ["es", "en", "fr", "de", "it", "pt"].includes(lengua.codigo);
     <section class="seccion" style="padding-top:0">
       <div class="hoja torcido-3" style="position:relative;display:flex;gap:18px;align-items:center;flex-wrap:wrap">
         <span class="celo izq"></span>
-        <Loro size={64} tinta="#2f4bc4" etiqueta="" />
+        <Loro size={64} etiqueta="" />
         <div style="flex:1;min-width:240px">
           <p class="susurro" style="margin-bottom:0.5rem">{t(lang, "idioma_pagina.muestra")}</p>
           <audio controls preload="none" src={`/audio/demo-${lengua.codigo}.m4a`} style="width:100%"></audio>

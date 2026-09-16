@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Tasuta prooviperioodi pole — ja see on tahtlik: kolme dokumendiga riidepuu <em>on</em> proov, mis ei aegu ega hakka hiljem raha küsima. Hinnad on Hispaania omad; sinu poes kuvatakse need sinu valuutas.",
     "cuerda_donde": "Riidepyy leiad rakenduse seest — poe tagaruumist.",
-    "solo_ios": "Arvutis ja Androidis on kõik avatud: riidepyyd on olemas ainult iPhone'il ja iPad'il.",
+    "solo_movil": "Rihm kuulub telefonile: iPhone, iPad ja Android. Arvutis on kõik avatud.",
     "comparacion_titulo": "Mida teised küsivad.",
     "comparacion_entradilla": "Pilves töötavad kõnerakendused maksavad iga play-vajutuse pealt serveritele, seepärast küsivad nad tasu tundide või tähemärkide kaupa. Yappy sünteesib kõne sinu seadmes: ühe kuulamise hind on null — seepärast saab ta seda ka tasuta pakkuda.",
     "comparacion_nota": "Avalikult kättesaadavad hinnad, kontrollitud 2026. aasta septembris. Need muutuvad sageli: enne otsustamist kontrolli üle iga teenuse veebilehelt.",
@@ -442,8 +442,8 @@
         "a": "Jah, oma Apple'i kontolt, nagu iga teinegi tellimus. Tellimused uuenevad ise iga perioodi lõpus, kui neid ei tühistata vähemalt 24 tundi varem. Eluaegset ostu ei uuendata kunagi: makstad ühe korra ja ongi kõik. Ja kui tühistad, ei kaota sa midagi tasulisest: naased lihtsalt kolme dokumendi nagile."
       },
       {
-        "q": "Miks ei pea arvutis ega Androidis maksma?",
-        "a": "Sest kogu see mehhanism on paigaldatud ainult iPhone'ile ja iPadile. Töölaual ja Androidi versioonis, kui see ilmub, on trükikoda, põhjatu nagi ja sild kohe lahti. See ei ole tutvustussoodustus: seal pole lihtsalt mitte midagi, mille eest tasu võtta."
+        "q": "Miks arvutis ei maksta?",
+        "a": "Sest rihm on telefoni külge pandud, arvuti külge mitte. Seal on trükikoda, põhjatu riidepukk ja sild juba avatud. See pole avamispakkumine: lauaarvuti on masin, mis teeb raskema töö ära, ja raha nõudmine selle eest, et lasta sinu oma arvutil öösel töötada, ei olnud mõtet."
       }
     ],
     "una_a_una": "üks haaval, koos andmetega"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Korduma kippuvad küsimused"
+  },
+  "aspecto": {
+    "titulo": "Välimus",
+    "papel": "Paber",
+    "noche": "Öö",
+    "sistema": "Süsteemi järgi"
   }
 }

@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Sin prueba gratuita, a propósito: la percha de tres documentos <em>es</em> la prueba, y no caduca ni se cobra después. Los precios son los de España; en tu tienda aparecerán en tu moneda.",
     "cuerda_donde": "La cuerda se da dentro de la app, en la trastienda.",
-    "solo_ios": "En el ordenador y en Android está todo abierto: la cuerda solo existe en el iPhone y el iPad.",
+    "solo_movil": "La cuerda es del móvil: en el iPhone, en el iPad y en Android. En el ordenador está todo abierto.",
     "comparacion_titulo": "Lo que cobran los demás.",
     "comparacion_entradilla": "Las apps de voz en la nube pagan servidores cada vez que pulsas play, así que te cobran por horas o por caracteres. Yappy sintetiza en tu aparato: su coste por escucha es cero, y por eso puede no cobrarla.",
     "comparacion_nota": "Precios públicos consultados en septiembre de 2026. Cambian a menudo: compruébalos en cada web antes de decidir.",
@@ -442,8 +442,8 @@
         "a": "Sí, desde tu cuenta de Apple, como cualquier otra suscripción. Se renuevan solas al final de cada periodo salvo que las canceles al menos 24 horas antes. La compra de por vida no se renueva nunca: se paga una vez y ya está. Y si cancelas, no pierdes nada de lo gratuito: vuelves a la percha de tres."
       },
       {
-        "q": "¿Por qué en el ordenador y en Android no se paga?",
-        "a": "Porque la cuerda solo está montada en el iPhone y el iPad. En el escritorio, y en la versión de Android cuando se publique, la imprenta, la percha sin fondo y el puente vienen abiertos. No es una oferta de lanzamiento: es que ahí no hay nada que cobrar."
+        "q": "¿Por qué en el ordenador no se paga?",
+        "a": "Porque la cuerda está montada en el móvil, y en el ordenador no. Allí la imprenta, la percha sin fondo y el puente vienen abiertos. No es una oferta de lanzamiento: el escritorio es la máquina que hace el trabajo pesado, y cobrar por dejar que tu propio ordenador trabaje de noche no tenía sentido."
       }
     ],
     "una_a_una": "una a una, con sus datos"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Preguntas frecuentes"
+  },
+  "aspecto": {
+    "titulo": "Aspecto",
+    "papel": "Papel",
+    "noche": "Noche",
+    "sistema": "Como el sistema"
   }
 }

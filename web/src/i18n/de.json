@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Bewusst ohne Testphase: Die Garderobe für drei Dokumente <em>ist</em> die Testphase – sie läuft nicht ab, und später wird nichts abgebucht. Die Preise gelten für Spanien; in deinem Store erscheinen sie in deiner Währung.",
     "cuerda_donde": "Das Abo gibt es in der App, im Hinterzimmer.",
-    "solo_ios": "Auf dem Computer und bei Android ist alles offen: Das Abo gibt es nur für iPhone und iPad.",
+    "solo_movil": "Die Leine hängt am Handy: auf dem iPhone, auf dem iPad und unter Android. Am Computer ist alles offen.",
     "comparacion_titulo": "Was die anderen verlangen.",
     "comparacion_entradilla": "Sprach-Apps in der Cloud mieten für jede Wiedergabe einen Server. Deshalb rechnen sie nach Stunden oder nach Zeichen ab. Yappy synthetisiert auf deinem Gerät: Zuhören kostet nichts, und deshalb kann Yappy auch nichts dafür verlangen.",
     "comparacion_nota": "Öffentliche Preise, Stand September 2026. Sie ändern sich oft: Prüfe sie auf jeder Website, bevor du dich entscheidest.",
@@ -442,8 +442,8 @@
         "a": "Ja, über dein Apple-Konto, wie jedes andere Abo auch. Abos verlängern sich am Ende jeder Laufzeit von selbst, außer du kündigst mindestens 24 Stunden vorher. Der Kauf auf Lebenszeit verlängert sich nie: einmal zahlen, fertig. Und wenn du kündigst, verlierst du nichts von dem, was gratis ist: zurück auf die Sitzstange für drei."
       },
       {
-        "q": "Warum kostet es auf dem Rechner und unter Android nichts?",
-        "a": "Weil das Aufziehwerk nur in iPhone und iPad eingebaut ist. Am Rechner, und in der Android-Version, sobald sie erscheint, sind Druckerei, bodenlose Sitzstange und Brücke ab Werk offen. Das ist kein Startangebot: Es gibt dort schlicht nichts zu kassieren."
+        "q": "Warum kostet es am Computer nichts?",
+        "a": "Weil die Leine am Handy hängt, nicht am Computer. Dort sind die Druckerei, das Fass ohne Boden und die Brücke offen. Das ist kein Einführungsangebot: Der Desktop ist die Maschine, die die Schwerarbeit macht, und Geld dafür zu verlangen, dass dein eigener Computer nachts arbeitet, ergab keinen Sinn."
       }
     ],
     "una_a_una": "eins nach dem anderen, mit ihren Daten"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Häufige Fragen"
+  },
+  "aspecto": {
+    "titulo": "Aussehen",
+    "papel": "Papier",
+    "noche": "Nacht",
+    "sistema": "Wie das System"
   }
 }

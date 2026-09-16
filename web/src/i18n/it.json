@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Niente prova gratuita, ed è voluto: l'attaccapanni da tre documenti <em>è</em> la prova, e non scade né si fa pagare dopo. I prezzi sono quelli di listino; nel tuo store li vedrai nella tua valuta.",
     "cuerda_donde": "L'abbonamento si paga dentro l'app, in retrobottega.",
-    "solo_ios": "Sul computer e su Android è tutto aperto: l'abbonamento esiste solo su iPhone e iPad.",
+    "solo_movil": "I soldi stanno sul telefono: su iPhone, su iPad e su Android. Sul computer è tutto aperto.",
     "comparacion_titulo": "Quanto fanno pagare gli altri.",
     "comparacion_entradilla": "Le app vocali nel cloud pagano dei server ogni volta che premi play, quindi ti fanno pagare per ore o per caratteri. Yappy sintetizza sul tuo dispositivo: il costo per ascolto è zero, e per questo può non fartelo pagare.",
     "comparacion_nota": "Prezzi pubblici, verificati a settembre 2026. Cambiano spesso: controllali sul sito di ciascuno prima di decidere.",
@@ -442,8 +442,8 @@
         "a": "Sì, dal tuo account Apple, come un abbonamento qualsiasi. Si rinnovano da soli alla fine di ogni periodo, a meno che tu non li annulli almeno 24 ore prima. L'acquisto a vita non si rinnova mai: si paga una volta e basta. E se annulli, non perdi niente di quello che era gratis: torni al posatoio da tre."
       },
       {
-        "q": "Perché su computer e Android non si paga?",
-        "a": "Perché la corda è montata solo su iPhone e iPad. Sul desktop, e nella versione per Android quando uscirà, la tipografia, il posatoio senza fondo e il ponte arrivano aperti. Non è un'offerta di lancio: è che lì non c'è niente da far pagare."
+        "q": "Perché sul computer non si paga?",
+        "a": "Perché i soldi stanno sul telefono, e non sul computer. Lì la stamperia, l'appendiabiti senza fondo e il ponte arrivano aperti. Non è un'offerta di lancio: il desktop è la macchina che fa il lavoro pesante, e farti pagare per lasciare che il tuo computer lavori di notte non aveva senso."
       }
     ],
     "una_a_una": "una a una, con i propri dati"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Domande frequenti"
+  },
+  "aspecto": {
+    "titulo": "Aspetto",
+    "papel": "Carta",
+    "noche": "Notte",
+    "sistema": "Come il sistema"
   }
 }

@@ -52,7 +52,7 @@ const dir = direccion(lang);
 ---
 
 <!doctype html>
-<html lang={lang} dir={dir} data-tema="sistema">
+<html lang={lang} dir={dir} data-tema="papel">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -104,8 +104,9 @@ const dir = direccion(lang);
     </main>
     <Pie lang={lang} />
     <script is:inline>
-      // El tema, antes de pintar: quien eligió noche no ve un fogonazo de
-      // papel. Tres estados, como en la trastienda de la app.
+      // El aspecto, antes de pintar, para que quien eligió noche no vea un
+      // fogonazo de papel. La casa arranca en papel: «como el sistema» es
+      // una opción, no el punto de partida.
       try {
         var g = localStorage.getItem("yappy.tema");
         if (g === "papel" || g === "noche" || g === "sistema") {

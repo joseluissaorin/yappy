@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Không có dùng thử miễn phí, và đó là chủ ý: cái móc ba tài liệu <em>chính là</em> bản dùng thử, không hết hạn và cũng không tự tính tiền sau đó. Giá là giá ở Tây Ban Nha; trong cửa hàng ứng dụng của bạn, chúng sẽ hiện theo đồng tiền của bạn.",
     "cuerda_donde": "Gói này được mua ngay trong ứng dụng, ở gian hàng sau.",
-    "solo_ios": "Trên máy tính và Android thì tất cả đều mở: gói này chỉ có trên iPhone và iPad.",
+    "solo_movil": "Phần thu phí nằm trên điện thoại: iPhone, iPad và Android. Trên máy tính thì tất cả đều mở.",
     "comparacion_titulo": "Những gì app khác thu phí.",
     "comparacion_entradilla": "Các app giọng nói trên đám mây phải trả tiền máy chủ mỗi khi bạn bấm play, nên họ tính phí theo giờ hoặc theo ký tự. Yappy tổng hợp giọng ngay trên máy của bạn: mỗi lần nghe tốn đúng bằng không, nên nó mới có thể không thu tiền.",
     "comparacion_nota": "Giá niêm yết lấy vào tháng 9 năm 2026. Giá thay đổi thường xuyên: hãy kiểm tra lại trên từng trang web trước khi quyết định.",
@@ -442,8 +442,8 @@
         "a": "Có, qua tài khoản Apple của bạn, như mọi gói đăng ký khác. Chúng tự gia hạn vào cuối mỗi kỳ, trừ khi bạn hủy trước ít nhất 24 giờ. Gói mua trọn đời không bao giờ gia hạn: trả một lần là xong. Còn nếu hủy, bạn không mất gì phần miễn phí: quay về lại cột đậu ba tài liệu."
       },
       {
-        "q": "Vì sao trên máy tính và Android lại không phải trả tiền?",
-        "a": "Vì cỗ lên dây chỉ được lắp trên iPhone và iPad. Trên máy tính, và trong bản Android khi ra mắt, xưởng in, cột đậu không đáy và cây cầu đều mở sẵn. Đây không phải khuyến mãi ra mắt: ở đó đơn giản là không có gì để thu tiền."
+        "q": "Tại sao trên máy tính lại không phải trả tiền?",
+        "a": "Vì phần thu phí nằm trên điện thoại, còn máy tính thì không. Ở đó, lò in, túi không đáy và cầu nối đều mở sẵn. Đây không phải khuyến mãi ra mắt: máy tính để bàn là cỗ máy làm việc nặng, mà thu tiền vì để chiếc máy của chính bạn làm việc trong đêm thì chẳng có nghĩa lý gì."
       }
     ],
     "una_a_una": "từng giọng một, kèm dữ liệu"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Câu hỏi thường gặp"
+  },
+  "aspecto": {
+    "titulo": "Diện mạo",
+    "papel": "Giấy",
+    "noche": "Đêm",
+    "sistema": "Theo hệ thống"
   }
 }

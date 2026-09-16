@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Fără perioadă de probă, din principiu: cuierul cu trei documente <em>este</em> proba, și nici nu expiră, nici nu te taxează după aceea. Prețurile sunt cele din Spania; în magazinul tău vor apărea în moneda ta.",
     "cuerda_donde": "Abonamentul se cumpără din aplicație, în camera din spate.",
-    "solo_ios": "Pe calculator și pe Android, totul e deschis: abonamentul există doar pe iPhone și iPad.",
+    "solo_movil": "Abonamentul e doar pe mobil: pe iPhone, pe iPad și pe Android. Pe calculator totul e gratuit.",
     "comparacion_titulo": "Cât percep ceilalți.",
     "comparacion_entradilla": "Aplicațiile de voce în cloud plătesc servere de fiecare dată când apeși play, așa că te taxează pe ore sau pe caractere. Yappy sintetizează pe dispozitivul tău: costul unei ascultări e zero, și tocmai de asta poate să nu-l perceapă.",
     "comparacion_nota": "Prețuri publice, verificate în septembrie 2026. Se schimbă des: verifică-le pe fiecare site înainte să decizi.",
@@ -442,8 +442,8 @@
         "a": "Da, din contul tău Apple, ca orice alt abonament. Se reînnoiesc singure la finalul fiecărei perioade, dacă nu le anulezi cu cel puțin 24 de ore înainte. Achiziția pe viață nu se reînnoiește niciodată: plătești o singură dată și gata. Iar dacă anulezi, nu pierzi nimic din ce e gratuit: te întorci la popica de trei."
       },
       {
-        "q": "De ce pe calculator și pe Android nu se plătește?",
-        "a": "Pentru că coarda e montată doar pe iPhone și iPad. Pe calculator – și în versiunea de Android, când va apărea – tiparnița, popica fără fund și puntea vin deblocate. Nu e o ofertă de lansare: acolo pur și simplu nu e nimic de încasat."
+        "q": "De ce nu se plătește pe calculator?",
+        "a": "Pentru că abonamentul e montat pe mobil, iar pe calculator nu. Acolo tipografia, cuierul fără fund și podul vin gratuite. Nu e o ofertă de lansare: desktopul e mașina care face munca grea, și să încasezi pentru a-ți lăsa propriul calculator să lucreze noaptea nu avea sens."
       }
     ],
     "una_a_una": "una câte una, cu datele lor"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Întrebări frecvente"
+  },
+  "aspecto": {
+    "titulo": "Aspect",
+    "papel": "Hârtie",
+    "noche": "Noapte",
+    "sistema": "Ca sistemul"
   }
 }

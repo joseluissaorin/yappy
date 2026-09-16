@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Pas d'essai gratuit, et c'est voulu : le portemanteau de trois documents <em>est</em> l'essai, il n'expire pas et ne facture rien ensuite. Les prix affichés sont ceux de l'Espagne ; dans votre boutique, ils apparaîtront dans votre devise.",
     "cuerda_donde": "L'abonnement se prend dans l'app, à l'arrière-boutique.",
-    "solo_ios": "Sur ordinateur et sur Android, tout est ouvert : l'abonnement n'existe que sur iPhone et iPad.",
+    "solo_movil": "La corde vocale, c'est sur mobile : sur iPhone, sur iPad et sur Android. Sur ordinateur, tout est ouvert.",
     "comparacion_titulo": "Ce que facturent les autres.",
     "comparacion_entradilla": "Les apps vocales du cloud paient des serveurs chaque fois que vous appuyez sur play, alors elles vous facturent à l'heure ou au caractère. Yappy synthétise sur votre appareil : une écoute ne lui coûte rien, et c'est pour ça qu'il peut ne pas vous la facturer.",
     "comparacion_nota": "Prix publics relevés en septembre 2026. Ils changent souvent : vérifiez sur chaque site avant de décider.",
@@ -442,8 +442,8 @@
         "a": "Oui, depuis votre compte Apple, comme pour n’importe quel autre abonnement. Ils se renouvellent tout seuls à la fin de chaque période, sauf si vous les annulez au moins 24 heures avant. L’achat à vie ne se renouvelle jamais : on paie une fois, et c’est tout. Et si vous annulez, vous ne perdez rien de ce qui est gratuit : vous retournez au perchoir à trois."
       },
       {
-        "q": "Pourquoi est-ce gratuit sur ordinateur et sur Android ?",
-        "a": "Parce que le mécanisme payant n’est monté que sur l’iPhone et l’iPad. Sur ordinateur, et dans la version Android quand elle paraîtra, l’imprimerie, le perchoir sans fond et le pont sont ouverts d’emblée. Ce n’est pas une offre de lancement : c’est qu’il n’y a rien à facturer."
+        "q": "Pourquoi est-ce gratuit sur ordinateur ?",
+        "a": "Parce que la corde vocale est montée sur le mobile, et pas sur l'ordinateur. Là, l'imprimerie, le perchoir sans fond et le pont arrivent ouverts. Ce n'est pas une offre de lancement : l'ordinateur de bureau, c'est la machine qui fait le gros du travail, et faire payer pour laisser votre propre machine travailler la nuit, ça n'avait aucun sens."
       }
     ],
     "una_a_una": "une à une, avec leurs données"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Questions fréquentes"
+  },
+  "aspecto": {
+    "titulo": "Apparence",
+    "papel": "Papier",
+    "noche": "Nuit",
+    "sistema": "Comme le système"
   }
 }

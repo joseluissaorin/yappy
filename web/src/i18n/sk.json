@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Brez brezplačnega preizkusa – in to namerno: vesa s tremi dokumenti <em>je</em> preizkus. Ne poteče in pozneje ne zaračuna ničesar. Cene so španske; v tvoji trgovini bodo prikazane v tvoji valuti.",
     "cuerda_donde": "Vrvico kupiš v aplikaciji, v zalogovniku.",
-    "solo_ios": "Na računalniku in Androidu je vse odprto: vrvica obstaja samo na iPhoneu in iPadu.",
+    "solo_movil": "Povodec velja samo za telefon: na iPhoneu, iPadu in Androidu. Na računalniku je vse odprto.",
     "comparacion_titulo": "Kaj zaračunajo drugi.",
     "comparacion_entradilla": "Aplikacije za govor v oblaku plačujejo strežnike vsakič, ko pritisneš predvajaj, zato zaračunavajo po urah ali po znakih. Yappy sintetizira na tvoji napravi: poslušanje ne stane nič, zato ga lahko sploh ne zaračuna.",
     "comparacion_nota": "Objavljene cene, preverjene septembra 2026. Pogosto se spreminjajo: pred odločitvijo jih preveri na vsaki spletni strani.",
@@ -442,8 +442,8 @@
         "a": "Áno, z účtu Apple, ako každé iné predplatné. Na konci obdobia sa samo obnoví, pokiaľ ho nezrušíš aspoň 24 hodín vopred. Doživotný nákup sa neobnovuje nikdy: zaplatíš raz a hotovo. A keď predplatné zrušíš, o nič zadarmo neprídeš: vrátiš sa na trojmiestne bidlo."
       },
       {
-        "q": "Prečo sa na počítači a v Androide neplatí?",
-        "a": "Pretože natahovací mechanizmus je osadený len v iPhone a iPade. Na desktope – aj v androidovej verzii, keď raz vyjde – sú tlačiareň, bidlo bez dna aj most hneď otvorené. Nie je to štartovná ponuka: prosto tam niet čo účtovať."
+        "q": "Zakaj na računalniku nič ne stane?",
+        "a": "Ker je povodec pripet na telefon, na računalnik pa ne. Tam so tiskarna, obešalnik brez dna in most odprti. To ni uvedna ponudba: namizje je stroj, ki dela težko delo, in zaračunavati za to, da tvoj lastni računalnik ponoči dela, ni imelo smisla."
       }
     ],
     "una_a_una": "jedna po druhej, s ich dátami"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Časté otázky"
+  },
+  "aspecto": {
+    "titulo": "Videz",
+    "papel": "Papir",
+    "noche": "Noč",
+    "sistema": "Kot v sistemu"
   }
 }

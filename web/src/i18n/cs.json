@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Zkušební doba zdarma není, a to schválně: věšák se třemi dokumenty <em>je</em> ta zkouška. Nevyprší a potom nezačne nic účtovat. Ceny jsou španělské; ve tvém obchodě se ukážou ve tvé měně.",
     "cuerda_donde": "Předplatné se kupuje přímo v aplikaci, tam vzadu.",
-    "solo_ios": "Na počítači a na Androidu je všechno otevřené: předplatné existuje jen pro iPhone a iPad.",
+    "solo_movil": "Účtuje se jen na mobilu: na iPhonu, na iPadu a v Androidu. Na počítači je všechno otevřené.",
     "comparacion_titulo": "Co účtují ostatní.",
     "comparacion_entradilla": "Cloudové aplikace pro převod textu na řeč platí servery pokaždé, když zmáčkneš play, a proto účtují za hodiny nebo za znaky. Yappy syntetizuje přímo ve tvém zařízení: poslech ho nestojí nic, takže za něj účtovat nemusí.",
     "comparacion_nota": "Ceny z veřejných stránek, zjištěné v září 2026. Mění se často: než se rozhodneš, ověř si je na webu každé aplikace.",
@@ -442,8 +442,8 @@
         "a": "Ano, ze svého Apple účtu, jako každé jiné předplatné. Samy se obnovují na konci každého období, pokud je nezrušíte alespoň 24 hodin předem. Doživotní nákup se neobnovuje nikdy: zaplatíte jednou a je to. A když předplatné zrušíte, o nic zdarma nepřijdete: vrátíte se na bidlo pro tři."
       },
       {
-        "q": "Proč se na počítači a na Androidu neplatí?",
-        "a": "Protože pružina je namontovaná jen v iPhonu a iPadu. Na počítači a ve verzi pro Android, až jednou vyjde, jsou tiskárna audioknih, bidlo bez dna i most otevřené hned od začátku. Není to nabídka na přivítanou: prostě tu není nic, za co by se platilo."
+        "q": "Proč se na počítači neplatí?",
+        "a": "Protože se účtuje na mobilu a na počítači ne. Tiskárna, bezedný věšák i most tam jsou otevřené. Není to úvodní akce: desktop je stroj, který odvádí tu těžkou práci, a účtovat si za to, že si necháš vlastní počítač přes noc pracovat, nemělo smysl."
       }
     ],
     "una_a_una": "jedna po druhé, včetně jejich dat"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Časté otázky"
+  },
+  "aspecto": {
+    "titulo": "Vzhled",
+    "papel": "Papír",
+    "noche": "Noc",
+    "sistema": "Podle systému"
   }
 }

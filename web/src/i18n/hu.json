@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Nincs ingyenes próba, és ez szándékos: a háromdokumentumos fogas <em>maga</em> a próba, nem jár le, és később nem indít számlázást. Az árak spanyolországiak; a boltodban a te pénznemedben jelennek meg.",
     "cuerda_donde": "A zsinór az alkalmazáson belül vehető meg, a bolt hátsó szobájában.",
-    "solo_ios": "Számítógépen és Androidon minden nyitott: a zsinór csak iPhone-on és iPaden létezik.",
+    "solo_movil": "A kassza a mobilon van: iPhone-on, iPaden és Androidon. A számítógépen minden szabad.",
     "comparacion_titulo": "Amit a többiek kérnek.",
     "comparacion_entradilla": "A felhőben dolgozó felolvasóalkalmazások minden lejátszásnál szervert fizetnek, ezért órában vagy karakterben számláznak. A Yappy a készülékeden szintetizál: egy meghallgatásnak nulla a költsége, ezért engedheti meg, hogy ne kérjen érte pénzt.",
     "comparacion_nota": "A nyilvános árakat 2026 szeptemberében néztük meg. Gyakran változnak: döntés előtt ellenőrizd őket az egyes oldalakon.",
@@ -442,8 +442,8 @@
         "a": "Igen, az Apple-fiókodból, mint bármely más előfizetés. Minden időszak végén magától megújul, hacsak nem mondod le legalább 24 órával korábban. Az élethosszig szóló vásárlás sosem újul meg: egyszer kifizeted, kész. És ha lemondod, az ingyenesből semmit nem veszítesz: visszakerülsz a három dokumentumos ülőkára."
       },
       {
-        "q": "Miért ingyenes a számítógépen és Androidon?",
-        "a": "Mert a felhúzómechanizmus csak az iPhone-ba és az iPadbe van beépítve. Az asztali gépen – és az Android-változatban is, ha egyszer megjelenik – a nyomda, a feneketlen ülőka és a híd nyitva van. Ez nem bemutatkozó akció: ott egyszerűen nincs mit felszámolni."
+        "q": "Miért nem kell a számítógépen fizetni?",
+        "a": "Mert a kassza a mobilhoz van kötve, a számítógéphez nem. Ott a nyomda, a feneketlen fogas és a híd szabadon használható. Ez nem bevezető akció: az asztali gép végzi a nehéz munkát, és pénzt kérni azért, hogy a saját géped éjjel dolgozzon, nem volt értelme."
       }
     ],
     "una_a_una": "egyenként, a saját adataikkal"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Gyakori kérdések"
+  },
+  "aspecto": {
+    "titulo": "Megjelenés",
+    "papel": "Papír",
+    "noche": "Éjszaka",
+    "sistema": "Rendszer szerint"
   }
 }

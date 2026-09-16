@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Ilmaiskokeilua ei ole, eikä se ole vahinko: kolmen dokumentin hylly <em>on</em> itse kokeilu, eikä se vanhene eikä ala laskuttaa jälkikäteen. Hinnat ovat Espanjan hintoja; oma kauppasi näyttää ne omassa valuutassasi.",
     "cuerda_donde": "Tilaus ostetaan sovelluksen sisältä, takahuoneesta.",
-    "solo_ios": "Tietokoneella ja Androidilla kaikki on avointa: tilaus on vain iPhonessa ja iPadissa.",
+    "solo_movil": "Talutin on puhelimessa: iPhonessa, iPadissa ja Androidissa. Tietokoneella kaikki on auki.",
     "comparacion_titulo": "Mitä muut perivät.",
     "comparacion_entradilla": "Pilvessä toimivat puhesovellukset maksavat palvelinkuluja joka kerta, kun painat toista, joten ne laskuttavat tunteittain tai merkeittäin. Yappy syntetisoi puheen laitteessasi: kuunteleminen ei maksa sille mitään, ja siksi Yappy voi jättää sen laskuttamatta.",
     "comparacion_nota": "Julkiset hinnat tarkistettu syyskuussa 2026. Ne muuttuvat usein: tarkista ne jokaisen palvelun omilta sivuilta ennen päätöstä.",
@@ -442,8 +442,8 @@
         "a": "Kyllä, Apple-tililtäsi, kuten mikä tahansa muukin tilaus. Ne uusiutuvat itse jakson lopussa, ellet peruuta niitä vähintään 24 tuntia ennen jakson päättymistä. Elinikäinen ostos ei uusiudu koskaan: maksetaan kerran, ja sillä hyvä. Jos peruutat, et menetä mitään ilmaista: palaat kolmen poijulle."
       },
       {
-        "q": "Miksi tietokoneella ja Androidilla ei makseta?",
-        "a": "Koska naru on kiinnitetty vain iPhoneen ja iPadiin. Työpöytäversiossa – ja Android-versiossa, kun se ilmestyy – äänikirjapaino, pohjaton poiju ja silta ovat auki valmiiksi. Tämä ei ole lanseeraustarjous: siellä ei yksinkertaisesti ole mitään laskutettavaa."
+        "q": "Miksi tietokoneella ei makseta?",
+        "a": "Koska talutin on puhelimessa, ei tietokoneessa. Siellä kirjapaino, pohjaton naulakko ja silta ovat auki. Ei tämä ole lanseeraustarjous: pöytäkone on se, joka tekee raskaan työn. Maksua ei olisi kannattanut periä siitä, että antaa oman koneensa tehdä töitä yöllä."
       }
     ],
     "una_a_una": "yksi kerrallaan, tiedot mukanaan"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Usein kysytyt kysymykset"
+  },
+  "aspecto": {
+    "titulo": "Ulkoasu",
+    "papel": "Paperi",
+    "noche": "Yö",
+    "sistema": "Järjestelmän mukaan"
   }
 }

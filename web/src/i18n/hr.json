@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Bez besplatne probe – namjerno: vješalica s tri dokumenta <em>jest</em> proba. Ne istječe i poslije ništa ne naplaćuje. Cijene su španjolske – u trgovini će se prikazati u tvojoj valuti.",
     "cuerda_donde": "Kanap se kupuje unutar aplikacije, u zadnjoj sobi trgovine.",
-    "solo_ios": "Na računalu i Androidu sve je otvoreno: kanap postoji samo na iPhoneu i iPadu.",
+    "solo_movil": "Plaćanje ide preko mobitela: na iPhoneu, iPadu i Androidu. Na računalu je sve otvoreno.",
     "comparacion_titulo": "Koliko naplaćuju drugi.",
     "comparacion_entradilla": "Aplikacije koje sintetiziraju govor u oblaku plaćaju poslužitelje svaki put kad pritisneš play, pa ti naplaćuju po satu ili po znaku. Yappy sve sintetizira na tvom uređaju: slušanje ne košta ništa, pa ga ne mora ni naplaćivati.",
     "comparacion_nota": "Javno objavljene cijene, provjerene u rujnu 2026. Često se mijenjaju: provjeri ih na svakoj stranici prije odluke.",
@@ -442,8 +442,8 @@
         "a": "Da, sa svog Apple računa, kao i svaka druga pretplata. Obnavljaju se same na kraju svakog razdoblja, osim ako ih otkažeš barem 24 sata prije. Doživotna kupnja se nikad ne obnavlja: platiš jednom i to je to. A ako otkažeš, ne gubiš ništa od besplatnoga: vraćaš se na vješalicu za tri."
       },
       {
-        "q": "Zašto se na računalu i na Androidu ne plaća?",
-        "a": "Jer je navijanje ugrađeno samo u iPhone i iPad. Na računalu, i u inačici za Android kad izađe, tiskara, vješalica bez dna i most dolaze otvoreni. Nije to lansirna ponuda: tamo jednostavno nema ničega za naplatiti."
+        "q": "Zašto se na računalu ne plaća?",
+        "a": "Jer je naplata namještena na mobitel, a ne na računalo. Tamo tiskara, vješalica bez dna i most dolaze otvoreni. To nije lansirna ponuda: stolno računalo je stroj koji radi teški posao, a naplaćivati da tvoje vlastito računalo radi preko noći nije imalo smisla."
       }
     ],
     "una_a_una": "jednu po jednu, sa svojim podacima"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Najčešća pitanja"
+  },
+  "aspecto": {
+    "titulo": "Izgled",
+    "papel": "Papir",
+    "noche": "Noć",
+    "sistema": "Kao sustav"
   }
 }

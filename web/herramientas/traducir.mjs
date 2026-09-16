@@ -159,6 +159,35 @@ async function remendar(codigo) {
   const claves = Object.keys(plano);
   const actual = aplanar(JSON.parse(readFileSync(join(I18N, `${codigo}.json`), "utf8")));
 
+  // Con --claves manda la lista: se rehacen esas y ninguna más.
+  if (FORZADAS.length) {
+    const desconocidas = FORZADAS.filter((k) => !claves.includes(k));
+    if (desconocidas.length) throw new Error(`no existen en es.json: ${desconocidas.join(", ")}`);
+    const resultado = { ...actual };
+    const lotes = trozos(FORZADAS, 20);
+    await piscina(lotes.map((lote) => async () => {
+      const d = {};
+      for (const k of lote) d[k] = plano[k];
+      for (let intento = 0; ; intento++) {
+        try {
+          const r = await modelo(`${INSTRUCCIONES}\n\nTarget language: ${nombre} (${bcp}).\n\n${JSON.stringify(d, null, 1)}`);
+          for (const k of lote) if (typeof r[k] === "string") resultado[k] = r[k];
+          return;
+        } catch {
+          if (intento >= 3) { process.stdout.write("!"); return; }
+          await new Promise((r) => setTimeout(r, 2000 * (intento + 1)));
+        }
+      }
+    }));
+    for (const k of claves) if (resultado[k] == null) resultado[k] = plano[k];
+    for (const k of Object.keys(resultado)) if (!claves.includes(k)) delete resultado[k];
+    const objeto = montar(resultado, es);
+    if (Object.keys(aplanar(objeto)).length !== claves.length) throw new Error(`${codigo}: no cuadra, no se escribe`);
+    writeFileSync(join(I18N, `${codigo}.json`), JSON.stringify(objeto, null, 2) + "\n");
+    console.log(`  ✓ ${codigo} al día (${FORZADAS.length} claves rehechas)`);
+    return;
+  }
+
   const slugsRotos = claves.filter((k) => k.startsWith("slugs.") && actual[k] == null);
   const rotas = claves.filter((k) => {
     if (k.startsWith("slugs.") || (k.startsWith("meta.") && k !== "meta.og_alt")) return false;
@@ -273,7 +302,10 @@ async function traducir(codigo) {
 const args = process.argv.slice(2);
 const todos = args.includes("--todos");
 const remiendo = args.includes("--rellenar");
-const pedidos = args.filter((a) => !a.startsWith("--"));
+const FORZADAS = (args.includes("--claves") ? args[args.indexOf("--claves") + 1] : "")
+  .split(",").map((k) => k.trim()).filter(Boolean);
+const bandera = args.indexOf("--claves");
+const pedidos = args.filter((a, i) => !a.startsWith("--") && i !== bandera + 1);
 const cola = (pedidos.length ? pedidos : Object.keys(IDIOMAS)).filter(
   (c) => IDIOMAS[c] && (remiendo
     ? existsSync(join(I18N, `${c}.json`))

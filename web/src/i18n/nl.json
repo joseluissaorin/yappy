@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Bewust geen gratis proefperiode: de kapstok met drie documenten <em>is</em> de proef. Die verloopt niet en begint later niet te factureren. De prijzen zijn die van Spanje; in jouw winkel staan ze in jouw eigen munt.",
     "cuerda_donde": "Het abonnement sluit je af in de app zelf, achterin de winkel.",
-    "solo_ios": "Op de computer en op Android is alles open: het abonnement bestaat alleen op iPhone en iPad.",
+    "solo_movil": "Het touw zit aan de telefoon vast: op de iPhone, op de iPad en op Android. Op de computer staat alles open.",
     "comparacion_titulo": "Wat anderen vragen.",
     "comparacion_entradilla": "Spraak-apps in de cloud betalen voor servers, telkens als je op play drukt. Daarom rekenen zij per uur of per teken af. Yappy synthetiseert op je eigen apparaat: een luisterbeurt kost niets, dus Yappy hoeft er ook niets voor te vragen.",
     "comparacion_nota": "De officiële prijzen, geraadpleegd in september 2026. Ze veranderen vaak: controleer ze op elke site voordat je beslist.",
@@ -442,8 +442,8 @@
         "a": "Ja, via je Apple-account, zoals elk ander abonnement. Ze verlengen vanzelf aan het einde van elke periode, tenzij je minstens 24 uur voor afloop opzegt. De levenslange aankoop verlengt nooit: één keer betalen en klaar. En zeg je op, dan verlies je niets van wat gratis is: je gaat terug naar de stok met drie."
       },
       {
-        "q": "Waarom hoef je op de computer en op Android niet te betalen?",
-        "a": "Omdat het opwindmechanisme alleen in de iPhone en de iPad zit. Op de computer, en in de Android-versie zodra die er is, staan de drukkerij, de bodemloze stok en de brug gewoon open. Dat is geen introductieaanbieding: er valt daar gewoon niets in rekening te brengen."
+        "q": "Waarom betaal je op de computer niet?",
+        "a": "Omdat het touw aan de telefoon vastzit, en aan de computer niet. Daar staan de drukkerij, de bodemloze kapstok en de brug gewoon open. Het is geen introductieaanbieding: de desktop is de machine die het zware werk doet, en geld vragen om je eigen computer 's nachts te laten werken, dat sloeg nergens op."
       }
     ],
     "una_a_una": "één voor één, met hun eigen gegevens"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Veelgestelde vragen"
+  },
+  "aspecto": {
+    "titulo": "Uiterlijk",
+    "papel": "Papier",
+    "noche": "Nacht",
+    "sistema": "Zoals het systeem"
   }
 }

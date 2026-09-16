@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Be bandomojo laikotarpio, ir tai sąmoninga: trijų dokumentų pakaba <em>yra</em> tas bandymas – ji nesibaigia ir vėliau nieko nereikalauja. Kainos nurodytos Ispanijai; savo parduotuvėje jas pamatysite savo valiuta.",
     "cuerda_donde": "Prenumeratą įsigysite pačioje programėlėje, užkulisiuose.",
-    "solo_ios": "Kompiuteryje ir „Android“ viskas atvira: prenumerata būna tik „iPhone“ ir „iPad“.",
+    "solo_movil": "Piniginė – telefone: iPhone, iPad ir Android. Kompiuteryje viskas atvira.",
     "comparacion_titulo": "Kiek ima kiti.",
     "comparacion_entradilla": "Balso programėlės debesyje serveriams moka kiekvieną kartą, kai paspaudžiate „groti“, todėl ima už valandas arba simbolius. Yappy sintezuoja jūsų įrenginyje: klausymasis jo nekainuoja nė cento, todėl gali būti ir nemokamas.",
     "comparacion_nota": "Viešai skelbtos kainos, patikrintos 2026 m. rugsėjį. Jos dažnai keičiasi: prieš apsispręsdami pasitikrinkite kiekvienoje svetainėje.",
@@ -442,8 +442,8 @@
         "a": "Taip, per savo Apple paskyrą, kaip ir bet kuri kita prenumerata. Jos atsinaujina automatiškai kiekvieno laikotarpio pabaigoje, nebent atšauksi jas bent likus 24 valandoms. Pirkimas visam gyvenimui nesinaujina niekada: sumoki vieną kartą ir tiek. O jei atšauksi, nieko iš to, kas nemokama, neprarandi: grįžti prie trijų vietų stovo."
       },
       {
-        "q": "Kodėl kompiuteryje ir Android nereikia mokėti?",
-        "a": "Nes raktas įtaisytas tik iPhone ir iPad. Darbalaukyje, o ir Android versijoje, kai ji pasirodys, spaustuvė, stovas be dugno ir tiltas atviri iš karto. Tai ne išleidimo akcija: ten tiesiog nėra už ką imti pinigų."
+        "q": "Kodėl kompiuteryje nereikia mokėti?",
+        "a": "Nes piniginė kabo telefone, o kompiuteryje – ne. Ten spaustuvė, lesyklėlė be dugno ir tiltas – visi atviri. Tai ne premjerinis pasiūlymas: darbastalis – tai mašina, kuri atlieka sunkųjį darbą, o imti pinigus už tai, kad tavo paties kompiuteris dirbtų naktį, nebuvo prasmės."
       }
     ],
     "una_a_una": "po vieną, su jų duomenimis"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Dažniausiai užduodami klausimai"
+  },
+  "aspecto": {
+    "titulo": "Išvaizda",
+    "papel": "Popierius",
+    "noche": "Naktis",
+    "sistema": "Kaip sistemoje"
   }
 }

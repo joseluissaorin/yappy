@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Bezmaksas izmēģinājuma nav, un tas ir apzināti: pakaramais ar trim dokumentiem <em>ir</em> izmēģinājums — tam nav termiņa, un vēlāk nekas netiek iekasēts. Cenas ir Spānijas cenas; tavā veikalā tās parādīsies tavā valūtā.",
     "cuerda_donde": "Auklu pērk pašā lietotnē, aizmugurējā telpā.",
-    "solo_ios": "Uz datora un Android viss ir atvērts: aukla ir tikai uz iPhone un iPad.",
+    "solo_movil": "Maksas siena ir tikai telefonā: iPhone, iPad un Android. Datorā viss ir atvērts.",
     "comparacion_titulo": "Ko ņem pārējie.",
     "comparacion_entradilla": "Balss lietotnes mākonī katru reizi, kad nospiež play, maksā par serveriem, tāpēc tās rēķina par stundām vai rakstzīmēm. Yappy runu sintezē tavā ierīcē: katrai klausīšanās reizei izmaksas ir nulle, un tāpēc tā var atļauties neko neprasīt.",
     "comparacion_nota": "Publiskās cenas pārbaudītas 2026. gada septembrī. Tās bieži mainās: pirms izlemt, pārbaudi katrā mājaslapā.",
@@ -442,8 +442,8 @@
         "a": "Jā, caur savu Apple kontu, kā jebkurš cits abonements. Abonementi atjaunojas paši katra perioda beigās, ja neesi tos atcēlis vismaz 24 stundas iepriekš. Mūža pirkums nekad neatjaunojas: vienu reizi samaksā — un viss. Un ja atceļ, nekas no bezmaksas nepazūd — atgriezīsies pie zara ar trim vietām."
       },
       {
-        "q": "Kāpēc datorā un Android nav jāmaksā?",
-        "a": "Jo uztinamais mehānisms iestrādāts tikai iPhone un iPad. Datorā, tāpat Android versijā, kad tā iznāks, tipogrāfija, zars bez robežas un tilts nāk jau atvērti. Tā nav akcija palaišanas laikā: tur vienkārši nav ko iekasēt."
+        "q": "Kāpēc datorā nav jāmaksā?",
+        "a": "Jo maksas siena ir uzstādīta telefonā, nevis datorā. Tur drukātava, pakaramais bez dibena un tilts ir atvērti. Tā nav palaišanas akcija: dators ir mašīna, kas veic smago darbu, un prasīt naudu par to, ka ļauj tavam paša datoram strādāt naktī, nebija jēgas."
       }
     ],
     "una_a_una": "pa vienai, ar saviem datiem"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Bieži uzdotie jautājumi"
+  },
+  "aspecto": {
+    "titulo": "Izskats",
+    "papel": "Papīrs",
+    "noche": "Nakts",
+    "sistema": "Kā sistēmā"
   }
 }

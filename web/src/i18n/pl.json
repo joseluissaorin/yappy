@@ -420,7 +420,7 @@
     ],
     "cuerda_nota": "Bez okresu próbnego, i to celowo: wieszak na trzy dokumenty <em>jest</em> próbą – nie wygasa i później niczego nie doliczy. Ceny podane dla Hiszpanii; w twoim sklepie pojawią się w twojej walucie.",
     "cuerda_donde": "Korbkę zakręca się w samej aplikacji, w zapleczu.",
-    "solo_ios": "Na komputerze i Androidzie wszystko jest otwarte: korbka istnieje tylko na iPhonie i iPadzie.",
+    "solo_movil": "Bramka jest na telefonie: na iPhonie, iPadzie i Androidzie. Na komputerze wszystko jest otwarte.",
     "comparacion_titulo": "Ile biorą inni.",
     "comparacion_entradilla": "Aplikacje głosowe w chmurze płacą za serwery za każdym razem, gdy naciskasz play, więc rozliczają cię godzinami albo znakami. Yappy syntetyzuje mowę na twoim urządzeniu: koszt odsłuchu wynosi zero, więc nie ma czego brać.",
     "comparacion_nota": "Publiczne ceny, sprawdzone we wrześniu 2026 r. Zmieniają się często: zweryfikuj je na każdej stronie, zanim się zdecydujesz.",
@@ -442,8 +442,8 @@
         "a": "Tak, z poziomu konta Apple, jak każda inna subskrypcja. Odnowią się same na koniec każdego okresu, chyba że anulujesz je co najmniej 24 godziny wcześniej. Zakup dożywotni nigdy się nie odnawia: płacisz raz i tyle. A jeśli anulujesz, nie tracisz nic z tego, co darmowe: wracasz na grzędę na trzy."
       },
       {
-        "q": "Dlaczego na komputerze i na Androidzie nic się nie płaci?",
-        "a": "Bo mechanizm nakręcania zamontowano tylko w iPhonie i iPadzie. Na komputerze — i w wersji na Androida, kiedy się pojawi — drukarnia, grzęda bez dna i most są otwarte od razu. To nie jest oferta premierowa: po prostu nie ma tam nic, za co brać pieniądze."
+        "q": "Dlaczego na komputerze się nie płaci?",
+        "a": "Bo bramka stoi na telefonie, a nie na komputerze. Tam drukarnia, półka bez dna i most są otwarte od wejścia. To nie jest oferta premierowa: komputer to maszyna do ciężkiej roboty, a brać pieniądze za to, żeby twój własny komputer pracował w nocy, nie miało sensu."
       }
     ],
     "una_a_una": "każda z osobna, wraz z danymi"
@@ -977,5 +977,11 @@
   },
   "preguntas_comunes": {
     "titulo": "Częste pytania"
+  },
+  "aspecto": {
+    "titulo": "Wygląd",
+    "papel": "Papier",
+    "noche": "Noc",
+    "sistema": "Jak w systemie"
   }
 }
