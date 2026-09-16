@@ -19,7 +19,8 @@
     "assets": "npm run capturas && npm run muestras && npm run og && npm run iconos",
     "enlaces": "node herramientas/enlaces.mjs",
     "mirar": "node herramientas/mirar.mjs",
-    "revisar": "npm run build && npm run verificar-i18n && npm run enlaces && npm run mirar"
+    "revisar": "npm run build && npm run verificar-i18n && npm run enlaces && npm run mirar",
+    "avisar": "node herramientas/avisar.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
