@@ -108,7 +108,7 @@ function ambrosio(t, { pagina = 0, ojos = 0 } = {}) {
   g += recorte(mano([[-18, -10], [18, -10], [26, 200], [-26, 200], [-18, -10]], 1.5, 172, true), ULTRA, { sombra: 0, opacidad: 0.85 });
   // brazos hacia el códice
   g += recorte(mano([[-100, 40], [-150, 110], [-120, 130], [-70, 70]], 2, 173, true), PAPEL, { sombra: 4, trazo: TINTA, grosor: 2 });
-  g += recorte(mano([[100, 40], [150, 110], [120, 130], [70, 70]], 2, 174, true), PAPEL, { sombra: 4, trazo: TINTA, grosor: 2 });
+
   // el códice abierto, sobre las rodillas: dos páginas y una que se pasa
   const k = ease(pagina);
   g += recorte(mano([[-160, 120], [0, 108], [160, 120], [150, 190], [0, 178], [-150, 190], [-160, 120]], 2, 175, true), VIEJO, { sombra: 6, trazo: TINTA, grosor: 2.5 });
@@ -118,6 +118,8 @@ function ambrosio(t, { pagina = 0, ojos = 0 } = {}) {
     const alza = Math.sin(k * Math.PI) * 26; // la hoja se levanta en mitad del giro
     g += `<g transform="translate(0 ${114 - alza}) scale(${sx} ${1 + alza / 120})">` + recorte(mano([[0, -6], [155, 6], [148, 76], [0, 64], [0, -6]], 1.5, 200, true), PAPEL, { sombra: 3 + alza / 4, trazo: TINTA, grosor: 2 }) + `</g>`;
   }
+  const alzaMano = Math.sin(k * Math.PI), cruza = -k * 190 * (pagina > 0 && pagina < 1 ? 1 : 0); // la mano sigue a la hoja de derecha a izquierda
+  g += `<g transform="translate(${cruza * 0.9} ${-alzaMano * 34}) rotate(${-alzaMano * 12} 100 40)">` + recorte(mano([[100, 40], [150, 110], [120, 130], [70, 70]], 2, 174, true), PAPEL, { sombra: 4, trazo: TINTA, grosor: 2 }) + recorte(ovalo(140, 122, 16, 12, 176, 1.2, 12), PIEL, { sombra: 2 }) + `</g>`;
   // cabeza inclinada hacia el libro
   g += `<g transform="rotate(8)">`;
   g += recorte(ovalo(0, -80, 52, 62, 210, 1.6), PIEL, { sombra: 5 });
@@ -210,7 +212,7 @@ if (ACTO === 1) {
   const E = window.ENVOLVENTE, ei = Math.floor((T - M.habla) * E.fps);
   const env = (i) => (i >= 0 && i < E.v.length ? E.v[i] : 0);
   const boca = hablando ? clamp(((env(ei - 1) + env(ei) + env(ei + 1)) / 3 - 0.12) / 0.8, 0, 1) : 0;
-  const ladea = -18 * easeOut(tramo(T, M.ladea, M.ladea + 0.6));
+  const ladea = -18 * easeOut(tramo(T, M.ladea, M.ladea + 0.12)); // seco, de pájaro: dos o tres fotogramas
   const parpado = ((T * 10) % 47 < 1) ? 1 : 0;
   const pag = tramo(T, M.ladea - 2.5, M.ladea - 1.1);
   svg += celda(0.8);
