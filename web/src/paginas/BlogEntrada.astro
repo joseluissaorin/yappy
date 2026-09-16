@@ -1,0 +1,75 @@
+---
+import { render } from "astro:content";
+import Interior from "../layouts/Interior.astro";
+import Tienda from "../components/Tienda.astro";
+import { t, type Idioma } from "../i18n";
+import { rutaPagina, type RutaPost } from "../lib/rutas";
+import { articulo, migas, persona, preguntas as faqLd } from "../lib/jsonld";
+
+interface Props { ruta: RutaPost }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const e = ruta.entrada;
+const { Content } = await render(e);
+const fecha = new Intl.DateTimeFormat(lang, { dateStyle: "long" });
+const palabras = (e.body ?? "").split(/\s+/).length;
+const minutos = Math.max(1, Math.round(palabras / 220));
+const faq = e.data.faq ?? [];
+const mig = [
+  { nombre: t(lang, "nav.blog"), ruta: rutaPagina(lang, "blog") },
+  { nombre: e.data.title, ruta: ruta.ruta },
+];
+---
+<Interior
+  lang={lang}
+  title={`${e.data.title} · Yappy`}
+  description={e.data.description}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={e.data.title}
+  migas={mig}
+  ogTipo="article"
+  jsonld={[
+    persona(),
+    migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig]),
+    articulo({
+      lang, title: e.data.title, description: e.data.description, ruta: ruta.ruta,
+      publicado: e.data.fecha, actualizado: e.data.actualizado, autor: e.data.autor, imagen: e.data.imagen,
+    }),
+    ...(faq.length ? [faqLd(faq)] : []),
+  ]}
+>
+  <article class="articulo">
+    <p class="ficha-articulo" style="margin-bottom:1.8rem">
+      <span>{t(lang, "comunes.publicado")} {fecha.format(e.data.fecha)}</span>
+      <span>{t(lang, "comunes.minutos", { n: minutos })}</span>
+      <span>{e.data.racimo}</span>
+    </p>
+
+    {e.data.audio && (
+      <div class="hoja escuchame torcido-3">
+        <div style="flex:1;min-width:0">
+          <p class="susurro" style="margin-bottom:0.4rem">{t(lang, "blog.escuchame")}</p>
+          <audio controls preload="none" src={e.data.audio} style="width:100%"></audio>
+        </div>
+      </div>
+    )}
+
+    <div class="cuerpo"><Content /></div>
+
+    {faq.length > 0 && (
+      <section style="margin-top:3rem">
+        <h2 class="grito" style="margin-bottom:1.2rem;font-size:1.6rem">{t(lang, "preguntas_comunes.titulo")}</h2>
+        <div class="preguntas">
+          {faq.map((p) => <details class="pregunta"><summary>{p.q}</summary><div set:html={p.a}></div></details>)}
+        </div>
+      </section>
+    )}
+
+    <div class="caja" style="margin-top:3rem;text-align:center">
+      <span class="etiqueta-caja">Yappy</span>
+      <p style="margin:0 0 1.2rem;color:var(--tinta-suave)">{t(lang, "portada.cierre_texto")}</p>
+      <Tienda lang={lang} centrado />
+    </div>
+  </article>
+</Interior>

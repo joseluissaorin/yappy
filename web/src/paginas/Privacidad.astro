@@ -1,0 +1,34 @@
+---
+import Interior from "../layouts/Interior.astro";
+import { t, tv, type Idioma } from "../i18n";
+import { rutaPagina, type RutaPagina } from "../lib/rutas";
+import { FECHAS } from "../lib/datos";
+import { migas, persona } from "../lib/jsonld";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const bloques = tv<{ titulo: string; texto: string }[]>(lang, "privacidad.bloques") ?? [];
+const fecha = new Intl.DateTimeFormat(lang, { dateStyle: "long" }).format(new Date(FECHAS.privacidad));
+const mig = [{ nombre: t(lang, "nav.privacidad"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "privacidad.title")}
+  description={t(lang, "privacidad.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "privacidad.h1")}
+  migas={mig}
+  jsonld={[persona(), migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig])]}
+>
+  <div class="prosa cuerpo" style="padding-bottom:3rem">
+    <p class="susurro">{t(lang, "privacidad.actualizado", { fecha })}</p>
+    {bloques.map((b) => (
+      <section style="margin-top:2.2rem">
+        <h2 style="font-family:var(--fuente)">{b.titulo}</h2>
+        <div set:html={b.texto}></div>
+      </section>
+    ))}
+  </div>
+</Interior>

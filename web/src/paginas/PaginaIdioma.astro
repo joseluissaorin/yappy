@@ -1,0 +1,86 @@
+---
+/**
+ * Una página por lengua que habla el loro. No es relleno: cada lengua tiene
+ * sus propias reglas de números, fechas y ordinales, y eso es exactamente lo
+ * que la página cuenta. Quien busca «text to speech en letón» quiere saber
+ * si la suya está de verdad, no si «también soporta europeo».
+ */
+import Interior from "../layouts/Interior.astro";
+import Loro from "../components/Loro.svelte";
+import Tienda from "../components/Tienda.astro";
+import { t, type Idioma } from "../i18n";
+import { rutaPagina, rutaIdioma, type RutaIdioma } from "../lib/rutas";
+import { IDIOMAS as LENGUAS, VOCES } from "../lib/datos";
+import { migas, persona } from "../lib/jsonld";
+
+interface Props { ruta: RutaIdioma }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const lengua = LENGUAS.find((l) => l.codigo === ruta.lengua)!;
+// El nombre de la lengua dicho en el idioma de la página, no en el suyo.
+const nombreLocal = new Intl.DisplayNames([lang], { type: "language" }).of(lengua.bcp) ?? lengua.endonimo;
+const nombre = nombreLocal.charAt(0).toUpperCase() + nombreLocal.slice(1);
+const otras = LENGUAS.filter((l) => l.codigo !== lengua.codigo);
+const mig = [{ nombre, ruta: ruta.ruta }];
+const conMuestra = ["es", "en", "fr", "de", "it", "pt"].includes(lengua.codigo);
+---
+<Interior
+  lang={lang}
+  title={t(lang, "idioma_pagina.title", { lengua: nombre })}
+  description={t(lang, "idioma_pagina.description", { lengua: nombre })}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "idioma_pagina.h1", { lengua: nombre })}
+  entradilla={t(lang, "idioma_pagina.entradilla", { lengua: nombre })}
+  susurro={lengua.endonimo}
+  migas={mig}
+  jsonld={[persona(), migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig])]}
+>
+  {conMuestra && (
+    <section class="seccion" style="padding-top:0">
+      <div class="hoja torcido-3" style="position:relative;display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+        <span class="celo izq"></span>
+        <Loro size={64} tinta="#2f4bc4" etiqueta="" />
+        <div style="flex:1;min-width:240px">
+          <p class="susurro" style="margin-bottom:0.5rem">{t(lang, "idioma_pagina.muestra")}</p>
+          <audio controls preload="none" src={`/audio/demo-${lengua.codigo}.m4a`} style="width:100%"></audio>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="seccion" style={conMuestra ? "" : "padding-top:0"}>
+    <div class="seccion-cabeza">
+      <h2 class="grito">{t(lang, "voces.h1")}</h2>
+      <p>{t(lang, "voces.entradilla")}</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px">
+      {VOCES.map((v, i) => (
+        <span class="hoja" style={`--giro:${(i % 2 ? 1 : -1) * 1.6}deg;display:flex;align-items:center;gap:9px;padding:9px 15px 9px 9px`}>
+          <Loro size={30} tinta={v.tinta} etiqueta="" />
+          <strong style="font-size:0.98rem">{v.nombre}</strong>
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="caja prosa" style="max-width:none">
+      <span class="etiqueta-caja">{t(lang, "nav.guionizador")}</span>
+      <h2 style="margin-top:0;font-size:1.3rem">{t(lang, "idioma_pagina.reglas_titulo", { lengua: nombre })}</h2>
+      <p style="color:var(--tinta-suave)">{t(lang, "guionizador.oficios.9.texto")}</p>
+      <p style="margin:0"><a href={rutaPagina(lang, "guionizador")}>{t(lang, "portada.guion_mas")} →</a></p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <h2 class="grito" style="font-size:1.5rem;margin-bottom:1.2rem">{t(lang, "idioma_pagina.todas")}</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      {otras.map((l) => (
+        <a class="etiqueta" href={rutaIdioma(lang, l.codigo)} style="--giro:0deg" lang={l.bcp}>{l.endonimo}</a>
+      ))}
+    </div>
+  </section>
+
+  <section class="seccion" style="text-align:center"><Tienda lang={lang} centrado /></section>
+</Interior>

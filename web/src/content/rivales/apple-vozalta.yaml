@@ -1,0 +1,52 @@
+# Función del sistema, documentada en support.apple.com (Contenido hablado en
+# iPhone y en Mac). Sin precio: viene con el aparato. Datos de septiembre de 2026.
+nombre: Contenido hablado de Apple
+web: https://support.apple.com/es-es/guide/iphone/iph96b214f0/ios
+tipo: sistema
+gratis_detalle:
+  es: >-
+    Todo. Viene incluido en iOS, iPadOS y macOS: leer la selección, leer la
+    pantalla entera, resaltar lo que se va leyendo y ajustar la velocidad, sin
+    pagar nada ni instalar nada. Apple Books lee en voz alta los EPUB y Safari
+    ofrece escuchar la página.
+  en: >-
+    All of it. It ships with iOS, iPadOS and macOS: speak selection, speak
+    screen, highlight content as it reads and adjust the rate, with nothing to
+    pay and nothing to install. Apple Books reads EPUBs aloud and Safari offers
+    to listen to the page.
+precio_desde: null
+precio_anual: null
+local: true
+sin_cuenta: true
+sin_conexion: true
+codigo_abierto: false
+tarifa_por_caracter: false
+idiomas: decenas, las de las voces del sistema
+formatos: lo que haya en pantalla, más EPUB en Apple Books y páginas web en Safari
+audiolibro_capitulos: false
+escritorio: true
+descripcion:
+  es: >-
+    No es una aplicación sino una función de accesibilidad del sistema. Lee en
+    voz alta lo que se selecciona o lo que se ve en pantalla, con las voces que
+    ya están instaladas en el aparato y sin enviar el texto a ningún servidor.
+  en: >-
+    Not an app but a system accessibility feature. It reads aloud whatever you
+    select or whatever is on screen, using the voices already installed on the
+    device and without sending the text anywhere.
+gana_en:
+  es: >-
+    Gana por estar ya ahí: cero euros, cero cuentas, cero descargas, y funciona
+    en cualquier aplicación del teléfono o del ordenador, no solo en los
+    documentos que uno importa. La síntesis es local, así que no hay nube ni
+    límite de caracteres, se integra con VoiceOver y con el resto de la
+    accesibilidad del sistema, y el gesto de leer la pantalla está a dos dedos
+    de distancia en cualquier momento.
+  en: >-
+    It wins by already being there: no money, no account, no download, and it
+    works inside any app on the phone or the computer, not just in documents you
+    import. Synthesis is on-device, so there is no cloud and no character cap,
+    it plugs into VoiceOver and the rest of the system accessibility stack, and
+    the speak-screen gesture is two fingers away at any moment.
+verificado: true
+fecha_datos: "2026-09"

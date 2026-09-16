@@ -1,0 +1,34 @@
+---
+/**
+ * El 404. En español, que es el idioma de la raíz, y con el loro
+ * avergonzado: la casa reconoce el tropiezo en vez de disimularlo.
+ */
+import Base from "../layouts/Base.astro";
+import Loro from "../components/Loro.svelte";
+import { rutaPagina } from "../lib/rutas";
+import { t } from "../i18n";
+const lang = "es";
+---
+<Base
+  lang={lang}
+  title="Aquí no hay nada · Yappy"
+  description="La página que buscas no existe."
+  ruta="/404/"
+  noindex
+>
+  <div class="envoltura" style="text-align:center;padding:5rem 0 6rem">
+    <div style="display:flex;justify-content:center;margin-bottom:1.5rem">
+      <Loro client:visible size={120} tinta="#e0502a" estado="pausa" sigueAlRaton etiqueta="" />
+    </div>
+    <p class="susurro">404</p>
+    <h1 class="grito" style="margin-bottom:1rem">Aquí no hay nada que leer.</h1>
+    <p style="color:var(--tinta-suave);max-width:40ch;margin:0 auto 2rem">
+      El loro ha buscado por toda la percha y no encuentra esta página.
+      Puede que se haya mudado, o que nunca existiera.
+    </p>
+    <div class="acciones" style="justify-content:center">
+      <a class="tecla" href={rutaPagina(lang, "portada")}>{t(lang, "comunes.inicio")}</a>
+      <a class="boton" href={rutaPagina(lang, "uso")}>{t(lang, "nav.uso")}</a>
+    </div>
+  </div>
+</Base>

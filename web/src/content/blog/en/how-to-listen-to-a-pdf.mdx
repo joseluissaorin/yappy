@@ -1,0 +1,95 @@
+---
+title: "How to listen to a PDF read aloud, on your phone and on your computer"
+description: "Three ways to listen to a PDF read aloud: the reader already on your phone, the one on your computer, and an app that reads the whole thing offline."
+lang: en
+slug: how-to-listen-to-a-pdf
+traduccionDe: como-escuchar-un-pdf
+racimo: formatos
+fecha: 2026-09-16
+autor: jose-luis-saorin
+faq:
+  - q: "Can I listen to a PDF without installing anything?"
+    a: "Yes. On iPhone and iPad, turn on Spoken Content in Accessibility settings and swipe down with two fingers from the top of the screen. On a Mac, select the text and use the Speak shortcut. On Windows, use Edge's Immersive Reader or Adobe Acrobat Reader. All of that is free and already on your device."
+  - q: "What if the PDF is a scan and I cannot select the text?"
+    a: "Then the letters have to be recognised first, which means OCR. Yappy does it locally, but only in the desktop version; on iPhone, not yet. If you have no computer nearby, Acrobat and Google Drive will both turn a scan into a text PDF."
+  - q: "Can I save the reading as an audio file?"
+    a: "System readers read live and save nothing. Yappy can: send the document to the press and you get an .m4b file with chapters that opens in any audiobook player."
+  - q: "Do the PDFs I read leave my device?"
+    a: "Not with Yappy: the voice is synthesised inside the device and the file is never uploaded. With cloud services it usually does leave, because that is the condition for the big voices to be generated on the other end."
+  - q: "How long does a long PDF take?"
+    a: "Listening starts within seconds, because the voice is cooked ahead of your ear while it plays. Converting the whole thing into an audiobook is different: a two-hundred-page book can take a couple of hours on a phone, and much less on a computer."
+---
+
+Let me start at the end. If your PDF has text inside it — if you can select a word with your finger or your mouse — then any device you already own can read it aloud today, with nothing installed. If the PDF is a photograph of paper, the letters have to be recognised first, and the options narrow. Everything else is deciding three things: which voice you can stand for an hour, whether you want to keep the reading or just hear it once, and whether you mind the file leaving your house.
+
+Let's go through it, and I won't sell you anything until the end.
+
+## First: does your PDF have text, or is it a picture?
+
+This question decides the rest of the article, and it takes two seconds to answer. Open the PDF and try to select a word. If it highlights, there is text. If nothing happens, or the whole page selects as a single image, you have a scan: a photograph of paper, without a single letter a machine can read.
+
+Almost everything that comes out of a word processor, a website or a journal has text. Almost everything that comes out of a photocopier, an archive, or a phone pointed at a book does not.
+
+## Route 1: the reader already in your pocket (free)
+
+### iPhone and iPad
+
+Apple has had a feature for years that almost nobody knows about: **Spoken Content**. It lives in Settings, under Accessibility. Turn on "Speak Screen" and from then on, swiping down with two fingers from the top edge reads whatever is on screen, including a PDF open in Files or Books.
+
+The good part: it is free, made by the people who made the system, and it respects your other accessibility settings. The less good part, said without malice: it reads what is visible, not the document. It can lose its place when the page turns, it knows nothing about chapters, it saves nothing, and the high-quality voices have to be downloaded one by one in Settings. For two pages while you wash your hands, it is perfect. For a hundred-and-twenty-page manual, it falls short.
+
+### Mac
+
+macOS has a keyboard shortcut that speaks any selected text. It is in System Settings, under Accessibility, in Spoken Content: turn on "Speak selection" and you will see the key combination. Select text in Preview, press it, and the Mac reads with the system voice. The Premium and Enhanced voices are separate downloads, and they are worth it, because the default one sounds like 2012.
+
+### Windows
+
+Microsoft Edge opens PDFs and includes **Immersive Reader** with "Read aloud", which works well and lets you change voice and speed. Adobe Acrobat Reader has its own "Read Out Loud" in the View menu, using installed system voices. Neither saves audio.
+
+### What they all have in common
+
+They are free, they are already there, and they ask for no account. And all three do exactly the same thing: **read live**. No file at the end, no progress carried across devices, and no idea that chapter 4 starts on page 61.
+
+## Route 2: cloud services
+
+Speechify, ElevenReader, NaturalReader and the rest upload your PDF to a server, synthesise it there with large models, and send audio back. The voices are genuinely spectacular; some are the best that exist today.
+
+That costs twice. Literally: usually ten to thirty euros a month, often with the good voices metered by characters or hours. And otherwise: the document leaves. If what you listen to is court rulings, medical records, an unpublished manuscript or your students' exams, that matters more than voice quality.
+
+If you want the most impressive voice possible for something that is not private, the cloud wins. I say it plainly because it is true.
+
+## Route 3: let your own device read the whole thing
+
+That is what [Yappy](/en/how-it-works/) does. You share the PDF with the app — from Files, from mail, from Safari — and the parrot reads it aloud with a voice synthesised inside the phone. The model is about 200 MB on mobile, downloads once, and after that it works offline, on a plane or in a basement.
+
+A PDF is not plain text, and half the work is there. Yappy strips the headers and page numbers that repeat on every page, rejoins paragraphs broken by page breaks, finds the chapters when the PDF declares them, and puts them in the index. Then the text goes through [the reading script](/en/reading-script/), the piece that turns "1492" into "fourteen ninety-two" and "Dr. Ramírez" into "Doctor Ramírez" before the voice says a syllable.
+
+And if you want to keep it rather than just hear it, you send it to the press: pick the chapters and you get an `.m4b` with markers, which is the old, boring, universal audiobook format. There is a whole page about it under [PDF to audio](/en/convert/pdf-to-audio/).
+
+Three documents fit on the free perch at once. If you want a bottomless perch and the audiobook press, there is [a subscription at 3.99 € a month, or 59.99 € once and forever](/en/pricing/). There is no free trial, on purpose: it seemed more honest that the three free documents never expire.
+
+## If the PDF is a scan
+
+No magic here. The letters have to be recognised before they can be read, and that is OCR.
+
+- **Yappy on desktop** does it locally: it opens the PDF, notices there is no text, runs the pages through an OCR inside your computer, and reads the result. On iPhone, not yet — I mention it because it is the question I get most.
+- **Acrobat** has "Recognise text" and gives you back a PDF with text inside, which you can then read with anything.
+- **Google Drive** converts a scanned PDF into a Google Doc with decent OCR, in exchange for uploading it.
+
+With old documents, handwriting or crooked photocopies, no OCR is perfect. If the text matters, it is worth a glance before you listen to two hours of a reading full of typos.
+
+## The PDFs that fight back
+
+Three cases make any reader suffer, this one included:
+
+1. **Two columns.** A journal article in two columns can be read in zigzag if the extractor does not understand the layout. If sentences stop making sense, this is usually why.
+2. **Footnotes and superscripts.** A footnote marker in the middle of a sentence, read aloud, snaps it in half. Yappy keeps them out of the body; other readers read them inline.
+3. **Tables.** A table read aloud is noise, nearly always. There is no good solution yet, here or anywhere.
+
+## So which one do I pick?
+
+- Two loose pages, right now, nothing installed: **Spoken Content** or Edge.
+- The most impressive voice possible, and the document is not private: **a cloud service**.
+- A whole book, something you would rather keep at home, or an audiobook with chapters you can save: **let your device do it**.
+
+None of the three is always right. I use all three in the same week. What I no longer do is leave a two-hundred-page PDF waiting for the day I have two free hours to sit down with it. That day never comes. With your ears, it arrives while you do the dishes.

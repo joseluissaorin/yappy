@@ -1,0 +1,61 @@
+---
+import Interior from "../layouts/Interior.astro";
+import Tienda from "../components/Tienda.astro";
+import { t, tv, type Idioma } from "../i18n";
+import { rutaPagina, type RutaPagina } from "../lib/rutas";
+import { ENLACES, MOTOR } from "../lib/datos";
+import { migas, persona, aplicacion } from "../lib/jsonld";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const plataformas = tv<{ nombre: string; texto: string; requisitos: string; enlace?: string; cta?: string }[]>(lang, "descargas.plataformas") ?? [];
+const mig = [{ nombre: t(lang, "nav.descargas"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "descargas.title")}
+  description={t(lang, "descargas.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "descargas.h1")}
+  entradilla={t(lang, "descargas.entradilla")}
+  migas={mig}
+  jsonld={[
+    persona(),
+    aplicacion(lang, { nombre: "Yappy", descripcion: t(lang, "descargas.description") }),
+    migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig]),
+  ]}
+>
+  <section class="seccion" style="padding-top:0">
+    <Tienda lang={lang} />
+  </section>
+
+  <section class="seccion" style="padding-top:0">
+    <div class="rejilla rejilla-2">
+      {plataformas.map((p, i) => (
+        <div class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+          <h2 style="margin-top:0;font-size:1.25rem">{p.nombre}</h2>
+          <p style="color:var(--tinta-suave)" set:html={p.texto}></p>
+          <p class="susurro" style="margin:0.8rem 0 0">{p.requisitos}</p>
+          {p.enlace && <p style="margin-top:1rem"><a class="boton" href={p.enlace}>{p.cta ?? t(lang, "comunes.descargar")}</a></p>}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="caja prosa" style="max-width:none">
+      <span class="etiqueta-caja">{MOTOR.modelo}</span>
+      <p style="margin:0" set:html={t(lang, "descargas.modelo_nota", { peso: MOTOR.pesoEscritorio })}></p>
+      <p style="margin:1rem 0 0;color:var(--tinta-suave)" set:html={t(lang, "descargas.escritorio_aviso")}></p>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="hoja torcido-2 prosa" style="max-width:none">
+      <h2 style="margin-top:0">{t(lang, "descargas.android_titulo")}</h2>
+      <p style="margin:0;color:var(--tinta-suave)">{t(lang, "descargas.android_texto")}</p>
+    </div>
+  </section>
+</Interior>

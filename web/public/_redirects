@@ -1,0 +1,16 @@
+# Las URL de la web anterior que cambian de nombre. 301 permanente: Google
+# traspasa la autoridad y quien tenga un enlace guardado sigue llegando.
+/uso                    /como-se-usa/            301
+/uso/                   /como-se-usa/            301
+/en/usage               /en/how-it-works/        301
+/en/usage/              /en/how-it-works/        301
+/en/guionizador         /en/reading-script/      301
+/en/guionizador/        /en/reading-script/      301
+/en/downloads           /en/download/            301
+/en/downloads/          /en/download/            301
+
+# Atajos cómodos que la gente teclea a mano.
+/pdf                    /convertir/pdf-a-audio/  301
+/en/pdf                 /en/convert/pdf-to-audio/ 301
+/descarga               /descargas/              301
+/precio                 /precios/                301

@@ -1,0 +1,17 @@
+---
+/**
+ * Las preguntas, en <details>. Sin JavaScript, plegables de serie, y con el
+ * texto dentro del HTML: se indexa aunque esté cerrado.
+ */
+interface Props { titulo?: string; lista: { q: string; a: string }[] }
+const { titulo, lista } = Astro.props;
+---
+{titulo && <h2 class="grito" style="margin-bottom:1.2rem">{titulo}</h2>}
+<div class="preguntas">
+  {lista.map((p) => (
+    <details class="pregunta">
+      <summary>{p.q}</summary>
+      <div set:html={p.a}></div>
+    </details>
+  ))}
+</div>

@@ -1,0 +1,49 @@
+# Precios de https://help.naturalreaders.com/en/articles/8854700-plans-pricing-personal-version
+# y límites del plan gratuito de https://www.naturalreaders.com/webapp.html (septiembre de 2026).
+nombre: NaturalReader
+web: https://www.naturalreaders.com
+tipo: saas
+gratis_detalle:
+  es: >-
+    Escucha ilimitada con las voces gratuitas y cinco minutos al día con las
+    voces Plus de IA. Las funciones de IA vienen limitadas y la exportación a
+    MP3 pertenece a los planes de pago.
+  en: >-
+    Unlimited listening with the free voices, plus a five minute daily
+    allowance of the Plus AI voices. The AI features are capped and MP3
+    export belongs to the paid plans.
+precio_desde: 13,90 $/mes (plan Lite)
+precio_anual: 79 $/año Lite, 119 $/año Plus, 159 $/año Pro
+local: parcial
+sin_cuenta: parcial
+sin_conexion: parcial
+codigo_abierto: false
+tarifa_por_caracter: true
+idiomas: más de 90 según su web
+formatos: PDF, EPUB, DOC(X), PPT(X), Pages, Numbers, páginas web, imágenes con OCR
+audiolibro_capitulos: parcial
+escritorio: true
+descripcion:
+  es: >-
+    Veterano del texto a voz, con lector web, extensión de Chrome, aplicaciones
+    móviles y programa de escritorio. Los planes de pago se miden en caracteres:
+    500.000 al día para escuchar y un millón al mes para exportar a MP3.
+  en: >-
+    A long-standing text to speech service with a web reader, a Chrome
+    extension, mobile apps and a desktop program. The paid plans are metered in
+    characters: 500,000 a day for listening and a million a month for MP3 export.
+gana_en:
+  es: >-
+    Gana en cobertura de idiomas y voces, con más de noventa lenguas, y en el
+    terreno educativo: su versión EDU está muy asentada en colegios y
+    universidades de Estados Unidos, con licencias por centro y soporte para
+    dislexia. También gana en lectura de la pantalla dentro del navegador y en
+    OCR de documentos escaneados, y ofrece clonación de voz en los planes altos.
+  en: >-
+    It wins on language and voice coverage, with more than ninety languages, and
+    in education: its EDU edition is well established in US schools and
+    universities, with site licences and dyslexia support. It also wins on
+    in-browser screen reading and on OCR of scanned documents, and it offers
+    voice cloning on the higher plans.
+verificado: true
+fecha_datos: "2026-09"

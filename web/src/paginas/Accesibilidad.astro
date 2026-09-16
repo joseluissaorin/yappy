@@ -1,0 +1,63 @@
+---
+import Interior from "../layouts/Interior.astro";
+import Tienda from "../components/Tienda.astro";
+import { t, tv, type Idioma } from "../i18n";
+import { rutaPagina, type RutaPagina } from "../lib/rutas";
+import { migas, persona, preguntas as faqLd } from "../lib/jsonld";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const casos = tv<{ titulo: string; texto: string }[]>(lang, "accesibilidad.casos") ?? [];
+const faq = tv<{ q: string; a: string }[]>(lang, "accesibilidad.faq") ?? [];
+const mig = [{ nombre: t(lang, "nav.accesibilidad"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "accesibilidad.title")}
+  description={t(lang, "accesibilidad.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "accesibilidad.h1")}
+  entradilla={t(lang, "accesibilidad.entradilla")}
+  migas={mig}
+  jsonld={[
+    persona(),
+    migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig]),
+    ...(faq.length ? [faqLd(faq)] : []),
+  ]}
+>
+  <section class="seccion" style="padding-top:0">
+    <div class="rejilla rejilla-2">
+      {casos.map((c, i) => (
+        <div class:list={["caja", `torcido-${(i % 5) + 1}`]}>
+          <span class="etiqueta-caja">{`0${i + 1}`}</span>
+          <h2 style="margin-top:0;font-size:1.3rem">{c.titulo}</h2>
+          <div style="color:var(--tinta-suave)" set:html={c.texto}></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="hoja torcido-4 prosa" style="max-width:none">
+      <h2 style="margin-top:0">{t(lang, "accesibilidad.voiceover_titulo")}</h2>
+      <p style="margin:0;color:var(--tinta-suave)">{t(lang, "accesibilidad.voiceover_texto")}</p>
+    </div>
+  </section>
+
+  {faq.length > 0 && (
+    <section class="seccion">
+      <div class="prosa">
+        <h2 class="grito" style="margin-bottom:1.2rem">{t(lang, "preguntas_comunes.titulo")}</h2>
+        <div class="preguntas">
+          {faq.map((p) => <details class="pregunta"><summary>{p.q}</summary><div set:html={p.a}></div></details>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="seccion" style="text-align:center">
+    <Tienda lang={lang} centrado />
+  </section>
+</Interior>

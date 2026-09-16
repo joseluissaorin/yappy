@@ -1,0 +1,109 @@
+---
+title: "Turn an EPUB into an audiobook with chapters, without uploading it anywhere"
+description: "How to convert an EPUB into an .m4b audiobook with real chapters on your own device: how long it takes, what to expect, and what the fine print says."
+lang: en
+slug: epub-to-audiobook
+traduccionDe: epub-a-audiolibro
+racimo: formatos
+fecha: 2026-09-16
+autor: jose-luis-saorin
+faq:
+  - q: "What is an .m4b file, and why not just MP3?"
+    a: "An .m4b is an MPEG-4 container with AAC audio inside and a chapter table. Players treat it as an audiobook: they remember where you were, they let you jump between chapters, and they keep it out of your music shuffle. A loose MP3 knows none of that."
+  - q: "Can I convert a book I bought on Kindle or Google Play Books?"
+    a: "No. Those books carry DRM and cannot be opened outside their app, not with Yappy and not with any other lawful tool. EPUBs without DRM are fine: public domain titles, DRM-free publishers, your own manuscripts, your own notes."
+  - q: "How long does a whole book take?"
+    a: "It depends on the device and the length. On a modern computer synthesis runs several times faster than real time, so a novel that is eight hours of audio can be ready in one or two. On a phone it is slower, which is why people leave it overnight or hand the job to their computer over the bridge."
+  - q: "Can I publish or sell the audiobook I produce?"
+    a: "That takes two licences, not one. The book's (if it is not public domain and you do not hold the rights, no) and the voice model's. Supertonic 3 ships under an OpenRAIL-M licence, which carries use restrictions, so read it before anything public or commercial."
+  - q: "Does the book leave my device at any point?"
+    a: "No. Synthesis happens inside the device. If you use the bridge so your computer does the work, the file travels end-to-end encrypted directly between your two devices, without passing through any server that could read it."
+---
+
+You have an EPUB. You want to listen to it while you drive, wash up or walk, and you want to be able to say "chapter seven, please" without hunting blindly along a two-hour scrubber. That is an audiobook, and you can manufacture one on your own device without uploading the book anywhere.
+
+This article is about how, what to realistically expect, and where the fine print is. There is fine print, and it is more interesting than it sounds.
+
+## What an audiobook actually is, technically
+
+An audiobook is not "one long MP3". It is an `.m4b` file: an MPEG-4 container with AAC audio inside and, crucially, **a chapter table**. That detail changes everything about how a player behaves.
+
+With an `.m4b`, the player:
+
+- remembers the exact second you stopped, even three days later;
+- jumps from chapter to chapter, with real names;
+- keeps the book out of your music library and out of shuffle;
+- carries title, author and cover as metadata.
+
+With a folder of loose MP3s, none of that is guaranteed: it depends on the player being clever and the files being numbered properly. So if you are going to convert a book, it is worth getting chapters from the start.
+
+## Why chapters matter more than they seem
+
+A book read aloud runs six to fifteen hours. Nobody listens to that in one sitting. In practice you listen in twenty-minute pieces, across three weeks, on four different devices. Without chapters, every return means hunting; and hunting in audio is miserable, because you cannot skim.
+
+With chapters, three good things happen: you come back to the right place, you can re-listen to a single chapter without dragging a bar, and the book stops being a block and gets its shape back. The shape of a book is information. Losing it in the conversion loses half the reading.
+
+An EPUB, luckily, already carries that structure: the table of contents is declared inside. All you have to do is not throw it away on the way.
+
+## How it works, step by step
+
+With [Yappy](/en/how-it-works/) it is three gestures, and the first is the usual one: share.
+
+1. **Share the EPUB with the app.** From Files, from mail, from wherever you keep it. It arrives with its chapters already recognised, because the EPUB declares them.
+2. **Send the job to the press.** Pick the chapters you actually want — you rarely want the acknowledgements or the bibliography — plus the voice and the speed. The press works in the background; you can close the app.
+3. **Collect it from the library.** You get an `.m4b` with markers, which you can play right there or send to Files, to Books, or to your favourite player.
+
+There is a page with the details under [EPUB to audiobook](/en/convert/epub-to-audiobook/).
+
+One note that changed my habits: if you have a computer, pair your phone to it over the bridge — you point the camera at a QR code, no accounts involved — and the job goes to the computer. The Mac prints overnight at the best quality, and in the morning the audiobook is on the phone. If it gets cut off halfway, it resumes where it stopped.
+
+## How long it really takes
+
+Honest numbers, which depend on the machine:
+
+- On a recent **computer**, synthesis runs several times faster than real time. A novel that is eight hours of listening can be done in one or two.
+- On a **phone**, slower, and the device gets warm. A whole book is an overnight job, plugged in.
+- High quality — more refinement steps in the model — takes longer and makes little difference in ordinary speech. For a whole book I use the normal setting.
+
+Listening, on the other hand, starts within seconds: the voice cooks two sentences ahead of your ear and starts as soon as it has a cushion. You only need to convert the whole book if you want the file.
+
+## The fine print, which is the interesting part
+
+### Books with DRM cannot be converted
+
+An EPUB bought from Kindle, Google Play Books or Apple Books is encrypted and tied to your account. It cannot be opened outside its app. Yappy reads the EPUBs you can open: public domain titles, DRM-free publishers, things you wrote yourself, lecture notes, proofs, a manuscript a friend sent you. For the rest there is no lawful trick, and anyone who tells you otherwise is proposing that you break a technical protection measure.
+
+### The voice model's licence
+
+I will spell this one out, because almost nobody does.
+
+Yappy — the app's code — is MIT, properly free. But the voice is not Yappy's: it is **Supertonic 3**, a model of roughly 99 million parameters made by Supertone, distributed under an **OpenRAIL-M** licence. RAIL licences are not classic open-source licences: they allow very broad use, commercial use included, but they add use-based restrictions on what may be done with the model, and they require you to pass those restrictions downstream.
+
+In plain terms: for personal use — listening to your own books on your own phone — there is nothing to think about. But if you plan to **publish or sell** an audiobook synthesised with it, read the model licence first, and check what rights you hold over the text. Those are two separate permissions and you need both.
+
+### What a synthetic voice does not do
+
+An audiobook read by an actor has performance: characters, irony, timing. A 99 M-parameter voice that fits in a phone reads well, with reasonable intonation and no fatigue errors, but it does not act. For essays, history, articles and manuals, that is plenty for me. For a novel with fifteen characters and heavy dialogue, a good commercial audiobook is still better. There is no harm in saying so.
+
+What it does do is something no commercial audiobook does: exist. Most of the books I want to hear will never get a recorded edition. That is the trade.
+
+## EPUBs that give trouble
+
+Not every book arrives clean, and it is worth knowing what to check before ordering eight hours of audio:
+
+- **Front matter.** Copyright pages, dedications, the publisher's legal notice and a page of acknowledgements, read aloud, are five wasted minutes at the start. Leave them out in the chapter picker.
+- **Footnotes.** In an academic book they can be half the text. Reference-only notes get in the way; substantive ones you want. Worth a look first.
+- **Indexes and bibliographies.** Forty pages of alphabetical entries read in sequence are unlistenable. Out.
+- **Badly converted files.** Some EPUBs are really a PDF in disguise, with hyphenation dashes baked into the middle of words. You hear it immediately: words come out snapped in two.
+
+Metadata behaves the same way. The EPUB's title, author and cover carry into the audiobook, so if the EPUB has the title in block capitals and the author backwards, so will the audiobook.
+
+## What it costs
+
+Three documents fit on the free perch at once, and reading aloud has no time limit. The audiobook press and the bottomless perch come with the subscription: 3.99 € a month, 29.99 € a year, or 59.99 € once, [on the pricing page](/en/pricing/), at Spanish prices; every store sets its own. There is no free trial, deliberately.
+
+## One last piece of advice, of the kind that takes time to learn
+
+Before you send a six-hundred-page book to the press, listen to two minutes of chapter three. Not chapter one: chapter three, where ordinary prose has started. That checks three things at once: whether the voice you picked can hold you for an afternoon, whether the speed is yours, and whether the book carries layout junk — stray numbers, repeated headers — worth cleaning up first.
+
+Two minutes there save two hours of audio you will not want to listen to.

@@ -1,0 +1,86 @@
+---
+title: "Texto a voz sin conexión: por qué la voz debería hacerse en tu aparato"
+description: "Texto a voz sin conexión: qué gana y qué pierde una voz sintetizada dentro del móvil frente a la nube, y por qué un modelo de 99 M de parámetros basta."
+lang: es
+slug: texto-a-voz-sin-conexion
+racimo: privacidad
+fecha: 2026-09-16
+autor: jose-luis-saorin
+faq:
+  - q: "¿Qué significa que un modelo de voz funcione «sin conexión»?"
+    a: "Que las redes neuronales que generan el sonido están dentro de tu aparato y se ejecutan en su procesador. No se manda texto a ningún servidor ni se recibe audio de vuelta. Después de la descarga inicial del modelo, puedes tener el avión en modo avión y funciona igual."
+  - q: "¿Suena peor que las voces de la nube?"
+    a: "En general, un poco. Los modelos que corren en servidores son mucho más grandes y tienen más expresividad y más registro actoral. La diferencia se nota más en una novela con diálogos que en un ensayo o un artículo. Para lectura corrida, la diferencia es pequeña."
+  - q: "¿Cuánto ocupa y cuánta batería gasta?"
+    a: "El modelo de Yappy ocupa unos 200 MB en el móvil (en media precisión) y 398 MB en el ordenador. La síntesis consume procesador mientras cocina, pero va por delante del oído y luego se queda quieta: escuchar un capítulo gasta parecido a escuchar un pódcast descargado."
+  - q: "¿Entonces la app no se conecta nunca a internet?"
+    a: "Casi nunca, y conviene decirlo con precisión. Se conecta para descargar el modelo la primera vez, para traerse el texto de un enlace que tú compartes, para gestionar la suscripción si la tienes y, en el móvil, para unas estadísticas anónimas de uso que se pueden apagar en los ajustes. Tus textos no viajan en ningún caso."
+  - q: "¿Por qué casi todas las apps de texto a voz usan la nube?"
+    a: "Porque es más fácil y porque encaja con el negocio: cobrar por caracteres necesita un contador, y un contador necesita un servidor. Además, hasta hace poco los modelos buenos no cabían en un teléfono. Eso último dejó de ser cierto hace muy poco."
+---
+
+Hay dos maneras de convertir un texto en voz. En la primera, tu texto viaja a un servidor, allí un modelo enorme genera el audio y te lo devuelve. En la segunda, el modelo está dentro de tu aparato y el texto no se mueve de ahí.
+
+Durante años la primera era la única con calidad aceptable. Ya no. Y el cambio tiene consecuencias que van bastante más allá de la privacidad, aunque la privacidad sea la que se cuenta siempre.
+
+## Qué cabe hoy en un teléfono
+
+La voz que usa Yappy es Supertonic 3, de la empresa coreana Supertone: **unos 99 millones de parámetros**. Comparado con los modelos de lenguaje de los que habla todo el mundo, eso es minúsculo: mil veces menos que los grandes. En media precisión ocupa unos 200 MB, cabe en el teléfono sin drama y sintetiza varias veces más rápido que el tiempo real.
+
+Son cuatro redes en fila. Una predice cuánto dura cada sonido. Otra convierte el texto en una representación intermedia. La tercera —la que de verdad canta— parte de ruido y lo va limpiando paso a paso, como se revelaba una foto: ocho pasos en calidad normal, cinco si hay prisa, doce si quieres lo mejor. La cuarta convierte eso en sonido a 44.100 muestras por segundo.
+
+El detalle que hace posible que sea tan pequeño es que trabaja **a nivel de carácter**: pronuncia lo que le llega escrito, letra a letra, sin un diccionario fonético gigante. Eso ahorra muchísimo peso. Y tiene una consecuencia que explico en otro artículo: si le llegan las cifras «1492», intentará decir «1492», así que alguien tiene que haberlas convertido antes en «mil cuatrocientos noventa y dos». Ese alguien es [el guionizador](/guionizador/), y es la mitad del trabajo de leer bien.
+
+## Cómo se consigue que quepa
+
+Que un modelo entre en un teléfono no es solo cuestión de que sea pequeño de nacimiento. Hay un trabajo de ajuste que casi nunca se cuenta y que conviene conocer, aunque solo sea para saber qué se está pagando.
+
+El modelo original ocupa 398 MB, con los números en coma flotante de treinta y dos bits. Pasarlo a **media precisión**, dieciséis bits, lo deja en 200 MB: la mitad. En teoría es trivial; en la práctica, si se convierte todo a ciegas, el modelo ni siquiera carga, porque hay operaciones concretas dentro que no admiten media precisión y hay que localizarlas y dejarlas como estaban. A cambio, la síntesis va un veinte por ciento más lenta —y sigue siendo varias veces más rápida que el tiempo real— y la voz no cambia de manera perceptible.
+
+Por eso el móvil usa la versión de media precisión y el ordenador la completa: en un teléfono, ahorrar doscientos megas de descarga vale más que un veinte por ciento de velocidad que nadie nota.
+
+## Las cuatro razones, por orden de importancia real
+
+### 1. El coste, que es la que menos se dice
+
+Un servicio de voz en la nube paga servidores por cada segundo de audio que genera. Como ese coste es proporcional al uso, el precio también tiene que serlo: de ahí las suscripciones de diez a treinta euros al mes, los planes por caracteres y las «horas de audio incluidas». No es avaricia, es aritmética.
+
+Un modelo que corre en tu aparato tiene coste marginal cero para quien lo hizo. Por eso puede haber una app que lee sin contador y sin límite de tiempo. No es generosidad mía: es que leer no me cuesta dinero. Lo que cobro —[una cuerda de 3,99 € al mes o 59,99 € de por vida](/precios/)— es por comodidades, no por segundos.
+
+### 2. La privacidad, que sí importa aunque suene a folleto
+
+«No tengo nada que esconder» es una frase que aguanta mal el examen en cuanto miras lo que la gente le da a leer a una app así: sentencias, historiales, contratos, un manuscrito sin publicar, los exámenes de los alumnos, la carta de un amigo, un informe médico. En una app local no hay discusión que tener, porque no hay nada que se vaya.
+
+Y hay un segundo orden, más sutil: no hay cuenta, así que no hay una base de datos con tu nombre y una lista de todo lo que has escuchado. Lo que no existe no se filtra, no se vende y no se entrega por requerimiento.
+
+Yo digo la verdad entera, porque queda peor pero es lo que hay: la app sí toca la red en cuatro casos —bajar el modelo la primera vez, ir a buscar el texto de un enlace que tú compartes, la gestión de la suscripción y unas estadísticas de uso anónimas que en el móvil se pueden apagar—. Está todo contado en [la página de privacidad](/privacidad/). Lo que nunca sale es el contenido.
+
+### 3. La latencia y el sitio donde estás
+
+Sin conexión no hay espera de red, ni cola de servidor, ni caídas. Le das al play y suena. Y funciona en el metro, en un avión, en un pueblo con dos rayas de cobertura, en una casa rural y en un sótano de biblioteca. Quien escucha mientras camina sabe exactamente de qué hablo: la nube se corta justo en la cuesta.
+
+### 4. La duración
+
+Esta es mi razón favorita y la menos comercial. Los servicios cierran. Cambian de precio, de dueño, de API; retiran la voz que te gustaba. Un modelo descargado en tu aparato, con la app que lo ejecuta en código abierto, sigue leyendo dentro de cinco años exactamente igual que hoy, aunque yo desaparezca. Aburrido, previsible y tuyo.
+
+## Qué se pierde. Sin rodeos
+
+Sería muy fácil terminar aquí y quedar estupendo. Pero hay cosas que la nube hace mejor, y son estas:
+
+- **Expresividad.** Los modelos grandes de servidor tienen un registro actoral que un modelo pequeño no alcanza: rabia, ironía, susurro, personajes distintos. En un ensayo apenas se nota; en una novela con mucho diálogo, se nota.
+- **Clonación de voces y control fino.** Poner la voz de alguien, dirigir la emoción frase a frase, hacer podcasts producidos: eso, hoy por hoy, es territorio de la nube.
+- **La descarga inicial.** Doscientos megas la primera vez. En una tarifa cara o una conexión mala, es una molestia real. (En el iPhone las voces bajan con la propia instalación, así que se disimula; en el ordenador se ve.)
+- **Aparatos viejos.** Un teléfono de hace ocho años sintetiza despacio. Un servidor no envejece nunca.
+
+Si lo que necesitas es una voz espectacular para un vídeo, la nube es la respuesta correcta. Si lo que necesitas es escuchar tus cosas, todos los días, sin contar caracteres, la respuesta es la otra.
+
+## Cómo comprobarlo tú mismo, en un minuto
+
+No hay que creerme. Hay dos pruebas caseras:
+
+1. **Modo avión.** Pon el aparato en modo avión, abre un texto largo y dale al play. Si suena, la voz está dentro. Si te sale un error de red, ya sabes dónde estaba.
+2. **El texto raro.** Dale un texto con fechas, siglas, romanos y cifras, y escucha si los dice como una persona. Eso no mide dónde está el modelo, pero mide si alguien se ha molestado en hacer la parte difícil. Puedes probarlo en el navegador, con el mismo código de la app compilado a WebAssembly, en [la página del guionizador](/guionizador/).
+
+## El resumen, en una línea
+
+Que la voz viva en el aparato no es una postura ideológica: es lo que permite que escuchar un libro entero no cueste nada, no pida cuenta, funcione en un túnel y siga funcionando dentro de diez años. Se paga con un poco de expresividad. A mí me parece un cambio barato.

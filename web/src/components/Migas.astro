@@ -1,0 +1,14 @@
+---
+/** Las migas visibles. El BreadcrumbList lo pone cada página en su JSON-LD. */
+interface Props { items: { nombre: string; ruta: string }[] }
+const { items } = Astro.props;
+---
+<nav class="migas" aria-label="migas">
+  <ol>
+    {items.map((it, i) => (
+      <li>
+        {i < items.length - 1 ? <a href={it.ruta}>{it.nombre}</a> : <span aria-current="page">{it.nombre}</span>}
+      </li>
+    ))}
+  </ol>
+</nav>

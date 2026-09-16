@@ -1,0 +1,32 @@
+# Cloudflare Pages. Lo que lleva hash en el nombre es inmutable; lo demás,
+# revalidación diaria. El WASM necesita su tipo MIME o el navegador lo
+# rechaza antes de compilarlo.
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/capturas/*
+  Cache-Control: public, max-age=604800
+
+/audio/*
+  Cache-Control: public, max-age=604800
+
+/muestras/*
+  Cache-Control: public, max-age=604800
+
+/guion/*
+  Cache-Control: public, max-age=604800
+
+/guion/yappy_wasm_bg.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=604800
+
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), interest-cohort=()

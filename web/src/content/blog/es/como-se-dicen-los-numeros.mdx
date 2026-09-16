@@ -1,0 +1,106 @@
+---
+title: "Cómo se dicen los números en voz alta, y por qué las máquinas se equivocan"
+description: "Cómo se dicen los números en voz alta en cada idioma: años, romanos, siglas y fechas, y por qué casi todos los lectores automáticos los pronuncian mal."
+lang: es
+slug: como-se-dicen-los-numeros
+racimo: oficio
+fecha: 2026-09-16
+autor: jose-luis-saorin
+faq:
+  - q: "¿Por qué una voz artificial dice mal las fechas y los números romanos?"
+    a: "Porque la mayoría de los modelos de voz pronuncian lo que les llega escrito, carácter a carácter. Convertir «1492» en «mil cuatrocientos noventa y dos» es un trabajo anterior, de normalización, y depende del idioma y del contexto. Si nadie lo hace bien, la voz dice lo que puede."
+  - q: "¿Qué son las reglas RBNF de Unicode CLDR?"
+    a: "RBNF (Rule-Based Number Format) es la parte del repositorio CLDR de Unicode que describe, lengua por lengua, cómo se deletrea un número en palabras: los nombres, las uniones, el género, el plural y las declinaciones. Es la misma base que usan los sistemas operativos para decir «mil novecientos» en ruso o en japonés."
+  - q: "¿«Siglo XX» se dice «siglo veinte» o «siglo vigésimo»?"
+    a: "En español actual, «siglo veinte»: los siglos se dicen en cardinal. Los reyes y papas, en cambio, van en ordinal hasta el décimo («Enrique octavo») y en cardinal a partir del trece («Alfonso trece»). En francés, los reyes van en cardinal salvo el primero: «Louis quatorze»."
+  - q: "¿Cómo sabe una máquina si una sigla se deletrea o se lee como palabra?"
+    a: "Por fonotáctica: si la secuencia de letras se puede pronunciar como una palabra de esa lengua, se lee (NASA, OTAN, sida); si no, se deletrea (FBI, «efe be i»). No es infalible, y por eso hay excepciones escritas a mano."
+  - q: "¿Dónde puedo probar esto?"
+    a: "En la página del guionizador de esta web. Corre el mismo código en Rust que usa la app, compilado a WebAssembly, así que lo que veas ahí es exactamente lo que dirá la voz."
+---
+
+Escribe «1492» y pídele a una máquina que lo lea. Casi todas las de hoy, si nadie las ayuda, dirán algo parecido a «uno cuatro nueve dos». Las mejores dirán «mil cuatrocientos noventa y dos». Una de cada diez dirá «catorce noventa y dos», que es justo lo que diría un inglés, y en español está mal.
+
+El problema no es la voz. La voz está perfecta. El problema es que **entre lo escrito y lo dicho hay un abismo**, y ese abismo está lleno de reglas que nadie escribió pensando en máquinas.
+
+Este artículo va de ese abismo. Es la parte de un lector automático que nadie ve y que decide si suena a persona o a locutor de estación de tren.
+
+## Lo primero: la voz no lee, pronuncia
+
+Los modelos de voz modernos que caben en un teléfono —el que usa Yappy tiene unos 99 millones de parámetros— trabajan a nivel de carácter. Reciben letras y producen sonido. Eso es lo que los hace pequeños y rápidos, y es también su límite: **si les llega «1492», intentarán decir «1492»**, sea eso lo que sea en su cabeza.
+
+Así que alguien tiene que convertir el texto escrito en el texto que una persona diría en voz alta. A esa pieza la llamamos el guionizador, porque lo que produce es exactamente eso: un guion de lectura. No una traducción, no un resumen: la partitura de lo que se va a decir.
+
+Y resulta que escribir esa partitura es un oficio filológico entero.
+
+## Los números: un problema con gramática
+
+Deletrear un número parece una tabla. Lo es hasta el veinte, y después empieza la literatura.
+
+En **español**, «200 páginas» son «doscientas páginas», con género, pero «200 libros» son «doscientos libros». En **francés**, noventa es «quatre-vingt-dix», cuatro veintes y diez, y setenta es «soixante-dix». En **alemán**, veintiuno se dice al revés: «einundzwanzig», uno-y-veinte, y los ordinales se declinan según la preposición que llevan delante: «im 19. Jahrhundert» es «im neunzehnten Jahrhundert». En **ruso**, el sustantivo que sigue al número cambia de caso según el número, y el número mismo se declina. En **japonés** hay contadores distintos según lo que se cuente, y no se cuentan igual las personas que los objetos planos.
+
+Escribir eso a mano para 31 idiomas es imposible, y hacerlo mal es peor que no hacerlo. Por suerte existe desde hace décadas, y lo tienes ya en tu ordenador: el **CLDR** de Unicode, el repositorio que describe cómo se comportan las lenguas, incluye unas gramáticas llamadas **RBNF**, *Rule-Based Number Format*, que dicen exactamente cómo se deletrea cualquier número en cada lengua, con su género, su plural y sus declinaciones. Son las mismas reglas que usa tu sistema operativo.
+
+Yappy lleva un intérprete de esas gramáticas escrito en Rust, con los datos de CLDR dentro de la app. Nada de llamar a un servidor para saber decir «mil novecientos» en búlgaro. Y nada de listas a mano que se quedan cortas en el número 101.
+
+## Los años, que no son números normales
+
+«1492» en español es «mil cuatrocientos noventa y dos», el número tal cual. En inglés es «fourteen ninety-two», partido en dos mitades de dos cifras, que en español sonaría absurdo. Y las excepciones inglesas son un campo de minas: 1900 es «nineteen hundred», 1905 es «nineteen oh five», 2000 es «two thousand» y 2005 es «two thousand five» o «twenty oh five» según a quién preguntes y en qué década nació.
+
+Es decir: la misma cifra, en dos lenguas vecinas, se dice con dos algoritmos distintos. Y para saber que es un año y no una cantidad hace falta mirar alrededor: «en 1492» es un año; «1492 euros» no lo es.
+
+## Los números romanos, donde se cae casi todo el mundo
+
+Aquí está mi parte favorita, porque no hay una regla: hay varias, y dependen de la lengua y de lo que se esté nombrando.
+
+- **Siglos, en español: cardinal.** «El siglo XX» se dice «el siglo veinte». Decir «el siglo vigésimo» suena a traducción mala.
+- **Reyes y papas, en español: ordinal hasta el diez, cardinal a partir del trece.** «Enrique VIII» es «Enrique octavo»; «Alfonso XIII» es «Alfonso trece», no «decimotercero». El once y el doce admiten las dos formas, y ahí cada cual tiene su manía.
+- **En francés, los reyes van en cardinal**, con una sola excepción: el primero. «Louis XIV» es «Louis quatorze», no «quatorzième»; pero «François Ier» es «François premier». Traducir mecánicamente «Enrique octavo» al francés produce un error que un francés nota a la primera sílaba.
+- **En inglés** se dice «Henry the eighth», con artículo en medio, cosa que no ocurre en ninguna de las otras lenguas de la lista.
+- **En italiano** los siglos van en ordinal: «il XX secolo» es «il ventesimo secolo».
+
+Y luego está el problema contrario, que es más divertido: **no todo lo que parece un número romano lo es**. Las letras romanas son también letras normales, así que una palabra en mayúsculas puede parecer una cifra. «MIX» es una palabra inglesa perfectamente corriente y, leída como número romano, es 1009. «DIVI», «CID», «LID», «MIL», «VIVID» pasan por el mismo filtro. Un lector ingenuo convierte el título «EL CID» en un número y lo dice. Nosotros lo dejamos en paz: si la secuencia es una palabra que existe, o va en un contexto donde no cabe una cifra, se queda como está.
+
+## Las siglas: deletrear o no deletrear
+
+Hay siglas que se leen como palabras y siglas que se deletrean, y la frontera no es el capricho: es la **fonotáctica**, es decir, si la secuencia de letras se puede pronunciar en esa lengua.
+
+- La NASA se lee «nasa». La OTAN, «otan». El sida, el láser y el radar ya son palabras comunes.
+- El FBI se deletrea: «efe be i». La ONG, «o ene ge». El PSOE, curiosamente, se lee como palabra en español, «pesoe», con un apoyo vocálico inventado por el uso.
+
+La regla práctica es que si cada consonante tiene una vocal cerca que la sostenga, la sigla es pronunciable y se lee; si hay un racimo de consonantes imposible, se deletrea. Funciona en la mayoría de los casos, y por eso existe también una lista de excepciones escritas a mano, lengua por lengua. Ninguna regla de este oficio sobrevive sin su lista de excepciones.
+
+## Y lo demás: fechas, horas, monedas, unidades, abreviaturas
+
+Es el trabajo aburrido, y es la mitad del resultado:
+
+- **Fechas.** «12/10/1492» es doce de octubre en España y 10 de diciembre en Estados Unidos. El orden de los números no está en el número: está en el país.
+- **Horas.** «14:05» es «las catorce y cinco» en español, «fourteen oh five» en inglés y «vierzehn Uhr fünf» en alemán, con la palabra «Uhr» metida en medio, que no existe en las otras.
+- **Monedas.** «3,50 €» es «tres euros con cincuenta céntimos» en español, «trois euros cinquante» en francés —sin decir los céntimos— y «três euros e cinquenta cêntimos» en portugués.
+- **Unidades.** «90 km/h» es «noventa kilómetros por hora», y «1 km» es «un kilómetro», en singular. Esa «s» de más delata a cualquier lector automático.
+- **Abreviaturas.** «Dr.» es doctor y «Dra.» es doctora; «núm.» es número; «etc.» es etcétera; «pp. 12-14» son las páginas doce a catorce, no «pe pe doce guion catorce».
+
+Cada una de esas líneas es una tabla escrita a mano en cada idioma. En Yappy son algo más de mil cien líneas, y crecerán.
+
+## La regla de oro: el original no se toca nunca
+
+Esta decisión es la que más consecuencias ha tenido, y la cuento porque no es evidente.
+
+Cuando el guionizador transforma algo, **no reescribe el texto**. Guarda el original intacto y, al lado, una lista de trozos: cada trozo dice qué parte exacta del original ocupa y qué palabras se van a decir en su lugar. Un doble libro: lo escrito y lo dicho, alineados.
+
+Eso permite dos cosas que se notan al usarlo. La primera, que el editor te enseña siempre lo que tú escribiste, no una versión desfigurada con los números en letras. La segunda, y más bonita: que el subrayado del karaoke cae en la palabra exacta. Cuando la voz está diciendo «mil cuatrocientos noventa y dos», lo que se ilumina en pantalla es «1492», porque el sistema sabe que ese sonido corresponde a esos cuatro caracteres. No lo adivina: lo sabe.
+
+## Lo que todavía se hace mal
+
+Por honestidad, los casos que siguen resistiéndose, aquí y en todas partes:
+
+- **La ambigüedad que necesita entender.** «1/2» puede ser un medio o el uno de febrero. «Python 3.12» es «tres punto doce», no «tres coma doce», porque es una versión y no un decimal. Distinguirlo pide contexto de verdad.
+- **Los números que no son cantidades.** Un teléfono, un IBAN, una referencia catastral: se dicen por grupos, y cada país agrupa a su manera.
+- **Las tablas.** Leídas en voz alta son ruido. No hay solución elegante todavía.
+- **Los nombres propios extranjeros.** Un modelo que pronuncia por caracteres dirá los apellidos polacos con acento de ninguna parte. Eso no lo arregla el guionizador.
+
+## Pruébalo
+
+Todo esto está en [la página del guionizador](/guionizador/), y no es una demostración grabada: es el mismo código en Rust de la app, compilado a WebAssembly y corriendo en tu navegador. Escribe una frase con fechas, siglas y romanos en seis idiomas y mira cómo se trocea. Si encuentras un caso que falla —los hay—, [escríbeme](/preguntas/): las reglas de este oficio se escriben así, una por una, cada vez que algo suena mal.
+
+Después, si quieres oírlo, es [la misma máquina la que lee un artículo o un libro entero](/como-se-usa/). Pero el guion va siempre primero. Leer en voz alta no es deletrear: es interpretar, y alguien tiene que escribir las reglas.

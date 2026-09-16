@@ -1,0 +1,32 @@
+---
+/**
+ * El marco del teléfono, dibujado con CSS. Nada de fotos de marco: así la
+ * captura queda nítida en cualquier pantalla y la página pesa lo que pesa
+ * la captura, no lo que pesa un PNG de 1470×3000.
+ */
+interface Props {
+  src: string;
+  alt: string;
+  giro?: number;
+  ancho?: number;
+  cargaPerezosa?: boolean;
+  class?: string;
+}
+const { src, alt, giro = 0, ancho = 268, cargaPerezosa = true, class: clase = "" } = Astro.props;
+const base = src.replace(/\.(png|jpg|jpeg|webp|avif)$/i, "");
+---
+<figure class:list={["aparato", clase]} style={`--giro:${giro}deg;max-width:${ancho}px`}>
+  <picture>
+    <source srcset={`${base}.avif`} type="image/avif" />
+    <source srcset={`${base}.webp`} type="image/webp" />
+    <img
+      src={`${base}.webp`}
+      alt={alt}
+      width="1290"
+      height="2796"
+      loading={cargaPerezosa ? "lazy" : "eager"}
+      decoding="async"
+      fetchpriority={cargaPerezosa ? undefined : "high"}
+    />
+  </picture>
+</figure>

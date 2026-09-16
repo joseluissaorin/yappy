@@ -1,0 +1,34 @@
+{
+  "name": "@yappy/web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "yappy.joseluissaorin.com: la web de Yappy, en 31 idiomas.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "desplegar": "astro build && wrangler pages deploy dist --project-name=yappy",
+    "traducir": "node herramientas/traducir.mjs",
+    "verificar-i18n": "node herramientas/verificar-i18n.mjs",
+    "capturas": "node herramientas/capturas.mjs",
+    "muestras": "node herramientas/muestras.mjs",
+    "og": "node herramientas/og.mjs",
+    "iconos": "node herramientas/iconos.mjs",
+    "assets": "npm run capturas && npm run muestras && npm run og && npm run iconos"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/svelte": "^7.0.9",
+    "astro": "^5.13.0",
+    "sharp": "^0.34.2",
+    "svelte": "^5.28.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^25.11.0",
+    "wrangler": "^4.20.0"
+  }
+}

@@ -1,0 +1,39 @@
+---
+/** El armazón de las páginas interiores: migas, titular y entradilla. */
+import Base from "./Base.astro";
+import Migas from "../components/Migas.astro";
+import { t, type Idioma } from "../i18n";
+import { rutaPagina, type Alternativa } from "../lib/rutas";
+
+interface Props {
+  lang: Idioma;
+  title: string;
+  description: string;
+  ruta: string;
+  alternativas?: Alternativa[];
+  h1: string;
+  entradilla?: string;
+  susurro?: string;
+  migas?: { nombre: string; ruta: string }[];
+  jsonld?: object[];
+  ogTipo?: "website" | "article";
+}
+const {
+  lang, title, description, ruta, alternativas, h1,
+  entradilla, susurro, migas = [], jsonld = [], ogTipo = "website",
+} = Astro.props;
+
+const camino = [{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...migas];
+---
+<Base {lang} {title} {description} {ruta} {alternativas} {jsonld} {ogTipo}
+      ogImagen={lang === "en" ? "/og-en.png" : "/og.png"}>
+  <div class="envoltura">
+    <Migas items={camino} />
+    <header class:list={["cabeza-pagina", ogTipo === "article" && "es-articulo"]}>
+      {susurro && <p class="susurro">{susurro}</p>}
+      <h1 class="grito">{h1}</h1>
+      {entradilla && <p class="entradilla" style="margin-top:1.1rem">{entradilla}</p>}
+    </header>
+    <slot />
+  </div>
+</Base>

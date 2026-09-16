@@ -1,0 +1,108 @@
+---
+title: "Convertir un EPUB en audiolibro con capítulos, sin subirlo a ninguna nube"
+description: "Cómo pasar un EPUB a audiolibro .m4b con capítulos reales en tu propio aparato: cuánto tarda, qué calidad esperar y qué dice la letra pequeña."
+lang: es
+slug: epub-a-audiolibro
+racimo: formatos
+fecha: 2026-09-16
+autor: jose-luis-saorin
+faq:
+  - q: "¿Qué es un fichero .m4b y por qué no un MP3?"
+    a: "Un .m4b es un contenedor MPEG-4 con audio AAC dentro y una tabla de capítulos. Los reproductores lo tratan como audiolibro: recuerdan por dónde ibas, permiten saltar de capítulo y no lo barajan con la música. Un MP3 suelto no sabe nada de eso."
+  - q: "¿Se puede convertir un libro comprado en Kindle o en Google Play Libros?"
+    a: "No. Esos libros llevan DRM y no se pueden abrir fuera de su app, ni con Yappy ni con ninguna otra herramienta legal. Sí se pueden convertir los EPUB sin DRM: los de dominio público, los de editoriales que venden sin candado, los manuscritos propios y los apuntes."
+  - q: "¿Cuánto tarda convertir un libro entero?"
+    a: "Depende del aparato y de la longitud. En un ordenador moderno la síntesis va a varias veces la velocidad real, así que una novela de ocho horas de audio puede estar en una o dos. En un teléfono es más lento; por eso lo normal es dejarlo trabajando de noche o encargárselo al ordenador por el puente."
+  - q: "¿Puedo publicar o vender el audiolibro que me salga?"
+    a: "Ahí hay que mirar dos licencias, no una. La del libro (si no es de dominio público ni tienes los derechos, no) y la del modelo de voz. Supertonic 3 se distribuye con licencia OpenRAIL-M, que trae restricciones de uso: para algo público o comercial, léela antes."
+  - q: "¿El libro sale de mi dispositivo en algún momento?"
+    a: "No. La síntesis ocurre dentro del aparato. Si usas el puente para que lo convierta tu ordenador, el fichero viaja cifrado de extremo a extremo directamente entre tus dos aparatos, sin pasar por ningún servidor que pueda leerlo."
+---
+
+Tienes un EPUB. Quieres escucharlo mientras conduces, mientras friegas o mientras andas, y quieres poder decir «ponme el capítulo siete» sin buscar a ciegas en una barra de dos horas. Eso es un audiolibro, y se puede fabricar en tu propio aparato sin subir el libro a ningún sitio.
+
+Este artículo cuenta cómo, qué se puede esperar de verdad y dónde está la letra pequeña. Porque la hay, y es más interesante de lo que parece.
+
+## Qué es exactamente un audiolibro, técnicamente
+
+Un audiolibro no es «un MP3 largo». Es un fichero `.m4b`: un contenedor MPEG-4 con audio AAC dentro y, sobre todo, **una tabla de capítulos**. Ese detalle cambia por completo cómo se comporta el reproductor.
+
+Con un `.m4b`, el reproductor:
+
+- recuerda el segundo exacto por el que ibas, aunque cierres y pasen tres días;
+- salta de capítulo a capítulo, con nombres de verdad;
+- no lo mezcla con tu música ni lo pone en aleatorio;
+- guarda el título, el autor y la portada como metadatos.
+
+Con una carpeta de MP3 sueltos, nada de eso está garantizado: depende de que el reproductor sea listo y de que los ficheros estén bien numerados. Por eso, si vas a convertir un libro, merece la pena que salga con capítulos desde el principio.
+
+## Por qué los capítulos importan más de lo que parece
+
+Un libro leído en voz alta dura entre seis y quince horas. Nadie escucha eso de un tirón. En la práctica lo escuchas en trozos de veinte minutos, a lo largo de tres semanas, en cuatro aparatos distintos. Sin capítulos, cada vez que vuelves tienes que buscar; y buscar en audio es incomodísimo, porque no puedes hojear.
+
+Con capítulos pasan tres cosas buenas: vuelves al sitio, puedes releer —reescuchar— un capítulo suelto sin arrastrar la barra, y el libro deja de ser un bloque y vuelve a tener forma. La forma del libro es información. Perderla al pasarlo a audio es perder media lectura.
+
+Un EPUB, por suerte, ya trae esa estructura dentro: tiene su índice declarado. Lo único que hay que hacer es no tirarlo por el camino.
+
+## Cómo se hace, paso a paso
+
+Con [Yappy](/como-se-usa/) son tres gestos, y el primero es el de siempre: compartir.
+
+1. **Comparte el EPUB con la app.** Desde Archivos, desde el correo, desde donde lo tengas. Llega con sus capítulos ya reconocidos, porque el EPUB los declara.
+2. **Encarga el trabajo a la imprenta.** Eliges qué capítulos quieres —a veces no quieres los agradecimientos ni la bibliografía—, la voz y la velocidad. La imprenta trabaja en segundo plano: puedes cerrar la app.
+3. **Recógelo en la biblioteca.** Queda un `.m4b` con marcadores, que puedes escuchar ahí mismo o mandar a Archivos, a Libros o a tu reproductor favorito.
+
+Hay una página con el detalle en [convertir EPUB a audiolibro](/convertir/epub-a-audiolibro/).
+
+Un apunte que a mí me cambió la costumbre: si tienes un ordenador, empareja el teléfono con él por el puente —se hace apuntando la cámara a un código QR, sin cuentas— y el encargo se lo lleva el ordenador. El Mac imprime de noche, a la mejor calidad, y por la mañana el audiolibro está en el teléfono. Si se corta a la mitad, sigue por donde iba.
+
+## Cuánto tarda de verdad
+
+Las cifras honestas, que dependen del aparato:
+
+- En un **ordenador** reciente, la síntesis va a varias veces la velocidad real. Una novela que dura ocho horas de escucha puede estar lista en una o dos.
+- En un **teléfono**, más despacio, y con el aparato caliente. Un libro entero es cosa de dejarlo de noche enchufado.
+- La calidad alta —más pasos de refinado en el modelo— tarda más que la rápida, y se nota poco en voz hablada. Para un libro entero suelo usar la normal.
+
+Escuchar, en cambio, empieza en segundos: la voz cocina dos frases por delante de tu oído y arranca en cuanto tiene colchón. Convertir el libro entero solo hace falta si quieres el fichero.
+
+## La letra pequeña, que aquí es la parte interesante
+
+### Los libros con DRM no se pueden convertir
+
+Un EPUB comprado en Kindle, en Google Play Libros o en Apple Libros está cifrado y atado a tu cuenta. No se puede abrir fuera de su app. Yappy lee los EPUB que tú puedes abrir: los de dominio público, los que venden editoriales sin candado, los que te has escrito tú, los apuntes, las galeradas, los manuscritos que te manda un amigo. Con los demás no hay truco legal, y quien te diga lo contrario te está proponiendo saltarte una protección técnica.
+
+### La licencia del modelo de voz
+
+Esta la explico despacio porque casi nadie la cuenta.
+
+Yappy —el código de la app— es MIT, libre de verdad. Pero la voz no es de Yappy: es **Supertonic 3**, un modelo de unos 99 millones de parámetros hecho por Supertone, y se distribuye con licencia **OpenRAIL-M**. Las licencias RAIL no son licencias libres clásicas: permiten un uso muy amplio, incluso comercial, pero añaden restricciones de uso sobre lo que se puede hacer con el modelo y obligan a arrastrar esas restricciones a quien reciba lo que hagas con él.
+
+En cristiano: para tu uso personal, escuchar tus libros en tu teléfono, no hay nada que pensar. Pero si vas a **publicar o vender** un audiolibro sintetizado con él, léete la licencia del modelo antes, y también qué derechos tienes sobre el texto. Son dos permisos distintos y hacen falta los dos.
+
+### Lo que una voz sintética no hace
+
+Un audiolibro leído por un actor tiene interpretación: personajes, ironía, tiempos. Una voz sintética de 99 M de parámetros que cabe en un teléfono lee bien, con entonación razonable y sin errores de fatiga, pero no interpreta. Para ensayo, historia, artículos y manuales, a mí me sobra. Para una novela con quince personajes y mucho diálogo, un buen audiolibro comercial sigue siendo mejor. No pasa nada por decirlo.
+
+Lo que sí hace es algo que ningún audiolibro comercial hace: existir. La mayoría de los libros que quiero escuchar nunca tendrán edición sonora. Ese es el trato.
+
+## Los EPUB que dan guerra
+
+No todos los libros llegan limpios, y conviene saber qué mirar antes de encargar ocho horas de audio:
+
+- **Los preliminares.** Créditos, dedicatorias, el aviso legal de la editorial y una página de agradecimientos leídos en voz alta son cinco minutos de nada al principio del libro. Quítalos en la selección de capítulos.
+- **Las notas al pie.** En un ensayo pueden ser la mitad del texto. Si son notas de referencia —un apellido y un número de página—, estorban; si son notas sustanciosas, las quieres. Merece la pena mirarlo antes.
+- **Los índices y las bibliografías.** Cuarenta páginas de entradas alfabéticas leídas seguidas son inescuchables. Fuera.
+- **Los libros mal convertidos.** Hay EPUB que son en realidad un PDF disfrazado, con guiones de partición de línea metidos dentro de las palabras. Se oye enseguida: las palabras salen partidas en dos.
+
+Con los metadatos pasa algo parecido. El título, el autor y la portada del EPUB pasan al audiolibro, así que si el EPUB viene con el título en mayúsculas y el autor al revés, el audiolibro también.
+
+## Qué cuesta
+
+Tres documentos caben a la vez en la percha gratis, y la lectura en voz alta no tiene límite de tiempo. La imprenta de audiolibros y la percha sin fondo van con la cuerda: 3,99 € al mes, 29,99 € al año o 59,99 € una sola vez, [en la página de precios](/precios/), con los precios de España; cada tienda pone el suyo. No hay prueba gratuita, a propósito.
+
+## Un consejo final, de los que cuestan tiempo aprender
+
+Antes de mandar un libro de seiscientas páginas a la imprenta, escucha dos minutos del capítulo tres. No del primero: del tercero, donde ya hay prosa normal. Se comprueban tres cosas de golpe: si la voz elegida te aguanta una tarde, si la velocidad es la tuya y si el libro trae basura de maquetación —numeritos, encabezados repetidos— que convenga limpiar antes.
+
+Dos minutos ahí ahorran dos horas de audio que no vas a querer escuchar.

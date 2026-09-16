@@ -1,0 +1,49 @@
+---
+/**
+ * Una pegatina troquelada: el cromo de la casa. Cuatro capas con el mismo
+ * polígono de 48 anclas (sombra de contacto, borde de troquel crema, cuerpo
+ * de tinta y costura). El texto va dentro, de verdad: es texto seleccionable
+ * e indexable, no una imagen.
+ */
+import { TROQUELES, poligono, puntosSvg, type NombreTroquel } from "../lib/troquel";
+
+interface Props {
+  forma?: NombreTroquel;
+  tinta?: string;
+  /** Grados de pegado a mano. */
+  giro?: number;
+  tamano?: number;
+  /** Texto oscuro sobre tintas claras (dorado, amarillo). */
+  clara?: boolean;
+  href?: string;
+  cuerpo?: string;
+  class?: string;
+}
+
+const {
+  forma = "sello", tinta, giro = 0, tamano = 150,
+  clara = false, href, cuerpo = "1rem", class: clase = "",
+} = Astro.props;
+
+const t = TROQUELES[forma]!;
+const estilo = [
+  `--troquel:${poligono(t, 1)}`,
+  `--troquel-93:${poligono(t, 0.93)}`,
+  `--giro:${giro}deg`,
+  `width:${tamano}px`,
+  `height:${tamano}px`,
+  `font-size:${cuerpo}`,
+  tinta ? `--tinta-pieza:${tinta}` : "",
+].filter(Boolean).join(";");
+
+const Etiqueta = href ? "a" : "span";
+---
+
+<Etiqueta class:list={["pegatina", clara && "clara", clase]} style={estilo} href={href}>
+  <span class="pegatina-borde" aria-hidden="true"></span>
+  <span class="pegatina-cuerpo" aria-hidden="true"></span>
+  <svg class="pegatina-costura" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <polygon points={puntosSvg(t, 0.8)} />
+  </svg>
+  <span class="pegatina-texto"><slot /></span>
+</Etiqueta>

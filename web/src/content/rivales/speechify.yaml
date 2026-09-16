@@ -1,0 +1,48 @@
+# Datos tomados de https://speechify.com/pricing/ (septiembre de 2026).
+nombre: Speechify
+web: https://speechify.com
+tipo: saas
+gratis_detalle:
+  es: >-
+    El plan gratuito da diez voces que su propia página describe como «robóticas»,
+    velocidad máxima de 1,5x y solo las funciones básicas de lectura. Las voces
+    naturales, el escaneo de documentos y los resúmenes con IA quedan del lado de pago.
+  en: >-
+    The free plan gives you ten voices their own page calls "robotic sounding",
+    a 1.5x speed ceiling and text to speech only. Natural voices, document
+    scanning and AI summaries all sit behind the paywall.
+precio_desde: 29 $/mes
+precio_anual: unos 139 $/año (11,60 $/mes facturados de una vez)
+local: false
+sin_cuenta: false
+sin_conexion: parcial
+codigo_abierto: false
+tarifa_por_caracter: false
+idiomas: más de 60 (plan de pago)
+formatos: PDF, DOCX, EPUB, páginas web, correo, fotos escaneadas
+audiolibro_capitulos: false
+escritorio: true
+descripcion:
+  es: >-
+    Lector de texto a voz en la nube con aplicaciones para iPhone, Android,
+    Mac y Windows, extensión de navegador y más de mil voces sintetizadas
+    en sus servidores. Es el producto más conocido del sector.
+  en: >-
+    A cloud text to speech reader with iPhone, Android, Mac and Windows apps,
+    a browser extension and over a thousand voices synthesised on their
+    servers. It is the best known product in the category.
+gana_en:
+  es: >-
+    Gana en catálogo de voces y en velocidad extrema: más de mil voces, voces
+    de famosos con licencia y lectura hasta 5x, algo que ningún motor local
+    iguala hoy. También gana en integraciones de oficina, Google Drive,
+    Dropbox y OneDrive, en resúmenes con IA y en extensión de navegador,
+    y es la opción con más soporte y más años de recorrido.
+  en: >-
+    It wins on voice catalogue and raw speed: over a thousand voices, licensed
+    celebrity voices and playback up to 5x, which no on-device engine matches
+    today. It also wins on office integrations, Google Drive, Dropbox and
+    OneDrive, on AI summaries and on its browser extension, and it is the
+    option with the longest track record and the largest support team.
+verificado: true
+fecha_datos: "2026-09"

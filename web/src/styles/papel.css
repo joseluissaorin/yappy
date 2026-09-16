@@ -1,0 +1,296 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   YAPPY, LA WEB · 1. EL PAPEL
+
+   El sustrato, tal como está en la app (yappy-app/src/app.css): dos tintas
+   sobre papel. La tinta del texto (ultramar) y la tinta de la voz (coral),
+   casi superpuestas pero no del todo: el desregistro entre ambas es el
+   producto, porque lo dicho nunca es exactamente lo escrito.
+
+   Dos leyes que no se negocian: el papel nunca es blanco puro, la tinta
+   nunca es negro puro. Encima de esto va el álbum (2-album.css).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: "Baloo 2";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/Baloo2-Variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/SpaceMono-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Literata";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("/fonts/literata-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC;
+}
+
+:root {
+  /* papel y superficies */
+  --papel: #f7f2e7;
+  --superficie: #fffdf7;
+  --superficie-2: #f3ecdb;
+  --borde: #e6dcc6;
+
+  /* tintas */
+  --tinta: #2b2418;
+  --tinta-suave: #82755a;
+  --voz: #e0502a;
+  --voz-fuerte: #c43e1c;
+  --voz-suave: #fbe3d8;
+  --ultramar: #2f4bc4;
+  --ultramar-suave: #e3e7f8;
+  --dorado: #e8b41a;
+  --subrayador: rgba(232, 180, 26, 0.42);
+  --ok: #3d8b40;
+  --peligro: #b3261e;
+
+  /* La sombra DURA de contacto: sin desenfoque, crema hundido. En la app
+     es lo que hace que nada flote. En la web, igual. */
+  --contacto: #ded7c2;
+  --sombra-dura: 3px 4px 0 var(--contacto);
+  --sombra-dura-corta: 2px 2.5px 0 var(--contacto);
+  --sombra-dura-alta: 5px 6px 0 var(--contacto);
+
+  /* El relieve heredado de Andarama: lo que se pulsa SUBE, lo que recibe
+     contenido SE HUNDE. */
+  --luz: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --hundido: inset 0 1px 2px rgba(64, 46, 12, 0.09);
+  --relieve: var(--luz), 0 1px 2px rgba(64, 46, 12, 0.1), 0 2px 8px rgba(64, 46, 12, 0.06);
+  --tecla: linear-gradient(180deg, #f4682e 0%, var(--voz) 100%);
+  --tecla-tinta: #fff6ef;
+  --anillo: 0 0 0 3px rgba(224, 80, 42, 0.26);
+
+  /* tipografías: las tres voces de la casa */
+  --fuente: "Baloo 2", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --lectura: "Literata", Georgia, "Times New Roman", serif;
+  --mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* radios */
+  --radio: 12px;
+  --radio-caja: 18px;
+
+  /* muelles con nombre, los mismos de $lib/juguete.ts */
+  --seco: cubic-bezier(0.3, 1.4, 0.6, 1);
+  --sereno: cubic-bezier(0.18, 1.5, 0.32, 1);
+  --muelle: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --ancho: 1080px;
+  --ancho-prosa: 68ch;
+
+  color-scheme: light;
+}
+
+/* La sesión de noche. El papel se vuelve azulado, las pegatinas conservan
+   su color (son de papel, no de luz) y el grano se apaga: sobre tinta no
+   hay grano que valga. */
+:root[data-tema="noche"] {
+  --papel: #191b22;
+  --superficie: #232631;
+  --superficie-2: #2b2f3d;
+  --borde: #3a3d4a;
+  --tinta: #f2edda;
+  --tinta-suave: #a9a48c;
+  --voz: #ff7a4d;
+  --voz-fuerte: #e0502a;
+  --voz-suave: #45281c;
+  --ultramar: #93a5ff;
+  --ultramar-suave: #232a4a;
+  --subrayador: rgba(232, 180, 26, 0.32);
+  --ok: #66bb6a;
+  --peligro: #ef7466;
+  --contacto: rgba(0, 0, 0, 0.5);
+  --luz: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --hundido: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  --relieve: var(--luz), 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --tecla: linear-gradient(180deg, #ff8f61 0%, #f26236 100%);
+  --tecla-tinta: #3a1508;
+  --anillo: 0 0 0 3px rgba(255, 122, 77, 0.3);
+  color-scheme: dark;
+}
+
+/* Mismo bloque para quien sigue al sistema. Duplicado a conciencia: las
+   custom properties no se reutilizan entre selectores condicionales. */
+@media (prefers-color-scheme: dark) {
+  :root[data-tema="sistema"] {
+    --papel: #191b22;
+    --superficie: #232631;
+    --superficie-2: #2b2f3d;
+    --borde: #3a3d4a;
+    --tinta: #f2edda;
+    --tinta-suave: #a9a48c;
+    --voz: #ff7a4d;
+    --voz-fuerte: #e0502a;
+    --voz-suave: #45281c;
+    --ultramar: #93a5ff;
+    --ultramar-suave: #232a4a;
+    --subrayador: rgba(232, 180, 26, 0.32);
+    --ok: #66bb6a;
+    --peligro: #ef7466;
+    --contacto: rgba(0, 0, 0, 0.5);
+    --luz: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    --hundido: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+    --relieve: var(--luz), 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --tecla: linear-gradient(180deg, #ff8f61 0%, #f26236 100%);
+    --tecla-tinta: #3a1508;
+    --anillo: 0 0 0 3px rgba(255, 122, 77, 0.3);
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fuente);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--tinta);
+  background: var(--papel);
+  overflow-x: hidden;
+}
+
+/* El grano del papel: huella del proceso, casi invisible. Capa fija en
+   multiply sobre todo, como en el móvil. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+:root[data-tema="noche"] body::before { opacity: 0; }
+@media (prefers-color-scheme: dark) {
+  :root[data-tema="sistema"] body::before { opacity: 0; }
+}
+
+::selection { background: var(--subrayador); color: var(--tinta); }
+
+a { color: var(--ultramar); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 2.5px solid var(--voz);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+img, svg, video { max-width: 100%; height: auto; }
+
+hr {
+  border: 0;
+  border-top: 2px dashed var(--borde);
+  margin: 2.5rem 0;
+}
+
+/* ── Las tres voces tipográficas ──────────────────────────────────────
+   El grito (Baloo 2 negra), el susurro (mono en versalitas espaciadas) y
+   la lectura (Literata). Son las mismas tres de la app, y son la firma:
+   nada de la casa se escribe fuera de estas tres. */
+
+.grito {
+  font-family: var(--fuente);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 0.98;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.susurro {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin: 0 0 0.8rem;
+  display: block;
+}
+
+.lectura {
+  font-family: var(--lectura);
+  font-weight: 420;
+  line-height: 1.62;
+  font-variation-settings: "opsz" 16;
+}
+
+h1 { font-size: clamp(2.6rem, 7.5vw, 4.6rem); }
+h2 { font-size: clamp(2rem, 5vw, 3rem); }
+h3 { font-size: clamp(1.2rem, 2.6vw, 1.45rem); }
+h1, h2, h3, h4 {
+  font-family: var(--fuente);
+  font-weight: 800;
+  letter-spacing: -0.022em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+p { margin: 0 0 1rem; }
+p:last-child { margin-bottom: 0; }
+
+/* El fluorescente que sigue a la voz: la tercera tinta de la casa. */
+mark, .karaoke {
+  background: var(--subrayador);
+  color: inherit;
+  border-radius: 4px;
+  padding: 0 3px;
+  margin: 0 -3px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+code, kbd {
+  font-family: var(--mono);
+  font-size: 0.86em;
+}
+kbd {
+  background: var(--superficie);
+  border: 1.5px solid var(--borde);
+  border-radius: 7px;
+  padding: 1px 7px;
+  box-shadow: var(--sombra-dura-corta);
+  white-space: nowrap;
+}
+
+.vh {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.envoltura {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding-inline: max(22px, env(safe-area-inset-left));
+}
+.prosa { max-width: var(--ancho-prosa); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

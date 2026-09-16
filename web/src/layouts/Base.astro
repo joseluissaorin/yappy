@@ -1,0 +1,117 @@
+---
+/**
+ * El armazón de toda página: el <head> entero en un solo sitio. Title,
+ * description, canonical, hreflang (autorreferencial y con x-default),
+ * Open Graph completo, tarjeta de X, el banderín de la App Store, las
+ * fuentes precargadas y los datos estructurados.
+ */
+import {
+  absoluta, direccion, hreflangDe, nombreDe, ogLocaleDe, t,
+  IDIOMAS, POR_DEFECTO, type Idioma,
+} from "../i18n";
+import { rutaPagina, type Alternativa } from "../lib/rutas";
+import { ENLACES } from "../lib/datos";
+import Cabecera from "../components/Cabecera.astro";
+import Pie from "../components/Pie.astro";
+import "../styles/papel.css";
+import "../styles/album.css";
+import "../styles/sitio.css";
+
+interface Props {
+  lang: Idioma;
+  title: string;
+  description: string;
+  /** Ruta absoluta desde la raíz, con barra final. */
+  ruta: string;
+  alternativas?: Alternativa[];
+  ogImagen?: string;
+  ogImagenAlt?: string;
+  ogTipo?: "website" | "article";
+  jsonld?: object[];
+  noindex?: boolean;
+}
+
+const {
+  lang, title, description, ruta,
+  alternativas = [{ lang, ruta }],
+  ogImagen = "/og.png",
+  ogImagenAlt,
+  ogTipo = "website",
+  jsonld = [],
+  noindex = false,
+} = Astro.props;
+
+const canonica = absoluta(ruta);
+// x-default manda al inglés: es la puerta que entiende más gente. Si un día
+// el inglés no existe para esta página, cae al español.
+const xDefault = alternativas.find((a) => a.lang === "en")
+  ?? alternativas.find((a) => a.lang === POR_DEFECTO)
+  ?? alternativas[0]!;
+const otrosLocales = alternativas.filter((a) => a.lang !== lang).map((a) => ogLocaleDe(a.lang));
+const dir = direccion(lang);
+---
+
+<!doctype html>
+<html lang={lang} dir={dir} data-tema="sistema">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <link rel="canonical" href={canonica} />
+
+    {alternativas.map((a) => (
+      <link rel="alternate" hreflang={hreflangDe(a.lang)} href={absoluta(a.ruta)} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={absoluta(xDefault.ruta)} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogTipo} />
+    <meta property="og:site_name" content="Yappy" />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:locale" content={ogLocaleDe(lang)} />
+    {otrosLocales.map((l) => <meta property="og:locale:alternate" content={l} />)}
+    <meta property="og:image" content={absoluta(ogImagen)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImagenAlt ?? t(lang, "meta.og_alt")} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={absoluta(ogImagen)} />
+
+    <meta name="theme-color" content="#f7f2e7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#191b22" media="(prefers-color-scheme: dark)" />
+    <meta name="apple-itunes-app" content={`app-id=${ENLACES.appStoreId}`} />
+    <meta name="author" content="José Luis Saorín Ferrer" />
+
+    <link rel="icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="manifest" href="/manifiesto.webmanifest" />
+
+    <link rel="preload" href="/fonts/Baloo2-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/SpaceMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+    <slot name="head" />
+    {jsonld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} is:inline />)}
+  </head>
+
+  <body>
+    <a class="saltar" href="#contenido">{t(lang, "comunes.saltar")}</a>
+    <Cabecera lang={lang} ruta={ruta} alternativas={alternativas} />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Pie lang={lang} />
+    <script is:inline>
+      // El tema, antes de pintar: quien eligió noche no ve un fogonazo de
+      // papel. Tres estados, como en la trastienda de la app.
+      try {
+        var g = localStorage.getItem("yappy.tema");
+        if (g === "papel" || g === "noche" || g === "sistema") {
+          document.documentElement.dataset.tema = g;
+        }
+      } catch (e) {}
+    </script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+# Precios leídos en la ficha de la App Store de «Voice Dream - Natural Reader»
+# (id496177674, tienda de Estados Unidos, septiembre de 2026). La ficha lista
+# una suscripción mensual de 4,99 $ y anuales de 39,99, 59,99 y 79,99 $ según el
+# plan, más voces sueltas de 4,99 $. No hay página de precios pública.
+nombre: Voice Dream Reader
+web: https://www.voicedream.com
+tipo: app
+gratis_detalle:
+  es: >-
+    No hay plan gratuito permanente: su propia ficha dice que hace falta una
+    suscripción para usar la aplicación y que se ofrece una prueba gratuita a
+    los usuarios nuevos. Quien compró la aplicación antes del cambio a
+    suscripción conserva lo que tenía.
+  en: >-
+    There is no permanent free tier: the App Store listing states that a
+    subscription is required to use the app and that new users get a free
+    trial. People who bought the app before the move to subscriptions keep
+    what they had.
+precio_desde: 4,99 $/mes
+precio_anual: entre 39,99 y 79,99 $/año según el plan
+local: parcial
+sin_cuenta: parcial
+sin_conexion: parcial
+codigo_abierto: false
+tarifa_por_caracter: false
+idiomas: 27 con las voces del sistema, más de 30 con las voces de pago
+formatos: PDF, EPUB sin DRM, Word, PowerPoint, RTF, texto, DAISY, Bookshare, web, MP3
+audiolibro_capitulos: false
+escritorio: parcial
+descripcion:
+  es: >-
+    Lector de documentos para iPhone, iPad y Mac, premiado con un Apple Design
+    Award y muy arraigado entre lectores con dislexia y baja visión. Usa las
+    voces del sistema, que funcionan sin conexión, y ofrece además voces de
+    pago y voces de IA en la nube.
+  en: >-
+    A document reader for iPhone, iPad and Mac, an Apple Design Award winner
+    with deep roots among readers with dyslexia and low vision. It uses the
+    system voices, which work offline, and adds paid voices and cloud AI voices.
+gana_en:
+  es: >-
+    Gana en accesibilidad: es probablemente la aplicación mejor pensada para
+    lectores con dislexia o baja visión, con VoiceOver, braille, control por
+    conmutadores, diccionario de pronunciación propio, resaltado palabra a
+    palabra y modos de lectura como el dedo lector. Gana también en formatos
+    difíciles, DAISY y Bookshare incluidos, en anotaciones exportables y en
+    sincronización de biblioteca por iCloud.
+  en: >-
+    It wins on accessibility: it is arguably the best designed app for readers
+    with dyslexia or low vision, with VoiceOver, braille, switch control, a
+    custom pronunciation dictionary, word-by-word highlighting and reading modes
+    such as finger reading. It also wins on awkward formats, DAISY and Bookshare
+    among them, on exportable annotations and on iCloud library sync.
+verificado: true
+fecha_datos: "2026-09"

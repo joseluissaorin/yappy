@@ -1,0 +1,48 @@
+# Precios y límites de https://elevenreader.io/pricing (septiembre de 2026).
+nombre: ElevenReader
+web: https://elevenreader.io
+tipo: saas
+gratis_detalle:
+  es: >-
+    Diez horas de texto a audio al mes, unas cuatrocientas páginas según su
+    propia página, con más de mil voces y una biblioteca de audiolibros
+    gratuitos. Las horas no consumidas caducan cada mes.
+  en: >-
+    Ten hours of text to audio a month, roughly four hundred pages by their own
+    count, with over a thousand voices and a library of free audiobooks. Unused
+    hours expire at the end of each month.
+precio_desde: 11 $/mes
+precio_anual: 99 $/año (8,25 $/mes)
+local: false
+sin_cuenta: false
+sin_conexion: parcial
+codigo_abierto: false
+tarifa_por_caracter: true
+idiomas: más de 30
+formatos: PDF, EPUB, artículos web, texto pegado
+audiolibro_capitulos: false
+escritorio: parcial
+descripcion:
+  es: >-
+    El lector de ElevenLabs, apoyado en el motor de voz que popularizó la
+    síntesis expresiva. Convierte documentos y artículos en audio en la nube y
+    los sincroniza entre el móvil y la web.
+  en: >-
+    ElevenLabs' own reader, built on the speech engine that made expressive
+    synthesis mainstream. It turns documents and articles into audio in the
+    cloud and syncs them between phone and web.
+gana_en:
+  es: >-
+    Gana en calidad de voz: el motor de ElevenLabs sigue siendo la referencia en
+    entonación y emoción, y ninguna voz que quepa en un teléfono se le acerca.
+    Gana también en catálogo, con más de doscientos mil audiolibros de pago y
+    miles gratuitos incluidos en la suscripción, en clonación de voz propia y en
+    precio anual, que es de los más bajos del sector.
+  en: >-
+    It wins on voice quality: the ElevenLabs engine is still the benchmark for
+    intonation and emotion, and no voice small enough to fit on a phone comes
+    close. It also wins on catalogue, with over two hundred thousand paid
+    audiobooks and thousands of free ones inside the subscription, on custom
+    voice cloning, and on annual price, which is among the lowest around.
+verificado: true
+fecha_datos: "2026-09"

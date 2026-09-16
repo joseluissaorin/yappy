@@ -1,0 +1,43 @@
+---
+import { render } from "astro:content";
+import Interior from "../layouts/Interior.astro";
+import Tienda from "../components/Tienda.astro";
+import { t, type Idioma } from "../i18n";
+import { rutaPagina, type RutaCuento } from "../lib/rutas";
+import { migas, persona, relato } from "../lib/jsonld";
+
+interface Props { ruta: RutaCuento }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const c = ruta.entrada;
+const { Content } = await render(c);
+const mig = [
+  { nombre: t(lang, "nav.cuentos"), ruta: rutaPagina(lang, "cuentos") },
+  { nombre: c.data.title, ruta: ruta.ruta },
+];
+---
+<Interior
+  lang={lang}
+  title={`${c.data.title} · ${c.data.autor}`}
+  description={c.data.description}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={c.data.title}
+  susurro={`${c.data.autor} · ${c.data.anio}`}
+  migas={mig}
+  ogTipo="article"
+  jsonld={[
+    persona(),
+    migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig]),
+    relato({ lang, title: c.data.title, autor: c.data.autor, anio: c.data.anio, ruta: ruta.ruta, palabras: c.data.palabras }),
+  ]}
+>
+  <article class="articulo">
+    <div class="cuerpo"><Content /></div>
+    <div class="caja" style="margin-top:3rem;text-align:center">
+      <span class="etiqueta-caja">{t(lang, "cuentos.dominio_publico")}</span>
+      <p style="margin:0 0 1.2rem;color:var(--tinta-suave)">{t(lang, "cuentos.entradilla")}</p>
+      <Tienda lang={lang} centrado />
+    </div>
+  </article>
+</Interior>

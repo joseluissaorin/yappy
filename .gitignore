@@ -59,3 +59,9 @@ marketing/output/
 marketing/screenshots/
 marketing/screenshots-ipad/
 web/.wrangler/
+
+# La web nueva (Astro)
+web/node_modules/
+web/dist/
+web/.astro/
+web/.wrangler/

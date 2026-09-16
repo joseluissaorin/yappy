@@ -1,0 +1,80 @@
+---
+import Interior from "../layouts/Interior.astro";
+import GuionDemo from "../components/GuionDemo.svelte";
+import Pegatina from "../components/Pegatina.astro";
+import { t, tv, type Idioma } from "../i18n";
+import { rutaPagina, type RutaPagina } from "../lib/rutas";
+import { IDIOMAS as LENGUAS, MOTOR } from "../lib/datos";
+import { migas, persona, preguntas as faqLd } from "../lib/jsonld";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const oficios = tv<{ titulo: string; texto: string }[]>(lang, "guionizador.oficios");
+const faq = tv<{ q: string; a: string }[]>(lang, "guionizador.faq") ?? [];
+const seis = ["es", "en", "fr", "de", "it", "pt"];
+const mig = [{ nombre: t(lang, "nav.guionizador"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "guionizador.title")}
+  description={t(lang, "guionizador.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "guionizador.h1")}
+  entradilla={t(lang, "portada.guion_entradilla").replace(/<[^>]+>/g, "")}
+  susurro={t(lang, "portada.guion_susurro")}
+  migas={mig}
+  jsonld={[
+    persona(),
+    migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig]),
+    ...(faq.length ? [faqLd(faq)] : []),
+  ]}
+>
+  <section class="seccion" style="padding-top:0">
+    <div class="caja">
+      <span class="etiqueta-caja">{t(lang, "nav.guionizador")}</span>
+      <p class="susurro" style="margin-bottom:1rem">{t(lang, "portada.guion_pruebalo")}</p>
+      <GuionDemo
+        client:visible
+        lang={lang}
+        ejemplo={t(lang, "portada.guion_ejemplo")}
+        marcador={t(lang, "portada.guion_marcador")}
+        boton={t(lang, "portada.guion_boton")}
+        espera={t(lang, "portada.guion_espera")}
+        fallo={t(lang, "portada.guion_fallo")}
+        idiomas={LENGUAS.filter((l) => seis.includes(l.codigo)).map((l) => ({ codigo: l.codigo, nombre: l.endonimo }))}
+      />
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="seccion-cabeza"><h2 class="grito">{t(lang, "guionizador.oficios_titulo")}</h2></div>
+    <div class="rejilla rejilla-3">
+      {oficios.map((o, i) => (
+        <div class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+          <h3 style="font-size:1.08rem">{o.titulo}</h3>
+          <p style="color:var(--tinta-suave);margin:0;font-size:0.96rem">{o.texto}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {faq.length > 0 && (
+    <section class="seccion">
+      <div class="prosa">
+        <h2 class="grito" style="margin-bottom:1.2rem">{t(lang, "preguntas_comunes.titulo")}</h2>
+        <div class="preguntas">
+          {faq.map((p) => (
+            <details class="pregunta"><summary>{p.q}</summary><div set:html={p.a}></div></details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="seccion" style="text-align:center">
+    <h2 class="grito">{t(lang, "guionizador.cierre")}</h2>
+    <p style="margin-top:1.4rem"><a class="tecla" href={rutaPagina(lang, "portada")}>{t(lang, "comunes.escuchar_muestra")}</a></p>
+  </section>
+</Interior>

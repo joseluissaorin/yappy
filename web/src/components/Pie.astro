@@ -1,0 +1,58 @@
+---
+/**
+ * El pie, con su colofón. La página tiene final, como lo impreso: esto no
+ * es un feed. Y el loro cruza por abajo de vez en cuando, sin molestar.
+ */
+import { t, type Idioma } from "../i18n";
+import { rutaPagina, rutaRss, ALCANCE } from "../lib/rutas";
+import { ENLACES, FECHAS } from "../lib/datos";
+import Loro from "./Loro.svelte";
+
+interface Props { lang: Idioma }
+const { lang } = Astro.props;
+const hayBlog = (ALCANCE.blog as readonly string[]).includes(lang);
+---
+
+<footer class="pie">
+  <div class="envoltura">
+    <div class="colofon" style="margin-top:2rem">
+      <div class="pie-rejilla" style="text-align:start;padding-top:2.5rem">
+        <div>
+          <h2>{t(lang, "pie.producto")}</h2>
+          <ul>
+            <li><a href={rutaPagina(lang, "uso")}>{t(lang, "nav.uso")}</a></li>
+            <li><a href={rutaPagina(lang, "voces")}>{t(lang, "nav.voces")}</a></li>
+            <li><a href={rutaPagina(lang, "guionizador")}>{t(lang, "nav.guionizador")}</a></li>
+            <li><a href={rutaPagina(lang, "precios")}>{t(lang, "nav.precios")}</a></li>
+            <li><a href={rutaPagina(lang, "descargas")}>{t(lang, "nav.descargas")}</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>{t(lang, "pie.leer")}</h2>
+          <ul>
+            {hayBlog && <li><a href={rutaPagina(lang, "blog")}>{t(lang, "nav.blog")}</a></li>}
+            {hayBlog && <li><a href={rutaPagina(lang, "cuentos")}>{t(lang, "nav.cuentos")}</a></li>}
+            <li><a href={rutaPagina(lang, "accesibilidad")}>{t(lang, "nav.accesibilidad")}</a></li>
+            <li><a href={rutaPagina(lang, "preguntas")}>{t(lang, "nav.preguntas")}</a></li>
+            {hayBlog && <li><a href={rutaRss(lang)}>RSS</a></li>}
+          </ul>
+        </div>
+        <div>
+          <h2>{t(lang, "pie.casa")}</h2>
+          <ul>
+            <li><a href={rutaPagina(lang, "privacidad")}>{t(lang, "nav.privacidad")}</a></li>
+            <li><a href={ENLACES.github} rel="noopener">{t(lang, "pie.codigo")}</a></li>
+            <li><a href={ENLACES.licencia} rel="noopener">{t(lang, "pie.licencia")}</a></li>
+            <li><a href={ENLACES.novedades} rel="noopener">{t(lang, "pie.novedades")}</a></li>
+            <li><a href={ENLACES.autor} rel="noopener">José Luis Saorín</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="pie-firma" set:html={t(lang, "pie.firma")}></p>
+    </div>
+  </div>
+  <div style="position:relative;height:42px;overflow:hidden">
+    <span class="paseo"><Loro size={30} tinta="#e0502a" andando /></span>
+    <span class="paseo segundo"><Loro size={22} tinta="#2f4bc4" andando /></span>
+  </div>
+</footer>

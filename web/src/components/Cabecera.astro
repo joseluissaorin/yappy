@@ -1,0 +1,78 @@
+---
+/**
+ * La cabecera: el membrete de letras de recorte, la fila de secciones y
+ * dos plegables (menú e idiomas). Sin una línea de JavaScript: <details>
+ * basta, y una web que promete funcionar sin nube puede empezar por
+ * funcionar sin scripts.
+ */
+import { IDIOMAS, nombreDe, slug, t, type Idioma } from "../i18n";
+import { rutaPagina, type Alternativa } from "../lib/rutas";
+import { ENLACES } from "../lib/datos";
+import Loro from "./Loro.svelte";
+
+interface Props { lang: Idioma; ruta: string; alternativas: Alternativa[] }
+const { lang, ruta, alternativas } = Astro.props;
+
+const porIdioma = new Map(alternativas.map((a) => [a.lang, a.ruta]));
+const secciones = ["uso", "guionizador", "voces", "precios", "preguntas"] as const;
+const esActual = (r: string) => (ruta === r ? "page" : undefined);
+---
+
+<header class="cabecera">
+  <div class="cabecera-int">
+    <a class="marca" href={rutaPagina(lang, "portada")} aria-label={t(lang, "comunes.marca_aria")}>
+      <Loro size={38} tinta="#2f4bc4" etiqueta="" />
+      <span class="marca-palabra" aria-hidden="true">
+        <span>y</span><span>a</span><span>p</span><span>p</span><span>y</span>
+      </span>
+      <span class="vh">Yappy</span>
+    </a>
+
+    <nav class="nav-lineal" aria-label={t(lang, "comunes.secciones")}>
+      {secciones.map((s) => (
+        <a href={rutaPagina(lang, s)} aria-current={esActual(rutaPagina(lang, s))}>
+          {t(lang, `nav.${s}`)}
+        </a>
+      ))}
+      <a href={rutaPagina(lang, "blog")}>{t(lang, "nav.blog")}</a>
+    </nav>
+
+    <a class="tecla tecla-cabecera" href={ENLACES.appStore} style="padding:9px 18px;font-size:0.95rem">
+      {t(lang, "comunes.descargar")}
+    </a>
+
+    <details class="plegable menu-movil">
+      <summary aria-label={t(lang, "comunes.menu")}>
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </summary>
+      <nav class="desplegable" aria-label={t(lang, "comunes.secciones")}>
+        <a href={ENLACES.appStore} style="color:var(--voz);font-weight:800">{t(lang, "comunes.descargar_gratis")}</a>
+        <div class="separador"></div>
+        {secciones.map((s) => <a href={rutaPagina(lang, s)}>{t(lang, `nav.${s}`)}</a>)}
+        <a href={rutaPagina(lang, "blog")}>{t(lang, "nav.blog")}</a>
+        <a href={rutaPagina(lang, "descargas")}>{t(lang, "nav.descargas")}</a>
+        <a href={rutaPagina(lang, "accesibilidad")}>{t(lang, "nav.accesibilidad")}</a>
+        <div class="separador"></div>
+        <a href={ENLACES.github} rel="noopener">GitHub</a>
+      </nav>
+    </details>
+
+    <details class="plegable">
+      <summary><span class="vh">{t(lang, "comunes.idioma")}: </span>{lang}</summary>
+      <div class="desplegable">
+        <div class="idiomas-lista">
+          {IDIOMAS.map((l) => (
+            <a
+              href={porIdioma.get(l) ?? rutaPagina(l, "portada")}
+              hreflang={l}
+              lang={l}
+              aria-current={l === lang ? "true" : undefined}
+            >{nombreDe(l)}</a>
+          ))}
+        </div>
+      </div>
+    </details>
+  </div>
+</header>

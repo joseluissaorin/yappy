@@ -1,0 +1,42 @@
+---
+import Interior from "../layouts/Interior.astro";
+import { t, type Idioma } from "../i18n";
+import { postsPublicados, rutaPost, rutaPagina, rutaRss, type RutaPagina } from "../lib/rutas";
+import { migas, persona } from "../lib/jsonld";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const posts = (await postsPublicados()).filter((p) => p.data.lang === lang);
+const fecha = new Intl.DateTimeFormat(lang, { dateStyle: "long" });
+const mig = [{ nombre: t(lang, "nav.blog"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "blog.title")}
+  description={t(lang, "blog.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "blog.h1")}
+  entradilla={t(lang, "blog.entradilla")}
+  migas={mig}
+  jsonld={[persona(), migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig])]}
+>
+  <link slot="head" rel="alternate" type="application/rss+xml" title={t(lang, "blog.title")} href={rutaRss(lang)} />
+  <section class="seccion" style="padding-top:0">
+    {posts.length === 0 ? (
+      <p style="color:var(--tinta-suave)">{t(lang, "blog.vacio")}</p>
+    ) : (
+      <ul class="entradas">
+        {posts.map((p, i) => (
+          <li class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+            <span class="susurro">{p.data.racimo}</span>
+            <h2><a href={rutaPost(lang, p.data.slug)}>{p.data.title}</a></h2>
+            <p>{p.data.description}</p>
+            <span class="susurro" style="margin:0">{fecha.format(p.data.fecha)}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</Interior>

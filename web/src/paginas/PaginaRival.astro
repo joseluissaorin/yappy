@@ -1,0 +1,114 @@
+---
+/**
+ * Yappy frente a X. La prosa no está aquí: los datos duros vienen del YAML
+ * de src/content/rivales/, así que un cambio de precio actualiza todas las
+ * páginas a la vez y en todos los idiomas.
+ *
+ * La fila «dónde gana» es obligatoria. Una comparativa que gana siempre no
+ * se la cree nadie, y además no convierte.
+ */
+import { getEntry } from "astro:content";
+import Interior from "../layouts/Interior.astro";
+import Tienda from "../components/Tienda.astro";
+import { t, type Idioma } from "../i18n";
+import { rutaPagina, rutaRival, RIVALES, type RutaRival } from "../lib/rutas";
+import { CUERDA, MOTOR } from "../lib/datos";
+import { migas, persona } from "../lib/jsonld";
+
+interface Props { ruta: RutaRival }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const ficha = await getEntry("rivales", ruta.rival);
+if (ficha == null) throw new Error(`Rival desconocido: ${ruta.rival}`);
+const c = ficha.data;
+
+type Valor = boolean | "parcial" | null;
+const celda = (v: Valor, alReves = false) =>
+  v === true ? { clase: alReves ? "no" : "si", texto: t(lang, "comunes.si") }
+  : v === false ? { clase: alReves ? "si" : "no", texto: t(lang, "comunes.no") }
+  : v === "parcial" ? { clase: "parcial", texto: t(lang, "comunes.parcial") }
+  : { clase: "parcial", texto: t(lang, "comunes.sin_datos") };
+
+const bilingue = (r: Record<string, string>) => r[lang] ?? r.en ?? r.es ?? "";
+
+const filas = [
+  { nombre: t(lang, "vs.gratis"), yappy: { clase: "si", texto: t(lang, "vs.yappy_gratis") }, otro: { clase: "", texto: bilingue(c.gratis_detalle) } },
+  { nombre: t(lang, "vs.precio"), yappy: { clase: "", texto: t(lang, "vs.yappy_precio") }, otro: { clase: "", texto: [c.precio_desde, c.precio_anual].filter(Boolean).join(" · ") || t(lang, "comunes.sin_datos") } },
+  { nombre: t(lang, "vs.local"), yappy: celda(true), otro: celda(c.local) },
+  { nombre: t(lang, "vs.sin_cuenta"), yappy: celda(true), otro: celda(c.sin_cuenta) },
+  { nombre: t(lang, "vs.sin_conexion"), yappy: celda(true), otro: celda(c.sin_conexion) },
+  // Aquí el «no» es la buena noticia, así que los colores van al revés.
+  { nombre: t(lang, "vs.tarifa"), yappy: celda(false, true), otro: celda(c.tarifa_por_caracter, true) },
+  { nombre: t(lang, "vs.idiomas"), yappy: { clase: "", texto: String(MOTOR.idiomas) }, otro: { clase: "", texto: c.idiomas ?? t(lang, "comunes.sin_datos") } },
+  { nombre: t(lang, "vs.formatos"), yappy: { clase: "", texto: "PDF, EPUB, DOCX, ODT, RTF, TXT, MD, HTML, PPTX, XLSX" }, otro: { clase: "", texto: c.formatos ?? t(lang, "comunes.sin_datos") } },
+  { nombre: t(lang, "vs.audiolibro"), yappy: { clase: "si", texto: ".m4b" }, otro: celda(c.audiolibro_capitulos) },
+  { nombre: t(lang, "vs.escritorio"), yappy: celda(true), otro: celda(c.escritorio) },
+  { nombre: t(lang, "vs.codigo_abierto"), yappy: { clase: "si", texto: "MIT" }, otro: celda(c.codigo_abierto) },
+];
+
+const titulo = `${t(lang, "vs.titulo", { nombre: c.nombre })}`;
+const seo = lang === "en"
+  ? `Yappy vs ${c.nombre}: a free, offline alternative`
+  : `Yappy frente a ${c.nombre}: la alternativa local y gratis`;
+const desc = lang === "en"
+  ? `${c.nombre} against Yappy, feature by feature: price, on-device voice, offline use, languages and formats. Checked ${c.fecha_datos}.`
+  : `${c.nombre} frente a Yappy, punto por punto: precio, voz en el dispositivo, uso sin conexión, idiomas y formatos. Datos de ${c.fecha_datos}.`;
+const mig = [{ nombre: c.nombre, ruta: ruta.ruta }];
+const otrosRivales = RIVALES.filter((r) => r !== ruta.rival);
+---
+<Interior
+  lang={lang}
+  title={seo}
+  description={desc}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={seo}
+  entradilla={bilingue(c.descripcion)}
+  susurro={c.nombre}
+  migas={mig}
+  jsonld={[persona(), migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig])]}
+>
+  <section class="seccion" style="padding-top:0">
+    <h2 class="grito" style="margin-bottom:1.4rem;font-size:1.7rem">{titulo}</h2>
+    <div class="tabla-envoltura">
+      <table class="comparativa">
+        <thead>
+          <tr>
+            <th scope="col">{t(lang, "vs.caracteristica")}</th>
+            <th scope="col" class="yappy">Yappy</th>
+            <th scope="col">{c.nombre}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filas.map((f) => (
+            <tr>
+              <th scope="row">{f.nombre}</th>
+              <td class:list={["yappy", f.yappy.clase]}>{f.yappy.texto}</td>
+              <td class={f.otro.clase}>{f.otro.texto}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="susurro" style="margin-top:1rem">
+      {t(lang, "vs.verificado", { fecha: c.fecha_datos })} {t(lang, "vs.sin_verificar")}
+      <a href={c.web} rel="nofollow noopener">{t(lang, "vs.ver_web")}</a>
+    </p>
+  </section>
+
+  <section class="seccion">
+    <div class="caja prosa" style="max-width:none">
+      <span class="etiqueta-caja">{t(lang, "vs.gana_en", { nombre: c.nombre })}</span>
+      <p style="margin:0;font-size:1.06rem">{bilingue(c.gana_en)}</p>
+    </div>
+  </section>
+
+  <section class="seccion" style="text-align:center">
+    <Tienda lang={lang} centrado />
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:2rem">
+      {otrosRivales.map((r) => (
+        <a class="boton" href={rutaRival(lang, r)}>{r.replace("-", " ")}</a>
+      ))}
+    </div>
+  </section>
+</Interior>

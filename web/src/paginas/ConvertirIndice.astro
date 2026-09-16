@@ -1,0 +1,62 @@
+---
+/**
+ * El vestíbulo de los formatos. Existe por dos razones: da un escalón de
+ * migas a las seis páginas de abajo, y recoge a quien busca en general
+ * («convertir texto a voz») antes de saber qué formato tiene delante.
+ */
+import Interior from "../layouts/Interior.astro";
+import Pegatina from "../components/Pegatina.astro";
+import Tienda from "../components/Tienda.astro";
+import { t, type Idioma } from "../i18n";
+import { rutaPagina, rutaConvertir, FORMATOS, type RutaPagina } from "../lib/rutas";
+import { migas, persona } from "../lib/jsonld";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+
+const piezas = [
+  { f: "pdf", forma: "sello", tinta: "var(--t5)", giro: 4 },
+  { f: "epub", forma: "escudo", tinta: "var(--t3)", giro: -5 },
+  { f: "word", forma: "hexagono", tinta: "var(--t6)", giro: 3 },
+  { f: "articulos", forma: "nube", tinta: "var(--t8)", giro: -3 },
+  { f: "videos", forma: "rombo", tinta: "var(--t2)", giro: 6 },
+  { f: "notas", forma: "flor", tinta: "var(--t7)", giro: -4 },
+] as const;
+const mig = [{ nombre: t(lang, "convertir.h1"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "convertir.title")}
+  description={t(lang, "convertir.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "convertir.h1")}
+  entradilla={t(lang, "convertir.entradilla")}
+  susurro={t(lang, "portada.formatos_susurro")}
+  migas={mig}
+  jsonld={[persona(), migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig])]}
+>
+  <section class="seccion" style="padding-top:0">
+    <div class="rejilla rejilla-2">
+      {piezas.map((p, i) => (
+        <a class="hoja" href={rutaConvertir(lang, p.f)}
+           style={`--giro:${[-2, 1.6, -1, 2.2, -2.6, 1.2][i]}deg;display:flex;gap:18px;align-items:flex-start`}>
+          <Pegatina forma={p.forma} tinta={p.tinta} giro={p.giro} tamano={84} cuerpo="0.74rem">
+            {t(lang, `convertir.formatos.${p.f}.nombre`)}
+          </Pegatina>
+          <span>
+            <strong style="display:block;font-size:1.14rem;margin-bottom:0.3rem">
+              {t(lang, `convertir.formatos.${p.f}.h1`)}
+            </strong>
+            <span style="color:var(--tinta-suave);font-size:0.95rem">
+              {t(lang, `convertir.formatos.${p.f}.description`)}
+            </span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="seccion" style="text-align:center"><Tienda lang={lang} centrado /></section>
+</Interior>

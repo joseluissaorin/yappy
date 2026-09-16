@@ -1,0 +1,58 @@
+---
+import Interior from "../layouts/Interior.astro";
+import Loro from "../components/Loro.svelte";
+import Aparato from "../components/Aparato.astro";
+import { t, type Idioma } from "../i18n";
+import { rutaPagina, rutaIdioma, ALCANCE, type RutaPagina } from "../lib/rutas";
+import { IDIOMAS as LENGUAS, MOTOR, VOCES } from "../lib/datos";
+import { migas, persona } from "../lib/jsonld";
+import { capturaDe } from "../lib/capturas";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const hayIdiomas = (ALCANCE.idiomas as readonly string[]).includes(lang);
+const mig = [{ nombre: t(lang, "nav.voces"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "voces.title")}
+  description={t(lang, "voces.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "voces.h1")}
+  entradilla={t(lang, "voces.entradilla")}
+  migas={mig}
+  jsonld={[persona(), migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig])]}
+>
+  <section class="seccion" style="padding-top:0">
+    <p class="susurro">{t(lang, "voces.elige")}</p>
+    <div class="rejilla rejilla-4" style="margin-top:1.4rem">
+      {VOCES.map((v, i) => (
+        <div class:list={["hoja", `torcido-${(i % 5) + 1}`]} style="text-align:center">
+          <Loro size={62} tinta={v.tinta} etiqueta={v.nombre} />
+          <h3 style="margin:0.6rem 0 0;font-size:1.1rem">{v.nombre}</h3>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="seccion-cabeza">
+      <h2 class="grito">{t(lang, "voces.idiomas_titulo")}</h2>
+      <p>{t(lang, "voces.idiomas_entradilla")}</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:9px">
+      {LENGUAS.map((l) => (
+        hayIdiomas
+          ? <a class="etiqueta" href={rutaIdioma(lang, l.codigo)} style="--giro:0deg" lang={l.bcp}>{l.endonimo}</a>
+          : <span class="etiqueta" style="--giro:0deg" lang={l.bcp}>{l.endonimo}</span>
+      ))}
+    </div>
+  </section>
+
+  <section class="seccion" style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap">
+    <Aparato src={capturaDe(lang, "pajaros")} alt={t(lang, "voces.elige")} giro={-2} ancho={250} />
+    <Aparato src={capturaDe(lang, "hola")} alt={t(lang, "voces.h1")} giro={2.4} ancho={250} />
+  </section>
+</Interior>

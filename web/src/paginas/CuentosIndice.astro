@@ -1,0 +1,37 @@
+---
+import { getCollection } from "astro:content";
+import Interior from "../layouts/Interior.astro";
+import { t, type Idioma } from "../i18n";
+import { rutaCuento, rutaPagina, type RutaPagina } from "../lib/rutas";
+import { migas, persona } from "../lib/jsonld";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const cuentos = (await getCollection("cuentos")).sort((a, b) => a.data.anio - b.data.anio);
+const mig = [{ nombre: t(lang, "nav.cuentos"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "cuentos.title")}
+  description={t(lang, "cuentos.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "cuentos.h1")}
+  entradilla={t(lang, "cuentos.entradilla")}
+  migas={mig}
+  jsonld={[persona(), migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig])]}
+>
+  <section class="seccion" style="padding-top:0">
+    <ul class="entradas">
+      {cuentos.map((c, i) => (
+        <li class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+          <span class="susurro">{c.data.autor} · {c.data.anio} · {c.data.lang}</span>
+          <h2><a href={rutaCuento(c.data.lang, c.data.slug)} lang={c.data.lang}>{c.data.title}</a></h2>
+          <p>{c.data.description}</p>
+          <span class="susurro" style="margin:0">{t(lang, "comunes.minutos", { n: c.data.minutos })}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Interior>

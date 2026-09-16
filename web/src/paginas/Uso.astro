@@ -1,0 +1,92 @@
+---
+import Interior from "../layouts/Interior.astro";
+import Etiqueta from "../components/Etiqueta.astro";
+import Aparato from "../components/Aparato.astro";
+import Tienda from "../components/Tienda.astro";
+import { t, tv, type Idioma } from "../i18n";
+import { rutaPagina, type RutaPagina } from "../lib/rutas";
+import { ATAJOS } from "../lib/datos";
+import { migas, persona, comoSeHace } from "../lib/jsonld";
+import { capturaDe } from "../lib/capturas";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const secciones = tv<{ id: string; titulo: string; texto: string; puntos?: string[] }[]>(lang, "uso.secciones") ?? [];
+const pasos = tv<{ titulo: string; texto: string }[]>(lang, "uso.pasos") ?? [];
+const mig = [{ nombre: t(lang, "nav.uso"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "uso.title")}
+  description={t(lang, "uso.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "uso.h1")}
+  entradilla={t(lang, "uso.entradilla")}
+  migas={mig}
+  jsonld={[
+    persona(),
+    migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig]),
+    ...(pasos.length ? [comoSeHace({ lang, nombre: t(lang, "uso.h1"), descripcion: t(lang, "uso.description"), pasos: pasos.map((p) => ({ nombre: p.titulo, texto: p.texto })) })] : []),
+  ]}
+>
+  {pasos.length > 0 && (
+    <section class="seccion" style="padding-top:0">
+      <div class="rejilla rejilla-4">
+        {pasos.map((p, i) => (
+          <div class:list={["caja", `torcido-${(i % 5) + 1}`]}>
+            <span class="etiqueta-caja">{`0${i + 1}`}</span>
+            <h3 style="margin-top:0">{p.titulo}</h3>
+            <p style="color:var(--tinta-suave);margin:0">{p.texto}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="seccion" style="display:grid;gap:22px;grid-template-columns:1fr">
+    <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
+      <Aparato src={capturaDe(lang, "compartir")} alt={t(lang, "uso.h1")} giro={-2.5} ancho={230} />
+      <Aparato src={capturaDe(lang, "cinta")} alt={t(lang, "uso.h1")} giro={2} ancho={230} />
+      <Aparato src={capturaDe(lang, "trastienda")} alt={t(lang, "uso.h1")} giro={-1.4} ancho={230} />
+    </div>
+  </section>
+
+  {secciones.map((s, i) => (
+    <section class="seccion" id={s.id}>
+      <div class="seccion-cabeza">
+        <h2 class="grito">{s.titulo}</h2>
+      </div>
+      <div class="prosa" style="font-size:1.06rem">
+        <p set:html={s.texto}></p>
+        {s.puntos && (
+          <ul style="margin-top:1rem">
+            {s.puntos.map((p) => <li set:html={p}></li>)}
+          </ul>
+        )}
+      </div>
+      {s.id === "ordenador" && (
+        <div class="tabla-envoltura" style="margin-top:1.6rem;max-width:620px">
+          <table class="comparativa">
+            <thead><tr><th>{t(lang, "uso.atajo")}</th><th>macOS</th><th>Windows · Linux</th></tr></thead>
+            <tbody>
+              {ATAJOS.map((a) => (
+                <tr>
+                  <th scope="row">{t(lang, `uso.atajo_${a.que}`)}</th>
+                  <td><kbd>{a.mac}</kbd></td>
+                  <td><kbd>{a.pc}</kbd></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  ))}
+
+  <section class="seccion" style="text-align:center">
+    <h2 class="grito" style="margin-bottom:1.2rem">{t(lang, "uso.cierre")}</h2>
+    <Tienda lang={lang} centrado />
+  </section>
+</Interior>

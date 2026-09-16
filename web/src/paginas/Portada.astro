@@ -1,0 +1,260 @@
+---
+/**
+ * La portada. Su trabajo es que alguien que llega buscando «text to speech»
+ * entienda en diez segundos qué es esto, lo OIGA, y se lo lleve.
+ *
+ * El orden no es decorativo: el sonido va arriba del todo porque en una app
+ * de voz la conversión ocurre cuando suena, no cuando se lee. Después, por
+ * orden, las tres objeciones (cuánto cuesta, dónde va mi texto, habla lo
+ * mío) y solo entonces el oficio.
+ */
+import Base from "../layouts/Base.astro";
+import Pegatina from "../components/Pegatina.astro";
+import Etiqueta from "../components/Etiqueta.astro";
+import Aparato from "../components/Aparato.astro";
+import Loro from "../components/Loro.svelte";
+import Demo from "../components/Demo.svelte";
+import GuionDemo from "../components/GuionDemo.svelte";
+import { t, tv, type Idioma } from "../i18n";
+import { rutaPagina, rutaConvertir, rutaIdioma, FORMATOS, ALCANCE, type RutaPagina } from "../lib/rutas";
+import { CUERDA, ENLACES, IDIOMAS as LENGUAS, MOTOR, VOCES } from "../lib/datos";
+import { aplicacion, persona, sitioWeb } from "../lib/jsonld";
+import { capturaDe } from "../lib/capturas";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+
+const momentos = tv<{ titulo: string; texto: string }[]>(lang, "portada.momentos");
+const porque = tv<{ titulo: string; texto: string }[]>(lang, "portada.porque");
+const hayIdiomas = (ALCANCE.idiomas as readonly string[]).includes(lang);
+
+// Las seis puertas de entrada, con su tinta y su forma. Vecinas nunca
+// repiten tinta ni forma: es la regla 2 de la casa.
+const puertas = [
+  { f: "pdf", forma: "sello", tinta: "var(--t5)" },
+  { f: "epub", forma: "escudo", tinta: "var(--t3)" },
+  { f: "word", forma: "hexagono", tinta: "var(--t6)" },
+  { f: "articulos", forma: "nube", tinta: "var(--t8)" },
+  { f: "videos", forma: "rombo", tinta: "var(--t2)" },
+  { f: "notas", forma: "flor", tinta: "var(--t7)" },
+] as const;
+
+const seisLenguas = ["es", "en", "fr", "de", "it", "pt"];
+---
+
+<Base
+  lang={lang}
+  title={t(lang, "portada.title")}
+  description={t(lang, "portada.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  ogImagen={lang === "en" ? "/og-en.png" : "/og.png"}
+  jsonld={[
+    persona(),
+    sitioWeb(lang),
+    aplicacion(lang, { nombre: "Yappy", descripcion: t(lang, "portada.description") }),
+  ]}
+>
+  <div class="envoltura">
+    <!-- ── El escaparate ────────────────────────────────────────── -->
+    <section class="hero">
+      <div>
+        <p class="susurro">{t(lang, "portada.susurro")}</p>
+        <h1 class="grito">
+          {t(lang, "portada.titular_1")} <span class="texto">{t(lang, "portada.titular_texto")}</span>{t(lang, "portada.titular_2")}
+          <span class="voz-alta">{t(lang, "portada.titular_voz")}</span>{t(lang, "portada.titular_3")}
+        </h1>
+        <p class="entradilla">{t(lang, "portada.entradilla")}</p>
+        <div class="acciones">
+          <a class="tecla" href={ENLACES.appStore}>{t(lang, "comunes.en_app_store")}</a>
+          <a class="boton" href="#suena">{t(lang, "comunes.escuchar_muestra")}</a>
+        </div>
+        <p class="acciones-nota">{t(lang, "portada.nota_acciones")}</p>
+      </div>
+
+      <div class="escenario">
+        <Aparato
+          src={capturaDe(lang, "cinta")}
+          alt={t(lang, "portada.capturas_titulo")}
+          giro={-3}
+          ancho={300}
+          cargaPerezosa={false}
+        />
+        <span class="etiqueta-escena">
+          <Etiqueta giro={-4}>{t(lang, "portada.susurro").split("·")[0]!.trim()}</Etiqueta>
+        </span>
+        <Pegatina forma="sello" tinta="var(--ultramar)" giro={9} tamano={132} cuerpo="1.1rem" class="flotante a">
+          <span set:html={t(lang, "portada.pegatina_sin_nube").replace("\n", "<br />")} />
+        </Pegatina>
+        <Pegatina forma="estrella" tinta="var(--dorado)" giro={-7} tamano={124} cuerpo="0.95rem" clara class="flotante b">
+          <span set:html={t(lang, "portada.pegatina_idiomas").replace("\n", "<br />")} />
+        </Pegatina>
+        <span class="loro-escena">
+          <Loro client:visible size={104} tinta="#e0502a" sigueAlRaton etiqueta="" />
+        </span>
+      </div>
+    </section>
+
+    <!-- ── Que suene, y cuanto antes ───────────────────────────── -->
+    <section class="seccion demo" id="suena">
+      <p class="susurro">{t(lang, "portada.demo_susurro")}</p>
+      <h2 class="grito" style="margin-bottom:1.5rem">{t(lang, "portada.demo_titulo")}</h2>
+      <div class="hoja torcido-3" style="position:relative">
+        <span class="celo izq"></span>
+        <span class="celo der"></span>
+        <Demo client:visible etiquetaPlay={t(lang, "comunes.escuchar_muestra")} nota={t(lang, "portada.demo_nota")} />
+      </div>
+    </section>
+
+    <!-- ── Las objeciones, de frente ───────────────────────────── -->
+    <section class="seccion">
+      <div class="seccion-cabeza">
+        <p class="susurro">{t(lang, "portada.porque_susurro")}</p>
+        <h2 class="grito">{t(lang, "portada.porque_titulo")}</h2>
+        <p>{t(lang, "portada.porque_entradilla")}</p>
+      </div>
+      <div class="rejilla rejilla-4">
+        {porque.map((p, i) => (
+          <div class:list={["hoja", `torcido-${(i % 5) + 1}`]}>
+            <h3>{p.titulo}</h3>
+            <p style="color:var(--tinta-suave);margin:0">{p.texto}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── Las puertas de entrada (y el enlazado interno) ──────── -->
+    <section class="seccion">
+      <div class="seccion-cabeza">
+        <p class="susurro">{t(lang, "portada.formatos_susurro")}</p>
+        <h2 class="grito">{t(lang, "portada.formatos_titulo")}</h2>
+        <p>{t(lang, "portada.formatos_entradilla")}</p>
+      </div>
+      <div class="rejilla rejilla-3" style="justify-items:center">
+        {puertas.map((p, i) => (
+          <a
+            class="hoja"
+            href={rutaConvertir(lang, p.f)}
+            style={`--giro:${[-2, 1.6, -1, 2.2, -2.6, 1.2][i]}deg;width:100%;display:flex;gap:16px;align-items:center`}
+          >
+            <Pegatina forma={p.forma} tinta={p.tinta} giro={[4, -5, 3, -3, 6, -4][i]} tamano={72} cuerpo="0.72rem">
+              {t(lang, `convertir.formatos.${p.f}.nombre`)}
+            </Pegatina>
+            <span>
+              <strong style="display:block;font-size:1.05rem">{t(lang, `convertir.formatos.${p.f}.h1`)}</strong>
+              <span style="color:var(--tinta-suave);font-size:0.92rem">{t(lang, `convertir.formatos.${p.f}.nombre`)}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── Tres momentos ───────────────────────────────────────── -->
+    <section class="seccion">
+      <div class="seccion-cabeza">
+        <p class="susurro">{t(lang, "portada.momentos_susurro")}</p>
+        <h2 class="grito">{t(lang, "portada.momentos_titulo")}</h2>
+      </div>
+      <div class="rejilla rejilla-3">
+        {momentos.map((m, i) => (
+          <div class:list={["caja", `torcido-${i + 2}`]}>
+            <span class="etiqueta-caja">{`0${i + 1}`}</span>
+            <h3 style="margin-top:0">{m.titulo}</h3>
+            <p style="color:var(--tinta-suave);margin:0">{m.texto}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── El guionizador, en vivo ─────────────────────────────── -->
+    <section class="seccion" id="guionizador">
+      <div class="seccion-cabeza" style="max-width:60ch">
+        <p class="susurro">{t(lang, "portada.guion_susurro")}</p>
+        <h2 class="grito">{t(lang, "portada.guion_titulo")}</h2>
+        <p set:html={t(lang, "portada.guion_entradilla")}></p>
+      </div>
+      <div class="caja">
+        <span class="etiqueta-caja">{t(lang, "nav.guionizador")}</span>
+        <p class="susurro" style="margin-bottom:1rem">{t(lang, "portada.guion_pruebalo")}</p>
+        <GuionDemo
+          client:visible
+          lang={lang}
+          ejemplo={t(lang, "portada.guion_ejemplo")}
+          marcador={t(lang, "portada.guion_marcador")}
+          boton={t(lang, "portada.guion_boton")}
+          espera={t(lang, "portada.guion_espera")}
+          fallo={t(lang, "portada.guion_fallo")}
+          idiomas={LENGUAS.filter((l) => seisLenguas.includes(l.codigo)).map((l) => ({ codigo: l.codigo, nombre: l.endonimo }))}
+        />
+        <p style="margin:1.2rem 0 0">
+          <a href={rutaPagina(lang, "guionizador")}>{t(lang, "portada.guion_mas")} →</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Las capturas de verdad ──────────────────────────────── -->
+    <section class="seccion">
+      <div class="seccion-cabeza">
+        <p class="susurro">{t(lang, "portada.capturas_susurro")}</p>
+        <h2 class="grito">{t(lang, "portada.capturas_titulo")}</h2>
+        <p>{t(lang, "portada.capturas_entradilla")}</p>
+      </div>
+      <div class="rejilla rejilla-aparatos" style="justify-items:center;align-items:end">
+        <Aparato src={capturaDe(lang, "lector")} alt={t(lang, "portada.guion_titulo")} giro={-2.5} ancho={286} />
+        <Aparato src={capturaDe(lang, "pajaros")} alt={t(lang, "voces.elige")} giro={1.8} ancho={286} />
+        <Aparato src={capturaDe(lang, "noche")} alt={t(lang, "voces.idiomas_titulo")} giro={-1.4} ancho={286} />
+      </div>
+    </section>
+
+    <!-- ── Las voces y las lenguas ─────────────────────────────── -->
+    <section class="seccion">
+      <div class="seccion-cabeza">
+        <p class="susurro">{t(lang, "voces.elige")}</p>
+        <h2 class="grito">{t(lang, "voces.h1")}</h2>
+        <p>{t(lang, "voces.entradilla")}</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:2.5rem">
+        {VOCES.map((v, i) => (
+          <a class="hoja" href={rutaPagina(lang, "voces")} style={`--giro:${(i % 2 ? 1 : -1) * (1 + (i % 3))}deg;display:flex;align-items:center;gap:10px;padding:10px 16px 10px 10px`}>
+            <Loro size={34} tinta={v.tinta} etiqueta="" />
+            <strong>{v.nombre}</strong>
+          </a>
+        ))}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        {LENGUAS.map((l) => (
+          hayIdiomas
+            ? <a class="etiqueta" href={rutaIdioma(lang, l.codigo)} style="--giro:0deg" lang={l.bcp}>{l.endonimo}</a>
+            : <span class="etiqueta" style="--giro:0deg" lang={l.bcp}>{l.endonimo}</span>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── El dinero ───────────────────────────────────────────── -->
+    <section class="seccion">
+      <div class="seccion-cabeza">
+        <p class="susurro">{t(lang, "portada.precio_susurro")}</p>
+        <h2 class="grito">{t(lang, "portada.precio_titulo")}</h2>
+        <p>{t(lang, "portada.precio_entradilla")}</p>
+      </div>
+      <div class="acciones">
+        <a class="tecla" href={rutaPagina(lang, "precios")}>{t(lang, "nav.precios")}</a>
+        <a class="boton" href={rutaPagina(lang, "preguntas")}>{t(lang, "nav.preguntas")}</a>
+      </div>
+    </section>
+
+    <!-- ── El cierre ───────────────────────────────────────────── -->
+    <section class="seccion" style="text-align:center">
+      <div style="display:flex;justify-content:center;margin-bottom:1.2rem">
+        <Loro client:visible size={110} tinta="#2f4bc4" cantando etiqueta="" />
+      </div>
+      <h2 class="grito" style="margin-bottom:0.8rem">{t(lang, "portada.cierre_titulo")}</h2>
+      <p style="color:var(--tinta-suave);max-width:46ch;margin:0 auto 1.8rem">{t(lang, "portada.cierre_texto")}</p>
+      <div class="acciones" style="justify-content:center">
+        <a class="tecla" href={ENLACES.appStore}>{t(lang, "comunes.en_app_store")}</a>
+        <a class="boton" href={rutaPagina(lang, "descargas")}>{t(lang, "nav.descargas")}</a>
+      </div>
+    </section>
+  </div>
+</Base>

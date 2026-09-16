@@ -1,0 +1,117 @@
+---
+/**
+ * Una página por puerta de entrada. Es el racimo de más intención de todo
+ * el sitio: quien busca «pdf a audio» no está curioseando, quiere hacerlo.
+ * Por eso lleva los tres pasos arriba, la app abajo y nada en medio.
+ */
+import Interior from "../layouts/Interior.astro";
+import Pegatina from "../components/Pegatina.astro";
+import Aparato from "../components/Aparato.astro";
+import Tienda from "../components/Tienda.astro";
+import { t, tv, type Idioma } from "../i18n";
+import { rutaPagina, rutaConvertir, FORMATOS, type RutaConvertir } from "../lib/rutas";
+import { migas, persona, comoSeHace, preguntas as faqLd } from "../lib/jsonld";
+import { capturaDe } from "../lib/capturas";
+
+interface Props { ruta: RutaConvertir }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const f = ruta.formato;
+const base = `convertir.formatos.${f}`;
+const pasos = tv<{ titulo: string; texto: string }[]>(lang, `${base}.pasos`) ?? [];
+const faq = tv<{ q: string; a: string }[]>(lang, `${base}.faq`) ?? [];
+
+const tintas: Record<string, string> = {
+  pdf: "var(--t5)", epub: "var(--t3)", word: "var(--t6)",
+  articulos: "var(--t8)", videos: "var(--t2)", notas: "var(--t7)",
+};
+const formas: Record<string, any> = {
+  pdf: "sello", epub: "escudo", word: "hexagono",
+  articulos: "nube", videos: "rombo", notas: "flor",
+};
+const capturas: Record<string, string> = {
+  pdf: "lector", epub: "imprenta", word: "lector",
+  articulos: "compartir", videos: "cinta", notas: "cinta",
+};
+const mig = [
+  { nombre: t(lang, "convertir.h1"), ruta: rutaPagina(lang, "convertir") },
+  { nombre: t(lang, `${base}.nombre`), ruta: ruta.ruta },
+];
+const otros = FORMATOS.filter((o) => o !== f);
+---
+<Interior
+  lang={lang}
+  title={t(lang, `${base}.title`)}
+  description={t(lang, `${base}.description`)}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, `${base}.h1`)}
+  entradilla={t(lang, `${base}.entradilla`)}
+  susurro={t(lang, `${base}.nombre`)}
+  migas={mig}
+  jsonld={[
+    persona(),
+    migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig]),
+    ...(pasos.length ? [comoSeHace({ lang, nombre: t(lang, `${base}.h1`), descripcion: t(lang, `${base}.description`), pasos: pasos.map((p) => ({ nombre: p.titulo, texto: p.texto })) })] : []),
+    ...(faq.length ? [faqLd(faq)] : []),
+  ]}
+>
+  <section class="seccion" style="padding-top:0">
+    <div style="display:grid;gap:2.5rem;grid-template-columns:1fr" class="convertir-cuerpo">
+      <div>
+        <h2 class="grito" style="margin-bottom:1.6rem">{t(lang, "convertir.pasos_titulo")}</h2>
+        <div style="display:grid;gap:16px">
+          {pasos.map((p, i) => (
+            <div style="display:flex;gap:16px;align-items:flex-start">
+              <Pegatina forma={formas[f]} tinta={tintas[f]} giro={[5, -4, 3][i] ?? 0} tamano={64} cuerpo="1.05rem">
+                {String(i + 1)}
+              </Pegatina>
+              <span>
+                <strong style="display:block;font-size:1.08rem">{p.titulo}</strong>
+                <span style="color:var(--tinta-suave)">{p.texto}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+        <div style="margin-top:2rem"><Tienda lang={lang} /></div>
+      </div>
+      <div style="display:flex;justify-content:center">
+        <Aparato src={capturaDe(lang, capturas[f]!)} alt={t(lang, `${base}.h1`)} giro={-2.5} ancho={262} cargaPerezosa={false} />
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="caja prosa" style="max-width:none">
+      <span class="etiqueta-caja">{t(lang, `${base}.nombre`)}</span>
+      <h2 style="margin-top:0;font-size:1.3rem">{t(lang, `${base}.extra_titulo`)}</h2>
+      <p style="margin:0;color:var(--tinta-suave)">{t(lang, `${base}.extra_texto`)}</p>
+    </div>
+  </section>
+
+  {faq.length > 0 && (
+    <section class="seccion">
+      <div class="prosa">
+        <h2 class="grito" style="margin-bottom:1.2rem">{t(lang, "convertir.faq_titulo")}</h2>
+        <div class="preguntas">
+          {faq.map((p) => <details class="pregunta"><summary>{p.q}</summary><div set:html={p.a}></div></details>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="seccion">
+    <h2 class="grito" style="margin-bottom:1.4rem;font-size:1.6rem">{t(lang, "convertir.otros_titulo")}</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      {otros.map((o) => (
+        <a class="boton" href={rutaConvertir(lang, o)}>{t(lang, `convertir.formatos.${o}.nombre`)}</a>
+      ))}
+    </div>
+  </section>
+</Interior>
+
+<style>
+  @media (min-width: 880px) {
+    .convertir-cuerpo { grid-template-columns: 1.15fr 0.85fr !important; align-items: center; }
+  }
+</style>

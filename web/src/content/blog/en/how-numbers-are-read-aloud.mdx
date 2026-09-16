@@ -1,0 +1,109 @@
+---
+title: "How numbers are read aloud, and why machines get them wrong"
+description: "How numbers are read aloud in each language: years, Roman numerals, acronyms and dates, and why almost every text-to-speech engine still pronounces them wrong."
+lang: en
+slug: how-numbers-are-read-aloud
+traduccionDe: como-se-dicen-los-numeros
+racimo: oficio
+fecha: 2026-09-16
+autor: jose-luis-saorin
+faq:
+  - q: "Why does a synthetic voice get dates and Roman numerals wrong?"
+    a: "Because most voice models pronounce what reaches them in writing, character by character. Turning 1492 into 'fourteen ninety-two' is an earlier job, called normalisation, and it depends on the language and the context. If nobody does it properly, the voice says whatever it can."
+  - q: "What are Unicode CLDR's RBNF rules?"
+    a: "RBNF (Rule-Based Number Format) is the part of Unicode's CLDR repository that describes, language by language, how a number is spelled out in words: the names, the joins, the gender, the plural and the declensions. It is the same basis operating systems use to say 'nineteen hundred' in Russian or in Japanese."
+  - q: "Is it 'the twentieth century' or 'century twenty'?"
+    a: "In English, ordinal: 'the twentieth century'. In Spanish the same century is a cardinal, 'siglo veinte'. Kings differ again: English says 'Henry the Eighth', Spanish says 'Enrique octavo' up to ten and switches to cardinals from thirteen, and French says 'Louis quatorze' with no ordinal at all except for the first."
+  - q: "How does a machine know whether to spell an acronym out?"
+    a: "By phonotactics: if the letter sequence can be pronounced as a word in that language, it is read (NASA, NATO); if not, it is spelled (FBI, 'eff bee eye'). It is not infallible, which is why there is always a hand-written exception list."
+  - q: "Where can I try this?"
+    a: "On the reading script page of this site. It runs the same Rust code the app uses, compiled to WebAssembly, so what you see there is exactly what the voice will say."
+---
+
+Write "1492" and ask a machine to read it. Most of them today, unassisted, will say something like "one four nine two". The better ones will say "fourteen ninety-two". And one in ten will say "one thousand four hundred and ninety-two", which is exactly what a Spanish speaker would say, and in English it is wrong.
+
+The problem is not the voice. The voice is fine. The problem is that **between what is written and what is said there is a gap**, and that gap is full of rules nobody ever wrote down for machines.
+
+This article is about that gap. It is the part of a reading app that nobody sees and that decides whether it sounds like a person or like a railway station announcement.
+
+## First: the voice does not read, it pronounces
+
+Modern voice models small enough to fit on a phone — the one Yappy uses has about 99 million parameters — work at character level. Letters go in, sound comes out. That is what makes them small and fast, and it is also their limit: **if "1492" arrives, they will try to say "1492"**, whatever that turns out to be inside their heads.
+
+So somebody has to convert the written text into the text a person would actually say out loud. We call that piece the scriptwriter, because what it produces is exactly that: a reading script. Not a translation, not a summary: the score of what is going to be said.
+
+And writing that score turns out to be an entire philological craft.
+
+## Numbers: a problem with grammar
+
+Spelling out a number looks like a lookup table. It is one, up to twenty, and after that literature begins.
+
+In **Spanish**, "200 páginas" is "doscientas páginas", with feminine agreement, but "200 libros" is "doscientos libros". In **French**, ninety is "quatre-vingt-dix" — four twenties and ten — and seventy is "soixante-dix". In **German**, twenty-one is said backwards, "einundzwanzig", one-and-twenty, and ordinals decline according to the preposition in front of them: "im 19. Jahrhundert" is "im neunzehnten Jahrhundert". In **Russian**, the noun after a number changes case depending on the number, and the number itself declines. In **Japanese** there are different counters depending on what is being counted, and people are not counted like flat objects.
+
+Hand-writing that for 31 languages is impossible, and doing it badly is worse than not doing it. Fortunately it has existed for decades and it is already on your computer: Unicode's **CLDR**, the repository that describes how languages behave, includes grammars called **RBNF**, *Rule-Based Number Format*, which state exactly how any number is spelled out in each language, with gender, plural and declension. They are the same rules your operating system uses.
+
+Yappy carries an interpreter for those grammars written in Rust, with the CLDR data bundled inside the app. No calling a server to find out how to say "nineteen hundred" in Bulgarian. And no hand-made lists that fall apart at number 101.
+
+## Years, which are not ordinary numbers
+
+"1492" in English is "fourteen ninety-two", split into two halves of two digits. In Spanish it is "mil cuatrocientos noventa y dos", the plain number, and splitting it English-style would sound absurd. The English exceptions are a minefield of their own: 1900 is "nineteen hundred", 1905 is "nineteen oh five", 2000 is "two thousand", and 2005 is "two thousand five" or "twenty oh five" depending on who you ask and what decade they were born in.
+
+In other words: the same figure, in two neighbouring languages, is said by two different algorithms. And to know it is a year at all rather than a quantity, you have to look around it: "in 1492" is a year; "1492 euros" is not.
+
+## Roman numerals, where nearly everyone falls over
+
+This is my favourite part, because there is no single rule: there are several, and they depend on the language and on what is being named.
+
+- **Centuries in English: ordinal.** "The XX century" is read "the twentieth century".
+- **Centuries in Spanish: cardinal.** "El siglo XX" is "el siglo veinte". Saying "el siglo vigésimo" sounds like a bad translation.
+- **Kings and popes in Spanish: ordinal up to ten, cardinal from thirteen.** "Enrique VIII" is "Enrique octavo"; "Alfonso XIII" is "Alfonso trece", not "decimotercero".
+- **In French, kings take cardinals**, with exactly one exception: the first. "Louis XIV" is "Louis quatorze", not "quatorzième"; but "François Ier" is "François premier". Translating "Henry the Eighth" mechanically into French produces an error a French speaker hears in the first syllable.
+- **In English** there is an article in the middle — "Henry the Eighth" — which happens in none of the other languages on the list.
+- **In Italian** centuries take ordinals: "il XX secolo" is "il ventesimo secolo".
+
+And then there is the opposite problem, which is more fun: **not everything that looks like a Roman numeral is one**. Roman digits are also ordinary letters, so a word in capitals can pass for a figure. "MIX" is a perfectly common English word and, read as a Roman numeral, it is 1009. "DID", "MILD", "CIVIL", "LID" and "DIM" go through the same filter. A naive reader turns the Spanish title "EL CID" into a number and says it. We leave it alone: if the sequence is a word that exists, or sits in a context where a figure makes no sense, it stays as it is.
+
+## Acronyms: to spell or not to spell
+
+Some acronyms are read as words and some are spelled out, and the border is not arbitrary: it is **phonotactics**, that is, whether the letter sequence is pronounceable in that language.
+
+- NASA is read "nasa". NATO is "nay-toh". Laser, radar and scuba have become ordinary words entirely.
+- FBI is spelled: "eff bee eye". So are NGO and USB.
+- And some go both ways depending on the speaker, which is where arguments start: SQL is "sequel" or "ess cue ell", and neither camp will yield.
+
+The practical rule is that if every consonant has a vowel nearby to hold it up, the acronym is pronounceable and gets read; if there is an impossible consonant cluster, it gets spelled. That works most of the time, which is why there is also a hand-written exception list, language by language. No rule in this craft survives without one.
+
+## And the rest: dates, times, currencies, units, abbreviations
+
+This is the boring work, and it is half the result:
+
+- **Dates.** "12/10/1492" is the twelfth of October in Britain and Spain, and the tenth of December in the United States. The order is not in the number: it is in the country.
+- **Times.** "14:05" is "two oh five" or "fourteen oh five" in English, "las catorce y cinco" in Spanish, and "vierzehn Uhr fünf" in German, with the word "Uhr" wedged in the middle, which the others do not have.
+- **Currencies.** "3.50 €" is "three euros fifty" in English, "trois euros cinquante" in French — with the cents left unsaid — and "tres euros con cincuenta céntimos" in Spanish.
+- **Units.** "90 km/h" is "ninety kilometres per hour", and "1 km" is "one kilometre", singular. That extra "s" gives away any automatic reader.
+- **Abbreviations.** "Dr." is Doctor, "St." is Saint or Street depending on where it sits, "pp. 12-14" is "pages twelve to fourteen", not "pee pee twelve dash fourteen".
+
+Every one of those lines is a hand-written table, per language. In Yappy they run to a bit over eleven hundred lines, and they will grow.
+
+## The golden rule: never touch the original
+
+This decision has had more consequences than any other, and it is not obvious, so here it is.
+
+When the scriptwriter transforms something, **it does not rewrite the text**. It keeps the original intact and, beside it, a list of spans: each span records exactly which part of the original it covers and which words will be said in its place. A double ledger: the written and the spoken, aligned.
+
+That buys two things you notice immediately in use. First, the editor always shows you what you wrote, not a disfigured version with the numbers spelled out. Second, and prettier: the karaoke highlight lands on the exact word. While the voice is saying "fourteen ninety-two", what lights up on screen is "1492", because the system knows that sound corresponds to those four characters. It does not guess: it knows.
+
+## What is still done badly
+
+For honesty, the cases that still resist, here and everywhere:
+
+- **Ambiguity that requires understanding.** "1/2" can be a half or the first of February. "Python 3.12" is "three point twelve", not "three point one two", because it is a version and not a decimal. Telling those apart needs real context.
+- **Numbers that are not quantities.** A phone number, an IBAN, a reference code: they are said in groups, and every country groups differently.
+- **Tables.** Read aloud they are noise. There is no elegant solution yet.
+- **Foreign proper names.** A model that pronounces by characters will read Polish surnames with an accent from nowhere. The scriptwriter cannot fix that.
+
+## Try it
+
+All of this lives on [the reading script page](/en/reading-script/), and it is not a recorded demo: it is the same Rust code from the app, compiled to WebAssembly and running in your browser. Type a sentence with dates, acronyms and Roman numerals in six languages and watch it break into spans. If you find a case that fails — there are some — [write to me](/en/faq/): the rules of this craft get written one at a time, every time something sounds wrong.
+
+Then, if you want to hear it, [the same machine reads an article or a whole book](/en/how-it-works/). But the script always comes first. Reading aloud is not spelling out: it is interpreting, and somebody has to write the rules.

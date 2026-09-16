@@ -1,0 +1,345 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   YAPPY, LA WEB · 2. EL ÁLBUM DE LA BANDADA
+
+   La segunda piel, la que la web no tenía. La app 1.0.0 no es una app de
+   papel y relieve suave: es un álbum de cromos. Cada cosa es una PEGATINA
+   TROQUELADA con forma propia, con su borde de troquel crema, su costura
+   de puntadas y su sombra dura de contacto. Nada flota. Nada está recto.
+
+   Las nueve reglas de la casa (docs/EL-ALBUM.md), abreviadas para la web:
+     1. Papel siempre; el blanco absoluto no existe.
+     2. Una tinta por pieza, de la carta de diez. Vecinas nunca repiten.
+     3. Solo una pieza gigante a la vez.
+     4. El color de lo que suena tiñe la casa.
+     5. Materia o nada: troquel, sombra dura, costura, celo, tampón.
+     6. Tres voces tipográficas: grito, susurro, lectura.
+     7. El dorado se gana.
+     8. Iconos a mano alzada; los de librería, prohibidos.
+     9. Legibilidad por jerarquía.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* La carta de diez tintas ($lib/juguete.ts). Planas, saturadas, con
+     crema legible encima. Nunca degradadas, nunca transparentes. */
+  --t1: #ff6b6b;  /* coral */
+  --t2: #f94892;  /* fucsia */
+  --t3: #a166f2;  /* lila */
+  --t4: #5d5fef;  /* azul-violeta */
+  --t5: #2e9bf7;  /* azul */
+  --t6: #00a896;  /* verde azulado */
+  --t7: #2ec96e;  /* verde */
+  --t8: #ff8e3c;  /* naranja */
+  --t9: #e84393;  /* magenta */
+  --t10: #7c4dff; /* morado */
+  --crema: #f7f2e7;
+  --humo: #2b2418;
+}
+
+/* ── La pegatina troquelada ───────────────────────────────────────────
+   Cuatro capas con el mismo polígono de 48 anclas: sombra de contacto,
+   borde de troquel (crema), cuerpo (la tinta) y la costura. El polígono
+   llega por --troquel; las escalas interiores, por --troquel-93 y -80. */
+
+.pegatina {
+  position: relative;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  transform: rotate(var(--giro, 0deg));
+}
+.pegatina::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--contacto);
+  clip-path: polygon(var(--troquel));
+  transform: translate(3px, 4px);
+  z-index: -2;
+}
+.pegatina-borde {
+  position: absolute;
+  inset: 0;
+  background: var(--crema);
+  clip-path: polygon(var(--troquel));
+  z-index: -1;
+}
+.pegatina-cuerpo {
+  position: absolute;
+  inset: 0;
+  background: var(--tinta-pieza, var(--t4));
+  clip-path: polygon(var(--troquel-93));
+  z-index: -1;
+}
+/* La costura: puntadas siguiendo la silueta, un poco por dentro. */
+.pegatina-costura {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.pegatina-costura polygon {
+  fill: none;
+  stroke: rgba(43, 36, 24, 0.3);
+  stroke-width: 1.4;
+  stroke-dasharray: 5 4;
+  vector-effect: non-scaling-stroke;
+}
+/* El contenido vive en la ventana segura de la forma. */
+.pegatina-texto {
+  position: relative;
+  z-index: 1;
+  color: var(--crema);
+  font-weight: 800;
+  line-height: 0.98;
+  text-align: center;
+  letter-spacing: -0.015em;
+  padding: 16%;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.pegatina.clara .pegatina-texto { color: var(--humo); }
+
+/* La pegatina que se pulsa: se hunde al posar el dedo, como en la app. */
+a.pegatina, button.pegatina {
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.16s var(--seco);
+}
+a.pegatina:hover, button.pegatina:hover {
+  transform: rotate(var(--giro, 0deg)) scale(1.035);
+}
+a.pegatina:active, button.pegatina:active {
+  transform: rotate(var(--giro, 0deg)) scale(0.965) translateY(1.5px);
+}
+
+/* ── La etiqueta de máquina ──────────────────────────────────────────
+   El susurro con cuerpo: mono en versalitas, cápsula de borde discontinuo.
+   Es el membrete de la app (LA TRASTIENDA, SIN CONEXIÓN, TEXTO A VOZ). */
+
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1.5px dashed rgba(43, 36, 24, 0.35);
+  border-radius: 999px;
+  padding: 5px 13px;
+  transform: rotate(var(--giro, -1.5deg));
+  box-shadow: var(--sombra-dura-corta);
+  white-space: nowrap;
+}
+:root[data-tema="noche"] .etiqueta { border-color: rgba(242, 237, 218, 0.28); }
+
+/* ── La hoja ─────────────────────────────────────────────────────────
+   Un papel sobre la mesa: superficie, borde vivo, sombra dura, y ni un
+   grado recto. Es la tarjeta de toda la web. */
+
+.hoja {
+  position: relative;
+  background: var(--superficie);
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-caja);
+  box-shadow: var(--sombra-dura);
+  padding: 22px 20px;
+  transform: rotate(var(--giro, 0deg));
+}
+a.hoja {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.24s var(--sereno), box-shadow 0.24s var(--sereno);
+}
+a.hoja:hover {
+  transform: rotate(var(--giro, 0deg)) translate(-2px, -3px);
+  box-shadow: var(--sombra-dura-alta);
+}
+a.hoja:active {
+  transform: rotate(var(--giro, 0deg)) translate(1px, 1px);
+  box-shadow: var(--sombra-dura-corta);
+}
+
+/* La caja con la etiqueta cosida al canto, como en la trastienda. */
+.caja {
+  position: relative;
+  background: var(--superficie);
+  border: 1.5px solid var(--borde);
+  border-radius: 20px;
+  box-shadow: var(--sombra-dura);
+  padding: 30px 22px 22px;
+  margin-top: 14px;
+}
+.caja > .etiqueta-caja {
+  position: absolute;
+  top: -13px;
+  left: 16px;
+  background: var(--papel);
+  border: 1.5px solid var(--borde);
+  border-radius: 9px;
+  padding: 3px 11px;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  transform: rotate(-1.6deg);
+  box-shadow: var(--sombra-dura-corta);
+}
+
+/* ── El celo ─────────────────────────────────────────────────────────
+   Dos tiras de cinta amarilla que sujetan una hoja al papel. Materia. */
+
+.celo {
+  position: absolute;
+  width: 84px;
+  height: 26px;
+  background: rgba(232, 180, 26, 0.35);
+  border-left: 1px solid rgba(232, 180, 26, 0.5);
+  border-right: 1px solid rgba(232, 180, 26, 0.5);
+  pointer-events: none;
+  z-index: 2;
+}
+.celo.izq { top: -13px; left: 8%; transform: rotate(-9deg); }
+.celo.der { top: -13px; right: 8%; transform: rotate(7deg); }
+
+/* ── La tecla ────────────────────────────────────────────────────────
+   Lo que se pulsa SUBE. La grande es coral; la de la tienda, negra. */
+
+.tecla {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  font-family: var(--fuente);
+  font-weight: 800;
+  font-size: 1.06rem;
+  letter-spacing: -0.01em;
+  color: var(--tecla-tinta);
+  background: var(--tecla);
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 26px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--luz), var(--sombra-dura);
+  transition: transform 0.16s var(--seco), box-shadow 0.16s var(--seco), filter 0.16s ease;
+}
+.tecla:hover { filter: brightness(1.06); transform: translate(-1px, -2px); box-shadow: var(--luz), var(--sombra-dura-alta); }
+.tecla:active { transform: translate(2px, 2px); box-shadow: var(--luz), 0 1px 0 var(--contacto); }
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-family: var(--fuente);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1.5px solid var(--borde);
+  border-radius: 14px;
+  padding: 13px 22px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--sombra-dura-corta);
+  transition: transform 0.16s var(--seco), box-shadow 0.16s var(--seco);
+}
+.boton:hover { transform: translate(-1px, -2px); box-shadow: var(--sombra-dura); }
+.boton:active { transform: translate(1px, 1px); box-shadow: none; }
+
+/* ── El colofón ──────────────────────────────────────────────────────
+   El pie del álbum: una diagonal discontinua y el susurro. La página
+   tiene final, como lo impreso: esto no es un feed. */
+
+.colofon {
+  position: relative;
+  text-align: center;
+  padding: 3rem 0 2rem;
+  margin-top: 4rem;
+}
+.colofon::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  background-image: linear-gradient(90deg, var(--voz) 0 10px, transparent 10px 20px);
+  background-size: 20px 2px;
+  opacity: 0.55;
+  transform: rotate(-0.4deg);
+}
+
+/* ── El aparato ──────────────────────────────────────────────────────
+   El marco del teléfono, dibujado con CSS (no una foto): así la captura
+   queda nítida en cualquier pantalla y pesa lo que pesa la captura. */
+
+.aparato {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1290 / 2796;
+  border-radius: 13.5%/6.2%;
+  padding: 2.6%;
+  background: linear-gradient(145deg, #4a4f57, #2c2f35 42%, #5a5f68);
+  box-shadow: var(--sombra-dura-alta);
+  transform: rotate(var(--giro, 0deg));
+}
+.aparato img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 11.4%/5.2%;
+  background: var(--papel);
+}
+/* La isla dinámica: tres trazos y ya. */
+.aparato::after {
+  content: "";
+  position: absolute;
+  top: 3.4%;
+  left: 50%;
+  width: 29%;
+  height: 3.1%;
+  background: #15171b;
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+
+/* ── La inclinación de collage ───────────────────────────────────────
+   Nada está recto, pero nada marea: ±3 grados y basta. */
+
+.torcido-1 { --giro: -2.2deg; }
+.torcido-2 { --giro: 1.8deg; }
+.torcido-3 { --giro: -1.1deg; }
+.torcido-4 { --giro: 2.6deg; }
+.torcido-5 { --giro: -3deg; }
+
+/* Las diez tintas, como clases utilitarias. */
+.tinta-1 { --tinta-pieza: var(--t1); }
+.tinta-2 { --tinta-pieza: var(--t2); }
+.tinta-3 { --tinta-pieza: var(--t3); }
+.tinta-4 { --tinta-pieza: var(--t4); }
+.tinta-5 { --tinta-pieza: var(--t5); }
+.tinta-6 { --tinta-pieza: var(--t6); }
+.tinta-7 { --tinta-pieza: var(--t7); }
+.tinta-8 { --tinta-pieza: var(--t8); }
+.tinta-9 { --tinta-pieza: var(--t9); }
+.tinta-10 { --tinta-pieza: var(--t10); }
+.tinta-dorado { --tinta-pieza: var(--dorado); }
+.tinta-voz { --tinta-pieza: var(--voz); }
+.tinta-ultramar { --tinta-pieza: var(--ultramar); }
+
+/* El loro respira. Cuando algo suena, respira más fuerte. */
+@keyframes respira {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.018); }
+}
+.respira { animation: respira 3.2s ease-in-out infinite; }

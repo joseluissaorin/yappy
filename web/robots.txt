@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://yappy.joseluissaorin.com/sitemap.xml

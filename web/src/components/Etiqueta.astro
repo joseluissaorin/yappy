@@ -1,0 +1,6 @@
+---
+/** El membrete de máquina: mono en versalitas, cápsula de borde cosido. */
+interface Props { giro?: number; class?: string }
+const { giro = -1.5, class: clase = "" } = Astro.props;
+---
+<span class:list={["etiqueta", clase]} style={`--giro:${giro}deg`}><slot /></span>

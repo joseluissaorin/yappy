@@ -1,0 +1,87 @@
+---
+title: "Offline text to speech: why the voice should be made on your own device"
+description: "Offline text to speech: what an on-device voice gains and loses against the cloud, and why a 99 M-parameter model is now enough to read a book aloud."
+lang: en
+slug: offline-text-to-speech
+traduccionDe: texto-a-voz-sin-conexion
+racimo: privacidad
+fecha: 2026-09-16
+autor: jose-luis-saorin
+faq:
+  - q: "What does it mean for a voice model to work offline?"
+    a: "It means the neural networks that generate the sound live inside your device and run on its processor. No text is sent to a server and no audio comes back. After the initial model download, you can put the device in airplane mode and it works exactly the same."
+  - q: "Does it sound worse than cloud voices?"
+    a: "Generally a little, yes. Server-side models are much larger and have more expressive range. The gap shows most in a novel full of dialogue and least in an essay or an article. For straight prose the difference is small."
+  - q: "How much space and battery does it take?"
+    a: "Yappy's model takes about 200 MB on mobile (half precision) and 398 MB on desktop. Synthesis uses the processor while it cooks, then goes quiet, because it runs ahead of your ear. Listening to a chapter costs roughly what listening to a downloaded podcast costs."
+  - q: "So the app never connects to the internet?"
+    a: "Almost never, and it deserves a precise answer. It connects to download the model the first time, to fetch the text behind a link you share, to handle the subscription if you have one, and, on mobile, for anonymous usage statistics you can switch off in settings. Your texts never travel."
+  - q: "Why do most text-to-speech apps use the cloud, then?"
+    a: "Because it is easier, and because it fits the business: charging per character needs a meter, and a meter needs a server. Also, until recently the good models did not fit on a phone. That last part stopped being true very recently."
+---
+
+There are two ways to turn text into speech. In the first, your text travels to a server, a huge model generates the audio there, and it comes back. In the second, the model lives inside your device and the text never moves.
+
+For years only the first had acceptable quality. That is no longer the case. And the change has consequences well beyond privacy, even though privacy is the one everybody talks about.
+
+## What fits on a phone today
+
+The voice Yappy uses is Supertonic 3, from the Korean company Supertone: **about 99 million parameters**. Compared with the language models everyone discusses, that is tiny — a thousand times smaller than the big ones. In half precision it takes about 200 MB, fits on a phone without drama, and synthesises several times faster than real time.
+
+It is four networks in a row. One predicts how long each sound lasts. Another turns the text into an intermediate representation. The third — the one that actually sings — starts from noise and cleans it step by step, the way a photograph used to be developed: eight steps at normal quality, five in a hurry, twelve for the best. The fourth turns that into sound at 44,100 samples per second.
+
+The detail that makes it small is that it works **at character level**: it pronounces what arrives written, letter by letter, with no enormous phonetic dictionary. That saves a great deal of weight. It also has a consequence I wrote about separately: if "1492" arrives, it will try to say "1492", so somebody has to have turned it into "fourteen ninety-two" first. That somebody is [the reading script](/en/reading-script/), and it is half the work of reading well.
+
+## How you make it fit
+
+Getting a model onto a phone is not only about being born small. There is tuning work that rarely gets described, and it is worth knowing about if only to understand what you are paying.
+
+The original model takes 398 MB, with its numbers in thirty-two-bit floating point. Converting it to **half precision**, sixteen bits, brings it down to 200 MB: half. In theory that is trivial; in practice, converted blindly, the model will not even load, because certain operations inside it do not tolerate half precision and have to be found and left alone. In exchange, synthesis runs about twenty per cent slower — still several times faster than real time — and the voice does not audibly change.
+
+So mobile uses the half-precision build and desktop uses the full one: on a phone, saving two hundred megabytes of download is worth more than twenty per cent of a speed nobody notices.
+
+## The four reasons, in order of how much they actually matter
+
+### 1. Cost, which is the one least often said out loud
+
+A cloud voice service pays for servers for every second of audio it generates. Since that cost scales with usage, the price has to scale too: hence the ten-to-thirty-euro monthly plans, the character allowances and the "hours of audio included". It is not greed, it is arithmetic.
+
+A model running on your device has zero marginal cost for whoever made it. That is why an app can read without a meter and without a time limit. It is not generosity on my part: reading costs me nothing. What I charge for — [a subscription at 3.99 € a month or 59.99 € for life](/en/pricing/) — is convenience, not seconds.
+
+### 2. Privacy, which matters even when it sounds like marketing
+
+"I have nothing to hide" survives about ten seconds of looking at what people actually feed an app like this: rulings, records, contracts, an unpublished manuscript, students' exams, a friend's letter, a medical report. With a local app there is no argument to have, because nothing leaves.
+
+And there is a second-order effect that is subtler: there is no account, so there is no database with your name next to a list of everything you have listened to. What does not exist cannot leak, cannot be sold, and cannot be handed over on request.
+
+I will tell the whole truth, because it looks worse but it is what it is: the app does touch the network in four cases — downloading the model the first time, fetching the text behind a link you share, handling the subscription, and anonymous usage statistics on mobile that you can switch off. It is all written out on [the privacy page](/en/privacy/). What never leaves is the content.
+
+### 3. Latency, and where you happen to be
+
+Offline means no network wait, no server queue, no outages. You press play and it plays. And it works on the underground, on a plane, in a village with two bars of signal, in a farmhouse and in a library basement. Anyone who listens while walking knows exactly what I mean: the cloud drops out on the uphill stretch.
+
+### 4. Durability
+
+This is my favourite reason and the least commercial one. Services shut down. They change price, owner and API; they retire the voice you liked. A model downloaded onto your device, with the app that runs it published as open source, will still be reading five years from now exactly as it reads today, even if I disappear. Boring, predictable and yours.
+
+## What you give up. No hedging
+
+It would be easy to stop here and look good. But there are things the cloud does better, and they are these:
+
+- **Expressiveness.** Large server models have an actorly range a small model cannot reach: anger, irony, whisper, distinct characters. In an essay you barely notice. In a novel with a lot of dialogue you do.
+- **Voice cloning and fine control.** Using somebody's voice, directing emotion sentence by sentence, producing polished podcasts: that is cloud territory today.
+- **The initial download.** Two hundred megabytes the first time. On an expensive plan or a bad connection, that is a real nuisance. (On iPhone the voices arrive with the installation itself, so it is hidden; on desktop you see it.)
+- **Old devices.** An eight-year-old phone synthesises slowly. A server never ages.
+
+If you need a spectacular voice for a video, the cloud is the correct answer. If you need to listen to your own things, every day, without counting characters, the answer is the other one.
+
+## How to check it yourself, in a minute
+
+You do not have to take my word for it. There are two kitchen tests:
+
+1. **Airplane mode.** Put the device in airplane mode, open a long text and press play. If it plays, the voice is inside. If you get a network error, now you know where it was.
+2. **The awkward text.** Feed it dates, acronyms, Roman numerals and figures, and listen to whether it says them the way a person would. That does not measure where the model runs, but it measures whether anyone bothered with the hard part. You can try it in your browser, running the same code as the app compiled to WebAssembly, on [the reading script page](/en/reading-script/).
+
+## The summary, in one line
+
+Keeping the voice on the device is not a political position: it is what makes listening to a whole book cost nothing, require no account, work in a tunnel, and keep working ten years from now. It costs you a little expressiveness. That seems a cheap trade to me.

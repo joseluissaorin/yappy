@@ -1,0 +1,51 @@
+---
+/**
+ * Un solo generador para todas las páginas del sitio, en todos los idiomas.
+ * Cada ruta trae su clase y su idioma; aquí solo se elige la plantilla. Toda
+ * la inteligencia vive en src/lib/rutas.ts.
+ */
+import type { GetStaticPaths } from "astro";
+import { todasLasRutas, aParam, type Ruta } from "../lib/rutas";
+import Portada from "../paginas/Portada.astro";
+import Uso from "../paginas/Uso.astro";
+import Guionizador from "../paginas/Guionizador.astro";
+import Descargas from "../paginas/Descargas.astro";
+import Precios from "../paginas/Precios.astro";
+import Voces from "../paginas/Voces.astro";
+import Preguntas from "../paginas/Preguntas.astro";
+import Privacidad from "../paginas/Privacidad.astro";
+import Accesibilidad from "../paginas/Accesibilidad.astro";
+import CuentosIndice from "../paginas/CuentosIndice.astro";
+import BlogIndice from "../paginas/BlogIndice.astro";
+import Convertir from "../paginas/Convertir.astro";
+import ConvertirIndice from "../paginas/ConvertirIndice.astro";
+import PaginaIdioma from "../paginas/PaginaIdioma.astro";
+import PaginaRival from "../paginas/PaginaRival.astro";
+import BlogEntrada from "../paginas/BlogEntrada.astro";
+import Cuento from "../paginas/Cuento.astro";
+
+export const getStaticPaths = (async () => {
+  const rutas = await todasLasRutas();
+  return rutas.map((r) => ({ params: { ruta: aParam(r.ruta) }, props: { r } }));
+}) satisfies GetStaticPaths;
+
+const { r } = Astro.props as { r: Ruta };
+---
+
+{r.clase === "pagina" && r.clave === "portada" && <Portada ruta={r} />}
+{r.clase === "pagina" && r.clave === "uso" && <Uso ruta={r} />}
+{r.clase === "pagina" && r.clave === "guionizador" && <Guionizador ruta={r} />}
+{r.clase === "pagina" && r.clave === "descargas" && <Descargas ruta={r} />}
+{r.clase === "pagina" && r.clave === "precios" && <Precios ruta={r} />}
+{r.clase === "pagina" && r.clave === "voces" && <Voces ruta={r} />}
+{r.clase === "pagina" && r.clave === "preguntas" && <Preguntas ruta={r} />}
+{r.clase === "pagina" && r.clave === "privacidad" && <Privacidad ruta={r} />}
+{r.clase === "pagina" && r.clave === "accesibilidad" && <Accesibilidad ruta={r} />}
+{r.clase === "pagina" && r.clave === "cuentos" && <CuentosIndice ruta={r} />}
+{r.clase === "pagina" && r.clave === "blog" && <BlogIndice ruta={r} />}
+{r.clase === "pagina" && r.clave === "convertir" && <ConvertirIndice ruta={r} />}
+{r.clase === "convertir" && <Convertir ruta={r} />}
+{r.clase === "idioma" && <PaginaIdioma ruta={r} />}
+{r.clase === "alternativa" && <PaginaRival ruta={r} />}
+{r.clase === "post" && <BlogEntrada ruta={r} />}
+{r.clase === "cuento" && <Cuento ruta={r} />}

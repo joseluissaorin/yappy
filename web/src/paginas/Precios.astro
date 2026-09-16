@@ -1,0 +1,133 @@
+---
+/**
+ * La página del dinero. Convierte porque no esconde nada: lo gratis primero,
+ * lo de pago después, y la tabla de lo que cobran los demás al final, con
+ * fecha y con el aviso de que los precios cambian.
+ */
+import Interior from "../layouts/Interior.astro";
+import Pegatina from "../components/Pegatina.astro";
+import Tienda from "../components/Tienda.astro";
+import { t, tv, type Idioma } from "../i18n";
+import { rutaPagina, type RutaPagina } from "../lib/rutas";
+import { CUERDA, RIVALES } from "../lib/datos";
+import { migas, persona, aplicacion, preguntas as faqLd } from "../lib/jsonld";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const puntos = tv<string[]>(lang, "precios.gratis_puntos");
+const noHay = tv<string[]>(lang, "precios.gratis_no");
+const cuerda = tv<string[]>(lang, "precios.cuerda_puntos");
+const faq = tv<{ q: string; a: string }[]>(lang, "precios.faq") ?? [];
+const mig = [{ nombre: t(lang, "nav.precios"), ruta: ruta.ruta }];
+
+const otros = [
+  { nombre: "Speechify", ...RIVALES.speechify },
+  { nombre: "NaturalReader", ...RIVALES.naturalreader },
+  { nombre: "ElevenReader", ...RIVALES.elevenreader },
+];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "precios.title")}
+  description={t(lang, "precios.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "precios.h1")}
+  entradilla={t(lang, "precios.entradilla")}
+  susurro={t(lang, "portada.precio_susurro")}
+  migas={mig}
+  jsonld={[
+    persona(),
+    aplicacion(lang, { nombre: "Yappy", descripcion: t(lang, "precios.description") }),
+    migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig]),
+    ...(faq.length ? [faqLd(faq)] : []),
+  ]}
+>
+  <section class="seccion" style="padding-top:0">
+    <div class="planes">
+      <div class="hoja plan torcido-3">
+        <Pegatina forma="banderin" tinta="var(--t7)" giro={7} tamano={96} cuerpo="0.92rem">
+          {t(lang, "comunes.gratis")}
+        </Pegatina>
+        <h2 style="margin:0.8rem 0 0.2rem">{t(lang, "precios.gratis_titulo")}</h2>
+        <p class="precio">{t(lang, "precios.gratis_precio")}</p>
+        <p class="periodo">{t(lang, "precios.gratis_periodo")}</p>
+        <ul>
+          {puntos.map((p) => <li>{p}</li>)}
+          {noHay.map((p) => <li class="no">{p}</li>)}
+        </ul>
+        <Tienda lang={lang} />
+      </div>
+
+      <div class="hoja plan torcido-2" style="border-color:var(--voz)">
+        <Pegatina forma="etiqueta" tinta="var(--dorado)" giro={-7} tamano={104} cuerpo="0.92rem" clara>
+          {CUERDA.mensual}
+        </Pegatina>
+        <h2 style="margin:0.8rem 0 0.2rem">{t(lang, "precios.cuerda_titulo")}</h2>
+        <p class="precio">{CUERDA.mensual}</p>
+        <p class="periodo">
+          {t(lang, "precios.cuerda_periodo_mes")} · {CUERDA.anual} {t(lang, "precios.cuerda_periodo_anio")} · {CUERDA.vida} {t(lang, "precios.cuerda_periodo_vida")}
+        </p>
+        <ul>{cuerda.map((p) => <li>{p}</li>)}</ul>
+        <p style="font-size:0.9rem;color:var(--tinta-suave)" set:html={t(lang, "precios.cuerda_nota")}></p>
+        <Tienda lang={lang} />
+        <p class="susurro" style="margin:0.9rem 0 0">{t(lang, "precios.cuerda_donde")}</p>
+      </div>
+    </div>
+    <p class="susurro" style="margin-top:1.6rem">{t(lang, "precios.solo_ios")}</p>
+  </section>
+
+  <section class="seccion">
+    <div class="seccion-cabeza">
+      <h2 class="grito">{t(lang, "precios.comparacion_titulo")}</h2>
+      <p>{t(lang, "precios.comparacion_entradilla")}</p>
+    </div>
+    <div class="tabla-envoltura">
+      <table class="comparativa">
+        <thead>
+          <tr>
+            <th scope="col">{t(lang, "vs.caracteristica")}</th>
+            <th scope="col" class="yappy">Yappy</th>
+            {otros.map((o) => <th scope="col">{o.nombre}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">{t(lang, "vs.gratis")}</th>
+            <td class="yappy si">{t(lang, "vs.yappy_gratis")}</td>
+            {otros.map((o) => <td>{o.gratis}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">{t(lang, "vs.precio")}</th>
+            <td class="yappy">{t(lang, "vs.yappy_precio")}</td>
+            {otros.map((o) => <td>{o.precio}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">{t(lang, "vs.local")}</th>
+            <td class="yappy si">{t(lang, "comunes.si")}</td>
+            {otros.map(() => <td class="no">{t(lang, "comunes.no")}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">{t(lang, "vs.sin_cuenta")}</th>
+            <td class="yappy si">{t(lang, "comunes.si")}</td>
+            {otros.map(() => <td class="no">{t(lang, "comunes.no")}</td>)}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="susurro" style="margin-top:1rem">{t(lang, "precios.comparacion_nota")}</p>
+    <p style="margin-top:1rem"><a href={rutaPagina(lang, "preguntas")}>{t(lang, "nav.preguntas")} →</a></p>
+  </section>
+
+  {faq.length > 0 && (
+    <section class="seccion">
+      <div class="prosa">
+        <h2 class="grito" style="margin-bottom:1.2rem">{t(lang, "preguntas_comunes.titulo")}</h2>
+        <div class="preguntas">
+          {faq.map((p) => <details class="pregunta"><summary>{p.q}</summary><div set:html={p.a}></div></details>)}
+        </div>
+      </div>
+    </section>
+  )}
+</Interior>

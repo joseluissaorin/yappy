@@ -1,0 +1,42 @@
+---
+import Interior from "../layouts/Interior.astro";
+import { t, tv, type Idioma } from "../i18n";
+import { rutaPagina, type RutaPagina } from "../lib/rutas";
+import { migas, persona, preguntas as faqLd } from "../lib/jsonld";
+
+interface Props { ruta: RutaPagina }
+const { ruta } = Astro.props;
+const lang: Idioma = ruta.lang;
+const grupos = tv<{ titulo: string; susurro?: string; lista: { q: string; a: string }[] }[]>(lang, "preguntas.grupos") ?? [];
+const todas = grupos.flatMap((g) => g.lista);
+const mig = [{ nombre: t(lang, "nav.preguntas"), ruta: ruta.ruta }];
+---
+<Interior
+  lang={lang}
+  title={t(lang, "preguntas.title")}
+  description={t(lang, "preguntas.description")}
+  ruta={ruta.ruta}
+  alternativas={ruta.alternativas}
+  h1={t(lang, "preguntas.h1")}
+  entradilla={t(lang, "preguntas.entradilla")}
+  migas={mig}
+  jsonld={[
+    persona(),
+    migas([{ nombre: t(lang, "comunes.inicio"), ruta: rutaPagina(lang, "portada") }, ...mig]),
+    ...(todas.length ? [faqLd(todas)] : []),
+  ]}
+>
+  {grupos.map((g) => (
+    <section class="seccion" style="padding-block:2rem">
+      <div class="prosa">
+        {g.susurro && <p class="susurro">{g.susurro}</p>}
+        <h2 class="grito" style="margin-bottom:1.2rem">{g.titulo}</h2>
+        <div class="preguntas">
+          {g.lista.map((p) => (
+            <details class="pregunta"><summary>{p.q}</summary><div set:html={p.a}></div></details>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+</Interior>

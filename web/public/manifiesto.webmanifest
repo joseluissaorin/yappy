@@ -1,0 +1,26 @@
+{
+  "name": "Yappy",
+  "short_name": "Yappy",
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#f7f2e7",
+  "background_color": "#f7f2e7",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icono-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icono-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
