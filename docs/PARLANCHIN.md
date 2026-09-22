@@ -21,6 +21,14 @@ con el ordenador funciona.
 | Anual | `com.joseluissaorin.yappy.parlanchin.anual` | 29,99 € |
 | De por vida | `com.joseluissaorin.yappy.parlanchin.vida` (no consumible) | 59,99 € |
 
+En Google Play (app `com.joseluissaorin.yappy.android`, creada el 22-09-2026) las
+suscripciones son `parlanchin_mensual` y `parlanchin_anual` (plan base
+`mensual` / `anual`: Play no admite puntos en los ids de suscripción) y el
+producto único es `com.joseluissaorin.yappy.parlanchin.vida`; script
+`scripts/crear-parlanchin-play.mjs`. En RevenueCat viven como
+`parlanchin_mensual:mensual`, `parlanchin_anual:anual` y `…vida` en la app
+`app81837ed704` (Play), sobre la misma entitlement y los mismos paquetes.
+
 RevenueCat: proyecto `proj313ccd9a`, app `app6674838594` (App Store),
 entitlement `yappy_parlanchín`, oferta `default` con `$rc_monthly`,
 `$rc_annual`, `$rc_lifetime`. Clave pública del SDK en `compras.rs`.

@@ -28,14 +28,14 @@ async function api(tok, ruta, opts = {}) {
 }
 
 const SUSCRIPCIONES = [
-  { id: "com.joseluissaorin.yappy.parlanchin.mensual", plan: "mensual", periodo: "P1M", eur: [3, 990000000], usd: [3, 990000000],
+  { id: "parlanchin_mensual", plan: "mensual", periodo: "P1M", eur: [3, 990000000], usd: [3, 990000000],
     es: ["Yappy Parlanchín mensual", "Percha sin fondo, imprenta de audiolibros y puente con el ordenador, un mes."],
     en: ["Yappy Parlanchín monthly", "Bottomless perch, audiobook press and bridge to your computer, for a month."] },
-  { id: "com.joseluissaorin.yappy.parlanchin.anual", plan: "anual", periodo: "P1Y", eur: [29, 990000000], usd: [29, 990000000],
+  { id: "parlanchin_anual", plan: "anual", periodo: "P1Y", eur: [29, 990000000], usd: [29, 990000000],
     es: ["Yappy Parlanchín anual", "Percha sin fondo, imprenta de audiolibros y puente con el ordenador, un año."],
     en: ["Yappy Parlanchín yearly", "Bottomless perch, audiobook press and bridge to your computer, for a year."] },
 ];
-const VIDA = { sku: "com.joseluissaorin.yappy.parlanchin.vida", eur: 59990000,
+const VIDA = { sku: "com.joseluissaorin.yappy.parlanchin.vida",
   es: ["Yappy Parlanchín de por vida", "Percha sin fondo, imprenta de audiolibros y puente con el ordenador, para siempre."],
   en: ["Yappy Parlanchín lifetime", "Bottomless perch, audiobook press and bridge to your computer, forever."] };
 
@@ -67,20 +67,36 @@ for (const s of SUSCRIPCIONES) {
     console.log(`  ✓ plan base ${s.plan} activado`);
   } else console.log(`  plan base ${s.plan}: ${plan?.state}`);
 }
-// El producto único
-let vida = null;
-try { vida = await api(tok, `/inappproducts/${VIDA.sku}`); } catch {}
+// El producto único, por la API nueva (oneTimeProducts:batchUpdate; la
+// vieja inappproducts.insert contesta «migrate to the new publishing API»).
+const BASE_OTP = `${BASE}/oneTimeProducts`;
 const cuerpoVida = {
-  packageName: PAQUETE, sku: VIDA.sku, status: "active", purchaseType: "managedUser",
-  defaultLanguage: "es-ES", defaultPrice: { priceMicros: String(VIDA.eur), currency: "EUR" },
-  listings: { "es-ES": { title: VIDA.es[0], description: VIDA.es[1] }, "en-US": { title: VIDA.en[0], description: VIDA.en[1] } },
+  packageName: PAQUETE, productId: VIDA.sku,
+  listings: [
+    { languageCode: "es-ES", title: VIDA.es[0], description: VIDA.es[1] },
+    { languageCode: "en-US", title: VIDA.en[0], description: VIDA.en[1] },
+  ],
+  purchaseOptions: [{
+    purchaseOptionId: "vida",
+    buyOption: { legacyCompatible: true, multiQuantityEnabled: false },
+    regionalPricingAndAvailabilityConfigs: [{ regionCode: "ES", price: { currencyCode: "EUR", units: "59", nanos: 990000000 }, availability: "AVAILABLE" }],
+    newRegionsConfig: { usdPrice: { currencyCode: "USD", units: "59", nanos: 990000000 }, eurPrice: { currencyCode: "EUR", units: "59", nanos: 990000000 }, availability: "AVAILABLE" },
+  }],
 };
+let vida = null;
+try { vida = await api(tok, `/oneTimeProducts/${VIDA.sku}`); } catch {}
 if (!vida) {
-  const r = await api(tok, `/inappproducts?autoConvertMissingPrices=true`, { method: "POST", body: JSON.stringify(cuerpoVida) });
-  console.log(`✓ producto único ${VIDA.sku} (${r.status})`);
-} else console.log(`producto único existe ${VIDA.sku} (${vida.status})`);
+  await api(tok, `/oneTimeProducts:batchUpdate`, { method: "POST", body: JSON.stringify({ requests: [{ oneTimeProduct: cuerpoVida, updateMask: "listings,purchaseOptions", allowMissing: true, regionsVersion: { version: "2022/02" } }] }) });
+  console.log(`✓ producto único ${VIDA.sku} creado`);
+  vida = await api(tok, `/oneTimeProducts/${VIDA.sku}`);
+} else console.log(`producto único existe ${VIDA.sku}`);
+const opcion = vida.purchaseOptions?.find((o) => o.purchaseOptionId === "vida");
+if (opcion && opcion.state !== "ACTIVE") {
+  await api(tok, `/oneTimeProducts/${VIDA.sku}/purchaseOptions:batchUpdateStates`, { method: "POST", body: JSON.stringify({ requests: [{ activatePurchaseOptionRequest: { packageName: PAQUETE, productId: VIDA.sku, purchaseOptionId: "vida" } }] }) });
+  console.log("  ✓ opción de compra activada");
+} else console.log(`  opción de compra: ${opcion?.state}`);
 console.log("— resumen —");
 const subs = await api(tok, `/subscriptions`);
 for (const s of subs.subscriptions ?? []) console.log(s.productId, s.basePlans.map((b) => `${b.basePlanId}:${b.state}`).join(","));
-const iaps = await api(tok, `/inappproducts`);
-for (const i of iaps.inappproduct ?? []) console.log(i.sku, i.status, i.defaultPrice);
+const otps = await api(tok, `/oneTimeProducts`);
+for (const o of otps.oneTimeProducts ?? []) console.log(o.productId, o.purchaseOptions.map((p) => `${p.purchaseOptionId}:${p.state}`).join(","));
