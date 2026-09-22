@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# El puente JNI: Rust busca estas clases y métodos por nombre.
+-keep class com.yappy.app.Puente { *; }
+-keep class com.yappy.app.Sonido { *; }
+-keep class com.yappy.app.ServicioYappy { *; }
+-keep class com.yappy.app.Compras { *; }
+-keep class com.yappy.app.MainActivity { *; }

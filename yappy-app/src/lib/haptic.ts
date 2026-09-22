@@ -1,6 +1,6 @@
 // La háptica de la casa. En iOS pasa por el puente nativo (Haptics.swift,
-// generadores estáticos precalentados); en Android usa la vibración web;
-// en escritorio calla. Sin await: el tacto no espera a nadie.
+// generadores estáticos precalentados); en Android por el Vibrator del
+// sistema (Puente.kt); en escritorio calla. Sin await: el tacto no espera a nadie.
 //
 // La paleta y su gramática:
 //   tick      posar el dedo en algo pulsable, detentes de dial, paso de
@@ -36,13 +36,16 @@ const VIBRA_ANDROID: Record<HapticKind, number | number[]> = {
 
 export function haptic(kind: HapticKind = "light"): void {
   const p = get(platformName);
-  if (p === "ios") {
-    invoke("haptic_cmd", { kind }).catch(() => {});
-    return;
-  }
-  if (p === "android" && typeof navigator !== "undefined" && "vibrate" in navigator) {
-    try {
-      navigator.vibrate(VIBRA_ANDROID[kind] ?? 8);
-    } catch {}
+  if (p === "ios" || p === "android") {
+    // Los dos móviles por el puente nativo (Haptics.swift / Puente.kt: los
+    // efectos predefinidos del Vibrator, que la Web Vibration API ignora
+    // en el WebView de Android).
+    invoke("haptic_cmd", { kind }).catch(() => {
+      if (p === "android" && typeof navigator !== "undefined" && "vibrate" in navigator) {
+        try {
+          navigator.vibrate(VIBRA_ANDROID[kind] ?? 8);
+        } catch {}
+      }
+    });
   }
 }

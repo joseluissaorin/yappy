@@ -194,7 +194,7 @@ impl PlaybackController {
         // active in the .playback category. Activate it BEFORE the audio thread
         // builds the output stream — otherwise TTS "plays" silently (the
         // playback clock never advances). Mirrors what the render keepalive does.
-        #[cfg(target_os = "ios")]
+        #[cfg(mobile)]
         crate::mobile::audio_session_activate();
 
         let nivel_listeners: OyentesNivel = Arc::new(Mutex::new(Vec::new()));
@@ -536,7 +536,7 @@ fn run_audio_thread(
                     // The Now-Playing bridge can deactivate it while idle, and
                     // cpal's RemoteIO output unit produces nothing if the session
                     // isn't active — so re-assert it here, not just at startup.
-                    #[cfg(target_os = "ios")]
+                    #[cfg(mobile)]
                     {
                         crate::mobile::audio_session_activate();
                         // El keepalive de fondo NO desactivará la sesión
@@ -721,7 +721,7 @@ fn run_audio_thread(
                         chunk_origen.clear();
                         continue;
                     }
-                    #[cfg(target_os = "ios")]
+                    #[cfg(mobile)]
                     crate::mobile::audio_session_lectura(false);
                     *buffer.lock().unwrap() = Vec::new();
                     *paused.lock().unwrap() = false;
@@ -972,7 +972,7 @@ fn run_audio_thread(
                 salto_pendiente = 0;
                 s.titulo.clear();
                 s.doc_path.clear();
-                #[cfg(target_os = "ios")]
+                #[cfg(mobile)]
                 crate::mobile::audio_session_lectura(false);
             }
             let sonando_de_verdad = s.estado == "sonando";
@@ -996,7 +996,7 @@ fn run_audio_thread(
                             u64::from(oido_ticks_estancado) * 50,
                             oido_reconstrucciones
                         );
-                        #[cfg(target_os = "ios")]
+                        #[cfg(mobile)]
                         {
                             crate::mobile::audio_session_activate();
                             crate::mobile::audio_session_lectura(true);

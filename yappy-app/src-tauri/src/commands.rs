@@ -81,7 +81,7 @@ pub fn set_voice_cmd(
     relanzar_con_voz(&app, state.inner(), voice);
     // Y los títulos DICHOS se recocinan con la voz nueva (la caché es por
     // voz: sin esto, tocar una pieza sonaba con la voz vieja).
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     precocinar_titulos(app.clone(), state.inner().clone());
     Ok(())
 }
@@ -1173,9 +1173,9 @@ pub async fn render_audiobook_cmd(
         // background; audiobook renders can run for hours. The Live Activity
         // gives the user visible progress on Lock Screen / Dynamic Island.
         // Both are released automatically when this closure returns.
-        #[cfg(target_os = "ios")]
+        #[cfg(mobile)]
         let _audio_keepalive = crate::mobile::BackgroundAudioGuard::begin();
-        #[cfg(target_os = "ios")]
+        #[cfg(mobile)]
         crate::mobile::activity_start(&activity_title, activity_total);
 
         // Windows: paint taskbar progress indicator + announce the render in
@@ -1196,7 +1196,7 @@ pub async fn render_audiobook_cmd(
         let mut tiempos: Vec<crate::yappy_pack::TiempoFrase> = Vec::new();
 
         for (i, p) in paragraphs.iter().enumerate() {
-            #[cfg(target_os = "ios")]
+            #[cfg(mobile)]
             crate::mobile::activity_update(i as i32, activity_total, "synth", None);
             #[cfg(target_os = "windows")]
             crate::os_win::taskbar_progress_set(i as u64, activity_total.max(1) as u64);
@@ -1282,7 +1282,7 @@ pub async fn render_audiobook_cmd(
             "audiobook_render_progress",
             serde_json::json!({ "index": total, "total": total, "stage": "writing" }),
         );
-        #[cfg(target_os = "ios")]
+        #[cfg(mobile)]
         crate::mobile::activity_update(total as i32, activity_total, "writing", None);
 
         let final_sr = sample_rate.max(44100);
@@ -1384,7 +1384,7 @@ pub async fn render_audiobook_cmd(
             "audiobook_render_done",
             serde_json::json!({ "path": output_path, "samples": combined.len(), "sample_rate": final_sr }),
         );
-        #[cfg(target_os = "ios")]
+        #[cfg(mobile)]
         {
             crate::mobile::activity_end(&activity_title);
             // Local notification — the user probably switched apps or
@@ -1426,18 +1426,18 @@ pub async fn render_audiobook_cmd(
 /// escritorio no hay diálogo: se da por concedido.
 #[tauri::command]
 pub fn avisos_pedir_cmd() {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     crate::mobile::notify_request();
 }
 
 /// 0 sin decidir · 1 concedido · 2 denegado.
 #[tauri::command]
 pub fn avisos_estado_cmd() -> i32 {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         return crate::mobile::notify_status();
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     1
 }
 
@@ -1475,7 +1475,7 @@ pub async fn read_document_paragraphs_cmd(
     doc_lang: Option<String>,
 ) -> Result<(), String> {
     // La voz de verdad manda: el dicho del título se calla al instante.
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     crate::mobile::efecto_stop();
     let receta = crate::state::RecetaLectura {
         paragraphs,
@@ -1632,7 +1632,7 @@ pub fn stop_playback_cmd(app: AppHandle, state: State<'_, Arc<AppState>>) {
 /// Salto por FRASE dentro de lo ya sintetizado: instantáneo, sin resíntesis.
 #[tauri::command]
 pub fn saltar_frase_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     if crate::libro::activo() {
         crate::libro::saltar_frase(&state, delta);
         return;
@@ -1643,7 +1643,7 @@ pub fn saltar_frase_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
 /// Salto por PÁRRAFO dentro de lo ya sintetizado.
 #[tauri::command]
 pub fn saltar_parrafo_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     if crate::libro::activo() {
         crate::libro::saltar_parrafo(&state, delta);
         return;
@@ -1655,7 +1655,7 @@ pub fn saltar_parrafo_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
 /// quieren. Instantánea a nivel de mezclador.
 #[tauri::command]
 pub fn pausar_cmd(state: State<'_, Arc<AppState>>) {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     if crate::libro::activo() {
         crate::libro::pausa(&state);
         return;
@@ -1666,7 +1666,7 @@ pub fn pausar_cmd(state: State<'_, Arc<AppState>>) {
 /// Reanudación directa (no toggle).
 #[tauri::command]
 pub fn reanudar_cmd(state: State<'_, Arc<AppState>>) {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     if crate::libro::activo() {
         crate::libro::reanuda(&state);
         return;
@@ -1679,7 +1679,7 @@ pub async fn toggle_pause_cmd(
     app: AppHandle,
     state: State<'_, Arc<AppState>>,
 ) -> Result<(), String> {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     if crate::libro::activo() {
         crate::libro::toggle(&state);
         return Ok(());
@@ -1703,9 +1703,9 @@ pub async fn trigger_read_now_cmd(
 /// light, medium, heavy, selection, success, warning, error.
 #[tauri::command]
 pub fn haptic_cmd(kind: String) {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     crate::mobile::haptic(&kind);
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     let _ = kind;
 }
 
@@ -1731,9 +1731,9 @@ pub fn drain_shared_payloads_cmd() -> Option<String> {
 /// No-op on desktop (desktop already has its own "Save as" + Reveal in Finder).
 #[tauri::command]
 pub fn share_file_cmd(path: String) -> Result<(), String> {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     crate::mobile::share_file(&path);
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     let _ = path;
     Ok(())
 }
@@ -1816,7 +1816,7 @@ fn library_resume_map_path(app: &AppHandle) -> Result<std::path::PathBuf, String
 
 /// Guarda la posición del audiolibro EN CURSO (si lo hay) en el mapa de
 /// reanudación. Factorizado para que el libro vivo lo use al ceder la voz.
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 pub fn persistir_resume_libro<R: tauri::Runtime>(app: &AppHandle<R>) {
     if let Some(p) = crate::mobile::audiofile_current_path() {
         let pos = crate::mobile::audiofile_position();
@@ -1828,7 +1828,7 @@ pub fn persistir_resume_libro<R: tauri::Runtime>(app: &AppHandle<R>) {
     }
 }
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 fn ruta_resume_generico<R: tauri::Runtime>(app: &AppHandle<R>) -> Option<std::path::PathBuf> {
     // El MISMO fichero que usa la biblioteca (library_resume_map_path):
     // un solo mapa de posiciones, lo abra quien lo abra.
@@ -1838,7 +1838,7 @@ fn ruta_resume_generico<R: tauri::Runtime>(app: &AppHandle<R>) -> Option<std::pa
     Some(dir.join("library_resume.json"))
 }
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 fn read_resume_map_generico<R: tauri::Runtime>(
     app: &AppHandle<R>,
 ) -> std::collections::HashMap<String, f64> {
@@ -1848,7 +1848,7 @@ fn read_resume_map_generico<R: tauri::Runtime>(
         .unwrap_or_default()
 }
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 fn write_resume_map_generico<R: tauri::Runtime>(
     app: &AppHandle<R>,
     map: &std::collections::HashMap<String, f64>,
@@ -2103,15 +2103,15 @@ pub fn library_play_cmd(
     let start_at = if from_start.unwrap_or(false) {
         0.0
     } else {
-        #[cfg(target_os = "ios")]
+        #[cfg(mobile)]
         {
             let map = read_resume_map(&_app);
             map.get(&path).copied().unwrap_or(0.0)
         }
-        #[cfg(not(target_os = "ios"))]
+        #[cfg(not(mobile))]
         0.0
     };
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         let reproducible = ruta_audio_de(&_app, &path)?;
         let ok = crate::mobile::audiofile_play(&reproducible.to_string_lossy(), start_at);
@@ -2132,7 +2132,7 @@ pub fn library_play_cmd(
         }
         return Ok(ok);
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     {
         let _ = path;
         let _ = start_at;
@@ -2142,7 +2142,7 @@ pub fn library_play_cmd(
 
 #[tauri::command]
 pub fn library_pause_cmd() {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         crate::mobile::audiofile_pause();
         // La pantalla de bloqueo debe reflejar la pausa (antes se quedaba
@@ -2153,14 +2153,14 @@ pub fn library_pause_cmd() {
 
 #[tauri::command]
 pub fn library_resume_cmd() {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         crate::mobile::audiofile_resume();
         actualizar_now_playing_biblioteca(true);
     }
 }
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 fn actualizar_now_playing_biblioteca(reproduciendo: bool) {
     if let Some(ruta) = crate::mobile::audiofile_current_path() {
         let titulo = std::path::Path::new(&ruta)
@@ -2181,7 +2181,7 @@ fn actualizar_now_playing_biblioteca(reproduciendo: bool) {
 
 #[tauri::command]
 pub fn library_stop_cmd(app: AppHandle) {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         // Persist the resume position before stopping so the next play
         // picks up where we left off.
@@ -2200,15 +2200,15 @@ pub fn library_stop_cmd(app: AppHandle) {
         // Y el espejo del libro (si lo había) vuelve a «inactivo».
         crate::libro::apagar_espejo(&app);
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     let _ = app;
 }
 
 #[tauri::command]
 pub fn library_seek_cmd(secs: f64) {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     crate::mobile::audiofile_seek(secs);
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     let _ = secs;
 }
 
@@ -2222,7 +2222,7 @@ pub struct LibraryStatus {
 
 #[tauri::command]
 pub fn library_status_cmd() -> LibraryStatus {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         LibraryStatus {
             current_path: crate::mobile::audiofile_current_path(),
@@ -2231,7 +2231,7 @@ pub fn library_status_cmd() -> LibraryStatus {
             playing: crate::mobile::audiofile_is_playing(),
         }
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     LibraryStatus {
         current_path: None,
         position_secs: 0.0,
@@ -2278,7 +2278,7 @@ pub fn library_chapters_cmd(path: String) -> Vec<ChapterEntry> {
 /// rendered audiobooks via system search. No-op on desktop.
 #[tauri::command]
 pub async fn library_reindex_spotlight_cmd(app: AppHandle) -> Result<(), String> {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         let items = list_rendered_audiobooks_cmd(app).await?;
         // Encode as tab/newline-delimited string. Swift splits on \n and \t.
@@ -2297,7 +2297,7 @@ pub async fn library_reindex_spotlight_cmd(app: AppHandle) -> Result<(), String>
             .join("\n");
         crate::mobile::spotlight_replace_all(&payload);
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     let _ = app;
     Ok(())
 }
@@ -2305,7 +2305,7 @@ pub async fn library_reindex_spotlight_cmd(app: AppHandle) -> Result<(), String>
 #[tauri::command]
 pub fn library_delete_cmd(app: AppHandle, path: String) -> Result<(), String> {
     // Stop playback if the file we're about to delete is currently playing.
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     if crate::mobile::audiofile_current_path().as_deref() == Some(path.as_str()) {
         crate::mobile::audiofile_stop();
     }
@@ -2376,7 +2376,7 @@ pub async fn library_abrir_cmd(
     from_start: Option<bool>,
     desde_parrafo: Option<usize>,
 ) -> Result<crate::state::CurrentDocument, String> {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         let state = state.inner().clone();
         tauri::async_runtime::spawn_blocking(move || {
@@ -2392,7 +2392,7 @@ pub async fn library_abrir_cmd(
         .await
         .map_err(|e| e.to_string())?
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     {
         let _ = (app, state, path, from_start, desde_parrafo);
         Err("solo iOS".into())
@@ -2666,7 +2666,7 @@ pub async fn sample_voice(
         Some(l) if !l.is_empty() && l != "na" => l,
         _ => lang_de_muestras(state.inner()),
     };
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         // Camino instantáneo: la muestra ya está cocinada, o viene
         // EMPAQUETADA con la app (sin motor: la primera apertura ya habla).
@@ -2698,7 +2698,7 @@ pub async fn sample_voice(
         let _ = sample_text;
         return Ok(dur);
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     {
         let text = sample_text.unwrap_or_else(|| sample_for_voice(&voice, &lang));
         state.playback.stop();
@@ -2800,7 +2800,7 @@ pub(crate) fn dicho_path(
     Ok(dir.join(format!("{h:016x}.wav")))
 }
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 fn cocinar_dicho_blocking(
     app: &AppHandle,
     state: &Arc<AppState>,
@@ -2853,7 +2853,7 @@ fn cocinar_dicho_blocking(
 /// su hilo, solo con el modelo listo y la casa en silencio.
 #[allow(dead_code)]
 pub fn precocinar_titulos(app: AppHandle, state: Arc<AppState>) {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     std::thread::Builder::new()
         .name("yappy-titulos".into())
         .spawn(move || {
@@ -2895,7 +2895,7 @@ pub fn precocinar_titulos(app: AppHandle, state: Arc<AppState>) {
             }
         })
         .ok();
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     {
         let _ = (app, state);
     }
@@ -2914,7 +2914,7 @@ pub async fn decir_cmd(
     velocidad: Option<f32>,
     idioma: Option<String>,
 ) -> Result<f64, String> {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         if state.playback.snapshot().estado != "inactivo" {
             return Ok(0.0);
@@ -2978,7 +2978,7 @@ pub async fn decir_cmd(
         .unwrap_or(0.0);
         return Ok(dur);
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     {
         let _ = (app, state, texto, velocidad, idioma);
         Ok(0.0)
@@ -3118,11 +3118,11 @@ pub fn cuentos_listar_cmd(app: AppHandle) -> Vec<Cuento> {
 /// ¿Hay un enlace copiado? Sin leer el portapapeles (iOS no avisa).
 #[tauri::command]
 pub fn portapapeles_tiene_enlace_cmd() -> bool {
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         crate::mobile::portapapeles_tiene_enlace()
     }
-    #[cfg(not(target_os = "ios"))]
+    #[cfg(not(mobile))]
     {
         false
     }

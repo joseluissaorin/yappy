@@ -1,7 +1,7 @@
 Share an article, a PDF, an EPUB, a Word file or a video with Yappy, and a parrot reads it to you in a natural voice. While you cook, while you walk, or with your eyes closed. Everything happens inside your phone: nothing ever leaves it.
 
 NO CLOUD, NO ACCOUNTS, NO PER-CHARACTER FEES
-The voice is synthesised on your device by an open model of about 66 million parameters. No sign-up, no email. It works offline, forever.
+The voice is synthesised on your device by an open model of about 99 million parameters. No sign-up, no email. It works offline, forever.
 
 31 LANGUAGES AND TEN VOICES, ALL OF THEM POLYGLOT
 English, Spanish, French, German, Italian, Portuguese, Dutch, Polish, Romanian, Swedish, Danish, Finnish, Estonian, Lithuanian, Latvian, Croatian, Slovenian, Slovak, Czech, Hungarian, Greek, Bulgarian, Ukrainian, Russian, Turkish, Arabic, Hindi, Indonesian, Vietnamese, Korean and Japanese. Texts with quotes in another language switch on their own, paragraph by paragraph.
@@ -18,8 +18,10 @@ Tap anywhere to pause, swipe to skip a paragraph, slide along the edge to change
 THE PRESS: WHOLE BOOKS AS AUDIOBOOKS
 Leave a book rendering when you go to bed and wake up with an audiobook with chapters in your library. With the bridge, your Mac or PC can convert it for you and send it back on its own.
 
-TRULY FREE
-Yappy is open source (MIT licence). On Android everything is open: the bottomless perch, the audiobook press and the bridge to your computer. No ads, no account and no in-app purchases.
+TRULY FREE, AND A WIND-UP PARROT
+Yappy is open source (MIT licence). The free parrot carries three documents at a time on its perch; remove one and another fits, with no time limit. If you want a bottomless perch, the audiobook press and the bridge to your computer, wind it up with Yappy Parlanchín: a monthly or yearly subscription, or a single lifetime purchase. Cancel whenever you like. No ads and no account.
+
+Subscriptions renew automatically at the end of each period unless cancelled in your Google Play account at least 24 hours before.
 
 Privacy: https://yappy.joseluissaorin.com/en/privacy
 

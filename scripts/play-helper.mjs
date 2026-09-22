@@ -9,7 +9,7 @@ import { readFileSync } from "node:fs";
 import { createSign } from "node:crypto";
 import { homedir } from "node:os";
 
-const PAQUETE = process.env.PLAY_PACKAGE || "com.joseluissaorin.yappy";
+const PAQUETE = process.env.PLAY_PACKAGE || "com.joseluissaorin.yappy.android";
 const SA = JSON.parse(
   readFileSync(`${homedir()}/.config/yappy-play/service-account.json`, "utf8"),
 );
@@ -77,7 +77,7 @@ async function upload(fichero, pista = "internal") {
   const version = artefacto.versionCode;
   await api(tok, `/edits/${edit.id}/tracks/${pista}`, {
     method: "PUT",
-    body: JSON.stringify({ releases: [{ versionCodes: [String(version)], status: "completed" }] }),
+    body: JSON.stringify({ releases: [{ versionCodes: [String(version)], status: pista === "production" ? "draft" : "completed" }] }),
   });
   const fin = await api(tok, `/edits/${edit.id}:commit`, { method: "POST", body: "{}" });
   console.log(JSON.stringify({ ok: true, pista, versionCode: version, edit: fin.id }));

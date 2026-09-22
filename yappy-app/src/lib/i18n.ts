@@ -3,6 +3,7 @@
 // El idioma sigue al del sistema, con override manual en la trastienda.
 // El español es primera lengua del proyecto; el inglés, la red de seguridad.
 import { derived, writable } from "svelte/store";
+import { platformName } from "$lib/platform";
 
 import es from "./i18n/es";
 import en from "./i18n/en";
@@ -111,8 +112,27 @@ export function frase(idioma: IdiomaUI, clave: string): string {
   return DICCIONARIOS[idioma]?.[clave] ?? DICCIONARIOS.en[clave] ?? DICCIONARIOS.es[clave] ?? clave;
 }
 
+/// En Android, las marcas del otro lado no valen: el navegador es Chrome,
+/// la cuenta es de Google y el teléfono no es un iPhone. Los diccionarios
+/// se escribieron para el iPhone (31 idiomas); esta adaptación es la misma
+/// en todos porque los nombres de marca no se traducen.
+const MARCAS_ANDROID: [RegExp, string][] = [
+  [/Safari/g, "Chrome"],
+  [/\bApple\b/g, "Google"],
+  [/\biPhone\b/g, "Android"],
+];
+export function adaptarMarcas(texto: string, plataforma: string): string {
+  if (plataforma !== "android") return texto;
+  let s = texto;
+  for (const [re, con] of MARCAS_ANDROID) s = s.replace(re, con);
+  return s;
+}
+
 /// t("clave") reactivo: $t en los componentes. Cae a inglés y luego a
 /// español antes de rendirse a la clave cruda.
-export const t = derived(idiomaUI, ($l) => (clave: string): string => {
-  return DICCIONARIOS[$l][clave] ?? DICCIONARIOS.en[clave] ?? DICCIONARIOS.es[clave] ?? clave;
+export const t = derived([idiomaUI, platformName], ([$l, $p]) => (clave: string): string => {
+  return adaptarMarcas(
+    DICCIONARIOS[$l][clave] ?? DICCIONARIOS.en[clave] ?? DICCIONARIOS.es[clave] ?? clave,
+    $p,
+  );
 });

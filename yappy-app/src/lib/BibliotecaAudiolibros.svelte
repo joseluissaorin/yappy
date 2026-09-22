@@ -7,7 +7,7 @@
   import { onMount, onDestroy } from "svelte";
   import { get as getStore } from "svelte/store";
   import { invoke, convertFileSrc } from "@tauri-apps/api/core";
-  import { isIOS } from "$lib/platform";
+  import { isIOS, isMobile } from "$lib/platform";
   import { t } from "$lib/i18n";
   import { notifyError } from "$lib/ui";
   import { libraryTiempos, libraryAudioSrc, type TiempoFrase } from "$lib/ipc";
@@ -54,7 +54,11 @@
   let audioEl: HTMLAudioElement | null = null;
   let rutaEscritorio: string | null = null;
 
-  const esIOS = () => getStore(isIOS);
+  // El motor NATIVO de fichero (AVAudioPlayer en iOS, MediaPlayer en
+  // Android) con su espejo de karaoke; el <audio> del webview es del
+  // escritorio. Spotlight sigue siendo solo de iOS.
+  const esIOS = () => getStore(isMobile);
+  const conSpotlight = () => getStore(isIOS);
 
   async function cargarTiempos(path: string) {
     tiemposActuales = path.toLowerCase().endsWith(".yappy")
@@ -65,7 +69,7 @@
   async function refreshLibrary() {
     try {
       libraryItems = (await invoke("list_rendered_audiobooks_cmd")) as LibraryItem[];
-      if (esIOS()) invoke("library_reindex_spotlight_cmd").catch(() => {});
+      if (conSpotlight()) invoke("library_reindex_spotlight_cmd").catch(() => {});
     } catch (e) {
       console.warn("[library] refresh failed:", e);
     }

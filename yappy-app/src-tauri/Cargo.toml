@@ -187,3 +187,5 @@ yt-transcript-rs = "0.1"
 
 [target.'cfg(target_os = "android")'.dependencies]
 ndk-context = "0.1"
+# El puente con Kotlin (Puente.kt): MediaSession, avisos, tienda, compartir.
+jni = "0.21"

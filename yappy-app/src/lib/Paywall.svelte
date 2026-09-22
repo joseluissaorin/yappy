@@ -22,6 +22,7 @@
   import { PALETA, tonoHondo } from "$lib/juguete";
   import { TROQUELES_BASE, CORAZON, ESTRELLA, aPoligono, aPuntosSvg, type Troquel } from "$lib/troquel";
   import { openUrl } from "@tauri-apps/plugin-opener";
+  import { platformName } from "$lib/platform";
   import {
     compras,
     cerrarPaywall,
@@ -238,7 +239,13 @@
     haptic("light");
     openUrl(url).catch(() => {});
   }
-  const URL_TERMINOS = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
+  // Los términos de la tienda que cobra: el EULA de Apple en iOS, los de
+  // Google Play en Android.
+  const URL_TERMINOS = $derived(
+    $platformName === "android"
+      ? "https://play.google.com/intl/es/about/play-terms/"
+      : "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/",
+  );
   const urlPrivacidad = $derived(
     $idiomaUI === "es" ? "https://yappy.joseluissaorin.com/preguntas" : "https://yappy.joseluissaorin.com/en/faq",
   );

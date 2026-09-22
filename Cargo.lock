@@ -11112,6 +11112,7 @@ dependencies = [
  "hound",
  "image",
  "iroh",
+ "jni 0.21.1",
  "mp4",
  "ndk-context",
  "objc2",

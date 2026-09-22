@@ -1,7 +1,7 @@
 Comparte un artículo, un PDF, un EPUB, un Word o un vídeo con Yappy, y un loro te lo lee en voz alta con una voz natural. Mientras cocinas, mientras caminas o con los ojos cerrados. Todo ocurre dentro de tu móvil: nada sale de él, nunca.
 
 SIN NUBE, SIN CUENTAS, SIN TARIFA POR CARÁCTER
-La voz se sintetiza en tu dispositivo con un modelo abierto de unos 66 millones de parámetros. No hace falta registrarse ni dar el correo. Funciona sin conexión, para siempre.
+La voz se sintetiza en tu dispositivo con un modelo abierto de unos 99 millones de parámetros. No hace falta registrarse ni dar el correo. Funciona sin conexión, para siempre.
 
 31 IDIOMAS Y DIEZ VOCES, TODAS POLÍGLOTAS
 Español, inglés, francés, alemán, italiano, portugués, neerlandés, polaco, rumano, sueco, danés, finés, estonio, lituano, letón, croata, esloveno, eslovaco, checo, húngaro, griego, búlgaro, ucraniano, ruso, turco, árabe, hindi, indonesio, vietnamita, coreano y japonés. Los textos con citas en otra lengua cambian de idioma solos, párrafo a párrafo.
@@ -18,8 +18,10 @@ Toca en cualquier sitio para pausar, desliza para saltar de párrafo, sube o baj
 LA IMPRENTA: LIBROS ENTEROS COMO AUDIOLIBROS
 Deja un libro renderizando al acostarte y al despertar tienes un audiolibro con capítulos en tu biblioteca. Con el puente, tu Mac o tu PC pueden convertirlo por ti y devolvértelo solo.
 
-GRATIS DE VERDAD
-Yappy es código abierto (licencia MIT). En Android todo está abierto: la percha sin fondo, la imprenta de audiolibros y el puente con el ordenador. Sin anuncios, sin cuenta y sin compras dentro de la app.
+GRATIS DE VERDAD, Y UN LORO CON CUERDA
+Yappy es código abierto (licencia MIT). El loro de prueba lleva tres documentos a la vez en su percha; quita uno y cabe otro, sin límite de tiempo. Si quieres una percha sin fondo, la imprenta de audiolibros y el puente con el ordenador, dale cuerda con Yappy Parlanchín: suscripción mensual o anual, o un único pago de por vida. Cancelas cuando quieras. Sin anuncios y sin cuenta.
+
+Las suscripciones se renuevan solas al final de cada periodo salvo que las canceles en tu cuenta de Google Play al menos 24 horas antes.
 
 Privacidad: https://yappy.joseluissaorin.com/privacidad
 

@@ -16,10 +16,10 @@
   #pega .datos { position: absolute; left: 70px; bottom: 56px; font-family: "Mono"; font-weight: 700; font-size: 62px;
     letter-spacing: 0.08em; color: #2b2418; line-height: 1; }
   #pega .movil { position: absolute; right: 64px; bottom: 30px; width: 118px; height: 184px; }
-  html, body { margin: 0; background: transparent; width: 2880px; height: 2160px; overflow: hidden; }
-  #escena { position: relative; width: 2880px; height: 2160px; }
-  .marca { position: absolute; left: 0; top: 0; width: 2880px; height: 2160px; display: flex; align-items: center; justify-content: center;
-           font-family: "Baloo"; font-weight: 800; font-size: 940px; letter-spacing: -0.03em; line-height: 1; color: #fff; }
+  html, body { margin: 0; background: transparent; width: var(--w, 2880px); height: var(--h, 2160px); overflow: hidden; }
+  #escena { position: relative; width: var(--w, 2880px); height: var(--h, 2160px); }
+  .marca { position: absolute; left: 0; top: 0; width: var(--w, 2880px); height: var(--h, 2160px); display: flex; align-items: center; justify-content: center;
+           font-family: "Baloo"; font-weight: 800; font-size: var(--marca, 940px); letter-spacing: -0.03em; line-height: 1; color: #fff; }
   .marca i { display: inline-block; font-style: normal; will-change: transform; }
   #atras, #delante { position: absolute; inset: 0; }
   #atras { z-index: 1; } #loro { z-index: 2; } #delante { z-index: 3; }
@@ -30,6 +30,13 @@
 <body><div id="escena">
 <script>
   const _q = new URLSearchParams(location.search), _f = _q.get("fondo");
+  // El lienzo es parametrizable (?w=&h=) para reencuadres: 2880x2160 (4:3) por
+  // defecto, 1080x1920 (9:16) para vertical. Todo lo demás escala con K=w/2880,
+  // así que la coreografía es la misma en cualquier formato.
+  const _w = parseInt(_q.get("w") || "2880"), _h = parseInt(_q.get("h") || "2160"), _k = _w / 2880;
+  const _r = document.documentElement.style;
+  _r.setProperty("--w", _w + "px"); _r.setProperty("--h", _h + "px");
+  _r.setProperty("--marca", (940 * _k) + "px");
   if (_f === "negro") document.documentElement.style.background = "#000";
   if (_f === "papel") document.documentElement.style.background = "#2b2418";
 </script>
@@ -40,7 +47,7 @@
 <script>
 const q = new URLSearchParams(location.search);
 const T = parseFloat(q.get("t") || "3.0");
-const W = 2880, H = 2160;
+const W = parseInt(q.get("w") || "2880"), H = parseInt(q.get("h") || "2160"), K = W / 2880;
 const LETRAS = "yappy".split("");
 const ROT = [-3.5, 3, -3.5, 3, -3.5], DY = [-1, 1.5, -1, 1.5, -1];
 
@@ -158,7 +165,7 @@ pega.innerHTML = `<div class="parche"></div>
     <svg x="11" y="27" width="42" height="42" viewBox="0 0 64 64">${loroSVG({ size: 42, boca: 0, giro: 0, parpado: 0, ala: 0, cola: 0, pata: 0, mirando: 1, inclina: 0, sx: 1, sy: 1, ojoX: 0, ojoY: 0, notas: 0 }).replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "")}</svg>
   </svg>`;
 document.getElementById("escena").appendChild(pega);
-const ESCALA_PEGA = 0.6;                      // «bastante más pequeña», idéntica por dentro
+const ESCALA_PEGA = 0.6 * K;                  // «bastante más pequeña», idéntica por dentro (encoge con el lienzo)
 const PEGA_W = 1400 * ESCALA_PEGA, PEGA_H = 560 * ESCALA_PEGA; // tamaño VISIBLE
 const MEDIA_CAJA = 700;                        // media anchura de la caja de diseño (origen del escalado)
 // Dónde queda estampada: mordiendo la esquina inferior derecha del logo

@@ -1,0 +1,33 @@
+<!doctype html>
+<!-- El marco del 9:16: lo que va en las bandas de arriba y abajo cuando el
+     anuncio 4:3 se pega sobre el papel. Estático (no depende de ?t=). -->
+<html lang="es"><head><meta charset="utf-8" />
+<style>
+  @font-face { font-family: "Baloo"; src: url("Baloo2-Variable.woff2") format("woff2"); font-weight: 400 800; }
+  @font-face { font-family: "Mono"; src: url("SpaceMono-Bold.woff2") format("woff2"); font-weight: 700; }
+  html, body { margin: 0; background: transparent; width: 1080px; height: 1920px; overflow: hidden; }
+  #marca { position: absolute; left: 0; right: 0; top: 300px; text-align: center;
+    font-family: "Baloo"; font-weight: 800; font-size: 132px; letter-spacing: -0.03em; line-height: 1; color: #fdf9ee; }
+  #marca i { display: inline-block; font-style: normal; }
+  #claim { position: absolute; left: 0; right: 0; top: 1418px; text-align: center;
+    font-family: "Mono"; font-weight: 700; font-size: 52px; letter-spacing: 0.06em; color: #fdf9ee; }
+  #tienda { position: absolute; left: 0; right: 0; top: 1500px; text-align: center;
+    font-family: "Mono"; font-weight: 700; font-size: 34px; letter-spacing: 0.10em; color: rgba(253, 249, 238, 0.62); }
+</style></head>
+<body>
+  <div id="marca"></div>
+  <div id="claim"></div>
+  <div id="tienda"></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const TX = {
+    es: { claim: "SIN INTERNET · SIN CUENTAS", tienda: "APP STORE · iPHONE Y iPAD" },
+    en: { claim: "NO INTERNET · NO ACCOUNTS",  tienda: "APP STORE · iPHONE AND iPAD" },
+  }[q.get("lang") || "es"];
+  // La marca con el mismo ladeo alterno que en la app.
+  const ROT = [-3.5, 3, -3.5, 3, -3.5], DY = [-1, 1.5, -1, 1.5, -1];
+  document.getElementById("marca").innerHTML = "yappy".split("").map((l, k) =>
+    `<i style="transform: rotate(${ROT[k]}deg) translateY(${DY[k] * 4}px)">${l}</i>`).join("");
+  document.getElementById("claim").textContent = TX.claim;
+  document.getElementById("tienda").textContent = TX.tienda;
+</script></body></html>

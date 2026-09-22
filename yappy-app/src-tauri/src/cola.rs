@@ -2836,9 +2836,181 @@ fn desescapar_markdown(s: &str) -> String {
     out
 }
 
+/// Los subtítulos vienen en frases cortas; se agrupan en párrafos de ~4
+/// frases para que la lectura respire como prosa.
+fn agrupar_subtitulos<'a>(partes: impl Iterator<Item = &'a str>) -> Vec<String> {
+    let mut parrafos: Vec<String> = Vec::new();
+    let mut actual = String::new();
+    let mut frases = 0usize;
+    for parte in partes {
+        let t = parte.trim();
+        if t.is_empty() {
+            continue;
+        }
+        if !actual.is_empty() {
+            actual.push(' ');
+        }
+        actual.push_str(t);
+        frases += 1;
+        let corta_por_frases =
+            frases >= 4 && (t.ends_with('.') || t.ends_with('?') || t.ends_with('!'));
+        if corta_por_frases || actual.chars().count() > 700 {
+            parrafos.push(std::mem::take(&mut actual));
+            frases = 0;
+        }
+    }
+    if !actual.trim().is_empty() {
+        parrafos.push(actual);
+    }
+    parrafos
+}
+
+/// Android: sin yt-transcript-rs (arrastra OpenSSL), los subtítulos se piden
+/// directamente a InnerTube (el `player` del cliente ANDROID de YouTube) y
+/// se lee la pista en su XML de `timedtext`. Mismo resultado que en iOS y
+/// escritorio: un artículo por párrafos.
 #[cfg(target_os = "android")]
-async fn preparar_youtube<R: Runtime>(_app: &AppHandle<R>, _item: &ItemCola) -> Result<()> {
-    Err(anyhow!("los subtítulos de YouTube llegan pronto a Android; de momento comparte artículos, documentos o audio"))
+async fn preparar_youtube<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> Result<()> {
+    let video = id_video_youtube(&item.origen)
+        .ok_or_else(|| anyhow!("no reconozco el identificador del vídeo"))?;
+    let pref = {
+        let estado = app.state::<std::sync::Arc<crate::state::AppState>>();
+        let s = estado.settings.lock().unwrap();
+        s.default_lang.clone()
+    };
+    let partes = subtitulos_youtube_innertube(&video, &[pref.as_str(), "en", "es"]).await?;
+    let parrafos = agrupar_subtitulos(partes.iter().map(|s| s.as_str()));
+    if parrafos.is_empty() {
+        return Err(anyhow!("la transcripción llegó vacía"));
+    }
+    let markdown = parrafos.join("\n\n");
+    terminar_con_markdown(app, &item.id, None, markdown)
+}
+
+/// Las líneas de subtítulo de un vídeo, por InnerTube. Prefiere una pista
+/// de los idiomas pedidos (manual antes que automática); si no, la primera.
+#[cfg(target_os = "android")]
+pub async fn subtitulos_youtube_innertube(video: &str, idiomas: &[&str]) -> Result<Vec<String>> {
+    let cliente = reqwest::Client::builder()
+        .user_agent("com.google.android.youtube/20.10.38 (Linux; U; Android 11) gzip")
+        .timeout(std::time::Duration::from_secs(25))
+        .build()?;
+    let cuerpo = serde_json::json!({
+        "context": {
+            "client": {
+                "clientName": "ANDROID",
+                "clientVersion": "20.10.38",
+                "androidSdkVersion": 30,
+                "hl": "en",
+                "gl": "US"
+            }
+        },
+        "videoId": video,
+        "contentCheckOk": true,
+        "racyCheckOk": true
+    });
+    let r = cliente
+        .post("https://www.youtube.com/youtubei/v1/player?prettyPrint=false")
+        .header("Content-Type", "application/json")
+        .header("X-YouTube-Client-Name", "3")
+        .header("X-YouTube-Client-Version", "20.10.38")
+        .json(&cuerpo)
+        .send()
+        .await
+        .map_err(|e| anyhow!("youtube: {e}"))?;
+    if !r.status().is_success() {
+        return Err(anyhow!("youtube respondió {}", r.status()));
+    }
+    let datos: serde_json::Value = r.json().await.map_err(|e| anyhow!("youtube: {e}"))?;
+    let pistas = datos
+        .pointer("/captions/playerCaptionsTracklistRenderer/captionTracks")
+        .and_then(|v| v.as_array())
+        .cloned()
+        .unwrap_or_default();
+    if pistas.is_empty() {
+        let motivo = datos
+            .pointer("/playabilityStatus/reason")
+            .and_then(|v| v.as_str())
+            .unwrap_or("no tiene subtítulos");
+        return Err(anyhow!(
+            "este vídeo no tiene transcripción disponible ({motivo})"
+        ));
+    }
+    let lang_de = |p: &serde_json::Value| {
+        p.get("languageCode")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .split('-')
+            .next()
+            .unwrap_or("")
+            .to_ascii_lowercase()
+    };
+    let es_auto = |p: &serde_json::Value| p.get("kind").and_then(|v| v.as_str()) == Some("asr");
+    let mut elegida: Option<&serde_json::Value> = None;
+    for idioma in idiomas {
+        if idioma.is_empty() || *idioma == "na" {
+            continue;
+        }
+        if let Some(p) = pistas.iter().find(|p| lang_de(p) == *idioma && !es_auto(p)) {
+            elegida = Some(p);
+            break;
+        }
+        if let Some(p) = pistas.iter().find(|p| lang_de(p) == *idioma) {
+            elegida = Some(p);
+            break;
+        }
+    }
+    let pista = elegida
+        .or_else(|| pistas.first())
+        .ok_or_else(|| anyhow!("sin pistas"))?;
+    let url = pista
+        .get("baseUrl")
+        .and_then(|v| v.as_str())
+        .ok_or_else(|| anyhow!("la pista no trae dirección"))?;
+    let xml = cliente
+        .get(url)
+        .send()
+        .await
+        .map_err(|e| anyhow!("youtube subtítulos: {e}"))?
+        .text()
+        .await
+        .map_err(|e| anyhow!("youtube subtítulos: {e}"))?;
+    Ok(lineas_de_timedtext(&xml))
+}
+
+/// El XML de `timedtext` (`<text start=… dur=…>…</text>`): los textos, con
+/// las entidades resueltas y los saltos convertidos en espacios.
+#[cfg(any(target_os = "android", test))]
+fn lineas_de_timedtext(xml: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    let mut resto = xml;
+    while let Some(i) = resto.find("<text") {
+        let tras = &resto[i..];
+        let Some(cierre_apertura) = tras.find('>') else {
+            break;
+        };
+        let despues = &tras[cierre_apertura + 1..];
+        let Some(fin) = despues.find("</text>") else {
+            break;
+        };
+        let crudo = &despues[..fin];
+        let texto = crudo
+            .replace("&amp;#39;", "'")
+            .replace("&amp;quot;", "\"")
+            .replace("&#39;", "'")
+            .replace("&quot;", "\"")
+            .replace("&lt;", "<")
+            .replace("&gt;", ">")
+            .replace("&amp;", "&")
+            .replace("&nbsp;", " ")
+            .replace('\n', " ");
+        let texto = texto.split_whitespace().collect::<Vec<_>>().join(" ");
+        if !texto.is_empty() {
+            out.push(texto);
+        }
+        resto = &despues[fin + 7..];
+    }
+    out
 }
 
 #[cfg(not(target_os = "android"))]
@@ -2859,31 +3031,7 @@ async fn preparar_youtube<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> Re
         .await
         .map_err(|e| anyhow!("este vídeo no tiene transcripción disponible ({e})"))?;
 
-    // Los subtítulos vienen en frases cortas; se agrupan en párrafos de
-    // ~4 frases para que la lectura respire como prosa.
-    let mut parrafos: Vec<String> = Vec::new();
-    let mut actual = String::new();
-    let mut frases = 0usize;
-    for parte in transcripcion.parts() {
-        let t = parte.text.trim();
-        if t.is_empty() {
-            continue;
-        }
-        if !actual.is_empty() {
-            actual.push(' ');
-        }
-        actual.push_str(t);
-        frases += 1;
-        let corta_por_frases =
-            frases >= 4 && (t.ends_with('.') || t.ends_with('?') || t.ends_with('!'));
-        if corta_por_frases || actual.chars().count() > 700 {
-            parrafos.push(std::mem::take(&mut actual));
-            frases = 0;
-        }
-    }
-    if !actual.trim().is_empty() {
-        parrafos.push(actual);
-    }
+    let parrafos = agrupar_subtitulos(transcripcion.parts().iter().map(|p| p.text.as_str()));
     if parrafos.is_empty() {
         return Err(anyhow!("la transcripción llegó vacía"));
     }
@@ -3060,6 +3208,23 @@ pub fn cola_reintentar_cmd(app: AppHandle, id: String) -> Result<(), String> {
     });
     procesar_en_segundo_plano(app, id);
     Ok(())
+}
+
+#[cfg(test)]
+mod tests_timedtext {
+    #[test]
+    fn el_xml_de_youtube_se_lee() {
+        let xml = r#"<?xml version="1.0" encoding="utf-8" ?><transcript><text start="0" dur="1.2">Hola &amp;#39;mundo&amp;#39;</text><text start="1.2" dur="2">segunda
+línea &amp;quot;con&amp;quot; cosas</text></transcript>"#;
+        let l = super::lineas_de_timedtext(xml);
+        assert_eq!(
+            l,
+            vec![
+                "Hola 'mundo'".to_string(),
+                "segunda línea \"con\" cosas".to_string()
+            ]
+        );
+    }
 }
 
 #[cfg(test)]

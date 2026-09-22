@@ -10,7 +10,7 @@
 
 use std::sync::Mutex;
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 use anyhow::{Context, Result};
 use tauri::AppHandle;
 use tauri::Runtime;
@@ -27,7 +27,7 @@ pub struct LibroVivo {
 }
 
 static LIBRO: Mutex<Option<LibroVivo>> = Mutex::new(None);
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 static TICKER_VIVO: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
 
 pub fn activo() -> bool {
@@ -35,7 +35,7 @@ pub fn activo() -> bool {
 }
 
 /// La frase de `tiempos` que suena en `pos` (o la última empezada).
-#[cfg(any(target_os = "ios", test))]
+#[cfg(any(mobile, test))]
 fn frase_en(tiempos: &[TiempoFrase], pos: f32) -> Option<usize> {
     if tiempos.is_empty() {
         return None;
@@ -53,7 +53,7 @@ fn frase_en(tiempos: &[TiempoFrase], pos: f32) -> Option<usize> {
 
 /// Publica el estado del libro como snapshot de reproducción (revisión del
 /// contador común del controller).
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 fn publicar(state: &AppState, pos: f32, sonando: bool) {
     let guard = LIBRO.lock().unwrap();
     let Some(l) = guard.as_ref() else { return };
@@ -102,7 +102,7 @@ fn publicar(state: &AppState, pos: f32, sonando: bool) {
 /// Enciende el ESPEJO para un .yappy que ya está sonando por el reproductor
 /// de fichero (cualquier camino: biblioteca, deep link, pegatina). Si ese
 /// mismo libro ya está espejado, no hace nada.
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 pub fn espejar<R: Runtime>(app: &AppHandle<R>, path: &str) {
     use tauri::Manager;
     {
@@ -159,7 +159,7 @@ pub fn espejar<R: Runtime>(app: &AppHandle<R>, path: &str) {
 /// Abre un .yappy como LIBRO VIVO: para la lectura de síntesis, carga el
 /// texto como documento (para el lector), arranca el reproductor de fichero
 /// y enciende el espejo. Devuelve el documento listo para `reader.doc`.
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 pub fn abrir(
     app: &AppHandle,
     state: &AppState,
@@ -219,7 +219,7 @@ pub fn abrir(
 
 /// El ticker del espejo: mientras el libro viva, publica posición y frase
 /// (solo cuando algo cambia: la pausa quieta no inunda el frontend).
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 fn arrancar_ticker<R: Runtime>(app: AppHandle<R>) {
     use std::sync::atomic::Ordering;
     use tauri::Manager;
@@ -300,7 +300,7 @@ pub fn parar<R: Runtime>(app: &AppHandle<R>, _state: &AppState) {
     if !activo() {
         return;
     }
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     {
         crate::commands::persistir_resume_libro(app);
         crate::mobile::audiofile_stop();
@@ -311,19 +311,19 @@ pub fn parar<R: Runtime>(app: &AppHandle<R>, _state: &AppState) {
 
 // ── Los mandos, enrutados desde los comandos comunes ────────────────────
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 pub fn pausa(state: &AppState) {
     crate::mobile::audiofile_pause();
     publicar(state, crate::mobile::audiofile_position() as f32, false);
 }
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 pub fn reanuda(state: &AppState) {
     crate::mobile::audiofile_resume();
     publicar(state, crate::mobile::audiofile_position() as f32, true);
 }
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 pub fn toggle(state: &AppState) {
     if crate::mobile::audiofile_is_playing() {
         pausa(state);
@@ -332,7 +332,7 @@ pub fn toggle(state: &AppState) {
     }
 }
 
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 pub fn seek_a(state: &AppState, secs: f64) {
     crate::mobile::audiofile_seek(secs.max(0.0));
     publicar(
@@ -345,7 +345,7 @@ pub fn seek_a(state: &AppState, secs: f64) {
 /// Salto por FRASE del karaoke: a la frase anterior o siguiente según los
 /// tiempos del pack (convención musical: atrás con la frase empezada más
 /// de 1,2 s vuelve al principio de la actual).
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 pub fn saltar_frase(state: &AppState, delta: i32) {
     let destino = {
         let guard = LIBRO.lock().unwrap();
@@ -367,7 +367,7 @@ pub fn saltar_frase(state: &AppState, delta: i32) {
 }
 
 /// Salto por PÁRRAFO: a la primera frase del párrafo vecino.
-#[cfg(target_os = "ios")]
+#[cfg(mobile)]
 pub fn saltar_parrafo(state: &AppState, delta: i32) {
     let destino = {
         let guard = LIBRO.lock().unwrap();

@@ -19,3 +19,6 @@ export AR_aarch64_linux_android="$_TC/llvm-ar"
 export RANLIB_aarch64_linux_android="$_TC/llvm-ranlib"
 export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="$_TC/aarch64-linux-android24-clang"
 export ORT_LIB_LOCATION="$HOME/.config/yappy-android/ort-1.22.0/lib"
+# Páginas de 16 KB (Android 15+ lo exige a las apps nuevas de Play): el .so de
+# Rust se enlaza con esa alineación; onnxruntime-android 1.22 ya la trae.
+export CARGO_TARGET_AARCH64_LINUX_ANDROID_RUSTFLAGS="-C link-arg=-Wl,-z,max-page-size=16384"

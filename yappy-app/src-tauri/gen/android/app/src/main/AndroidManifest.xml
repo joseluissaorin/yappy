@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROCESSING" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <!-- AndroidTV support -->
     <uses-feature android:name="android.software.leanback" android:required="false" />
@@ -32,6 +40,11 @@
                     <data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
                     <data android:mimeType="application/msword" />
                     <data android:mimeType="application/vnd.oasis.opendocument.text" />
+                    <data android:mimeType="application/rtf" />
+                    <data android:mimeType="text/rtf" />
+                    <data android:mimeType="text/*" />
+                    <data android:mimeType="application/zip" />
+                    <data android:mimeType="application/octet-stream" />
                     <data android:mimeType="audio/*" />
                 </intent-filter>
                 <!-- «Abrir con» desde gestores de archivos. -->
@@ -41,6 +54,19 @@
                     <data android:scheme="content" android:mimeType="application/pdf" />
                     <data android:scheme="content" android:mimeType="application/epub+zip" />
                     <data android:scheme="content" android:mimeType="text/plain" />
+                    <data android:scheme="content" android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                    <data android:scheme="content" android:mimeType="application/msword" />
+                    <data android:scheme="content" android:mimeType="application/vnd.oasis.opendocument.text" />
+                    <data android:scheme="content" android:mimeType="application/rtf" />
+                    <data android:scheme="content" android:mimeType="audio/*" />
+                </intent-filter>
+                <!-- Los audiolibros .yappy («Abrir con»): por extensión, no por tipo. -->
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <category android:name="android.intent.category.BROWSABLE" />
+                    <data android:scheme="content" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.yappy" />
+                    <data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.yappy" />
                 </intent-filter>
             <!-- DEEP LINK PLUGIN. AUTO-GENERATED. DO NOT REMOVE. -->
             <intent-filter >
@@ -58,6 +84,19 @@
             </intent-filter>
             <!-- DEEP LINK PLUGIN. AUTO-GENERATED. DO NOT REMOVE. -->
         </activity>
+
+        <!-- El escudo: mantiene el proceso vivo mientras algo suena o la imprenta trabaja. -->
+        <service
+          android:name=".ServicioYappy"
+          android:exported="false"
+          android:foregroundServiceType="mediaPlayback|dataSync|mediaProcessing" />
+        <receiver
+          android:name="androidx.media.session.MediaButtonReceiver"
+          android:exported="true">
+          <intent-filter>
+            <action android:name="android.intent.action.MEDIA_BUTTON" />
+          </intent-filter>
+        </receiver>
 
         <provider
           android:name="androidx.core.content.FileProvider"

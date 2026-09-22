@@ -172,7 +172,8 @@ pub fn read_text() -> Result<Option<String>> {
 }
 #[cfg(target_os = "android")]
 pub fn read_text() -> Result<Option<String>> {
-    Ok(None)
+    // El ClipboardManager por el puente Kotlin (gesto explícito de pegar).
+    Ok(crate::mobile::pasteboard_text())
 }
 #[cfg(any(target_os = "ios", target_os = "android"))]
 pub fn write_text(_text: &str) -> Result<()> {

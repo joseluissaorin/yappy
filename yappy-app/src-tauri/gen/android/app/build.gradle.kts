@@ -18,7 +18,7 @@ android {
     namespace = "com.yappy.app"
     defaultConfig {
         manifestPlaceholders["usesCleartextTraffic"] = "false"
-        applicationId = "com.joseluissaorin.yappy"
+        applicationId = "com.joseluissaorin.yappy.android"
         minSdk = 24
         targetSdk = 36
         versionCode = tauriProperties.getProperty("tauri.android.versionCode", "1").toInt()
@@ -63,6 +63,10 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.10.1")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.lifecycle:lifecycle-process:2.10.0")
+    // La sesión de medios (pantalla de bloqueo, auriculares) y la notificación MediaStyle.
+    implementation("androidx.media:media:1.7.0")
+    // Yappy Parlanchín: RevenueCat sobre Google Play Billing.
+    implementation("com.revenuecat.purchases:purchases:10.22.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.4")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")

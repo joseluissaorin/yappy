@@ -604,9 +604,9 @@ async fn procesar_local(
     );
 
     // iOS: el proceso sigue vivo con la pantalla apagada, con la isla.
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     let _keepalive = crate::mobile::BackgroundAudioGuard::begin();
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     crate::mobile::activity_start(&encargo.titulo, total_piezas as i32);
 
     // Sintetizar DESDE el checkpoint: el subguion re-indexa, así que la
@@ -636,7 +636,7 @@ async fn procesar_local(
         let dir2 = dir.clone();
         let control2 = control.clone();
         let engine2 = engine.clone();
-        #[cfg(target_os = "ios")]
+        #[cfg(mobile)]
         let total_act = total_piezas as i32;
         let estado_arc = app.state::<Arc<AppState>>().inner().clone();
         let estado_lectores = estado_arc.clone();
@@ -669,7 +669,7 @@ async fn procesar_local(
                         tardo
                     };
                 });
-                #[cfg(target_os = "ios")]
+                #[cfg(mobile)]
                 crate::mobile::activity_update((n_global + 1) as i32, total_act, "synth", None);
                 samples.clear();
                 tiempos.clear();
@@ -739,7 +739,7 @@ async fn procesar_local(
         Ok("hecho")
     };
 
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     crate::mobile::activity_end(&encargo.titulo);
 
     match resultado_sintesis? {
@@ -921,7 +921,7 @@ fn publicar(app: &AppHandle, pack: &Path, titulo: &str) -> Result<String> {
 
 fn avisar_terminado(app: &AppHandle, titulo: &str, duracion: f32) {
     let mins = (duracion / 60.0).round().max(1.0) as i64;
-    #[cfg(target_os = "ios")]
+    #[cfg(mobile)]
     crate::mobile::notify(
         "yappy.imprenta.hecho",
         "Audiolibro listo",
@@ -937,7 +937,7 @@ fn avisar_terminado(app: &AppHandle, titulo: &str, duracion: f32) {
             .body(format!("{titulo}: {mins} min de audio, en tu biblioteca"))
             .show();
     }
-    #[cfg(not(any(target_os = "ios", desktop)))]
+    #[cfg(not(any(mobile, desktop)))]
     let _ = (app, titulo);
 }
 

@@ -51,6 +51,22 @@ pub fn decode_to_mono16k(path: &Path) -> Result<Vec<f32>> {
             }
         }
     }
+    #[cfg(target_os = "android")]
+    {
+        // Android: lo que symphonia no lea (Ogg-Opus de WhatsApp, AMR, 3GP)
+        // lo decodifica MediaCodec a WAV por el puente Kotlin.
+        match decode_symphonia(path) {
+            Ok(s) if !s.is_empty() => return Ok(s),
+            _ => {
+                let wav = crate::mobile::decodificar_audio(path)
+                    .ok_or_else(|| anyhow::anyhow!("Android no pudo decodificar este audio"))?;
+                let r = decode_symphonia(&wav).context("decoding the MediaCodec WAV");
+                let _ = std::fs::remove_file(&wav);
+                return r;
+            }
+        }
+    }
+    #[cfg(not(target_os = "android"))]
     decode_symphonia(path).context("decoding audio via symphonia")
 }
 
