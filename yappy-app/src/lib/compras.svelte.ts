@@ -69,6 +69,14 @@ export async function cargarOfertas(fuerza = false) {
   compras.errorOfertas = null;
   try {
     const r = await comprasOfertas();
+    // La tienda contesta los errores DENTRO del JSON ({ error, codigo }):
+    // antes se leían como «lista vacía» y nadie sabía por qué.
+    if (r.error) {
+      compras.errorOfertas = String(r.error);
+      logToBackend("warn", "compras", `ofertas: ${r.error} (${r.codigo ?? "?"}; ${r.dominio_debajo ?? "-"} ${r.codigo_debajo ?? ""})`);
+      medirFalloOfertas(r);
+      return;
+    }
     const nuevos = r.paquetes ?? [];
     if (nuevos.length || compras.paquetes.length) compras.paquetes = nuevos;
     if (!compras.paquetes.length) compras.errorOfertas = "vacio";
@@ -78,6 +86,19 @@ export async function cargarOfertas(fuerza = false) {
   } finally {
     compras.cargandoOfertas = false;
   }
+}
+
+// Un `offers_failed` por arranque como mucho: solo códigos numéricos y el
+// dominio del error de debajo, nada del usuario.
+let falloMedido = false;
+function medirFalloOfertas(r: { codigo?: number | null; dominio_debajo?: string | null; codigo_debajo?: number | null }) {
+  if (falloMedido) return;
+  falloMedido = true;
+  medir("offers_failed", {
+    codigo: r.codigo ?? 0,
+    dominio: r.dominio_debajo ?? "",
+    codigo_debajo: r.codigo_debajo ?? 0,
+  });
 }
 
 export async function cargarCliente() {

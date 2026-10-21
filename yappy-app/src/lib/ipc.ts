@@ -818,7 +818,16 @@ export interface Cliente {
   gestionar?: string | null;
 }
 export const comprasEstado = (): Promise<EstadoCompras> => invoke("compras_estado_cmd");
-export const comprasOfertas = (): Promise<{ paquetes: Paquete[]; oferta?: string; simulado?: boolean }> =>
+export const comprasOfertas = (): Promise<{
+  paquetes?: Paquete[];
+  oferta?: string;
+  simulado?: boolean;
+  // Si la tienda falló, viene esto en vez de los paquetes.
+  error?: string;
+  codigo?: number | null;
+  dominio_debajo?: string | null;
+  codigo_debajo?: number | null;
+}> =>
   invoke("compras_ofertas_cmd");
 export const comprasComprar = (paquete: string): Promise<{ ok?: boolean; pro?: boolean; cancelado?: boolean; error?: string }> =>
   invoke("compras_comprar_cmd", { paquete });

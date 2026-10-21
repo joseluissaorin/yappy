@@ -139,7 +139,15 @@ private func describirCliente(_ info: CustomerInfo) -> [String: Any?] {
 
 private func errorJson(_ error: Error) -> [String: Any?] {
     let ns = error as NSError
-    return ["error": ns.localizedDescription, "codigo": ns.code]
+    // El error de debajo (StoreKit, red) es el que dice POR QUÉ: sin él, una
+    // tienda vacía en la revisión de Apple era indistinguible de una caída.
+    let debajo = ns.userInfo[NSUnderlyingErrorKey] as? NSError
+    return [
+        "error": ns.localizedDescription,
+        "codigo": ns.code,
+        "dominio_debajo": debajo?.domain,
+        "codigo_debajo": debajo?.code,
+    ]
 }
 
 // ─── PUBLIC FFI ──────────────────────────────────────────────────────────
@@ -186,8 +194,12 @@ public func yappy_compras_ofertas(_ id: UInt64) {
     Task {
         do {
             let ofertas = try await Purchases.shared.offerings()
-            let paquetes = (ofertas.current?.availablePackages ?? []).map(describir)
-            responder(id, ["paquetes": paquetes, "oferta": ofertas.current?.identifier])
+            guard let actual = ofertas.current else {
+                responder(id, ["error": "sin oferta actual", "codigo": -1])
+                return
+            }
+            let paquetes = actual.availablePackages.map(describir)
+            responder(id, ["paquetes": paquetes, "oferta": actual.identifier])
         } catch {
             responder(id, errorJson(error))
         }
