@@ -251,6 +251,9 @@ export default {
   "pro.sin_ofertas": "La boutique n'est pas disponible pour le moment.",
   "pro.cargando": "on demande à la boutique…",
   "pro.elige": "Choisis ton remontage",
+  "pro.cobro_mensual": "Tu paies {precio} chaque mois.",
+  "pro.cobro_anual": "Tu paies {precio} en une fois, chaque année (soit {mes} par mois).",
+  "pro.cobro_vida": "Un seul paiement de {precio}. Sans renouvellement.",
   // le tour du perroquet (onboarding)
   "paseo.sigue": "Continue",
   "paseo.luego": "Plus tard",

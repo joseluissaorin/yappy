@@ -251,6 +251,9 @@ export default {
   "pro.sin_ofertas": "De winkel is op dit moment niet beschikbaar.",
   "pro.cargando": "even de winkel vragen…",
   "pro.elige": "Kies je veer",
+  "pro.cobro_mensual": "Je betaalt {precio} per maand.",
+  "pro.cobro_anual": "Je betaalt {precio} in één keer per jaar (dat is {mes} per maand).",
+  "pro.cobro_vida": "Eén betaling van {precio}. Geen verlenging.",
   // de wandeling van de papegaai (onboarding)
   "paseo.sigue": "Verder",
   "paseo.luego": "Later",

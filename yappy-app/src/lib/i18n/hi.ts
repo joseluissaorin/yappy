@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "स्टोर अभी उपलब्ध नहीं है।",
   "pro.cargando": "स्टोर से पूछ रहे हैं…",
   "pro.elige": "अपनी चाबी चुनिए",
+  "pro.cobro_mensual": "हर महीने {precio} का भुगतान।",
+  "pro.cobro_anual": "साल में एक बार {precio} का एकमुश्त भुगतान (यानी {mes} प्रति माह)।",
+  "pro.cobro_vida": "{precio} का सिर्फ़ एक भुगतान। कोई नवीनीकरण नहीं।",
   // el paseo del loro (onboarding)
   "paseo.sigue": "आगे बढ़ें",
   "paseo.luego": "बाद में",

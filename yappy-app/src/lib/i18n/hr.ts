@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "Trgovina trenutačno nije dostupna.",
   "pro.cargando": "pitamo trgovinu…",
   "pro.elige": "Odaberi svoju oprugu",
+  "pro.cobro_mensual": "Plaćaš {precio} svaki mjesec.",
+  "pro.cobro_anual": "Plaćaš {precio} odjednom, jednom godišnje (to je {mes} na mjesec).",
+  "pro.cobro_vida": "Jedno plaćanje od {precio}. Bez obnavljanja.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Dalje",
   "paseo.luego": "Poslije",

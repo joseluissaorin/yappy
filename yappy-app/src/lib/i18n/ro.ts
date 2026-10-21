@@ -251,6 +251,9 @@ export default {
   "pro.sin_ofertas": "Magazinul nu e disponibil chiar acum.",
   "pro.cargando": "întreb magazinul…",
   "pro.elige": "Alege-ți cheița",
+  "pro.cobro_mensual": "Plătești {precio} în fiecare lună.",
+  "pro.cobro_anual": "Plătești {precio} o singură dată pe an (adică {mes} pe lună).",
+  "pro.cobro_vida": "O singură plată de {precio}. Fără reînnoiri.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Continuă",
   "paseo.luego": "Mai târziu",

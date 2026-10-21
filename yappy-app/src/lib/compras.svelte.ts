@@ -58,15 +58,19 @@ export async function refrescarCompras() {
   }
 }
 
-/// Las ofertas, una vez (y de nuevo si fallaron).
+/// Las ofertas, una vez (y de nuevo si fallaron). Nunca dos peticiones a
+/// la vez, y una respuesta vacía no reasigna la lista si ya estaba vacía:
+/// así ningún efecto que la lea puede entrar en bucle con la tienda.
 export async function cargarOfertas(fuerza = false) {
   if (!compras.disponible) return;
+  if (compras.cargandoOfertas) return;
   if (compras.paquetes.length && !fuerza) return;
   compras.cargandoOfertas = true;
   compras.errorOfertas = null;
   try {
     const r = await comprasOfertas();
-    compras.paquetes = r.paquetes ?? [];
+    const nuevos = r.paquetes ?? [];
+    if (nuevos.length || compras.paquetes.length) compras.paquetes = nuevos;
     if (!compras.paquetes.length) compras.errorOfertas = "vacio";
   } catch (e) {
     compras.errorOfertas = String(e);
@@ -93,8 +97,17 @@ export function abrirPaywall(motivo: MotivoPaywall = "trastienda") {
   void cargarOfertas();
 }
 
+let ultimoCierre = 0;
+
 export function cerrarPaywall() {
   compras.abierto = false;
+  ultimoCierre = Date.now();
+}
+
+/// ¿Está el muro abierto, o se cerró hace menos de `ms`? (La reseña no se
+/// pide nunca a la sombra del muro.)
+export function muroReciente(ms = 5 * 60_000): boolean {
+  return compras.abierto || Date.now() - ultimoCierre < ms;
 }
 
 /// ¿Puede hacerse una cosa de parlanchines? Si no, abre el paywall y devuelve falso.

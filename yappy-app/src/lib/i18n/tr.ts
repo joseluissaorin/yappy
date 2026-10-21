@@ -246,6 +246,9 @@ export default {
   "pro.sin_ofertas": "Mağaza şu anda kullanılamıyor.",
   "pro.cargando": "mağazaya soruluyor…",
   "pro.elige": "Zembereğini seç",
+  "pro.cobro_mensual": "Her ay {precio} ödersin.",
+  "pro.cobro_anual": "Yılda bir kez, tek seferde {precio} ödersin (aylık {mes} eder).",
+  "pro.cobro_vida": "Tek ödeme: {precio}. Yenileme yok.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "İleri",
   "paseo.luego": "Sonra",

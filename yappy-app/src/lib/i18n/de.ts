@@ -251,6 +251,9 @@ export default {
   "pro.sin_ofertas": "Der Store ist gerade nicht erreichbar.",
   "pro.cargando": "der Store wird gefragt…",
   "pro.elige": "Wähl, wie du ihn aufziehst",
+  "pro.cobro_mensual": "Du zahlst {precio} pro Monat.",
+  "pro.cobro_anual": "Du zahlst {precio} einmal im Jahr (das sind {mes} im Monat).",
+  "pro.cobro_vida": "Eine einzige Zahlung von {precio}. Keine Verlängerung.",
   // der Spaziergang des Papageis (Onboarding)
   "paseo.sigue": "Weiter",
   "paseo.luego": "Später",

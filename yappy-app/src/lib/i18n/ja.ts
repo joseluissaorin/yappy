@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "ストアは今ご利用いただけません。",
   "pro.cargando": "ストアに問い合わせ中…",
   "pro.elige": "ぜんまいを選ぶ",
+  "pro.cobro_mensual": "毎月{precio}のお支払い。",
+  "pro.cobro_anual": "年に一度、{precio}をまとめてお支払い（月あたり{mes}）。",
+  "pro.cobro_vida": "{precio}の一回払い。更新はありません。",
   // el paseo del loro (onboarding)
   "paseo.sigue": "つぎへ",
   "paseo.luego": "あとで",

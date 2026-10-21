@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "Cửa hàng hiện không khả dụng.",
   "pro.cargando": "đang hỏi cửa hàng…",
   "pro.elige": "Chọn dây cót của bạn",
+  "pro.cobro_mensual": "Bạn trả {precio} mỗi tháng.",
+  "pro.cobro_anual": "Bạn trả {precio} một lần mỗi năm (tức {mes} mỗi tháng).",
+  "pro.cobro_vida": "Thanh toán một lần {precio}. Không gia hạn.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Tiếp tục",
   "paseo.luego": "Để sau",

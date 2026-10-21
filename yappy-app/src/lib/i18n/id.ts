@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "Toko sedang tidak tersedia.",
   "pro.cargando": "menanyai toko…",
   "pro.elige": "Pilih putaranmu",
+  "pro.cobro_mensual": "Kamu membayar {precio} setiap bulan.",
+  "pro.cobro_anual": "Kamu membayar {precio} sekaligus setiap tahun (setara {mes} per bulan).",
+  "pro.cobro_vida": "Sekali bayar {precio}. Tanpa perpanjangan.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Lanjut",
   "paseo.luego": "Nanti",

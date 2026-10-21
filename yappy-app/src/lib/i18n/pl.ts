@@ -251,6 +251,9 @@ export default {
   "pro.sin_ofertas": "Sklep jest teraz niedostępny.",
   "pro.cargando": "pytam sklep…",
   "pro.elige": "Wybierz swoją sprężynę",
+  "pro.cobro_mensual": "Płacisz {precio} co miesiąc.",
+  "pro.cobro_anual": "Płacisz {precio} jednorazowo raz w roku (wychodzi {mes} miesięcznie).",
+  "pro.cobro_vida": "Jedna płatność: {precio}. Bez odnawiania.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Dalej",
   "paseo.luego": "Później",

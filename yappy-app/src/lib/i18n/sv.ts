@@ -251,6 +251,9 @@ export default {
   "pro.sin_ofertas": "Butiken är inte tillgänglig just nu.",
   "pro.cargando": "frågar butiken…",
   "pro.elige": "Välj din fjäder",
+  "pro.cobro_mensual": "Du betalar {precio} varje månad.",
+  "pro.cobro_anual": "Du betalar {precio} en gång om året (det blir {mes} i månaden).",
+  "pro.cobro_vida": "En enda betalning på {precio}. Ingen förnyelse.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Fortsätt",
   "paseo.luego": "Senare",

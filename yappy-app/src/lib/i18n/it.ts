@@ -251,6 +251,9 @@ export default {
   "pro.sin_ofertas": "Il negozio non è disponibile in questo momento.",
   "pro.cargando": "chiedo al negozio…",
   "pro.elige": "Scegli la tua carica",
+  "pro.cobro_mensual": "Paghi {precio} ogni mese.",
+  "pro.cobro_anual": "Paghi {precio} in un'unica volta, ogni anno (cioè {mes} al mese).",
+  "pro.cobro_vida": "Un unico pagamento di {precio}. Nessun rinnovo.",
   // la passeggiata del pappagallo (onboarding)
   "paseo.sigue": "Avanti",
   "paseo.luego": "Più tardi",

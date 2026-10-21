@@ -265,6 +265,9 @@ export default {
   "pro.sin_ofertas": "La tienda no está disponible ahora mismo.",
   "pro.cargando": "preguntando a la tienda…",
   "pro.elige": "Elige tu cuerda",
+  "pro.cobro_mensual": "Se cobran {precio} cada mes.",
+  "pro.cobro_anual": "Se cobran {precio} de una vez, cada año (sale a {mes} al mes).",
+  "pro.cobro_vida": "Un solo pago de {precio}. Sin renovaciones.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Sigue",
   "paseo.luego": "Luego",

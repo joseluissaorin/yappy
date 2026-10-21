@@ -288,13 +288,15 @@ async fn pedir(
     }
 }
 
+/// Los precios REALES de España (Apple no tiene puntos de 4,00/30,00/60,00 €):
+/// el ensayo tiene que enseñar lo mismo que la hoja de la tienda.
 #[cfg(debug_assertions)]
 fn ofertas_simuladas() -> serde_json::Value {
     serde_json::json!({
         "paquetes": [
-            { "id": "$rc_monthly", "tipo": "mensual", "producto": "com.joseluissaorin.yappy.parlanchin.mensual", "precio": "4,00 €", "precio_num": 4.0, "moneda": "EUR", "periodo": "P1M", "intro": null },
-            { "id": "$rc_annual", "tipo": "anual", "producto": "com.joseluissaorin.yappy.parlanchin.anual", "precio": "30,00 €", "precio_num": 30.0, "moneda": "EUR", "periodo": "P1Y", "intro": null },
-            { "id": "$rc_lifetime", "tipo": "vida", "producto": "com.joseluissaorin.yappy.parlanchin.vida", "precio": "60,00 €", "precio_num": 60.0, "moneda": "EUR", "periodo": null, "intro": null }
+            { "id": "$rc_monthly", "tipo": "mensual", "producto": "com.joseluissaorin.yappy.parlanchin.mensual", "precio": "3,99 €", "precio_num": 3.99, "moneda": "EUR", "periodo": "P1M", "intro": null },
+            { "id": "$rc_annual", "tipo": "anual", "producto": "com.joseluissaorin.yappy.parlanchin.anual", "precio": "29,99 €", "precio_num": 29.99, "moneda": "EUR", "periodo": "P1Y", "intro": null },
+            { "id": "$rc_lifetime", "tipo": "vida", "producto": "com.joseluissaorin.yappy.parlanchin.vida", "precio": "59,99 €", "precio_num": 59.99, "moneda": "EUR", "periodo": null, "intro": null }
         ],
         "simulado": true
     })

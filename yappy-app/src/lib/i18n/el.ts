@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "Το κατάστημα δεν είναι διαθέσιμο αυτή τη στιγμή.",
   "pro.cargando": "ρωτάμε το κατάστημα…",
   "pro.elige": "Διάλεξε το κούρδισμά σου",
+  "pro.cobro_mensual": "Πληρώνεις {precio} κάθε μήνα.",
+  "pro.cobro_anual": "Πληρώνεις {precio} μία φορά τον χρόνο (δηλαδή {mes} τον μήνα).",
+  "pro.cobro_vida": "Μία μόνο πληρωμή {precio}. Χωρίς ανανεώσεις.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Επόμενο",
   "paseo.luego": "Αργότερα",

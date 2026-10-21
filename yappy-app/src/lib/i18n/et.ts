@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "Pood pole praegu saadaval.",
   "pro.cargando": "küsime poelt…",
   "pro.elige": "Vali oma vedru",
+  "pro.cobro_mensual": "Maksad {precio} igas kuus.",
+  "pro.cobro_anual": "Maksad {precio} korraga kord aastas (see teeb {mes} kuus).",
+  "pro.cobro_vida": "Üks makse: {precio}. Ei uuene.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Edasi",
   "paseo.luego": "Hiljem",

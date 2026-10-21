@@ -246,6 +246,9 @@ export default {
   "pro.sin_ofertas": "المتجر غير متاح الآن.",
   "pro.cargando": "نسأل المتجر…",
   "pro.elige": "اختر لفّة مفتاحك",
+  "pro.cobro_mensual": "تدفع {precio} كل شهر.",
+  "pro.cobro_anual": "تدفع {precio} دفعة واحدة كل سنة (أي {mes} في الشهر).",
+  "pro.cobro_vida": "دفعة واحدة بقيمة {precio}، بلا تجديد.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "التالي",
   "paseo.luego": "لاحقًا",

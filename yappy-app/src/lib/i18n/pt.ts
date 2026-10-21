@@ -251,6 +251,9 @@ export default {
   "pro.sin_ofertas": "A loja não está disponível neste momento.",
   "pro.cargando": "a perguntar à loja…",
   "pro.elige": "Escolhe a tua corda",
+  "pro.cobro_mensual": "Pagas {precio} todos os meses.",
+  "pro.cobro_anual": "Pagas {precio} de uma só vez, todos os anos (dá {mes} por mês).",
+  "pro.cobro_vida": "Um só pagamento de {precio}. Sem renovações.",
   // o passeio do papagaio (onboarding)
   "paseo.sigue": "Continuar",
   "paseo.luego": "Mais tarde",

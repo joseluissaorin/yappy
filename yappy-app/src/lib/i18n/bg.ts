@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "Магазинът не е наличен в момента.",
   "pro.cargando": "питаме магазина…",
   "pro.elige": "Избери си пружината",
+  "pro.cobro_mensual": "Плащаш {precio} всеки месец.",
+  "pro.cobro_anual": "Плащаш {precio} наведнъж, веднъж годишно (излиза {mes} на месец).",
+  "pro.cobro_vida": "Едно-единствено плащане от {precio}. Без подновяване.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Напред",
   "paseo.luego": "По-късно",

@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "A bolt most nem elérhető.",
   "pro.cargando": "kérdezzük a boltot…",
   "pro.elige": "Válassz rugót",
+  "pro.cobro_mensual": "Havonta fizetendő: {precio}.",
+  "pro.cobro_anual": "Évente egyszer fizetendő: {precio} (havi {mes}).",
+  "pro.cobro_vida": "Egyszeri fizetés: {precio}. Nincs megújítás.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Tovább",
   "paseo.luego": "Később",

@@ -251,6 +251,9 @@ export default {
   "pro.sin_ofertas": "Kauppa ei ole juuri nyt käytettävissä.",
   "pro.cargando": "kysytään kaupalta…",
   "pro.elige": "Valitse jousesi",
+  "pro.cobro_mensual": "Maksat {precio} kuukaudessa.",
+  "pro.cobro_anual": "Maksat {precio} kerralla kerran vuodessa (eli {mes} kuukaudessa).",
+  "pro.cobro_vida": "Yksi maksu: {precio}. Ei uusiutumista.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Jatka",
   "paseo.luego": "Myöhemmin",

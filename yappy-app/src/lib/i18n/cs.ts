@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "Obchod teď není dostupný.",
   "pro.cargando": "ptáme se obchodu…",
   "pro.elige": "Vyber si svou pružinu",
+  "pro.cobro_mensual": "Platíš {precio} každý měsíc.",
+  "pro.cobro_anual": "Platíš {precio} najednou, jednou ročně (vychází to {mes} měsíčně).",
+  "pro.cobro_vida": "Jedna platba: {precio}. Bez obnovování.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "Dále",
   "paseo.luego": "Později",

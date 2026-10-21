@@ -9,7 +9,7 @@
   // celebra con su bandada y llueven recortes. Las tres cuerdas son pegatinas troqueladas de la casa
   // (sello, estrella, corazón), con su costura y su sombra dura. Ley del
   // álbum: papel, una tinta por pieza, tres voces tipográficas, humor.
-  import { onMount } from "svelte";
+  import { onMount, untrack } from "svelte";
   import { fly, fade, scale } from "svelte/transition";
   import { backOut, cubicOut } from "svelte/easing";
   import { t, idiomaUI } from "$lib/i18n";
@@ -73,11 +73,20 @@
     const pct = Math.round((1 - a.precio_num / (m.precio_num * 12)) * 100);
     return pct > 0 ? pct : null;
   });
-  function equivalente(p: Paquete | null): string | null {
+  // LO QUE SE COBRA, dicho antes de la hoja de la tienda. Antes, con el
+  // anual elegido, lo último que se leía encima de la tecla era «2,50 € al
+  // mes», y la hoja de Apple pedía 29,99 € de golpe: cinco de los seis que
+  // pulsaron comprar la cerraron en menos de seis segundos. Ahora la frase
+  // empieza por el cargo real (el precio de StoreKit, tal cual) y el
+  // equivalente mensual va después, entre paréntesis.
+  function cobro(p: Paquete | null): string | null {
     if (!p) return null;
-    if (p.tipo === "anual" && p.precio_num) return f("pro.equivale", { precio: moneda(p.precio_num / 12, p.moneda) });
-    if (p.tipo === "vida") return `${$t("pro.un_pago")} · ${$t("pro.para_siempre")}`;
-    if (p.tipo === "mensual") return $t("pro.cancelas");
+    if (p.tipo === "anual") {
+      const mes = p.precio_num ? moneda(p.precio_num / 12, p.moneda) : null;
+      return mes ? f("pro.cobro_anual", { precio: p.precio, mes }) : `${p.precio} ${$t("pro.al_ano")}`;
+    }
+    if (p.tipo === "mensual") return f("pro.cobro_mensual", { precio: p.precio });
+    if (p.tipo === "vida") return f("pro.cobro_vida", { precio: p.precio });
     return null;
   }
   function periodoDe(tipo: TipoPaquete): string {
@@ -246,8 +255,10 @@
       ? "https://play.google.com/intl/es/about/play-terms/"
       : "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/",
   );
+  // La política de privacidad DE VERDAD (la misma URL que la ficha de la
+  // tienda), no las preguntas frecuentes.
   const urlPrivacidad = $derived(
-    $idiomaUI === "es" ? "https://yappy.joseluissaorin.com/preguntas" : "https://yappy.joseluissaorin.com/en/faq",
+    $idiomaUI === "es" ? "https://yappy.joseluissaorin.com/privacidad" : "https://yappy.joseluissaorin.com/en/privacy",
   );
 
   // ── El tirón para cerrar ────────────────────────────────────────────
@@ -279,15 +290,29 @@
   }
 
   // Al abrirse: sonido de papel, y la cuerda favorita por delante.
+  //
+  // UNA VEZ POR APERTURA. El efecto solo depende de `compras.abierto` y
+  // solo actúa en el flanco cerrado → abierto; todo lo demás va dentro de
+  // `untrack`. Antes leía también `compras.paquetes` (directamente y dentro
+  // de cargarOfertas): si la tienda contestaba con la lista VACÍA, la
+  // asignación del array nuevo volvía a disparar el efecto, que volvía a
+  // pedir ofertas y a medir `paywall_shown`: un bucle de ~7 vueltas por
+  // segundo (miles de eventos en los dispositivos de la revisión de Apple,
+  // que ven la tienda sin productos, y 670 en el emulador de Android).
+  let estabaAbierto = false;
   $effect(() => {
-    if (compras.abierto) {
+    const abierto = compras.abierto;
+    if (abierto === estabaAbierto) return;
+    estabaAbierto = abierto;
+    if (!abierto) return;
+    untrack(() => {
       rasga();
       haptic("soft");
       elegida = "anual";
       arrastre = 0;
       medir("paywall_shown", { source: compras.motivo });
       if (!compras.paquetes.length) void cargarOfertas(true);
-    }
+    });
   });
   onMount(() => () => clearTimeout(cierreTimer));
 
@@ -511,8 +536,8 @@
           {:else if !compras.paquetes.length}
             <p class="nota peligro">{$t("pro.sin_ofertas")}</p>
             <button class="yap-boton" use:presionable onclick={() => cargarOfertas(true)}>{$t("cinta.error")}</button>
-          {:else if equivalente(paqueteElegido)}
-            <p class="yap-susurro nota">{equivalente(paqueteElegido)}</p>
+          {:else if cobro(paqueteElegido)}
+            <p class="nota cobro" aria-live="polite">{cobro(paqueteElegido)}</p>
           {/if}
 
           <button
@@ -536,7 +561,9 @@
             <p class="nota peligro" in:fly={{ y: 6, duration: 200 }}>{error}</p>
           {:else if aviso}
             <p class="nota" in:fly={{ y: 6, duration: 200 }}>{aviso}</p>
-          {:else}
+          {:else if paqueteElegido?.tipo !== "vida"}
+            <!-- «Cancelas cuando quieras» solo tiene sentido en una suscripción:
+                 el de por vida no se renueva ni se cancela. -->
             <p class="nota">{$t("pro.cancelas")}</p>
           {/if}
 
@@ -871,7 +898,7 @@
     justify-content: center;
     gap: 2px;
     width: calc(100% + 16px);
-    margin: 10px -8px 0;
+    margin: 22px -8px 0;
     height: 176px;
   }
   .cuerda {
@@ -964,7 +991,9 @@
     white-space: nowrap;
     z-index: 2;
   }
-  .tampon-cuerda.izquierda { left: -6px; transform: rotate(-8deg); background: #fffdf7; }
+  /* Los dos tampones del anual no caben lado a lado en la estrella (se
+     pisaban: «la más pedi…»): el de la izquierda sube un escalón. */
+  .tampon-cuerda.izquierda { top: -16px; left: -6px; transform: rotate(-8deg); background: #fffdf7; }
   .tampon-cuerda.derecha { right: -6px; transform: rotate(8deg); }
 
   .nota {
@@ -974,6 +1003,9 @@
     max-width: 36ch;
   }
   .nota.peligro { color: var(--yap-peligro); font-weight: 700; }
+  /* El cargo real, en la tinta del texto: es lo último que se lee antes de
+     la tecla y tiene que coincidir con la hoja de la tienda. */
+  .nota.cobro { color: var(--yap-tinta); font-weight: 600; font-size: 13.5px; line-height: 1.4; }
   .tecla-grande {
     margin-top: 8px;
     width: 100%;

@@ -250,6 +250,9 @@ export default {
   "pro.sin_ofertas": "지금은 스토어를 이용할 수 없어요.",
   "pro.cargando": "스토어에 물어보는 중…",
   "pro.elige": "태엽을 골라 주세요",
+  "pro.cobro_mensual": "매달 결제: {precio}",
+  "pro.cobro_anual": "1년에 한 번 결제: {precio} (월 {mes}꼴)",
+  "pro.cobro_vida": "한 번만 결제: {precio}. 갱신은 없어요.",
   // el paseo del loro (onboarding)
   "paseo.sigue": "다음",
   "paseo.luego": "나중에",
