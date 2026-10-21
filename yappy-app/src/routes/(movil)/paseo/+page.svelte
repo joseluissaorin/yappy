@@ -32,7 +32,7 @@
   import { backOut, cubicOut } from "svelte/easing";
   import { goto } from "$app/navigation";
   import { get as getStore } from "svelte/store";
-  import { t, idiomaUI, IDIOMAS_UI, NOMBRE_IDIOMA, frase, fijarPreferenciaIdioma, type IdiomaUI } from "$lib/i18n";
+  import { t, idiomaUI, IDIOMAS_UI, NOMBRE_IDIOMA, fijarPreferenciaIdioma, type IdiomaUI } from "$lib/i18n";
   import { haptic } from "$lib/haptic";
   import { presionable } from "$lib/presionable";
   import { plop, pop, boing, rasga, tick as foleyTick } from "$lib/foley";
@@ -56,7 +56,11 @@
     cargarPaseo,
     cargarCuentos,
     decirPaso,
+    decirTexto,
     callar,
+    precocinarPaseo,
+    bajarVozPaseo,
+    bajarHolas,
     siguiente,
     saltarPaso,
     irAlPaso,
@@ -119,9 +123,10 @@
   $effect(() => {
     const p = paso;
     if (!listo) return;
-    const vars = { voz: vozElegida };
     if (p === "gestos" || p === "cuerda") return;
-    void decirPaso(`paseo.dice.${p}`, vars);
+    // Solo depende del paso: si leyera la voz elegida, tocar un pájaro
+    // volvería a decir el paso encima de su muestra.
+    void decirPaso(`paseo.dice.${p}`);
   });
 
   // El paso de la cuerda: se abre el paywall y, al cerrarse, termina el
@@ -167,6 +172,10 @@
     await cargarCuentos();
     paseo.piezasAntes = await piezasPropias();
     listo = true;
+    // Paseo reanudado con otro pájaro: su voz se prepara desde ya.
+    precocinarPaseo(vozElegida);
+    // Los «hola» de los sellos de idioma, por si se tocan.
+    bajarHolas(IDIOMAS_UI);
     medirPantalla(`paseo_${paso}`);
     rasga();
     // Compartir: la página se completa sola cuando llega una pieza propia.
@@ -206,6 +215,7 @@
     if (idiomaTocado === cod) {
       // Segundo toque: elegir.
       fijarPreferenciaIdioma(cod);
+      bajarVozPaseo(cod);
       await setDefaultLang(cod).catch(() => {});
       medir("paseo_idioma", { idioma: cod });
       plop();
@@ -213,13 +223,9 @@
     }
     idiomaTocado = cod;
     foleyTick();
-    void decirPaso("paseo.hola_corto", {}, undefined, cod).then(() => {});
-    // La frase en SU idioma: el diccionario de esa lengua, no el nuestro.
-    const linea = frase(cod, "paseo.hola_corto");
-    if (linea && linea !== "paseo.hola_corto") {
-      const { hablar } = await import("$lib/ipc");
-      hablar(linea, undefined, cod).catch(() => {});
-    }
+    // La frase en SU idioma: el diccionario de esa lengua, no el nuestro
+    // (pregrabada en las 31: suena al instante).
+    void decirPaso("paseo.hola_corto", {}, undefined, cod);
   }
 
   async function elegirVoz(v: Voice, i: number) {
@@ -228,6 +234,8 @@
     fijarTintaVoz(TINTAS_VOZ[i % TINTAS_VOZ.length]);
     await setVoice(v.name).catch(() => {});
     sampleVoice(v.name).catch(() => {});
+    // Lo que queda del paseo, con la voz de este pájaro.
+    precocinarPaseo(v.name);
     medir("paseo_voz", { voz: v.name });
   }
 
@@ -309,15 +317,15 @@
     }
   }
 
-  async function tocarCuento(id: string, primera: string) {
+  async function tocarCuento(id: string, primera: string, idioma: string) {
     haptic("light");
     if (cuentoTocado !== id) {
       cuentoTocado = id;
       foleyTick();
-      const { hablar } = await import("$lib/ipc");
-      hablar(primera).catch(() => {});
+      void decirTexto(`cuento.${id}`, primera, idioma);
       return;
     }
+    callar();
     haptic("medium");
     try {
       const item = await colaAgregarCuento(id);
@@ -419,6 +427,7 @@
             <Criatura size={96} cantando={paseo.hablando} tinta={$tintaVoz} />
             <h1 class="yap-grito titulo">{$t("paseo.idiomas.titulo")}</h1>
             <p class="lectura">{$t("paseo.dice.idiomas")}</p>
+            <p class="lectura chica todos">{$t("paseo.idiomas.todos")}</p>
             <p class="yap-susurro pista">{$t("paseo.idiomas.pista")}</p>
             <div class="sellos">
               {#each IDIOMAS_UI as cod, i (cod)}
@@ -539,7 +548,7 @@
               <div class="pegatinas cuentos">
                 {#each paseo.cuentos as c, i (c.id)}
                   {@const tocado = cuentoTocado === c.id}
-                  <button class="pegatina cuento" class:activa={tocado} style="--tinta:{tinta(i + 7)}; --honda:{tonoHondo(tinta(i + 7))}; --clip:{aPoligono(forma(i + 5))}; --clip-in:{aPoligono(forma(i + 5), 0.92)}; --giro:{tocado ? 0 : ((i % 2) * 2 - 1) * 3}deg" use:presionable={{ hap: "soft" }} onclick={() => tocarCuento(c.id, c.primera_frase)}>
+                  <button class="pegatina cuento" class:activa={tocado} style="--tinta:{tinta(i + 7)}; --honda:{tonoHondo(tinta(i + 7))}; --clip:{aPoligono(forma(i + 5))}; --clip-in:{aPoligono(forma(i + 5), 0.92)}; --giro:{tocado ? 0 : ((i % 2) * 2 - 1) * 3}deg" use:presionable={{ hap: "soft" }} onclick={() => tocarCuento(c.id, c.primera_frase, c.idioma)}>
                     <span class="capa sombra"></span><span class="capa borde"></span><span class="capa cuerpo"></span>
                     <svg class="costura" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points={aPuntosSvg(forma(i + 5), 0.82)} fill="none" stroke="var(--honda)" stroke-width="1.4" stroke-dasharray="3 2.6" vector-effect="non-scaling-stroke" /></svg>
                     <span class="etiqueta"><strong>{c.titulo}</strong><small>{c.autor}</small></span>
@@ -817,6 +826,8 @@
     text-wrap: pretty;
   }
   .lectura.chica { font-size: 14px; color: var(--yap-tinta-suave); }
+  /* Que se lea a la primera: elegir idioma no limita lo que el loro lee. */
+  .lectura.chica.todos { color: var(--yap-tinta); font-weight: 600; }
   .pista { margin: 0; }
   .yap-tecla.grande {
     margin-top: 6px;

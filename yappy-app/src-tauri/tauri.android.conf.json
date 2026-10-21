@@ -12,12 +12,9 @@
   },
   "bundle": {
     "resources": [
-      "../resources/paddleocr/*",
-      "../resources/defuddle.js",
       "../resources/muestras/*",
       "../resources/cuentos/*",
-      "../resources/paseo/*",
-      "../resources/licenses/*"
+      "../resources/paseo-voz/*"
     ],
     "android": {
       "versionCode": 1000003

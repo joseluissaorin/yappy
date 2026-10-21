@@ -184,6 +184,8 @@ object Puente {
           "wav" -> "audio/wav"
           "yappy" -> "application/zip"
           "txt", "md" -> "text/plain"
+          "pdf" -> "application/pdf"
+          "html", "htm" -> "text/html"
           else -> "application/octet-stream"
         }
         val enviar = Intent(Intent.ACTION_SEND).apply {
@@ -329,6 +331,8 @@ object Puente {
   @JvmStatic fun ficheroActual(): String? = Sonido.ficheroActual()
   @JvmStatic fun efectoPlay(path: String): Double = Sonido.efectoPlay(path)
   @JvmStatic fun efectoStop() = Sonido.efectoStop()
+  @JvmStatic fun efectoPlayRate(path: String, rate: Float): Double = Sonido.efectoPlayRate(path, rate)
+  @JvmStatic fun efectoPlayRecurso(rel: String, rate: Float): Double = Sonido.efectoPlayRecurso(rel, rate)
 
   // ─── Compras (delegado) ─────────────────────────────────────────────────
   @JvmStatic fun comprasConfigurar(apiKey: String, entitlement: String) = Compras.configurar(apiKey, entitlement)
@@ -339,4 +343,114 @@ object Puente {
   @JvmStatic fun comprasCliente(id: Long) = Compras.cliente(id)
   @JvmStatic fun comprasUsuario(): String? = Compras.usuario()
   @JvmStatic fun comprasGestionar() = Compras.gestionar()
+
+  // ─── OCR (Amanuensis): páginas de PDF escaneado e imágenes ──────────────
+  /** Páginas del PDF (-1 si no se puede abrir). Rust lee luego cada página
+   *  con Amanuensis Ligero (capture/amanuensis.rs). */
+  @JvmStatic
+  fun pdfPaginas(ruta: String): Int {
+    var fd: android.os.ParcelFileDescriptor? = null
+    var r: android.graphics.pdf.PdfRenderer? = null
+    return try {
+      fd = android.os.ParcelFileDescriptor.open(File(ruta), android.os.ParcelFileDescriptor.MODE_READ_ONLY)
+      r = android.graphics.pdf.PdfRenderer(fd)
+      r.pageCount
+    } catch (e: Exception) {
+      android.util.Log.w("yappy", "pdfPaginas: $e"); -1
+    } finally {
+      try { r?.close() } catch (_: Exception) {}
+      try { fd?.close() } catch (_: Exception) {}
+    }
+  }
+
+  /** Una página del PDF a PNG sobre blanco, a `dpi` (lado mayor ≤ 4000 px). */
+  @JvmStatic
+  fun pdfPaginaPng(ruta: String, destino: String, indice: Int, dpi: Int): Boolean {
+    var fd: android.os.ParcelFileDescriptor? = null
+    var r: android.graphics.pdf.PdfRenderer? = null
+    var p: android.graphics.pdf.PdfRenderer.Page? = null
+    return try {
+      fd = android.os.ParcelFileDescriptor.open(File(ruta), android.os.ParcelFileDescriptor.MODE_READ_ONLY)
+      r = android.graphics.pdf.PdfRenderer(fd)
+      if (indice < 0 || indice >= r.pageCount) return false
+      p = r.openPage(indice)
+      val esc = dpi / 72f
+      var w = (p.width * esc).toInt().coerceAtLeast(1)
+      var h = (p.height * esc).toInt().coerceAtLeast(1)
+      val lado = maxOf(w, h)
+      if (lado > 4000) { val f = 4000f / lado; w = (w * f).toInt().coerceAtLeast(1); h = (h * f).toInt().coerceAtLeast(1) }
+      val bmp = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+      bmp.eraseColor(android.graphics.Color.WHITE)
+      p.render(bmp, null, null, android.graphics.pdf.PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+      java.io.FileOutputStream(destino).use { bmp.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it) }
+      bmp.recycle()
+      true
+    } catch (e: Exception) {
+      android.util.Log.w("yappy", "pdfPaginaPng: $e"); false
+    } finally {
+      try { p?.close() } catch (_: Exception) {}
+      try { r?.close() } catch (_: Exception) {}
+      try { fd?.close() } catch (_: Exception) {}
+    }
+  }
+
+  /** Imagen que Rust no decodifica (HEIC…) → PNG derecho (orientación EXIF
+   *  aplicada) con el lado mayor ≤ `ladoMax`. */
+  @JvmStatic
+  fun imagenAPng(origen: String, destino: String, ladoMax: Int): Boolean {
+    return try {
+      val bmp: android.graphics.Bitmap = if (Build.VERSION.SDK_INT >= 28) {
+        val src = android.graphics.ImageDecoder.createSource(File(origen))
+        android.graphics.ImageDecoder.decodeBitmap(src) { dec, info, _ ->
+          val lado = maxOf(info.size.width, info.size.height)
+          if (lado > ladoMax) {
+            val f = ladoMax.toFloat() / lado
+            dec.setTargetSize((info.size.width * f).toInt().coerceAtLeast(1), (info.size.height * f).toInt().coerceAtLeast(1))
+          }
+          dec.allocator = android.graphics.ImageDecoder.ALLOCATOR_SOFTWARE
+        }
+      } else {
+        android.graphics.BitmapFactory.decodeFile(origen) ?: return false
+      }
+      java.io.FileOutputStream(destino).use { bmp.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it) }
+      bmp.recycle()
+      true
+    } catch (e: Exception) {
+      android.util.Log.w("yappy", "imagenAPng: $e"); false
+    }
+  }
+
+  // ─── Los resources/ de Tauri, que en Android viven en los assets ───────
+  // (assets/_up_/resources/…): no tienen ruta de fichero, así que Rust
+  // pregunta aquí si existen o pide que se copien a disco.
+
+  /** ¿Existe `rel` (relativo a assets/) dentro del APK? */
+  @JvmStatic
+  fun recursoExiste(rel: String): Boolean = try {
+    app.assets.open(rel).close(); true
+  } catch (_: Exception) { false }
+
+  /** Copia la carpeta `rel` de los assets (sin subcarpetas) a `destino`.
+   *  Devuelve cuántos ficheros quedaron copiados (-1 si falló). */
+  @JvmStatic
+  fun recursosExtraer(rel: String, destino: String): Int {
+    return try {
+      val dir = File(destino)
+      dir.mkdirs()
+      var n = 0
+      for (nombre in app.assets.list(rel) ?: emptyArray()) {
+        try {
+          app.assets.open("$rel/$nombre").use { ent ->
+            File(dir, nombre).outputStream().use { sal -> ent.copyTo(sal) }
+          }
+          n++
+        } catch (_: java.io.FileNotFoundException) {
+          // Una subcarpeta (list la da como nombre): no hace falta.
+        }
+      }
+      n
+    } catch (e: Exception) {
+      android.util.Log.w("yappy", "recursosExtraer $rel: $e"); -1
+    }
+  }
 }

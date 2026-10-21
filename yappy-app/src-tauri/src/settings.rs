@@ -44,10 +44,13 @@ pub enum AppTheme {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "lowercase")]
 pub enum OcrEngine {
+    /// Amanuensis Ligero con Vision de respaldo. «paddle» (PaddleOCR, quitado el 21-10-2026) se lee como Auto.
     #[default]
+    #[serde(alias = "paddle")]
     Auto,
     AppleVision,
-    Paddle,
+    /// Solo Amanuensis Ligero (el OCR propio), sin respaldo del sistema.
+    Amanuensis,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]

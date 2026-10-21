@@ -108,11 +108,11 @@
       "signingIdentity": "-"
     },
     "resources": [
-      "../resources/paddleocr/*",
       "../resources/defuddle.js",
       "../resources/muestras/*",
       "../resources/cuentos/*",
       "../resources/paseo/*",
+      "../resources/paseo-voz/*",
       "../resources/licenses/*",
       "../resources/extension/*",
       "../resources/pdfium/*",

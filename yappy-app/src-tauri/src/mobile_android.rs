@@ -151,7 +151,26 @@ fn llamar(
     let Ok(mut env) = vm.attach_current_thread_permanently() else {
         return Valor::Nada;
     };
-    let Some(clase) = clase_puente(&mut env) else {
+    // Un MARCO LOCAL por llamada: el hilo queda adjunto para siempre y
+    // nunca vuelve a Java, así que sin marco ninguna referencia local
+    // (los String de los textos, lo devuelto) se liberaba jamás. Cada
+    // snapshot de reproducción (nowPlaying) dejaba tres colgadas: la
+    // tabla de referencias locales crecía sin fin durante la lectura.
+    env.with_local_frame(16, |env| {
+        Ok::<_, jni::errors::Error>(llamar_en(env, nombre, firma, textos, extra, extra_primero))
+    })
+    .unwrap_or(Valor::Nada)
+}
+
+fn llamar_en(
+    env: &mut JNIEnv,
+    nombre: &str,
+    firma: &str,
+    textos: &[&str],
+    extra: &[JValue],
+    extra_primero: bool,
+) -> Valor {
+    let Some(clase) = clase_puente(env) else {
         return Valor::Nada;
     };
     let mut objs: Vec<JObject> = Vec::with_capacity(textos.len());
@@ -484,6 +503,48 @@ pub fn efecto_play(path: &str) -> f64 {
 pub fn efecto_stop() {
     llamar_v("efectoStop", "()V", &[], &[]);
 }
+/// El canal de efectos con velocidad (la voz pregrabada del paseo).
+pub fn efecto_play_rate(path: &str, rate: f32) -> f64 {
+    llamar_f64(
+        "efectoPlayRate",
+        "(Ljava/lang/String;F)D",
+        &[path],
+        &[JValue::Float(rate)],
+    )
+}
+/// Igual, pero desde los assets del APK (`rel` relativo a assets/): en
+/// Android los resources/ de Tauri no tienen ruta de fichero.
+pub fn efecto_play_recurso(rel: &str, rate: f32) -> f64 {
+    llamar_f64(
+        "efectoPlayRecurso",
+        "(Ljava/lang/String;F)D",
+        &[rel],
+        &[JValue::Float(rate)],
+    )
+}
+
+// ─── Los resources/ de Tauri (assets del APK) ───────────────────────────
+
+/// ¿Existe `rel` (relativo a assets/, p. ej. `_up_/resources/muestras/x.m4a`)?
+pub fn recurso_existe(rel: &str) -> bool {
+    llamar_bool("recursoExiste", "(Ljava/lang/String;)Z", &[rel], &[])
+}
+
+/// Copia la carpeta de assets `rel` a `destino` (ficheros sueltos, sin
+/// subcarpetas). Devuelve cuántos copió; `None` si el puente aún no está
+/// (contexto sin llegar) o falló.
+pub fn recursos_extraer(rel: &str, destino: &str) -> Option<usize> {
+    match llamar(
+        "recursosExtraer",
+        "(Ljava/lang/String;Ljava/lang/String;)I",
+        &[rel, destino],
+        &[],
+        false,
+    ) {
+        Valor::Int(n) if n >= 0 => Some(n as usize),
+        _ => None,
+    }
+}
 
 // ─── Spotlight: no existe en Android ────────────────────────────────────
 pub fn spotlight_replace_all(_payload: &str) {}
@@ -617,4 +678,46 @@ pub extern "system" fn Java_com_yappy_app_Puente_nativoPro(
     pro: jni::sys::jboolean,
 ) {
     crate::compras::pro_desde_la_tienda(pro != 0);
+}
+
+// ─── OCR (Amanuensis): PDF escaneado e imágenes que Rust no decodifica ────
+
+/// Páginas del PDF según PdfRenderer (-1 si no se puede abrir).
+pub fn pdf_paginas(ruta: &std::path::Path) -> i32 {
+    match llamar(
+        "pdfPaginas",
+        "(Ljava/lang/String;)I",
+        &[&ruta.to_string_lossy()],
+        &[],
+        false,
+    ) {
+        Valor::Int(n) => n,
+        _ => -1,
+    }
+}
+
+/// Rasteriza una página del PDF a PNG (fondo blanco, `dpi`, lado máximo 4000 px).
+pub fn pdf_pagina_png(
+    ruta: &std::path::Path,
+    destino: &std::path::Path,
+    indice: i32,
+    dpi: i32,
+) -> bool {
+    llamar_bool(
+        "pdfPaginaPng",
+        "(Ljava/lang/String;Ljava/lang/String;II)Z",
+        &[&ruta.to_string_lossy(), &destino.to_string_lossy()],
+        &[JValue::Int(indice), JValue::Int(dpi)],
+    ) && destino.exists()
+}
+
+/// Decodifica con Android (HEIC y lo que el decodificador de Rust no lea; con la orientación EXIF) y guarda un
+/// PNG con el lado mayor acotado.
+pub fn imagen_a_png(origen: &std::path::Path, destino: &std::path::Path, lado_max: i32) -> bool {
+    llamar_bool(
+        "imagenAPng",
+        "(Ljava/lang/String;Ljava/lang/String;I)Z",
+        &[&origen.to_string_lossy(), &destino.to_string_lossy()],
+        &[JValue::Int(lado_max)],
+    ) && destino.exists()
 }

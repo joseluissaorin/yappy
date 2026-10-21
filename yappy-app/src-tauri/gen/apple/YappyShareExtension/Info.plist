@@ -37,6 +37,7 @@
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.openxmlformats.wordprocessingml.document"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "com.microsoft.word.doc"
     OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "org.oasis-open.opendocument.text"
+    OR ANY $att.registeredTypeIdentifiers UTI-CONFORMS-TO "public.image"
   ).@count &gt; 0
 ).@count &gt; 0</string>
 			<key>NSExtensionJavaScriptPreprocessingFile</key>

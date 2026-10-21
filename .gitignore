@@ -47,8 +47,8 @@ yappy-devid.key*
 /tmp/yappy-build*.log
 
 # ── Bundled third-party we intentionally ship ────────────────────────────
-# (pdfium binaries, paddleocr ONNX models, defuddle.js)
-# These ARE committed — yappy-app/resources/{pdfium,paddleocr,extension}/* —
+# (pdfium binaries, defuddle.js; the Amanuensis OCR weights live in resources/amanuensis)
+# These ARE committed — yappy-app/resources/{pdfium,amanuensis,extension}/* —
 # so users can clone+build without separately fetching them.
 
 # Libs nativas Android: las trae scripts/fetch-ort-android.sh
@@ -69,3 +69,10 @@ web/.wrangler/
 # Los recursos que el empaquetador de Android copia al compilar: son copias
 # de yappy-app/resources/, no fuentes.
 yappy-app/src-tauri/gen/android/app/src/main/assets/_up_/
+
+# Cachés de compilación de Kotlin/Gradle en el proyecto Android.
+yappy-app/src-tauri/gen/android/.kotlin/
+yappy-app/src-tauri/gen/android/buildSrc/.kotlin/
+# La voz del paseo en los idiomas que no van en el paquete: se regenera con
+# tooling/paseo/voz.mjs y vive en el espejo R2.
+tooling/paseo/voz-remota/

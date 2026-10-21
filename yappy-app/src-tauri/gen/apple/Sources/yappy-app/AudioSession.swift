@@ -219,6 +219,31 @@ public func yappy_efecto_play(_ pathPtr: UnsafePointer<CChar>?) -> Double {
     }
 }
 
+// LA VOZ DEL PASEO: el mismo canal de efectos, con velocidad. La demo del
+// dial suena al instante sobre el audio pregrabado (AVAudioPlayer estira el
+// tiempo sin cambiar el tono). Devuelve la duración del fichero sin escalar.
+@_cdecl("yappy_efecto_play_rate")
+public func yappy_efecto_play_rate(_ pathPtr: UnsafePointer<CChar>?, _ rate: Float) -> Double {
+    guard let pathPtr = pathPtr else { return 0.0 }
+    let path = String(cString: pathPtr)
+    try? AVAudioSession.sharedInstance().setActive(true)
+    do {
+        let player = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: path))
+        efectoPlayer?.stop()
+        efectoPlayer = player
+        if abs(rate - 1.0) > 0.01 {
+            player.enableRate = true
+            player.rate = max(0.5, min(2.0, rate))
+        }
+        player.prepareToPlay()
+        player.play()
+        return player.duration
+    } catch {
+        NSLog("[yappy/efecto] no se pudo reproducir \(path): \(error)")
+        return 0.0
+    }
+}
+
 // La VOZ DE VERDAD manda: cuando arranca la lectura de un documento, el
 // dicho del título (o cualquier efecto) se calla al instante.
 @_cdecl("yappy_efecto_stop")

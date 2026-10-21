@@ -7,11 +7,14 @@
 // en la cinta (segunda apertura sin compartir, libro largo, favoritos).
 import { get } from "svelte/store";
 import { goto } from "$app/navigation";
-import { t, idiomaUI } from "$lib/i18n";
+import { t, idiomaUI, frase as fraseEn, type IdiomaUI } from "$lib/i18n";
 import {
   getSettings,
   setPaseo,
-  hablar,
+  paseoDecir,
+  paseoCallar,
+  paseoPrecocinar,
+  paseoVozDescargar,
   cuentosListar,
   portapapelesTieneEnlace,
   colaListar,
@@ -121,35 +124,104 @@ export async function cargarPaseo(): Promise<boolean> {
   paseo.paso = paseo.activo ? Math.min(paseo.libreta.paso, PASOS.length - 1) : 0;
   paseo.cargado = true;
   void arrancarAnalitica(paseo.libreta.estadisticas !== false);
-  if (paseo.activo) medir("paseo_reanudado", { paso: pasoActual() });
+  if (paseo.activo) {
+    medir("paseo_reanudado", { paso: pasoActual() });
+    bajarVozPaseo(get(idiomaUI));
+  }
   calcularAviso();
   await guardarPaseo();
   return paseo.activo;
 }
 
 /// Lo que el loro dice en un paso (con la voz elegida). Calla si algo suena.
+/// Sin `idioma`, la frase va en el idioma de la interfaz; con él, en el
+/// diccionario de ESA lengua (los sellos de idioma).
 export async function decirPaso(clave: string, vars: Record<string, string | number> = {}, velocidad?: number, idioma?: string) {
-  const tr = get(t);
-  let frase = tr(clave);
-  for (const [k, v] of Object.entries(vars)) frase = frase.replaceAll(`{${k}}`, String(v));
-  if (!frase || frase === clave) return;
+  const lang = idioma ?? get(idiomaUI);
+  let texto = idioma ? fraseEn(idioma as IdiomaUI, clave) : get(t)(clave);
+  for (const [k, v] of Object.entries(vars)) texto = texto.replaceAll(`{${k}}`, String(v));
+  if (!texto || texto === clave) return;
+  await decirTexto(clave, texto, lang, velocidad);
+}
+
+/// El turno de la voz: lo que llega tarde de un turno viejo no anima al loro.
+let turnoVoz = 0;
+/// El último callar en vuelo: un decir espera a que llegue antes de sonar
+/// (si no, el stop de un paso viejo podría cortar la voz del nuevo).
+let callando: Promise<unknown> = Promise.resolve();
+
+/// Dice `texto` (identificado por `clave` para su audio pregrabado).
+export async function decirTexto(clave: string, texto: string, idioma?: string, velocidad?: number) {
   if (repro.snap && repro.snap.estado !== "inactivo") return;
   clearTimeout(hablaTimer);
+  const turno = ++turnoVoz;
   paseo.hablando = true;
   try {
-    const dur = await hablar(frase, velocidad, idioma);
+    await callando;
+    if (turno !== turnoVoz) return;
+    const dur = await paseoDecir(clave, texto, idioma, velocidad);
+    if (turno !== turnoVoz) return;
     hablaTimer = setTimeout(() => (paseo.hablando = false), Math.max(600, dur * 1000));
   } catch {
-    paseo.hablando = false;
+    if (turno === turnoVoz) paseo.hablando = false;
   }
 }
 
+/// Corta la voz EN SECO: al cambiar de paso, al saltar y al salir.
 export function callar() {
   clearTimeout(hablaTimer);
+  turnoVoz++;
   paseo.hablando = false;
+  callando = paseoCallar().catch(() => {});
+}
+
+/// Todo lo que el loro dice en el paseo (lo mismo que graba
+/// tooling/paseo/voz.mjs), en el orden en que se dice.
+function clavesDichas(desde = 0): string[] {
+  const claves: string[] = [];
+  for (const p of PASOS.slice(desde)) {
+    if (p !== "gestos" && p !== "cuerda") claves.push(`paseo.dice.${p}`);
+    if (p === "idiomas") claves.push("paseo.hola_corto");
+    if (p === "que") claves.push(...OPCIONES_QUE.map((o) => `paseo.que.comentario.${o}`));
+    if (p === "cuando") claves.push(...OPCIONES_CUANDO.map((o) => `paseo.cuando.comentario.${o}`));
+    if (p === "velocidad") claves.push("paseo.velocidad.demo");
+    if (p === "cuanto") claves.push(...OPCIONES_CUANTO.map((o) => `paseo.cuanto.dice.${o}`));
+    if (p === "avisos") claves.push("paseo.avisos.gracias");
+  }
+  return claves;
+}
+
+/// Lo que no va en el paquete (en iOS, todo menos español e inglés; en
+/// Android, todo) baja del espejo al arrancar en ese idioma o al elegirlo;
+/// mientras, el loro sintetiza en vivo. Rust decide qué falta.
+export function bajarVozPaseo(lang: string, claves: string[] = clavesDichas()) {
+  const frases = claves
+    .map((clave) => ({ clave, texto: fraseEn(lang as IdiomaUI, clave), idioma: lang }))
+    .filter((f) => f.texto && f.texto !== f.clave && !f.texto.includes("{"));
+  void paseoVozDescargar(frases).catch(() => {});
+}
+
+/// El «hola» de los 31 sellos, para que tocar un idioma suene al instante.
+export function bajarHolas(idiomas: readonly string[]) {
+  for (const l of idiomas) bajarVozPaseo(l, ["paseo.hola_corto"]);
+}
+
+/// Con otro pájaro elegido, el motor prepara en segundo plano lo que queda
+/// del paseo con SU voz (en el orden en que se dirá). Con la voz del loro no
+/// hace nada: ya viene grabado.
+export function precocinarPaseo(voz: string) {
+  const tr = get(t);
+  const lang = get(idiomaUI);
+  const desde = Math.max(0, PASOS.indexOf("pajaro") + 1, paseo.paso + 1);
+  const frases = clavesDichas(desde)
+    .map((clave) => ({ clave, texto: tr(clave), idioma: lang }))
+    .filter((f) => f.texto && f.texto !== f.clave && !f.texto.includes("{"));
+  void paseoPrecocinar(voz, frases).catch(() => {});
 }
 
 export async function irAlPaso(n: number) {
+  // Nunca dos pasos hablando a la vez: el anterior se corta en seco.
+  callar();
   paseo.paso = Math.max(0, Math.min(PASOS.length - 1, n));
   paseo.libreta.paso = paseo.paso;
   medirPantalla(`paseo_${pasoActual()}`);

@@ -40,6 +40,8 @@
   } from "$lib/ipc";
   import { isIOS as isIOSStore } from "$lib/platform";
   import { haptic } from "$lib/haptic";
+  import Exportar from "$lib/Exportar.svelte";
+  import { t } from "$lib/i18n";
 
   // Per-paragraph editor state. Voice/speed/pause are nullable: null = inherit global.
   // `kind` is a hint from markdown parsing ("heading1", "list", "hr", …) — used
@@ -55,6 +57,8 @@
   // ── document state ─────────────────────────────────────────────────────────
   let doc: DocumentLoaded | null = $state(null);
   let paragraphs: ParaState[] = $state([]);
+  // Exportar (Markdown, HTML, PDF): la tirilla de pegatinas bajo la barra.
+  let exportarAbierto = $state(false);
   /// Tracks which paragraph (by index) is currently being edited inline. -1 = none.
   let editingIndex = $state(-1);
   let editingText = $state("");
@@ -649,7 +653,7 @@
       const path = await dialogOpen({
         multiple: false,
         filters: [
-          { name: "Documents", extensions: ["txt", "md", "markdown", "rtf", "docx", "doc", "odt", "pdf", "epub", "html", "htm"] },
+          { name: "Documents", extensions: ["txt", "md", "markdown", "rtf", "docx", "doc", "odt", "pdf", "epub", "html", "htm", "png", "jpg", "jpeg", "webp", "tif", "tiff", "bmp", "heic"] },
         ],
       });
       // The doc window's pickFile = "swap content". Target our own label.
@@ -1120,6 +1124,27 @@
           </button>
         {/if}
       {/if}
+      {#if doc && paragraphs.length > 0}
+        <span class="exportar-ancla">
+          <button class="btn" class:active={exportarAbierto} onclick={() => (exportarAbierto = !exportarAbierto)} aria-expanded={exportarAbierto} title="Markdown · HTML · PDF">
+            {$t("exportar.boton")}…
+          </button>
+          {#if exportarAbierto}
+            <div class="exportar-globo" role="dialog" aria-label={$t("exportar.cabeza")}>
+              <div class="exportar-cabeza">{$t("exportar.cabeza")}</div>
+              <Exportar
+                fuente={{
+                  ruta: doc.path,
+                  parrafos: paragraphs.map((p) => p.text),
+                  kinds: paragraphs.map((p) => p.kind),
+                  titulo: (doc.filename ?? "").replace(/\.(epub|pdf|docx?|md|txt|html?|rtf|odt|yappy)$/i, ""),
+                }}
+                alTerminar={() => (exportarAbierto = false)}
+              />
+            </div>
+          {/if}
+        </span>
+      {/if}
       <button class="btn" onclick={pickFile} title="open another file">
         {doc ? "swap" : "open…"}
       </button>
@@ -1285,7 +1310,7 @@
               </div>
               <div class="loading-stage">
                 <span class="stage-dot"></span>
-                if no text layer → rasterize + OCR (PaddleOCR, bundled)
+                if no text layer → rasterize + OCR (Amanuensis Ligero, bundled)
               </div>
             {:else if doc?.extension === "epub"}
               <div class="loading-stage active"><span class="stage-dot"></span> unpacking EPUB</div>
@@ -1563,6 +1588,31 @@
   .doc-bar-right { display: flex; align-items: center; gap: 6px; -webkit-app-region: no-drag; flex-wrap: wrap; }
 
   /* ── BUTTONS ───────────────────────────────────────────────────────────── */
+  .exportar-ancla {
+    position: relative;
+    display: inline-flex;
+  }
+  .exportar-globo {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 40;
+    width: 330px;
+    padding: 12px 14px 14px;
+    background: var(--yap-papel, #f7f2e7);
+    border: 1.5px solid var(--yap-tinta, #2b2418);
+    border-radius: 18px 12px 18px 14px;
+    box-shadow: 4px 4px 0 #ded7c2;
+  }
+  .exportar-cabeza {
+    margin-bottom: 8px;
+    text-align: center;
+    font-family: var(--yap-mono, ui-monospace, monospace);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--yap-tinta-suave, #82755a);
+  }
   .btn {
     display: inline-flex; align-items: center; gap: 5px;
     height: 30px; padding: 0 10px;

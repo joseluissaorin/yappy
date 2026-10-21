@@ -40,7 +40,7 @@ export function ultimaEscucha(): UltimaEscucha | null {
   }
 }
 
-export function progresoDe(ruta: string): { parrafo: number; total: number } | null {
+export function progresoDe(ruta: string): { parrafo: number; total: number; cuando: number } | null {
   try {
     const crudo =
       localStorage.getItem(PREFIJO_DOC + nombreDe(ruta)) ??
@@ -48,7 +48,7 @@ export function progresoDe(ruta: string): { parrafo: number; total: number } | n
       localStorage.getItem(PREFIJO_DOC + ruta);
     if (!crudo) return null;
     const p = JSON.parse(crudo);
-    return { parrafo: p.parrafo ?? 0, total: p.total ?? 0 };
+    return { parrafo: p.parrafo ?? 0, total: p.total ?? 0, cuando: p.cuando ?? 0 };
   } catch {
     return null;
   }
@@ -76,4 +76,22 @@ export function sembrarProgreso(todo: Record<string, { parrafo: number; total: n
   } catch {
     /* la caché es prescindible */
   }
+}
+
+/// El párrafo donde reanudar un documento que hoy tiene `totalActual`
+/// párrafos. Los EPUB importados antes del 21-10-2026 salían en el móvil
+/// como un párrafo por fichero del libro (6 en vez de 305): su índice
+/// guardado no vale tal cual y se lleva a la MISMA PROPORCIÓN del libro
+/// nuevo. Solo con lo que guardó el lector (`cuando` > 0), cuyo total es
+/// siempre el del documento entero; lo sembrado desde el motor (cuando 0)
+/// puede traer el total parcial de la cocina y no se reescala.
+export function parrafoReanudable(ruta: string, totalActual: number): number {
+  const p = progresoDe(ruta);
+  if (!p || !p.total || p.parrafo <= 0 || totalActual <= 0) return 0;
+  let parrafo = p.parrafo;
+  const esEpub = ruta.toLowerCase().endsWith(".epub");
+  if (esEpub && p.cuando > 0 && p.total * 3 <= totalActual) {
+    parrafo = Math.floor((p.parrafo / p.total) * totalActual);
+  }
+  return Math.min(parrafo, Math.max(0, totalActual - 1));
 }

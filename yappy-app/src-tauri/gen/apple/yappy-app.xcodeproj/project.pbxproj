@@ -19,6 +19,7 @@
 		3B18C5A4C1417A130DB2339D /* Transcriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE272FD54178048E0A9541EC /* Transcriber.swift */; };
 		3E69589CF40DCCDA1133A771 /* YappyHomeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6A1FAB9378B7B7941C656CA /* YappyHomeWidget.swift */; };
 		43B7E8BEEB5DA997B66FFFD5 /* YappyWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 11D8807FE02A0A9A28B2AC44 /* YappyWidgets.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A11A5E0B0C0CA0A0A0A0A001 /* Amanuensis.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11A5E0B0C0CA0A0A0A0A002 /* Amanuensis.swift */; };
 		450331386243A28C0C5EF0C9 /* AudioFilePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07B5C0EC4CB481A9F8969C /* AudioFilePlayer.swift */; };
 		450EF73371F034EB0BC204E5 /* libapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5A9A58DA5F7712C4E9EF3F /* libapp.a */; };
 		47174ECD30E68DA2CB827F64 /* YappyPreprocess.js in Resources */ = {isa = PBXBuildFile; fileRef = 503DC22B3CF3FCF5C2BA89C4 /* YappyPreprocess.js */; };
@@ -169,6 +170,7 @@
 		96AEBF7E16B41A1D15A49708 /* main.rs */ = {isa = PBXFileReference; path = main.rs; sourceTree = "<group>"; };
 		98AA74B59D6D936A419DBEF8 /* mobile_android.rs */ = {isa = PBXFileReference; path = mobile_android.rs; sourceTree = "<group>"; };
 		99919EAFD1D88126A62A38B1 /* cola.rs */ = {isa = PBXFileReference; path = cola.rs; sourceTree = "<group>"; };
+		A11A5E0B0C0CA0A0A0A0A002 /* Amanuensis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amanuensis.swift; sourceTree = "<group>"; };
 		9C07B5C0EC4CB481A9F8969C /* AudioFilePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFilePlayer.swift; sourceTree = "<group>"; };
 		A1030C208421566F6F5B172E /* yappy-app_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "yappy-app_iOS.entitlements"; sourceTree = "<group>"; };
 		A3E0AF9352CCEF2EA54486D9 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 		0A56D527530D92E2F4FC210D /* yappy-app */ = {
 			isa = PBXGroup;
 			children = (
+				A11A5E0B0C0CA0A0A0A0A002 /* Amanuensis.swift */,
 				9C07B5C0EC4CB481A9F8969C /* AudioFilePlayer.swift */,
 				AFBA15D588B3157A3A10AC2E /* AudioSession.swift */,
 				2A5E10E62CB0CCC683C809BB /* Compras.swift */,
@@ -638,7 +641,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nVENDOR=\"$SRCROOT/../../../../vendor/ort-ios\"\nif [ \"$PLATFORM_NAME\" = \"iphoneos\" ]; then\n  export ORT_LIB_LOCATION=\"$VENDOR/ios-arm64\"\nelse\n  export ORT_LIB_LOCATION=\"$VENDOR/ios-arm64_x86_64-simulator\"\nfi\nexport ORT_SKIP_DOWNLOAD=1\necho \"→ ORT_LIB_LOCATION=$ORT_LIB_LOCATION\"\ncargo tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths \"${FRAMEWORK_SEARCH_PATHS:?}\" --header-search-paths \"${HEADER_SEARCH_PATHS:?}\" --gcc-preprocessor-definitions \"${GCC_PREPROCESSOR_DEFINITIONS:-}\" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}\n# Strip resources that App Store Connect rejects for iOS bundles\n# (code 90171: \"standalone executables or libraries not permitted\").\n# tauri.ios.conf.json's `bundle.resources` override isn't honored by\n# Tauri 2.x's iOS build pipeline for the assets/_up_/resources/\n# copy step, so we delete the offenders here after Tauri's copy.\necho \"→ Stripping iOS-incompatible resources from assets/_up_/resources/\"\nrm -rf \"$SRCROOT/assets/_up_/resources/pdfium\"        # .dylib/.dll/.so libraries\nrm -rf \"$SRCROOT/assets/_up_/resources/extension\"     # Chromium browser extension\n";
+			shellScript = "set -e\nVENDOR=\"$SRCROOT/../../../../vendor/ort-ios\"\nif [ \"$PLATFORM_NAME\" = \"iphoneos\" ]; then\n  export ORT_LIB_LOCATION=\"$VENDOR/ios-arm64\"\nelse\n  export ORT_LIB_LOCATION=\"$VENDOR/ios-arm64_x86_64-simulator\"\nfi\nexport ORT_SKIP_DOWNLOAD=1\necho \"→ ORT_LIB_LOCATION=$ORT_LIB_LOCATION\"\ncargo tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths \"${FRAMEWORK_SEARCH_PATHS:?}\" --header-search-paths \"${HEADER_SEARCH_PATHS:?}\" --gcc-preprocessor-definitions \"${GCC_PREPROCESSOR_DEFINITIONS:-}\" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}\n# Strip resources that App Store Connect rejects for iOS bundles\n# (code 90171: \"standalone executables or libraries not permitted\").\n# tauri.ios.conf.json's `bundle.resources` override isn't honored by\n# Tauri 2.x's iOS build pipeline for the assets/_up_/resources/\n# copy step, so we delete the offenders here after Tauri's copy.\necho \"→ Stripping iOS-incompatible resources from assets/_up_/resources/\"\nrm -rf \"$SRCROOT/assets/_up_/resources/pdfium\"        # .dylib/.dll/.so libraries\nrm -rf \"$SRCROOT/assets/_up_/resources/extension\"     # Chromium browser extension\nrm -rf \"$SRCROOT/assets/_up_/resources/paddleocr\"     # PaddleOCR: el OCR del movil es Amanuensis (empotrado)\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -675,6 +678,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A11A5E0B0C0CA0A0A0A0A001 /* Amanuensis.swift in Sources */,
 				450331386243A28C0C5EF0C9 /* AudioFilePlayer.swift in Sources */,
 				FCA153A76EC118E0E6697166 /* AudioSession.swift in Sources */,
 				72613F97D5C386CD5413E8B4 /* Compras.swift in Sources */,

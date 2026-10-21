@@ -44,7 +44,7 @@ pub fn credits() -> &'static [Credit] {
             version: "2.0.0-rc.10",
             license: "MIT",
             url: "https://onnxruntime.ai/",
-            note: "Powers Supertonic 3 + PaddleOCR + Parakeet ASR inference.",
+            note: "Powers Supertonic 3 + Parakeet ASR + Amanuensis OCR inference.",
         },
         // Speech-to-text (ASR)
         Credit {
@@ -97,20 +97,12 @@ pub fn credits() -> &'static [Credit] {
         },
         // OCR + readability
         Credit {
-            name: "PaddleOCR (PP-OCRv4)",
+            name: "Amanuensis Ligero 3 (José Luis Saorín)",
             kind: "model",
-            version: "v4 mobile det+cls+rec",
-            license: "Apache-2.0",
-            url: "https://github.com/PaddlePaddle/PaddleOCR",
-            note: "Cross-platform text detection + recognition. Models bundled (~16 MB).",
-        },
-        Credit {
-            name: "paddle-ocr-rs",
-            kind: "library",
-            version: "0.6",
-            license: "Apache-2.0",
-            url: "https://crates.io/crates/paddle-ocr-rs",
-            note: "Rust glue to run PaddleOCR via ONNX Runtime.",
+            version: "amanuensis-ligero-3 + amanuensis-det-minimo-1",
+            license: "code Apache-2.0; Ligero weights non-commercial (CC BY-NC 4.0 training data); Mínimo detector Apache-2.0",
+            url: "https://github.com/joseluissaorin/amanuensis",
+            note: "Default OCR for photos, screenshots and scanned PDFs (3.5 M + 0.13 M parameters, CPU, bundled ~14.5 MB).",
         },
         Credit {
             name: "defuddle",
@@ -234,11 +226,6 @@ pub fn license_docs() -> &'static [LicenseDoc] {
             name: "Supertonic 3 (OpenRAIL-M)",
             url: "https://huggingface.co/Supertone/supertonic-3/blob/main/LICENSE",
             text: include_str!("../../resources/licenses/LICENSE-OpenRAIL-M.txt"),
-        },
-        LicenseDoc {
-            name: "PaddleOCR (Apache-2.0)",
-            url: "https://github.com/PaddlePaddle/PaddleOCR/blob/main/LICENSE",
-            text: include_str!("../../resources/licenses/LICENSE-Apache-2.0.txt"),
         },
         LicenseDoc {
             name: "defuddle (MIT)",

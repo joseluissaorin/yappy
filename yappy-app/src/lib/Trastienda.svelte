@@ -404,6 +404,17 @@
           <button class="yap-tecla chica" use:presionable onclick={() => downloadAsrModel()}>{$t("ajustes.descargar")}</button>
         {/if}
       </div>
+      <!-- El OCR: Amanuensis Ligero va empotrado en la app (nada que descargar). -->
+      <div class="fila">
+        <span>Amanuensis Ligero</span>
+        <span class="yap-pildora es-ok">{$t("ajustes.descargado")}</span>
+      </div>
+      <p class="pie-puente">{$t("ajustes.modelo_ocr_texto")}</p>
+      <button
+        class="yap-tecla chica"
+        use:presionable={{ hap: "soft" }}
+        onclick={() => { haptic("light"); openUrl("https://github.com/joseluissaorin/amanuensis").catch(() => {}); }}
+      >{$t("ajustes.modelo_ocr_web")}</button>
     </section>
 
     <section class="grupo">

@@ -162,6 +162,8 @@ public func yappy_compras_configurar(_ apiKeyPtr: UnsafePointer<CChar>?, _ entlP
     Purchases.logLevel = .warn
     Purchases.configure(withAPIKey: apiKey)
     Purchases.shared.delegate = oyente
+    // Atribución de Search Ads: RevenueCat liga cada compra a su campaña.
+    Purchases.shared.attribution.enableAdServicesAttributionTokenCollection()
     // La verdad fresca en cuanto llegue (la caché ya contestó al arranque).
     Task {
         if let info = try? await Purchases.shared.customerInfo() {

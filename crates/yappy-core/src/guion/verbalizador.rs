@@ -600,6 +600,199 @@ fn pasada_ordinales(l: &mut Lienzo, t: &TablaIdioma) {
 static RE_ROMANO: Lazy<Regex> =
     Lazy::new(|| Regex::new(r"\b([MDCLXVI]+)(?:(e|ème|er))?\b").unwrap());
 
+/// Nombres de reyes, reinas, papas y emperadores. En inglés una «I», «V» o
+/// «X» SUELTAS solo se leen como ordinal tras uno de estos: la «I» es el
+/// pronombre, y cualquier palabra capitalizada delante («Then I said»,
+/// «Mom I», «Paris I») no basta para hacerla numeral.
+static NOMBRES_REGIOS: &[&str] = &[
+    "Abdulhamid",
+    "Adrian",
+    "Afonso",
+    "Ahmed",
+    "Albert",
+    "Alexander",
+    "Alexios",
+    "Alfonso",
+    "Amadeus",
+    "Amenhotep",
+    "Anastasius",
+    "Andrew",
+    "Anne",
+    "Antiochus",
+    "Artaxerxes",
+    "Baldwin",
+    "Bayezid",
+    "Bela",
+    "Benedict",
+    "Boleslaw",
+    "Boniface",
+    "Carlos",
+    "Casimir",
+    "Catherine",
+    "Celestine",
+    "Charles",
+    "Childeric",
+    "Christian",
+    "Christina",
+    "Clement",
+    "Clovis",
+    "Cnut",
+    "Conrad",
+    "Constantine",
+    "Cyrus",
+    "Darius",
+    "David",
+    "Duarte",
+    "Duncan",
+    "Edmund",
+    "Edward",
+    "Elizabeth",
+    "Emmanuel",
+    "Eric",
+    "Erik",
+    "Eugene",
+    "Faisal",
+    "Felipe",
+    "Ferdinand",
+    "Fernando",
+    "Francis",
+    "Franz",
+    "Frederick",
+    "Friedrich",
+    "Fuad",
+    "George",
+    "Gregory",
+    "Gustav",
+    "Gustavus",
+    "Haakon",
+    "Harald",
+    "Henry",
+    "Honorius",
+    "Hussein",
+    "Innocent",
+    "Isabella",
+    "Ivan",
+    "Jacob",
+    "James",
+    "Joao",
+    "João",
+    "John",
+    "Joseph",
+    "Juan",
+    "Julius",
+    "Justinian",
+    "Karl",
+    "Kenneth",
+    "Ladislaus",
+    "Leo",
+    "Leopold",
+    "Louis",
+    "Ludwig",
+    "Magnus",
+    "Malcolm",
+    "Manuel",
+    "Margaret",
+    "Margrethe",
+    "Maria",
+    "Martin",
+    "Mary",
+    "Matilda",
+    "Maximilian",
+    "Mehmed",
+    "Michael",
+    "Mieszko",
+    "Murad",
+    "Napoleon",
+    "Nicholas",
+    "Olaf",
+    "Osman",
+    "Otto",
+    "Paul",
+    "Pedro",
+    "Peter",
+    "Philip",
+    "Pius",
+    "Ptolemy",
+    "Rama",
+    "Ramesses",
+    "Ramses",
+    "Richard",
+    "Robert",
+    "Roger",
+    "Rudolf",
+    "Sancho",
+    "Sebastian",
+    "Seleucus",
+    "Selim",
+    "Seti",
+    "Sigismund",
+    "Sixtus",
+    "Stephen",
+    "Suleiman",
+    "Sylvester",
+    "Theodosius",
+    "Thutmose",
+    "Umberto",
+    "Urban",
+    "Valdemar",
+    "Vasily",
+    "Victor",
+    "Wilhelm",
+    "William",
+    "Xerxes",
+];
+
+/// Verbos que tras «I» delatan al pronombre aunque delante haya un nombre
+/// de rey («John I guess», «Mary I think»). «was», «had», «died» no
+/// entran: «Henry I was king» es el rey.
+static VERBOS_DE_YO: &[&str] = &[
+    "am", "guess", "think", "mean", "suppose", "believe", "hope", "wish", "know", "feel", "want",
+    "love", "swear", "promise", "bet", "reckon", "need", "can", "can't", "cannot", "don't",
+    "won't", "didn't", "do", "will", "would", "should", "could", "must", "might", "have", "just",
+    "really", "also", "never", "always", "still",
+];
+
+/// Lo que precede al romano es una palabra pegada por espacio, sin coma,
+/// punto ni otro signo en medio. «Paris. I think» o «Mom, I» no dan
+/// contexto de nombre propio.
+fn pegado_a_palabra(texto: &str, ini: usize) -> bool {
+    texto[..ini]
+        .trim_end()
+        .chars()
+        .next_back()
+        .is_some_and(|c| c.is_alphabetic())
+        && texto[..ini].ends_with(char::is_whitespace)
+}
+
+/// El romano abre la pieza como encabezado: la pieza entera es el romano
+/// («I», «IV.») o el romano va seguido de punto o paréntesis y del título
+/// («I. Introduction», «IV) Results»).
+fn romano_encabezado(texto: &str, ini: usize, fin: usize, crudo: &str) -> bool {
+    if !texto[..ini].trim().is_empty() {
+        return false;
+    }
+    let resto = &texto[fin..];
+    let resto_limpio = resto.trim_end();
+    if resto_limpio.is_empty() || resto_limpio == "." {
+        return true;
+    }
+    if !crudo.chars().all(|c| matches!(c, 'I' | 'V' | 'X')) {
+        return false;
+    }
+    let Some(tras) = resto.strip_prefix(['.', ')']) else {
+        return false;
+    };
+    if !tras.starts_with(char::is_whitespace) {
+        return false;
+    }
+    // «V. S. Naipaul», «X. Y. Z.»: si lo que sigue es otra inicial, el
+    // romano era una inicial de nombre.
+    let siguiente = tras.trim_start();
+    let mut cs = siguiente.chars();
+    let inicial = cs.next().is_some_and(|c| c.is_uppercase()) && cs.next() == Some('.');
+    !inicial && !siguiente.is_empty()
+}
+
 fn pasada_romanos(l: &mut Lienzo, t: &TablaIdioma) {
     let capturas: Vec<(usize, usize, String)> = RE_ROMANO
         .captures_iter(l.texto)
@@ -615,6 +808,14 @@ fn pasada_romanos(l: &mut Lienzo, t: &TablaIdioma) {
         let Some(n) = romano_a_entero(&crudo) else {
             continue;
         };
+        let una_letra = crudo.chars().count() == 1;
+        // Una letra sola pegada a apóstrofo o guion es una palabra o una
+        // marca, no un número: «I'm», «I'll», «I’d», «X-ray», «V-2».
+        if una_letra && l.texto[fin..].starts_with(['\'', '’', '-', '‑']) {
+            continue;
+        }
+        // En inglés la «I» suelta es el pronombre salvo prueba en contra.
+        let pronombre = t.lang == "en" && crudo == "I";
         let anterior = l.palabra_anterior(ini);
         let siguiente = l.palabra_siguiente(fin);
 
@@ -632,22 +833,54 @@ fn pasada_romanos(l: &mut Lienzo, t: &TablaIdioma) {
                     .any(|x| x.eq_ignore_ascii_case(p) || x.eq_ignore_ascii_case(pelado))
             })
         };
+        // Las letras C, D, L, M solas casi nunca son romanos: «Appendix C»,
+        // «Class D», «vitamin C», «Type L». Solo I, V y X sueltas cuentan.
+        let letra_numeral = !una_letra || matches!(crudo.as_str(), "I" | "V" | "X");
+        let pegado = pegado_a_palabra(l.texto, ini);
 
         // Ningún siglo real pasa de cien: sin este tope, un falso contexto
         // convertía romanos enormes en ordinales absurdos.
-        let hablado = if (en_lista(&ant, t.palabras_siglo) || en_lista(&sig, t.palabras_siglo))
+        let hablado = if letra_numeral
+            && !pronombre
+            && (en_lista(&ant, t.palabras_siglo) || en_lista(&sig, t.palabras_siglo))
             && (1..=100).contains(&n)
         {
             (t.romano_siglo)(n)
-        } else if en_lista(&ant, t.palabras_capitulo) {
+        } else if letra_numeral
+            && pegado
+            && en_lista(&ant, t.palabras_capitulo)
+            // «the part I played», «the war I fought»: en inglés la «I» solo
+            // es numeral tras la palabra de división CAPITALIZADA
+            // («Chapter I», «World War I», «PART I»).
+            && (!pronombre
+                || anterior.is_some_and(|p| p.chars().next().is_some_and(char::is_uppercase)))
+        {
             (t.romano_capitulo)(n)
-        } else if crudo.chars().count() >= 2 || matches!(crudo.as_str(), "I" | "V" | "X") {
+        } else if romano_encabezado(l.texto, ini, fin, &crudo) && letra_numeral {
+            // «I. Introduction», «IV.» solo en su línea: encabezado numerado.
+            (t.romano_capitulo)(n)
+        } else if pegado && crudo.chars().all(|c| matches!(c, 'I' | 'V' | 'X')) {
             // Nombre propio delante («Enrique VIII», «Louis XIV»): el
             // anterior es Capitalizado normal, no VERSALES (que serían un
-            // título tipo «EL CID» donde CID parecería romano).
+            // título tipo «EL CID» donde CID parecería romano). Ningún
+            // ordinal regio pasa de XXXIX: con C, D, L o M es otra cosa
+            // («Washington DC», «John Smith MD»).
             match anterior {
                 Some(p) if es_nombre_propio(p) && !es_mayusculas(p) => {
-                    if crudo.chars().count() == 1 && !matches!(crudo.as_str(), "I" | "V" | "X") {
+                    let regio = NOMBRES_REGIOS.contains(&p);
+                    if p == "Malcolm" && crudo == "X" {
+                        None
+                    } else if (t.lang == "en" && una_letra) && !regio {
+                        // En inglés, la «I» (y la «V» o la «X» sueltas) solo
+                        // tras nombre de rey o papa: «Henry I», «Charles V».
+                        None
+                    } else if pronombre
+                        && sig.as_deref().is_some_and(|s| {
+                            VERBOS_DE_YO.contains(&s.trim_end_matches(['.', ',', ';', ':']))
+                        })
+                    {
+                        // «John I guess…», «Mary I think…»: verbo que solo
+                        // conjuga con el pronombre; «Henry I was» sí es rey.
                         None
                     } else {
                         (t.romano_nombre)(n)
@@ -675,9 +908,110 @@ fn pasada_romanos(l: &mut Lienzo, t: &TablaIdioma) {
     }
 }
 
-static RE_SIGLA: Lazy<Regex> = Lazy::new(|| Regex::new(r"\b([A-ZÑ]{2,6})\b").unwrap());
+static RE_SIGLA: Lazy<Regex> = Lazy::new(|| Regex::new(r"\b(\p{Lu}{2,12})\b").unwrap());
 
+/// Las 4.000 palabras más frecuentes de cada idioma con tabla, en su forma
+/// habitual («knew», «Haus»). Sacadas de libros de dominio público del
+/// Proyecto Gutenberg (tooling/frecuentes/): sin licencias de por medio.
+/// Una palabra en VERSALES cuya forma en minúsculas está aquí es énfasis
+/// («it KNEW», «DOES exhaust», «NO quiero»), no una sigla.
+static FRECUENTES: Lazy<
+    std::collections::HashMap<&'static str, std::collections::HashMap<String, &'static str>>,
+> = Lazy::new(|| {
+    let fuentes: [(&str, &str); 6] = [
+        ("en", include_str!("frecuentes/en.txt")),
+        ("es", include_str!("frecuentes/es.txt")),
+        ("fr", include_str!("frecuentes/fr.txt")),
+        ("de", include_str!("frecuentes/de.txt")),
+        ("it", include_str!("frecuentes/it.txt")),
+        ("pt", include_str!("frecuentes/pt.txt")),
+    ];
+    fuentes
+        .into_iter()
+        .map(|(lang, lista)| {
+            let m = lista
+                .lines()
+                .map(str::trim)
+                .filter(|l| !l.is_empty())
+                .map(|l| (l.to_lowercase(), l))
+                .collect();
+            (lang, m)
+        })
+        .collect()
+});
+
+/// Siglas que también son palabras corrientes: en VERSALES casi siempre son
+/// la sigla («the US economy», «the WHO said», «USA» en un texto italiano,
+/// donde «usa» es un verbo).
+const SIGLAS_QUE_SON_PALABRAS: &[&str] = &[
+    "US", "USA", "UK", "IT", "WHO", "EU", "UE", "UN", "ONU", "ID", "AM", "PM", "TV", "PC", "CD",
+    "DJ", "PR", "OK", "AI", "IA", "OMS", "ONG", "NGO", "PIB", "GDP", "AIDS", "SIDA", "NATO",
+    "OTAN", "CIA", "MI", "ETA", "RAE", "UNO",
+];
+
+/// La forma de la palabra común para leerla como énfasis: la habitual del
+/// idioma («knew», «Haus»), con mayúscula si abre frase.
+fn forma_de_enfasis(versal: &str, lang: &str, abre_frase: bool) -> Option<String> {
+    if SIGLAS_QUE_SON_PALABRAS.contains(&versal) {
+        return None;
+    }
+    let canon = FRECUENTES.get(lang)?.get(&versal.to_lowercase())?;
+    if abre_frase {
+        let mut cs = canon.chars();
+        let primera = cs.next()?;
+        Some(primera.to_uppercase().chain(cs).collect())
+    } else {
+        Some(canon.to_string())
+    }
+}
+
+/// ¿La palabra que empieza en `ini` abre frase? (principio de pieza, o tras
+/// punto, signo de apertura, comillas o raya).
+fn abre_frase(texto: &str, ini: usize) -> bool {
+    let antes = texto[..ini].trim_end_matches(|c: char| {
+        c.is_whitespace()
+            || matches!(
+                c,
+                '"' | '“' | '«' | '‘' | '\'' | '(' | '¿' | '¡' | '—' | '–' | '*' | '_'
+            )
+    });
+    match antes.chars().next_back() {
+        None => true,
+        Some(c) => matches!(c, '.' | '!' | '?' | '…'),
+    }
+}
+
+/// Un titular en VERSALES («WHAT I LEARNED IN SCHOOL»): casi todas sus
+/// palabras van en mayúsculas. Ahí las «siglas» son palabras normales y
+/// deletrearlas («W H A T») es un destrozo.
+fn es_titular_en_versales(texto: &str) -> bool {
+    let palabras: Vec<&str> = texto
+        .split_whitespace()
+        .filter(|p| p.chars().filter(|c| c.is_alphabetic()).count() >= 2)
+        .collect();
+    let versales = palabras.iter().filter(|p| es_mayusculas(p)).count();
+    // Entero en versales («DERECHO CIVIL», «CHAPTER I»), o casi entero si es
+    // largo.
+    (versales >= 1 && versales == palabras.len())
+        || (versales >= 3 && versales * 10 >= palabras.len() * 8)
+}
+
+/// Palabras en VERSALES: énfasis o sigla.
+///
+/// 1. Si su forma en minúsculas es una palabra común del idioma (lista de
+///    frecuencias embebida), es ÉNFASIS: el modelo la recibe en minúsculas
+///    (o capitalizada si abre frase), como cualquier otra palabra.
+/// 2. Si no, y se puede pronunciar (todas sus consonantes tienen una vocal
+///    al lado: NASA, UNESCO, OTAN), se deja tal cual: es sigla que se lee.
+/// 3. Si no, se deletrea (FBI, HTML, BBC, JPEG). Las de cinco letras o más
+///    con alguna vocal que no están en la lista se dejan al modelo: son
+///    palabras raras de énfasis («SMOOCH») más que siglas.
 fn pasada_siglas(l: &mut Lienzo, t: &TablaIdioma) {
+    // Un titular entero en versales se deja como está (ni énfasis ni
+    // siglas): el modelo lo lee como el título que es.
+    if es_titular_en_versales(l.texto) {
+        return;
+    }
     let capturas: Vec<(usize, usize, String)> = RE_SIGLA
         .captures_iter(l.texto)
         .map(|c| {
@@ -689,18 +1023,31 @@ fn pasada_siglas(l: &mut Lienzo, t: &TablaIdioma) {
         if !l.libre(ini, fin) {
             continue;
         }
-        // Solo se deletrean las impronunciables. Heurística fonotáctica:
-        // una sigla se puede leer como palabra (NASA, UNESCO, OTAN) si
-        // TODAS sus consonantes tienen una vocal al lado; si alguna queda
-        // encajonada entre consonantes (FBI, BBC, DVD), se deletrea.
-        let es_vocal = |c: char| "AEIOUÁÉÍÓÚ".contains(c);
+        if let Some(forma) = forma_de_enfasis(&sigla, t.lang, abre_frase(l.texto, ini)) {
+            if forma != sigla {
+                l.reclamar(ini, fin, ClaseSpan::Versal, forma);
+            }
+            continue;
+        }
         let cs: Vec<char> = sigla.chars().collect();
+        if cs.len() > 6 {
+            continue;
+        }
+        // Heurística fonotáctica: una sigla se puede leer como palabra
+        // (NASA, UNESCO, OTAN) si TODAS sus consonantes tienen una vocal al
+        // lado; si alguna queda encajonada entre consonantes (FBI, BBC,
+        // DVD), se deletrea.
+        let es_vocal = |c: char| "AEIOUÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÄËÏÖÜ".contains(c);
         let pronunciable = cs.iter().enumerate().all(|(i, c)| {
             es_vocal(*c)
                 || (i > 0 && es_vocal(cs[i - 1]))
                 || (i + 1 < cs.len() && es_vocal(cs[i + 1]))
         }) && cs.iter().any(|c| es_vocal(*c));
         if pronunciable {
+            continue;
+        }
+        let vocales = cs.iter().filter(|c| es_vocal(**c)).count();
+        if cs.len() >= 5 && vocales >= 1 {
             continue;
         }
         // Un romano válido sin contexto (ya rechazado antes) se queda como
@@ -1035,6 +1382,155 @@ mod tests {
         assert_eq!(
             habla("the century; Dr. Lopez arrived", "en"),
             "the century; Doctor Lopez arrived"
+        );
+    }
+    #[test]
+    fn la_i_inglesa_es_pronombre() {
+        // José Luis (21-10-2026): «I» se leía «the first» tras cualquier
+        // palabra capitalizada.
+        for frase in [
+            "I think I can",
+            "I am here",
+            "Then I said no",
+            "So I went home and I slept.",
+            "Yesterday I'm sure I'll go, I'd say.",
+            "Mom, I love you.",
+            "We met in Paris. I think it rained.",
+            "Mary and I went out.",
+            "WHAT I LEARNED IN SCHOOL",
+            "THEN I SAID NO TO THE BBC",
+            "the war I fought was long",
+            "the part I played",
+            "a type I like",
+            "the century I was born in",
+            "and then John I guess left",
+            "Mary I think so",
+            "Generation X grew up",
+            "Malcolm X spoke",
+            "Washington DC is a city",
+            "John Smith MD signed",
+            "see Appendix C and Class D",
+            "take vitamin C daily",
+            "an X-ray and a V-shaped neck",
+        ] {
+            assert_eq!(habla(frase, "en"), frase, "«{frase}» no debe tocarse");
+        }
+    }
+
+    #[test]
+    fn la_i_inglesa_numeral_en_contexto() {
+        assert_eq!(habla("Henry I was king", "en"), "Henry the first was king");
+        assert_eq!(
+            habla("Elizabeth I died in 1603", "en"),
+            "Elizabeth the first died in sixteen oh-three"
+        );
+        assert_eq!(habla("Pope John Paul I", "en"), "Pope John Paul the first");
+        assert_eq!(
+            habla("Charles V ruled Spain", "en"),
+            "Charles the fifth ruled Spain"
+        );
+        assert_eq!(habla("Pius X was pope", "en"), "Pius the tenth was pope");
+        assert_eq!(
+            habla("after World War I ended", "en"),
+            "after World War one ended"
+        );
+        assert_eq!(habla("Chapter I", "en"), "Chapter one");
+        assert_eq!(habla("CHAPTER I", "en"), "CHAPTER one");
+        assert_eq!(
+            habla("Part I: The Beginning", "en"),
+            "Part one: The Beginning"
+        );
+        assert_eq!(habla("Book I", "en"), "Book one");
+        assert_eq!(habla("Act I, Scene II", "en"), "Act one, Scene two");
+        assert_eq!(habla("Volume I", "en"), "Volume one");
+        assert_eq!(habla("Type I diabetes", "en"), "Type one diabetes");
+        assert_eq!(habla("I. Introduction", "en"), "one. Introduction");
+        assert_eq!(habla("IV. Results", "en"), "four. Results");
+        assert_eq!(habla("I", "en"), "one");
+        assert_eq!(habla("XII.", "en"), "twelve.");
+        assert_eq!(
+            habla("Louis XIV's reign", "en"),
+            "Louis the fourteenth's reign"
+        );
+        assert_eq!(
+            habla("Henry VIII had six wives", "en"),
+            "Henry the eighth had six wives"
+        );
+    }
+
+    #[test]
+    fn romanos_de_una_letra_en_otros_idiomas() {
+        assert_eq!(
+            habla("Carlos V fue emperador", "es"),
+            "Carlos quinto fue emperador"
+        );
+        assert_eq!(
+            habla("Juan Pablo I murió pronto", "es"),
+            "Juan Pablo primero murió pronto"
+        );
+        assert_eq!(
+            habla("el capítulo I empieza", "es"),
+            "el capítulo uno empieza"
+        );
+        // El artículo italiano tras punto no es romano.
+        assert_eq!(
+            habla("Siamo a Roma. I ragazzi giocano.", "it"),
+            "Siamo a Roma. I ragazzi giocano."
+        );
+        assert_eq!(
+            habla("el anexo C y la clase D", "es"),
+            "el anexo C y la clase D"
+        );
+        assert_eq!(habla("Malcolm X habló", "es"), "Malcolm X habló");
+        assert_eq!(habla("Pedro, I", "es"), "Pedro, I");
+        assert_eq!(habla("C. S. Lewis escribió", "es"), "C. S. Lewis escribió");
+        assert_eq!(habla("V. S. Naipaul wrote", "en"), "V. S. Naipaul wrote");
+        assert_eq!(
+            habla("el HTML y la MSNBC", "es"),
+            "el hache te eme ele y la eme ese ene be ce"
+        );
+        // Una sigla suelta en texto normal se sigue deletreando.
+        assert_eq!(habla("el FBI investiga", "es"), "el efe be i investiga");
+    }
+
+    #[test]
+    fn versales_de_enfasis_van_en_minusculas() {
+        // Palabra común en versales: énfasis, al modelo en minúsculas.
+        assert_eq!(
+            habla("as if it KNEW what a vicious influence it had", "en"),
+            "as if it knew what a vicious influence it had"
+        );
+        assert_eq!(
+            habla("and THE paper looks at me", "en"),
+            "and the paper looks at me"
+        );
+        assert_eq!(habla("John DOES exhaust me", "en"), "John does exhaust me");
+        // Abre frase: capitalizada.
+        assert_eq!(
+            habla("He laughed. PERHAPS he knew.", "en"),
+            "He laughed. Perhaps he knew."
+        );
+        assert_eq!(
+            habla("Te digo que NO quiero ir.", "es"),
+            "Te digo que no quiero ir."
+        );
+        // Siglas de verdad: se deletrean las impronunciables...
+        assert_eq!(
+            habla("the FBI and the BBC", "en"),
+            "the F B I and the B B C"
+        );
+        assert_eq!(habla("an HTML page", "en"), "an H T M L page");
+        // ...y las pronunciables se dejan al modelo, que las dice como palabra.
+        assert_eq!(habla("NASA launched it", "en"), "NASA launched it");
+        // Siglas que coinciden con una palabra corriente: siguen siendo sigla.
+        assert_eq!(habla("the US economy", "en"), "the US economy");
+        assert_eq!(habla("negli USA si usa", "it"), "negli USA si usa");
+        // Los sustantivos alemanes conservan su mayúscula.
+        assert_eq!(habla("Das ist mein HAUS", "de"), "Das ist mein Haus");
+        // Un titular entero en versales no se toca.
+        assert_eq!(
+            habla("WHAT I LEARNED IN SCHOOL", "en"),
+            "WHAT I LEARNED IN SCHOOL"
         );
     }
 }

@@ -140,7 +140,7 @@
     try {
       const path = await openDialog({
         multiple: false,
-        filters: [{ name: "Documents", extensions: ["txt", "md", "markdown", "rtf", "docx", "doc", "odt", "pdf", "epub", "html", "htm"] }],
+        filters: [{ name: "Documents", extensions: ["txt", "md", "markdown", "rtf", "docx", "doc", "odt", "pdf", "epub", "html", "htm", "png", "jpg", "jpeg", "webp", "tif", "tiff", "bmp", "heic"] }],
       });
       if (typeof path === "string") await openDoc(path);
     } catch (e) { notifyError(String(e)); }

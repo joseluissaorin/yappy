@@ -16,11 +16,11 @@
       "bundleVersion": "1.0.0.5"
     },
     "resources": [
-      "../resources/paddleocr/*",
       "../resources/defuddle.js",
       "../resources/muestras/*",
       "../resources/cuentos/*",
       "../resources/paseo/*",
+      "../resources/paseo-voz/*",
       "../resources/licenses/*"
     ]
   }

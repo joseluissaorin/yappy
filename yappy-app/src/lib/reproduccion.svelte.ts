@@ -7,6 +7,7 @@ import {
   playbackSnapshot,
   onPlaybackState,
   onNivel,
+  interfazVisible,
   type PlaybackSnapshot,
 } from "$lib/ipc";
 
@@ -59,7 +60,9 @@ export async function arrancarEspejo() {
   });
   if (typeof document !== "undefined") {
     document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") reconciliar();
+      const visible = document.visibilityState === "visible";
+      interfazVisible(visible).catch(() => {});
+      if (visible) reconciliar();
     });
   }
 }

@@ -1,10 +1,13 @@
 //! Smart capture: pick the best text source for the focused context.
 
 pub mod active_doc;
+pub mod amanuensis;
 pub mod browser;
 pub mod clipboard;
 pub mod doc_loader;
 pub mod ocr;
+pub mod ofimatica;
+pub mod pdf_maqueta;
 pub mod selection;
 
 use anyhow::Result;

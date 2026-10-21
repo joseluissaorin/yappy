@@ -138,3 +138,54 @@ Cuatro quejas de José Luis, las cuatro atendidas:
    por índice y `trocear` nunca descarta: si no localiza un trozo, lo
    emite igual. Pruebas de regresión en `chunker::tests_largos` y
    `guion::tests_voz_entera`; con el troceador viejo fallan cinco.
+
+## La voz pregrabada (21-10-2026)
+
+Tres quejas de José Luis: la voz tardaba en empezar (cada paso se
+sintetizaba en vivo), se solapaba al pasar de paso, y el paso de idiomas no
+dejaba claro que Yappy lee en todos por igual.
+
+- **Pregrabada.** Todo lo que el loro dice en el paseo (31 frases por
+  idioma, más la primera frase de cada cuento de la casa) viene renderizado
+  con la voz del loro (Alex, 12 pasos, semilla 7) en ficheros
+  `<lang>.<clave>.<hash>.m4a`: HE-AAC mono, 24 kHz, 24 kbps, −23 LUFS,
+  sin silencio en cabeza ni cola. Suena por el canal de efectos al
+  instante (`paseo_voz.rs::paseo_decir_cmd`).
+- **Dentro del paquete, solo español e inglés** (`resources/paseo-voz/`,
+  iOS). OJO Android: aapt deja fuera de los assets las carpetas que
+  empiezan por «_» (`_up_/resources`), así que hoy el APK no lleva NINGÚN
+  recurso de `resources/` (tampoco muestras ni cuentos); allí se bajan
+  también es y en. `Sonido.efectoPlayRecurso` y `noCompress m4a` quedan
+  listos por si se arregla `ignoreAssetsPattern`. Los otros 29 idiomas viven en el espejo R2
+  (`modelos.yappy.joseluissaorin.com/paseo-voz/<fichero>`, caché
+  inmutable: el nombre lleva el hash) y la app los baja a
+  `app_data/paseo-voz/` al arrancar el paseo en ese idioma, al elegirlo
+  en los sellos, y los «hola» de los 31 sellos al abrir el paseo
+  (`paseo_voz_descargar_cmd`). Sin manifiesto remoto: la app calcula los
+  nombres. Mientras no llegan, síntesis en vivo. `YAPPY_PASEO_VOZ_URL`
+  cambia el espejo para pruebas.
+- **El hash manda.** El nombre lleva el FNV-1a de «lang\ntexto». Si un
+  texto cambia y nadie regenera, el hash no casa y la app sintetiza en vivo
+  (reserva, igual que para textos con partes dinámicas).
+- **Trampa al borrar audios**: `gen/apple/assets/_up_/resources/` guarda
+  copias viejas y Tauri no las limpia; tras regenerar, borrar
+  `gen/apple/assets/_up_/resources/paseo-voz` antes de compilar.
+- **Regenerar:** `node tooling/paseo/voz.mjs` (solo lo que falte o haya
+  cambiado; borra huérfanos; escribe `tooling/paseo/voz-manifiesto.json`;
+  lo que no va en el paquete queda en `tooling/paseo/voz-remota/`, fuera
+  de git). `--subir` sube al espejo lo que falte (token temporal de R2 en
+  `/tmp/cf-tmp-token.json`, skill de Cloudflare: acuñar, usar, revocar).
+  `--comprobar` avisa sin sintetizar (sale con 1 si algo está viejo),
+  `--solo es,en` limita idiomas, `--forzar` lo rehace todo. Necesita
+  `cargo build --release -p yappy-core --bin yappy-cli` (modo `lote`: una
+  sola carga del modelo), el modelo en Application Support, ffmpeg y
+  afconvert.
+- **Otro pájaro.** Si el usuario elige otra voz, `paseo_precocinar_cmd`
+  cocina en segundo plano lo que queda del paseo con esa voz
+  (`muestras/paseo/`); mientras no esté, suena la grabación del loro.
+- **La demo del dial** reproduce la grabación a la velocidad elegida
+  (AVAudioPlayer `rate` / `PlaybackParams`), sin sintetizar.
+- **Callar en seco.** `irAlPaso`, `siguiente`, «Luego» y salir llaman a
+  `callar()` → `paseo_callar_cmd` (para el canal de efectos y sube un turno:
+  una síntesis en vivo que llegue tarde ya no suena). El siguiente decir
+  espera a que el stop haya llegado.

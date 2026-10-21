@@ -16,13 +16,14 @@
   import { cubicOut, backOut } from "svelte/easing";
   import { goto } from "$app/navigation";
   import { reader } from "$lib/readerStore.svelte";
-  import { guardarProgreso, progresoDe } from "$lib/progreso";
+  import { guardarProgreso, parrafoReanudable } from "$lib/progreso";
   import { t, IDIOMAS_UI, NOMBRE_IDIOMA, idiomaUI } from "$lib/i18n";
   import { get } from "svelte/store";
   import { invoke } from "@tauri-apps/api/core";
   import { isMobile } from "$lib/platform";
   import { haptic } from "$lib/haptic";
   import { presionable } from "$lib/presionable";
+  import Exportar from "$lib/Exportar.svelte";
   import Criatura from "$lib/Criatura.svelte";
   import { tintaVoz } from "$lib/voces";
   import { repro, reconciliar } from "$lib/reproduccion.svelte";
@@ -369,7 +370,8 @@
     setTimeout(() => (anticipa = 0), 200);
     const destinoRel = destino - baseIndex;
     const cocinadoHasta = playback?.parrafo_max_cocinado ?? -1;
-    if (activo && destinoRel >= 0 && destinoRel <= cocinadoHasta) {
+    const retenidoDesde = playback?.parrafo_min_retenido ?? 0;
+    if (activo && destinoRel >= retenidoDesde && destinoRel <= cocinadoHasta) {
       // Dentro de lo sintetizado: salto instantáneo, sin resíntesis.
       await saltarParrafo(direccion).catch(() => {});
     } else {
@@ -567,9 +569,7 @@
   // La portada sabe dónde ibas: seguir o empezar de cero.
   const progresoGuardado = $derived.by(() => {
     if (!doc?.path) return 0;
-    const p = progresoDe(doc.path);
-    if (!p || !p.total || p.parrafo <= 0) return 0;
-    return Math.min(p.parrafo, Math.max(0, paras.length - 1));
+    return parrafoReanudable(doc.path, paras.length);
   });
   const pctPortada = $derived(
     progresoGuardado > 0 && paras.length > 0
@@ -635,7 +635,8 @@
     guionManual = false;
     const destinoRel = i - baseIndex;
     const cocinadoHasta = playback?.parrafo_max_cocinado ?? -1;
-    if (activo && destinoRel >= 0 && destinoRel <= cocinadoHasta) {
+    const retenidoDesde = playback?.parrafo_min_retenido ?? 0;
+    if (activo && destinoRel >= retenidoDesde && destinoRel <= cocinadoHasta) {
       const delta = i - currentPara;
       if (delta !== 0) {
         void marcarGesto("parrafo");
@@ -1109,6 +1110,15 @@
           {/each}
         </select>
       </label>
+
+      <!-- EXPORTAR: el texto tal cual lo tiene el cartel, en pegatinas. -->
+      <div class="ctl">
+        <div class="ctl-fila"><span class="ctl-rotulo">{$t("exportar.boton")}</span></div>
+        <Exportar
+          fuente={{ ruta: doc?.path ?? null, parrafos: paras, kinds, titulo: (doc?.filename ?? "").replace(/\.(epub|pdf|docx?|md|txt|html?|rtf|odt|yappy)$/i, ""), idioma: docLang === "auto" ? null : docLang }}
+          alTerminar={() => (tallerAbierto = false)}
+        />
+      </div>
 
       {#if !esLibroDoc}
         <!-- Los audiolibros se encargan en la imprenta (la biblioteca), no

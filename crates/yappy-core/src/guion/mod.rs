@@ -87,6 +87,8 @@ pub enum ClaseSpan {
     Sigla,
     Abreviatura,
     Electronico,
+    /// Palabra común escrita en VERSALES de énfasis, pasada en minúsculas.
+    Versal,
 }
 
 /// Un tramo del texto original con su forma hablada.

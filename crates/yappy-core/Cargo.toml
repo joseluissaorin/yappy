@@ -26,6 +26,9 @@ whatlang.workspace = true
 # itself is desktop-gated, but the mel front-end is cheap and harmless to compile
 # everywhere, so realfft stays an unconditional dep.
 realfft = "3"
+# Decodificación de imágenes para el OCR (Amanuensis Ligero, módulo `ocr`). La app ya
+# depende de image 0.25, así que no añade compilación.
+image = "0.25"
 
 [features]
 default = []

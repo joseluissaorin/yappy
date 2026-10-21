@@ -16,7 +16,7 @@ export type Quality = "fast" | "balanced" | "best";
 export type PlayerPositionPreset = "top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right" | "custom";
 export type PlayerTheme = "cream" | "dark" | "translucent";
 export type AppTheme = "cream" | "dark" | "system";
-export type OcrEngine = "auto" | "applevision" | "paddle";
+export type OcrEngine = "auto" | "applevision" | "amanuensis";
 
 /// La libreta del paseo (ver settings.rs::Paseo).
 export interface Paseo {
@@ -125,6 +125,9 @@ export interface PlaybackSnapshot {
   /// La cocina visible: trozos sintetizados y hasta qué párrafo hay audio.
   chunks_cocinados: number;
   parrafo_max_cocinado: number;
+  /// Primer párrafo (relativo) con su audio aún retenido: más atrás hay que
+  /// resintetizar (el motor suelta lo que sonó hace más de diez minutos).
+  parrafo_min_retenido?: number;
   /// Desde qué párrafo del documento arrancó la sesión (los índices del
   /// snapshot son relativos a la sesión).
   base_paragraph_index: number;
@@ -489,6 +492,18 @@ export const setPaseo = (paseo: Paseo): Promise<void> => invoke("set_paseo_cmd",
 /// `idioma` los usa el paseo (demo del deslizador, sellos de idioma).
 export const hablar = (texto: string, velocidad?: number, idioma?: string): Promise<number> =>
   invoke("decir_cmd", { texto, velocidad: velocidad ?? null, idioma: idioma ?? null });
+/// La voz del paseo: suena el audio PREGRABADO de `clave` si casa con
+/// `texto` (al instante); si no, lo sintetiza en vivo. Devuelve segundos.
+export const paseoDecir = (clave: string, texto: string, idioma?: string, velocidad?: number): Promise<number> =>
+  invoke("paseo_decir_cmd", { clave, texto, idioma: idioma ?? null, velocidad: velocidad ?? null });
+/// Corta en seco lo que el loro esté diciendo.
+export const paseoCallar = (): Promise<void> => invoke("paseo_callar_cmd");
+/// Con otro pájaro elegido, prepara en segundo plano las frases que quedan.
+/// Baja del espejo los audios del paseo de un idioma que no va en el paquete.
+export const paseoVozDescargar = (frases: { clave: string; texto: string; idioma?: string }[]): Promise<void> =>
+  invoke("paseo_voz_descargar_cmd", { frases });
+export const paseoPrecocinar = (voz: string, frases: { clave: string; texto: string; idioma?: string }[]): Promise<void> =>
+  invoke("paseo_precocinar_cmd", { voz, frases });
 export const decir = (texto: string, clave?: string): Promise<number> =>
   invoke("decir_cmd", { texto, clave: clave ?? null });
 /// Una voz al azar (estable) para cada pieza.
@@ -601,6 +616,27 @@ export const libraryImportYappy = (ruta: string): Promise<string> =>
 export const shareFile = (path: string): Promise<void> =>
   invoke("share_file_cmd", { path });
 
+// ── EXPORTAR (Markdown, HTML, PDF con la marca de la casa) ─────────────
+export type FormatoExportar = "md" | "html" | "pdf";
+export interface PeticionExportar {
+  formato: FormatoExportar;
+  /// El documento en disco (la pieza de la cinta, el fichero abierto)…
+  ruta?: string | null;
+  /// …o tal como está en pantalla (con las ediciones del editor).
+  parrafos?: string[] | null;
+  kinds?: string[] | null;
+  titulo?: string | null;
+  /// La URL o el nombre de archivo original (ItemCola.origen).
+  origen?: string | null;
+  idioma?: string | null;
+  marca: { leido_con: string; exportado: string };
+  /// Escritorio: la ruta elegida en el diálogo de guardar.
+  destino?: string | null;
+}
+/// Devuelve la ruta del fichero escrito.
+export const exportarDocumento = (peticion: PeticionExportar): Promise<string> =>
+  invoke("exportar_documento_cmd", { peticion });
+
 export const openBrowserExtensions = (browser: string): Promise<void> =>
   invoke("open_browser_extensions_cmd", { browser });
 export const getExtensionPath = (): Promise<string> => invoke("get_extension_path_cmd");
@@ -667,6 +703,10 @@ export function onModelDownload(cb: (p: DownloadProgress) => void): Promise<Unli
 export const playbackSnapshot = (): Promise<PlaybackSnapshot> =>
   invoke("playback_snapshot_cmd");
 
+/// La interfaz se ve o no (visibilitychange). En el móvil, con la app en el
+/// fondo, el motor deja de mandar el nivel (~20 eventos/s que nadie pinta).
+export const interfazVisible = (visible: boolean): Promise<void> =>
+  invoke("interfaz_visible_cmd", { visible });
 export function onNivel(cb: (v: number) => void): Promise<UnlistenFn> {
   return listen<number>("playback_nivel", (ev) => cb(ev.payload));
 }

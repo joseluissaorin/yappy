@@ -1,13 +1,22 @@
-//! Screen OCR — picks the best engine for the platform.
+//! OCR de capturas, imágenes y PDF escaneados.
 //!
-//! macOS  → Apple Vision (via the bundled `yappy-ocr.swift` helper)
-//! Other  → PaddleOCR via the bundled ONNX models
-//! `Auto` setting on macOS uses Vision; everywhere else it uses PaddleOCR.
+//! `Auto` (por omisión): Amanuensis Ligero, el OCR propio (capture/amanuensis.rs), con Apple Vision de
+//! respaldo en macOS e iOS para lo que Ligero no lee con seguridad (otras escrituras: Ligero solo conoce el
+//! alfabeto latino). `Amanuensis`: solo Ligero. `AppleVision`: solo Vision (macOS; en el resto, `Auto`).
+//! PaddleOCR se quitó el 21-10-2026 (su modelo era el chino, sin tildes; los ajustes que lo guardaban leen
+//! ahora `Auto`).
 
-use std::path::{Path, PathBuf};
+// En el móvil no hay captura de pantalla ni motor elegible: el OCR entra por capture/amanuensis.rs.
+#![cfg_attr(any(target_os = "ios", target_os = "android"), allow(dead_code))]
+
+use std::path::Path;
+#[cfg(not(any(target_os = "ios", target_os = "android")))]
+use std::path::PathBuf;
 use std::sync::OnceLock;
 
-use anyhow::{Context, Result};
+#[cfg(target_os = "macos")]
+use anyhow::Context;
+use anyhow::Result;
 
 use crate::settings::OcrEngine;
 
@@ -143,33 +152,17 @@ fn full_screen_capture(_out: &Path) -> Result<()> {
 
 // ---------- OCR engine selection ----------
 
-#[allow(unreachable_code)] // según la plataforma, algún brazo devuelve siempre
-pub fn ocr_image(image_path: &Path, lang: &str) -> Result<String> {
-    let engine = active_engine();
-    match engine {
+pub fn ocr_image(image_path: &Path, _lang: &str) -> Result<String> {
+    match active_engine() {
+        OcrEngine::Amanuensis => {
+            crate::capture::amanuensis::leer_ruta_solo_ligero(image_path).map(|p| p.texto())
+        }
+        #[cfg(target_os = "macos")]
         OcrEngine::AppleVision => {
-            #[cfg(target_os = "macos")]
-            {
-                return vision_ocr(image_path, lang);
-            }
-            #[cfg(not(target_os = "macos"))]
-            {
-                // Fall through to PaddleOCR.
-            }
+            crate::capture::amanuensis::leer_ruta_solo_vision(image_path).map(|p| p.texto())
         }
-        OcrEngine::Paddle => return paddle_ocr(image_path),
-        OcrEngine::Auto => {
-            #[cfg(target_os = "macos")]
-            {
-                if let Ok(t) = vision_ocr(image_path, lang) {
-                    return Ok(t);
-                }
-            }
-            return paddle_ocr(image_path);
-        }
+        _ => crate::capture::amanuensis::leer_ruta(image_path).map(|p| p.texto()),
     }
-    // fallback
-    paddle_ocr(image_path)
 }
 
 fn active_engine() -> OcrEngine {
@@ -185,7 +178,7 @@ fn active_engine() -> OcrEngine {
                 if let Some(e) = v.get("ocr_engine").and_then(|x| x.as_str()) {
                     return match e {
                         "applevision" | "apple-vision" | "apple_vision" => OcrEngine::AppleVision,
-                        "paddle" => OcrEngine::Paddle,
+                        "amanuensis" => OcrEngine::Amanuensis,
                         _ => OcrEngine::Auto,
                     };
                 }
@@ -197,13 +190,16 @@ fn active_engine() -> OcrEngine {
 
 // ---------- Apple Vision (macOS only) ----------
 
+/// Renglones de Vision con su caja, en JSON (`[{"t", "c", "x0", "y0", "x1", "y1"}]`, px con origen arriba a
+/// la izquierda): el respaldo de Amanuensis rehace con ellos los párrafos.
 #[cfg(target_os = "macos")]
-pub fn vision_ocr(image_path: &Path, lang: &str) -> Result<String> {
+pub fn vision_lineas_json(image_path: &Path) -> Result<String> {
     let helper_path = find_helper_script()?;
     let out = std::process::Command::new("swift")
         .arg(helper_path)
         .arg(image_path)
-        .arg(lang)
+        .arg("es-ES")
+        .arg("json")
         .output()
         .context("swift command failed (Xcode CLT may not be installed)")?;
     if !out.status.success() {
@@ -249,137 +245,6 @@ fn find_helper_script() -> Result<PathBuf> {
     Err(anyhow::anyhow!(
         "could not locate yappy-ocr.swift helper script"
     ))
-}
-
-#[cfg(not(target_os = "macos"))]
-pub fn vision_ocr(_image_path: &Path, _lang: &str) -> Result<String> {
-    Err(anyhow::anyhow!("Apple Vision only available on macOS"))
-}
-
-// ---------- PaddleOCR (cross-platform) ----------
-
-pub fn paddle_ocr(image_path: &Path) -> Result<String> {
-    use paddle_ocr_rs::ocr_lite::OcrLite;
-
-    let dir = paddle_models_dir()?;
-    let det = dir.join("ch_PP-OCRv4_det_infer.onnx");
-    let cls = dir.join("ch_ppocr_mobile_v2.0_cls_infer.onnx");
-    let rec = dir.join("ch_PP-OCRv4_rec_infer.onnx");
-    let keys = dir.join("ppocr_keys_v1.txt");
-
-    if !det.exists() || !cls.exists() || !rec.exists() || !keys.exists() {
-        return Err(anyhow::anyhow!(
-            "PaddleOCR models not found at {} — please reinstall Yappy",
-            dir.display()
-        ));
-    }
-
-    let mut ocr = OcrLite::new();
-    ocr.init_models(
-        det.to_str().unwrap(),
-        cls.to_str().unwrap(),
-        rec.to_str().unwrap(),
-        1,
-    )
-    .map_err(|e| anyhow::anyhow!("paddle init: {e:?}"))?;
-    let _ = keys;
-    let img = image::open(image_path)?.to_rgb8();
-    let results = ocr
-        .detect(&img, 50, 1024, 0.5, 0.3, 1.6, true, false)
-        .map_err(|e| anyhow::anyhow!("paddle detect: {e:?}"))?;
-    // Re-order blocks into reading order: top→bottom rows, then left→right within each row.
-    Ok(reorder_blocks_to_text(&results.text_blocks))
-}
-
-fn reorder_blocks_to_text(blocks: &[paddle_ocr_rs::ocr_result::TextBlock]) -> String {
-    // Collect each block with its centroid y and left-x.
-    let mut items: Vec<(f32, f32, &str)> = blocks
-        .iter()
-        .map(|b| {
-            let ys: Vec<i32> = b.box_points.iter().map(|p| p.y as i32).collect();
-            let xs: Vec<i32> = b.box_points.iter().map(|p| p.x as i32).collect();
-            let cy = (ys.iter().sum::<i32>() as f32) / (ys.len().max(1) as f32);
-            let cx = xs.iter().min().copied().unwrap_or(0) as f32;
-            (cy, cx, b.text.as_str())
-        })
-        .collect();
-    items.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
-
-    // Cluster into rows: y within ~half-line-height tolerance.
-    if items.is_empty() {
-        return String::new();
-    }
-    let mut rows: Vec<Vec<(f32, f32, &str)>> = vec![vec![items[0]]];
-    let mut last_y = items[0].0;
-    let line_h = estimate_line_height(blocks);
-    let tol = (line_h * 0.6).max(8.0);
-    for it in items.into_iter().skip(1) {
-        if (it.0 - last_y).abs() <= tol {
-            rows.last_mut().unwrap().push(it);
-        } else {
-            rows.push(vec![it]);
-            last_y = it.0;
-        }
-    }
-    let mut buf = String::new();
-    for row in rows.iter_mut() {
-        row.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal));
-        let line: Vec<&str> = row.iter().map(|(_, _, t)| *t).collect();
-        buf.push_str(&line.join(" "));
-        buf.push('\n');
-    }
-    buf
-}
-
-fn estimate_line_height(blocks: &[paddle_ocr_rs::ocr_result::TextBlock]) -> f32 {
-    let mut hs: Vec<f32> = blocks
-        .iter()
-        .map(|b| {
-            let ys: Vec<i32> = b.box_points.iter().map(|p| p.y as i32).collect();
-            let max = ys.iter().max().copied().unwrap_or(0) as f32;
-            let min = ys.iter().min().copied().unwrap_or(0) as f32;
-            max - min
-        })
-        .collect();
-    if hs.is_empty() {
-        return 12.0;
-    }
-    hs.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
-    hs[hs.len() / 2]
-}
-
-fn paddle_models_dir() -> Result<PathBuf> {
-    // First, look next to the running binary (Tauri bundles resources here in production).
-    if let Ok(exe) = std::env::current_exe() {
-        let candidates = [
-            exe.parent().map(|p| p.join("paddleocr")),
-            exe.parent()
-                .and_then(|p| p.parent())
-                .map(|p| p.join("Resources/paddleocr")),
-            exe.parent()
-                .and_then(|p| p.parent())
-                .map(|p| p.join("Resources/_up_/resources/paddleocr")),
-        ];
-        for c in candidates.into_iter().flatten() {
-            if c.join("ch_PP-OCRv4_det_infer.onnx").exists() {
-                return Ok(c);
-            }
-        }
-    }
-    // Dev: from the workspace.
-    let cwd = std::env::current_dir()?;
-    for sub in &[
-        "yappy-app/resources/paddleocr",
-        "resources/paddleocr",
-        "../yappy-app/resources/paddleocr",
-        "../../yappy-app/resources/paddleocr",
-    ] {
-        let p = cwd.join(sub);
-        if p.join("ch_PP-OCRv4_det_infer.onnx").exists() {
-            return Ok(p);
-        }
-    }
-    Err(anyhow::anyhow!("PaddleOCR models not found"))
 }
 
 #[allow(dead_code)]

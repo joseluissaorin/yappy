@@ -1,5 +1,6 @@
 //! Audio playback queue with volume, seek, and an export-friendly samples buffer.
 
+use std::collections::VecDeque;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 
@@ -13,6 +14,26 @@ use serde::{Deserialize, Serialize};
 type Oyentes = Arc<Mutex<Vec<Box<dyn Fn(&PlaybackSnapshot) + Send + Sync>>>>;
 /// Oyentes del nivel (RMS 0..1 de la ventana que suena).
 type OyentesNivel = Arc<Mutex<Vec<Box<dyn Fn(f32) + Send + Sync>>>>;
+/// Lo que falta por sonar. Cola de doble extremo: el callback de audio
+/// consume por delante en O(lo consumido). Con un `Vec`, cada `drain(..n)`
+/// movía en memoria TODO lo pendiente decenas de veces por segundo, y el
+/// coste crecía con lo que la cocina llevaba de adelanto.
+type Pendiente = Arc<Mutex<VecDeque<f32>>>;
+
+/// Cuánto audio YA SONADO se retiene para volver atrás (saltos de frase y
+/// de párrafo, -15 s). Más allá se suelta: la sesión guardaba cada muestra
+/// desde el principio (~11 MB por minuto a 48 kHz) y una escucha larga
+/// acababa con la app muerta por memoria.
+const RETENCION_SONADO_S: u64 = 600;
+/// Se recorta por tandas (cada recorte mueve la ventana entera en memoria),
+/// no en cada tick.
+const TANDA_RECORTE_S: u64 = 60;
+
+/// ¿Hay interfaz a la vista? En el móvil, con la app en el fondo, la
+/// WebView no pinta pero cada `emit` del nivel (~20/s) se seguía mandando
+/// y encolando. Lo fija `interfaz_visible_cmd` (visibilitychange).
+pub static INTERFAZ_VISIBLE: std::sync::atomic::AtomicBool =
+    std::sync::atomic::AtomicBool::new(true);
 
 #[derive(Debug, Clone)]
 pub struct AudioChunk {
@@ -86,6 +107,11 @@ pub struct PlaybackSnapshot {
     /// llega cada trozo nuevo. La interfaz enseña «+1…» mientras espera.
     #[serde(default)]
     pub salto_pendiente: i32,
+    /// Primer párrafo (relativo a la sesión) cuyo audio sigue retenido
+    /// entero: lo anterior ya se soltó (ver RETENCION_SONADO_S). Un salto
+    /// atrás más lejos que esto necesita resintetizar.
+    #[serde(default)]
+    pub parrafo_min_retenido: usize,
 }
 
 #[derive(Debug)]
@@ -185,6 +211,7 @@ impl PlaybackController {
             frase_ini_s: 0.0,
             frase_fin_s: 0.0,
             salto_pendiente: 0,
+            parrafo_min_retenido: 0,
         }));
         let listeners: Oyentes = Arc::new(Mutex::new(Vec::new()));
         let session_samples: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
@@ -324,7 +351,9 @@ impl PlaybackController {
     pub fn snapshot(&self) -> PlaybackSnapshot {
         self.snapshot.lock().unwrap().clone()
     }
-    /// All synth output for the current session, at the device's output sample rate.
+    /// The synth output RETAINED for the current session (the last
+    /// RETENCION_SONADO_S of what already played plus everything pending), at
+    /// the device's output sample rate.
     pub fn session_audio(&self) -> (Vec<f32>, u32) {
         (
             self.session_samples.lock().unwrap().clone(),
@@ -368,7 +397,7 @@ fn run_audio_thread(
         }
     }
     // Shared state for the audio callback.
-    let buffer: Arc<Mutex<Vec<f32>>> = Arc::new(Mutex::new(Vec::new()));
+    let buffer: Pendiente = Arc::new(Mutex::new(VecDeque::new()));
     let paused = Arc::new(Mutex::new(false));
     let played_samples = Arc::new(Mutex::new(0u64));
     let volume = Arc::new(Mutex::new(1.0f32));
@@ -405,6 +434,12 @@ fn run_audio_thread(
     let mut nivel_anterior: f32 = 0.0;
     // Saltos de frase pedidos por delante de la cocina (ver el snapshot).
     let mut salto_pendiente: i32 = 0;
+    // LA VENTANA RETENIDA: `session_samples[0]` es la muestra ABSOLUTA
+    // `session_base` de la sesión. played_samples y chunk_boundaries siguen
+    // siendo absolutos; solo el acceso a session_samples resta la base.
+    let mut session_base: u64 = 0;
+    // Primer chunk cuyo audio sigue retenido entero.
+    let mut primer_retenido: usize = 0;
 
     // ─── EL OÍDO: el vigilante de que el audio AVANZA de verdad ─────────
     // Si el estado dice «sonando», no hay pausa y hay material en el buffer
@@ -437,7 +472,8 @@ fn run_audio_thread(
                         chunk_paragraph_idx: &[usize],
                         chunk_origen: &[(usize, usize)],
                         session_samples: &Arc<Mutex<Vec<f32>>>,
-                        buffer: &Arc<Mutex<Vec<f32>>>,
+                        session_base: u64,
+                        buffer: &Pendiente,
                         played_samples: &Arc<Mutex<u64>>,
                         snapshot: &Arc<Mutex<PlaybackSnapshot>>,
                         out_sr: u32|
@@ -446,14 +482,16 @@ fn run_audio_thread(
             0
         } else {
             chunk_boundaries[destino - 1]
-        } as usize;
+        };
         let sesion = session_samples.lock().unwrap();
-        let inicio = inicio.min(sesion.len());
-        *played_samples.lock().unwrap() = inicio as u64;
+        // Lo soltado ya no existe: como mucho, al principio de lo retenido.
+        let rel = (inicio.saturating_sub(session_base) as usize).min(sesion.len());
+        let inicio = session_base + rel as u64;
+        *played_samples.lock().unwrap() = inicio;
         {
             let mut buf = buffer.lock().unwrap();
             buf.clear();
-            buf.extend_from_slice(&sesion[inicio..]);
+            buf.extend(sesion[rel..].iter().copied());
         }
         drop(sesion);
         let texto = chunk_texts.get(destino).cloned().unwrap_or_default();
@@ -505,6 +543,7 @@ fn run_audio_thread(
                         s.frase_ini_s = 0.0;
                         s.frase_fin_s = 0.0;
                         s.salto_pendiente = 0;
+                        s.parrafo_min_retenido = 0;
                     }
                     salto_pendiente = 0;
                     emit(&snapshot, &listeners);
@@ -543,8 +582,10 @@ fn run_audio_thread(
                         // mientras esta lectura viva (sonando o en pausa).
                         crate::mobile::audio_session_lectura(true);
                     }
-                    *buffer.lock().unwrap() = Vec::new();
+                    *buffer.lock().unwrap() = VecDeque::new();
                     *session_samples.lock().unwrap() = Vec::new();
+                    session_base = 0;
+                    primer_retenido = 0;
                     session_total = chunks.first().map(|c| c.total).unwrap_or(0);
                     total_paragraphs = chunks.first().map(|c| c.total_paragraphs).unwrap_or(0);
                     *played_samples.lock().unwrap() = 0;
@@ -595,6 +636,7 @@ fn run_audio_thread(
                         s.frase_ini_s = ini_s;
                         s.frase_fin_s = fin_s;
                         s.salto_pendiente = 0;
+                        s.parrafo_min_retenido = 0;
                     }
                     salto_pendiente = 0;
                     emit(&snapshot, &listeners);
@@ -648,6 +690,7 @@ fn run_audio_thread(
                             &chunk_paragraph_idx,
                             &chunk_origen,
                             &session_samples,
+                            session_base,
                             &buffer,
                             &played_samples,
                             &snapshot,
@@ -708,9 +751,11 @@ fn run_audio_thread(
                         // el snapshot es del libro y no se toca (pisar aquí
                         // dejaba el lector en la portada con el audio
                         // sonando de fondo).
-                        *buffer.lock().unwrap() = Vec::new();
+                        *buffer.lock().unwrap() = VecDeque::new();
                         *session_samples.lock().unwrap() = Vec::new();
                         *played_samples.lock().unwrap() = 0;
+                        session_base = 0;
+                        primer_retenido = 0;
                         session_duration_samples = 0;
                         session_total = 0;
                         total_paragraphs = 0;
@@ -723,7 +768,7 @@ fn run_audio_thread(
                     }
                     #[cfg(mobile)]
                     crate::mobile::audio_session_lectura(false);
-                    *buffer.lock().unwrap() = Vec::new();
+                    *buffer.lock().unwrap() = VecDeque::new();
                     *paused.lock().unwrap() = false;
                     paused_state = false;
                     session_duration_samples = 0;
@@ -736,6 +781,8 @@ fn run_audio_thread(
                     chunk_origen.clear();
                     *played_samples.lock().unwrap() = 0;
                     *session_samples.lock().unwrap() = Vec::new();
+                    session_base = 0;
+                    primer_retenido = 0;
                     {
                         let mut s = snapshot.lock().unwrap();
                         s.estado = "inactivo".into();
@@ -757,6 +804,7 @@ fn run_audio_thread(
                         s.frase_ini_s = 0.0;
                         s.frase_fin_s = 0.0;
                         s.salto_pendiente = 0;
+                        s.parrafo_min_retenido = 0;
                     }
                     salto_pendiente = 0;
                     emit(&snapshot, &listeners);
@@ -778,7 +826,9 @@ fn run_audio_thread(
                     let segs_en_frase = played.saturating_sub(inicio_actual) as f32 / out_sr as f32;
                     let saltable: Vec<bool> =
                         chunk_texts.iter().map(|t| !t.trim().is_empty()).collect();
-                    let destino = destino_salto_frase(actual, segs_en_frase, delta, &saltable);
+                    // Hacia atrás, no más allá de lo retenido.
+                    let destino = destino_salto_frase(actual, segs_en_frase, delta, &saltable)
+                        .max(primer_retenido.min(actual));
                     // Al BORDE de la cocina (no hay frase siguiente todavía)
                     // el salto no se pierde: queda pendiente y se cobra con
                     // el próximo trozo. Con la cocina terminada, no hay a
@@ -805,6 +855,7 @@ fn run_audio_thread(
                         &chunk_paragraph_idx,
                         &chunk_origen,
                         &session_samples,
+                        session_base,
                         &buffer,
                         &played_samples,
                         &snapshot,
@@ -834,7 +885,8 @@ fn run_audio_thread(
                     let saltable: Vec<bool> =
                         chunk_texts.iter().map(|t| !t.trim().is_empty()).collect();
                     let destino =
-                        destino_salto_parrafo(actual, delta, &chunk_paragraph_idx, &saltable);
+                        destino_salto_parrafo(actual, delta, &chunk_paragraph_idx, &saltable)
+                            .max(primer_retenido.min(actual));
                     let (nuevo, _, parrafo) = reposicionar(
                         destino,
                         &chunk_boundaries,
@@ -842,6 +894,7 @@ fn run_audio_thread(
                         &chunk_paragraph_idx,
                         &chunk_origen,
                         &session_samples,
+                        session_base,
                         &buffer,
                         &played_samples,
                         &snapshot,
@@ -865,16 +918,20 @@ fn run_audio_thread(
                         salto_pendiente = 0;
                         snapshot.lock().unwrap().salto_pendiente = 0;
                     }
-                    // delta < 0 means rewind. Implemented by re-staging samples from session.
-                    let session = session_samples.lock().unwrap().clone();
+                    // delta < 0 means rewind. Implemented by re-staging samples from session
+                    // (sin clonarla entera: con una sesión larga, cada -15 s de la
+                    // pantalla de bloqueo duplicaba cientos de MB de golpe).
+                    let session = session_samples.lock().unwrap();
                     let played = *played_samples.lock().unwrap() as i64;
                     let delta_samples = (delta * out_sr as f32) as i64;
-                    let target = (played + delta_samples).clamp(0, session.len() as i64) as usize;
+                    let base = session_base as i64;
+                    let target = (played + delta_samples).clamp(base, base + session.len() as i64);
                     *played_samples.lock().unwrap() = target as u64;
                     let mut buf = buffer.lock().unwrap();
                     buf.clear();
-                    buf.extend_from_slice(&session[target..]);
+                    buf.extend(session[(target - base) as usize..].iter().copied());
                     drop(buf);
+                    drop(session);
                     snapshot.lock().unwrap().elapsed_secs = target as f32 / out_sr as f32;
                     emit(&snapshot, &listeners);
                 }
@@ -883,8 +940,9 @@ fn run_audio_thread(
 
         // El NIVEL: RMS de la ventana que acaba de sonar, escalado a 0..1 y
         // emitido a ~20 Hz solo cuando cambia lo suficiente. Es la señal que
-        // anima el pico del loro, el peso de la letra y la aguja.
-        {
+        // anima el pico del loro, el peso de la letra y la aguja. Sin
+        // interfaz a la vista no se calcula ni se manda.
+        if INTERFAZ_VISIBLE.load(Ordering::Relaxed) {
             let played = *played_samples.lock().unwrap() as usize;
             let nivel = if paused_state {
                 0.0
@@ -893,7 +951,9 @@ fn run_audio_thread(
                 if played == 0 || sesion.is_empty() {
                     0.0
                 } else {
-                    let fin = played.min(sesion.len());
+                    let fin = played
+                        .saturating_sub(session_base as usize)
+                        .min(sesion.len());
                     let ini = fin.saturating_sub(2048);
                     let v = &sesion[ini..fin];
                     if v.is_empty() {
@@ -909,6 +969,26 @@ fn run_audio_thread(
                 for f in nivel_listeners.lock().unwrap().iter() {
                     f(nivel);
                 }
+            }
+        }
+
+        // LA VENTANA RETENIDA: soltar lo que sonó hace más de
+        // RETENCION_SONADO_S. Solo lo YA sonado: el buffer pendiente es un
+        // sufijo de lo retenido y no se toca.
+        {
+            let played = *played_samples.lock().unwrap();
+            let n = muestras_recortables(played.saturating_sub(session_base), out_sr);
+            if n > 0 {
+                let n = {
+                    let mut sesion = session_samples.lock().unwrap();
+                    let n = n.min(sesion.len());
+                    sesion.drain(..n);
+                    n
+                };
+                session_base += n as u64;
+                primer_retenido = primer_chunk_retenido(session_base, &chunk_boundaries);
+                snapshot.lock().unwrap().parrafo_min_retenido =
+                    parrafo_min_retenido(primer_retenido, &chunk_paragraph_idx);
             }
         }
 
@@ -1013,6 +1093,7 @@ fn run_audio_thread(
                                         nuevo_sr,
                                         &buffer,
                                         &session_samples,
+                                        &mut session_base,
                                         &played_samples,
                                         &mut chunk_boundaries,
                                         &mut session_duration_samples,
@@ -1057,7 +1138,7 @@ fn run_audio_thread(
 /// sample rate. Los Arcs compartidos siguen siendo los mismos: el callback
 /// nuevo tira del mismo buffer donde la síntesis encola.
 fn construir_stream(
-    buffer: &Arc<Mutex<Vec<f32>>>,
+    buffer: &Pendiente,
     paused: &Arc<Mutex<bool>>,
     played: &Arc<Mutex<u64>>,
     volume: &Arc<Mutex<f32>>,
@@ -1139,8 +1220,9 @@ fn construir_stream(
 fn migrar_sample_rate(
     viejo: u32,
     nuevo: u32,
-    buffer: &Arc<Mutex<Vec<f32>>>,
+    buffer: &Pendiente,
     session_samples: &Arc<Mutex<Vec<f32>>>,
+    session_base: &mut u64,
     played_samples: &Arc<Mutex<u64>>,
     chunk_boundaries: &mut [u64],
     session_duration_samples: &mut u64,
@@ -1150,10 +1232,12 @@ fn migrar_sample_rate(
         let sesion = session_samples.lock().unwrap();
         resample_mono(&sesion, viejo, nuevo)?
     };
-    let played_nuevo = {
+    *session_base = escala(*session_base);
+    let base = *session_base;
+    let played_rel = {
         let mut p = played_samples.lock().unwrap();
-        *p = escala(*p).min(sesion_nueva.len() as u64);
-        *p as usize
+        *p = escala(*p).clamp(base, base + sesion_nueva.len() as u64);
+        (*p - base) as usize
     };
     for b in chunk_boundaries.iter_mut() {
         *b = escala(*b);
@@ -1162,7 +1246,11 @@ fn migrar_sample_rate(
     {
         let mut buf = buffer.lock().unwrap();
         buf.clear();
-        buf.extend_from_slice(&sesion_nueva[played_nuevo.min(sesion_nueva.len())..]);
+        buf.extend(
+            sesion_nueva[played_rel.min(sesion_nueva.len())..]
+                .iter()
+                .copied(),
+        );
     }
     *session_samples.lock().unwrap() = sesion_nueva;
     Ok(())
@@ -1171,7 +1259,7 @@ fn migrar_sample_rate(
 fn fill<S: Copy + Default>(
     data: &mut [S],
     channels: usize,
-    buffer: &Arc<Mutex<Vec<f32>>>,
+    buffer: &Pendiente,
     paused: &Arc<Mutex<bool>>,
     played: &Arc<Mutex<u64>>,
     volume: &Arc<Mutex<f32>>,
@@ -1188,9 +1276,9 @@ fn fill<S: Copy + Default>(
     }
     let frames = data.len() / channels;
     let take = frames.min(buf.len());
-    for i in 0..take {
-        let v = buf[i] * vol;
-        let enc = encode(v);
+    // O(take): la cola suelta por delante sin mover lo que queda.
+    for (i, x) in buf.drain(..take).enumerate() {
+        let enc = encode(x * vol);
         for c in 0..channels {
             data[i * channels + c] = enc;
         }
@@ -1200,8 +1288,48 @@ fn fill<S: Copy + Default>(
             data[i * channels + c] = encode(0.0);
         }
     }
-    buf.drain(..take);
     *played.lock().unwrap() += take as u64;
+}
+
+/// Cuántas muestras del principio de lo retenido pueden soltarse ya, dado
+/// cuánto de lo retenido ha sonado (`sonado_retenido`). Cero hasta que lo
+/// sonado pase la retención más una tanda; entonces, todo lo que exceda la
+/// retención.
+pub fn muestras_recortables(sonado_retenido: u64, out_sr: u32) -> usize {
+    let retencion = RETENCION_SONADO_S * out_sr as u64;
+    let tanda = TANDA_RECORTE_S * out_sr as u64;
+    if sonado_retenido > retencion + tanda {
+        (sonado_retenido - retencion) as usize
+    } else {
+        0
+    }
+}
+
+/// El primer chunk que empieza dentro de lo retenido (su audio está entero).
+pub fn primer_chunk_retenido(base: u64, boundaries: &[u64]) -> usize {
+    if base == 0 {
+        return 0;
+    }
+    // El chunk i empieza en boundaries[i-1] (o 0).
+    boundaries
+        .iter()
+        .position(|&fin_anterior| fin_anterior >= base)
+        .map(|i| i + 1)
+        .unwrap_or(boundaries.len())
+        .min(boundaries.len().saturating_sub(1))
+}
+
+/// El primer párrafo con su audio retenido ENTERO: si el párrafo del primer
+/// chunk retenido empezó antes (le falta el principio), el siguiente.
+pub fn parrafo_min_retenido(primer_retenido: usize, parrafo_de: &[usize]) -> usize {
+    let Some(&p) = parrafo_de.get(primer_retenido) else {
+        return 0;
+    };
+    if primer_retenido > 0 && parrafo_de[primer_retenido - 1] == p {
+        p + 1
+    } else {
+        p
+    }
 }
 
 /// Elige el chunk destino de un salto por FRASE. `saltable[i]` dice si el
@@ -1410,6 +1538,41 @@ mod tests {
         assert_eq!(ventana_de_chunk(1, &b, 44_100), (1.0, 2.0));
         assert_eq!(ventana_de_chunk(7, &b, 44_100), (2.0, 3.0));
         assert_eq!(ventana_de_chunk(0, &[], 44_100), (0.0, 0.0));
+    }
+
+    #[test]
+    fn la_ventana_retenida_recorta_por_tandas() {
+        let sr = 48_000u32;
+        let ret = RETENCION_SONADO_S * sr as u64;
+        let tanda = TANDA_RECORTE_S * sr as u64;
+        // Dentro de la retención (y de su tanda de holgura): nada.
+        assert_eq!(muestras_recortables(0, sr), 0);
+        assert_eq!(muestras_recortables(ret, sr), 0);
+        assert_eq!(muestras_recortables(ret + tanda, sr), 0);
+        // Pasada la tanda: se suelta todo lo que excede la retención y
+        // quedan exactamente RETENCION_SONADO_S detrás de lo que suena.
+        let sonado = ret + tanda + 1;
+        let n = muestras_recortables(sonado, sr) as u64;
+        assert_eq!(sonado - n, ret);
+    }
+
+    #[test]
+    fn primer_chunk_y_parrafo_retenidos() {
+        // Chunks de 100 muestras; párrafos 0,0,1,1,2.
+        let b = [100u64, 200, 300, 400, 500];
+        let p = [0usize, 0, 1, 1, 2];
+        assert_eq!(primer_chunk_retenido(0, &b), 0);
+        // Base justo en la frontera: el chunk 1 está entero.
+        assert_eq!(primer_chunk_retenido(100, &b), 1);
+        // Base a mitad del chunk 1: el primero entero es el 2.
+        assert_eq!(primer_chunk_retenido(150, &b), 2);
+        assert_eq!(primer_chunk_retenido(10_000, &b), 4);
+        // El párrafo 0 perdió su principio (chunk 0): el mínimo es el 1.
+        assert_eq!(parrafo_min_retenido(1, &p), 1);
+        // El chunk 2 abre el párrafo 1: entero.
+        assert_eq!(parrafo_min_retenido(2, &p), 1);
+        assert_eq!(parrafo_min_retenido(0, &p), 0);
+        assert_eq!(parrafo_min_retenido(9, &p), 0);
     }
 
     #[test]

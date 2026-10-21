@@ -11,6 +11,7 @@ mod cola;
 mod commands;
 mod credits;
 mod enlaces;
+mod exportar;
 mod history;
 mod hotkey;
 pub mod imprenta;
@@ -49,6 +50,7 @@ mod asr_decode;
 mod asr_model;
 mod compras;
 mod cuota;
+mod paseo_voz;
 mod playback;
 mod puente;
 mod settings;
@@ -172,10 +174,10 @@ pub fn run() {
     tracing::info!("yappy starting — log at {}", log_path.display());
 
     // Register hardware-acceleration execution providers at the ONNX Runtime
-    // ENVIRONMENT level. Every session created later (Supertonic synthesis +
-    // paddle-ocr-rs's internal sessions) inherits the EP list unless they
-    // explicitly override it. Crucially this accelerates paddle-ocr-rs even
-    // though that crate doesn't expose an EP knob of its own.
+    // ENVIRONMENT level. Every session created later (Supertonic synthesis,
+    // Parakeet ASR) inherits the EP list unless they explicitly override it.
+    // The Amanuensis OCR sessions opt out on purpose (CPU: variable batch
+    // shapes; see yappy_core::ocr) without registering any EP themselves.
     //
     // ORT tries each EP in order and falls back to the next (and ultimately
     // CPU) if initialization fails — e.g. no GPU available, missing CUDA
@@ -770,6 +772,7 @@ pub fn run() {
             commands::toggle_pause_cmd,
             commands::saltar_frase_cmd,
             commands::saltar_parrafo_cmd,
+            commands::interfaz_visible_cmd,
             commands::pausar_cmd,
             commands::reanudar_cmd,
             commands::set_speed_cmd,
@@ -794,6 +797,10 @@ pub fn run() {
             commands::request_macos_permissions,
             commands::sample_voice,
             commands::decir_cmd,
+            paseo_voz::paseo_decir_cmd,
+            paseo_voz::paseo_callar_cmd,
+            paseo_voz::paseo_precocinar_cmd,
+            paseo_voz::paseo_voz_descargar_cmd,
             commands::set_voz_al_azar_cmd,
             commands::progreso_todo_cmd,
             commands::capture_diagnostics,
@@ -834,6 +841,7 @@ pub fn run() {
             commands::render_audiobook_cmd,
             commands::haptic_cmd,
             commands::share_file_cmd,
+            exportar::exportar_documento_cmd,
             commands::drain_shared_payloads_cmd,
             commands::audiobook_export_path_cmd,
             commands::list_rendered_audiobooks_cmd,

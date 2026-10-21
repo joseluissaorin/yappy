@@ -74,6 +74,15 @@ class ShareViewController: UIViewController {
                 }
             }
         }
+        // Fotos y capturas (las lee con OCR Amanuensis en la app). Solo si no
+        // viene un enlace: muchas apps comparten una web con su miniatura, y
+        // ahí manda la web.
+        let providers = items.flatMap { $0.attachments ?? [] }
+        let hayEnlace = providers.contains { $0.hasItemConformingToTypeIdentifier(UTType.url.identifier) }
+        if !hayEnlace, let imagen = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.image.identifier) }) {
+            loadFile(imagen, uti: UTType.image.identifier)
+            return
+        }
         // Sin audio ni ficheros: el camino clásico de texto/URL.
         handleTextOrUrl(items)
     }

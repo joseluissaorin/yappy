@@ -16,6 +16,20 @@ val tauriProperties = Properties().apply {
 android {
     compileSdk = 36
     namespace = "com.yappy.app"
+    // La voz pregrabada del paseo se abre con AssetManager.openFd: los .m4a
+    // tienen que ir SIN comprimir dentro del APK/AAB.
+    androidResources {
+        noCompress += listOf("m4a")
+        // Tauri deja los resources/ en assets/_up_/resources, y el patrón por
+        // defecto de aapt descarta las carpetas que empiezan por «_»
+        // (`<dir>_*`): el APK salía sin cuentos, muestras ni voz del paseo.
+        // Es el patrón por defecto de AGP sin esa entrada, más lo que el móvil
+        // no usa y Tauri no borra de assets/ si quedó de un build anterior
+        // (lo mismo que project.yml quita en iOS: pdfium, extension, paddleocr; y
+        // el yappy-ocr.swift del Mac, que cae en _up_/macos).
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~" +
+            ":<dir>pdfium:<dir>extension:<dir>paddleocr:<dir>macos"
+    }
     defaultConfig {
         manifestPlaceholders["usesCleartextTraffic"] = "false"
         applicationId = "com.joseluissaorin.yappy.android"

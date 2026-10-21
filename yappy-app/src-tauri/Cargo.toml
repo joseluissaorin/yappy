@@ -40,9 +40,8 @@ once_cell.workspace = true
 regex = "1"
 hound.workspace = true
 
-# Cross-platform OCR via PaddleOCR ONNX. With ORT's CoreML EP registered at
-# environment level (see lib.rs), PaddleOCR runs on the Neural Engine on iOS.
-paddle-ocr-rs = "0.6"
+# OCR: Amanuensis Ligero (yappy-core::ocr, pesos empotrados; capture/amanuensis.rs).
+# `image` decodifica las fotos y las páginas rasterizadas.
 image = "0.25"
 
 # Document parsing.
@@ -97,6 +96,14 @@ dom_query = "0.28"
 tauri-plugin-deep-link = "2.4.9"
 iroh = "1"
 qrcode = "0.14"
+# Exportar a PDF (src/exportar): krilla es el escritor de PDF de Typst
+# (letras incrustadas en subconjunto, marcadores, metadatos), sin sus
+# extras de imagen; rustybuzz da forma a la letra (la misma versión que
+# usa krilla), y los cortes de línea y el bidi siguen UAX #14 y #9.
+krilla = { version = "0.8.2", default-features = false }
+rustybuzz = "0.20.1"
+unicode-linebreak = "0.1.5"
+unicode-bidi = "0.3.18"
 rand = { workspace = true }
 
 # ─── macOS-only deps (AppKit / Core Foundation / Core Graphics).
@@ -110,7 +117,7 @@ objc2-app-kit = { version = "0.3", features = ["NSPasteboard", "NSWorkspace", "N
 # ─── pdfium-render: bundled for desktop (uses dylib/dll/so loaded at runtime).
 # Not yet bundled for iOS — we'd need to provide an iOS XCFramework. For Phase
 # 1 the dep is simply excluded from iOS; capture/doc_loader.rs falls back to
-# pdf_oxide (pure-Rust born-digital PDFs) + PaddleOCR (scanned).
+# pdf_oxide (pure-Rust born-digital PDFs) + Amanuensis (scanned, rasterized by the OS).
 [target.'cfg(not(any(target_os = "ios", target_os = "android")))'.dependencies]
 pdfium-render = { version = "0.8", features = ["thread_safe", "image"] }
 tauri-plugin-global-shortcut = "2"

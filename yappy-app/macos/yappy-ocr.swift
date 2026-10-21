@@ -1,6 +1,8 @@
 // yappy-ocr.swift — Vision-framework OCR helper.
-// Usage:  swift yappy-ocr.swift <image-path> [primary-lang]
+// Usage:  swift yappy-ocr.swift <image-path> [primary-lang] [json]
 // Prints recognized text (paragraph-segmented by line breaks) to stdout.
+// With «json»: one object per line of text, [{"t", "c", "x0", "y0", "x1", "y1"}] in pixels with the origin at
+// the top left, so Yappy can rebuild paragraphs from the geometry (Amanuensis fallback).
 
 import AppKit
 import Foundation
@@ -13,6 +15,7 @@ guard CommandLine.arguments.count >= 2 else {
 
 let path = CommandLine.arguments[1]
 let lang = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "en-US"
+let asJSON = CommandLine.arguments.count > 3 && CommandLine.arguments[3] == "json"
 
 let url = URL(fileURLWithPath: path)
 guard let image = NSImage(contentsOf: url),
@@ -29,6 +32,21 @@ let request = VNRecognizeTextRequest { (req, err) in
         exit(4)
     }
     guard let results = req.results as? [VNRecognizedTextObservation] else {
+        return
+    }
+    if asJSON {
+        let W = Double(cgImage.width), H = Double(cgImage.height)
+        var out: [[String: Any]] = []
+        for obs in results {
+            guard let s = obs.topCandidates(1).first else { continue }
+            let b = obs.boundingBox  // normalized, origin bottom-left
+            out.append(["t": s.string, "c": Double(s.confidence),
+                        "x0": Double(b.minX) * W, "y0": (1 - Double(b.maxY)) * H,
+                        "x1": Double(b.maxX) * W, "y1": (1 - Double(b.minY)) * H])
+        }
+        if let d = try? JSONSerialization.data(withJSONObject: out), let txt = String(data: d, encoding: .utf8) {
+            print(txt)
+        }
         return
     }
     var lines: [String] = []

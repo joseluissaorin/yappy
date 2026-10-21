@@ -1640,6 +1640,17 @@ pub fn saltar_frase_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
     state.playback.saltar_chunk(delta);
 }
 
+/// La interfaz entra o sale de la vista (visibilitychange). Solo en el
+/// móvil: en el escritorio hay varias ventanas y una oculta no debe callar
+/// el nivel de las demás.
+#[tauri::command]
+pub fn interfaz_visible_cmd(visible: bool) {
+    #[cfg(mobile)]
+    crate::playback::INTERFAZ_VISIBLE.store(visible, std::sync::atomic::Ordering::Relaxed);
+    #[cfg(not(mobile))]
+    let _ = visible;
+}
+
 /// Salto por PÁRRAFO dentro de lo ya sintetizado.
 #[tauri::command]
 pub fn saltar_parrafo_cmd(state: State<'_, Arc<AppState>>, delta: i32) {
@@ -1921,15 +1932,7 @@ pub fn library_import_yappy_cmd(app: AppHandle, ruta: String) -> Result<String, 
 /// biblioteca en la primera apertura (una vez por título). Suenan sin
 /// motor: son la primera escucha del onboarding mientras llegan las voces.
 pub fn importar_cuentos_empaquetados(app: &AppHandle) {
-    let Ok(base) = app.path().resource_dir() else {
-        return;
-    };
-    let dirs = [
-        base.join("_up_").join("resources").join("cuentos"),
-        base.join("resources").join("cuentos"),
-        base.join("cuentos"),
-    ];
-    let Some(dir) = dirs.iter().find(|d| d.is_dir()) else {
+    let Some(dir) = dir_cuentos(app) else {
         return;
     };
     let marca = app
@@ -2531,6 +2534,7 @@ fn muestra_path(app: &AppHandle, voice: &str, lang: &str) -> Result<std::path::P
 /// La presentación EMPAQUETADA de una voz (resources/muestras, AAC): suena
 /// sin motor, desde el primer segundo de la primera apertura. Tauri copia
 /// `../resources/*` bajo `_up_/resources/` en el bundle.
+#[cfg(not(target_os = "android"))]
 fn muestra_empaquetada(app: &AppHandle, voice: &str, lang: &str) -> Option<std::path::PathBuf> {
     let v: String = voice
         .chars()
@@ -2549,6 +2553,19 @@ fn muestra_empaquetada(app: &AppHandle, voice: &str, lang: &str) -> Option<std::
     ]
     .into_iter()
     .find(|c| c.exists())
+}
+
+/// En Android la muestra empaquetada es un asset del APK: se devuelve su
+/// ruta RELATIVA a assets/ y suena con `efecto_play_recurso` (openFd).
+#[cfg(target_os = "android")]
+fn muestra_empaquetada(_app: &AppHandle, voice: &str, lang: &str) -> Option<std::path::PathBuf> {
+    let v: String = voice
+        .chars()
+        .filter(|c| c.is_alphanumeric())
+        .collect::<String>()
+        .to_lowercase();
+    let rel = format!("_up_/resources/muestras/{v}-{lang}.m4a");
+    crate::mobile::recurso_existe(&rel).then(|| std::path::PathBuf::from(rel))
 }
 
 /// Sintetiza la presentación de una voz y la escribe en la caché. Bloqueante:
@@ -2675,6 +2692,12 @@ pub async fn sample_voice(
             return Ok(crate::mobile::efecto_play(&p.to_string_lossy()));
         }
         if let Some(e) = muestra_empaquetada(&app, &voice, &lang) {
+            #[cfg(target_os = "android")]
+            return Ok(crate::mobile::efecto_play_recurso(
+                &e.to_string_lossy(),
+                1.0,
+            ));
+            #[cfg(not(target_os = "android"))]
             return Ok(crate::mobile::efecto_play(&e.to_string_lossy()));
         }
         // Aún no cocinada. Con una sesión de lectura viva NO se sintetiza
@@ -3022,6 +3045,7 @@ pub struct Cuento {
     pub texto: String,
 }
 
+#[cfg(not(target_os = "android"))]
 fn dir_cuentos(app: &AppHandle) -> Option<std::path::PathBuf> {
     let base = app.path().resource_dir().ok()?;
     [
@@ -3031,6 +3055,24 @@ fn dir_cuentos(app: &AppHandle) -> Option<std::path::PathBuf> {
     ]
     .into_iter()
     .find(|d| d.is_dir())
+}
+
+/// En Android los resources/ son assets del APK, sin ruta de fichero: los
+/// cuentos (unos KB) se copian una vez por arranque a `<datos>/cuentos-casa`
+/// y se leen de ahí como en el resto de plataformas.
+#[cfg(target_os = "android")]
+fn dir_cuentos(app: &AppHandle) -> Option<std::path::PathBuf> {
+    static HECHO: std::sync::OnceLock<std::path::PathBuf> = std::sync::OnceLock::new();
+    if let Some(d) = HECHO.get() {
+        return Some(d.clone());
+    }
+    let destino = app.path().app_data_dir().ok()?.join("cuentos-casa");
+    let n = crate::mobile::recursos_extraer("_up_/resources/cuentos", &destino.to_string_lossy())?;
+    tracing::info!("cuentos de la casa: {n} copiados de los assets");
+    if n == 0 {
+        return None;
+    }
+    Some(HECHO.get_or_init(|| destino).clone())
 }
 
 /// Parsea un cuento con cabecera YAML sencilla (`clave: valor` entre `---`).
@@ -3467,6 +3509,22 @@ pub fn colchon_listo(frases_con_texto: usize, segundos: f32, es_ultimo: bool) ->
     es_ultimo || frases_con_texto >= 2 || segundos >= 4.0
 }
 
+/// EL FRENO DE LA COCINA: cuánto audio puede llevar sintetizado la lectura
+/// por delante de lo que suena. Sin freno, la síntesis (varias veces más
+/// rápida que la voz) se comía el documento entero y TODO ese audio vivía
+/// en memoria a la vez: a los quince minutos de un texto largo eran cientos
+/// de MB por delante (más su copia en la sesión) y el sistema mataba la app.
+/// Al pasar de ADELANTO_MAX la cocina espera hasta bajar de REANUDA (la
+/// histéresis evita despertar el motor en cada trozo).
+pub const COCINA_ADELANTO_MAX_S: f32 = 120.0;
+pub const COCINA_ADELANTO_REANUDA_S: f32 = 60.0;
+
+/// ¿Lleva la cocina más de `umbral_s` segundos de audio por delante de lo
+/// que ya sonó?
+pub fn cocina_adelantada(cocinado_s: f32, sonado_s: f32, umbral_s: f32) -> bool {
+    cocinado_s - sonado_s > umbral_s
+}
+
 /// El camino común de toda lectura. Si llega un Guion ya construido (el
 /// editor de documentos, con sus clases de pieza y sus anulaciones por
 /// párrafo), se sintetiza tal cual; si no, el texto plano pasa por el
@@ -3660,7 +3718,9 @@ async fn read_internal<R: Runtime>(
         // El candado se RETIENE durante toda la síntesis: nada de fondo
         // sintetiza a la vez robando la mitad de la CPU. (La imprenta lo
         // suelta en cuanto ve el contador de lectores; ver imprenta.rs.)
-        let _motor = state_for_thread.candado_motor.lock().unwrap();
+        // (En un Option: mientras el freno de la cocina espera a la voz, el
+        // motor se SUELTA para que la imprenta y las muestras trabajen.)
+        let motor = RefCell::new(Some(state_for_thread.candado_motor.lock().unwrap()));
 
         // La síntesis va envuelta en catch_unwind: un PÁNICO en el motor (el
         // guionizador con un texto raro, un modelo corrupto) se saltaba el
@@ -3733,6 +3793,40 @@ async fn read_internal<R: Runtime>(
                     chunk.text.chars().count()
                 );
                 let _ = &voice_overrides;
+                // EL FRENO: con la sesión ya sonando, no cocinar más de
+                // COCINA_ADELANTO_MAX_S por delante de la voz. Mientras se
+                // espera, el motor y el contador de lectores se sueltan (la
+                // imprenta cede en cuanto vuelven a subir).
+                if first_emitted.get() {
+                    let adelanto = || {
+                        let s = state_for_thread.playback.snapshot();
+                        (s.duration_secs, s.elapsed_secs)
+                    };
+                    let (cocinado, sonado) = adelanto();
+                    if cocina_adelantada(cocinado, sonado, COCINA_ADELANTO_MAX_S) {
+                        motor.borrow_mut().take();
+                        state_for_thread
+                            .lectores
+                            .fetch_sub(1, std::sync::atomic::Ordering::SeqCst);
+                        loop {
+                            std::thread::sleep(std::time::Duration::from_millis(250));
+                            if state_for_thread.playback.current_session() != my_session {
+                                break;
+                            }
+                            let (cocinado, sonado) = adelanto();
+                            if !cocina_adelantada(cocinado, sonado, COCINA_ADELANTO_REANUDA_S) {
+                                break;
+                            }
+                        }
+                        state_for_thread
+                            .lectores
+                            .fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+                        if state_for_thread.playback.current_session() != my_session {
+                            return Err(anyhow::anyhow!("session cancelled"));
+                        }
+                        *motor.borrow_mut() = Some(state_for_thread.candado_motor.lock().unwrap());
+                    }
+                }
                 Ok(())
             };
 
@@ -4146,7 +4240,9 @@ pub fn delete_transcript_cmd(app: AppHandle, id: String) -> Result<(), String> {
 
 #[cfg(test)]
 mod tests_colchon {
-    use super::colchon_listo;
+    use super::{
+        cocina_adelantada, colchon_listo, COCINA_ADELANTO_MAX_S, COCINA_ADELANTO_REANUDA_S,
+    };
 
     #[test]
     fn el_colchon_espera_dos_frases_pero_no_para_siempre() {
@@ -4161,5 +4257,20 @@ mod tests_colchon {
         assert!(colchon_listo(0, 0.0, true));
         // Solo silencios de párrafo acumulados: seguir esperando.
         assert!(!colchon_listo(0, 1.5, false));
+    }
+
+    #[test]
+    fn la_cocina_frena_con_histeresis() {
+        // Recién estrenada: cocinar sin freno.
+        assert!(!cocina_adelantada(10.0, 0.0, COCINA_ADELANTO_MAX_S));
+        // Dos minutos y pico por delante: frenar.
+        assert!(cocina_adelantada(130.0, 5.0, COCINA_ADELANTO_MAX_S));
+        // Frenada, sigue esperando mientras quede más de REANUDA...
+        assert!(cocina_adelantada(130.0, 60.0, COCINA_ADELANTO_REANUDA_S));
+        // ...y despierta al bajar de ahí.
+        assert!(!cocina_adelantada(130.0, 75.0, COCINA_ADELANTO_REANUDA_S));
+        // En pausa lo sonado no avanza: la cocina no se come el libro.
+        assert!(cocina_adelantada(3600.0, 900.0, COCINA_ADELANTO_MAX_S));
+        assert!(COCINA_ADELANTO_REANUDA_S < COCINA_ADELANTO_MAX_S);
     }
 }

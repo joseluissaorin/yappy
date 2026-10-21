@@ -420,6 +420,20 @@ pub fn efecto_stop() {
     unsafe { yappy_efecto_stop() };
 }
 
+extern "C" {
+    fn yappy_efecto_play_rate(path: *const std::os::raw::c_char, rate: f32) -> f64;
+}
+
+/// El canal de efectos con velocidad (la voz pregrabada del paseo). Devuelve
+/// la duración del fichero SIN escalar por la velocidad.
+pub fn efecto_play_rate(path: &str, rate: f32) -> f64 {
+    use std::ffi::CString;
+    match CString::new(path) {
+        Ok(c) => unsafe { yappy_efecto_play_rate(c.as_ptr(), rate) },
+        Err(_) => 0.0,
+    }
+}
+
 // ─── Spotlight indexing ────────────────────────────────────────────────
 extern "C" {
     fn yappy_spotlight_replace_all(payload: *const std::os::raw::c_char);

@@ -467,12 +467,12 @@
       <div class="pref-row">
         <div>
           <div class="pref-label">ocr engine</div>
-          <div class="pref-sub">"auto" picks apple vision on macos, paddleocr elsewhere. paddleocr is bundled — works offline on every platform.</div>
+          <div class="pref-sub">"auto" reads with amanuensis ligero (bundled, offline) and, on macos, falls back to apple vision for scripts ligero does not know (it reads the latin alphabet only). "amanuensis" never falls back.</div>
         </div>
         <div class="seg">
           <button class:active={settings.ocr_engine === "auto"} onclick={() => changeOcrEngine("auto")}>auto</button>
+          <button class:active={settings.ocr_engine === "amanuensis"} onclick={() => changeOcrEngine("amanuensis")}>amanuensis</button>
           <button class:active={settings.ocr_engine === "applevision"} onclick={() => changeOcrEngine("applevision")}>apple vision</button>
-          <button class:active={settings.ocr_engine === "paddle"} onclick={() => changeOcrEngine("paddle")}>paddleocr</button>
         </div>
       </div>
       <div class="pref-row">

@@ -7,6 +7,7 @@
 //!   - `lang_detect`— per-paragraph language detection (whatlang)
 //!   - `chunker`    — paragraph / sentence chunking for streaming synthesis
 //!   - `engine`     — high-level Engine tying the above together
+//!   - `ocr`        — Amanuensis Ligero (OCR propio, detector Mínimo + lector Ligero 3) sin Python
 
 pub mod asr;
 pub mod chunker;
@@ -14,6 +15,7 @@ pub mod engine;
 pub mod guion;
 pub mod lang_detect;
 pub mod normalize;
+pub mod ocr;
 pub mod supertonic;
 pub mod voices;
 

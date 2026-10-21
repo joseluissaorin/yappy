@@ -107,10 +107,36 @@ public func yappy_register_seek_handler(_ cb: YappySeekCallback?) {
     configureRemoteCommands()
 }
 
+// La caratula se construye UNA vez (antes: un MPMediaItemArtwork nuevo en
+// cada snapshot) y el widget solo se recarga cuando cambia el titulo.
+private let caratulaLoro: MPMediaItemArtwork? = {
+    guard let img = UIImage(named: "LoroCaratula") else { return nil }
+    return MPMediaItemArtwork(boundsSize: img.size) { _ in img }
+}()
+private let candadoWidget = NSLock()
+private var ultimoTituloWidget: String?
+
 /// Update Now Playing metadata. Called by Rust whenever playback state
 /// changes. Pass title=NULL to clear (e.g. when stopping playback).
 @_cdecl("yappy_now_playing_set")
 public func yappy_now_playing_set(
+    _ titlePtr: UnsafePointer<CChar>?,
+    _ artistPtr: UnsafePointer<CChar>?,
+    _ albumPtr: UnsafePointer<CChar>?,
+    _ durationSecs: Double,
+    _ positionSecs: Double,
+    _ isPlaying: Bool
+) {
+    // Lo llaman hilos de Rust que viven toda la app (el de audio, el del
+    // libro) y que no tienen autorelease pool que se vacíe: sin este pool,
+    // los objetos autoliberados de cada llamada (uno por trozo leído) se
+    // acumulaban hasta la muerte del hilo, o sea, para siempre.
+    autoreleasepool {
+        nowPlayingSet(titlePtr, artistPtr, albumPtr, durationSecs, positionSecs, isPlaying)
+    }
+}
+
+private func nowPlayingSet(
     _ titlePtr: UnsafePointer<CChar>?,
     _ artistPtr: UnsafePointer<CChar>?,
     _ albumPtr: UnsafePointer<CChar>?,
@@ -140,8 +166,8 @@ public func yappy_now_playing_set(
     if !artist.isEmpty { info[MPMediaItemPropertyArtist]  = artist }
     if !album.isEmpty  { info[MPMediaItemPropertyAlbumTitle] = album }
     // La carátula: el loro de la casa en la pantalla de bloqueo.
-    if let img = UIImage(named: "LoroCaratula") {
-        info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: img.size) { _ in img }
+    if let caratula = caratulaLoro {
+        info[MPMediaItemPropertyArtwork] = caratula
     }
     info[MPMediaItemPropertyPlaybackDuration]   = max(0, durationSecs)
     info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = max(0, positionSecs)
@@ -158,7 +184,13 @@ public func yappy_now_playing_set(
     }
 
     // El widget de inicio lee este titulo del App Group; sin esta escritura
-    // se quedaba para siempre en el texto generico.
+    // se quedaba para siempre en el texto generico. Solo al CAMBIAR de
+    // titulo: recargar el widget en cada snapshot gastaba su presupuesto.
+    candadoWidget.lock()
+    let tituloNuevo = ultimoTituloWidget != title
+    if tituloNuevo { ultimoTituloWidget = title }
+    candadoWidget.unlock()
+    guard tituloNuevo else { return }
     if let defaults = UserDefaults(suiteName: "group.com.joseluissaorin.yappy") {
         defaults.set(title, forKey: "last_played_title")
     }

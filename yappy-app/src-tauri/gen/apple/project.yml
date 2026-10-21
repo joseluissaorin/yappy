@@ -269,6 +269,7 @@ targets:
           echo "→ Stripping iOS-incompatible resources from assets/_up_/resources/"
           rm -rf "$SRCROOT/assets/_up_/resources/pdfium"        # .dylib/.dll/.so libraries
           rm -rf "$SRCROOT/assets/_up_/resources/extension"     # Chromium browser extension
+          rm -rf "$SRCROOT/assets/_up_/resources/paddleocr"     # PaddleOCR: el OCR del móvil es Amanuensis (empotrado)
         name: Build Rust Code
         basedOnDependencyAnalysis: false
         outputFiles:

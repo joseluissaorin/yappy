@@ -20,6 +20,7 @@
   import Trastienda from "$lib/Trastienda.svelte";
   import HojaEncargo from "$lib/HojaEncargo.svelte";
   import ImprentaHoja from "$lib/ImprentaHoja.svelte";
+  import Exportar from "$lib/Exportar.svelte";
   import IconoTipo from "$lib/IconoTipo.svelte";
   import { reader } from "$lib/readerStore.svelte";
   import { abrirPaywall, esErrorParlanchin } from "$lib/compras.svelte";
@@ -611,6 +612,12 @@
   // ── EL MOSAICO VIVO: pesos renegociados, losa continua, FLIP ──────────
   let arrastre = $state<{ id: string; dx: number } | null>(null);
   let menuPieza = $state<ItemCola | null>(null);
+  // EXPORTAR: las tres pegatinas (.md, .html, .pdf) se despliegan dentro
+  // de la ficha; se pliegan al cerrarla.
+  let exportandoPieza = $state(false);
+  $effect(() => {
+    if (!menuPieza) exportandoPieza = false;
+  });
   let renombrando = $state(false);
   let nuevoNombre = $state("");
   let arranque: { id: string; x: number; y: number; decidido: "no" | "swipe" } | null = null;
@@ -1918,6 +1925,20 @@
             {$t("pieza.imprenta")}
           </button>
         {/if}
+        {#if !esLibro(menuPieza) && menuPieza.estado === "listo" && menuPieza.ruta && menuPieza.tipo !== "audio"}
+          <button class="tecla-menu" class:abierta={exportandoPieza} use:presionable onclick={() => (exportandoPieza = !exportandoPieza)} aria-expanded={exportandoPieza}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.6 3.4 H7 q-1.6 0 -1.6 1.6 v14 q0 1.6 1.6 1.6 h10 q1.6 0 1.6 -1.6 V8.4 Z M13.4 3.6 v4.2 q0 0.8 0.8 0.8 h4.2 M12 17.4 v-6 M9.4 13.8 L12 11.2 L14.6 13.8"/></svg>
+            {$t("exportar.boton")}
+          </button>
+          {#if exportandoPieza}
+            <div class="exportar-pieza">
+              <Exportar
+                fuente={{ ruta: menuPieza.ruta, titulo: menuPieza.titulo, origen: menuPieza.origen }}
+                alTerminar={() => (menuPieza = null)}
+              />
+            </div>
+          {/if}
+        {/if}
         <button class="tecla-menu" use:presionable onclick={() => { renombrando = true; nuevoNombre = menuPieza?.titulo ?? ""; }}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.6 3.6 q2.5 -1.5 3.9 0.3 q1.3 1.7 -0.7 3.5 L8.5 18.5 l-4.7 1.7 q-0.7 0.2 -0.5 -0.5 l1.6 -4.6 Z"/></svg>
           {$t("pieza.renombrar")}
@@ -2946,6 +2967,13 @@
     font-size: 14px;
     font-weight: 800;
     text-align: center;
+  }
+  .tecla-menu.abierta {
+    border-style: dashed;
+    box-shadow: none;
+  }
+  .exportar-pieza {
+    padding: 6px 0 4px;
   }
   .tecla-menu.peligro {
     color: var(--yap-voz, #e0502a);

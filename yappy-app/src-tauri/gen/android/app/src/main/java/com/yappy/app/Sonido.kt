@@ -177,6 +177,15 @@ object Sonido {
     val hayLectura = sonandoAhora || (lecturaViva && titulo.isNotEmpty())
     if (hayLectura || imprentaViva) {
       tenerWake(true)
+      // Con el servicio ya vivo, repintar y basta. Antes CADA snapshot de
+      // la lectura (uno por trozo) llamaba a startForegroundService: cientos
+      // de arranques en un cuarto de hora, y cada uno obliga a un
+      // startForeground a tiempo o Android mata la app.
+      val vivo = ServicioYappy.actual
+      if (vivo != null) {
+        vivo.repintar()
+        return
+      }
       try {
         val i = Intent(app, ServicioYappy::class.java)
         if (Build.VERSION.SDK_INT >= 26) app.startForegroundService(i) else app.startService(i)
@@ -337,6 +346,45 @@ object Sonido {
   fun efectoStop() {
     try { efecto?.stop(); efecto?.release() } catch (_: Exception) {}
     efecto = null
+  }
+
+  // LA VOZ DEL PASEO: el mismo canal de efectos, con velocidad (la demo del
+  // dial suena al instante sobre el audio pregrabado) y leyendo también de
+  // los assets del APK, donde Tauri deja resources/ (sin ruta de fichero).
+  fun efectoPlayRate(path: String, rate: Float): Double {
+    if (!File(path).exists()) return 0.0
+    return efectoArrancar(rate) { it.setDataSource(path) }
+  }
+  fun efectoPlayRecurso(rel: String, rate: Float): Double {
+    val fd = try { Puente.app.assets.openFd(rel) } catch (_: Exception) { return 0.0 }
+    return try {
+      efectoArrancar(rate) { it.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length) }
+    } finally {
+      try { fd.close() } catch (_: Exception) {}
+    }
+  }
+  private fun efectoArrancar(rate: Float, fuente: (MediaPlayer) -> Unit): Double {
+    return try {
+      efectoStop()
+      val p = MediaPlayer()
+      p.setAudioAttributes(
+        AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build()
+      )
+      fuente(p)
+      p.prepare()
+      p.setOnCompletionListener { it.release(); if (efecto === it) efecto = null }
+      if (kotlin.math.abs(rate - 1f) > 0.01f) {
+        // setPlaybackParams arranca la reproducción por sí mismo.
+        p.playbackParams = p.playbackParams.setSpeed(rate.coerceIn(0.5f, 2f))
+        if (!p.isPlaying) p.start()
+      } else {
+        p.start()
+      }
+      efecto = p
+      p.duration / 1000.0
+    } catch (e: Exception) {
+      android.util.Log.w("yappy", "efectoArrancar: $e"); 0.0
+    }
   }
 }
 
