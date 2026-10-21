@@ -1,0 +1,33 @@
+Yappy è un lettore text to speech che legge ad alta voce tutto ciò che condividi: un articolo, un PDF, un EPUB, un file Word, la foto di una pagina o un video. Un pappagallo te lo legge con una voce naturale mentre cucini, mentre cammini o a occhi chiusi. Text to speech vero, dentro il tuo telefono: i tuoi testi non ne escono, mai.
+
+SENZA CLOUD, SENZA ACCOUNT, SENZA TARIFFA A CARATTERE
+La voce viene sintetizzata sul tuo dispositivo da un modello aperto di circa 99 milioni di parametri. Non serve registrarsi né lasciare l'email. Funziona offline, senza connessione, per sempre.
+
+31 LINGUE E DIECI VOCI, TUTTE POLIGLOTTE
+Italiano, inglese, spagnolo, francese, tedesco, portoghese, olandese, polacco, rumeno, svedese, danese, finlandese, estone, lituano, lettone, croato, sloveno, slovacco, ceco, ungherese, greco, bulgaro, ucraino, russo, turco, arabo, hindi, indonesiano, vietnamita, coreano e giapponese. I testi con citazioni in un'altra lingua cambiano lingua da soli, paragrafo per paragrafo.
+
+CONDIVIDERE È LA PORTA
+Da Chrome, Gmail, File o qualsiasi app: tocca Condividi e scegli Yappy. La pagina si ripulisce da sola (via menu, banner e piè di pagina) e resta la prosa, con i suoi titoli e il suo ritmo. I video di YouTube si ascoltano come articoli. I PDF e gli EPUB arrivano con i capitoli. I memo vocali vengono trascritti sul dispositivo.
+
+ANCHE FOTO E PDF SCANSIONATI
+Amanuensis, il riconoscimento del testo (OCR) di Yappy, legge foto, appunti e PDF scansionati senza uscire dal telefono, ed è gratis. E quello che hai sul nastro lo esporti in PDF, HTML o Markdown.
+
+LO SCENEGGIATORE: DALLO SCRITTO AL DETTO
+Leggere ad alta voce non è fare lo spelling. «1492» si dice «millequattrocentonovantadue»; «Enrico VIII» si dice «Enrico ottavo», ma «Louis XIV» in francese si dice «Louis quatorze». Yappy trasforma ogni testo in un copione di lettura con le regole di ciascuna lingua, e la voce del text to speech lo segue frase per frase mentre il testo si illumina sullo schermo.
+
+LO SCHERMO È IL PULSANTE
+Tocca ovunque per mettere in pausa, scorri per saltare un paragrafo, alza o abbassa la velocità lungo il bordo. E dalla schermata di blocco o dagli auricolari, come con qualsiasi lettore.
+
+LA STAMPERIA: LIBRI INTERI COME AUDIOLIBRI
+Lascia un libro in elaborazione quando vai a dormire e al risveglio trovi un audiolibro con i capitoli nella tua libreria. Con il ponte, il tuo Mac o il tuo PC possono convertirlo per te e restituirtelo da soli.
+
+GRATIS DAVVERO, E UN PAPPAGALLO A CARICA
+Yappy è open source (licenza MIT); il modello vocale ha una licenza propria, OpenRAIL-M. Il pappagallo gratuito porta tre documenti alla volta sul suo trespolo; togline uno e ce ne sta un altro, senza limiti di tempo. Se vuoi un trespolo senza fondo, la stamperia di audiolibri e il ponte con il computer, dagli la carica con Yappy Parlanchín: abbonamento mensile o annuale, oppure un unico acquisto a vita. Disdici quando vuoi. Senza pubblicità e senza account.
+
+Gli abbonamenti si rinnovano automaticamente alla fine di ogni periodo, salvo disdetta nel tuo account Google Play almeno 24 ore prima.
+
+LA PRIVACY, RACCONTATA PER INTERO
+Yappy invia statistiche d'uso anonime a un server proprio: il nome dell'evento, un identificativo casuale dell'installazione, la lingua e la versione. Mai testi, titoli, link, nomi né email. Si disattivano con un tocco nel retrobottega.
+https://yappy.joseluissaorin.com/en/privacy
+
+Fatto con amore da José Luis Saorín. Un filologo che voleva ascoltare ciò che leggeva, e un bambino di sei anni che voleva giocare con il pappagallo.

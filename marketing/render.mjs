@@ -16,6 +16,8 @@ import sharp from "sharp";
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
 const L = args[0] || "es";
+// «xx-android» usa copy/xx-android.json, pero las capturas y la escritura de «xx».
+const LB = L.replace(/-android$/, "");
 const opt = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const DEVICE = opt("--device", "iphone");
 const LAYOUT = opt("--layout", DEVICE === "ipad" ? "ipad" : "iphone");
@@ -23,7 +25,7 @@ const ASC = opt("--asc", null);
 
 const layout = JSON.parse(readFileSync(join(AQUI, "layouts", `${LAYOUT}.json`), "utf8"));
 const copy = JSON.parse(readFileSync(join(AQUI, "copy", `${L}.json`), "utf8"));
-const rawDir = join(AQUI, DEVICE === "ipad" ? "screenshots-ipad" : "screenshots", L);
+const rawDir = join(AQUI, DEVICE === "ipad" ? "screenshots-ipad" : "screenshots", LB);
 const rawFallback = join(AQUI, DEVICE === "ipad" ? "screenshots-ipad" : "screenshots", "es");
 const outDir = join(AQUI, "output", ASC || L, DEVICE);
 mkdirSync(outDir, { recursive: true });
@@ -34,8 +36,8 @@ const BEZEL = join(AQUI, G.bezel_png);
 const [BW, BH] = G.bezel_dims;
 const SO = G.screen_offset;
 const RADIUS = G.screen_corner_radius_px;
-const RTL = ["ar", "he"].includes(L);
-const CJK = ["ja", "ko", "zh"].includes(L);
+const RTL = ["ar", "he"].includes(LB);
+const CJK = ["ja", "ko", "zh"].includes(LB);
 
 const esc = (s) => String(s).replace(/[<>&"']/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&apos;" }[c]));
 const r = Math.round;
@@ -43,8 +45,8 @@ const FONT_T = `'Baloo 2', sans-serif`;
 const FONT_S = `'Literata', serif`;
 const FONT_M = `'Space Mono', 'Menlo', monospace`;
 // Reservas para las escrituras que Baloo 2 no cubre.
-const extra = CJK ? "'Hiragino Sans', 'Apple SD Gothic Neo', 'PingFang SC', " : L === "ar" ? "'Geeza Pro', " : L === "hi" ? "'Kohinoor Devanagari', 'Devanagari Sangam MN', " : "";
-const extraS = CJK ? "'Hiragino Mincho ProN', 'Apple SD Gothic Neo', " : L === "ar" ? "'Geeza Pro', " : L === "hi" ? "'Kohinoor Devanagari', " : "";
+const extra = CJK ? "'Hiragino Sans', 'Apple SD Gothic Neo', 'PingFang SC', " : LB === "ar" ? "'Geeza Pro', " : LB === "hi" ? "'Kohinoor Devanagari', 'Devanagari Sangam MN', " : "";
+const extraS = CJK ? "'Hiragino Mincho ProN', 'Apple SD Gothic Neo', " : LB === "ar" ? "'Geeza Pro', " : LB === "hi" ? "'Kohinoor Devanagari', " : "";
 const FONT_T_L = extra + FONT_T;
 const FONT_S_L = extraS + FONT_S;
 const ancho = (s) => [...s].reduce((a, ch) => a + (/[　-鿿가-힯＀-￯]/.test(ch) ? 1.0 : /[A-Z0-9ÁÉÍÓÚÑÄÖÜМШЩ]/.test(ch) ? 0.66 : /[ijl.,:;'!| ]/.test(ch) ? 0.3 : 0.56), 0);

@@ -1,0 +1,33 @@
+Yappy est un lecteur de texte qui lit à voix haute tout ce que vous lui partagez : un article, un PDF, un EPUB, un fichier Word, la photo d'une page ou une vidéo. Un perroquet vous le lit d'une voix naturelle, en cuisinant, en marchant ou les yeux fermés. Du vrai text to speech, dans votre téléphone : vos textes n'en sortent jamais.
+
+SANS CLOUD, SANS COMPTE, SANS TARIF AU CARACTÈRE
+La voix du text to speech est synthétisée sur votre appareil par un modèle ouvert d'environ 99 millions de paramètres. Pas d'inscription, pas d'adresse e-mail. Ça marche hors ligne, pour toujours.
+
+31 LANGUES ET DIX VOIX, TOUTES POLYGLOTTES
+Français, anglais, espagnol, allemand, italien, portugais, néerlandais, polonais, roumain, suédois, danois, finnois, estonien, lituanien, letton, croate, slovène, slovaque, tchèque, hongrois, grec, bulgare, ukrainien, russe, turc, arabe, hindi, indonésien, vietnamien, coréen et japonais. Les textes qui citent une autre langue changent de langue tout seuls, paragraphe par paragraphe.
+
+PARTAGER, C'EST LA PORTE
+Depuis Chrome, Gmail, Fichiers ou n'importe quelle app : touchez Partager et choisissez Yappy. La page se nettoie toute seule (adieu menus, bannières et pieds de page) et il reste la prose, avec ses titres et son rythme. Les vidéos YouTube s'écoutent comme des articles. Les PDF et les EPUB arrivent avec leurs chapitres. Les mémos vocaux sont transcrits sur l'appareil.
+
+PHOTOS ET PDF SCANNÉS, AUSSI
+Amanuensis, la reconnaissance de texte (OCR) propre à Yappy, lit les photos, les notes et les PDF scannés sans quitter votre téléphone, et c'est gratuit. Et ce qui est sur votre bande, vous l'exportez en PDF, HTML ou Markdown.
+
+LE SCRIPTEUR : DE L'ÉCRIT AU DIT
+Lire à voix haute, ce n'est pas épeler. « 1492 » se dit « mille quatre cent quatre-vingt-douze » ; « Louis XIV » se dit « Louis quatorze », mais « Henry VIII » en anglais se dit « Henry the Eighth ». Yappy transforme chaque texte en un script de lecture selon les règles de chaque langue, et la voix du text to speech le suit phrase par phrase pendant que le texte s'illumine à l'écran.
+
+L'ÉCRAN EST LE BOUTON
+Touchez n'importe où pour mettre en pause, glissez pour sauter un paragraphe, montez ou baissez la vitesse le long du bord. Et depuis l'écran verrouillé ou vos écouteurs, comme avec n'importe quel lecteur.
+
+L'IMPRIMERIE : DES LIVRES ENTIERS EN LIVRES AUDIO
+Laissez un livre se générer en allant vous coucher et, au réveil, un livre audio avec ses chapitres vous attend dans votre bibliothèque. Avec le pont, votre Mac ou votre PC peut le convertir pour vous et vous le renvoyer tout seul.
+
+VRAIMENT GRATUIT, ET UN PERROQUET À REMONTER
+Yappy est open source (licence MIT) ; le modèle de voix a sa propre licence, OpenRAIL-M. Le perroquet gratuit porte trois documents à la fois sur son perchoir ; retirez-en un et un autre y tient, sans limite de temps. Si vous voulez un perchoir sans fond, l'imprimerie de livres audio et le pont avec votre ordinateur, remontez-le avec Yappy Parlanchín : abonnement mensuel ou annuel, ou un seul achat à vie. Vous annulez quand vous voulez. Sans publicité et sans compte.
+
+Les abonnements se renouvellent automatiquement à la fin de chaque période, sauf annulation dans votre compte Google Play au moins 24 heures avant.
+
+LA CONFIDENTIALITÉ, RACONTÉE EN ENTIER
+Yappy envoie des statistiques d'utilisation anonymes à son propre serveur : le nom de l'événement, un identifiant d'installation aléatoire, la langue et la version. Jamais de textes, de titres, de liens, de noms ni d'adresses e-mail. Elles se désactivent d'un geste dans l'arrière-boutique.
+https://yappy.joseluissaorin.com/en/privacy
+
+Fait avec amour par José Luis Saorín. Un philologue qui voulait écouter ce qu'il lisait, et un enfant de six ans qui voulait jouer avec le perroquet.

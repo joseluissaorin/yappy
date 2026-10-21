@@ -1,0 +1,1 @@
+Yappy: lector de textos

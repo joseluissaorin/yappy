@@ -1,0 +1,33 @@
+Yappy yra text to speech skaityklė, kuri garsiai perskaito viską, kuo su ja pasidalini: straipsnį, PDF, EPUB, Word failą, puslapio nuotrauką ar vaizdo įrašą. Papūga tau tai perskaito natūraliu balsu, kol gamini valgyti, vaikštai ar sėdi užsimerkęs. Tikras teksto įgarsinimas tavo telefone: tavo tekstai niekada jo nepalieka.
+
+BE DEBESIES, BE PASKYRŲ, BE MOKESČIO UŽ SIMBOLĮ
+Balsas sintezuojamas tavo įrenginyje atviru modeliu, turinčiu apie 99 milijonus parametrų. Nereikia registruotis ar nurodyti el. pašto. Veikia be ryšio, visam laikui.
+
+31 KALBA IR DEŠIMT BALSŲ, VISI POLIGLOTAI
+Lietuvių, anglų, ispanų, prancūzų, vokiečių, italų, portugalų, nyderlandų, lenkų, rumunų, švedų, danų, suomių, estų, latvių, kroatų, slovėnų, slovakų, čekų, vengrų, graikų, bulgarų, ukrainiečių, rusų, turkų, arabų, hindi, indoneziečių, vietnamiečių, korėjiečių ir japonų. Tekstai su citatomis kita kalba patys pakeičia kalbą, pastraipa po pastraipos.
+
+DALINTIS YRA DURYS
+Iš Chrome, Gmail, Failų ar bet kurios kitos programėlės: paliesk Bendrinti ir pasirink Yappy. Puslapis išsivalo pats (dingsta meniu, reklamjuostės ir poraštės), ir lieka proza su savo antraštėmis ir ritmu. YouTube vaizdo įrašų klausaisi kaip straipsnių. PDF ir EPUB failai atkeliauja su skyriais. Balso įrašai transkribuojami įrenginyje.
+
+TAIP PAT NUOTRAUKOS IR NUSKENUOTI PDF
+Amanuensis, paties Yappy teksto atpažinimas (OCR), skaito nuotraukas, užrašus ir nuskenuotus PDF, jiems nepaliekant tavo telefono, ir yra nemokamas. O tai, kas yra tavo juostoje, gali eksportuoti į PDF, HTML ar Markdown.
+
+SCENARISTAS: NUO PARAŠYTO IKI PASAKYTO
+Skaityti garsiai nereiškia raidžiuoti. „1492“ tariama „tūkstantis keturi šimtai devyniasdešimt du“; „Henrikas VIII“ tariama „Henrikas Aštuntasis“, bet „Louis XIV“ prancūziškai yra „Louis quatorze“. Yappy kiekvieną tekstą paverčia skaitymo scenarijumi pagal kiekvienos kalbos taisykles, o balsas seka jį sakinys po sakinio, kol tekstas šviečia ekrane.
+
+EKRANAS YRA MYGTUKAS
+Paliesk bet kur, kad sustabdytum, perbrauk, kad praleistum pastraipą, slink palei kraštą, kad pakeistum greitį. Ir iš užrakinto ekrano ar ausinių, kaip su bet kuriuo kitu grotuvu.
+
+SPAUSTUVĖ: IŠTISOS KNYGOS KAIP AUDIOKNYGOS
+Eidamas miegoti palik knygą generuotis, o pabudęs rasi bibliotekoje audioknygą su skyriais. Per tiltą tavo Mac ar PC gali ją konvertuoti už tave ir pats grąžinti.
+
+TIKRAI NEMOKAMA, IR PRISUKAMA PAPŪGA
+Yappy yra atvirojo kodo (MIT licencija); balso modelis turi savo licenciją, OpenRAIL-M. Nemokama papūga ant savo laktos neša tris dokumentus vienu metu; nuimk vieną, ir tilps kitas, be laiko apribojimų. Jei nori laktos be dugno, audioknygų spaustuvės ir tilto su kompiuteriu, prisuk papūgą su Yappy Parlanchín: mėnesio ar metų prenumerata arba vienkartinis pirkinys visam laikui. Atšaukti gali bet kada. Be reklamų ir be paskyros.
+
+Prenumeratos automatiškai atsinaujina kiekvieno laikotarpio pabaigoje, nebent jas atšauksi savo Google Play paskyroje bent 24 valandas prieš tai.
+
+PRIVATUMAS, PAPASAKOTAS IKI GALO
+Yappy siunčia anoniminę naudojimo statistiką į savo serverį: įvykio pavadinimą, atsitiktinį įdiegimo ID, kalbą ir versiją. Niekada tekstų, pavadinimų, nuorodų, vardų ar el. pašto adresų. Ją išjungsi užkulisiuose vienu palietimu.
+https://yappy.joseluissaorin.com/en/privacy
+
+Su meile sukūrė José Luis Saorín. Filologas, norėjęs klausytis to, ką skaito, ir šešiametis, norėjęs žaisti su papūga.

@@ -1,0 +1,33 @@
+Yappy är en uppläsningsapp med text to speech som läser upp det du delar med den: en artikel, en PDF, en EPUB, en Word-fil, ett foto av en sida eller en video. En papegoja läser upp det för dig med naturlig röst, medan du lagar mat, medan du promenerar eller med slutna ögon. Riktig text till tal, inuti din telefon: dina texter lämnar den aldrig.
+
+INGET MOLN, INGA KONTON, INGEN AVGIFT PER TECKEN
+Rösten syntetiseras på din enhet av en öppen modell med omkring 99 miljoner parametrar. Ingen registrering, ingen e-postadress. Det fungerar offline, för alltid.
+
+31 SPRÅK OCH TIO RÖSTER, ALLA FLERSPRÅKIGA
+Svenska, engelska, spanska, franska, tyska, italienska, portugisiska, nederländska, polska, rumänska, danska, finska, estniska, litauiska, lettiska, kroatiska, slovenska, slovakiska, tjeckiska, ungerska, grekiska, bulgariska, ukrainska, ryska, turkiska, arabiska, hindi, indonesiska, vietnamesiska, koreanska och japanska. Texter med citat på ett annat språk byter språk av sig själva, stycke för stycke.
+
+ATT DELA ÄR DÖRREN
+Från Chrome, Gmail, Filer eller vilken app som helst: tryck på Dela och välj Yappy. Sidan städar sig själv (bort med menyer, banners och sidfötter) och kvar blir prosan, med sina rubriker och sin rytm. YouTube-videor lyssnar du på som artiklar. PDF:er och EPUB:er kommer med kapitel. Röstanteckningar transkriberas på enheten.
+
+FOTON OCH SKANNADE PDF:ER OCKSÅ
+Amanuensis, Yappys egen textigenkänning (OCR), läser foton, anteckningar och skannade PDF:er utan att de lämnar din telefon, och den är gratis. Och det som ligger på ditt band exporterar du till PDF, HTML eller Markdown.
+
+MANUSFÖRFATTAREN: FRÅN DET SKRIVNA TILL DET SAGDA
+Att läsa högt är inte att bokstavera. ”1492” läses ”fjortonhundranittiotvå”; ”Henrik VIII” läses ”Henrik den åttonde”, men ”Louis XIV” på franska läses ”Louis quatorze”. Yappy gör om varje text till ett läsmanus efter varje språks regler, och rösten följer det mening för mening medan texten tänds på skärmen.
+
+SKÄRMEN ÄR KNAPPEN
+Tryck var som helst för att pausa, svep för att hoppa över ett stycke, dra längs kanten för att ändra hastigheten. Och från låsskärmen eller hörlurarna, som med vilken spelare som helst.
+
+TRYCKERIET: HELA BÖCKER SOM LJUDBÖCKER
+Låt en bok renderas när du går och lägger dig, och vakna med en ljudbok med kapitel i ditt bibliotek. Med bryggan kan din Mac eller PC konvertera den åt dig och skicka tillbaka den av sig själv.
+
+GRATIS PÅ RIKTIGT, OCH EN PAPEGOJA MED NYCKEL
+Yappy är öppen källkod (MIT-licens); röstmodellen har sin egen licens, OpenRAIL-M. Gratispapegojan bär tre dokument åt gången på sin pinne; ta bort ett så får ett annat plats, utan tidsgräns. Vill du ha en pinne utan botten, ljudbokstryckeriet och bryggan till datorn, vrid upp den med Yappy Parlanchín: månads- eller årsprenumeration, eller ett enda köp för livet. Avsluta när du vill. Inga annonser och inget konto.
+
+Prenumerationer förnyas automatiskt i slutet av varje period om de inte sägs upp i ditt Google Play-konto minst 24 timmar innan.
+
+INTEGRITET, BERÄTTAD I SIN HELHET
+Yappy skickar anonym användningsstatistik till en egen server: händelsens namn, ett slumpmässigt installations-ID, språket och versionen. Aldrig texter, titlar, länkar, namn eller e-postadresser. Du stänger av den i bakrummet med ett tryck.
+https://yappy.joseluissaorin.com/en/privacy
+
+Gjord med kärlek av José Luis Saorín. En filolog som ville lyssna på det han läste, och en sexåring som ville leka med papegojan.

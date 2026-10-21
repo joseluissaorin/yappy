@@ -1,0 +1,33 @@
+Yappy ir text to speech lasītājs, kas skaļi nolasa visu, ko ar to kopīgo: rakstu, PDF, EPUB, Word failu, lapas fotoattēlu vai video. Papagailis to tev nolasa dabiskā balsī, kamēr tu gatavo ēst, ej pastaigā vai sēdi aizvērtām acīm. Īsts text to speech tavā tālrunī: tavi teksti to nekad nepamet.
+
+BEZ MĀKOŅA, BEZ KONTIEM, BEZ MAKSAS PAR RAKSTZĪMI
+Balss tiek sintezēta tavā ierīcē ar atvērtu modeli, kurā ir aptuveni 99 miljoni parametru. Nav jāreģistrējas, nav jānorāda e-pasts. Darbojas bezsaistē, uz visiem laikiem.
+
+31 VALODA UN DESMIT BALSIS, VISAS POLIGLOTES
+Latviešu, angļu, spāņu, franču, vācu, itāļu, portugāļu, nīderlandiešu, poļu, rumāņu, zviedru, dāņu, somu, igauņu, lietuviešu, horvātu, slovēņu, slovāku, čehu, ungāru, grieķu, bulgāru, ukraiņu, krievu, turku, arābu, hindi, indonēziešu, vjetnamiešu, korejiešu un japāņu valoda. Teksti ar citātiem citā valodā paši pārslēdz valodu, rindkopu pēc rindkopas.
+
+KOPĪGOŠANA IR DURVIS
+No Chrome, Gmail, Failiem vai jebkuras citas lietotnes: pieskaries Kopīgot un izvēlies Yappy. Lapa pati sevi satīra (prom izvēlnes, baneri un kājenes), un paliek proza ar saviem virsrakstiem un savu ritmu. YouTube video klausies kā rakstus. PDF un EPUB faili ienāk ar nodaļām. Balss piezīmes tiek transkribētas ierīcē.
+
+ARĪ FOTOATTĒLI UN SKENĒTI PDF
+Amanuensis, paša Yappy teksta atpazīšana (OCR), nolasa fotoattēlus, piezīmes un skenētus PDF, tiem nepametot tālruni, un tā ir bez maksas. Un visu, kas ir tavā lentē, vari eksportēt uz PDF, HTML vai Markdown.
+
+SCENĀRISTS: NO RAKSTĪTĀ UZ RUNĀTO
+Lasīt skaļi nenozīmē burtot. „1492” izrunā „tūkstoš četri simti deviņdesmit divi”; „Henrijs VIII” izrunā „Henrijs Astotais”, bet „Louis XIV” franciski ir „Louis quatorze”. Yappy katru tekstu pārvērš lasīšanas scenārijā pēc katras valodas likumiem, un balss tam seko teikumu pēc teikuma, kamēr teksts izgaismojas ekrānā.
+
+EKRĀNS IR POGA
+Pieskaries jebkur, lai apturētu, pavelc, lai pārlēktu rindkopu, maini ātrumu gar malu. Un no bloķēšanas ekrāna vai austiņām, kā jebkurā atskaņotājā.
+
+TIPOGRĀFIJA: VESELAS GRĀMATAS KĀ AUDIOGRĀMATAS
+Atstāj grāmatu renderēties, kad ej gulēt, un pamosties ar audiogrāmatu ar nodaļām savā bibliotēkā. Ar tiltu tavs Mac vai PC to var pārveidot tavā vietā un pats atsūtīt atpakaļ.
+
+TIEŠĀM BEZ MAKSAS, UN UZVELKAMS PAPAGAILIS
+Yappy ir atvērtā koda text to speech (MIT licence); balss modelim ir sava licence, OpenRAIL-M. Bezmaksas papagailis uz savas laktas tur trīs dokumentus vienlaikus; noņem vienu, un ietilpst cits, bez laika ierobežojuma. Ja gribi laktu bez dibena, audiogrāmatu tipogrāfiju un tiltu ar datoru, uzvelc to ar Yappy Parlanchín: mēneša vai gada abonements vai viens pirkums uz mūžu. Atcel, kad vien vēlies. Bez reklāmām un bez konta.
+
+Abonementi automātiski atjaunojas katra perioda beigās, ja vien tos neatcel savā Google Play kontā vismaz 24 stundas iepriekš.
+
+PRIVĀTUMS, IZSTĀSTĪTS LĪDZ GALAM
+Yappy sūta anonīmu lietošanas statistiku uz savu serveri: notikuma nosaukumu, nejaušu instalācijas identifikatoru, valodu un versiju. Nekad tekstus, nosaukumus, saites, vārdus vai e-pastus. To var izslēgt ar vienu pieskārienu aizkulisēs.
+https://yappy.joseluissaorin.com/en/privacy
+
+Ar mīlestību veidojis José Luis Saorín. Filologs, kurš gribēja klausīties to, ko lasa, un sešgadnieks, kurš gribēja spēlēties ar papagaili.

@@ -44,6 +44,7 @@ async function api(tok, ruta, opts = {}) {
   const r = await fetch(`${BASE}${ruta}`, {
     ...opts,
     headers: { Authorization: `Bearer ${tok}`, "Content-Type": "application/json", ...(opts.headers ?? {}) },
+    signal: opts.signal ?? AbortSignal.timeout(120_000),
   });
   const cuerpo = await r.text();
   if (!r.ok) throw new Error(`${ruta}: ${r.status} ${cuerpo.slice(0, 400)}`);
@@ -91,33 +92,43 @@ async function upload(fichero, pista = "internal", notas, estado) {
 
 // ── La ficha: textos, imágenes y datos de contacto ──────────────────────
 // marketing/play/<locale>/{title,short,full}.txt  → listings/<locale>
-// marketing/output/android-<idioma>/{01..08}.png   → phoneScreenshots
+// marketing/output/android-<idioma>/iphone/{01..08}.png → phoneScreenshots
 // marketing/output/android-<idioma>/portada.png    → featureGraphic
-const IDIOMA_DE = { "es-ES": "es", "en-US": "en" };
-
+// <idioma> = las dos primeras letras del locale de Play (es-419 → es, pt-BR → pt).
+// Los locales van de seis en seis en paralelo: en serie, 34 idiomas pasan de la media hora.
+// Una subida a veces se queda colgada sin respuesta: dos minutos y se reintenta (hasta 4 veces).
 async function subirImagen(tok, editId, locale, tipo, fichero) {
-  const r = await fetch(
-    `https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/${PAQUETE}/edits/${editId}/listings/${locale}/${tipo}?uploadType=media`,
-    { method: "POST", headers: { Authorization: `Bearer ${tok}`, "Content-Type": "image/png" }, body: readFileSync(fichero) },
-  );
-  if (!r.ok) throw new Error(`${tipo} ${locale}: ${r.status} ${(await r.text()).slice(0, 300)}`);
+  for (let intento = 1; ; intento++) {
+    try {
+      const r = await fetch(
+        `https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/${PAQUETE}/edits/${editId}/listings/${locale}/${tipo}?uploadType=media`,
+        { method: "POST", headers: { Authorization: `Bearer ${tok}`, "Content-Type": "image/png" }, body: readFileSync(fichero), signal: AbortSignal.timeout(120_000) },
+      );
+      if (!r.ok) throw new Error(`${tipo} ${locale}: ${r.status} ${(await r.text()).slice(0, 300)}`);
+      return;
+    } catch (e) {
+      if (intento >= 4) throw e;
+      console.log(`  · reintento ${intento} ${tipo} ${locale}: ${String(e.message ?? e).slice(0, 120)}`);
+    }
+  }
 }
 
-async function ficha(raiz = "marketing", conImagenes = true) {
+async function ficha(raiz = "marketing", conImagenes = true, solo = null) {
   const { readdirSync, existsSync } = await import("node:fs");
   const tok = await token();
   const edit = await api(tok, "/edits", { method: "POST", body: "{}" });
-  const locales = readdirSync(`${raiz}/play`).filter((d) => existsSync(`${raiz}/play/${d}/title.txt`));
-  for (const locale of locales) {
+  const locales = readdirSync(`${raiz}/play`)
+    .filter((d) => existsSync(`${raiz}/play/${d}/title.txt`))
+    .filter((d) => !solo || solo.includes(d));
+  const uno = async (locale) => {
     const leer = (f) => readFileSync(`${raiz}/play/${locale}/${f}.txt`, "utf8").trim();
     await api(tok, `/edits/${edit.id}/listings/${locale}`, {
       method: "PUT",
       body: JSON.stringify({ language: locale, title: leer("title"), shortDescription: leer("short"), fullDescription: leer("full") }),
     });
-    console.log(`  ✓ textos ${locale}`);
-    if (!conImagenes) continue;
-    const dir = `${raiz}/output/android-${IDIOMA_DE[locale] ?? locale.slice(0, 2)}`;
-    if (!existsSync(dir)) { console.log(`  · sin imágenes para ${locale} (${dir})`); continue; }
+    if (!conImagenes) return console.log(`  ✓ textos ${locale}`);
+    const dir = `${raiz}/output/android-${locale.slice(0, 2)}`;
+    if (!existsSync(dir)) return console.log(`  ✓ textos ${locale} · sin imágenes (${dir})`);
     for (const tipo of ["phoneScreenshots", "featureGraphic", "icon"]) {
       await api(tok, `/edits/${edit.id}/listings/${locale}/${tipo}`, { method: "DELETE" }).catch(() => {});
     }
@@ -127,8 +138,10 @@ async function ficha(raiz = "marketing", conImagenes = true) {
       const f = `${dir}/iphone/${String(i).padStart(2, "0")}.png`;
       if (existsSync(f)) await subirImagen(tok, edit.id, locale, "phoneScreenshots", f);
     }
-    console.log(`  ✓ imágenes ${locale}`);
-  }
+    console.log(`  ✓ textos e imágenes ${locale}`);
+  };
+  const cola = [...locales];
+  await Promise.all(Array.from({ length: 6 }, async () => { while (cola.length) await uno(cola.shift()); }));
   await api(tok, `/edits/${edit.id}/details`, {
     method: "PATCH",
     body: JSON.stringify({ defaultLanguage: "es-ES", contactEmail: "jl@joseluissaorin.com", contactWebsite: "https://yappy.joseluissaorin.com" }),
@@ -161,16 +174,38 @@ async function listado() {
   await api(tok, `/edits/${edit.id}`, { method: "DELETE" }).catch(() => {});
 }
 
+// Lee la ficha publicada y la compara con marketing/play/<locale>: textos idénticos y número de imágenes.
+async function verificar(raiz = "marketing") {
+  const { readdirSync, existsSync } = await import("node:fs");
+  const tok = await token();
+  const edit = await api(tok, "/edits", { method: "POST", body: "{}" });
+  const vivos = Object.fromEntries(((await api(tok, `/edits/${edit.id}/listings`)).listings ?? []).map((x) => [x.language, x]));
+  const locales = readdirSync(`${raiz}/play`).filter((d) => existsSync(`${raiz}/play/${d}/title.txt`));
+  let mal = 0;
+  for (const locale of [...new Set([...locales, ...Object.keys(vivos)])].sort()) {
+    const v = vivos[locale];
+    const leer = (f) => existsSync(`${raiz}/play/${locale}/${f}.txt`) ? readFileSync(`${raiz}/play/${locale}/${f}.txt`, "utf8").trim() : null;
+    const igual = v && v.title === leer("title") && v.shortDescription === leer("short") && v.fullDescription === leer("full");
+    const n = async (t) => ((await api(tok, `/edits/${edit.id}/listings/${locale}/${t}`).catch(() => ({}))).images ?? []).length;
+    const img = v ? { capturas: await n("phoneScreenshots"), portada: await n("featureGraphic"), icono: await n("icon") } : {};
+    if (!igual) mal++;
+    console.log(`${igual ? "OK " : "MAL"} ${locale.padEnd(6)} ${JSON.stringify(img)} ${v?.title ?? "(no publicada)"}`);
+  }
+  await api(tok, `/edits/${edit.id}`, { method: "DELETE" }).catch(() => {});
+  console.log(JSON.stringify({ ok: mal === 0, locales: Object.keys(vivos).length, distintos: mal }));
+}
+
 const [cmd, ...args] = process.argv.slice(2);
 try {
   if (cmd === "token") console.log(await token());
   else if (cmd === "status") await status();
   else if (cmd === "upload") await upload(args[0], args[1], args[2], args[3]);
-  else if (cmd === "ficha") await ficha(args[0], args[1] !== "--sin-imagenes");
+  else if (cmd === "ficha") await ficha(args[0], !args.includes("--sin-imagenes"), args.includes("--solo") ? args[args.indexOf("--solo") + 1].split(",") : null);
   else if (cmd === "listado") await listado();
+  else if (cmd === "verificar") await verificar(args[0]);
   else if (cmd === "promote") await promover(args[0], args[1], args[2]);
   else {
-    console.error("uso: play-helper.mjs token|status|upload <fichero> [pista]|ficha [raiz] [--sin-imagenes]|listado|promote <versionCode> [pista] [completed|draft]  (app en borrador: draft)");
+    console.error("uso: play-helper.mjs token|status|upload <fichero> [pista]|ficha [raiz] [--sin-imagenes] [--solo es-ES,en-US]|listado|verificar [raiz]|promote <versionCode> [pista] [completed|draft]  (app en borrador: draft)");
     process.exitCode = 2;
   }
 } catch (e) {

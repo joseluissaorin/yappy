@@ -1,0 +1,33 @@
+O Yappy é um leitor de texto que lê em voz alta o que você compartilhar com ele: um artigo, um PDF, um EPUB, um Word, a foto de uma página ou um vídeo. Um papagaio lê tudo com uma voz natural enquanto você cozinha, enquanto caminha ou de olhos fechados. Text to speech de verdade, dentro do seu celular: seus textos não saem dele, nunca.
+
+SEM NUVEM, SEM CONTAS, SEM TARIFA POR CARACTERE
+A voz do text to speech é sintetizada no seu aparelho com um modelo aberto de cerca de 99 milhões de parâmetros. Não precisa se cadastrar nem informar e-mail. Funciona offline, sem conexão, para sempre.
+
+31 IDIOMAS E DEZ VOZES, TODAS POLIGLOTAS
+Português, inglês, espanhol, francês, alemão, italiano, holandês, polonês, romeno, sueco, dinamarquês, finlandês, estoniano, lituano, letão, croata, esloveno, eslovaco, tcheco, húngaro, grego, búlgaro, ucraniano, russo, turco, árabe, híndi, indonésio, vietnamita, coreano e japonês. Textos com citações em outra língua trocam de idioma sozinhos, parágrafo a parágrafo.
+
+COMPARTILHAR É A PORTA
+Do Chrome, do Gmail, do Arquivos ou de qualquer app: toque em Compartilhar e escolha o Yappy. A página se limpa sozinha (fora menus, banners e rodapés) e sobra a prosa, com seus títulos e seu ritmo. Vídeos do YouTube são ouvidos como artigos. PDFs e EPUBs chegam com capítulos. Notas de voz são transcritas no aparelho.
+
+FOTOS E PDFS ESCANEADOS, TAMBÉM
+O Amanuensis, o reconhecimento de texto (OCR) próprio do Yappy, lê fotos, anotações e PDFs escaneados sem sair do celular, e é grátis. E o que estiver na sua fita você exporta para PDF, HTML ou Markdown.
+
+O ROTEIRISTA: DO ESCRITO AO DITO
+Ler em voz alta não é soletrar. “1492” se diz “mil quatrocentos e noventa e dois”; “Henrique VIII” se diz “Henrique oitavo”, mas “Louis XIV” em francês se diz “Louis quatorze”. O Yappy converte cada texto em um roteiro de leitura com as regras de cada língua, e a voz do text to speech o segue frase a frase enquanto o texto se ilumina na tela.
+
+A TELA É O BOTÃO
+Toque em qualquer lugar para pausar, deslize para pular de parágrafo, aumente ou diminua a velocidade pela borda. E da tela de bloqueio ou dos fones, como em qualquer player.
+
+A GRÁFICA: LIVROS INTEIROS COMO AUDIOLIVROS
+Deixe um livro renderizando ao deitar e, ao acordar, você tem um audiolivro com capítulos na sua biblioteca. Com a ponte, seu Mac ou seu PC podem convertê-lo para você e devolvê-lo sozinhos.
+
+GRÁTIS DE VERDADE, E UM PAPAGAIO DE CORDA
+O Yappy é código aberto (licença MIT); o modelo de voz tem sua própria licença, OpenRAIL-M. O papagaio grátis carrega três documentos por vez no seu poleiro; tire um e cabe outro, sem limite de tempo. Se quiser um poleiro sem fundo, a gráfica de audiolivros e a ponte com o computador, dê corda com o Yappy Parlanchín: assinatura mensal ou anual, ou um único pagamento vitalício. Cancele quando quiser. Sem anúncios e sem conta.
+
+As assinaturas se renovam automaticamente ao fim de cada período, a menos que você as cancele na sua conta do Google Play com pelo menos 24 horas de antecedência.
+
+PRIVACIDADE, CONTADA POR INTEIRO
+O Yappy envia estatísticas de uso anônimas para um servidor próprio: o nome do evento, um identificador aleatório da instalação, o idioma e a versão. Nunca textos, títulos, links, nomes nem e-mails. Elas se desligam com um toque nos bastidores.
+https://yappy.joseluissaorin.com/en/privacy
+
+Feito com amor por José Luis Saorín. Um filólogo que queria ouvir o que lia, e um menino de seis anos que queria brincar com o papagaio.

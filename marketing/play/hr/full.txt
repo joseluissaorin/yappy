@@ -1,0 +1,33 @@
+Yappy je text to speech čitač koji naglas čita sve što s njim podijeliš: članak, PDF, EPUB, Word, fotografiju stranice ili video. Papiga ti to čita prirodnim glasom dok kuhaš, dok šetaš ili zatvorenih očiju. Pravi text to speech, unutar tvog mobitela: tvoji tekstovi iz njega nikad ne izlaze.
+
+BEZ OBLAKA, BEZ RAČUNA, BEZ NAPLATE PO ZNAKU
+Glas se sintetizira na tvom uređaju otvorenim modelom od oko 99 milijuna parametara. Ne treba se registrirati ni davati e-mail. Radi bez veze, zauvijek.
+
+31 JEZIK I DESET GLASOVA, SVI POLIGLOTI
+Hrvatski, engleski, španjolski, francuski, njemački, talijanski, portugalski, nizozemski, poljski, rumunjski, švedski, danski, finski, estonski, litavski, latvijski, slovenski, slovački, češki, mađarski, grčki, bugarski, ukrajinski, ruski, turski, arapski, hindski, indonezijski, vijetnamski, korejski i japanski. Tekstovi s citatima na drugom jeziku sami mijenjaju jezik, odlomak po odlomak.
+
+DIJELJENJE JE VRATA
+Iz Chromea, Gmaila, Datoteka ili bilo koje aplikacije: dodirni Podijeli i odaberi Yappy. Stranica se sama očisti (odu izbornici, banneri i podnožja) i ostane proza sa svojim naslovima i svojim ritmom. YouTube videi slušaju se kao članci. PDF-ovi i EPUB-ovi stižu s poglavljima. Glasovne bilješke transkribiraju se na uređaju.
+
+I FOTOGRAFIJE I SKENIRANI PDF-OVI
+Amanuensis, Yappyjevo vlastito prepoznavanje teksta (OCR), čita fotografije, bilješke i skenirane PDF-ove bez izlaska iz mobitela, i besplatan je. A sve što imaš na traci možeš izvesti u PDF, HTML ili Markdown.
+
+SCENARIST: OD NAPISANOG DO IZGOVORENOG
+Čitati naglas nije sricati. „1492” čita se „tisuću četiristo devedeset dva”; „Henrik VIII.” čita se „Henrik Osmi”, ali „Louis XIV.” na francuskom je „Louis quatorze”. Yappy pretvara svaki tekst u scenarij za čitanje prema pravilima svakog jezika, a glas ga prati rečenicu po rečenicu dok se tekst osvjetljava na zaslonu.
+
+ZASLON JE GUMB
+Dodirni bilo gdje za pauzu, povuci za preskakanje odlomka, uz rub podesi brzinu. I sa zaključanog zaslona ili slušalica, kao s bilo kojim playerom.
+
+TISKARA: CIJELE KNJIGE KAO AUDIOKNJIGE
+Ostavi knjigu da se renderira kad ideš spavati, a kad se probudiš, u knjižnici te čeka audioknjiga s poglavljima. S mostom je tvoj Mac ili PC može pretvoriti umjesto tebe i sam ti je vratiti.
+
+STVARNO BESPLATNO, I PAPIGA NA NAVIJANJE
+Yappy je text to speech otvorenog koda (MIT licenca); model glasa ima vlastitu licencu, OpenRAIL-M. Besplatna papiga nosi tri dokumenta odjednom na svojoj prečki; makni jedan i stane drugi, bez vremenskog ograničenja. Ako želiš prečku bez dna, tiskaru audioknjiga i most s računalom, navij je s Yappy Parlanchín: mjesečna ili godišnja pretplata, ili jedna doživotna kupnja. Otkazuješ kad želiš. Bez oglasa i bez računa.
+
+Pretplate se automatski obnavljaju na kraju svakog razdoblja, osim ako ih ne otkažeš na svom Google Play računu najmanje 24 sata prije.
+
+PRIVATNOST, ISPRIČANA DO KRAJA
+Yappy šalje anonimne statistike korištenja na vlastiti poslužitelj: naziv događaja, nasumični identifikator instalacije, jezik i verziju. Nikad tekstove, naslove, poveznice, imena ni e-mailove. Isključuješ ih jednim dodirom u stražnjoj sobi.
+https://yappy.joseluissaorin.com/en/privacy
+
+S ljubavlju napravio José Luis Saorín. Filolog koji je htio slušati ono što čita, i šestogodišnjak koji se htio igrati s papigom.

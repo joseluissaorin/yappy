@@ -1,4 +1,4 @@
-Share an article, a PDF, an EPUB, a Word file or a video with Yappy, and a parrot reads it to you in a natural voice. While you cook, while you walk, or with your eyes closed. Everything happens inside your phone: nothing ever leaves it.
+Yappy is a text to speech reader that reads aloud whatever you share with it: an article, a PDF, an EPUB, a Word file, a photo of a page or a video. A parrot reads it to you in a natural voice while you cook, while you walk, or with your eyes closed. Real text to speech, inside your phone: your texts never leave it.
 
 NO CLOUD, NO ACCOUNTS, NO PER-CHARACTER FEES
 The voice is synthesised on your device by an open model of about 99 million parameters. No sign-up, no email. It works offline, forever.
@@ -8,6 +8,9 @@ English, Spanish, French, German, Italian, Portuguese, Dutch, Polish, Romanian, 
 
 SHARING IS THE DOOR
 From Chrome, Gmail, Files or any app: tap Share and choose Yappy. The page cleans itself up (menus, banners and footers gone) and what is left is the prose, with its headings and its rhythm. YouTube videos are listened to like articles. PDFs and EPUBs arrive with chapters. Voice notes are transcribed on the device.
+
+PHOTOS AND SCANNED PDFS, TOO
+Amanuensis, Yappy's own text recognition (OCR), reads photos, notes and scanned PDFs without leaving your phone, and it is free. And whatever is on your tape you can export to PDF, HTML or Markdown.
 
 THE SCRIPTWRITER: FROM WHAT IS WRITTEN TO WHAT IS SAID
 Reading aloud is not spelling out. "1492" is said "fourteen ninety-two"; "Henry VIII" is said "Henry the Eighth", but "Louis XIV" in French is "Louis quatorze". Yappy turns every text into a reading script with the rules of each language, and the voice follows it sentence by sentence while the text lights up on screen.
@@ -19,10 +22,12 @@ THE PRESS: WHOLE BOOKS AS AUDIOBOOKS
 Leave a book rendering when you go to bed and wake up with an audiobook with chapters in your library. With the bridge, your Mac or PC can convert it for you and send it back on its own.
 
 TRULY FREE, AND A WIND-UP PARROT
-Yappy is open source (MIT licence). The free parrot carries three documents at a time on its perch; remove one and another fits, with no time limit. If you want a bottomless perch, the audiobook press and the bridge to your computer, wind it up with Yappy Parlanchín: a monthly or yearly subscription, or a single lifetime purchase. Cancel whenever you like. No ads and no account.
+Yappy is open source (MIT licence); the voice model has its own licence, OpenRAIL-M. The free parrot carries three documents at a time on its perch; remove one and another fits, with no time limit. If you want a bottomless perch, the audiobook press and the bridge to your computer, wind it up with Yappy Parlanchín: a monthly or yearly subscription, or a single lifetime purchase. Cancel whenever you like. No ads and no account.
 
 Subscriptions renew automatically at the end of each period unless cancelled in your Google Play account at least 24 hours before.
 
-Privacy: https://yappy.joseluissaorin.com/en/privacy
+PRIVACY, TOLD IN FULL
+Yappy sends anonymous usage statistics to its own server: the event name, a random installation ID, the language and the version. Never texts, titles, links, names or emails. You can switch them off in the back room with one tap.
+https://yappy.joseluissaorin.com/en/privacy
 
 Made with love by José Luis Saorín. A philologist who wanted to listen to what he read, and a six-year-old who wanted to play with the parrot.

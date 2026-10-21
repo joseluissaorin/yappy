@@ -1,0 +1,33 @@
+Yappy on ettelugemise rakendus (text to speech), mis loeb valjusti ette kõik, mida sa sellega jagad: artikli, PDF-i, EPUB-i, Wordi faili, foto raamatuleheküljest või video. Papagoi loeb selle sulle loomuliku häälega ette, kui sa süüa teed, jalutad või silmad kinni hoiad. Päris tekst kõneks, sinu telefoni sees: sinu tekstid ei lahku sealt kunagi.
+
+EI PILVE, EI KONTOSID, EI TASU MÄRGI PEALT
+Hääl sünteesitakse sinu seadmes avatud mudeliga, millel on umbes 99 miljonit parameetrit. Pole vaja registreeruda ega e-posti aadressi anda. Töötab võrguta, igavesti.
+
+31 KEELT JA KÜMME HÄÄLT, KÕIK POLÜGLOTID
+Eesti, inglise, hispaania, prantsuse, saksa, itaalia, portugali, hollandi, poola, rumeenia, rootsi, taani, soome, leedu, läti, horvaadi, sloveeni, slovaki, tšehhi, ungari, kreeka, bulgaaria, ukraina, vene, türgi, araabia, hindi, indoneesia, vietnami, korea ja jaapani keel. Tekstid, milles on tsitaate teises keeles, vahetavad keelt ise, lõik lõigu haaval.
+
+JAGAMINE ON UKS
+Chrome'ist, Gmailist, Failidest või mis tahes rakendusest: puuduta Jaga ja vali Yappy. Leht koristab end ise (menüüd, bännerid ja jalused kaovad) ning alles jääb proosa oma pealkirjade ja rütmiga. YouTube'i videoid kuulad nagu artikleid. PDF-id ja EPUB-id saabuvad peatükkidega. Häälmärkmed transkribeeritakse seadmes.
+
+KA FOTOD JA SKANNITUD PDF-ID
+Amanuensis, Yappy enda tekstituvastus (OCR), loeb fotosid, märkmeid ja skannitud PDF-e nii, et need su telefonist ei lahku, ning on tasuta. Ja mis su lindil on, saad eksportida PDF-, HTML- või Markdown-vormingusse.
+
+STSENARIST: KIRJUTATUST ÖELDUNI
+Ettelugemine ei ole veerimine. „1492“ öeldakse „tuhat nelisada üheksakümmend kaks“; „Henry VIII“ öeldakse „Henry Kaheksas“, aga „Louis XIV“ on prantsuse keeles „Louis quatorze“. Yappy muudab iga teksti iga keele reeglite järgi lugemisstsenaariumiks ning hääl järgib seda lause lause haaval, samal ajal kui tekst ekraanil süttib.
+
+EKRAAN ON NUPP
+Puuduta ükskõik kus, et peatada, libista, et lõik vahele jätta, ja muuda kiirust ekraani serval libistades. Ning lukustuskuvalt või kõrvaklappidest, nagu iga teise pleieriga.
+
+TRÜKIKODA: TERVED RAAMATUD AUDIORAAMATUTENA
+Jäta raamat magama minnes renderdama ja ärgates on sinu raamatukogus peatükkidega audioraamat. Sillaga saab sinu Mac või PC selle sinu eest teisendada ja ise tagasi saata.
+
+PÄRISELT TASUTA, JA ÜLESKEERATAV PAPAGOI
+Yappy on avatud lähtekoodiga (MIT-litsents); häälemudelil on oma litsents, OpenRAIL-M. Tasuta papagoi kannab õrrel korraga kolme dokumenti; võta üks maha ja järgmine mahub, ilma ajapiiranguta. Kui tahad põhjatut õrt, audioraamatute trükikoda ja silda arvutiga, keera papagoi üles Yappy Parlanchíniga: kuu- või aastatellimus või üksainus eluaegne ost. Tühistad, millal tahad. Ei reklaame ega kontot.
+
+Tellimused uuenevad iga perioodi lõpus automaatselt, kui sa neid vähemalt 24 tundi varem oma Google Play kontol ei tühista.
+
+PRIVAATSUS, ÄRA RÄÄGITUD TERVENISTI
+Yappy saadab anonüümset kasutusstatistikat oma serverisse: sündmuse nime, juhusliku installi-ID, keele ja versiooni. Mitte kunagi tekste, pealkirju, linke, nimesid ega e-posti aadresse. Tagatoas lülitad selle ühe puudutusega välja.
+https://yappy.joseluissaorin.com/en/privacy
+
+Armastusega teinud José Luis Saorín. Filoloog, kes tahtis kuulata seda, mida ta luges, ja kuueaastane, kes tahtis papagoiga mängida.

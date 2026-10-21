@@ -1,0 +1,33 @@
+A Yappy egy text to speech felolvasó, amely hangosan felolvassa, amit megosztasz vele: egy cikket, PDF-et, EPUB-ot, Word-fájlt, egy oldal fotóját vagy egy videót. Egy papagáj olvassa fel neked természetes hangon, főzés közben, séta közben vagy csukott szemmel. Igazi text to speech a telefonodon belül: a szövegeid soha nem hagyják el.
+
+FELHŐ, FIÓK ÉS KARAKTERENKÉNTI DÍJ NÉLKÜL
+A hangot a készülékeden állítja elő egy körülbelül 99 millió paraméteres nyílt modell. Nem kell regisztrálni, nem kell e-mail-címet megadni. Kapcsolat nélkül működik, örökre.
+
+31 NYELV ÉS TÍZ HANG, MIND POLIGLOTT
+Magyar, angol, spanyol, francia, német, olasz, portugál, holland, lengyel, román, svéd, dán, finn, észt, litván, lett, horvát, szlovén, szlovák, cseh, görög, bolgár, ukrán, orosz, török, arab, hindi, indonéz, vietnámi, koreai és japán. A más nyelvű idézeteket tartalmazó szövegek maguktól váltanak nyelvet, bekezdésről bekezdésre.
+
+A MEGOSZTÁS AZ AJTÓ
+A Chrome-ból, a Gmailből, a Fájlokból vagy bármelyik appból: koppints a Megosztásra, és válaszd a Yappyt. Az oldal magától kitakarítja magát (menük, bannerek és láblécek nélkül), és marad a próza a címeivel és a ritmusával. A YouTube-videókat cikként hallgathatod. A PDF-ek és EPUB-ok fejezetekkel érkeznek. A hangjegyzeteket a készülék írja le.
+
+FOTÓK ÉS SZKENNELT PDF-EK IS
+Az Amanuensis, a Yappy saját szövegfelismerése (OCR), a telefonodon belül olvassa be a fotókat, jegyzeteket és szkennelt PDF-eket, és ingyenes. Ami pedig a szalagodon van, azt PDF-be, HTML-be vagy Markdownba exportálhatod.
+
+A FORGATÓKÖNYVÍRÓ: A LEÍRTTÓL A KIMONDOTTIG
+Felolvasni nem betűzést jelent. Az „1492” úgy hangzik: „ezernégyszázkilencvenkettő”; a „VIII. Henrik” úgy: „nyolcadik Henrik”, a „XIV. Lajos” viszont franciául „Louis quatorze”. A Yappy minden szöveget felolvasó-forgatókönyvvé alakít az adott nyelv szabályai szerint, és a hang mondatról mondatra követi, miközben a szöveg kigyullad a képernyőn.
+
+A KÉPERNYŐ A GOMB
+Koppints bárhová a szünethez, húzd el az ujjad a bekezdés átugrásához, a szélén állítsd a sebességet. És a zárolási képernyőről vagy a fülhallgatóról, mint bármelyik lejátszónál.
+
+A NYOMDA: EGÉSZ KÖNYVEK HANGOSKÖNYVKÉNT
+Hagyj egy könyvet renderelődni lefekvéskor, és ébredésre egy fejezetekre osztott hangoskönyv vár a könyvtáradban. A híddal a Maced vagy PC-d átalakítja helyetted, és magától visszaküldi.
+
+TÉNYLEG INGYENES, ÉS EGY FELHÚZHATÓ PAPAGÁJ
+A Yappy nyílt forráskódú text to speech alkalmazás (MIT-licenc); a hangmodellnek saját licence van, az OpenRAIL-M. Az ingyenes papagáj egyszerre három dokumentumot visz az ülőrúdján; vegyél le egyet, és elfér egy másik, időkorlát nélkül. Ha feneketlen ülőrudat, hangoskönyv-nyomdát és hidat szeretnél a számítógépedhez, húzd fel a Yappy Parlanchínnal: havi vagy éves előfizetés, vagy egyetlen, életre szóló vásárlás. Bármikor lemondhatod. Reklámok és fiók nélkül.
+
+Az előfizetések minden időszak végén automatikusan megújulnak, hacsak legalább 24 órával korábban le nem mondod őket a Google Play-fiókodban.
+
+ADATVÉDELEM, ELEJÉTŐL A VÉGÉIG
+A Yappy névtelen használati statisztikákat küld a saját szerverére: az esemény nevét, egy véletlenszerű telepítési azonosítót, a nyelvet és a verziót. Soha nem szövegeket, címeket, linkeket, neveket vagy e-mail-címeket. A hátsó szobában egy koppintással kikapcsolhatod őket.
+https://yappy.joseluissaorin.com/en/privacy
+
+Szeretettel készítette José Luis Saorín. Egy filológus, aki hallani akarta, amit olvas, és egy hatéves, aki játszani akart a papagájjal.

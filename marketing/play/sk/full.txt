@@ -1,0 +1,33 @@
+Yappy je čítačka text to speech, ktorá nahlas prečíta čokoľvek, čo s ňou zdieľate: článok, PDF, EPUB, Word, fotku stránky alebo video. Papagáj vám to prečíta prirodzeným hlasom, kým varíte, kým kráčate alebo so zatvorenými očami. Skutočné text to speech vo vnútri vášho telefónu: vaše texty z neho nikdy neodchádzajú.
+
+BEZ CLOUDU, BEZ ÚČTOV, BEZ POPLATKU ZA ZNAK
+Hlas sa syntetizuje vo vašom zariadení otvoreným modelom s približne 99 miliónmi parametrov. Netreba sa registrovať ani zadávať e-mail. Funguje bez pripojenia, navždy.
+
+31 JAZYKOV A DESAŤ HLASOV, VŠETKY POLYGLOTNÉ
+Slovenčina, angličtina, španielčina, francúzština, nemčina, taliančina, portugalčina, holandčina, poľština, rumunčina, švédčina, dánčina, fínčina, estónčina, litovčina, lotyština, chorvátčina, slovinčina, čeština, maďarčina, gréčtina, bulharčina, ukrajinčina, ruština, turečtina, arabčina, hindčina, indonézština, vietnamčina, kórejčina a japončina. Texty s citátmi v inom jazyku menia jazyk samy, odsek po odseku.
+
+ZDIEĽANIE JE DVERE
+Z Chromu, Gmailu, Súborov alebo akejkoľvek aplikácie: ťuknite na Zdieľať a vyberte Yappy. Stránka sa sama vyčistí (preč s menu, bannermi a pätičkami) a ostane próza so svojimi nadpismi a svojím rytmom. Videá z YouTube sa počúvajú ako články. PDF a EPUB prichádzajú s kapitolami. Hlasové poznámky sa prepisujú v zariadení.
+
+FOTKY A NASKENOVANÉ PDF TIEŽ
+Amanuensis, vlastné rozpoznávanie textu (OCR) aplikácie Yappy, číta fotky, poznámky a naskenované PDF bez toho, aby opustili váš telefón, a je zadarmo. A čo máte na páske, vyexportujete do PDF, HTML alebo Markdownu.
+
+SCENÁRISTA: OD NAPÍSANÉHO K POVEDANÉMU
+Čítať nahlas nie je hláskovať. „1492“ sa číta „tisícštyristodeväťdesiatdva“; „Henrich VIII.“ sa číta „Henrich Ôsmy“, ale „Louis XIV.“ je po francúzsky „Louis quatorze“. Yappy premení každý text na čítací scenár podľa pravidiel daného jazyka a hlas ho sleduje vetu po vete, kým sa text rozsvecuje na obrazovke.
+
+OBRAZOVKA JE TLAČIDLO
+Ťuknite kamkoľvek na pozastavenie, potiahnite na preskočenie odseku, pri okraji zvýšte alebo znížte rýchlosť. A zo zamknutej obrazovky alebo zo slúchadiel, ako pri každom prehrávači.
+
+TLAČIAREŇ: CELÉ KNIHY AKO AUDIOKNIHY
+Nechajte knihu renderovať, keď idete spať, a po prebudení máte v knižnici audioknihu s kapitolami. S mostom ju za vás môže previesť váš Mac alebo PC a sám vám ju poslať späť.
+
+NAOZAJ ZADARMO, A PAPAGÁJ NA KĽÚČIK
+Yappy je text to speech s otvoreným zdrojovým kódom (licencia MIT); hlasový model má vlastnú licenciu, OpenRAIL-M. Bezplatný papagáj nosí na svojom bidielku tri dokumenty naraz; odoberte jeden a zmestí sa ďalší, bez časového limitu. Ak chcete bidielko bez dna, tlačiareň audiokníh a most s počítačom, natiahnite ho s Yappy Parlanchín: mesačné alebo ročné predplatné, alebo jedna doživotná platba. Zrušíte, kedy chcete. Bez reklám a bez účtu.
+
+Predplatné sa automaticky obnovuje na konci každého obdobia, pokiaľ ho nezrušíte vo svojom účte Google Play aspoň 24 hodín vopred.
+
+SÚKROMIE, POVEDANÉ CELÉ
+Yappy posiela anonymné štatistiky používania na vlastný server: názov udalosti, náhodný identifikátor inštalácie, jazyk a verziu. Nikdy texty, názvy, odkazy, mená ani e-maily. Vypnete ich jedným ťuknutím v Zákulisí.
+https://yappy.joseluissaorin.com/en/privacy
+
+S láskou vytvoril José Luis Saorín. Filológ, ktorý chcel počúvať to, čo číta, a šesťročný chlapec, ktorý sa chcel hrať s papagájom.

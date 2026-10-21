@@ -1,0 +1,1 @@
+Lector de textos y texto a voz para PDF, EPUB, fotos y artículos. Sin nube.
