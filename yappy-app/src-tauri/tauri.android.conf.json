@@ -17,7 +17,7 @@
       "../resources/paseo-voz/*"
     ],
     "android": {
-      "versionCode": 1000003
+      "versionCode": 1000100
     }
   }
 }

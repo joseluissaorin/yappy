@@ -13,7 +13,7 @@
   },
   "bundle": {
     "iOS": {
-      "bundleVersion": "1.0.0.5"
+      "bundleVersion": "1.0.1.1"
     },
     "resources": [
       "../resources/defuddle.js",
