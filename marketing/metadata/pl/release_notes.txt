@@ -1,0 +1,6 @@
+• Długie czytanie działa stabilniej.
+• EPUB, Word, PDF i inne formaty są czytane akapit po akapicie, a postęp zapisuje się poprawnie.
+• Własny OCR, Amanuensis Ligero: odczytuje zdjęcia i zeskanowane pliki PDF bezpośrednio na urządzeniu.
+• Eksport do Markdown, HTML i PDF.
+• Powitalny przewodnik mówi od razu.
+• W języku angielskim zaimek „I” nie jest już czytany jako „the first”.

@@ -1,0 +1,6 @@
+• Uzun okumalar daha kararlı.
+• EPUB, Word, PDF ve diğer biçimler paragraf paragraf okunuyor, ilerlemeniz düzgünce kaydediliyor.
+• Kendi OCR’ımız Amanuensis Ligero, fotoğrafları ve taranmış PDF’leri doğrudan cihazda okuyor.
+• Markdown, HTML ve PDF olarak dışa aktarma.
+• Karşılama turu anında konuşuyor.
+• İngilizcede “I” zamiri artık “the first” diye okunmuyor.

@@ -1,0 +1,6 @@
+• Long readings are more stable.
+• EPUB, Word, PDF and other formats are read paragraph by paragraph, and your progress is saved properly.
+• Our own OCR, Amanuensis Ligero, reads photos and scanned PDFs right on your device.
+• Export to Markdown, HTML and PDF.
+• The welcome tour speaks instantly.
+• In English, the pronoun “I” is no longer read as “the first”.

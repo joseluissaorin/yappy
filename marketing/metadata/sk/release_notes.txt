@@ -1,0 +1,6 @@
+• Dlhé čítanie je stabilnejšie.
+• EPUB, Word, PDF a ďalšie formáty sa čítajú po odsekoch a postup sa spoľahlivo ukladá.
+• Vlastné OCR, Amanuensis Ligero: číta fotografie a naskenované PDF priamo v zariadení.
+• Export do Markdownu, HTML a PDF.
+• Uvítacia prehliadka hovorí okamžite.
+• V angličtine sa zámeno „I“ už nečíta ako „the first“.

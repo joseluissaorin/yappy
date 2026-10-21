@@ -1,0 +1,6 @@
+• Lecturile lungi sunt mai stabile.
+• EPUB, Word, PDF și alte formate se citesc paragraf cu paragraf, iar progresul se salvează corect.
+• OCR propriu, Amanuensis Ligero: citește fotografii și PDF-uri scanate direct pe dispozitiv.
+• Export în Markdown, HTML și PDF.
+• Turul de bun venit vorbește imediat.
+• În engleză, pronumele „I” nu mai este citit „the first”.

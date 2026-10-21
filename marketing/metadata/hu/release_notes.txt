@@ -1,0 +1,6 @@
+• A hosszú felolvasások stabilabbak.
+• Az EPUB, Word, PDF és más formátumok bekezdésenként szólalnak meg, és a haladás megbízhatóan mentődik.
+• Saját szövegfelismerés (OCR), Amanuensis Ligero: fényképeket és szkennelt PDF-eket olvas közvetlenül az eszközön.
+• Exportálás Markdown, HTML és PDF formátumba.
+• Az üdvözlő bemutató azonnal megszólal.
+• Angolul az „I” névmást már nem „the first”-ként olvassa.

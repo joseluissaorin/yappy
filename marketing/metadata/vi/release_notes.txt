@@ -1,0 +1,6 @@
+• Đọc văn bản dài ổn định hơn.
+• EPUB, Word, PDF và các định dạng khác được đọc theo từng đoạn, tiến độ được lưu đúng.
+• OCR riêng, Amanuensis Ligero, đọc ảnh và PDF scan ngay trên thiết bị.
+• Xuất sang Markdown, HTML và PDF.
+• Chuyến tham quan chào mừng cất tiếng ngay lập tức.
+• Trong tiếng Anh, đại từ “I” không còn bị đọc thành “the first”.

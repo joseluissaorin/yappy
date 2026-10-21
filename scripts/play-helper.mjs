@@ -4,7 +4,7 @@
 //
 //   node scripts/play-helper.mjs token
 //   node scripts/play-helper.mjs status
-//   node scripts/play-helper.mjs upload <fichero.aab|.apk> [internal|alpha|beta|production]
+//   node scripts/play-helper.mjs upload <fichero.aab|.apk> [internal|alpha|beta|production] [notas.json] [completed|draft]
 import { readFileSync } from "node:fs";
 import { createSign } from "node:crypto";
 import { homedir } from "node:os";
@@ -62,7 +62,9 @@ async function status() {
   }
 }
 
-async function upload(fichero, pista = "internal") {
+// notas: JSON {"es-ES": "…", "en-US": "…"}; estado: completed|draft|inProgress
+// (por defecto draft en producción, como la primera vez que la app estaba en borrador).
+async function upload(fichero, pista = "internal", notas, estado) {
   const tok = await token();
   const edit = await api(tok, "/edits", { method: "POST", body: "{}" });
   const esApk = fichero.toLowerCase().endsWith(".apk");
@@ -77,7 +79,11 @@ async function upload(fichero, pista = "internal") {
   const version = artefacto.versionCode;
   await api(tok, `/edits/${edit.id}/tracks/${pista}`, {
     method: "PUT",
-    body: JSON.stringify({ releases: [{ versionCodes: [String(version)], status: pista === "production" ? "draft" : "completed" }] }),
+    body: JSON.stringify({ releases: [{
+      versionCodes: [String(version)],
+      status: estado ?? (pista === "production" ? "draft" : "completed"),
+      ...(notas ? { releaseNotes: Object.entries(JSON.parse(readFileSync(notas, "utf8"))).map(([language, text]) => ({ language, text })) } : {}),
+    }] }),
   });
   const fin = await api(tok, `/edits/${edit.id}:commit`, { method: "POST", body: "{}" });
   console.log(JSON.stringify({ ok: true, pista, versionCode: version, edit: fin.id }));
@@ -159,7 +165,7 @@ const [cmd, ...args] = process.argv.slice(2);
 try {
   if (cmd === "token") console.log(await token());
   else if (cmd === "status") await status();
-  else if (cmd === "upload") await upload(args[0], args[1]);
+  else if (cmd === "upload") await upload(args[0], args[1], args[2], args[3]);
   else if (cmd === "ficha") await ficha(args[0], args[1] !== "--sin-imagenes");
   else if (cmd === "listado") await listado();
   else if (cmd === "promote") await promover(args[0], args[1], args[2]);

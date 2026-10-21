@@ -1,0 +1,6 @@
+• Les longues lectures sont plus stables.
+• EPUB, Word, PDF et autres formats se lisent paragraphe par paragraphe, et la progression est bien enregistrée.
+• Notre propre OCR, Amanuensis Ligero, lit les photos et les PDF numérisés directement sur l’appareil.
+• Export en Markdown, HTML et PDF.
+• La visite de bienvenue parle instantanément.
+• En anglais, le pronom « I » n’est plus lu « the first ».

@@ -1,0 +1,6 @@
+• Le letture lunghe sono più stabili.
+• EPUB, Word, PDF e altri formati si leggono paragrafo per paragrafo, e i progressi vengono salvati correttamente.
+• OCR proprio, Amanuensis Ligero: legge foto e PDF scansionati direttamente sul dispositivo.
+• Esporta in Markdown, HTML e PDF.
+• Il tour di benvenuto parla all’istante.
+• In inglese, il pronome «I» non viene più letto «the first».

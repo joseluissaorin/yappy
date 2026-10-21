@@ -1,0 +1,6 @@
+• Långa uppläsningar är stabilare.
+• EPUB, Word, PDF och andra format läses stycke för stycke, och dina framsteg sparas ordentligt.
+• Egen OCR, Amanuensis Ligero: läser foton och skannade PDF-filer direkt på enheten.
+• Exportera till Markdown, HTML och PDF.
+• Välkomstturen talar direkt.
+• På engelska läses pronomenet ”I” inte längre som ”the first”.

@@ -1,0 +1,6 @@
+• Lang voorlezen is stabieler.
+• EPUB, Word, PDF en andere formaten worden per alinea voorgelezen, en je voortgang wordt goed bewaard.
+• Eigen OCR, Amanuensis Ligero: leest foto’s en gescande pdf’s op je apparaat zelf.
+• Exporteren naar Markdown, HTML en PDF.
+• De welkomstrondleiding spreekt meteen.
+• In het Engels wordt het voornaamwoord ‘I’ niet meer als ‘the first’ gelezen.

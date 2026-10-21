@@ -1,0 +1,6 @@
+• As leituras longas estão mais estáveis.
+• EPUB, Word, PDF e outros formatos são lidos parágrafo a parágrafo, e o progresso fica bem guardado.
+• OCR próprio, Amanuensis Ligero: lê fotografias e PDF digitalizados no próprio dispositivo.
+• Exportar para Markdown, HTML e PDF.
+• A visita de boas-vindas fala de imediato.
+• Em inglês, o pronome «I» já não é lido como «the first».
