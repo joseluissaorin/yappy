@@ -620,3 +620,12 @@ pub fn compras_usuario() -> Option<String> {
     unsafe { yappy_free_string(raw) };
     (!s.is_empty()).then_some(s)
 }
+
+// ─── La reseña: el aviso nativo de la App Store (Compras.swift) ─────────
+extern "C" {
+    fn yappy_pedir_resena();
+}
+
+pub fn pedir_resena() {
+    unsafe { yappy_pedir_resena() }
+}

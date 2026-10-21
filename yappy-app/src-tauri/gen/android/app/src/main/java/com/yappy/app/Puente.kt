@@ -22,6 +22,7 @@ import android.view.textclassifier.TextClassifier
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.google.android.play.core.review.ReviewManagerFactory
 import java.io.File
 import java.io.RandomAccessFile
 import java.nio.ByteBuffer
@@ -227,6 +228,30 @@ object Puente {
       false
     } catch (e: Exception) { false }
   }
+
+  // ─── La reseña: el aviso nativo de Google Play ──────────────────────────
+  /** Pide valoración con la In-App Review API (nunca un diálogo propio).
+   *  Rust ya decidió que es buen momento; Play decide si lo enseña (tiene
+   *  su propia cuota). En el emulador no se pide: capturas y ensayos. */
+  @JvmStatic
+  fun pedirResena() {
+    if (esEmulador()) return
+    principal.post {
+      val a = actividad ?: return@post
+      try {
+        val gestor = ReviewManagerFactory.create(a)
+        gestor.requestReviewFlow().addOnCompleteListener { pedida ->
+          val act = actividad ?: return@addOnCompleteListener
+          if (pedida.isSuccessful) gestor.launchReviewFlow(act, pedida.result)
+        }
+      } catch (e: Exception) {}
+    }
+  }
+
+  private fun esEmulador(): Boolean =
+    Build.FINGERPRINT.startsWith("generic") || Build.FINGERPRINT.contains("emulator") ||
+      Build.MODEL.contains("sdk_gphone") || Build.MODEL.contains("Emulator") ||
+      Build.PRODUCT.contains("sdk") || Build.HARDWARE.contains("ranchu") || Build.HARDWARE.contains("goldfish")
 
   // ─── Audio de entrada: cualquier formato → WAV PCM16 ────────────────────
   /** Las notas de voz de WhatsApp llegan en Ogg-Opus, que el decodificador

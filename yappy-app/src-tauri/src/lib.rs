@@ -53,6 +53,7 @@ mod cuota;
 mod paseo_voz;
 mod playback;
 mod puente;
+mod resena;
 mod settings;
 mod state;
 mod transcripts;
@@ -511,6 +512,11 @@ pub fn run() {
                 });
             }
 
+            // LA RESEÑA: el oído que cuenta lo escuchado y avisa cuando
+            // llega un buen momento para pedir valoración (solo móvil).
+            #[cfg(mobile)]
+            resena::arrancar(app.handle().clone(), &state);
+
             // LA IMPRENTA despierta: encargos huérfanos a pausado, y el
             // runner en marcha (procesa la cola en orden).
             imprenta::arrancar(app.handle().clone());
@@ -874,6 +880,7 @@ pub fn run() {
             commands::cuentos_listar_cmd,
             cola::cola_agregar_cuento_cmd,
             compras::compras_usuario_cmd,
+            resena::resena_pedir_cmd,
             compras::compras_estado_cmd,
             compras::compras_ofertas_cmd,
             compras::compras_comprar_cmd,

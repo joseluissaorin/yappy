@@ -81,6 +81,8 @@ dependencies {
     implementation("androidx.media:media:1.7.0")
     // Yappy Parlanchín: RevenueCat sobre Google Play Billing.
     implementation("com.revenuecat.purchases:purchases:10.22.1")
+    // La reseña: el aviso nativo de valoración de Google Play.
+    implementation("com.google.android.play:review:2.0.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.4")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")

@@ -14,6 +14,7 @@
   import Aguja from "$lib/Aguja.svelte";
   import Paywall from "$lib/Paywall.svelte";
   import { arrancarCompras, abrirPaywall, esErrorParlanchin } from "$lib/compras.svelte";
+  import { arrancarResena } from "$lib/resena";
   import { cargarPaseo, paseo } from "$lib/paseo.svelte";
   import { haptic } from "$lib/haptic";
   import { llegada } from "$lib/llegada.svelte";
@@ -77,6 +78,8 @@
     await arrancarEspejo();
     // La cuerda del loro: estado de compras, cuota y el paywall global.
     void arrancarCompras();
+    // La reseña: el aviso nativo de valoración, solo en un buen momento.
+    void arrancarResena();
     // EL PASEO DEL LORO: en la primera apertura, la cinta espera; el loro
     // se presenta primero. (También enciende las estadísticas anónimas.)
     const enPaseo = await cargarPaseo();

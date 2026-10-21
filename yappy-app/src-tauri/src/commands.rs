@@ -40,9 +40,15 @@ pub fn set_settings(
     state: State<'_, Arc<AppState>>,
     settings: Settings,
 ) -> Result<(), String> {
-    settings::update(&app, state.inner(), |s| *s = settings)
-        .map(|_| ())
-        .map_err(|e| e.to_string())
+    // La libreta de la reseña es del motor: una copia vieja de los ajustes
+    // que mande la interfaz no puede borrar cuándo se pidió.
+    settings::update(&app, state.inner(), |s| {
+        let resena = std::mem::take(&mut s.resena);
+        *s = settings;
+        s.resena = resena;
+    })
+    .map(|_| ())
+    .map_err(|e| e.to_string())
 }
 
 #[tauri::command]

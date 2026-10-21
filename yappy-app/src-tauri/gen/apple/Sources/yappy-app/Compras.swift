@@ -14,6 +14,8 @@
 
 import Foundation
 import RevenueCat
+import enum StoreKit.AppStore
+import UIKit
 
 public typealias YappyComprasResultado = @convention(c) (UInt64, UnsafePointer<CChar>?) -> Void
 public typealias YappyComprasPro = @convention(c) (Bool) -> Void
@@ -263,5 +265,18 @@ public func yappy_compras_gestionar() {
     guard configurado else { return }
     Task { @MainActor in
         try? await Purchases.shared.showManageSubscriptions()
+    }
+}
+
+// ─── La reseña: el aviso NATIVO de valoración de la App Store ───────────
+// Rust (resena.rs) ya ha decidido que es buen momento (documento entero o
+// 20 minutos en dos días, fuera del paseo, una vez por versión y 30 días
+// entre peticiones). Apple decide si lo enseña: como mucho tres al año.
+@_cdecl("yappy_pedir_resena")
+public func yappy_pedir_resena() {
+    DispatchQueue.main.async {
+        let escenas = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        guard let escena = escenas.first(where: { $0.activationState == .foregroundActive }) else { return }
+        AppStore.requestReview(in: escena)
     }
 }

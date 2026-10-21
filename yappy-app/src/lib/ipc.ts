@@ -835,3 +835,12 @@ export function onProCambio(cb: (pro: boolean) => void): Promise<UnlistenFn> {
 export function onCuotaAgotada(cb: (c: InfoCuota) => void): Promise<UnlistenFn> {
   return listen<InfoCuota>("cuota_agotada", (ev) => cb(ev.payload));
 }
+
+// ─── La reseña (resena.rs): el aviso nativo de valoración ───────────────
+export type MomentoResena = "documento" | "tiempo";
+export function onResenaMomento(cb: (m: MomentoResena) => void): Promise<UnlistenFn> {
+  return listen<MomentoResena>("resena_momento", (ev) => cb(ev.payload));
+}
+export function resenaPedir(motivo: MomentoResena): Promise<boolean> {
+  return invoke<boolean>("resena_pedir_cmd", { motivo });
+}

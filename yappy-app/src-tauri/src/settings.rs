@@ -152,6 +152,10 @@ pub struct Settings {
     #[serde(default)]
     pub paseo: Paseo,
 
+    // --- la reseña: cuándo se pidió valoración (ver resena.rs) ---
+    #[serde(default)]
+    pub resena: crate::resena::Resena,
+
     // --- main app appearance ---
     pub app_theme: AppTheme,
     pub karaoke_in_player: bool,
@@ -216,6 +220,7 @@ impl Default for Settings {
                 estadisticas: true,
                 ..Paseo::default()
             },
+            resena: crate::resena::Resena::default(),
             app_theme: AppTheme::Cream,
             karaoke_in_player: true,
             player_position_preset: PlayerPositionPreset::BottomRight,

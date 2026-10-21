@@ -620,6 +620,11 @@ pub fn portapapeles_tiene_enlace() -> bool {
 pub fn pip_iniciar(_path: &str, _x: f64, _y: f64, _w: f64, _h: f64) {}
 pub fn pip_parar() {}
 
+// ─── La reseña: la Play In-App Review API (Puente.kt) ───────────────────
+pub fn pedir_resena() {
+    llamar_v("pedirResena", "()V", &[], &[]);
+}
+
 // ─── Las compras (RevenueCat en Kotlin) ─────────────────────────────────
 
 pub fn compras_configurar(api_key: &str, entitlement: &str) {
