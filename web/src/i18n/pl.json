@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon i Intel, w notaryzowanym .dmg. Z trzema globalnymi skrótami, edytorem akapitowym, OCR-em zeskanowanych PDF-ów i eksportem audiobooków. Tu nie ma haczyka: wszystko jest otwarte.",
+        "texto": "Dla Maców z Apple Silicon (M1 lub nowszym), w postaci podpisanego i notaryzowanego pliku .dmg. Ze wszystkimi trzema skrótami globalnymi, edytorem akapitowym, OCR-em zeskanowanych plików PDF i eksportem audiobooków. Bez kruczków: wszystko jest otwarte.",
         "requisitos": "macOS 12 lub nowszy · model głosu zajmuje ok. 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Zobacz wydania na GitHubie"

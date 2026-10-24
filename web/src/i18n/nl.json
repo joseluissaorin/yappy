@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon en Intel, in een .dmg met Apple-notarisering. Met de drie globale sneltoetsen, de alinea-editor, OCR voor gescande PDF’s en export van audiobooks. Hier zitten geen touwtjes aan: alles is open.",
+        "texto": "Voor Mac met Apple Silicon (M1 of nieuwer), als ondertekend en genotariseerd .dmg-bestand. Met de drie globale sneltoetsen, de alinea-editor, OCR voor gescande PDF's en audioboekexport. Geen gedoe: alles zit erbij.",
         "requisitos": "macOS 12 of hoger · spraakmodel van ongeveer 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Releases op GitHub bekijken"

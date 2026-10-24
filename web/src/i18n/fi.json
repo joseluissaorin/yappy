@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon ja Intel, notaroitu .dmg. Mukana kolme järjestelmänlaajuista pikanäppäintä, kappalepohjainen editori, skannattujen PDF-tiedostojen OCR ja äänikirjojen vienti. Tässä ei ole piiloviiksiä: kaikki on auki.",
+        "texto": "Mac-koneille, joissa Apple Silicon (M1 tai uudempi), allekirjoitettuna ja notarisoituna .dmg-tiedostona. Kolme pikanäppäintä, kappalekohtainen editori, skannattujen PDF-tiedostojen tekstintunnistus ja äänikirjojen vienti. Ei mitään salattavaa: koodi on avointa.",
         "requisitos": "macOS 12 tai uudempi · äänimalli vie noin 398 Mt",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Katso julkaisut GitHubissa"

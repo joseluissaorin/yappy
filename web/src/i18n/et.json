@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon ja Intel, notariseeritud .dmg-failis. Kolm globaalset kiirklahvi, lõikupõhine redaktor, skannitud PDF-ide OCR ja audioraamatute eksport. Siin pole lisatingimusi: kõik on avatud.",
+        "texto": "Apple Silicon'iga Macile (M1 või uuem), allkirjastatud ja notariseeritud .dmg-na. Kolm üldklahvi, lõikude kaupa muutmine, skannitud PDF-ide OCR ja audioraamatute eksport. Piiranguid pole: kõik on avatud.",
         "requisitos": "macOS 12 või uuem · häälemudel võtab umbes 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Vaata väljalaskesid GitHubis"

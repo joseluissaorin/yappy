@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon és Intel, notarizált .dmg-ben. Benne a három globális gyorsbillentyű, a bekezdésenkénti szerkesztő, a szkennelt PDF-ek OCR-je és a hangoskönyv-exportálás. Itt nincs madzag: minden nyitva van.",
+        "texto": "Apple Silicon (M1 vagy újabb) Mac-ekhez, aláírt és hitelesített .dmg formátumban. A három globális billentyűparanccsal, bekezdésenkénti szerkesztővel, a beolvasott PDF-ek szövegfelismerésével és hangoskönyv-exportálással. Nincs itt semmi trükk: minden nyílt.",
         "requisitos": "macOS 12-től · a hangmodell nagyjából 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Kiadások megtekintése a GitHubon"

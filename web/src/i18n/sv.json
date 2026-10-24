@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon och Intel, i en notariserad .dmg. Med de tre globala genvägarna, styckevis redigering, OCR av inskannade PDF:er och export av ljudböcker. Inga dolda trådar här: allt är öppet.",
+        "texto": "För Mac med Apple Silicon (M1 eller senare), som en signerad och notariserad .dmg. Med alla tre globala kortkommandon, styckevis redigering, OCR för inskannade PDF-filer och export av ljudböcker. Inga begränsningar: allt är öppet.",
         "requisitos": "macOS 12 eller senare · cirka 398 MB röstmodell",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Se versionerna på GitHub"

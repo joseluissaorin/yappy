@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon and Intel, in a notarised .dmg. With the three global shortcuts, the paragraph editor, local OCR for scanned PDFs and audiobook export. No wind-up key here: everything is unlocked.",
+        "texto": "For Macs with Apple Silicon (M1 or later), in a signed and notarised .dmg. Includes the three global shortcuts, the paragraph editor, OCR for scanned PDFs, and audiobook export. No strings attached: it's all open.",
         "requisitos": "macOS 12 or later · about 398 MB of voice model",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "See the releases on GitHub"

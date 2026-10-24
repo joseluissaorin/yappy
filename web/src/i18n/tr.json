@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon ve Intel; notarize edilmiş bir .dmg olarak. Üç global kısayol, paragraf editörü, taranmış PDF'lerde OCR ve sesli kitap dışa aktarma dahil. Burada gizli kapak yok: her şey açık.",
+        "texto": "Apple Silicon'lu (M1 veya sonrası) Mac için, imzalanmış ve noter onaylı .dmg dosyası. Üç genel kısayol, paragraf düzenleyici, taranmış PDF'lerin OCR'ı ve sesli kitap dışa aktarımı dahil. Gizli şart yok: her şey açık.",
         "requisitos": "macOS 12 ve üzeri · yaklaşık 398 MB ses modeli",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "GitHub'daki sürümleri gör"

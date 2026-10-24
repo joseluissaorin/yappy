@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon și Intel, într-un .dmg notarizat. Cu cele trei comenzi rapide globale, editorul pe paragrafe, OCR-ul PDF-urilor scanate și exportul de audiobookuri. Aici nu te leagă nimic: totul e deschis.",
+        "texto": "Pentru Mac cu Apple Silicon (M1 sau mai recent), într-un .dmg semnat și notarizat. Cu toate cele trei scurtături globale, editorul pe paragrafe, OCR pentru PDF-uri scanate și export de audiobook-uri. Fără restricții: totul e deschis.",
         "requisitos": "macOS 12 sau mai recent · un model de voce de circa 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Vezi versiunile pe GitHub"

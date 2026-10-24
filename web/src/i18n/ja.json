@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple SiliconとIntelの両方に対応し、公証済みの.dmgで配布しています。3つのグローバルショートカット、段落ごとのエディタ、スキャンしたPDFのOCR、オーディオブックの書き出しを備えています。裏の条件はありません。すべてオープンです。",
+        "texto": "Apple Silicon（M1以降）搭載Macに対応。署名・公証済みの.dmgファイルです。3つのグローバルショートカット、段落ごとの編集、スキャンしたPDFのOCR、オーディオブックの書き出しに対応。制約なし、すべてオープンです。",
         "requisitos": "macOS 12以降 · 音声モデルは約398MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "GitHubでリリース一覧を見る"

@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon i Intel, v notarizovaném .dmg. Se všemi třemi globálními zkratkami, editorem po odstavcích, OCR naskenovaných PDF a exportem audioknih. Tady není žádný háček: všechno je otevřené.",
+        "texto": "Pro Mac s Apple Silicon (M1 nebo novější), jako podepsaný a notarizovaný .dmg. Se třemi globálními zkratkami, editorem po odstavcích, OCR naskenovaných PDF a exportem audioknih. Žádné podmínky: všechno je otevřené.",
         "requisitos": "macOS 12 a novější · hlasový model zabere zhruba 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Zobrazit vydání na GitHubu"

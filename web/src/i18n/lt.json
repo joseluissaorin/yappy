@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon ir Intel, notaruotas .dmg. Su trimis globaliais sparčiaisiais klavišais, redagavimu pastraipomis, nuskaitytų PDF OCR ir audioknygų eksportu. Čia jokių sąlygų: viskas atvira.",
+        "texto": "Mac kompiuteriams su Apple Silicon (M1 ar naujesniais), .dmg formatu, pasirašytas ir notarizuotas. Su trimis visuotiniais sparčiaisiais klavišais, pastraipų redaktoriumi, skenuotų PDF atpažinimu ir garso knygų eksportavimu. Jokių paslėptų dalykų – viskas atvira.",
         "requisitos": "macOS 12 arba naujesnė · balso modelis užima apie 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Peržiūrėti versijas GitHub"

@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon i Intel, u obliku notarizirane .dmg datoteke. Ima sva tri globalna prečaca, uređivač po odlomcima, OCR skeniranih PDF-ova i izvoz audioknjiga. Ovdje nema skrivenih obveza: sve je otvoreno.",
+        "texto": "Za Mac s Apple Silicon (M1 ili noviji), u potpisanom i ovjerenom .dmg formatu. S tri globalne tipkovničke prečice, uređivačem po odlomcima, OCR-om za skenirane PDF-ove i izvozom audiokniga. Ovdje nema škripca: sve je otvoreno.",
         "requisitos": "macOS 12 ili noviji · model glasa od oko 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Pogledaj verzije na GitHubu"

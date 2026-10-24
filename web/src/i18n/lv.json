@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon un Intel, notarizēts .dmg fails. Ar trim globālajiem īsceļiem, rindkopu redaktoru, skenēto PDF OCR un audiogrāmatu eksportu. Šeit nav pavadassīles: viss ir atvērts.",
+        "texto": "Mac datoriem ar Apple Silicon (M1 vai jaunāku), .dmg formātā, parakstīts un notarizēts. Ar visām trim globālajām īsinājumtaustiņu kombinācijām, rediģēšanu pa rindkopām, OCR skenētiem PDF failiem un audiogrāmatu eksportu. Nekādu slēpto maksu — viss ir atvērts.",
         "requisitos": "macOS 12 vai jaunāka · balss modelis aizņem apmēram 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Skatīt versijas GitHub"

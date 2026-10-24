@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon과 Intel 모두 지원하며, 공증을 받은 .dmg로 배포됩니다. 세 가지 전역 단축키, 문단 단위 편집기, 스캔한 PDF의 OCR, 오디오북 내보내기가 있습니다. 숨은 조건 같은 건 없습니다. 전부 열려 있습니다.",
+        "texto": "Apple Silicon(M1 이상) Mac용, 서명되고 공증된 .dmg 파일. 전역 단축키 3개, 문단별 편집기, 스캔된 PDF OCR, 오디오북 내보내기 포함. 제약 없음. 전부 오픈소스.",
         "requisitos": "macOS 12 이상 · 음성 모델 약 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "GitHub에서 릴리스 보기"

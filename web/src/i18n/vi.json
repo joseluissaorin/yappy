@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Chạy trên Apple Silicon lẫn Intel, dưới dạng file .dmg đã được xác thực. Có đủ ba phím tắt toàn cục, trình soạn thảo theo đoạn, OCR cho file PDF scan và xuất sách nói. Ở đây không có dây ràng buộc: tất cả đều mở.",
+        "texto": "Cho Mac với Apple Silicon (M1 trở lên), trong file .dmg đã ký và công chứng. Có đủ ba phím tắt toàn cục, trình soạn theo đoạn văn, OCR cho PDF quét và xuất audiobook. Không có rào cản gì: mọi thứ đều mở.",
         "requisitos": "macOS 12 trở lên · mô hình giọng nói khoảng 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Xem các bản phát hành trên GitHub"

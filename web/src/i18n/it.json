@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon e Intel, in un .dmg notarizzato. Con le tre scorciatoie globali, l'editor per paragrafi, l'OCR dei PDF scansionati e l'esportazione degli audiolibri. Qui nessun vincolo: è tutto aperto.",
+        "texto": "Per Mac con Apple Silicon (M1 o successivi), in un .dmg firmato e autenticato. Con le tre scorciatoie globali, l'editor per paragrafi, l'OCR per i PDF scansionati e l'esportazione di audiolibri. Niente trucchi: è tutto aperto.",
         "requisitos": "macOS 12 o superiore · circa 398 MB di modello vocale",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Vedi le release su GitHub"

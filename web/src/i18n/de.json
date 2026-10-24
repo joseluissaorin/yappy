@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon und Intel, als notarisierte .dmg. Mit den drei globalen Tastenkürzeln, dem Absatz-Editor, der OCR für eingescannte PDFs und dem Export von Hörbüchern. Hier gibt es keinen Haken: Alles liegt offen.",
+        "texto": "Für Mac mit Apple Silicon (M1 oder neuer), als signiertes und notarisiertes .dmg. Mit den drei globalen Tastaturkürzeln, dem absatzweisen Editor, der OCR-Funktion für gescannte PDFs und dem Hörbuch-Export. Keine Tricks: alles offen.",
         "requisitos": "macOS 12 oder neuer · etwa 398 MB für das Sprachmodell",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Versionen auf GitHub ansehen"

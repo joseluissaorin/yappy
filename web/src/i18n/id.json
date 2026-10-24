@@ -367,7 +367,7 @@
       },
       {
         "nombre": "macOS",
-        "texto": "Apple Silicon dan Intel, dalam satu berkas .dmg yang dinotarisasi. Lengkap dengan tiga pintasan global, editor per paragraf, OCR untuk PDF hasil pindai dan ekspor buku audio. Di sini tidak ada syarat tersembunyi: semuanya terbuka.",
+        "texto": "Untuk Mac dengan Apple Silicon (M1 atau lebih baru), dalam .dmg yang ditandatangani dan dinotarisasi. Dengan tiga pintasan global, editor per paragraf, OCR untuk PDF hasil scan, dan ekspor audiobook. Tidak ada batasan: semuanya terbuka.",
         "requisitos": "macOS 12 atau lebih baru · model suara sekitar 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Lihat rilis di GitHub"
