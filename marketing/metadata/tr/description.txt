@@ -1,7 +1,7 @@
 Yappy ile bir makale, PDF, EPUB, Word dosyası ya da video paylaş; bir papağan onu sana doğal bir sesle okusun. Yemek yaparken, yürürken ya da gözlerin kapalıyken. Her şey iPhone'unun içinde olur: hiçbir şey dışarı çıkmaz, asla.
 
 BULUT YOK, HESAP YOK, KARAKTER BAŞINA ÜCRET YOK
-Ses, cihazında yaklaşık 66 milyon parametreli açık bir modelle üretilir. Kayıt olmak ya da e-posta vermek gerekmez. Bağlantısız çalışır, sonsuza dek.
+Ses, cihazında yaklaşık 99 milyon parametreli açık bir modelle üretilir. Kayıt olmak ya da e-posta vermek gerekmez. Bağlantısız çalışır, sonsuza dek.
 
 31 DİL VE ON SES, HEPSİ ÇOK DİLLİ
 Türkçe, İngilizce, İspanyolca, Fransızca, Almanca, İtalyanca, Portekizce, Felemenkçe, Lehçe, Rumence, İsveççe, Danca, Fince, Estonca, Litvanca, Letonca, Hırvatça, Slovence, Slovakça, Çekçe, Macarca, Yunanca, Bulgarca, Ukraynaca, Rusça, Arapça, Hintçe, Endonezce, Vietnamca, Korece ve Japonca. Başka bir dilden alıntı içeren metinler paragraf paragraf kendi kendine dil değiştirir.

@@ -6,11 +6,11 @@
 
 **Any text, read aloud. Entirely on your device.**
 
-[Website (es/en)](https://yappy.joseluissaorin.com) · [Download](https://github.com/joseluissaorin/yappy/releases/latest) · [Build from source](#build-from-source)
+[Website](https://yappy.joseluissaorin.com/en/) · [App Store](https://apps.apple.com/app/id6773110015) · [Google Play](https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android) · [Desktop](https://github.com/joseluissaorin/yappy/releases/latest) · [Build from source](#build-from-source)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![ci](https://github.com/joseluissaorin/yappy/actions/workflows/ci.yml/badge.svg)](https://github.com/joseluissaorin/yappy/actions/workflows/ci.yml)
-[![Platforms](https://img.shields.io/badge/platforms-macOS%20·%20Windows%20·%20Linux%20·%20iOS-e0502a)](https://github.com/joseluissaorin/yappy/releases)
+[![Platforms](https://img.shields.io/badge/platforms-macOS%20·%20Windows%20·%20Linux%20·%20iOS%20·%20Android-e0502a)](https://github.com/joseluissaorin/yappy/releases)
 
 </div>
 
@@ -21,9 +21,18 @@ to start cooking. You share it with Yappy and it starts reading to you while
 you cook. Want a book for your walks? Leave it rendering overnight and
 listen in the morning.
 
-Everything happens on your device: the voice model (Supertonic 3, ~66M
+Everything happens on your device: the voice model (Supertonic 3, ~99M
 params, 31 languages), the article extraction, the transcription. No cloud,
-no accounts, no telemetry, no per-character fee. MIT.
+no accounts, no per-character fee. Your texts never leave the device. The
+app is MIT; the voice model has its own license (OpenRAIL-M, see
+[Licenses](#licenses)).
+
+The one thing that does phone home, stated plainly: the mobile apps send
+anonymous usage events (event name from a closed list, a random install id,
+language and app version) to a Cloudflare Worker I run myself. No names,
+emails, texts, titles, links or advertising ids. It is on by default and can
+be switched off in the settings (*la trastienda*). The desktop app sends
+nothing.
 
 ## The pieces
 
@@ -42,7 +51,7 @@ their own breathing (real pauses, slightly slower titles) both live and in
 exports. Try it in your browser: the website runs this same Rust code
 compiled to WebAssembly.
 
-**The phone (iOS).** A queue-first app: share an article, a YouTube video, a
+**The phone (iOS and Android).** A queue-first app: share an article, a YouTube video, a
 PDF, an EPUB, a Word file or a voice note from anywhere; it lands in the
 queue, gets prepared on-device, and starts reading on its own. Lock-screen
 controls, background audio while it keeps synthesizing ahead, a real library
@@ -65,12 +74,18 @@ phone's library by itself.
 
 Grab the latest [release](https://github.com/joseluissaorin/yappy/releases/latest):
 
-- **macOS**: `.dmg` (Apple Silicon notarized, Intel)
+- **iPhone and iPad**: [App Store](https://apps.apple.com/app/id6773110015).
+  Free with three documents on the shelf at a time; *Yappy Parlanchín*
+  (monthly, yearly or lifetime) lifts the limit and unlocks audiobooks and
+  the bridge.
+- **Android**: [Google Play](https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android). Free, everything included.
+- **macOS**: `.dmg` (Apple Silicon)
 - **Windows**: `.exe` / `.msi` (x64)
-- **Linux**: `.AppImage` / `.deb` (x64)
-- **iPhone**: TestFlight soon
+- **Linux**: `.AppImage` / `.deb` / `.rpm` (x64)
 
-First launch downloads the voice model (~380 MB) once. After that Yappy
+The desktop apps are free, everything included.
+
+First launch downloads the voice model once (~400 MB on desktop, ~200 MB on the phone). After that Yappy
 works offline forever.
 
 ## Build from source
@@ -107,4 +122,11 @@ web/                    yappy.joseluissaorin.com (static + WASM demo)
 - [Handy](https://github.com/cjpais/Handy): the original inspiration for
   "one hotkey, fully local".
 
-Made by [José Luis Saorín](https://joseluissaorin.com) in Tenerife. MIT.
+## Licenses
+
+Yappy's code is [MIT](LICENSE). The models it runs are not Yappy's and keep
+their own licenses: Supertonic 3 is **OpenRAIL-M** and Parakeet is
+**CC-BY-4.0**. If you publish a podcast or an audiobook made with Yappy,
+check the voice model's license: that part does not depend on Yappy.
+
+Made by [José Luis Saorín](https://joseluissaorin.com) in Tenerife.

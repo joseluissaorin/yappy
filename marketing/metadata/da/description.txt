@@ -1,7 +1,7 @@
 Del en artikel, en PDF, en EPUB, en Word-fil eller en video med Yappy, og en papegøje læser den højt for dig med en naturlig stemme. Mens du laver mad, mens du går tur eller med lukkede øjne. Alt sker inde i din iPhone: intet forlader den, nogensinde.
 
 INGEN CLOUD, INGEN KONTI, INTET GEBYR PR. TEGN
-Stemmen syntetiseres på din enhed af en åben model med omkring 66 millioner parametre. Ingen tilmelding, ingen e-mail. Det virker offline, for altid.
+Stemmen syntetiseres på din enhed af en åben model med omkring 99 millioner parametre. Ingen tilmelding, ingen e-mail. Det virker offline, for altid.
 
 31 SPROG OG TI STEMMER, ALLE FLERSPROGEDE
 Dansk, engelsk, spansk, fransk, tysk, italiensk, portugisisk, nederlandsk, polsk, rumænsk, svensk, finsk, estisk, litauisk, lettisk, kroatisk, slovensk, slovakisk, tjekkisk, ungarsk, græsk, bulgarsk, ukrainsk, russisk, tyrkisk, arabisk, hindi, indonesisk, vietnamesisk, koreansk og japansk. Tekster med citater på et andet sprog skifter sprog af sig selv, afsnit for afsnit.

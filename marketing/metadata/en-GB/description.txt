@@ -1,7 +1,7 @@
 Share an article, a PDF, an EPUB, a Word file or a video with Yappy, and a parrot reads it to you in a natural voice. While you cook, while you walk, or with your eyes closed. Everything happens inside your iPhone: nothing ever leaves it.
 
 NO CLOUD, NO ACCOUNTS, NO PER-CHARACTER FEES
-The voice is synthesised on your device by an open model of about 66 million parameters. No sign-up, no email. It works offline, forever.
+The voice is synthesised on your device by an open model of about 99 million parameters. No sign-up, no email. It works offline, forever.
 
 31 LANGUAGES AND TEN VOICES, ALL OF THEM POLYGLOT
 English, Spanish, French, German, Italian, Portuguese, Dutch, Polish, Romanian, Swedish, Danish, Finnish, Estonian, Lithuanian, Latvian, Croatian, Slovenian, Slovak, Czech, Hungarian, Greek, Bulgarian, Ukrainian, Russian, Turkish, Arabic, Hindi, Indonesian, Vietnamese, Korean and Japanese. Texts with quotes in another language switch on their own, paragraph by paragraph.
