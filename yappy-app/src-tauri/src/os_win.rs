@@ -24,9 +24,6 @@
 
 use std::sync::Arc;
 
-#[cfg(target_os = "windows")]
-use crate::state::AppState;
-
 // ─── Cross-platform stubs (compiled on every target) ───────────────────
 
 #[cfg(not(target_os = "windows"))]
@@ -99,8 +96,21 @@ mod imp {
     /// Stored SMTC instance — created on first metadata push, kept alive for
     /// the lifetime of the process so handler subscriptions stay valid.
     static SMTC: OnceLock<Mutex<Option<SystemMediaTransportControls>>> = OnceLock::new();
-    static TASKBAR: OnceLock<Mutex<Option<ITaskbarList3>>> = OnceLock::new();
-    static MAIN_HWND: OnceLock<Mutex<Option<HWND>>> = OnceLock::new();
+    static TASKBAR: OnceLock<Mutex<Option<Hilo<ITaskbarList3>>>> = OnceLock::new();
+    /// HWND crudo como `isize`: desde windows 0.58 `HWND` envuelve un
+    /// `*mut c_void` y no es `Send`, así que no puede vivir en un static.
+    static MAIN_HWND: OnceLock<Mutex<Option<isize>>> = OnceLock::new();
+
+    /// Envoltorio para guardar objetos COM en statics. Desde windows 0.58
+    /// las interfaces COM no son `Send`; aquí solo se usan tras el `Mutex`,
+    /// y tanto ITaskbarList3 como IUIAutomation son seguras entre hilos.
+    struct Hilo<T>(T);
+    unsafe impl<T> Send for Hilo<T> {}
+
+    fn main_hwnd() -> Option<HWND> {
+        let g = MAIN_HWND.get()?.lock().ok()?;
+        (*g).map(|h| HWND(h as _))
+    }
 
     fn ensure_com_init() {
         // Idempotent — Tauri also calls CoInitializeEx; calling it again on
@@ -119,8 +129,7 @@ mod imp {
             return Some(s.clone());
         }
         ensure_com_init();
-        let hwnd_guard = MAIN_HWND.get()?.lock().ok()?;
-        let hwnd = (*hwnd_guard)?;
+        let hwnd = main_hwnd()?;
         unsafe {
             let interop: ISystemMediaTransportControlsInterop = windows::core::factory::<
                 SystemMediaTransportControls,
@@ -192,7 +201,7 @@ mod imp {
         // Stash the HWND so smtc_get_or_create can wire it on first call.
         let cell = MAIN_HWND.get_or_init(|| Mutex::new(None));
         if let Ok(mut g) = cell.lock() {
-            *g = Some(HWND(hwnd_raw as _));
+            *g = Some(hwnd_raw);
         }
         let Some(smtc) = smtc_get_or_create() else {
             return;
@@ -230,14 +239,14 @@ mod imp {
         let cell = TASKBAR.get_or_init(|| Mutex::new(None));
         let mut guard = cell.lock().ok()?;
         if let Some(t) = guard.as_ref() {
-            return Some(t.clone());
+            return Some(t.0.clone());
         }
         ensure_com_init();
         unsafe {
             let tl: ITaskbarList3 =
                 CoCreateInstance(&TaskbarList, None, CLSCTX_INPROC_SERVER).ok()?;
             tl.HrInit().ok()?;
-            *guard = Some(tl.clone());
+            *guard = Some(Hilo(tl.clone()));
             Some(tl)
         }
     }
@@ -246,9 +255,7 @@ mod imp {
         let Some(tb) = taskbar_get_or_create() else {
             return;
         };
-        let hwnd_guard = MAIN_HWND.get().and_then(|c| c.lock().ok());
-        let Some(g) = hwnd_guard else { return };
-        let Some(hwnd) = *g else { return };
+        let Some(hwnd) = main_hwnd() else { return };
         unsafe {
             let _ = tb.SetProgressState(hwnd, TBPF_NORMAL);
             let _ = tb.SetProgressValue(hwnd, value, total);
@@ -259,9 +266,7 @@ mod imp {
         let Some(tb) = taskbar_get_or_create() else {
             return;
         };
-        let hwnd_guard = MAIN_HWND.get().and_then(|c| c.lock().ok());
-        let Some(g) = hwnd_guard else { return };
-        let Some(hwnd) = *g else { return };
+        let Some(hwnd) = main_hwnd() else { return };
         unsafe {
             let _ = tb.SetProgressState(hwnd, TBPF_NOPROGRESS);
         }
@@ -290,7 +295,7 @@ mod imp {
             }
             let handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid).ok()?;
             let mut buf = [0u16; MAX_PATH as usize];
-            let len = GetModuleFileNameExW(Some(handle), None, &mut buf);
+            let len = GetModuleFileNameExW(handle, None, &mut buf);
             let _ = CloseHandle(handle);
             if len == 0 {
                 return None;
@@ -331,7 +336,7 @@ mod imp {
     // console window AND adds ~100-300ms latency. Native Win32 = zero
     // flash, sub-ms call cost.
 
-    use windows::Win32::Foundation::{HANDLE, HWND};
+    use windows::Win32::Foundation::HANDLE;
     use windows::Win32::System::DataExchange::{
         CloseClipboard, EmptyClipboard, GetClipboardData, GetClipboardSequenceNumber,
         OpenClipboard, SetClipboardData,
@@ -403,7 +408,7 @@ mod imp {
             }
             let _ = EmptyClipboard();
             // SetClipboardData takes ownership of hmem on success.
-            let ok = SetClipboardData(CF_UNICODETEXT.0 as u32, Some(HANDLE(hmem.0 as _))).is_ok();
+            let ok = SetClipboardData(CF_UNICODETEXT.0 as u32, HANDLE(hmem.0 as _)).is_ok();
             let _ = CloseClipboard();
             ok
         }
@@ -485,7 +490,7 @@ mod imp {
                 }
                 std::ptr::copy_nonoverlapping(bytes.as_ptr(), dst as *mut u8, size);
                 let _ = GlobalUnlock(hmem);
-                let _ = SetClipboardData(*fmt, Some(HANDLE(hmem.0 as _)));
+                let _ = SetClipboardData(*fmt, HANDLE(hmem.0 as _));
             }
             let _ = CloseClipboard();
         }
@@ -578,7 +583,7 @@ mod imp {
             if screen_dc.is_invalid() {
                 anyhow::bail!("capture: GetDC(NULL) failed");
             }
-            let mem_dc = CreateCompatibleDC(Some(screen_dc));
+            let mem_dc = CreateCompatibleDC(screen_dc);
             if mem_dc.is_invalid() {
                 ReleaseDC(None, screen_dc);
                 anyhow::bail!("capture: CreateCompatibleDC failed");
@@ -589,11 +594,11 @@ mod imp {
                 ReleaseDC(None, screen_dc);
                 anyhow::bail!("capture: CreateCompatibleBitmap failed");
             }
-            let old = SelectObject(mem_dc, hbm.into());
-            let blt_ok = BitBlt(mem_dc, 0, 0, w, h, Some(screen_dc), x, y, SRCCOPY).is_ok();
+            let old = SelectObject(mem_dc, hbm);
+            let blt_ok = BitBlt(mem_dc, 0, 0, w, h, screen_dc, x, y, SRCCOPY).is_ok();
             if !blt_ok {
                 let _ = SelectObject(mem_dc, old);
-                let _ = DeleteObject(hbm.into());
+                let _ = DeleteObject(hbm);
                 let _ = DeleteDC(mem_dc);
                 ReleaseDC(None, screen_dc);
                 anyhow::bail!("capture: BitBlt failed");
@@ -622,7 +627,7 @@ mod imp {
             // 4) GDI cleanup before we get to the PNG encode (let go of all
             //    the kernel handles ASAP).
             let _ = SelectObject(mem_dc, old);
-            let _ = DeleteObject(hbm.into());
+            let _ = DeleteObject(hbm);
             let _ = DeleteDC(mem_dc);
             ReleaseDC(None, screen_dc);
 
@@ -654,19 +659,19 @@ mod imp {
     // Ctrl+Alt+R can fire dozens of times in a session and that
     // adds up. The COM object is thread-safe per Microsoft's docs as
     // long as we use it from the same MTA apartment.
-    static UIA_CACHE: OnceLock<Mutex<Option<IUIAutomation>>> = OnceLock::new();
+    static UIA_CACHE: OnceLock<Mutex<Option<Hilo<IUIAutomation>>>> = OnceLock::new();
 
     fn get_uia() -> Option<IUIAutomation> {
         let cell = UIA_CACHE.get_or_init(|| Mutex::new(None));
         let mut guard = cell.lock().ok()?;
         if let Some(u) = guard.as_ref() {
-            return Some(u.clone());
+            return Some(u.0.clone());
         }
         ensure_com_init();
         unsafe {
             let u: IUIAutomation =
                 CoCreateInstance(&CUIAutomation, None, CLSCTX_INPROC_SERVER).ok()?;
-            *guard = Some(u.clone());
+            *guard = Some(Hilo(u.clone()));
             Some(u)
         }
     }
