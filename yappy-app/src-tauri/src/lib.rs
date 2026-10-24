@@ -76,7 +76,7 @@ mod os_win;
 
 use std::sync::Arc;
 
-#[cfg(mobile)]
+#[cfg(any(mobile, target_os = "windows"))]
 use tauri::Emitter;
 use tauri::Manager;
 
@@ -123,7 +123,7 @@ pub fn run() {
     // Tauri webview render crisp on Hi-DPI screens.
     #[cfg(target_os = "windows")]
     unsafe {
-        use windows::Win32::UI::HiDpi::{
+        use ::windows::Win32::UI::HiDpi::{
             SetProcessDpiAwarenessContext, DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2,
         };
         let _ = SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
