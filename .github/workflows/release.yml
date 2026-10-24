@@ -112,6 +112,9 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # audiopus_sys vendors an Opus CMakeLists with cmake_minimum_required
+          # < 3.5, which CMake 4 (now on the hosted runners) refuses outright.
+          CMAKE_POLICY_VERSION_MINIMUM: "3.5"
         with:
           projectPath: yappy-app
           args: --target ${{ matrix.target }}
