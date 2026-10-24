@@ -2,10 +2,16 @@
 // una cifra, un precio ni un enlace. Si algo cambia en el producto, cambia
 // aquí y cambia en los 31 idiomas a la vez.
 
+// La versión publicada se lee de la propia app (la misma que firma Tauri),
+// para que la web no se quede diciendo una versión vieja.
+import tauri from "../../../yappy-app/src-tauri/tauri.conf.json";
+export const VERSION: string = tauri.version;
+
 export const ENLACES = {
   appStore: "https://apps.apple.com/app/id6773110015",
   appStoreId: "6773110015",
-  googlePlay: null as string | null, // aún no publicada: no inventar enlace
+  // Publicada el 21-10-2026 (1.0.1). En Android no hay cuerda: todo abierto.
+  googlePlay: "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
   github: "https://github.com/joseluissaorin/yappy",
   releases: "https://github.com/joseluissaorin/yappy/releases/latest",
   novedades: "https://github.com/joseluissaorin/yappy/releases",
@@ -113,6 +119,6 @@ export const ATAJOS = [
 ] as const;
 
 export const FECHAS = {
-  privacidad: "2026-09-09",
+  privacidad: "2026-10-24",
   lanzamiento: "2026-09-16",
 } as const;

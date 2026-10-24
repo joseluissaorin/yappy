@@ -14,3 +14,7 @@
 /en/pdf                 /en/convert/pdf-to-audio/ 301
 /descarga               /descargas/              301
 /precio                 /precios/                301
+
+# El slug húngaro llevaba tilde (pdf-hanggá) hasta el 24-10-2026; ahora es ASCII.
+/hu/konvertalas/pdf-hangg%C3%A1/  /hu/konvertalas/pdf-hangga/  301
+/hu/konvertalas/pdf-hangg%C3%A1   /hu/konvertalas/pdf-hangga/  301

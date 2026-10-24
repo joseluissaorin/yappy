@@ -37,6 +37,7 @@
     "descargar": "Download",
     "descargar_gratis": "Download free",
     "en_app_store": "Download on the App Store",
+    "en_google_play": "Download on Google Play",
     "escuchar_muestra": "Hear a sample",
     "probar": "Try it now",
     "leer_mas": "Keep reading",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "On Android",
-        "texto": "The same gesture: share a link, a text or a document and it lands in the same queue, with article extraction, karaoke and voice, all inside the phone itself. The Android build is the youngest of the family and still lacks three things the iPhone has: lock-screen controls, videos and the .m4b audiobook player. And there is something more important: <strong>it is not published yet</strong>. The Google developer account is still being verified, and we are not giving a date, because we do not have one. When it ships it will be announced here and in the repository. One thing is certain, though: on Android there will be no wind-up key. Everything is unlocked."
+        "texto": "The same gesture as on the iPhone: you share a link, text or document and it lands in the queue, with article extraction, karaoke and voice, all on the phone itself. Keeps playing with the screen locked, with controls in the notification, and the audiobook press works in the background while you do something else. It's on <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> and there it's <strong>completely free</strong>: there's no Yappy Parlanchín or anything to pay, so the perch has no limit and the audiobook press is open. The only things it doesn't have are the Apple-specific bits: Siri and the Shortcuts app."
       }
     ],
     "atajo": "Shortcut",
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Download Yappy: iPhone, iPad, Mac, Windows and Linux",
-    "description": "Yappy is free and open source. On the App Store for iPhone and iPad; the desktop builds live on GitHub or compile from source. Requirements and the size of the voice model.",
+    "title": "Download Yappy: iPhone, iPad, Android, Mac, Windows and Linux",
+    "description": "Yappy is free and open source. On the App Store for iPhone and iPad and on Google Play for Android; the desktop version downloads from GitHub or compiles from source. Requirements and voice model size.",
     "h1": "Free, open and yours.",
     "entradilla": "No sign-up, no email, no trial that expires. You download it and that is that.",
     "modelo_nota": "The first time, Yappy downloads the voice model ({peso}). On the iPhone it arrives with the install; on the computer, the first time you open the app. After that you never need a connection again.",
-    "android_titulo": "Android",
-    "android_texto": "It is built and working, but not published yet: the Google developer account is still being verified. When it ships, it will be announced here and in the repository.",
+    "android_titulo": "On Android, no strings attached",
+    "android_texto": "On Android there's no Yappy Parlanchín or anything to pay: the perch has no limit and the audiobook press is open, just like on the desktop. Subscriptions only exist on the iPhone and iPad.",
     "escritorio_aviso": "Desktop builds are published on GitHub. If the version you find there is older than the iPhone one, the latest has not been uploaded yet: the source is up to date and builds with <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS or iPadOS 17 and up · the voice model takes about 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Download on the App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "On Google Play, free and no account needed. The same gesture as on the iPhone: you share a link, text or document and it plays, with karaoke, the audiobook press and controls on the lock screen.",
+        "requisitos": "Android 7.0 or later · about 200 MB for the voice model, which downloads the first time you open the app",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Download on Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage and .deb for x64. Global shortcuts depend on your desktop environment; if yours are already taken, swap them in Preferences.",
+        "texto": "AppImage, .deb and .rpm for x64. Global shortcuts depend on your desktop environment; in Preferences you can change them if yours are already taken.",
         "requisitos": "x64 · about 398 MB of voice model",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "See the releases on GitHub"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "No free trial, on purpose: the three-document perch <em>is</em> the trial, and it neither expires nor starts charging later. Prices shown are the Spanish ones; your store will show yours.",
     "cuerda_donde": "You wind it up inside the app, in the back room.",
-    "solo_movil": "The paywall lives on mobile: on iPhone, on iPad, and on Android. On the computer, everything is open.",
+    "solo_movil": "The subscription only exists on the iPhone and iPad. On Android and on the desktop everything is open.",
     "comparacion_titulo": "What the others charge.",
     "comparacion_entradilla": "Cloud voice apps pay for servers every time you press play, so they charge you by the hour or by the character. Yappy synthesises on your device: its cost per listen is zero, which is why it can leave listening free.",
     "comparacion_nota": "Public prices checked in September 2026. They change often: check each site before deciding.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Why is the desktop free?",
-        "a": "Because the paywall was built on mobile, and not on the computer. There, the printing press, the bottomless hanger, and the bridge come free. It's not a launch offer: the desktop is the machine that does the heavy lifting, and charging you to let your own computer work overnight made no sense."
+        "a": "Because the subscription is only set up on the iPhone and iPad, not on the desktop. There the press, the unlimited perch and the bridge are open. It's not a launch offer: the desktop is the machine that does the heavy lifting, and charging you to let your own computer work at night made no sense."
       }
     ],
     "una_a_una": "one by one, with their numbers"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Is it really free?",
-            "a": "Yes. Yappy is open source under the MIT licence. Being able to hear what you read is an accessibility matter, and accessibility tools should not ask for a credit card. On the desktop there is no paid tier and no ads. On the iPhone, the free parrot carries three documents at a time on its perch, with no time limit; if you want a bottomless perch, the audiobook press and the bridge to your computer, you wind it up with Yappy Parlanchín, as a subscription or a single lifetime purchase. No account and no ads either way."
+            "a": "Yes. Yappy is open source under the MIT licence. Being able to listen to what you read is a matter of accessibility, and accessibility tools shouldn't ask for a credit card. On the desktop and on Android there's no paid version or ads. On the iPhone, the trial parrot holds three documents at a time on its perch, with no time limit; if you want an unlimited perch, the audiobook press and the desktop bridge, you wind it up with Yappy Parlanchín, as a subscription or a one-time lifetime payment. No account and no ads, either way."
           },
           {
             "q": "What's the catch? How is it funded?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "And scanned PDFs, with no text inside?",
-            "a": "On the desktop they go through a local OCR before being read, and nothing leaves your computer there either. On the iPhone, not yet: if the PDF is a photograph of paper, the phone finds no text to read. A crooked or blurry scan gives what any OCR can give, but a decent one reads through whole."
+            "a": "They're run through a local OCR before being read, on the computer, on iPhone and on Android, and nothing leaves your device there either. It's free everywhere: OCR isn't part of the subscription. It's designed for printed text in the Latin alphabet; other scripts are only recognised on iPhone, iPad and Mac, using Apple's recogniser. A skewed or blurry scan will give you what any OCR can give you, but a decent one reads in full."
           },
           {
             "q": "Can it read the books I bought from a store?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "What this is",
-        "texto": "This is the privacy policy of Yappy: the iPhone, iPad, Mac, Windows and Linux app, with its widgets and extensions. It is short because there is little to tell. Yappy has no accounts, never asks for your name or your email, and what you give it to read never leaves your device. Four specific things do touch the network, and here are all four, one by one."
+        "texto": "This is the privacy policy for Yappy: the iPhone, iPad, Android, Mac, Windows and Linux app, with its widgets and extensions. It's short because there's not much to say. Yappy has no accounts, doesn't ask for your name or email, and what you give it to read doesn't leave your device. What does touch the network are four specific things, and here are all four, one by one."
       },
       {
         "titulo": "No account, no name, no texts",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Touches the network (4): purchases",
-        "texto": "Subscriptions and the lifetime purchase of Yappy Parlanchín are handled by Apple through the App Store, and they only exist on iPhone and iPad. To know whether your parrot is wound up, the app uses <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, a subscription manager, which receives an anonymous installation identifier and the Apple receipt; it does not receive your name or your email. Apple describes its own data in <a href=\"https://www.apple.com/legal/privacy/\">its policy</a>."
+        "texto": "Subscriptions and the lifetime purchase of Yappy Parlanchín are handled by Apple through the App Store, and only exist on iPhone and iPad. To check whether your subscription is active, the app uses <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, a subscription manager, which receives an anonymous installation identifier and the Apple receipt; it doesn't receive your name or email. On Android nothing is sold, but the app also starts RevenueCat when opened, to check whether Google Play offers any purchases: RevenueCat then receives that same anonymous identifier, and the query passes through Google Play's billing system. Apple and Google explain their own data in their policies: <a href=\"https://www.apple.com/legal/privacy/\">Apple's</a> and <a href=\"https://policies.google.com/privacy\">Google's</a>."
       },
       {
         "titulo": "The bridge: from your iPhone to your computer, and back",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Can it read my course PDFs and the books I already own?",
-        "a": "Any PDF, EPUB, Word or ODT you can open. If the PDF is a scan with no text, the desktop version runs it through a local OCR first; on the phone that is not there yet. Books with a store's DRM cannot be read anywhere, and that includes here."
+        "a": "Any PDF, EPUB, Word or ODT you can open. If the PDF is a scan without text, Yappy runs it through a local OCR before reading it, on the computer and on mobile, at no charge. DRM-protected books from a shop can't be read anywhere, and not here either."
       },
       {
         "q": "What does it cost to use every day?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Scanned PDFs",
-        "extra_texto": "If the PDF is a photograph of paper with no text inside, the desktop version runs it through a local OCR before reading it. Not on the iPhone yet.",
+        "extra_texto": "If the PDF is a photo of paper and has no text inside, Yappy runs it through a local OCR before reading it, on the computer, on iPhone and on Android. It's free: OCR isn't part of the subscription.",
         "faq": [
           {
             "q": "Is there a page limit?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "What if the PDF is a scan with no text?",
-            "a": "The desktop version runs it through a local OCR before reading it, and nothing leaves your computer there either. On the iPhone, not yet: if the PDF is a photograph of paper, the phone finds no text to read."
+            "a": "Yappy runs it through a local OCR before reading it, on the computer and on mobile, and nothing leaves your device there either. A skewed or blurry scan will give you what any OCR can give you, but a decent one reads in full."
           },
           {
             "q": "Does it strip headers and page numbers?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "If the video has no transcript",
-        "extra_texto": "Then there is nothing to read: Yappy works with published text, it does not transcribe the video's audio. This feature exists on iPhone; on Android, not yet.",
+        "extra_texto": "So there's nothing to read: Yappy works with published text, it doesn't transcribe the video's audio.",
         "faq": [
           {
             "q": "Does it transcribe the video's audio?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Does it work on every video platform?",
-            "a": "Wherever there is a published, reachable transcript. The feature exists on the iPhone; on the Android build, not yet."
+            "a": "Today, with YouTube, on iPhone, on Android and on the computer. With other video platforms, Yappy doesn't yet know how to request the transcript."
           },
           {
             "q": "Does it use much data?",

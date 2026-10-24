@@ -37,6 +37,7 @@
     "descargar": "Pobierz",
     "descargar_gratis": "Pobierz za darmo",
     "en_app_store": "Pobierz w App Store",
+    "en_google_play": "Pobierz w Google Play",
     "escuchar_muestra": "Odsłuchaj próbkę",
     "probar": "Wypróbuj teraz",
     "leer_mas": "Czytaj dalej",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Na Androidzie",
-        "texto": "Ten sam gest: udostępniasz link, tekst albo dokument i trafia do tej samej kolejki — z automatycznym wyodrębnianiem artykułu, karaoke i głosem, wszystko w samym telefonie. Wersja na Androida jest najmłodsza w rodzinie i wciąż brakuje jej trzech rzeczy, które iPhone już ma: sterowania z ekranu blokady, filmów i odtwarzacza audiobooków .m4b. I coś ważniejszego: <strong>na razie nie jest opublikowana</strong>. Konto deweloperskie Google wciąż jest w trakcie weryfikacji, a daty nie podajemy, bo jej nie znamy. Gdy wersja wyjdzie, ogłosimy to tutaj i w repozytorium. Za to na Androidzie nie będzie żadnych haczyków. Wszystko jest otwarte."
+        "texto": "Ten sam gest co na iPhonie: udostępniasz link, tekst lub dokument i ląduje w tej samej kolejce, z wyodrębnianiem artykułu, karaoke i głosem – wszystko w samym telefonie. Działa przy zablokowanym ekranie, z kontrolkami w powiadomieniu, a drukarka pracuje w tle, gdy robisz coś innego. Jest w <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> i tam jest <strong>całkowicie za darmo</strong>: nie ma Yappy Parlanchín ani nic do płacenia, więc żerdka jest bez dna, a drukarka audiobooków jest otwarta. Jedyne, czego nie ma, to elementy właściwe dla Apple: Siri i aplikacja Skróty."
       }
     ],
     "atajo": "Skrót",
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Pobierz Yappy: iPhone, iPad, Mac, Windows i Linux",
-    "description": "Yappy jest darmowy i o otwartym kodzie. W App Store na iPhone'a i iPada; wersję na komputer skompilujesz z kodu albo pobierzesz z GitHuba. Wymagania i rozmiar modelu głosu.",
+    "title": "Pobierz Yappy: iPhone, iPad, Android, Mac, Windows i Linux",
+    "description": "Yappy jest darmowy i open source. W App Store na iPhone i iPad oraz w Google Play na Android; wersję na komputer pobiera się z GitHub albo kompiluje z kodu źródłowego. Wymagania i rozmiar modelu głosowego.",
     "h1": "Darmowy, otwarty i twój.",
     "entradilla": "Żadnej rejestracji, żadnego adresu e-mail, żadnej wersji próbnej, która wygasa. Pobierasz i tyle.",
     "modelo_nota": "Za pierwszym razem Yappy pobiera model głosu ({peso}). Na iPhonie dołącza do instalacji; na komputerze pobiera się przy pierwszym otwarciu aplikacji. Potem internet nie jest już potrzebny.",
-    "android_titulo": "Android",
-    "android_texto": "Aplikacja jest skompilowana i działa, ale jeszcze nie została opublikowana: konto deweloperskie Google wciąż czeka na weryfikację. Gdy wyjdzie, ogłosimy to tutaj i w repozytorium.",
+    "android_titulo": "Na Androidzie bez ograniczeń",
+    "android_texto": "Na Androidzie nie ma Yappy Parlanchín ani nic do płacenia: żerdka jest bez dna, a drukarka audiobooków jest otwarta, jak na komputerze. Subskrypcje istnieją tylko na iPhonie i iPadzie.",
     "escritorio_aviso": "Pliki binarne na komputery publikujemy na GitHubie. Jeśli wersja, którą tam znajdziesz, jest starsza niż ta na iPhone'a, to najnowsza jeszcze nie została wgrana: kod za to jest aktualny i skompilujesz go poleceniem <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS lub iPadOS 17 albo nowszy · model głosu zajmuje ok. 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Pobierz w App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "W Google Play, za darmo i bez konta. Ten sam gest co na iPhonie: udostępniasz link, tekst lub dokument i już gra, z karaoke, drukarką audiobooków i kontrolkami na zablokowanym ekranie.",
+        "requisitos": "Android 7.0 lub nowszy · około 200 MB modelu głosowego, który pobiera się przy pierwszym uruchomieniu aplikacji",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Pobierz w Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage i .deb dla x64. Globalne skróty zależą od środowiska graficznego; jeśli twoje są już zajęte, w Preferencjach ustawisz inne.",
+        "texto": "AppImage, .deb i .rpm dla x64. Skróty globalne zależą od twojego środowiska graficznego; w Preferencjach można je zmienić na inne, jeśli twoje są już zajęte.",
         "requisitos": "x64 · model głosu, ok. 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Zobacz wydania na GitHubie"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Bez okresu próbnego, i to celowo: wieszak na trzy dokumenty <em>jest</em> próbą – nie wygasa i później niczego nie doliczy. Ceny podane dla Hiszpanii; w twoim sklepie pojawią się w twojej walucie.",
     "cuerda_donde": "Korbkę zakręca się w samej aplikacji, w zapleczu.",
-    "solo_movil": "Bramka jest na telefonie: na iPhonie, iPadzie i Androidzie. Na komputerze wszystko jest otwarte.",
+    "solo_movil": "Ograniczenia istnieją tylko na iPhonie i iPadzie. Na Androidzie i na komputerze wszystko jest otwarte.",
     "comparacion_titulo": "Ile biorą inni.",
     "comparacion_entradilla": "Aplikacje głosowe w chmurze płacą za serwery za każdym razem, gdy naciskasz play, więc rozliczają cię godzinami albo znakami. Yappy syntetyzuje mowę na twoim urządzeniu: koszt odsłuchu wynosi zero, więc nie ma czego brać.",
     "comparacion_nota": "Publiczne ceny, sprawdzone we wrześniu 2026 r. Zmieniają się często: zweryfikuj je na każdej stronie, zanim się zdecydujesz.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Dlaczego na komputerze się nie płaci?",
-        "a": "Bo bramka stoi na telefonie, a nie na komputerze. Tam drukarnia, półka bez dna i most są otwarte od wejścia. To nie jest oferta premierowa: komputer to maszyna do ciężkiej roboty, a brać pieniądze za to, żeby twój własny komputer pracował w nocy, nie miało sensu."
+        "a": "Bo ograniczenia są tylko na iPhonie i iPadzie, a nie na komputerze. Tam drukarka, żerdka bez dna imost są otwarte. To nie jest oferta startowa: komputer to maszyna, która wykonuje ciężką pracę, i pobieranie opłat za pozwolenie własnemu komputerowi na pracę w nocy nie miało sensu."
       }
     ],
     "una_a_una": "każda z osobna, wraz z danymi"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Czy to naprawdę za darmo?",
-            "a": "Tak. Kod Yappy jest otwarty, na licencji MIT. Możliwość odsłuchania tego, co się czyta, to kwestia dostępności, a narzędzia dostępności nie powinny prosić o kartę. Na komputerze nie ma wersji płatnej ani reklam. Na iPhonie papuga próbna trzyma na swojej grzędzie trzy dokumenty naraz, bez limitu czasu; jeśli chcesz grzędę bez dna, drukarnię audiobooków i most do komputera, wszystko nakręca Yappy Parlanchín — w subskrypcji albo za jednorazową opłatę dożywotnią. Tak czy inaczej: bez konta i bez reklam."
+            "a": "Tak. Yappy jest open source z licencją MIT. Możliwość słuchania tego, co się czyta, to kwestia dostępności, a narzędzia dostępności nie powinny prosić o kartę. Na komputerze i na Androidzie nie ma płatnej wersji ani reklam. Na iPhonie testowa papuga ma trzy dokumenty naraz na żerdce, bez limitu czasu; jeśli chcesz żerdkę bez dna, drukarkę audiobooków i most z komputerem, nakręcasz ją za pomocą Yappy Parlanchín – w subskrypcji albo jednorazowej opłacie dożywotniej. Bez konta i bez reklam, w każdym przypadku."
           },
           {
             "q": "Gdzie jest haczyk? Jak to się finansuje?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "A zeskanowane PDF-y, bez tekstu w środku?",
-            "a": "Na komputerze przechodzą najpierw przez lokalny OCR, zanim zostaną przeczytane, i nawet wtedy nic nie opuszcza twojego komputera. Na iPhonie — jeszcze nie: jeśli PDF to zdjęcie kartki, telefon nie znajdzie tekstu do przeczytania. Krzywy albo rozmazany skan da tyle, ile da każdy OCR, ale przyzwoity zostanie przeczytany od deski do deski."
+            "a": "Są przepuszczane przez lokalny OCR przed odczytaniem, na komputerze, iPhonie i Androidzie, i też nic nie wychodzi z twojego urządzenia. Wszędzie jest za darmo: OCR nie wchodzi w abonament. Jest przeznaczony do druku alfabetem łacińskim; inne pisma rozpoznaje tylko na iPhonie, iPadzie i Macu, systemem rozpoznawania Apple'a. Skośny albo rozmazany skan da to, co każdy OCR może dać, ale porządny odczyta się w całości."
           },
           {
             "q": "Czy odczyta książki kupione w sklepie?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "O co tu chodzi",
-        "texto": "To jest polityka prywatności Yappy: aplikacji na iPhone, iPad, Mac, Windows i Linux, z jej widżetami i rozszerzeniami. Jest krótka, bo niewiele się tu dzieje. Yappy nie ma kont, nie prosi o imię ani adres e-mail, a wszystko, co dostaje do przeczytania, zostaje na twoim urządzeniu. Z siecią stykają się za to cztery konkretne sprawy — i oto wszystkie cztery, po kolei."
+        "texto": "To jest polityka prywatności Yappy: aplikacji na iPhone, iPad, Android, Mac, Windows i Linux, z widgetami i rozszerzeniami. Jest krótka, bo niewiele jest do opowiedzenia. Yappy nie ma kont, nie pyta o imię ani e-mail, a to, co dajesz do czytania, nie wychodzi z urządzenia. To, co dotyka sieci, to cztery konkretne rzeczy – i oto te cztery, jedna po drugiej."
       },
       {
         "titulo": "Żadnego konta, żadnego imienia, żadnych tekstów",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "O sieci (4): zakupy",
-        "texto": "Subskrypcjami i dożywotnim zakupem Yappy Parlanchín zarządza Apple przez App Store i istnieją one tylko na iPhonie i iPadzie. Żeby sprawdzić, czy twoja subskrypcja jest aktywna, aplikacja korzysta z <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, menedżera subskrypcji, który dostaje anonimowy identyfikator instalacji i paragon od Apple; nie dostaje twojego imienia ani twojego e-maila. Apple opisuje własne dane w <a href=\"https://www.apple.com/legal/privacy/\">swojej polityce</a>."
+        "texto": "Subskrypcje i zakup dożywotni Yappy Parlanchín zarządza Apple przez App Store i istnieją tylko na iPhonie i iPadzie. Żeby sprawdzić, czy twój abonament jest aktywny, aplikacja używa <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, menedżera subskrypcji, który otrzymuje anonimowy identyfikator instalacji i paragon z Apple'a; nie otrzymuje twojego nazwiska ani e-maila. Na Androidzie nic się nie sprzedaje, ale aplikacja też uruchamia RevenueCat przy otwarciu, żeby sprawdzić, czy Google Play oferuje jakiś zakup: RevenueCat otrzymuje wtedy ten sam anonimowy identyfikator, a zapytanie przechodzi przez system płatności Google Play. Apple i Google wyjaśniają swoje własne dane w swoich politykach: <a href=\"https://www.apple.com/legal/privacy/\">polityka Apple'a</a> i <a href=\"https://policies.google.com/privacy\">polityka Google'a</a>."
       },
       {
         "titulo": "Most: z iPhone'a na komputer i z powrotem",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Czy przeczyta szkolne PDF-y i książki, które już mam?",
-        "a": "Każdy PDF, EPUB, Word czy ODT, który da się otworzyć. Jeśli PDF to skan bez warstwy tekstowej, wersja komputerowa przepuszcza go najpierw przez lokalny OCR; w wersji mobilnej tego jeszcze nie ma. Książki z DRM ze sklepu nie da się przeczytać nigdzie. Tu też nie."
+        "a": "Każdy PDF, EPUB, Word czy ODT, który możesz otworzyć. Jeśli PDF to skan bez tekstu, Yappy przepuszcza go przez lokalny OCR przed odczytaniem, na komputerze i telefonie, bez dodatkowych opłat. Książek z DRM ze sklepu nie da się czytać nigdzie, tu też nie."
       },
       {
         "q": "Ile kosztuje codzienne korzystanie?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Zeskanowane PDF-y",
-        "extra_texto": "Jeśli PDF to zdjęcie papieru i nie ma w środku tekstu, wersja desktopowa najpierw przepuszcza go przez lokalny OCR. Na iPhonie jeszcze nie.",
+        "extra_texto": "Jeśli PDF to zdjęcie papieru i nie ma w nim tekstu, Yappy przepuszcza go przez lokalny OCR przed odczytaniem, na komputerze, iPhonie i Androidzie. Jest za darmo: OCR nie wchodzi w abonament.",
         "faq": [
           {
             "q": "Czy jest limit stron?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "A jeśli PDF to skan bez tekstu?",
-            "a": "Wersja desktopowa najpierw przepuszcza go przez lokalny OCR, zanim zacznie czytać, i tam też nic nie opuszcza twojego komputera. Na iPhonie jeszcze nie: jeśli PDF to zdjęcie papieru, telefon nie znajduje tekstu do przeczytania."
+            "a": "Yappy przepuszcza go przez lokalny OCR przed odczytaniem, na komputerze i telefonie, i też nic nie wychodzi z twojego urządzenia. Skośny albo rozmazany skan da to, co każdy OCR może dać, ale porządny odczyta się w całości."
           },
           {
             "q": "Czy usuwa nagłówki i numery stron?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Jeśli film nie ma transkrypcji",
-        "extra_texto": "Wtedy nie ma czego czytać: Yappy korzysta z opublikowanego tekstu i nie transkrybuje dźwięku z filmu. Na iPhonie ta funkcja istnieje, na Androidzie jeszcze nie.",
+        "extra_texto": "Czyli nie ma nic do czytania: Yappy pracuje z opublikowanym tekstem, nie transkrybuje dźwięku z nagrania.",
         "faq": [
           {
             "q": "Czy transkrybuje dźwięk z filmu?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Czy działa na wszystkich platformach wideo?",
-            "a": "Tam, gdzie transkrypcja jest opublikowana i dostępna. Na iPhonie ta funkcja istnieje, w wersji na Androida jeszcze nie."
+            "a": "Dziś z YouTube'em, na iPhonie, Androidzie i komputerze. Z innymi platformami wideo Yappy jeszcze nie umie poprosić o transkrypcję."
           },
           {
             "q": "Czy zużywa dane?",

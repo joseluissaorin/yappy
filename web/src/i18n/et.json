@@ -37,6 +37,7 @@
     "descargar": "Laadi alla",
     "descargar_gratis": "Laadi tasuta alla",
     "en_app_store": "Laadi alla App Store'ist",
+    "en_google_play": "Laadi alla Google Play'st",
     "escuchar_muestra": "Kuula näidist",
     "probar": "Proovi kohe",
     "leer_mas": "Loe edasi",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Androidis",
-        "texto": "Sama liigutus: jagad lingi, teksti või dokumendi ja see maandub samas järjekorras – artikli väljavõte, karaoke ja hääl, kõik telefoni enda sees. Androidi versioon on perekonna noorim ja tal on veel kolm asja puudu, mis iPhone'il olemas on: juhtnupud lukustuskuval, videod ning .m4b audioraamatute mängija. Ja midagi olulisemat: <strong>see pole veel avaldatud</strong>. Google'i arendajakonto on veel kinnitamisel ja kuupäeva me ei pane, sest me ei tea seda. Kui see ilmub, teatatakse sellest siin ja repositooriumis. Üks on aga kindel: Androidis ei tule midagi peitu. Kõik on avatud."
+        "texto": "Sama liigutus mis iPhone'is: jagad linki, teksti või dokumenti ja see satub samasse järjekorda, koos artikli eraldamise, karaoke ja hääle töötlemisega – kõik telefonis endas. Jätkab mängimist lukustatud ekraanil, juhtnupud on teavituses, ning audioraamatute trükikoda töötab taustal samal ajal kui sa teed midagi muud. Rakendus on <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play's</a> ja seal on see <strong>täiesti tasuta</strong>: Yappy Parlanchín'it ega mingit maksmist pole, nii et riidepuu on põhjatu ja audioraamatute trükikoda on avatud. Ainus, mida seal pole, on Apple'ile omased osad: Siri ja Otseteed."
       }
     ],
     "atajo": "Otsetee",
@@ -300,7 +301,7 @@
         "texto": "„jne“, „lk“, „19. saj“: igal keelel on oma tabel."
       },
       {
-        "titulo": "Números grandes",
+        "titulo": "Suured arvud",
         "texto": "Unicode CLDR-i RBNF-grammatikad, sugu ja käänded kaasa arvatud."
       },
       {
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Yappy allalaadimine: iPhone, iPad, Mac, Windows ja Linux",
-    "description": "Yappy on tasuta ja avatud lähtekoodiga. App Store'is iPhone'ile ja iPad'ile; töölauaversiooni kompileeritakse lähtekoodist või laaditakse alla GitHubist. Nõuded ja häälemudeli suurus.",
+    "title": "Laadi alla Yappy: iPhone, iPad, Android, Mac, Windows ja Linux",
+    "description": "Yappy on tasuta ja avatud lähtekoodiga. App Store'is iPhone'ile ja iPad'ile ning Google Play's Androidile; lauaarvuti versiooni saab alla laadida GitHub'ist või kompileerida lähtekoodist. Nõuded ja häälmudeli suurus.",
     "h1": "Tasuta, avatud ja sinu oma.",
     "entradilla": "Registreerimist pole, e-posti pole, aeguvat prooviversiooni pole. Laadid alla ja ongi kõik.",
     "modelo_nota": "Esimesel korral laadib Yappy alla häälemudeli ({peso}). iPhone'il tuleb see juba installimisega kaasa; arvutil siis, kui rakenduse esimest korda avad. Pärast pole ühendust enam vaja.",
-    "android_titulo": "Android",
-    "android_texto": "See on kompileeritud ja töötab, kuid veel avaldamata: Google'i arendajakonto on veel kinnitamisel. Niipea, kui see ilmub, teatatakse sellest siin ja repositooriumis.",
+    "android_titulo": "Androidis ilma köieta",
+    "android_texto": "Androidis pole Yappy Parlanchín'it ega mingit maksmist: riidepuu on põhjatu ja audioraamatute trükikoda on avatud, nagu arvutis. Tellimused on ainult iPhone'is ja iPad'is.",
     "escritorio_aviso": "Töölauabinaarid avaldatakse GitHubis. Kui seal leitav versioon on vanem kui iPhone'i oma, pole viimast veel üles laaditud: kood on küll ajakohane ja kompileeritakse käsuga <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS või iPadOS 17 või uuem · häälemudel võtab umbes 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Laadi alla App Store'ist"
+      },
+      {
+        "nombre": "Android",
+        "texto": "Google Play's, tasuta ja ilma kontota. Sama liigutus mis iPhone'is: jagad linki, teksti või dokumenti ja juba mängib, koos karaoke, audioraamatute trükikoja ja juhtimisega lukustatud ekraanil.",
+        "requisitos": "Android 7.0 või uuem · umbes 200 MB häälmudelit, mis laetakse alla esimesel korral kui rakenduse avad",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Laadi alla Google Play'st"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage ja .deb x64 jaoks. Globaalsed otseteed sõltuvad sinu töölauakeskkonnast; kui sinu omad on juba hõivatud, saab neid Eelistustes teistega asendada.",
+        "texto": "AppImage, .deb ja .rpm x64 jaoks. Globaalsed kiirklahvid sõltuvad töölauakeskkonnast; eelistustes saab asendada teistega, kui sinu omad on juba hõivatud.",
         "requisitos": "x64 · umbes 398 MB häälemudelit",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Vaata versioone GitHubis"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Tasuta prooviperioodi pole — ja see on tahtlik: kolme dokumendiga riidepuu <em>on</em> proov, mis ei aegu ega hakka hiljem raha küsima. Hinnad on Hispaania omad; sinu poes kuvatakse need sinu valuutas.",
     "cuerda_donde": "Riidepyy leiad rakenduse seest — poe tagaruumist.",
-    "solo_movil": "Rihm kuulub telefonile: iPhone, iPad ja Android. Arvutis on kõik avatud.",
+    "solo_movil": "Köis on ainult iPhone'is ja iPad'is. Androidis ja arvutis on kõik avatud.",
     "comparacion_titulo": "Mida teised küsivad.",
     "comparacion_entradilla": "Pilves töötavad kõnerakendused maksavad iga play-vajutuse pealt serveritele, seepärast küsivad nad tasu tundide või tähemärkide kaupa. Yappy sünteesib kõne sinu seadmes: ühe kuulamise hind on null — seepärast saab ta seda ka tasuta pakkuda.",
     "comparacion_nota": "Avalikult kättesaadavad hinnad, kontrollitud 2026. aasta septembris. Need muutuvad sageli: enne otsustamist kontrolli üle iga teenuse veebilehelt.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Miks arvutis ei maksta?",
-        "a": "Sest rihm on telefoni külge pandud, arvuti külge mitte. Seal on trükikoda, põhjatu riidepukk ja sild juba avatud. See pole avamispakkumine: lauaarvuti on masin, mis teeb raskema töö ära, ja raha nõudmine selle eest, et lasta sinu oma arvutil öösel töötada, ei olnud mõtet."
+        "a": "Sest köis on paigaldatud ainult iPhone'i ja iPad'i, arvutis mitte. Seal on trükikoda, põhjatu riidepuu ja sild avatud. See pole lansseerimiспakkumine: lauaarvuti on masin, mis teeb raske töö, ja selle eest tasumine, et oma arvuti öösel tööle panna, polnud mõistlik."
       }
     ],
     "una_a_una": "üks haaval, koos andmetega"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Kas see on tõesti tasuta?",
-            "a": "Jah. Yappy on avatud lähtekoodiga ja MIT-litsentsi all. Võimalus kuulata seda, mida loed, on ligipääsetavuse küsimus, ja ligipääsetavuse vahendid ei tohiks kaarti küsida. Arvutis pole makseversiooni ega reklaame. iPhone'il kannab proovipapagoi korraga kolme dokumenti oma nagil, ilma ajapiirita; kui tahad põhjatut nagit, audioraamatute trükikoda ja silda arvutiga, kerid üles Yappy Parlanchíniga: kas tellimusena või ühekordse eluaegse maksega. Igal juhul ilma kontota ja ilma reklaamideta."
+            "a": "Jah. Yappy on avatud lähtekoodiga MIT litsentsi all. Võimalus kuulata seda, mida loetakse, on juurdepääsetavuse küsimus, ja juurdepääsetavuse tööriistad ei peaks kaarti küsima. Arvutis ja Androidis pole tasulist versiooni ega reklaame. iPhone'is mahub proovipapagoil kolm dokumenti korraga riidepuule, ajapiiranguta; kui tahad põhjatut riidepuud, audioraamatute trükikoda ja silda arvutiga, annad talle köie Yappy Parlanchín'iga, tellimuse või ühekordelise eluaegse maksuga. Igal juhul ilma konto ja reklaamideta."
           },
           {
             "q": "Kus on nipp? Kuidas teda rahastatakse?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "Ja need skaneeritud PDF-id, mille sees teksti ei ole?",
-            "a": "Töölaual käivad need enne lugemist läbi kohaliku OCR-i, ja sealgi ei välju sinu arvutist midagi. iPhone'il veel mitte: kui PDF on paberist pildistatud foto, ei leia telefon teksti, mida lugeda. Vildakas või hägune skann annab selle, mida ükskõik milline OCR suudab, aga korralik skann loetakse otsast lõpuni läbi."
+            "a": "Läbivad enne lugemist kohaliku OCR-i, arvutis, iPhone'is ja Androidis, ja ka seal ei lahku seadmest midagi. Tasuta kõikjal: OCR ei ole tellimuse osa. Mõeldud ladina tähestikus trükitekstile; teisi kirjasüsteeme tuvastatakse ainult iPhone'is, iPadis ja Macis, Apple'i tuvastajaga. Viltu või udune skaneering annab seda, mida iga OCR suudab anda, aga korralik loetakse tervikuna läbi."
           },
           {
             "q": "Kas ta loeb raamatuid, mis ma poest ostsin?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "Millega siin tegu on",
-        "texto": "See on Yappy privaatsuspoliitika: iPhone'i, iPadi, Maci, Windowsi ja Linuxi rakendus, koos oma vidinate ja laiendustega. Ta on lühike, sest rääkida on vähe. Yappyl pole kontosid, ta ei küsi sinu nime ega postiaadressi, ja see, mille sa talle lugeda annad, ei välju sinu seadmest. Võrku puudutab küll neli konkreetset asja, ja siin nad kõik on, üks haaval."
+        "texto": "See on Yappy privaatsuspoliitika: iPhone'i, iPad'i, Androidi, Maci, Windowsi ja Linuxi rakendus koos vidinate ja laiendustega. See on lühike, sest eriti jutustada pole. Yappy'l pole kontosid, ta ei küsi nime ega e-posti, ja see, mida talle lugeda annad, ei lahku sinu seadmest. Mis aga võrku puudutab, on neli konkreetset asja, ja siin need neli on, üks haaval."
       },
       {
         "titulo": "Ei kontot, ei nime, ei tekste",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Võrgukäik (4): ostud",
-        "texto": "Yappy Parlanchín-i tellimusi ja eluaegset ostu haldab Apple App Store'i kaudu, ja need on olemas ainult iPhone'is ja iPadis. Et teada, kas sinu tellimus kehtib, võtab rakendus kasutusele <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, tellimuste halduri, mis saab kätte anonüümse paigaldustunnuse ja Apple'i kviitungi; sinu nime ega e-posti ta ei saa. Apple seletab oma andmeid lahti <a href=\"https://www.apple.com/legal/privacy/\">oma privaatsuspoliitikas</a>."
+        "texto": "Yappy Parlanchín tellimusi ja ühekordset ostu haldab Apple läbi App Store'i, need on ainult iPhone'is ja iPadis. Et teada, kas tellimus on aktiivne, kasutab rakendus teenust <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, tellimuste haldur, mis saab anonüümse paigalduse identifikaatori ja Apple'i kviitungi; ei saa su nime ega e-posti. Androidis ei müüda midagi, aga rakendus käivitab avamisel ka RevenueCati, et kontrollida, kas Google Play pakub oste: RevenueCat saab siis sama anonüümse identifikaatori ja päring läheb läbi Google Play arveldussüsteemi. Apple ja Google selgitavad oma andmeid oma põhimõtetes: <a href=\"https://www.apple.com/legal/privacy/\">Apple'i oma</a> ja <a href=\"https://policies.google.com/privacy\">Google'i oma</a>."
       },
       {
         "titulo": "Sild: sinu iPhone'ist arvutisse ja tagasi",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Kas see loeb kooli-PDF-id ja raamatud, mis mul juba on?",
-        "a": "Iga PDF, EPUB, Word või ODT, mida avada saab. Kui PDF on skann ilma tekstita, ajab töölauaversioon selle enne ettelugemist läbi kohaliku OCR-i; mobiilil seda võimalust veel pole. Poe DRM-kaitsega raamatuid ei saa lugeda kusagil — siin ka mitte."
+        "a": "Iga PDF, EPUB, Word või ODT, mida suudad avada. Kui PDF on skaneering ilma tekstita, läbib Yappy selle kohaliku OCR-i enne lugemist, arvutis ja telefonis, tasuta. DRM-iga raamatuid poest ei saa kuskil lugeda, ka siin mitte."
       },
       {
         "q": "Kui palju maksab seda iga päev kasutada?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Skaneeritud PDF-id",
-        "extra_texto": "Kui PDF on lihtsalt paberi foto ja teksti pole sees, ajab töölauaversioon selle enne lugemist läbi kohaliku OCR-i. iPhone'il pole seda veel.",
+        "extra_texto": "Kui PDF on paberi foto ega sisalda teksti, läbib Yappy selle kohaliku OCR-i enne lugemist, arvutis, iPhone'is ja Androidis. Tasuta: OCR ei ole tellimuse osa.",
         "faq": [
           {
             "q": "Kas lehekülgede arv on piiratud?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "Ja kui PDF on skann, milles teksti pole?",
-            "a": "Töölauaversioon ajab selle enne lugemist läbi kohaliku OCR-i, ja ka seal ei lahku sinu arvutist midagi. iPhone'il pole seda veel: kui PDF on paberi foto, ei leia telefon ühtegi teksti, mida lugeda."
+            "a": "Yappy läbib selle kohaliku OCR-i enne lugemist, arvutis ja telefonis, ja ka seal ei lahku seadmest midagi. Viltu või udune skaneering annab seda, mida iga OCR suudab anda, aga korralik loetakse tervikuna läbi."
           },
           {
             "q": "Kas päised ja leheküljenumbrid jäetakse välja?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Kui videol pole transkriptsiooni",
-        "extra_texto": "Siis pole midagi lugeda: Yappy töötab avaldatud tekstiga, ta ei transkribeeri video heli. iPhone'il see funktsioon on olemas; Androidil veel mitte.",
+        "extra_texto": "Siis pole midagi lugeda: Yappy töötab avaldatud tekstiga, ei transkribeeri video helifaili.",
         "faq": [
           {
             "q": "Kas see transkribeerib video heli?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Kas see töötab kõigil videoplatvormidel?",
-            "a": "Kus avaldatud ja kättesaadav transkriptsioon on olemas. iPhone'il see funktsioon on; Androidi versioonil veel ei ole."
+            "a": "Praegu YouTube'iga, iPhone'is, Androidis ja arvutis. Teistel videoplatvormidel Yappy veel transkriptsiooni küsida ei oska."
           },
           {
             "q": "Kas see tarbib andmeid?",

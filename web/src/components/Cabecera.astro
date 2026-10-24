@@ -43,7 +43,7 @@ const hayBlog = (ALCANCE.blog as readonly string[]).includes(lang);
       {hayBlog && <a href={rutaPagina(lang, "blog")}>{t(lang, "nav.blog")}</a>}
     </nav>
 
-    <a class="tecla tecla-cabecera" href={ENLACES.appStore} style="padding:9px 18px;font-size:0.95rem">
+    <a class="tecla tecla-cabecera" href={rutaPagina(lang, "descargas")} style="padding:9px 18px;font-size:0.95rem">
       {t(lang, "comunes.descargar")}
     </a>
 
@@ -54,7 +54,7 @@ const hayBlog = (ALCANCE.blog as readonly string[]).includes(lang);
         </svg>
       </summary>
       <nav class="desplegable" aria-label={t(lang, "comunes.secciones")}>
-        <a href={ENLACES.appStore} style="color:var(--voz);font-weight:800">{t(lang, "comunes.descargar_gratis")}</a>
+        <a href={rutaPagina(lang, "descargas")} style="color:var(--voz);font-weight:800">{t(lang, "comunes.descargar_gratis")}</a>
         <div class="separador"></div>
         {secciones.map((s) => <a href={rutaPagina(lang, s)}>{t(lang, `nav.${s}`)}</a>)}
         <div class="separador"></div>

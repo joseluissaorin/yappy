@@ -37,6 +37,7 @@
     "descargar": "Descargar",
     "descargar_gratis": "Descargar gratis",
     "en_app_store": "Descargar en la App Store",
+    "en_google_play": "Descargar en Google Play",
     "escuchar_muestra": "Escuchar una muestra",
     "probar": "Probarlo ahora",
     "leer_mas": "Seguir leyendo",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "En Android",
-        "texto": "El mismo gesto: compartes un enlace, un texto o un documento y aterriza en la misma cola, con la extracción del artículo, el karaoke y la voz, todo dentro del propio teléfono. La versión de Android es la más joven de la familia y todavía le faltan tres cosas que el iPhone sí tiene: los controles en la pantalla bloqueada, los vídeos y el reproductor de audiolibros .m4b. Y hay algo más importante: <strong>aún no está publicada</strong>. La cuenta de desarrollador de Google sigue en verificación y no ponemos fecha, porque no la sabemos. Cuando salga se anunciará aquí y en el repositorio. Eso sí: en Android no habrá cuerda que dar. Está todo abierto."
+        "texto": "El mismo gesto que en el iPhone: compartes un enlace, un texto o un documento y aterriza en la misma cola, con la extracción del artículo, el karaoke y la voz, todo dentro del propio teléfono. Sigue sonando con la pantalla bloqueada, con sus controles en la notificación, y la imprenta trabaja en segundo plano mientras haces otra cosa. Está en <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> y allí es <strong>gratis del todo</strong>: no hay Yappy Parlanchín ni nada que pagar, así que la percha no tiene fondo y la imprenta de audiolibros viene abierta. Lo único que no tiene son las piezas propias de Apple: Siri y la app Atajos."
       }
     ],
     "atajo": "Atajo",
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Descargar Yappy: iPhone, iPad, Mac, Windows y Linux",
-    "description": "Yappy es gratis y de código abierto. En la App Store para iPhone y iPad; el escritorio se compila desde el código o se descarga de GitHub. Requisitos y el peso del modelo de voz.",
+    "title": "Descargar Yappy: iPhone, iPad, Android, Mac, Windows y Linux",
+    "description": "Yappy es gratis y de código abierto. En la App Store para iPhone y iPad y en Google Play para Android; el escritorio se descarga de GitHub o se compila desde el código. Requisitos y el peso del modelo de voz.",
     "h1": "Gratis, abierto y tuyo.",
     "entradilla": "No hay registro, ni correo, ni versión de prueba que caduque. Se descarga y ya está.",
     "modelo_nota": "La primera vez, Yappy descarga el modelo de voz ({peso}). En el iPhone llega con la instalación; en el ordenador, la primera vez que abres la app. Después ya no hace falta conexión.",
-    "android_titulo": "Android",
-    "android_texto": "Está compilada y funcionando, pero todavía no publicada: la cuenta de desarrollador de Google sigue en verificación. Cuando salga, se anunciará aquí y en el repositorio.",
+    "android_titulo": "En Android, sin cuerda",
+    "android_texto": "En Android no hay Yappy Parlanchín ni nada que pagar: la percha no tiene fondo y la imprenta de audiolibros viene abierta, como en el ordenador. Las suscripciones solo existen en el iPhone y el iPad.",
     "escritorio_aviso": "Los binarios de escritorio se publican en GitHub. Si la versión que encuentras allí es más antigua que la del iPhone, es que aún no se ha subido la última: el código sí está al día y se compila con <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS o iPadOS 17 en adelante · el modelo de voz ocupa unos 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Descargar en la App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "En Google Play, gratis y sin cuenta. El mismo gesto que en el iPhone: compartes un enlace, un texto o un documento y ya suena, con el karaoke, la imprenta de audiolibros y los controles en la pantalla bloqueada.",
+        "requisitos": "Android 7.0 o superior · unos 200 MB de modelo de voz, que se descarga la primera vez que abres la app",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Descargar en Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage y .deb para x64. Los atajos globales dependen de tu entorno de escritorio; en las Preferencias se cambian por otros si los tuyos ya están ocupados.",
+        "texto": "AppImage, .deb y .rpm para x64. Los atajos globales dependen de tu entorno de escritorio; en las Preferencias se cambian por otros si los tuyos ya están ocupados.",
         "requisitos": "x64 · unos 398 MB de modelo de voz",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Ver las versiones en GitHub"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Sin prueba gratuita, a propósito: la percha de tres documentos <em>es</em> la prueba, y no caduca ni se cobra después. Los precios son los de España; en tu tienda aparecerán en tu moneda.",
     "cuerda_donde": "La cuerda se da dentro de la app, en la trastienda.",
-    "solo_movil": "La cuerda es del móvil: en el iPhone, en el iPad y en Android. En el ordenador está todo abierto.",
+    "solo_movil": "La cuerda solo existe en el iPhone y el iPad. En Android y en el ordenador está todo abierto.",
     "comparacion_titulo": "Lo que cobran los demás.",
     "comparacion_entradilla": "Las apps de voz en la nube pagan servidores cada vez que pulsas play, así que te cobran por horas o por caracteres. Yappy sintetiza en tu aparato: su coste por escucha es cero, y por eso puede no cobrarla.",
     "comparacion_nota": "Precios públicos consultados en septiembre de 2026. Cambian a menudo: compruébalos en cada web antes de decidir.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "¿Por qué en el ordenador no se paga?",
-        "a": "Porque la cuerda está montada en el móvil, y en el ordenador no. Allí la imprenta, la percha sin fondo y el puente vienen abiertos. No es una oferta de lanzamiento: el escritorio es la máquina que hace el trabajo pesado, y cobrar por dejar que tu propio ordenador trabaje de noche no tenía sentido."
+        "a": "Porque la cuerda solo está montada en el iPhone y el iPad, y en el ordenador no. Allí la imprenta, la percha sin fondo y el puente vienen abiertos. No es una oferta de lanzamiento: el escritorio es la máquina que hace el trabajo pesado, y cobrar por dejar que tu propio ordenador trabaje de noche no tenía sentido."
       }
     ],
     "una_a_una": "una a una, con sus datos"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "¿De verdad es gratis?",
-            "a": "Sí. Yappy es código abierto con licencia MIT. Poder escuchar lo que uno lee es una cuestión de accesibilidad, y las herramientas de accesibilidad no deberían pedir tarjeta. En el ordenador no hay versión de pago ni anuncios. En el iPhone, el loro de prueba lleva tres documentos a la vez en su percha, sin límite de tiempo; si quieres una percha sin fondo, la imprenta de audiolibros y el puente con el ordenador, le das cuerda con Yappy Parlanchín, en suscripción o en un único pago de por vida. Sin cuenta y sin anuncios, en cualquier caso."
+            "a": "Sí. Yappy es código abierto con licencia MIT. Poder escuchar lo que uno lee es una cuestión de accesibilidad, y las herramientas de accesibilidad no deberían pedir tarjeta. En el ordenador y en Android no hay versión de pago ni anuncios. En el iPhone, el loro de prueba lleva tres documentos a la vez en su percha, sin límite de tiempo; si quieres una percha sin fondo, la imprenta de audiolibros y el puente con el ordenador, le das cuerda con Yappy Parlanchín, en suscripción o en un único pago de por vida. Sin cuenta y sin anuncios, en cualquier caso."
           },
           {
             "q": "¿Cuál es el truco? ¿Cómo se financia?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "¿Y los PDF escaneados, sin texto dentro?",
-            "a": "En el escritorio pasan por un OCR local antes de leerse, y tampoco ahí sale nada de tu ordenador. En el iPhone, todavía no: si el PDF es una foto del papel, el móvil no encuentra texto que leer. Un escaneo torcido o borroso dará lo que cualquier OCR pueda dar, pero uno decente se lee entero."
+            "a": "Pasan por un OCR local antes de leerse, en el ordenador, en el iPhone y en Android, y tampoco ahí sale nada de tu aparato. Es gratis en todas partes: el OCR no forma parte de la cuerda. Está pensado para la letra impresa en alfabeto latino; las demás escrituras solo se reconocen en el iPhone, el iPad y el Mac, con el reconocedor de Apple. Un escaneo torcido o borroso dará lo que cualquier OCR pueda dar, pero uno decente se lee entero."
           },
           {
             "q": "¿Puede leer los libros que compré en una tienda?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "De qué va esto",
-        "texto": "Esta es la política de privacidad de Yappy: la app de iPhone, iPad, Mac, Windows y Linux, con sus widgets y sus extensiones. Es corta porque hay poco que contar. Yappy no tiene cuentas, no pide tu nombre ni tu correo, y lo que le das para leer no sale de tu aparato. Lo que sí toca la red son cuatro cosas concretas, y aquí están las cuatro, una por una."
+        "texto": "Esta es la política de privacidad de Yappy: la app de iPhone, iPad, Android, Mac, Windows y Linux, con sus widgets y sus extensiones. Es corta porque hay poco que contar. Yappy no tiene cuentas, no pide tu nombre ni tu correo, y lo que le das para leer no sale de tu aparato. Lo que sí toca la red son cuatro cosas concretas, y aquí están las cuatro, una por una."
       },
       {
         "titulo": "Ni cuenta, ni nombre, ni textos",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Toca la red (4): las compras",
-        "texto": "Las suscripciones y la compra de por vida de Yappy Parlanchín las gestiona Apple a través del App Store, y solo existen en el iPhone y el iPad. Para saber si tu cuerda está activa, la app usa <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, un gestor de suscripciones, que recibe un identificador anónimo de la instalación y el recibo de Apple; no recibe tu nombre ni tu correo. Apple explica sus propios datos en <a href=\"https://www.apple.com/legal/privacy/\">su política</a>."
+        "texto": "Las suscripciones y la compra de por vida de Yappy Parlanchín las gestiona Apple a través del App Store, y solo existen en el iPhone y el iPad. Para saber si tu cuerda está activa, la app usa <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, un gestor de suscripciones, que recibe un identificador anónimo de la instalación y el recibo de Apple; no recibe tu nombre ni tu correo. En Android no se vende nada, pero la app también pone en marcha RevenueCat al abrirse, para comprobar si Google Play ofrece alguna compra: RevenueCat recibe entonces ese mismo identificador anónimo, y la consulta pasa por el sistema de facturación de Google Play. Apple y Google explican sus propios datos en sus políticas: <a href=\"https://www.apple.com/legal/privacy/\">la de Apple</a> y <a href=\"https://policies.google.com/privacy\">la de Google</a>."
       },
       {
         "titulo": "El puente: de tu iPhone a tu ordenador, y vuelta",
@@ -663,7 +671,7 @@
       },
       {
         "q": "¿Puede leer los PDF de clase y los libros que ya tengo?",
-        "a": "Cualquier PDF, EPUB, Word u ODT que puedas abrir. Si el PDF es un escaneo sin texto, la versión de escritorio lo pasa por un OCR local antes de leerlo; en el móvil eso todavía no está. Los libros con DRM de una tienda no se pueden leer en ninguna parte, y aquí tampoco."
+        "a": "Cualquier PDF, EPUB, Word u ODT que puedas abrir. Si el PDF es un escaneo sin texto, Yappy lo pasa por un OCR local antes de leerlo, en el ordenador y en el móvil, y sin cobrar. Los libros con DRM de una tienda no se pueden leer en ninguna parte, y aquí tampoco."
       },
       {
         "q": "¿Cuánto cuesta usarlo a diario?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "PDF escaneados",
-        "extra_texto": "Si el PDF es una foto del papel y no lleva texto dentro, la versión de escritorio lo pasa por un OCR local antes de leerlo. En el iPhone todavía no.",
+        "extra_texto": "Si el PDF es una foto del papel y no lleva texto dentro, Yappy lo pasa por un OCR local antes de leerlo, en el ordenador, en el iPhone y en Android. Es gratis: el OCR no forma parte de la cuerda.",
         "faq": [
           {
             "q": "¿Hay límite de páginas?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "¿Y si el PDF es un escaneo sin texto?",
-            "a": "La versión de escritorio lo pasa por un OCR local antes de leerlo, y tampoco ahí sale nada de tu ordenador. En el iPhone todavía no: si el PDF es una foto del papel, el móvil no encuentra texto que leer."
+            "a": "Yappy lo pasa por un OCR local antes de leerlo, en el ordenador y en el móvil, y tampoco ahí sale nada de tu aparato. Un escaneo torcido o borroso dará lo que cualquier OCR pueda dar, pero uno decente se lee entero."
           },
           {
             "q": "¿Quita las cabeceras y los números de página?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Si el vídeo no tiene transcripción",
-        "extra_texto": "Entonces no hay nada que leer: Yappy trabaja con el texto publicado, no transcribe el audio del vídeo. En el iPhone esta función existe; en Android, todavía no.",
+        "extra_texto": "Entonces no hay nada que leer: Yappy trabaja con el texto publicado, no transcribe el audio del vídeo.",
         "faq": [
           {
             "q": "¿Transcribe el audio del vídeo?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "¿Funciona en todas las plataformas de vídeo?",
-            "a": "Donde haya transcripción publicada y accesible. En el iPhone esta función existe; en la versión de Android, todavía no."
+            "a": "Hoy, con YouTube, en el iPhone, en Android y en el ordenador. Con otras plataformas de vídeo, Yappy todavía no sabe pedir la transcripción."
           },
           {
             "q": "¿Gasta datos?",

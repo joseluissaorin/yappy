@@ -37,6 +37,7 @@
     "descargar": "Stiahnuť",
     "descargar_gratis": "Stiahnuť zadarmo",
     "en_app_store": "Stiahnuť v App Store",
+    "en_google_play": "Stiahnuť z Google Play",
     "escuchar_muestra": "Prehrať ukážku",
     "probar": "Vyskúšať teraz",
     "leer_mas": "Čítať ďalej",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "V Androide",
-        "texto": "Ten istý pohyb: zdieľate odkaz, text alebo dokument a ocitne sa v rovnakej rade – s extrakciou článku, karaoke aj hlasom, všetko v samotnom telefóne. Verzia pre Android je v rodine najmladšia a ešte jej chýbajú tri veci, ktoré iPhone má: ovládanie na uzamknutej obrazovke, videá a prehrávač audiokníh .m4b. A potom je tu niečo dôležitejšie: <strong>ešte nie je zverejnená</strong>. Vývojársky účet u Googlu sa stále overuje a dátum nedávame, lebo ho nepoznáme. Keď vyjde, oznámime to tu a v repozitári. Jedno však: v Androide nie je žiadna obrátka. Všetko je otvorené."
+        "texto": "Rovnaké gesto ako na iPhone: zdieľaš odkaz, text alebo dokument a pristane v tom istom rade, s extrahovaniem článku, karaoke a hlasom, všetko priamo v telefóne. Hrá aj so zamknutou obrazovkou, s ovládaním v notifikácii, a tlačiareň pracuje na pozadí, kým robíš niečo iné. Je v <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> a tam je <strong>úplne zadarmo</strong>: žiadny Yappy Parlanchín ani nič na platenie, takže vešiak nemá dno a tlačiareň audiokníh je otvorená. Jediné, čo tam nie je, sú veci od Apple: Siri a aplikácia Skratky."
       }
     ],
     "atajo": "Skratka",
@@ -300,7 +301,7 @@
         "texto": "„atď.“, „str.“, „19. st.“: každý jazyk má svoju tabuľku."
       },
       {
-        "titulo": "Números grandes",
+        "titulo": "Veľké čísla",
         "texto": "S gramatikami RBNF z Unicode CLDR, vrátane rodu a skloňovania."
       },
       {
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Stiahnuť Yappy: iPhone, iPad, Mac, Windows a Linux",
-    "description": "Yappy je zdarma a s otvoreným kódom. V App Store pre iPhone a iPad; desktop sa skompiluje zo zdrojového kódu alebo stiahne z GitHubu. Požiadavky a veľkosť hlasového modelu.",
+    "title": "Stiahnuť Yappy: iPhone, iPad, Android, Mac, Windows a Linux",
+    "description": "Yappy je zadarmo a s otvoreným zdrojovým kódom. V App Store pre iPhone a iPad a v Google Play pre Android; desktop sa sťahuje z GitHub alebo sa kompiluje zo zdrojového kódu. Požiadavky a veľkosť hlasového modelu.",
     "h1": "Zadarmo, otvorené a tvoje.",
     "entradilla": "Žiadna registrácia, žiadny e-mail, žiadna skúšobná verzia, ktorá vyprší. Stiahneš a hotovo.",
     "modelo_nota": "Pri prvom spustení Yappy stiahne hlasový model ({peso}). Na iPone príde spolu s inštaláciou; na počítači pri prvom otvorení aplikácie. Pripojenie potom už netreba.",
-    "android_titulo": "Android",
-    "android_texto": "Verzia pre Android je skompilovaná a funguje, ale ešte nie je vydaná: Google stále overuje vývojársky účet. Keď vyjde, oznámime to tu a v repozitári.",
+    "android_titulo": "Na Androide bez natiahnutia",
+    "android_texto": "Na Androide nie je žiadny Yappy Parlanchín ani nič na platenie: vešiak nemá dno a tlačiareň audiokníh je otvorená, ako na počítači. Predplatné existuje len na iPhone a iPad.",
     "escritorio_aviso": "Desktopové binárky sa zverejňujú na GitHube. Ak je verzia, ktorú tam nájdeš, staršia než verzia pre iPhone, najnovšia ešte nebola nahraná: kód je aktuálny a skompiluješ ho príkazom <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS alebo iPadOS 17 a novší · hlasový model zaberá približne 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Stiahnuť v App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "V Google Play, zadarmo a bez účtu. Rovnaké gesto ako na iPhone: zdieľaš odkaz, text alebo dokument a už to hrá, s karaoke, tlačiarňou audiokníh a ovládaním na zamknutej obrazovke.",
+        "requisitos": "Android 7.0 alebo vyšší · asi 200 MB hlasového modelu, ktorý sa stiahne pri prvom otvorení aplikácie",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Stiahnuť z Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage a .deb pre x64. Globálne skratky závisia od tvojho desktopového prostredia; keď sú tvoje už obsadené, v Nastaveniach si nastavíš iné.",
+        "texto": "AppImage, .deb a .rpm pre x64. Globálne skratky závisia od pracovného prostredia; v Nastaveniach sa dajú zmeniť, ak sú tvoje už obsadené.",
         "requisitos": "x64 · hlasový model zaberá zhruba 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Zobraziť vydania na GitHube"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Brez brezplačnega preizkusa – in to namerno: vesa s tremi dokumenti <em>je</em> preizkus. Ne poteče in pozneje ne zaračuna ničesar. Cene so španske; v tvoji trgovini bodo prikazane v tvoji valuti.",
     "cuerda_donde": "Vrvico kupiš v aplikaciji, v zalogovniku.",
-    "solo_movil": "Povodec velja samo za telefon: na iPhoneu, iPadu in Androidu. Na računalniku je vse odprto.",
+    "solo_movil": "Natiahnutie existuje len na iPhone a iPad. Na Androide a na počítači je všetko otvorené.",
     "comparacion_titulo": "Kaj zaračunajo drugi.",
     "comparacion_entradilla": "Aplikacije za govor v oblaku plačujejo strežnike vsakič, ko pritisneš predvajaj, zato zaračunavajo po urah ali po znakih. Yappy sintetizira na tvoji napravi: poslušanje ne stane nič, zato ga lahko sploh ne zaračuna.",
     "comparacion_nota": "Objavljene cene, preverjene septembra 2026. Pogosto se spreminjajo: pred odločitvijo jih preveri na vsaki spletni strani.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Zakaj na računalniku nič ne stane?",
-        "a": "Ker je povodec pripet na telefon, na računalnik pa ne. Tam so tiskarna, obešalnik brez dna in most odprti. To ni uvedna ponudba: namizje je stroj, ki dela težko delo, in zaračunavati za to, da tvoj lastni računalnik ponoči dela, ni imelo smisla."
+        "a": "Pretože natiahnutie je nastavené len na iPhone a iPad, nie na počítači. Tam sú tlačiareň, vešiak bez dna a most otvorené. Nie je to úvodná ponuka: desktop je stroj, ktorý robí ťažkú prácu, a účtovať si za to, že tvoj vlastný počítač pracuje v noci, nedávalo zmysel."
       }
     ],
     "una_a_una": "jedna po druhej, s ich dátami"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Je to naozaj zadarmo?",
-            "a": "Áno. Yappy má otvorený kód pod licenciou MIT. Počúvať, čo si čítaš, je otázka prístupnosti, a nástroje prístupnosti by nemali žiadať kartu. Na počítači nie je platená verzia ani reklamy. V iPhone nesie skúšobný papagáj na svojom bidle naraz tri dokumenty, bez časového limitu. Ak chceš bidlo bez dna, tlačiareň audiokníh a most do počítača, natiahneš ho Yappy Parlanchínom – predplatným alebo jednorazovou doživotnou platbou. Tak či onak: bez účtu a bez reklám."
+            "a": "Áno. Yappy je open source s licenciou MIT. Možnosť počúvať, čo čítaš, je vec prístupnosti a nástroje na prístupnosť by nemali pýtať kartu. Na počítači a na Androide nie je platená verzia ani reklamy. Na iPhone má skúšobný papagáj na vešiaku tri dokumenty naraz, bez časového obmedzenia; ak chceš vešiak bez dna, tlačiareň audiokníh a most s počítačom, natiahneš ho cez Yappy Parlanchín, v predplatnom alebo v jednorazovej celoživotnej platbe. Bez účtu a bez reklám v každom prípade."
           },
           {
             "q": "V čom je háčik? Ako sa to financuje?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "A naskenované PDF bez textu vo vnútri?",
-            "a": "Na počítači sa každé PDF skôr, než sa začne čítať, prehne cez lokálne OCR a ani tam nič neopustí tvoj počítač. V iPhone to ešte nejde: ak je PDF fotkou papiera, telefón nenájde text, ktorý by mohol čítať. Krivo naskenovaný alebo rozmazaný sken dá, čo dá ktorékoľvek OCR, ale slušný kus sa prečíta celý."
+            "a": "Prejdú cez lokálne OCR pred čítaním, na počítači, iPhone aj Androide, a ani tu nič neopustí zariadenie. Je to zadarmo všade: OCR nie je súčasť predplatného. Je určené pre tlačené písmo v latinke; iné písma rozpozná len iPhone, iPad a Mac, pomocou rozpoznávača Apple. Šikmý alebo rozmazaný sken dá to, čo dokáže hocijaké OCR, ale slušný sa prečíta celý."
           },
           {
             "q": "Dokáže čítať knihy kúpené v obchode?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "O čom je reč",
-        "texto": "Toto je politika súkromia Yappy: aplikácie pre iPhone, iPad, Mac, Windows a Linux, vrátane widgetov a rozšírení. Je krátka, lebo na rozprávanie nie je veľa. Yappy nemá účty, nežiada tvoje meno ani e-mail a to, čo mu dáš na prečítanie, neopustí tvoje zariadenie. Na sieť odchádzajú štyri konkrétne veci a tu sú všetky štyri, jedna za druhou."
+        "texto": "Toto je zásada ochrany súkromia Yappy: aplikácie pre iPhone, iPad, Android, Mac, Windows a Linux, s widgetmi a rozšíreniami. Je krátka, pretože niet veľa čo povedať. Yappy nemá účty, nepýta si tvoje meno ani e-mail a to, čo mu dáš čítať, neopúšťa tvoje zariadenie. Čo sa siete dotýka, sú štyri konkrétne veci, a tu sú tie štyri, jedna po druhej."
       },
       {
         "titulo": "Žiadny účet, žiadne meno, žiadne texty",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Dotyk so sieťou (4): nákupy",
-        "texto": "Predplatné aj doživotný nákup Yappy Parlanchín spravuje Apple cez App Store a existujú len na iPhone a iPade. Aby aplikácia zistila, či ti predplatné stále beží, používa <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, správcu predplatných. Ten dostane anonymný identifikátor inštalácie a účtenku od Apple; tvoje meno a e-mail nie. Apple popisuje svoje údaje vo <a href=\"https://www.apple.com/legal/privacy/\">vlastnej politike</a>."
+        "texto": "Predplatné a celoživotný nákup Yappy Parlanchín spravuje Apple cez App Store a existujú len na iPhone a iPad. Aby vedela, či je predplatné aktívne, aplikácia používa <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, správcu predplatného, ktorý dostane anonymný identifikátor inštalácie a potvrdenie od Apple; nedostane meno ani e-mail. Na Androide sa nič nepredáva, ale aplikácia tiež spustí RevenueCat pri otvorení, aby skontrolovala, či Google Play ponúka nejaký nákup: RevenueCat vtedy dostane ten istý anonymný identifikátor a dotaz prejde cez platobný systém Google Play. Apple a Google vysvetľujú svoje vlastné údaje vo svojich zásadách: <a href=\"https://www.apple.com/legal/privacy/\">Apple</a> a <a href=\"https://policies.google.com/privacy\">Google</a>."
       },
       {
         "titulo": "Most: z iPhone do počítača a späť",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Dokáže čítať školské PDF a knihy, ktoré už mám?",
-        "a": "Akýkoľvek PDF, EPUB, Word či ODT, ktorý dokážete otvoriť. Ak je PDF len sken bez textu, verzia pre počítač ho pred čítaním preženie cez lokálne OCR; v telefóne to zatiaľ nie je. Knihy s DRM z obchodu sa nedajú čítať nikde, ani tu."
+        "a": "Hocijaký PDF, EPUB, Word alebo ODT, ktorý vieš otvoriť. Ak je PDF sken bez textu, Yappy ho prejde cez lokálne OCR pred čítaním, na počítači aj mobile, a bez poplatku. Knihy s DRM z obchodu sa nedajú čítať nikde, ani tu."
       },
       {
         "q": "Koľko stojí každodenné používanie?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Skenované PDF",
-        "extra_texto": "Ak je PDF fotkou papiera a text v ňom nie je, desktopová verzia ho pred čítaním preženie cez lokálne OCR. Na iPhone to zatiaľ nejde.",
+        "extra_texto": "Ak je PDF fotka papiera a neobsahuje text, Yappy ho prejde cez lokálne OCR pred čítaním, na počítači, iPhone aj Androide. Je to zadarmo: OCR nie je súčasť predplatného.",
         "faq": [
           {
             "q": "Existuje limit počtu strán?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "A čo ak je PDF sken bez textu?",
-            "a": "Desktopová verzia ho pred čítaním preženie cez lokálne OCR a ani tam nič neopustí váš počítač. Na iPhone to zatiaľ nejde: ak je PDF fotkou papiera, telefón nenájde text na prečítanie."
+            "a": "Yappy ho prejde cez lokálne OCR pred čítaním, na počítači aj mobile, a ani tu nič neopustí zariadenie. Šikmý alebo rozmazaný sken dá to, čo dokáže hocijaké OCR, ale slušný sa prečíta celý."
           },
           {
             "q": "Odstráni hlavičky a čísla strán?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Ak video nemá prepis",
-        "extra_texto": "Potom nie je čo čítať: Yappy pracuje s publikovaným textom, neprepisuje zvuk videa. Na iPhone táto funkcia existuje; na Androide ešte nie.",
+        "extra_texto": "Takže nie je čo čítať: Yappy pracuje s publikovaným textom, neprepisuje zvuk z videa.",
         "faq": [
           {
             "q": "Prepisuje zvuk videa?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Funguje to na všetkých videoplatformách?",
-            "a": "Tam, kde je zverejnený a dostupný prepis. Na iPhone táto funkcia je; vo verzii pre Android ešte nie."
+            "a": "Dnes s YouTube, na iPhone, Androide a počítači. Z iných videoportálov Yappy zatiaľ transkripciu stiahnuť nevie."
           },
           {
             "q": "Spotrebuje to dáta?",

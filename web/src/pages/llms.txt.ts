@@ -16,15 +16,15 @@ export const GET: APIRoute = async () => {
 
   const cuerpo = `# Yappy
 
-> Yappy convierte cualquier texto (artículos web, PDF, EPUB, Word, ODT, vídeos y notas de voz) en voz natural, en 31 idiomas, con un modelo que corre entero en el aparato del usuario. Sin nube, sin cuentas y sin tarifa por carácter. Código abierto con licencia MIT. Publicada en la App Store para iPhone y iPad; escritorio para macOS, Windows y Linux; Android aún sin publicar.
+> Yappy convierte cualquier texto (artículos web, PDF, EPUB, Word, ODT, vídeos y notas de voz) en voz natural, en 31 idiomas, con un modelo que corre entero en el aparato del usuario. Sin nube, sin cuentas y sin tarifa por carácter. Código abierto con licencia MIT. Publicada en la App Store para iPhone y iPad y en Google Play para Android; escritorio para macOS, Windows y Linux.
 
 Datos esenciales:
 - Modelo de voz: ${MOTOR.modelo} (${MOTOR.fabricante}), unos ${MOTOR.parametros} de parámetros, licencia ${MOTOR.licenciaModelo} (el modelo, no la app). ${MOTOR.pesoEscritorio} en escritorio y ${MOTOR.pesoMovil} en móvil. Trabaja a nivel de carácter y va más rápido que el tiempo real en CPU.
 - ${MOTOR.voces} voces, todas políglotas: la misma voz lee los ${MOTOR.idiomas} idiomas sin cambiar de timbre.
 - El «guionizador» convierte lo escrito en lo dicho antes de sintetizar: fechas, horas, monedas, porcentajes, unidades, ordinales, números romanos con contexto, siglas por fonotáctica, abreviaturas y números deletreados con las gramáticas RBNF de Unicode CLDR (género y declinación incluidos) en los ${MOTOR.idiomas} idiomas. La verbalización anota en lugar de destruir, y por eso el karaoke es exacto.
-- Privacidad: la síntesis, la transcripción (${MOTOR.oido}, local) y la extracción de artículos ocurren en el dispositivo. Tocan la red exactamente cuatro cosas: la descarga inicial del modelo, las URL que el usuario comparte, unas estadísticas anónimas de uso (solo en móvil, apagables, a un servidor del propio autor) y las compras vía Apple y RevenueCat.
+- Privacidad: la síntesis, la transcripción (${MOTOR.oido}, local) y la extracción de artículos ocurren en el dispositivo. Tocan la red exactamente cuatro cosas: la descarga inicial del modelo, las URL que el usuario comparte, unas estadísticas anónimas de uso (solo en móvil, apagables, a un servidor del propio autor) y las compras vía Apple y RevenueCat (en Android no se vende nada, pero RevenueCat se pone en marcha para comprobar si Google Play ofrece alguna compra).
 - «El puente»: el ordenador sintetiza audiolibros .m4b con capítulos y los envía al móvil por una conexión directa cifrada (QUIC/iroh), emparejada con un código QR y revocable. Sin servidor intermedio.
-- Precio: gratis, con escucha ilimitada y tres documentos a la vez en la «percha». «Yappy Parlanchín» (${CUERDA.mensual} al mes, ${CUERDA.anual} al año o ${CUERDA.vida} una sola vez) añade percha sin fondo, la imprenta de audiolibros y el puente. No hay prueba gratuita. La cuerda solo existe en iPhone y iPad.
+- Precio: gratis, con escucha ilimitada y tres documentos a la vez en la «percha». «Yappy Parlanchín» (${CUERDA.mensual} al mes, ${CUERDA.anual} al año o ${CUERDA.vida} una sola vez) añade percha sin fondo, la imprenta de audiolibros y el puente. No hay prueba gratuita. La cuerda solo existe en iPhone y iPad: en Android y en el escritorio todo viene abierto, gratis.
 
 ## Páginas principales (español)
 - [Portada](${p("portada")}): qué es, demo sonora en seis idiomas y demo del guionizador en WebAssembly.
@@ -48,6 +48,7 @@ El sitio existe en 31 idiomas, con prefijo de idioma en la ruta (/fr/, /de/, /ja
 ## Código
 - [Repositorio](${ENLACES.github}): monorepo con la app (Tauri + Rust + Svelte), el motor, el guionizador y esta web. Licencia MIT.
 - [App Store](${ENLACES.appStore})
+- [Google Play](${ENLACES.googlePlay})
 `;
   return new Response(cuerpo, { headers: { "content-type": "text/plain; charset=utf-8" } });
 };

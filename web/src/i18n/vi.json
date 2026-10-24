@@ -37,6 +37,7 @@
     "descargar": "Tải xuống",
     "descargar_gratis": "Tải miễn phí",
     "en_app_store": "Tải trên App Store",
+    "en_google_play": "Tải về trên Google Play",
     "escuchar_muestra": "Nghe thử",
     "probar": "Dùng thử ngay",
     "leer_mas": "Đọc tiếp",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Trên Android",
-        "texto": "Cùng một cú chạm: bạn chia sẻ một liên kết, một đoạn chữ hay một tài liệu, nó rơi ngay vào cùng một hàng đợi, với trích xuất bài báo, karaoke và giọng đọc, tất cả ngay trên điện thoại. Bản Android là đứa trẻ nhất trong nhà và còn thiếu ba thứ mà iPhone đã có: nút điều khiển trên màn hình khóa, video và trình phát sách nói .m4b. Còn chuyện quan trọng hơn: <strong>chưa phát hành</strong>. Tài khoản nhà phát triển Google vẫn đang chờ xác minh, nên chúng tôi không nêu ngày, vì cũng không biết ngày nào. Khi ra mắt sẽ thông báo tại đây và trên kho mã nguồn. Trên Android không có gì để giấu. Tất cả đều mở."
+        "texto": "Thao tác giống như trên iPhone: bạn chia sẻ một liên kết, đoạn văn bản hoặc tài liệu và nó sẽ vào hàng đợi, với chức năng trích xuất bài viết, karaoke và giọng đọc, tất cả xử lý ngay trên điện thoại. Vẫn phát khi khóa màn hình, với các nút điều khiển trong thông báo, và máy in hoạt động nền trong khi bạn làm việc khác. Có trên <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> và ở đó <strong>hoàn toàn miễn phí</strong>: không có Yappy Parlanchín hay bất kỳ khoản phí nào, hàng đợi không giới hạn và máy in audiobook mở sẵn. Chỉ thiếu các tính năng riêng của Apple: Siri và ứng dụng Phím tắt."
       }
     ],
     "atajo": "Lối tắt",
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Tải Yappy: iPhone, iPad, Mac, Windows và Linux",
-    "description": "Yappy miễn phí và mã nguồn mở. Có trên App Store cho iPhone và iPad; bản máy tính thì biên dịch từ mã nguồn hoặc tải từ GitHub. Yêu cầu hệ thống và dung lượng của mô hình giọng nói.",
+    "title": "Tải Yappy: iPhone, iPad, Android, Mac, Windows và Linux",
+    "description": "Yappy miễn phí và mã nguồn mở. Trên App Store cho iPhone và iPad, trên Google Play cho Android; bản máy tính tải từ GitHub hoặc biên dịch từ mã nguồn. Yêu cầu hệ thống và dung lượng mô hình giọng nói.",
     "h1": "Miễn phí, mã nguồn mở, và của bạn.",
     "entradilla": "Không cần đăng ký, không cần email, cũng không có bản dùng thử hết hạn. Tải xuống là xong.",
     "modelo_nota": "Lần đầu tiên, Yappy sẽ tải mô hình giọng nói ({peso}). Trên iPhone, nó có sẵn trong bản cài đặt; trên máy tính, tải vào lần đầu bạn mở ứng dụng. Sau đó thì không cần mạng nữa.",
-    "android_titulo": "Android",
-    "android_texto": "Bản Android đã biên dịch xong và chạy tốt, nhưng chưa được phát hành: tài khoản nhà phát triển Google vẫn đang chờ xác minh. Khi ra mắt, sẽ có thông báo ở đây và trên kho mã nguồn.",
+    "android_titulo": "Trên Android, không giới hạn",
+    "android_texto": "Trên Android không có Yappy Parlanchín hay bất kỳ khoản phí nào: hàng đợi không giới hạn và máy in audiobook mở sẵn, giống như trên máy tính. Gói đăng ký chỉ tồn tại trên iPhone và iPad.",
     "escritorio_aviso": "Các file nhị phân cho máy tính được đăng trên GitHub. Nếu bản bạn thấy ở đó cũ hơn bản trên iPhone tức là bản mới nhất chưa được tải lên: mã nguồn thì luôn cập nhật, và bạn có thể tự biên dịch bằng <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS hoặc iPadOS 17 trở lên · mô hình giọng nói chiếm khoảng 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Tải xuống trên App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "Trên Google Play, miễn phí và không cần tài khoản. Thao tác giống như trên iPhone: bạn chia sẻ một liên kết, đoạn văn bản hoặc tài liệu và nó sẽ phát ngay, với karaoke, máy in audiobook và các nút điều khiển trên màn hình khóa.",
+        "requisitos": "Android 7.0 trở lên · khoảng 200 MB cho mô hình giọng nói, tải về lần đầu mở ứng dụng",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Tải về trên Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage và .deb cho x64. Phím tắt toàn cục phụ thuộc môi trường desktop của bạn; nếu tổ hợp của bạn đã bị chiếm, vào Tùy chọn để đổi sang tổ hợp khác.",
+        "texto": "AppImage, .deb và .rpm cho x64. Phím tắt toàn cục phụ thuộc vào môi trường desktop của bạn; trong Preferences có thể đổi sang phím khác nếu phím của bạn đã bị chiếm.",
         "requisitos": "x64 · mô hình giọng nói khoảng 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Xem các bản phát hành trên GitHub"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Không có dùng thử miễn phí, và đó là chủ ý: cái móc ba tài liệu <em>chính là</em> bản dùng thử, không hết hạn và cũng không tự tính tiền sau đó. Giá là giá ở Tây Ban Nha; trong cửa hàng ứng dụng của bạn, chúng sẽ hiện theo đồng tiền của bạn.",
     "cuerda_donde": "Gói này được mua ngay trong ứng dụng, ở gian hàng sau.",
-    "solo_movil": "Phần thu phí nằm trên điện thoại: iPhone, iPad và Android. Trên máy tính thì tất cả đều mở.",
+    "solo_movil": "Gói trả phí chỉ có trên iPhone và iPad. Trên Android và máy tính mọi thứ đều mở sẵn.",
     "comparacion_titulo": "Những gì app khác thu phí.",
     "comparacion_entradilla": "Các app giọng nói trên đám mây phải trả tiền máy chủ mỗi khi bạn bấm play, nên họ tính phí theo giờ hoặc theo ký tự. Yappy tổng hợp giọng ngay trên máy của bạn: mỗi lần nghe tốn đúng bằng không, nên nó mới có thể không thu tiền.",
     "comparacion_nota": "Giá niêm yết lấy vào tháng 9 năm 2026. Giá thay đổi thường xuyên: hãy kiểm tra lại trên từng trang web trước khi quyết định.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Tại sao trên máy tính lại không phải trả tiền?",
-        "a": "Vì phần thu phí nằm trên điện thoại, còn máy tính thì không. Ở đó, lò in, túi không đáy và cầu nối đều mở sẵn. Đây không phải khuyến mãi ra mắt: máy tính để bàn là cỗ máy làm việc nặng, mà thu tiền vì để chiếc máy của chính bạn làm việc trong đêm thì chẳng có nghĩa lý gì."
+        "a": "Vì gói trả phí chỉ thiết lập trên iPhone và iPad, không có trên máy tính. Ở đó máy in, hàng đợi không giới hạn và cầu nối đều mở sẵn. Đây không phải ưu đãi ra mắt: máy tính là thiết bị làm việc nặng, và việc thu phí để máy tính của chính bạn chạy ban đêm thì vô lý."
       }
     ],
     "una_a_una": "từng giọng một, kèm dữ liệu"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Có thật là miễn phí không?",
-            "a": "Có. Yappy là mã nguồn mở theo giấy phép MIT. Được nghe những gì mình đọc là chuyện của khả năng tiếp cận, mà công cụ hỗ trợ tiếp cận không nên đòi quẹt thẻ. Trên máy tính không có bản trả phí, cũng không có quảng cáo. Trên iPhone, chú vẹt dùng thử cõng được ba tài liệu cùng lúc trên cột đậu của nó, không giới hạn thời gian; nếu muốn cột đậu không đáy, xưởng in sách nói và cây cầu nối với máy tính, bạn lên dây bằng Yappy Parlanchín, theo gói đăng ký hoặc trả một lần dùng trọn đời. Dù chọn cách nào cũng không cần tài khoản và không có quảng cáo."
+            "a": "Có. Yappy là mã nguồn mở với giấy phép MIT. Được nghe những gì mình đọc là vấn đề hỗ trợ tiếp cận, và công cụ hỗ trợ tiếp cận không nên yêu cầu thẻ thanh toán. Trên máy tính và Android không có phiên bản trả phí hay quảng cáo. Trên iPhone, bản dùng thử cho phép ba tài liệu cùng lúc trong hàng đợi, không giới hạn thời gian; nếu muốn hàng đợi không giới hạn, máy in audiobook và cầu nối với máy tính, bạn nâng cấp với Yappy Parlanchín, theo gói đăng ký hoặc trả một lần trọn đời. Không cần tài khoản và không có quảng cáo, trong mọi trường hợp."
           },
           {
             "q": "Có bẫy gì không? Dự án sống bằng gì?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "Còn PDF quét, bên trong không có chữ thì sao?",
-            "a": "Trên máy tính, chúng đi qua một bộ OCR chạy ngay trên máy trước khi được đọc, và ở đó cũng chẳng có gì rời khỏi máy của bạn. Trên iPhone thì chưa: nếu PDF là tấm ảnh chụp tờ giấy, điện thoại không tìm thấy chữ nào để đọc. Bản quét bị lệch hay nhòe sẽ cho ra đúng thứ mà OCR nào cũng cho nổi, còn bản quét tử tế thì đọc được trọn."
+            "a": "Chúng được qua OCR cục bộ trước khi đọc, trên máy tính, iPhone và Android, và cũng không có gì rời khỏi thiết bị của bạn. Miễn phí trên mọi nền tảng: OCR không nằm trong gói trả phí. Nó được thiết kế cho chữ in Latin; các hệ chữ viết khác chỉ được nhận dạng trên iPhone, iPad và Mac, bằng bộ nhận dạng của Apple. Bản scan nghiêng hoặc mờ sẽ cho kết quả như bất kỳ OCR nào có thể cho, nhưng bản scan tốt thì đọc được hết."
           },
           {
             "q": "Yappy có đọc được sách tôi đã mua ở cửa hàng không?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "Trang này nói về điều gì",
-        "texto": "Đây là chính sách quyền riêng tư của Yappy: ứng dụng cho iPhone, iPad, Mac, Windows và Linux, cùng các widget và tiện ích mở rộng của nó. Chính sách ngắn vì chẳng có mấy chuyện để kể. Yappy không có tài khoản, không hỏi tên hay email của bạn, và những gì bạn đưa cho nó đọc không rời khỏi thiết bị. Những việc đụng đến mạng chỉ có bốn, và đây là cả bốn, lần lượt từng cái."
+        "texto": "Đây là chính sách quyền riêng tư của Yappy: ứng dụng cho iPhone, iPad, Android, Mac, Windows và Linux, kể cả widget và tiện ích mở rộng. Ngắn gọn vì có ít việc phải nói. Yappy không có tài khoản, không hỏi tên hay email của bạn, và nội dung bạn cho đọc không rời khỏi thiết bị. Có bốn việc cụ thể chạm tới mạng, và đây là cả bốn việc, từng cái một."
       },
       {
         "titulo": "Không tài khoản, không tên, không văn bản",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Chạm vào mạng (4): Việc mua hàng",
-        "texto": "Gói đăng ký và lần mua trọn đời Yappy Parlanchín do Apple quản lý qua App Store, và chỉ có trên iPhone và iPad. Để biết gói của bạn còn hiệu lực hay không, app dùng <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, một dịch vụ quản lý gói đăng ký. Dịch vụ này nhận một mã ẩn danh của bản cài đặt và hóa đơn từ Apple; không nhận tên hay email của bạn. Apple giải thích về dữ liệu của riêng họ trong <a href=\"https://www.apple.com/legal/privacy/\">chính sách của mình</a>."
+        "texto": "Gói đăng ký và mua trọn đời Yappy Parlanchín do Apple quản lý thông qua App Store, và chỉ có trên iPhone và iPad. Để biết gói của bạn có đang hoạt động không, app dùng <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, một trình quản lý đăng ký, nhận mã định danh ẩn danh của lần cài đặt và biên lai từ Apple; không nhận tên hay email của bạn. Trên Android không bán gì cả, nhưng app vẫn khởi động RevenueCat khi mở, để kiểm tra xem Google Play có cung cấp mục mua nào không: RevenueCat lúc đó nhận cùng mã định danh ẩn danh đó, và truy vấn đi qua hệ thống thanh toán của Google Play. Apple và Google giải thích dữ liệu của họ trong chính sách riêng: <a href=\"https://www.apple.com/legal/privacy/\">của Apple</a> và <a href=\"https://policies.google.com/privacy\">của Google</a>."
       },
       {
         "titulo": "Cầu nối: từ iPhone sang máy tính, và ngược lại",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Có đọc được PDF bài giảng và những cuốn sách tôi đã có không?",
-        "a": "Bất kỳ tệp PDF, EPUB, Word hay ODT nào mà bạn mở được. Nếu PDF là bản scan không có lớp chữ, phiên bản trên máy tính sẽ chạy OCR ngay tại chỗ trước khi đọc; trên điện thoại thì chưa có tính năng này. Sách có DRM mua ở cửa hàng thì không đọc được ở đâu cả, kể cả ở đây."
+        "a": "Bất kỳ file PDF, EPUB, Word hay ODT nào bạn có thể mở. Nếu PDF là bản scan không có text, Yappy sẽ cho qua OCR cục bộ trước khi đọc, trên máy tính và điện thoại, và không tính phí. Sách có DRM từ cửa hàng thì không đọc được ở đâu cả, ở đây cũng vậy."
       },
       {
         "q": "Dùng hằng ngày tốn bao nhiêu?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "PDF bản scan",
-        "extra_texto": "Nếu PDF chỉ là ảnh chụp tờ giấy, bên trong không có chữ, thì bản trên máy tính sẽ chạy qua OCR ngay trên máy trước khi đọc. Trên iPhone thì chưa.",
+        "extra_texto": "Nếu PDF là ảnh chụp giấy và không có text bên trong, Yappy sẽ cho qua OCR cục bộ trước khi đọc, trên máy tính, iPhone và Android. Miễn phí: OCR không nằm trong gói trả phí.",
         "faq": [
           {
             "q": "Có giới hạn số trang không?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "Còn nếu PDF là bản scan không có chữ thì sao?",
-            "a": "Bản trên máy tính sẽ chạy qua OCR ngay trên máy trước khi đọc, và cũng chẳng có gì thoát ra khỏi máy của bạn. Trên iPhone thì chưa: nếu PDF chỉ là ảnh chụp tờ giấy, điện thoại sẽ không tìm thấy chữ nào để đọc."
+            "a": "Yappy cho qua OCR cục bộ trước khi đọc, trên máy tính và điện thoại, và cũng không có gì rời khỏi thiết bị của bạn. Bản scan nghiêng hoặc mờ sẽ cho kết quả như bất kỳ OCR nào có thể cho, nhưng bản scan tốt thì đọc được hết."
           },
           {
             "q": "Nó có bỏ đầu trang và số trang không?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Nếu video không có bản chép lời",
-        "extra_texto": "Vậy thì chẳng có gì để đọc: Yappy làm việc với văn bản đã đăng, không chép lời âm thanh của video. Trên iPhone có tính năng này; trên Android thì chưa.",
+        "extra_texto": "Vậy thì không có gì để đọc: Yappy làm việc với phụ đề đã công bố, không phiên âm audio của video.",
         "faq": [
           {
             "q": "Có chép lời âm thanh của video không?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Có chạy trên mọi nền tảng video không?",
-            "a": "Ở đâu có bản chép lời đã đăng và truy cập được thì chạy được ở đó. Trên iPhone có tính năng này; bản Android thì chưa."
+            "a": "Hiện tại chỉ với YouTube, trên iPhone, Android và máy tính. Với các nền tảng video khác, Yappy chưa biết cách yêu cầu phụ đề."
           },
           {
             "q": "Có tốn dữ liệu không?",

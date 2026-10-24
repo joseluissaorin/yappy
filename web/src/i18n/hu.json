@@ -21,7 +21,7 @@
     "convertir": "konvertalas",
     "idiomas": "nyelvek",
     "alternativas": "alternativak",
-    "formato_pdf": "pdf-hanggá",
+    "formato_pdf": "pdf-hangga",
     "formato_epub": "epub-hangoskonyv",
     "formato_word": "word-hang",
     "formato_articulos": "cikkek-hang",
@@ -37,6 +37,7 @@
     "descargar": "Letöltés",
     "descargar_gratis": "Ingyenes letöltés",
     "en_app_store": "Letöltés az App Store-ból",
+    "en_google_play": "Letöltés a Google Play áruházból",
     "escuchar_muestra": "Minta meghallgatása",
     "probar": "Kipróbálom most",
     "leer_mas": "Tovább olvasom",
@@ -248,11 +249,11 @@
       {
         "id": "android",
         "titulo": "En Android",
-        "texto": "Ugyanaz a mozdulat: megosztasz egy hivatkozást, egy szöveget vagy egy dokumentumot, és az ugyanabba a sorba kerül – a cikk kinyerésével, a karaokéval és a hanggal, minden magán a telefonon belül. Az Android-verzió a család legfiatalabb tagja, és még három dolog hiányzik belőle, amit az iPhone tud: a vezérlők a zárolási képernyőn, a videók és a .m4b hangoskönyv-lejátszó. És van fontosabb is: <strong>egyelőre nincs közzétéve</strong>. A Google fejlesztői fiókja még ellenőrzés alatt áll, dátumot nem adunk, mert nincs. Amikor megjelenik, itt és a repóban jelentjük be. Viszont: az Androidon nem lesz csavar. Minden nyitva van."
+        "texto": "Ugyanaz a mozdulat, mint iPhone-on: megoszol egy linket, szöveget vagy dokumentumot, és már a sorban is van, cikkmentéssel, karaoke-val és hanggal, minden a telefonon belül. Zárolt képernyővel is megy tovább, az értesítésben ott vannak a vezérlők, a hangoskönyv-nyomda pedig a háttérben dolgozik, miközben te mást csinálsz. A <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> áruházban van, és ott <strong>teljesen ingyenes</strong>: nincs Yappy Parlanchín, nincs mit fizetni, a polc végtelen, a hangoskönyv-nyomda pedig nyitva. Csak az Apple saját dolgai hiányoznak: Siri és a Parancsok alkalmazás."
       }
     ],
     "atajo": "Atajo",
-    "atajo_leer": "Leer lo que miras",
+    "atajo_leer": "Felolvassa, amit nézel",
     "atajo_portapapeles": "Vágólap felolvasása",
     "atajo_pausar": "Pausar",
     "cierre": "A kézikönyv ennyi."
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Yappy letöltése: iPhone, iPad, Mac, Windows és Linux",
-    "description": "A Yappy ingyenes és nyílt forráskódú. App Store-ból iPhone-ra és iPadra. Az asztali változat forráskódból fordítható, vagy letölthető a GitHubról. Követelmények és a hangmodell mérete.",
+    "title": "Yappy letöltése: iPhone, iPad, Android, Mac, Windows és Linux",
+    "description": "A Yappy ingyenes és nyílt forráskódú. Az App Store-ban iPhone-ra és iPadre, a Google Play-ben Androidra; az asztali verziót a GitHubról töltheted le, vagy a forráskódból fordíthatod. Rendszerkövetelmények és a hangmodell mérete.",
     "h1": "Ingyenes, nyílt és a tiéd.",
     "entradilla": "Nincs regisztráció, nincs e-mail-cím, nincs lejáró próbaverzió. Letöltöd, és kész.",
     "modelo_nota": "Első használatkor a Yappy letölti a hangmodellt ({peso}). iPhone-on a telepítés része; számítógépen az app első megnyitásakor jön le. Utána már nincs szükség internetkapcsolatra.",
-    "android_titulo": "Android",
-    "android_texto": "Lefordítva és működik, de még nincs közzétéve: a Google fejlesztői fiókja továbbra is hitelesítés alatt áll. Amint megjelenik, itt és a repóban bejelentjük.",
+    "android_titulo": "Androidon nincs zsinór",
+    "android_texto": "Androidon nincs Yappy Parlanchín, nincs mit fizetni: a polc végtelen, a hangoskönyv-nyomda nyitva van, mint a számítógépen. Előfizetés csak iPhone-on és iPaden létezik.",
     "escritorio_aviso": "Az asztali binárisok a GitHubon jelennek meg. Ha az ott található verzió régebbi, mint az iPhone-é, akkor a legfrissebb még nincs feltöltve: a kód viszont naprakész, és <code>cargo tauri build</code> paranccsal fordítható.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS vagy iPadOS 17-től · a hangmodell nagyjából 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Letöltés az App Store-ból"
+      },
+      {
+        "nombre": "Android",
+        "texto": "A Google Play-ben, ingyen, fiók nélkül. Ugyanaz a mozdulat, mint iPhone-on: megoszol egy linket, szöveget vagy dokumentumot, és máris szól, karaoke-val, hangoskönyv-nyomdával és vezérlőkkel a zárolt képernyőn.",
+        "requisitos": "Android 7.0 vagy újabb · kb. 200 MB hangmodell, amely az alkalmazás első megnyitásakor töltődik le",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Letöltés a Google Play áruházból"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage és .deb x64-re. A globális gyorsbillentyűk az asztali környezettől függenek; ha a tiéid már foglaltak, a Beállításokban másra cserélheted őket.",
+        "texto": "AppImage, .deb és .rpm x64-re. A globális billentyűparancsok az asztali környezettől függenek; a Beállításokban másikat lehet választani, ha a tieid már foglaltak.",
         "requisitos": "x64 · kb. 398 MB-os hangmodell",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "A kiadások megtekintése a GitHubon"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Nincs ingyenes próba, és ez szándékos: a háromdokumentumos fogas <em>maga</em> a próba, nem jár le, és később nem indít számlázást. Az árak spanyolországiak; a boltodban a te pénznemedben jelennek meg.",
     "cuerda_donde": "A zsinór az alkalmazáson belül vehető meg, a bolt hátsó szobájában.",
-    "solo_movil": "A kassza a mobilon van: iPhone-on, iPaden és Androidon. A számítógépen minden szabad.",
+    "solo_movil": "A zsinór csak iPhone-on és iPaden létezik. Androidon és számítógépen minden nyitva van.",
     "comparacion_titulo": "Amit a többiek kérnek.",
     "comparacion_entradilla": "A felhőben dolgozó felolvasóalkalmazások minden lejátszásnál szervert fizetnek, ezért órában vagy karakterben számláznak. A Yappy a készülékeden szintetizál: egy meghallgatásnak nulla a költsége, ezért engedheti meg, hogy ne kérjen érte pénzt.",
     "comparacion_nota": "A nyilvános árakat 2026 szeptemberében néztük meg. Gyakran változnak: döntés előtt ellenőrizd őket az egyes oldalakon.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Miért nem kell a számítógépen fizetni?",
-        "a": "Mert a kassza a mobilhoz van kötve, a számítógéphez nem. Ott a nyomda, a feneketlen fogas és a híd szabadon használható. Ez nem bevezető akció: az asztali gép végzi a nehéz munkát, és pénzt kérni azért, hogy a saját géped éjjel dolgozzon, nem volt értelme."
+        "a": "Mert a zsinór csak iPhone-on és iPaden van felszerelve, számítógépen nem. Ott a nyomda, a végtelen polc és a híd nyitva van. Ez nem indulási akció: az asztali gép az a masina, amely a nehéz munkát végzi, és értelmetlen lett volna pénzt kérni azért, hogy a saját gépednek megengedjem éjjel dolgozni."
       }
     ],
     "una_a_una": "egyenként, a saját adataikkal"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Tényleg ingyenes?",
-            "a": "Igen. A Yappy nyílt forráskódú, MIT-licenc alatt. Az, hogy valaki meghallgathassa, amit olvas, akadálymentesítés kérdése, az akadálymentesítő eszközöknek pedig nem kellene bankkártyát kérniük. A számítógépen nincs fizetős változat és nincs reklám. Az iPhone-on a próbapapagáj egyszerre három dokumentumot tart az ülőkáján, időkorlát nélkül; ha feneketlen ülőkát, hangoskönyv-nyomdát és hidat a számítógéphez szeretnél, a Yappy Parlanchínnal húzod fel: előfizetéssel vagy egyetlen, élethosszig szóló fizetéssel. Fiók nélkül és reklám nélkül, minden esetben."
+            "a": "Igen. A Yappy nyílt forráskódú, MIT licenccel. Hogy meghallgathasd, amit olvasol, az akadálymentesítés kérdése, az akadálymentesítő eszközöknek pedig nem kellene bankkártyát kérniük. Számítógépen és Androidon nincs fizetős verzió, nincsenek hirdetések. iPhone-on a próbapapagáj egyszerre három dokumentumot tud a polcára tenni, időkorlát nélkül; ha végtelen polcot, hangoskönyv-nyomdát és hidat a számítógéphez akarsz, akkor felhúzod a Yappy Parlanchínnal, előfizetéssel vagy egyszeri, élethosszig tartó fizetéssel. Fiók nélkül és hirdetések nélkül, mindenesetre."
           },
           {
             "q": "Mi a trükk? Miből tartja fenn magát?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "És a szkennelt PDF-ek, amelyekben nincs szöveg?",
-            "a": "Asztali gépen a fájlok felolvasás előtt helyi OCR-en mennek át, és ott sem hagyja el semmi a gépet. iPhone-on ez még nincs meg: ha a PDF a papír fotója, a telefon nem talál szöveget, amit fel tudna olvasni. A ferde vagy elmosódott szkennelés annyit ad, amennyit bármelyik OCR tud, egy rendes szkennelés viszont elejétől a végéig olvasható."
+            "a": "Helyi OCR-en mennek át felolvasás előtt, számítógépen, iPhone-on és Androidon, és itt sem megy ki semmi a készülékedről. Mindenhol ingyenes: az OCR nem része az előfizetésnek. Latin betűs nyomtatott szövegre van tervezve; más írásrendszereket csak iPhone-on, iPaden és Macen ismer fel, az Apple felismerőjével. Egy ferde vagy elmosódott szkennelés annyit ad, amennyit bármelyik OCR tud adni, de egy tisztességes szkent végigolvassa."
           },
           {
             "q": "Fel tudja olvasni a boltban vett könyveimet?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "Miről szól ez",
-        "texto": "Ez a Yappy adatvédelmi tájékoztatója: az iPhone, iPad, Mac, Windows és Linux alatti appé, a widgetjeivel és a bővítményeivel együtt. Rövid, mert kevés a mesélnivaló. A Yappynak nincsenek fiókjai, nem kér nevet és e-mailt, és ami olvasásra adsz neki, az nem hagyja el a készüléked. Ami viszont hozzányúl a hálózathoz, az négy konkrét dolog, és itt van mind a négy, egyenként."
+        "texto": "Ez a Yappy adatvédelmi szabályzata: az iPhone-, iPad-, Android-, Mac-, Windows- és Linux-alkalmazásé, a widgetekkel és a bővítményekkel együtt. Rövid, mert kevés a mondanivaló. A Yappynak nincsenek fiókjai, nem kéri a neved vagy az e-mail-címed, és amit olvasásra adsz neki, az nem hagyja el a készüléket. Ami viszont hozzáér a hálózathoz, az négy konkrét dolog, és itt van mind a négy, egyesével."
       },
       {
         "titulo": "Se fiók, se név, se szövegek",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Amikor a hálózathoz nyúl (4): a vásárlások",
-        "texto": "Az előfizetéseket és a Yappy Parlanchín életre szóló megvásárlását az Apple kezeli az App Store-on keresztül, és csak iPhone-on és iPaden léteznek. Hogy az app megtudja, aktív-e az előfizetésed, a <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a> nevű előfizetéskezelőt használja, amely egy névtelen telepítési azonosítót és az Apple vásárlási bizonylatát kapja meg; a nevedet és az e-mail-címedet nem. Az Apple a saját adatait <a href=\"https://www.apple.com/legal/privacy/\">a maga tájékoztatójában</a> ismerteti."
+        "texto": "A Yappy Parlanchín előfizetéseit és végleges vásárlását az Apple kezeli az App Store-on keresztül, és csak iPhone-on és iPaden léteznek. Hogy megnézze, aktív-e az előfizetésed, az app a <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a> előfizetéskezelőt használja, amely egy névtelen telepítési azonosítót és az Apple nyugtáját kapja meg; a nevedet és az e-mailedet nem. Androidon nem árul semmit, de az app indításkor itt is elindítja a RevenueCatot, hogy megnézze, kínál-e a Google Play valamilyen vásárlást: a RevenueCat ekkor ugyanazt a névtelen azonosítót kapja meg, és a lekérdezés a Google Play számlázási rendszerén megy át. Az Apple és a Google a saját adatkezelését a saját szabályzatában fejti ki: <a href=\"https://www.apple.com/legal/privacy/\">az Apple-é</a> és <a href=\"https://policies.google.com/privacy\">a Google-é</a>."
       },
       {
         "titulo": "A híd: az iPhone-odtól a számítógépedig és vissza",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Felolvassa a tananyag PDF-jeit és a már meglévő könyveimet?",
-        "a": "Minden PDF, EPUB, Word vagy ODT, amit meg tudsz nyitni. Ha a PDF szöveg nélküli szkennelt kép, az asztali változat felolvasás előtt egy helyi OCR-en engedi át; mobilon ez még nincs. Az üzletből vett, DRM-es könyveket sehol sem lehet felolvastatni, itt sem."
+        "a": "Bármilyen PDF, EPUB, Word vagy ODT, amit meg tudsz nyitni. Ha a PDF szkennelt és nincs benne szöveg, a Yappy helyi OCR-en átfuttatja olvasás előtt, számítógépen és mobilon, fizetés nélkül. A boltok DRM-es könyveit sehol nem lehet olvasni, itt sem."
       },
       {
         "q": "Mennyibe kerül a mindennapi használat?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Szkennelt PDF-ek",
-        "extra_texto": "Ha a PDF a papír fotója, és nincs benne szöveg, az asztali verzió előbb helyi OCR-en engedi át, és csak utána olvassa fel. iPhone-on ez még nincs.",
+        "extra_texto": "Ha a PDF papírról készült fotó és nincs benne szöveg, a Yappy helyi OCR-en átfuttatja olvasás előtt, számítógépen, iPhone-on és Androidon. Ingyenes: az OCR nem része az előfizetésnek.",
         "faq": [
           {
             "q": "Van oldalszám-korlát?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "És ha a PDF szöveg nélküli szkennelt anyag?",
-            "a": "Az asztali verzió előbb helyi OCR-en engedi át, mielőtt felolvasná – ott sem kerül ki semmi a gépedről. iPhone-on ez még nincs: ha a PDF a papír fotója, a telefon nem talál szöveget, amit felolvashatna."
+            "a": "A Yappy helyi OCR-en átfuttatja olvasás előtt, számítógépen és mobilon, és itt sem megy ki semmi a készülékedről. Egy ferde vagy elmosódott szkennelés annyit ad, amennyit bármelyik OCR tud adni, de egy tisztességes szkent végigolvassa."
           },
           {
             "q": "Kidobja a fejléceket és az oldalszámokat?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Ha a videóhoz nincs leirat",
-        "extra_texto": "Akkor nincs mit olvasni: a Yappy a közzétett szövegből dolgozik, a videó hangját nem írja át. Ez a funkció iPhone-on létezik; Androidon még nem.",
+        "extra_texto": "Ilyenkor nincs mit felolvasni: a Yappy a közzétett szöveggel dolgozik, a videó hangját nem írja át.",
         "faq": [
           {
             "q": "Átírja a videó hangját?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Minden videós platformon működik?",
-            "a": "Ott, ahol van közzétett és elérhető leirat. Ez a funkció iPhone-on létezik; az Android-változatban még nem."
+            "a": "Ma YouTube-bal, iPhone-on, Androidon és számítógépen. Más videóplatformoknál a Yappy még nem tudja lekérni az átiratot."
           },
           {
             "q": "Fogyaszt adatot?",

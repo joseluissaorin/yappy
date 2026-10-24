@@ -1,5 +1,5 @@
 ---
-/** Los botones de tienda. Google Play no existe todavía: no se finge. */
+/** Los botones de tienda: App Store (iPhone y iPad) y Google Play (Android). */
 import { t, type Idioma } from "../i18n";
 import { ENLACES } from "../lib/datos";
 interface Props { lang: Idioma; centrado?: boolean }
@@ -7,5 +7,5 @@ const { lang, centrado = false } = Astro.props;
 ---
 <div class="acciones" style={centrado ? "justify-content:center" : undefined}>
   <a class="tecla" href={ENLACES.appStore}>{t(lang, "comunes.en_app_store")}</a>
-  {ENLACES.googlePlay && <a class="boton" href={ENLACES.googlePlay}>Google Play</a>}
+  <a class="boton" href={ENLACES.googlePlay}>{t(lang, "comunes.en_google_play")}</a>
 </div>

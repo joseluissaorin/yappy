@@ -37,6 +37,7 @@
     "descargar": "Descarcă",
     "descargar_gratis": "Descarcă gratuit",
     "en_app_store": "Descarcă din App Store",
+    "en_google_play": "Descarcă din Google Play",
     "escuchar_muestra": "Ascultă o mostră",
     "probar": "Încearcă acum",
     "leer_mas": "Continuă lectura",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Pe Android",
-        "texto": "Același gest: distribui un link, un text sau un document și ajunge în aceeași coadă, cu extragerea articolului, karaoke-ul și vocea, totul în chiar telefon. Versiunea de Android e cea mai tânără din familie și încă îi lipsesc trei lucruri pe care iPhone-ul le are: comenzile de pe ecranul de blocare, videoclipurile și playerul de cărți audio .m4b. Și mai e ceva mai important: <strong>încă nu a fost publicată</strong>. Contul de dezvoltator Google e încă în verificare și nu dăm o dată, pentru că nu o știm. Când apare, se anunță aici și în repozitoriu. Un lucru însă e sigur: pe Android nu se trag sfori. Totul e deschis."
+        "texto": "Același gest ca pe iPhone: partajezi un link, un text sau un document și ajunge în aceeași coadă, cu extragerea articolului, karaoke și vocea, totul în telefonul propriu. Continuă să redea cu ecranul blocat, cu controalele în notificare, și tipografia lucrează în fundal în timp ce faci altceva. E pe <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> și acolo e <strong>complet gratuit</strong>: nu există Yappy Parlanchín și nimic de plătit, deci cuierul nu are fund și tipografia de audiobook-uri vine deschisă. Singurul lucru care lipsește sunt componentele proprii Apple: Siri și aplicația Scurtături."
       }
     ],
     "atajo": "Comandă rapidă",
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Descarcă Yappy: iPhone, iPad, Mac, Windows și Linux",
-    "description": "Yappy e gratuit și cu cod deschis. În App Store pentru iPhone și iPad; varianta de desktop se compilează din cod sau se descarcă de pe GitHub. Cerințe și mărimea modelului de voce.",
+    "title": "Descarcă Yappy: iPhone, iPad, Android, Mac, Windows și Linux",
+    "description": "Yappy e gratuit și open source. În App Store pentru iPhone și iPad și în Google Play pentru Android; desktop-ul se descarcă de pe GitHub sau se compilează din cod. Cerințe și dimensiunea modelului vocal.",
     "h1": "Gratuit, deschis și al tău.",
     "entradilla": "Fără înregistrare, fără e-mail, fără versiune de probă care să expire. O descarci și gata.",
     "modelo_nota": "Prima dată, Yappy descarcă modelul de voce ({peso}). Pe iPhone vine odată cu instalarea; pe calculator, prima dată când deschizi aplicația. După aceea nu mai e nevoie de conexiune.",
-    "android_titulo": "Android",
-    "android_texto": "E compilată și funcționează, dar nu a fost încă publicată: contul de dezvoltator de la Google e încă în verificare. Când va apărea, se va anunța aici și în repositoriu.",
+    "android_titulo": "Pe Android, fără constrângeri",
+    "android_texto": "Pe Android nu există Yappy Parlanchín și nimic de plătit: cuierul nu are fund și tipografia de audiobook-uri vine deschisă, ca pe computer. Abonamentele există doar pe iPhone și iPad.",
     "escritorio_aviso": "Binarele pentru desktop se publică pe GitHub. Dacă versiunea pe care o găsești acolo e mai veche decât cea pentru iPhone, înseamnă că ultima încă nu a fost urcată: codul însă e la zi și se compilează cu <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS sau iPadOS 17 sau mai recent · modelul de voce ocupă circa 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Descarcă din App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "În Google Play, gratuit și fără cont. Același gest ca pe iPhone: partajezi un link, un text sau un document și deja redă, cu karaoke, tipografia de audiobook-uri și controalele pe ecranul blocat.",
+        "requisitos": "Android 7.0 sau mai nou · circa 200 MB de model vocal, care se descarcă prima dată când deschizi aplicația",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Descarcă din Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage și .deb pentru x64. Scurtăturile globale depind de mediul tău desktop; dacă sunt deja ocupate, le poți schimba din Preferințe.",
+        "texto": "AppImage, .deb și .rpm pentru x64. Scurtăturile globale depind de mediul tău desktop; în Preferințe se pot schimba cu altele dacă ale tale sunt deja ocupate.",
         "requisitos": "x64 · un model de voce de circa 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Vezi versiunile pe GitHub"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Fără perioadă de probă, din principiu: cuierul cu trei documente <em>este</em> proba, și nici nu expiră, nici nu te taxează după aceea. Prețurile sunt cele din Spania; în magazinul tău vor apărea în moneda ta.",
     "cuerda_donde": "Abonamentul se cumpără din aplicație, în camera din spate.",
-    "solo_movil": "Abonamentul e doar pe mobil: pe iPhone, pe iPad și pe Android. Pe calculator totul e gratuit.",
+    "solo_movil": "Constrângerea există doar pe iPhone și iPad. Pe Android și pe computer totul e deschis.",
     "comparacion_titulo": "Cât percep ceilalți.",
     "comparacion_entradilla": "Aplicațiile de voce în cloud plătesc servere de fiecare dată când apeși play, așa că te taxează pe ore sau pe caractere. Yappy sintetizează pe dispozitivul tău: costul unei ascultări e zero, și tocmai de asta poate să nu-l perceapă.",
     "comparacion_nota": "Prețuri publice, verificate în septembrie 2026. Se schimbă des: verifică-le pe fiecare site înainte să decizi.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "De ce nu se plătește pe calculator?",
-        "a": "Pentru că abonamentul e montat pe mobil, iar pe calculator nu. Acolo tipografia, cuierul fără fund și podul vin gratuite. Nu e o ofertă de lansare: desktopul e mașina care face munca grea, și să încasezi pentru a-ți lăsa propriul calculator să lucreze noaptea nu avea sens."
+        "a": "Pentru că constrângerea e pusă doar pe iPhone și iPad, nu și pe computer. Acolo tipografia, cuierul fără fund și puntea vin deschise. Nu e o ofertă de lansare: desktop-ul e mașina care face treaba grea, și să cer bani ca să-ți las propriul computer să lucreze noaptea nu avea sens."
       }
     ],
     "una_a_una": "una câte una, cu datele lor"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Chiar e gratuit?",
-            "a": "Da. Yappy e open-source, cu licență MIT. Să poți asculta ce citești e o chestiune de accesibilitate, iar instrumentele de accesibilitate nu ar trebui să ceară card. Pe calculator nu există versiune plătită și nici reclame. Pe iPhone, papagalul de probă ține trei documente odată pe popica lui, fără limită de timp; dacă vrei popica fără fund, tiparnița de cărți audio și puntea spre calculator, îi dai coardă cu Yappy Parlanchín: abonament sau o singură plată pe viață. Fără cont și fără reclame, în orice caz."
+            "a": "Da. Yappy e open source cu licență MIT. A putea asculta ce citești e o chestiune de accesibilitate, iar instrumentele de accesibilitate n-ar trebui să ceară card. Pe computer și pe Android nu există versiune cu plată sau reclame. Pe iPhone, papagalul de probă ține trei documente deodată pe cuier, fără limită de timp; dacă vrei un cuier fără fund, tipografia de audiobook-uri și puntea cu computerul, îi dai coardă cu Yappy Parlanchín, în abonament sau într-o plată unică pe viață. Fără cont și fără reclame, oricum."
           },
           {
             "q": "Care e trucul? Cum se finanțează?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "Și PDF-urile scanate, fără text înăuntru?",
-            "a": "Pe desktop trec printr-un OCR local înainte să fie citite, și nici acolo nu pleacă nimic din calculatorul tău. Pe iPhone, deocamdată nu: dacă PDF-ul e o fotografie a hârtiei, telefonul nu găsește text de citit. O scanare strâmbă sau neclară va da ce poate da orice OCR, dar una decentă se citește integral."
+            "a": "Trec printr-un OCR local înainte de citire, pe calculator, pe iPhone și pe Android, și nici acolo nu iese nimic din aparatul tău. E gratis peste tot: OCR-ul nu face parte din abonament. E gândit pentru literele tipărite din alfabetul latin; celelalte scrieri se recunosc doar pe iPhone, iPad și Mac, cu recognitorul Apple. O scanare strâmbă sau neclară va da ce poate da orice OCR, dar una decentă se citește în întregime."
           },
           {
             "q": "Poate citi cărțile pe care le-am cumpărat dintr-un magazin?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "Despre ce e vorba",
-        "texto": "Aceasta este politica de confidențialitate a aplicației Yappy: aplicația de iPhone, iPad, Mac, Windows și Linux, cu widgeturile și extensiile ei. E scurtă pentru că are puțin de povestit. Yappy nu are conturi, nu-ți cere numele nici adresa de e-mail, iar ce îi dai de citit nu pleacă de pe aparatul tău. Ce atinge totuși rețeaua sunt patru lucruri concrete, și iată-le pe toate patru, unul câte unul."
+        "texto": "Aceasta e politica de confidențialitate a Yappy: aplicația pentru iPhone, iPad, Android, Mac, Windows și Linux, cu widget-urile și extensiile ei. E scurtă pentru că nu e mult de spus. Yappy nu are conturi, nu-ți cere numele sau e-mailul, și ce îi dai de citit nu iese din dispozitivul tău. Ce atinge rețeaua sunt patru lucruri concrete, și aici sunt cele patru, unul câte unul."
       },
       {
         "titulo": "Nici cont, nici nume, nici texte",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Rețeaua intră în joc (4): cumpărăturile",
-        "texto": "Abonamentele și achiziția pe viață a lui Yappy Parlanchín sunt gestionate de Apple prin App Store și există doar pe iPhone și iPad. Ca să afle dacă abonamentul tău e activ, aplicația folosește <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, un administrator de abonamente, care primește un identificator anonim al instalării și chitanța de la Apple; nu primește numele tău și nici adresa ta de e-mail. Apple explică propriile practici privind datele în <a href=\"https://www.apple.com/legal/privacy/\">politica sa</a>."
+        "texto": "Abonamentele și achiziția pe viață pentru Yappy Parlanchín sunt gestionate de Apple prin App Store și există doar pe iPhone și iPad. Ca să afle dacă abonamentul tău e activ, aplicația folosește <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, un administrator de abonamente, care primește un identificator anonim al instalării și chitanța de la Apple; nu primește numele sau e-mailul tău. Pe Android nu se vinde nimic, dar aplicația tot pornește RevenueCat la deschidere, ca să verifice dacă Google Play oferă vreo achiziție: RevenueCat primește atunci același identificator anonim, iar interogarea trece prin sistemul de facturare Google Play. Apple și Google explică propriile date în politicile lor: <a href=\"https://www.apple.com/legal/privacy/\">cea a Apple</a> și <a href=\"https://policies.google.com/privacy\">cea a Google</a>."
       },
       {
         "titulo": "Podul: de la iPhone la calculator și înapoi",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Poate citi PDF-urile de la curs și cărțile pe care le am deja?",
-        "a": "Orice PDF, EPUB, Word sau ODT pe care îl poți deschide. Dacă PDF-ul e o scanare fără text, versiunea de desktop îl trece printr-un OCR local înainte să-l citească; pe mobil, încă nu există. Cărțile cu DRM dintr-un magazin nu se pot citi nicăieri, deci nici aici."
+        "a": "Orice PDF, EPUB, Word sau ODT pe care îl poți deschide. Dacă PDF-ul e o scanare fără text, Yappy îl trece printr-un OCR local înainte de citire, pe calculator și pe mobil, și fără să ia bani. Cărțile cu DRM dintr-un magazin nu se pot citi nicăieri, nici aici."
       },
       {
         "q": "Cât costă să-l folosești zilnic?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "PDF-uri scanate",
-        "extra_texto": "Dacă PDF-ul e o poză a hârtiei și nu are text în el, versiunea de desktop îl trece printr-un OCR local înainte să-l citească. Pe iPhone, încă nu.",
+        "extra_texto": "Dacă PDF-ul e o fotografie a hârtiei și nu are text înăuntru, Yappy îl trece printr-un OCR local înainte de citire, pe calculator, pe iPhone și pe Android. E gratis: OCR-ul nu face parte din abonament.",
         "faq": [
           {
             "q": "Există vreo limită de pagini?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "Dar dacă PDF-ul e o scanare fără text?",
-            "a": "Versiunea de desktop îl trece printr-un OCR local înainte să-l citească, și nici acolo nu pleacă nimic din calculatorul tău. Pe iPhone, încă nu: dacă PDF-ul e o poză a hârtiei, telefonul nu găsește niciun text de citit."
+            "a": "Yappy îl trece printr-un OCR local înainte de citire, pe calculator și pe mobil, și nici acolo nu iese nimic din aparatul tău. O scanare strâmbă sau neclară va da ce poate da orice OCR, dar una decentă se citește în întregime."
           },
           {
             "q": "Scoate antetele și numerele de pagină?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Dacă videoclipul nu are transcriere",
-        "extra_texto": "Atunci nu e nimic de citit: Yappy lucrează cu textul publicat, nu transcrie sunetul videoclipului. Pe iPhone funcția există; pe Android, încă nu.",
+        "extra_texto": "Deci nu e nimic de citit: Yappy lucrează cu textul publicat, nu transcrie sunetul din video.",
         "faq": [
           {
             "q": "Transcrie sunetul videoclipului?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Funcționează pe toate platformele video?",
-            "a": "Unde există o transcriere publicată și accesibilă. Pe iPhone funcția există; în versiunea pentru Android, încă nu."
+            "a": "Astăzi, cu YouTube, pe iPhone, pe Android și pe calculator. Cu alte platforme video, Yappy nu știe încă să ceară transcrierea."
           },
           {
             "q": "Consumă date?",

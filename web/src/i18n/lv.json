@@ -37,6 +37,7 @@
     "descargar": "Lejupielādēt",
     "descargar_gratis": "Lejupielādēt bez maksas",
     "en_app_store": "Lejupielādēt no App Store",
+    "en_google_play": "Lejupielādēt Google Play",
     "escuchar_muestra": "Noklausīties paraugu",
     "probar": "Izmēģināt tagad",
     "leer_mas": "Turpināt lasīt",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Android tālrunī",
-        "texto": "Tā pati darbība: padalies ar saiti, tekstu vai dokumentu, un tas nonāk tajā pašā rindā — ar raksta izgūšanu, karaoke un balsi, viss tālruņa iekšienē. Android versija ir jaunākā ģimenē, un tai vēl trūkst trīs lietu, kas iPhone jau ir: vadība bloķēšanas ekrānā, video un .m4b audiogrāmatu atskaņotājs. Un vēl svarīgāk: <strong>tā vēl nav publicēta</strong>. Google izstrādātāja konts vēl joprojām ir pārbaudē, un mēs nesaucam datumu, jo to nezinām. Kad tā iznāks, par to paziņosim šeit un repozitorijā. Toties Android pusē nebūs nekā, ko slēpt. Viss ir atklāts."
+        "texto": "Tāds pats žests kā iPhone: tu kopīgo saiti, tekstu vai dokumentu, un tas nonāk tajā pašā rindā — ar raksta izvilkumu, karaoke un balsi, viss pašā tālrunī. Turpina skanēt ar bloķētu ekrānu, ar vadīklām paziņojumā, un audiogrāmatu spiestuve strādā fonā, kamēr tu nodarbojies ar kaut ko citu. Atrodama <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a>, un tur ir <strong>pilnīgi bez maksas</strong>: nav nekāda Yappy Parlanchín un nekā nav jāmaksā, tātad plaukts ir bez dibena un audiogrāmatu spiestuve ir atvērta. Vienīgais, kā nav, ir Apple īpašās lietas: Siri un lietotne Saīsnes."
       }
     ],
     "atajo": "Saīsne",
@@ -300,7 +301,7 @@
         "texto": "„utt.”, „lpp.”, „XIX gs.”: katrai valodai ir sava tabula."
       },
       {
-        "titulo": "Números grandes",
+        "titulo": "Lieli skaitļi",
         "texto": "Ar Unicode CLDR RBNF gramatikām, ieskaitot dzimti un deklināciju."
       },
       {
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Lejupielādēt Yappy: iPhone, iPad, Mac, Windows un Linux",
-    "description": "Yappy ir bez maksas un atvērtā koda. App Store — iPhone un iPad ierīcēm; datora versiju kompilē no koda vai lejupielādē no GitHub. Prasības un balss modeļa izmērs.",
+    "title": "Lejupielādēt Yappy: iPhone, iPad, Android, Mac, Windows un Linux",
+    "description": "Yappy ir bezmaksas un atvērtā pirmkoda programmatūra. App Store priekš iPhone un iPad, Google Play priekš Android; darbvirsmas versiju lejupielādē no GitHub vai kompilē no pirmkoda. Prasības un balss modeļa izmērs.",
     "h1": "Bez maksas, atvērts un tavs.",
     "entradilla": "Nav ne reģistrācijas, ne e-pasta, ne izmēģinājuma versijas, kas beidzas. Lejupielādē — un tas arī viss.",
     "modelo_nota": "Pirmajā reizē Yappy lejupielādē balss modeli ({peso}). Uz iPhone tas nāk līdzi instalācijai; datorā — pirmajā atvēršanas reizē. Pēc tam savienojums vairs nav vajadzīgs.",
-    "android_titulo": "Android",
-    "android_texto": "Versija ir sakompilēta un strādā, bet vēl nav publicēta: Google izstrādātāja konts joprojām tiek pārbaudīts. Kad tas iznāks, par to paziņos šeit un repozitorijā.",
+    "android_titulo": "Android bez ierobežojumiem",
+    "android_texto": "Android nav nekāda Yappy Parlanchín un nekā nav jāmaksā: plaukts ir bez dibena un audiogrāmatu spiestuve ir atvērta, tāpat kā datorā. Abonements eksistē tikai iPhone un iPad.",
     "escritorio_aviso": "Datora binārfaili tiek publicēti GitHub. Ja tur atrodamā versija ir vecāka par iPhone versiju, tad jaunākā vēl nav augšupielādēta: kods gan ir svaigs, un to var kompilēt ar <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS vai iPadOS 17 un jaunāka · balss modelis aizņem apmēram 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Lejupielādēt App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "Google Play, bez maksas un bez konta. Tāds pats žests kā iPhone: tu kopīgo saiti, tekstu vai dokumentu, un tas jau skan — ar karaoke, audiogrāmatu spiestuvi un vadīklām bloķētā ekrānā.",
+        "requisitos": "Android 7.0 vai jaunāks · apmēram 200 MB balss modelis, kas lejupielādējas pirmajā reizē, kad atver lietotni",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Lejupielādēt Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage un .deb x64 sistēmai. Globālie īsceļi atkarīgi no tavas darbvirsmas vides; ja tavi pašreizējie jau ir aizņemti, iestatījumos tos var nomainīt pret citiem.",
+        "texto": "AppImage, .deb un .rpm priekš x64. Globālie īsinājumtaustiņi ir atkarīgi no darbvirsmas vides; Iestatījumos var nomainīt pret citiem, ja tavējie jau ir aizņemti.",
         "requisitos": "x64 · balss modelis, ap 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Skatīt laidienus GitHub"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Bezmaksas izmēģinājuma nav, un tas ir apzināti: pakaramais ar trim dokumentiem <em>ir</em> izmēģinājums — tam nav termiņa, un vēlāk nekas netiek iekasēts. Cenas ir Spānijas cenas; tavā veikalā tās parādīsies tavā valūtā.",
     "cuerda_donde": "Auklu pērk pašā lietotnē, aizmugurējā telpā.",
-    "solo_movil": "Maksas siena ir tikai telefonā: iPhone, iPad un Android. Datorā viss ir atvērts.",
+    "solo_movil": "Ierobežojums eksistē tikai iPhone un iPad. Android un datorā viss ir atvērts.",
     "comparacion_titulo": "Ko ņem pārējie.",
     "comparacion_entradilla": "Balss lietotnes mākonī katru reizi, kad nospiež play, maksā par serveriem, tāpēc tās rēķina par stundām vai rakstzīmēm. Yappy runu sintezē tavā ierīcē: katrai klausīšanās reizei izmaksas ir nulle, un tāpēc tā var atļauties neko neprasīt.",
     "comparacion_nota": "Publiskās cenas pārbaudītas 2026. gada septembrī. Tās bieži mainās: pirms izlemt, pārbaudi katrā mājaslapā.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Kāpēc datorā nav jāmaksā?",
-        "a": "Jo maksas siena ir uzstādīta telefonā, nevis datorā. Tur drukātava, pakaramais bez dibena un tilts ir atvērti. Tā nav palaišanas akcija: dators ir mašīna, kas veic smago darbu, un prasīt naudu par to, ka ļauj tavam paša datoram strādāt naktī, nebija jēgas."
+        "a": "Tāpēc, ka ierobežojums ir uzstādīts tikai iPhone un iPad, bet ne datorā. Tur spiestuve, plaukts bez dibena un tilts ir atvērti. Tas nav ieviešanas piedāvājums: darbvirsma ir mašīna, kas veic smago darbu, un prasīt maksu par to, lai tavs pats dators strādātu naktī, nebija jēgas."
       }
     ],
     "una_a_una": "pa vienai, ar saviem datiem"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Vai tas tiešām ir bez maksas?",
-            "a": "Jā. Yappy ir atvērtā koda lietotne ar MIT licenci. Tas, ka vari noklausīties to, ko lasi, ir pieejamības jautājums, un pieejamības rīkiem nevajadzētu prasīt maksājuma karti. Datorā nav ne maksas versijas, ne reklāmu. iPhone izmēģinājuma papagailis savā zarā tur vienlaikus trīs dokumentus, bez laika ierobežojuma; ja gribi zaru bez robežas, audiokniņu tipogrāfiju un tiltu uz datoru, to uztin Yappy Parlanchīns — abonements vai vienreizējs maksājums uz mūžu. Jebkurā gadījumā bez konta un bez reklāmām."
+            "a": "Jā. Yappy ir atvērtā pirmkoda programmatūra ar MIT licenci. Iespēja dzirdēt to, ko lasa, ir pieejamības jautājums, un pieejamības rīkiem nevajadzētu prasīt karti. Datorā un Android nav maksas versijas, nav reklāmu. iPhone pārbaudes papagailim plauktā ir trīs dokumenti vienlaikus, bez laika ierobežojuma; ja vēlies plauktu bez dibena, audiogrāmatu spiestuvi un tiltu ar datoru, tu to ieslēdz ar Yappy Parlanchín — abonementā vai vienreizējā maksājumā uz visu mūžu. Bez konta un bez reklāmām jebkurā gadījumā."
           },
           {
             "q": "Kur āķis āķī? Kā tas tiek finansēts?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "Un skanētie PDF bez teksta iekšā?",
-            "a": "Uz datora tie pirms nolasīšanas iziet cauri lokālam OCR, un arī tur no datora nekas neaiziet. Uz iPhone — vēl ne: ja PDF ir papīra fotogrāfija, telefons neatrod tekstu, ko nolasīt. Šķībs vai izplūdis skenējums dos to, ko dod jebkurš OCR, bet pieklājīgs nolasās pilnībā."
+            "a": "Tie iet caur lokālu OCR pirms nolasīšanas, datorā, iPhone un Android, un arī tur nekas neatstāj ierīci. Tas ir bez maksas visur: OCR nav abonementa daļa. Tas ir domāts drukātiem latīņu alfabēta burtiem; citas rakstības atpazīst tikai iPhone, iPad un Mac, ar Apple atpazinēju. Šķībs vai neskaidrs skenējums dos to, ko jebkurš OCR var dot, bet sakarīgs nolasās pilnībā."
           },
           {
             "q": "Vai tas var nolasīt grāmatas, ko nopirku veikalā?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "Par ko šis ir",
-        "texto": "Šī ir Yappy privātuma politika: lietotne iPhone, iPad, Mac, Windows un Linux, ar saviem logrīkiem un paplašinājumiem. Tā ir īsa, jo stāstīt ir maz ko. Yappy nav kontu, tā neprasa ne tavu vārdu, ne e-pastu, un tas, ko tu tai dod nolasīt, nekur no ierīces neaiziet. Internetā tomēr aiziet četras konkrētas lietas, un šeit tās visas ir, vienu pēc otras."
+        "texto": "Šī ir Yappy privātuma politika: lietotne iPhone, iPad, Android, Mac, Windows un Linux, ar tās sīklietotnēm un paplašinājumiem. Īsa, jo ir maz ko stāstīt. Yappy nav kontu, neprasa tavu vārdu vai e-pastu, un tas, ko tu dod lasīt, nepamet tavu ierīci. Kas gan pieskaras tīklam, ir četras konkrētas lietas, un šeit tās visas četras, viena pēc otras."
       },
       {
         "titulo": "Bez konta, bez vārda, bez tekstiem",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Piekļuve tīklam (4): pirkumi",
-        "texto": "Abonementus un Yappy Parlanchín mūža pirkumu pārvalda Apple caur App Store, un tie ir tikai iPhone un iPad ierīcēs. Lai uzzinātu, vai tavs abonements joprojām ir spēkā, lietotne izmanto <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a> — abonementu pārvaldnieku, kas saņem anonīmu instalācijas identifikatoru un Apple čeku; ne tavu vārdu, ne e-pastu tas nesaņem. Apple savus datus izskaidro <a href=\"https://www.apple.com/legal/privacy/\">savā privātuma politikā</a>."
+        "texto": "Yappy Parlanchín abonementus un mūža pirkumu pārvalda Apple caur App Store, un tie ir tikai iPhone un iPad. Lai pārbaudītu, vai abonements ir aktīvs, lietotne izmanto <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, abonentu pārvaldnieku, kas saņem anonīmu instalācijas identifikatoru un Apple kvīti; tas nesaņem tavu vārdu vai e-pastu. Android nekas netiek pārdots, bet lietotne arī palaiž RevenueCat, atverot to, lai pārbaudītu, vai Google Play piedāvā kādu pirkumu: RevenueCat tad saņem to pašu anonīmo identifikatoru, un vaicājums iet caur Google Play norēķinu sistēmu. Apple un Google savus datus izskaidro savās politikās: <a href=\"https://www.apple.com/legal/privacy/\">Apple politikā</a> un <a href=\"https://policies.google.com/privacy\">Google politikā</a>."
       },
       {
         "titulo": "Tilts: no iPhone uz datoru un atpakaļ",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Vai tas var nolasīt mācību PDF un grāmatas, kas man jau ir?",
-        "a": "Jebkuru PDF, EPUB, Word vai ODT, ko vari atvērt. Ja PDF ir skanējums bez teksta, datora versija to vispirms izlaiž caur lokālu OCR un tikai tad nolasa; telefonā tādas iespējas vēl nav. Veikala grāmatas ar DRM nevar nolasīt nekur, arī šeit ne."
+        "a": "Jebkuru PDF, EPUB, Word vai ODT, ko vari atvērt. Ja PDF ir skenējums bez teksta, Yappy to laiž caur lokālu OCR pirms nolasīšanas, datorā un mobilajā, bez maksas. Grāmatas ar DRM no veikala nevar lasīt nekur, arī šeit ne."
       },
       {
         "q": "Cik maksā ikdienas lietošana?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Skanēti PDF",
-        "extra_texto": "Ja PDF ir papīra foto bez teksta iekšā, datora versija pirms lasīšanas palaiž to caur lokālu OCR. iPhone vēl ne.",
+        "extra_texto": "Ja PDF ir papīra foto un nesatur tekstu, Yappy to laiž caur lokālu OCR pirms nolasīšanas, datorā, iPhone un Android. Tas ir bez maksas: OCR nav abonementa daļa.",
         "faq": [
           {
             "q": "Vai ir lapu skaita ierobežojums?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "Un ja PDF ir skanējums bez teksta?",
-            "a": "Datora versija pirms lasīšanas palaiž to caur lokālu OCR, un arī tad no datora nekas neaiziet. iPhone vēl ne: ja PDF ir papīra foto, tālrunis neatrod tekstu, ko lasīt."
+            "a": "Yappy to laiž caur lokālu OCR pirms nolasīšanas, datorā un mobilajā, un arī tur nekas neatstāj ierīci. Šķībs vai neskaidrs skenējums dos to, ko jebkurš OCR var dot, bet sakarīgs nolasās pilnībā."
           },
           {
             "q": "Vai tas noņem galvenes un lappušu numurus?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Ja video nav transkripcijas",
-        "extra_texto": "Tad nav ko lasīt: Yappy strādā ar publicēto tekstu, nevis transkribē video skaņu. iPhone šī funkcija ir; Android — vēl nav.",
+        "extra_texto": "Tātad nav ko lasīt: Yappy strādā ar publicēto tekstu, nevis transkribē video audio.",
         "faq": [
           {
             "q": "Vai tiek transkribēta video skaņa?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Vai tas darbojas visās video platformās?",
-            "a": "Tur, kur ir publicēta un pieejama transkripcija. iPhone šī funkcija ir; Android versijā — vēl nav."
+            "a": "Šodien ar YouTube, iPhone, Android un datorā. Ar citām video platformām Yappy vēl neprot pieprasīt transkriptu."
           },
           {
             "q": "Vai tas patērē datus?",

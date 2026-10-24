@@ -37,6 +37,7 @@
     "descargar": "Atsisiųsti",
     "descargar_gratis": "Atsisiųsti nemokamai",
     "en_app_store": "Atsisiųsti iš App Store",
+    "en_google_play": "Atsisiųsti iš Google Play",
     "escuchar_muestra": "Pasiklausyti pavyzdžio",
     "probar": "Išbandyti dabar",
     "leer_mas": "Skaityti toliau",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Android sistemoje",
-        "texto": "Tas pats gestas: pasidalini nuoroda, tekstu arba dokumentu, ir jis atkrenta į tą pačią eilę — su straipsnio ištraukimu, karaoke ir balsu, visa tai pačiame telefone. Android versija šeimoje jauniausia, ir jai dar trūksta trijų dalykų, kuriuos iPhone turi: valdiklių užrakintame ekrane, vaizdo įrašų ir audioknygų .m4b grotuvo. Ir dar svarbiau: <strong>kol kas ji nepublikuota</strong>. Google kūrėjo paskyra vis dar tikrinama, o termino nenurodome, nes jo nežinome. Kai ji pasirodys, apie tai paskelbsime čia ir saugykloje. Viena bet: Android'as nesivilks. Viskas atvira."
+        "texto": "Tas pats gestas kaip iPhone: pasidalini nuoroda, tekstu ar dokumentu, ir jis atsiduria toje pačioje eilėje – su straipsnio išskyrimu, karaoke ir balsu, viskas telefone. Groja užrakintame ekrane, su valdymu pranešime, ir audioknygų spaustuvė dirba fone, kol tu užsiiminėji kuo kitu. Yra <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> ir ten <strong>visiškai nemokama</strong>: nėra Yappy Parlanchín ir nieko mokėti nereikia, tad kartis neturi dugno, o audioknygų spaustuvė ateina atvira. Vienintelis dalykas, kurio nėra – Apple dalykų: Siri ir Nuorodos programa."
       }
     ],
     "atajo": "Spartusis klavišas",
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Atsisiųsti Yappy: iPhone, iPad, Mac, Windows ir Linux",
-    "description": "Yappy nemokama ir atviro kodo. iPhone ir iPad – per App Store; darbalaukio versiją galima sukompiliuoti iš kodo arba atsisiųsti iš GitHub. Reikalavimai ir balso modelio dydis.",
+    "title": "Atsisiųsti Yappy: iPhone, iPad, Android, Mac, Windows ir Linux",
+    "description": "Yappy nemokama ir atviro kodo. App Store skirta iPhone ir iPad, Google Play skirta Android; darbalaukio versija atsisiunčiama iš GitHub arba kompiliuojama iš kodo. Reikalavimai ir balso modelio dydis.",
     "h1": "Nemokama, atvira ir tavo.",
     "entradilla": "Jokios registracijos, jokio el. pašto, jokios bandomosios versijos, kuri kažkada baigtų galioti. Parsisiunti – ir viskas.",
     "modelo_nota": "Pirmą kartą Yappy parsisiunčia balso modelį ({peso}). iPhone jis atkeliauja kartu su pačiu įdiegimu; kompiuteryje – pirmą kartą atvėrus programėlę. Po to internetas nebereikalingas.",
-    "android_titulo": "Android",
-    "android_texto": "Sukompiliuota ir veikia, bet kol kas neskelbiama: Google kūrėjo paskyra vis dar tikrinama. Kai versija pasirodys, apie tai bus paskelbta čia ir saugykloje.",
+    "android_titulo": "Android be raktų",
+    "android_texto": "Android nėra Yappy Parlanchín ir nieko mokėti nereikia: kartis neturi dugno, o audioknygų spaustuvė ateina atvira, kaip kompiuteryje. Prenumeratos yra tik iPhone ir iPad.",
     "escritorio_aviso": "Darbalaukio binariniai failai skelbiami GitHub. Jei ten rasti rinkiniai senesni nei iPhone versija, tai reiškia, kad naujausia dar nepatalpinta: pats kodas yra atnaujintas, o sukompiliuoti galima su <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS arba iPadOS 17 ir naujesnės · balso modelis užima apie 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Atsisiųsti iš App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "Google Play, nemokamai ir be paskyros. Tas pats gestas kaip iPhone: pasidalini nuoroda, tekstu ar dokumentu ir jau groja, su karaoke, audioknygų spaustuve ir valdymu užrakintame ekrane.",
+        "requisitos": "Android 7.0 arba naujesnė · apie 200 MB balso modelio, kuris atsisiunčiamas pirmą kartą paleidus programą",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Atsisiųsti iš Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage ir .deb paketai x64. Globalieji spartieji klavišai priklauso nuo tavo darbalaukio aplinkos; jei tavo deriniai jau užimti, nustatymuose juos galima pakeisti kitais.",
+        "texto": "AppImage, .deb ir .rpm x64 architektūrai. Visuotiniai spartieji klavišai priklauso nuo darbalaukio aplinkos; Nustatymuose galima pakeisti kitus, jei tavieji jau užimti.",
         "requisitos": "x64 · apie 398 MB balso modelio",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Peržiūrėti laidas GitHub'e"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Be bandomojo laikotarpio, ir tai sąmoninga: trijų dokumentų pakaba <em>yra</em> tas bandymas – ji nesibaigia ir vėliau nieko nereikalauja. Kainos nurodytos Ispanijai; savo parduotuvėje jas pamatysite savo valiuta.",
     "cuerda_donde": "Prenumeratą įsigysite pačioje programėlėje, užkulisiuose.",
-    "solo_movil": "Piniginė – telefone: iPhone, iPad ir Android. Kompiuteryje viskas atvira.",
+    "solo_movil": "Raktai yra tik iPhone ir iPad. Android ir kompiuteryje viskas atvira.",
     "comparacion_titulo": "Kiek ima kiti.",
     "comparacion_entradilla": "Balso programėlės debesyje serveriams moka kiekvieną kartą, kai paspaudžiate „groti“, todėl ima už valandas arba simbolius. Yappy sintezuoja jūsų įrenginyje: klausymasis jo nekainuoja nė cento, todėl gali būti ir nemokamas.",
     "comparacion_nota": "Viešai skelbtos kainos, patikrintos 2026 m. rugsėjį. Jos dažnai keičiasi: prieš apsispręsdami pasitikrinkite kiekvienoje svetainėje.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Kodėl kompiuteryje nereikia mokėti?",
-        "a": "Nes piniginė kabo telefone, o kompiuteryje – ne. Ten spaustuvė, lesyklėlė be dugno ir tiltas – visi atviri. Tai ne premjerinis pasiūlymas: darbastalis – tai mašina, kuri atlieka sunkųjį darbą, o imti pinigus už tai, kad tavo paties kompiuteris dirbtų naktį, nebuvo prasmės."
+        "a": "Nes raktai sumontuoti tik iPhone ir iPad, o kompiuteryje ne. Ten spaustuvė, kartis be dugno ir tiltas ateina atviri. Tai ne paleisimo pasiūlymas: darbalaukis yra mašina, kuri atlieka sunkų darbą, ir imti už tai, kad tavo paties kompiuteris dirba naktį, prasmės neturėjo."
       }
     ],
     "una_a_una": "po vieną, su jų duomenimis"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Ar tikrai nemokama?",
-            "a": "Taip. Yappy – atvirojo kodo programa su MIT licencija. Galėti klausytis to, ką skaitai, yra prieinamumo klausimas, o prieinamumo priemonės neturėtų prašyti kortelės. Kompiuteryje nėra nei mokamos versijos, nei reklamų. iPhone bandomoji papūga savo stove vienu metu laiko tris dokumentus, be laiko ribos; jei nori stovo be dugno, audioknygų spaustuvės ir tilto su kompiuteriu, raktą užsuki su Yappy Parlanchín – prenumerata arba vienkartinis mokėjimas visam gyvenimui. Bet kuriuo atveju – be paskyros ir be reklamų."
+            "a": "Taip. Yappy yra atviro kodo su MIT licencija. Galimybė klausytis to, ką skaitai, yra prieinamumo klausimas, o prieinamumo įrankiai neturėtų prašyti kortelės. Kompiuteryje ir Android nėra mokamos versijos nei skelbimų. iPhone bandomasis papūga laiko tris dokumentus savo kartyje vienu metu, be laiko ribos; jei nori kartį be dugno, audioknygų spaustuvę ir tiltą su kompiuteriu, užsuki raktą su Yappy Parlanchín – prenumerata arba vienkartinis mokėjimas visam laikui. Be paskyros ir be skelbimų bet kuriuo atveju."
           },
           {
             "q": "Kokia čia gudrybė? Iš ko tai finansuojama?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "O skenuoti PDF be teksto viduje?",
-            "a": "Darbalaukyje jie prieš skaitymą praeina pro vietinį OCR, ir ten taip pat iš tavo kompiuterio niekas neišeina. iPhone'e – kol kas ne: jei PDF yra popieriaus lapo nuotrauka, telefonas neranda, ką skaityti. Kreivas ar neryškus skenavimas duos tai, ką gali duoti bet koks OCR, o geras skenavimas perskaitomas iki galo."
+            "a": "Prieš skaitymą praeina per vietinį OCR – kompiuteryje, iPhone ir Android – ir ten taip pat niekas neišeina iš įrenginio. Veikia nemokamai visur: OCR nėra mokamos prenumeratos dalis. Skirta spausdintam lotynų rašmeniui; kitus rašmenis atpažįsta tik iPhone, iPad ir Mac, naudodamas Apple atpažinimo sistemą. Kreivai ar neryškiai nuskanuotas dokumentas duos tai, ką bet kuris OCR gali duoti, bet padoriai nuskenuotą perskaito iki galo."
           },
           {
             "q": "Ar gali skaityti knygas, kurias nusipirkau parduotuvėje?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "Apie ką tai",
-        "texto": "Tai – Yappy privatumo politika: iPhone, iPad, Mac, Windows ir Linux programos su jos valdikliais ir plėtiniais. Ji trumpa, nes pasakoti nedaug ką. Yappy neturi paskyrų, neprašo nei vardo, nei el. pašto, o tai, ką jai duodi perskaityti, neišeina iš tavo įrenginio. Tinklą liečia tik keturi konkretūs dalykai – štai jie visi keturi, po vieną."
+        "texto": "Tai Yappy privatumo politika: iPhone, iPad, Android, Mac, Windows ir Linux programa su jos valdikliais ir plėtiniais. Trumpa, nes pasakoti nedaug ko. Yappy neturi paskyrų, neprašo vardo ar el. pašto, o tai, ką duodi skaityti, neišeina iš tavo įrenginio. Kas tikrai liečia tinklą – keturi konkretūs dalykai, ir štai tie keturi, vienas po kito."
       },
       {
         "titulo": "Nei paskyros, nei vardo, nei tekstų",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Kai paliečiamas tinklas (4): pirkimai",
-        "texto": "Prenumeratas ir Yappy Parlanchín pirkimą visam laikui tvarko Apple per App Store, ir jie galioja tik iPhone bei iPad įrenginiuose. Kad sužinotų, ar jūsų prenumerata aktyvi, programėlė naudojasi <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a> — prenumeratų tvarkykle, kuri gauna anoniminį diegimo identifikatorių ir Apple kvitą; jūsų vardo ir el. pašto ji negauna. Apie savo duomenis Apple pasakoja <a href=\"https://www.apple.com/legal/privacy/\">savoje privatumo politikoje</a>."
+        "texto": "Yappy Parlanchín prenumeratas ir vienkartinį pirkimą tvarko Apple per App Store – jos veikia tik iPhone ir iPad. Kad sužinotų, ar prenumerata aktyvi, programa naudoja <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a> – prenumeratų valdymo sistemą, kuri gauna anoniminį diegimo identifikatorių ir Apple kvitą; ji negauna nei vardo, nei el. pašto. Android nieko neparduodama, bet programa vis tiek paleidžia RevenueCat atsidarius, kad patikrintų, ar Google Play siūlo pirkimus: RevenueCat tuomet gauna tą patį anoniminį identifikatorių, o užklausa pereina per Google Play atsiskaitymo sistemą. Apple ir Google savo duomenis aprašo savo privatumo politikose: <a href=\"https://www.apple.com/legal/privacy/\">Apple</a> ir <a href=\"https://policies.google.com/privacy\">Google</a>."
       },
       {
         "titulo": "Tiltas: iš jūsų iPhone į kompiuterį ir atgal",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Ar jis perskaitys pamokų PDF ir knygas, kurias jau turiu?",
-        "a": "Bet kurį PDF, EPUB, Word arba ODT, kurį gali atidaryti. Jei PDF yra nuskenuotas be teksto, darbalaukio versija prieš skaitydama perleidžia jį per vietinį OCR; mobiliajame to dar nėra. Knygų su DRM iš parduotuvės neperskaitysi niekur – ir čia taip pat."
+        "a": "Bet kurį PDF, EPUB, Word ar ODT, kurį gali atidaryti. Jei PDF yra nuskenuotas be teksto, Yappy jį praleidžia per vietinį OCR prieš skaitymą – kompiuteryje ir mobiliajame – ir nemokamai. Knygų su parduotuvių DRM apsauga negalima skaityti niekur, ir čia taip pat."
       },
       {
         "q": "Kiek kainuoja naudotis kiekvieną dieną?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Skenuoti PDF",
-        "extra_texto": "Jei PDF – popieriaus nuotrauka ir teksto jame nėra, darbalaukio versija prieš skaitydama perleidžia jį per vietinį OCR. iPhone dar ne.",
+        "extra_texto": "Jei PDF yra popieriaus nuotrauka be teksto viduje, Yappy jį praleidžia per vietinį OCR prieš skaitymą – kompiuteryje, iPhone ir Android. Nemokamai: OCR nėra mokamos prenumeratos dalis.",
         "faq": [
           {
             "q": "Ar yra puslapių ribojimas?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "O jei PDF – skenuotas be teksto?",
-            "a": "Darbalaukio versija prieš skaitydama perleidžia jį per vietinį OCR, ir šiuo atveju iš tavo kompiuterio niekas neišeina. iPhone dar ne: jei PDF – popieriaus nuotrauka, telefonas nesuranda teksto, kurį skaityti."
+            "a": "Yappy jį praleidžia per vietinį OCR prieš skaitymą – kompiuteryje ir mobiliajame – ir ten taip pat niekas neišeina iš įrenginio. Kreivai ar neryškiai nuskenuotas dokumentas duos tai, ką bet kuris OCR gali duoti, bet padoriai nuskenuotą perskaito iki galo."
           },
           {
             "q": "Ar jis pašalina antraštes ir puslapių numerius?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Jei vaizdo įraše nėra transkripcijos",
-        "extra_texto": "Tada skaityti nėra ko: Yappy dirba su paskelbtu tekstu, o vaizdo įrašo garso neperkelia į tekstą. Na iPhone ši funkcija yra; na Android — kol kas ne.",
+        "extra_texto": "Tokiu atveju skaityti nėra ko: Yappy dirba su paskelbtais subtitrais, o ne garso transkribacija.",
         "faq": [
           {
             "q": "Ar transkribuoja vaizdo įrašo garsą?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Ar veikia visose vaizdo įrašų platformose?",
-            "a": "Ten, kur yra paskelbta ir prieinama transkripcija. iPhone įrenginiuose ši funkcija yra; Android versijoje jos dar nėra."
+            "a": "Šiandien veikia su YouTube – iPhone, Android ir kompiuteryje. Su kitomis vaizdo platformomis Yappy dar nemoka paprašyti subtitrų."
           },
           {
             "q": "Ar eikvoja duomenų?",

@@ -37,6 +37,7 @@
     "descargar": "Unduh",
     "descargar_gratis": "Unduh gratis",
     "en_app_store": "Unduh di App Store",
+    "en_google_play": "Unduh di Google Play",
     "escuchar_muestra": "Dengarkan contoh suara",
     "probar": "Coba sekarang",
     "leer_mas": "Baca selengkapnya",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Di Android",
-        "texto": "Gesturnya sama: bagikan tautan, teks, atau dokumen, dan semuanya mendarat di antrean yang sama—lengkap dengan ekstraksi artikel, karaoke, dan suara, semuanya diproses di dalam ponsel itu sendiri. Versi Android adalah yang termuda sekeluarga dan masih kekurangan tiga hal yang sudah dimiliki iPhone: kontrol di layar kunci, video, dan pemutar buku audio .m4b. Dan ada yang lebih penting: <strong>belum dirilis</strong>. Akun pengembang Google masih dalam proses verifikasi, dan kami tidak memberi tanggal karena memang tidak tahu. Begitu rilis, pengumumannya akan muncul di sini dan di repositori. Yang jelas: di Android tidak ada tangkapannya. Semuanya terbuka."
+        "texto": "Sama seperti di iPhone: bagikan tautan, teks, atau dokumen, langsung masuk ke antrean yang sama—lengkap dengan ekstraksi artikel, karaoke, dan suara, semua diproses di ponsel sendiri. Tetap memutar saat layar terkunci, dengan kontrol di notifikasi, dan pabrik audiobook bekerja di latar belakang saat kamu mengerjakan hal lain. Tersedia di <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> dan di sana <strong>sepenuhnya gratis</strong>: tidak ada Yappy Parlanchín atau apapun yang perlu dibayar, jadi tempat tunggu tanpa batas dan pabrik audiobook langsung terbuka. Yang tidak ada hanya fitur khas Apple: Siri dan app Shortcuts."
       }
     ],
     "atajo": "Pintasan",
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Unduh Yappy: iPhone, iPad, Mac, Windows dan Linux",
-    "description": "Yappy gratis dan sumber terbuka. Tersedia di App Store untuk iPhone dan iPad; versi desktop dikompilasi dari kode atau diunduh dari GitHub. Persyaratan dan ukuran model suara.",
+    "title": "Unduh Yappy: iPhone, iPad, Android, Mac, Windows, dan Linux",
+    "description": "Yappy gratis dan open source. Di App Store untuk iPhone dan iPad, di Google Play untuk Android; versi desktop diunduh dari GitHub atau dikompilasi dari kode sumber. Persyaratan sistem dan ukuran model suara.",
     "h1": "Gratis, terbuka, dan milik Anda.",
     "entradilla": "Tidak ada pendaftaran, tidak ada email, tidak ada versi coba yang kedaluwarsa. Tinggal unduh, dan selesai.",
     "modelo_nota": "Pertama kali dijalankan, Yappy mengunduh model suara ({peso}). Di iPhone, model ini sudah ikut saat instalasi; di komputer, baru diunduh saat pertama kali aplikasi dibuka. Setelah itu tidak perlu koneksi lagi.",
-    "android_titulo": "Android",
-    "android_texto": "Versi Android sudah dikompilasi dan berfungsi, tetapi belum dirilis: akun pengembang Google masih dalam proses verifikasi. Begitu rilis, pengumumannya akan muncul di sini dan di repositori.",
+    "android_titulo": "Di Android, tanpa batasan",
+    "android_texto": "Di Android tidak ada Yappy Parlanchín atau apapun yang perlu dibayar: tempat tunggu tanpa batas dan pabrik audiobook langsung terbuka, seperti di komputer. Langganan hanya ada di iPhone dan iPad.",
     "escritorio_aviso": "Binari desktop dipublikasikan di GitHub. Jika versi yang Anda temukan di sana lebih lama daripada versi iPhone, berarti yang terbaru belum diunggah: kodenya memang sudah mutakhir dan bisa dikompilasi dengan <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS atau iPadOS 17 ke atas · model suara berukuran sekitar 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Unduh di App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "Di Google Play, gratis tanpa akun. Sama seperti di iPhone: bagikan tautan, teks, atau dokumen dan langsung memutar, dengan karaoke, pabrik audiobook, dan kontrol di layar terkunci.",
+        "requisitos": "Android 7.0 atau lebih tinggi · sekitar 200 MB model suara, yang diunduh pertama kali saat membuka app",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Unduh di Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage dan .deb untuk x64. Pintasan global bergantung pada lingkungan desktop Anda; kalau pintasan Anda sudah terpakai, ganti saja lewat Preferensi.",
+        "texto": "AppImage, .deb, dan .rpm untuk x64. Pintasan global tergantung lingkungan desktop Anda; di Preferensi bisa diganti jika yang Anda punya sudah terpakai.",
         "requisitos": "x64 · model suara sekitar 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Lihat rilis di GitHub"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Tanpa uji coba gratis, dan itu memang disengaja: rak tiga dokumen <em>itulah</em> uji cobanya, tidak kedaluwarsa dan tidak menagih di kemudian hari. Harga yang tercantum adalah harga Spanyol; di toko di perangkatmu, angkanya akan tampil dalam mata uangmu.",
     "cuerda_donde": "Langganannya ada di dalam aplikasi, di ruang belakang.",
-    "solo_movil": "Talinya milik ponsel: di iPhone, di iPad, dan di Android. Di komputer, semuanya terbuka.",
+    "solo_movil": "Langganan hanya ada di iPhone dan iPad. Di Android dan komputer semuanya terbuka.",
     "comparacion_titulo": "Yang dipungut pesaing.",
     "comparacion_entradilla": "Aplikasi suara berbasis cloud membayar server setiap kali kamu menekan play, makanya mereka menagih per jam atau per karakter. Yappy menyintesis suara langsung di perangkatmu, jadi biaya per pemutaran nol — dan karena itu Yappy bisa memilih untuk tidak menagih.",
     "comparacion_nota": "Harga resmi yang dicek pada September 2026. Angkanya sering berubah: cek situs masing-masing sebelum memutuskan.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Mengapa di komputer gratis?",
-        "a": "Karena talinya memang dipasang di ponsel, bukan di komputer. Di sana, percetakan, percha tanpa dasar, dan jembatan terbuka sejak awal. Ini bukan promo peluncuran: desktoplah mesin yang mengerjakan pekerjaan berat, dan menagih biaya hanya karena membiarkan komputermu sendiri bekerja semalaman tidak masuk akal."
+        "a": "Karena langganan hanya ada di iPhone dan iPad, tidak di komputer. Di sana pabrik audiobook, tempat tunggu tanpa batas, dan jembatan langsung terbuka. Ini bukan promo peluncuran: desktop adalah mesin yang melakukan pekerjaan berat, dan memungut bayaran agar komputermu sendiri bekerja malam hari tidak masuk akal."
       }
     ],
     "una_a_una": "satu per satu, beserta datanya"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Benarkah gratis?",
-            "a": "Ya. Yappy adalah kode terbuka dengan lisensi MIT. Bisa mendengarkan apa yang kita baca adalah soal aksesibilitas, dan alat aksesibilitas tidak seharusnya meminta kartu kredit. Di komputer tidak ada versi berbayar atau iklan. Di iPhone, beo uji coba membawa tiga dokumen sekaligus di tenggerannya, tanpa batas waktu. Kalau kamu mau tenggeran tanpa dasar, percetakan buku audio, dan jembatan ke komputer, bayar lewat Yappy Parlanchín: langganan, atau sekali bayar seumur hidup. Apa pun pilihanmu, tanpa akun dan tanpa iklan."
+            "a": "Ya. Yappy adalah open source dengan lisensi MIT. Bisa mendengarkan apa yang kita baca adalah soal aksesibilitas, dan alat aksesibilitas tidak seharusnya minta kartu kredit. Di komputer dan Android tidak ada versi berbayar atau iklan. Di iPhone, burung percobaan membawa tiga dokumen sekaligus di tempat tunggunya, tanpa batas waktu; kalau mau tempat tunggu tanpa batas, pabrik audiobook, dan jembatan dengan komputer, aktifkan dengan Yappy Parlanchín, langganan atau bayar sekali seumur hidup. Tanpa akun dan tanpa iklan, bagaimanapun."
           },
           {
             "q": "Apa triknya? Bagaimana pendanaannya?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "Dan PDF hasil pindai, yang tidak punya teks di dalamnya?",
-            "a": "Di desktop, mereka melewati OCR lokal sebelum dibaca, dan juga di situ tidak ada apa pun yang keluar dari komputer kamu. Di iPhone, belum bisa: kalau PDF-nya cuma foto dari kertas, ponsel tidak menemukan teks untuk dibaca. Pindaian yang miring atau buram akan memberi apa yang bisa diberikan OCR mana pun, tetapi yang cukup rapi terbaca utuh."
+            "a": "Diproses dengan OCR lokal sebelum dibaca, di komputer, di iPhone, dan di Android, dan tidak ada yang keluar dari perangkat Anda. Gratis di semua platform: OCR bukan bagian dari langganan. Dirancang untuk huruf cetak alfabet Latin; sistem tulisan lain hanya dikenali di iPhone, iPad, dan Mac, menggunakan pengenal Apple. Pemindaian yang miring atau buram akan memberikan hasil seadanya seperti OCR mana pun, tapi yang layak bisa dibaca sepenuhnya."
           },
           {
             "q": "Apakah bisa membaca buku yang saya beli di toko?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "Tentang apa ini",
-        "texto": "Ini kebijakan privasi Yappy: aplikasi untuk iPhone, iPad, Mac, Windows, dan Linux, lengkap dengan widget dan ekstensinya. Pendek saja karena memang sedikit yang perlu diceritakan. Yappy tidak punya akun, tidak minta nama maupun email kamu, dan apa yang kamu berikan untuk dibaca tidak keluar dari perangkatmu. Yang benar-benar menyentuh jaringan hanya empat hal konkret, dan keempatnya ada di sini, satu per satu."
+        "texto": "Ini adalah kebijakan privasi Yappy: app untuk iPhone, iPad, Android, Mac, Windows, dan Linux, beserta widget dan ekstensinya. Singkat karena tidak banyak yang perlu diceritakan. Yappy tidak punya sistem akun, tidak minta nama atau emailmu, dan apa yang kamu berikan untuk dibaca tidak keluar dari perangkatmu. Yang menyentuh jaringan hanya empat hal spesifik, dan ini keempatnya, satu per satu."
       },
       {
         "titulo": "Tanpa akun, tanpa nama, tanpa teks",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Menyentuh jaringan (4): pembelian",
-        "texto": "Langganan dan pembelian seumur hidup Yappy Parlanchín ditangani Apple melalui App Store, dan hanya ada di iPhone dan iPad. Untuk memeriksa apakah langgananmu masih aktif, aplikasi memakai <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, sebuah pengelola langganan yang menerima pengenal anonim dari instalasi dan tanda terima dari Apple; tidak menerima nama atau emailmu. Apple menjelaskan datanya sendiri di <a href=\"https://www.apple.com/legal/privacy/\">kebijakan privasinya</a>."
+        "texto": "Langganan dan pembelian seumur hidup Yappy Parlanchín dikelola oleh Apple melalui App Store, dan hanya ada di iPhone dan iPad. Untuk mengetahui apakah langganan Anda aktif, aplikasi menggunakan <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, pengelola langganan, yang menerima pengenal anonim instalasi dan tanda terima dari Apple; tidak menerima nama atau email Anda. Di Android tidak ada yang dijual, tapi aplikasi juga menjalankan RevenueCat saat dibuka, untuk memeriksa apakah Google Play menawarkan pembelian: RevenueCat menerima pengenal anonim yang sama, dan permintaan melewati sistem penagihan Google Play. Apple dan Google menjelaskan data mereka di kebijakan masing-masing: <a href=\"https://www.apple.com/legal/privacy/\">milik Apple</a> dan <a href=\"https://policies.google.com/privacy\">milik Google</a>."
       },
       {
         "titulo": "Jembatan: dari iPhone ke komputer, dan sebaliknya",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Bisakah ia membaca PDF pelajaran dan buku yang sudah saya punya?",
-        "a": "PDF, EPUB, Word, atau ODT apa pun yang bisa kamu buka. Kalau PDF-nya hasil pindai tanpa teks, versi desktop menjalankannya lewat OCR lokal dulu sebelum membacanya; di ponsel fitur itu belum ada. Buku ber-DRM dari toko tidak bisa dibaca di mana pun, dan di sini juga tidak."
+        "a": "PDF, EPUB, Word, atau ODT apa pun yang bisa Anda buka. Jika PDF-nya adalah pemindaian tanpa teks, Yappy memprosesnya dengan OCR lokal sebelum membacanya, di komputer dan di ponsel, tanpa biaya. Buku dengan DRM dari toko tidak bisa dibaca di mana pun, termasuk di sini."
       },
       {
         "q": "Berapa biaya pakainya sehari-hari?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "PDF hasil pindai",
-        "extra_texto": "Kalau PDF-nya foto kertas tanpa teks di dalamnya, versi desktop melewatkannya lewat OCR lokal dulu sebelum membacanya. Di iPhone belum bisa.",
+        "extra_texto": "Jika PDF-nya adalah foto kertas dan tidak mengandung teks, Yappy memprosesnya dengan OCR lokal sebelum membacanya, di komputer, di iPhone, dan di Android. Gratis: OCR bukan bagian dari langganan.",
         "faq": [
           {
             "q": "Ada batas halaman?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "Bagaimana kalau PDF-nya hasil pindai tanpa teks?",
-            "a": "Versi desktop melewatkannya lewat OCR lokal dulu sebelum membacanya, dan di situ pun tidak ada yang keluar dari komputermu. Di iPhone belum bisa: kalau PDF-nya foto kertas, ponsel tidak menemukan teks untuk dibaca."
+            "a": "Yappy memprosesnya dengan OCR lokal sebelum membacanya, di komputer dan di ponsel, dan tidak ada yang keluar dari perangkat Anda. Pemindaian yang miring atau buram akan memberikan hasil seadanya seperti OCR mana pun, tapi yang layak bisa dibaca sepenuhnya."
           },
           {
             "q": "Apakah header dan nomor halaman dibuang?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Kalau video tidak punya transkrip",
-        "extra_texto": "Berarti tidak ada yang bisa dibaca: Yappy memakai teks yang sudah dipublikasikan, bukan mentranskrip audio videonya. Di iPhone fitur ini ada; di Android belum.",
+        "extra_texto": "Jadi tidak ada yang bisa dibaca: Yappy bekerja dengan teks yang dipublikasikan, tidak menyalin audio dari video.",
         "faq": [
           {
             "q": "Apakah audio video ditranskrip?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Apakah ini bekerja di semua platform video?",
-            "a": "Di mana ada transkrip yang dipublikasikan dan bisa diakses. Di iPhone fitur ini ada; di versi Android belum."
+            "a": "Saat ini, dengan YouTube, di iPhone, di Android, dan di komputer. Dengan platform video lain, Yappy belum bisa meminta transkripnya."
           },
           {
             "q": "Menghabiskan kuota?",

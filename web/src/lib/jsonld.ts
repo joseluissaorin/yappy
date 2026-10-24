@@ -5,7 +5,7 @@
  * repetir la organización tres veces.
  */
 import { absoluta, SITIO, type Idioma } from "../i18n";
-import { CUERDA, ENLACES, MOTOR } from "./datos";
+import { CUERDA, ENLACES, MOTOR, VERSION } from "./datos";
 
 const CONTEXTO = "https://schema.org";
 export const ID_PERSONA = `${SITIO}/#autor`;
@@ -38,11 +38,11 @@ export function aplicacion(lang: Idioma, opciones: { nombre: string; descripcion
     inLanguage: lang,
     applicationCategory: "UtilitiesApplication",
     applicationSubCategory: "Text to speech",
-    operatingSystem: "iOS 17+, iPadOS 17+, macOS 12+, Windows 10+, Linux",
+    operatingSystem: "iOS 17+, iPadOS 17+, Android 7.0+, macOS 12+, Windows 10+, Linux",
     url: SITIO,
-    downloadUrl: ENLACES.appStore,
-    installUrl: ENLACES.appStore,
-    softwareVersion: "1.0.0",
+    downloadUrl: [ENLACES.appStore, ENLACES.googlePlay],
+    installUrl: [ENLACES.appStore, ENLACES.googlePlay],
+    softwareVersion: VERSION,
     license: ENLACES.licencia,
     isAccessibleForFree: true,
     author: { "@id": ID_PERSONA },

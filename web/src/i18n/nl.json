@@ -37,6 +37,7 @@
     "descargar": "Downloaden",
     "descargar_gratis": "Gratis downloaden",
     "en_app_store": "Download in de App Store",
+    "en_google_play": "Downloaden op Google Play",
     "escuchar_muestra": "Voorbeeld beluisteren",
     "probar": "Nu uitproberen",
     "leer_mas": "Lees verder",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Op Android",
-        "texto": "Hetzelfde gebaar: je deelt een link, een tekst of een document en het belandt in dezelfde wachtrij, met artikelextractie, karaoke en stem, allemaal op de telefoon zelf. De Android-versie is de jongste van de familie en mist nog drie dingen die de iPhone wél heeft: de bediening op het vergrendelscherm, video's en de speler voor .m4b-audioboeken. En er is iets belangrijkers: <strong>de app is er nog niet</strong>. Het Google-ontwikkelaarsaccount wordt nog geverifieerd en we noemen geen datum, want die weten we niet. Zodra de app er is, lees je het hier en in de repository. Wél dit: op Android zit niets achter slot en grendel. Alles is open."
+        "texto": "Hetzelfde gebaar als op de iPhone: je deelt een link, tekst of document en het belandt in dezelfde wachtrij, met artikelextractie, karaoke en stem, allemaal op de telefoon zelf. Speelt door met vergrendeld scherm, met bediening in de notificatie, en de drukkerij werkt op de achtergrond terwijl je iets anders doet. Staat in <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a> en daar is het <strong>helemaal gratis</strong>: geen Yappy Parlanchín en niets om te betalen, dus de stok heeft geen bodem en de audioboekendrukkerij staat open. Het enige wat ontbreekt zijn de Apple-onderdelen: Siri en de Opdrachten-app."
       }
     ],
     "atajo": "Snelkoppeling",
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Yappy downloaden: iPhone, iPad, Mac, Windows en Linux",
-    "description": "Yappy is gratis en open source. In de App Store voor iPhone en iPad; de desktopversie compileer je vanuit de code of download je van GitHub. Systeemvereisten en de grootte van het spraakmodel.",
+    "title": "Yappy downloaden: iPhone, iPad, Android, Mac, Windows en Linux",
+    "description": "Yappy is gratis en open source. In de App Store voor iPhone en iPad en in Google Play voor Android; de desktopversie download je van GitHub of compileer je uit de broncode. Systeemeisen en grootte van het stemmodel.",
     "h1": "Gratis, open en van jou.",
     "entradilla": "Geen registratie, geen e-mailadres, geen proefversie die afloopt. Downloaden en klaar.",
     "modelo_nota": "De eerste keer downloadt Yappy het spraakmodel ({peso}). Op de iPhone komt die mee met de installatie; op de computer bij de eerste keer dat je de app opent. Daarna heb je geen verbinding meer nodig.",
-    "android_titulo": "Android",
-    "android_texto": "De Android-versie is gecompileerd en werkt, maar is nog niet gepubliceerd: het ontwikkelaarsaccount bij Google wacht nog op goedkeuring. Zodra die uitkomt, kondigen we dat hier en in de repository aan.",
+    "android_titulo": "Op Android, zonder touw",
+    "android_texto": "Op Android is er geen Yappy Parlanchín en niets om te betalen: de stok heeft geen bodem en de audioboekendrukkerij staat open, net als op de computer. Abonnementen bestaan alleen op de iPhone en iPad.",
     "escritorio_aviso": "De desktopbinaries worden op GitHub gepubliceerd. Als de versie die je daar vindt ouder is dan die op de iPhone, is de nieuwste nog niet geüpload: de code is wél up-to-date en te compileren met <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS of iPadOS 17 of hoger · het spraakmodel is ongeveer 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Downloaden in de App Store"
+      },
+      {
+        "nombre": "Android",
+        "texto": "In Google Play, gratis en zonder account. Hetzelfde gebaar als op de iPhone: je deelt een link, tekst of document en het speelt al af, met karaoke, de audioboekendrukkerij en bediening op het vergrendelde scherm.",
+        "requisitos": "Android 7.0 of nieuwer · circa 200 MB stemmodel, wordt de eerste keer dat je de app opent gedownload",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Downloaden op Google Play"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage en .deb voor x64. Globale sneltoetsen hangen af van je desktopomgeving; als de jouwe al bezet zijn, stel je in Voorkeuren andere in.",
+        "texto": "AppImage, .deb en .rpm voor x64. De globale sneltoetsen hangen af van je desktopomgeving; in de Voorkeuren kun je ze veranderen als de jouwe al bezet zijn.",
         "requisitos": "x64 · stemmodel van zo'n 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Bekijk de versies op GitHub"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Bewust geen gratis proefperiode: de kapstok met drie documenten <em>is</em> de proef. Die verloopt niet en begint later niet te factureren. De prijzen zijn die van Spanje; in jouw winkel staan ze in jouw eigen munt.",
     "cuerda_donde": "Het abonnement sluit je af in de app zelf, achterin de winkel.",
-    "solo_movil": "Het touw zit aan de telefoon vast: op de iPhone, op de iPad en op Android. Op de computer staat alles open.",
+    "solo_movil": "Het touw bestaat alleen op de iPhone en iPad. Op Android en op de computer staat alles open.",
     "comparacion_titulo": "Wat anderen vragen.",
     "comparacion_entradilla": "Spraak-apps in de cloud betalen voor servers, telkens als je op play drukt. Daarom rekenen zij per uur of per teken af. Yappy synthetiseert op je eigen apparaat: een luisterbeurt kost niets, dus Yappy hoeft er ook niets voor te vragen.",
     "comparacion_nota": "De officiële prijzen, geraadpleegd in september 2026. Ze veranderen vaak: controleer ze op elke site voordat je beslist.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Waarom betaal je op de computer niet?",
-        "a": "Omdat het touw aan de telefoon vastzit, en aan de computer niet. Daar staan de drukkerij, de bodemloze kapstok en de brug gewoon open. Het is geen introductieaanbieding: de desktop is de machine die het zware werk doet, en geld vragen om je eigen computer 's nachts te laten werken, dat sloeg nergens op."
+        "a": "Omdat het touw alleen op de iPhone en iPad zit, en niet op de computer. Daar staan de drukkerij, de bodemloze stok en de brug open. Het is geen lanceringsaanbieding: de desktop is de machine die het zware werk doet, en geld vragen om je eigen computer 's nachts te laten werken sloeg nergens op."
       }
     ],
     "una_a_una": "één voor één, met hun eigen gegevens"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Is het echt gratis?",
-            "a": "Ja. Yappy is open source onder de MIT-licentie. Kunnen luisteren naar wat je leest is een kwestie van toegankelijkheid, en toegankelijkheidshulpmiddelen horen geen pinpas te vragen. Op de computer is er geen betaalversie en geen reclame. Op de iPhone draagt de proefpapegaai drie documenten tegelijk op zijn stok, zonder tijdslimiet; wil je een bodemloze stok, de drukkerij voor audioboeken en de brug naar de computer, dan windt je hem op met Yappy Parlanchín, als abonnement of met één betaling voor altijd. In elk geval zonder account en zonder reclame."
+            "a": "Ja. Yappy is open source met een MIT-licentie. Kunnen beluisteren wat je leest is een kwestie van toegankelijkheid, en hulpmiddelen voor toegankelijkheid zouden niet om een bankpas moeten vragen. Op de computer en op Android is er geen betaalde versie en geen reclame. Op de iPhone draagt de proefpapegaai drie documenten tegelijk op zijn stok, zonder tijdslimiet; wil je een bodemloze stok, de audioboekendrukkerij en de brug met de computer, dan geef je hem touw met Yappy Parlanchín, als abonnement of in één levenslange betaling. Zonder account en zonder reclame, in elk geval."
           },
           {
             "q": "Waar zit het addertje? Hoe wordt dit gefinancierd?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "En gescande PDF's zonder tekst erin?",
-            "a": "Op de computer gaat de tekst eerst door een lokale OCR voordat hij wordt voorgelezen, en ook dan blijft alles op je computer. Op de iPhone nog niet: als de PDF een foto van papier is, vindt de telefoon geen tekst om voor te lezen. Een scheve of wazige scan levert op wat elke OCR eruit kan halen; van een degelijke scan komt alles mee."
+            "a": "Ze gaan door een lokale OCR voordat ze worden voorgelezen, op de computer, op de iPhone en op Android, en ook daar verlaat er niets je apparaat. Het is overal gratis: de OCR valt niet onder het abonnement. Het is bedoeld voor gedrukte tekst in het Latijnse alfabet; andere schriften worden alleen herkend op de iPhone, de iPad en de Mac, met de herkenner van Apple. Een scheve of wazige scan geeft wat elke OCR kan geven, maar een nette scan wordt helemaal voorgelezen."
           },
           {
             "q": "Kan de app boeken lezen die ik bij een winkel heb gekocht?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "Waar dit over gaat",
-        "texto": "Dit is de privacyverklaring van Yappy: de app voor iPhone, iPad, Mac, Windows en Linux, met zijn widgets en extensies. Hij is kort, want er valt weinig te vertellen. Yappy heeft geen accounts, vraagt niet om je naam of je e-mailadres, en wat je hem geeft om voor te lezen verlaat je toestel niet. Het netwerk wordt wel aangeraakt, voor vier concrete dingen, en hier staan die vier, één voor één."
+        "texto": "Dit is het privacybeleid van Yappy: de app voor iPhone, iPad, Android, Mac, Windows en Linux, met widgets en extensies. Het is kort omdat er weinig te vertellen valt. Yappy heeft geen accounts, vraagt niet om je naam of e-mail, en wat je te lezen geeft blijft op je apparaat. Wat wel het netwerk raakt zijn vier concrete zaken, en hier zijn die vier, stuk voor stuk."
       },
       {
         "titulo": "Geen account, geen naam, geen teksten",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Wat het netwerk ziet (4): de aankopen",
-        "texto": "De abonnementen en de levenslange aankoop van Yappy Parlanchín worden door Apple afgehandeld via de App Store, en bestaan alleen op de iPhone en de iPad. Om te zien of je abonnement nog loopt, gebruikt de app <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, een dienst die abonnementen beheert en een anoniem installatie-id en het aankoopbewijs van Apple krijgt; je naam en je e-mailadres niet. Wat Apple zelf met gegevens doet, legt het uit in <a href=\"https://www.apple.com/legal/privacy/\">zijn privacybeleid</a>."
+        "texto": "De abonnementen en de levenslange aankoop van Yappy Parlanchín worden door Apple beheerd via de App Store, en bestaan alleen op de iPhone en de iPad. Om te controleren of je abonnement actief is, gebruikt de app <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, een abonnementenbeheerder, die een anonieme identificatie van de installatie en het ontvangstbewijs van Apple ontvangt; hij ontvangt je naam en e-mailadres niet. Op Android wordt er niets verkocht, maar de app start ook RevenueCat op bij het openen, om te controleren of Google Play een aankoop aanbiedt: RevenueCat ontvangt dan diezelfde anonieme identificatie, en de vraag gaat via het factureringssysteem van Google Play. Apple en Google leggen hun eigen gegevens uit in hun privacybeleid: <a href=\"https://www.apple.com/legal/privacy/\">dat van Apple</a> en <a href=\"https://policies.google.com/privacy\">dat van Google</a>."
       },
       {
         "titulo": "De brug: van je iPhone naar je computer en terug",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Kan het de PDF's van school lezen en de boeken die ik al heb?",
-        "a": "Elke PDF, EPUB, Word of ODT die je kunt openen. Is de PDF een scan zonder tekst, dan haalt de desktopversie er eerst lokaal OCR overheen voordat hij hem voorleest; op de telefoon bestaat dat nog niet. Boeken met DRM uit een winkel kun je nergens lezen, en hier ook niet."
+        "a": "Elke PDF, EPUB, Word of ODT die je kunt openen. Als de PDF een scan zonder tekst is, haalt Yappy hem door een lokale OCR voordat hij wordt voorgelezen, op de computer en op de mobiel, zonder extra kosten. Boeken met DRM van een winkel kunnen nergens worden voorgelezen, hier ook niet."
       },
       {
         "q": "Wat kost het om het dagelijks te gebruiken?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Gescande PDF's",
-        "extra_texto": "Is de PDF een foto van papier zonder tekst erin, dan haalt de desktopversie er eerst lokaal OCR overheen. Op de iPhone nog niet.",
+        "extra_texto": "Als de PDF een foto van papier is en geen tekst bevat, haalt Yappy hem door een lokale OCR voordat hij wordt voorgelezen, op de computer, op de iPhone en op Android. Het is gratis: de OCR valt niet onder het abonnement.",
         "faq": [
           {
             "q": "Zit er een limiet aan het aantal pagina's?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "En als de PDF een scan zonder tekst is?",
-            "a": "De desktopversie haalt er eerst lokaal OCR overheen, en ook dan verlaat er niets je computer. Op de iPhone nog niet: is de PDF een foto van papier, dan vindt de telefoon geen tekst om voor te lezen."
+            "a": "Yappy haalt hem door een lokale OCR voordat hij wordt voorgelezen, op de computer en op de mobiel, en ook daar verlaat er niets je apparaat. Een scheve of wazige scan geeft wat elke OCR kan geven, maar een nette scan wordt helemaal voorgelezen."
           },
           {
             "q": "Haalt Yappy de kopteksten en paginanummers weg?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Als de video geen transcriptie heeft",
-        "extra_texto": "Dan is er niets te lezen: Yappy werkt met de gepubliceerde tekst en transcribeert de audio van de video niet. Op de iPhone bestaat deze functie; op Android nog niet.",
+        "extra_texto": "Dan is er niets te lezen: Yappy werkt met de gepubliceerde tekst, het transcribeert de audio van de video niet.",
         "faq": [
           {
             "q": "Transcribeert Yappy de audio van de video?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Werkt het op alle videoplatforms?",
-            "a": "Overal waar een gepubliceerde en toegankelijke transcriptie staat. Op de iPhone bestaat deze functie; in de Android-versie nog niet."
+            "a": "Vandaag werkt het met YouTube, op de iPhone, op Android en op de computer. Bij andere videoplatforms kan Yappy nog geen transcriptie opvragen."
           },
           {
             "q": "Kost het data?",

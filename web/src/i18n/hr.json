@@ -37,6 +37,7 @@
     "descargar": "Preuzmi",
     "descargar_gratis": "Preuzmi besplatno",
     "en_app_store": "Preuzmi u App Storeu",
+    "en_google_play": "Preuzmi na Google Playu",
     "escuchar_muestra": "Poslušaj uzorak",
     "probar": "Isprobaj odmah",
     "leer_mas": "Nastavi čitati",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Na Androidu",
-        "texto": "Isti potez: podijeliš poveznicu, tekst ili dokument i on slijeće u isti red — izdvajanje članka, karaoke i glas, sve unutar samog telefona. Android verzija je najmlađa u obitelji i još joj nedostaju tri stvari koje iPhone ima: kontrole na zaključanom zaslonu, videozapisi i reproduktor audioknjiga .m4b. A ima i nešto važnije: <strong>još nije objavljena</strong>. Googleov račun za razvojne programere još je u provjeri, pa ne navodimo datum jer ga ne znamo. Kad izađe, objavit ćemo to ovdje i u repozitoriju. Ali mirno: na Androidu neće biti kvake. Sve je otvoreno."
+        "texto": "Ista gesta kao na iPhoneu: podijeliš poveznicu, tekst ili dokument i slijeće u isti red, s izvlačenjem članka, karaoke i glasom, sve unutar samog telefona. Nastavlja zvučati sa zaključanim zaslonom, s kontrolama u obavijesti, a tiskara radi u pozadini dok ti radiš nešto drugo. Nalazi se na <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Playu</a> i tamo je <strong>potpuno besplatan</strong>: nema Yappy Parlanchína ni ičega za platiti, tako da vješalica nema dna i tiskara audioknjiga dolazi otvorena. Jedino što nema su Appleove stvari: Siri i aplikacija Prečaci."
       }
     ],
     "atajo": "Prečac",
@@ -300,7 +301,7 @@
         "texto": "„itd.“, „str.“, „19. st.“: svaki jezik ima svoju tablicu."
       },
       {
-        "titulo": "Números grandes",
+        "titulo": "Veliki brojevi",
         "texto": "S RBNF-gramatikama iz Unicode CLDR-a, uključujući rod i padeže."
       },
       {
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Preuzmi Yappy: iPhone, iPad, Mac, Windows i Linux",
-    "description": "Yappy je besplatan i otvorenog koda. Za iPhone i iPad u App Storeu; verzija za računalo kompajlira se iz koda ili preuzima s GitHuba. Zahtjevi i veličina modela glasa.",
+    "title": "Preuzmi Yappy: iPhone, iPad, Android, Mac, Windows i Linux",
+    "description": "Yappy je besplatan i otvorenog koda. U App Storeu za iPhone i iPad i na Google Playu za Android; desktop verzija preuzima se s GitHuba ili kompajlira iz koda. Zahtjevi i veličina glasovnog modela.",
     "h1": "Besplatan, otvoren i tvoj.",
     "entradilla": "Nema registracije, ni e-pošte, ni probne verzije koja istječe. Preuzmeš je i to je to.",
     "modelo_nota": "Prvi put Yappy preuzima model glasa ({peso}). Na iPhoneu stiže uz instalaciju; na računalu, kod prvog otvaranja aplikacije. Poslije veza više nije potrebna.",
-    "android_titulo": "Android",
-    "android_texto": "Kompajlirana je i radi, ali još nije objavljena: Googleov razvojni račun još je u provjeri. Kad izađe, najavit ćemo to ovdje i u repozitoriju.",
+    "android_titulo": "Na Androidu, bez žice",
+    "android_texto": "Na Androidu nema Yappy Parlanchína ni ičega za platiti: vješalica nema dna i tiskara audioknjiga dolazi otvorena, kao na računalu. Pretplate postoje samo na iPhoneu i iPadu.",
     "escritorio_aviso": "Binarne datoteke za računalo objavljuju se na GitHubu. Ako je verzija koju tamo nađeš starija od one za iPhone, najnovija još nije prenesena: kod jest ažuran i kompajlira se naredbom <code>cargo tauri build</code>.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS ili iPadOS 17 ili noviji · model glasa zauzima oko 200 MB",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "Preuzmi u App Storeu"
+      },
+      {
+        "nombre": "Android",
+        "texto": "Na Google Playu, besplatno i bez računa. Ista gesta kao na iPhoneu: podijeliš poveznicu, tekst ili dokument i već zvuči, s karaoke, tiskarom audioknjiga i kontrolama na zaključanom zaslonu.",
+        "requisitos": "Android 7.0 ili noviji · otprilike 200 MB glasovnog modela, koji se preuzima prvi put kad otvoriš aplikaciju",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Preuzmi na Google Playu"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "AppImage i .deb za x64. Globalne kratice ovise o tvom desktop okruženju; u Postavkama ih možeš zamijeniti drugima ako su ti već zauzete.",
+        "texto": "AppImage, .deb i .rpm za x64. Globalne tipkovničke prečice ovise o tvom okruženju radne površine; u Postavkama se mogu promijeniti ako su tvoje već zauzete.",
         "requisitos": "x64 · model glasa od oko 398 MB",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "Pogledaj verzije na GitHubu"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Bez besplatne probe – namjerno: vješalica s tri dokumenta <em>jest</em> proba. Ne istječe i poslije ništa ne naplaćuje. Cijene su španjolske – u trgovini će se prikazati u tvojoj valuti.",
     "cuerda_donde": "Kanap se kupuje unutar aplikacije, u zadnjoj sobi trgovine.",
-    "solo_movil": "Plaćanje ide preko mobitela: na iPhoneu, iPadu i Androidu. Na računalu je sve otvoreno.",
+    "solo_movil": "Žica postoji samo na iPhoneu i iPadu. Na Androidu i na računalu sve je otvoreno.",
     "comparacion_titulo": "Koliko naplaćuju drugi.",
     "comparacion_entradilla": "Aplikacije koje sintetiziraju govor u oblaku plaćaju poslužitelje svaki put kad pritisneš play, pa ti naplaćuju po satu ili po znaku. Yappy sve sintetizira na tvom uređaju: slušanje ne košta ništa, pa ga ne mora ni naplaćivati.",
     "comparacion_nota": "Javno objavljene cijene, provjerene u rujnu 2026. Često se mijenjaju: provjeri ih na svakoj stranici prije odluke.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Zašto se na računalu ne plaća?",
-        "a": "Jer je naplata namještena na mobitel, a ne na računalo. Tamo tiskara, vješalica bez dna i most dolaze otvoreni. To nije lansirna ponuda: stolno računalo je stroj koji radi teški posao, a naplaćivati da tvoje vlastito računalo radi preko noći nije imalo smisla."
+        "a": "Jer je žica postavljena samo na iPhoneu i iPadu, a ne na računalu. Tamo su tiskara, vješalica bez dna i most otvoreni. Nije ovo ponuda povodom lansiranja: desktop je stroj koji radi teške poslove, i naplaćivati da tvoje vlastito računalo radi noću nije imalo smisla."
       }
     ],
     "una_a_una": "jednu po jednu, sa svojim podacima"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Je li stvarno besplatno?",
-            "a": "Da. Yappy je otvorenog koda pod MIT licencom. Mogućnost da čuješ ono što čitaš pitanje je pristupačnosti, a alati za pristupačnost ne bi smjeli tražiti karticu. Na računalu nema ni plaćene inačice ni reklama. Na iPhoneu probna papiga na svojoj vješalici nosi tri dokumenta odjednom, bez ograničenja vremena; ako želiš vješalicu bez dna, tiskaru audioknjiga i most prema računalu, naviješ je uz Yappy Parlanchín — pretplatom ili jednokratnim plaćanjem za cijeli život. U svakom slučaju bez računa i bez reklama."
+            "a": "Da. Yappy je otvorenog koda s MIT licencom. Moći slušati ono što čitaš pitanje je pristupačnosti, a alati za pristupačnost ne bi trebali tražiti karticu. Na računalu i na Androidu nema plaćene verzije ni reklama. Na iPhoneu, probna papiga nosi tri dokumenta odjednom na vješalici, bez vremenskog ograničenja; ako želiš vješalicu bez dna, tiskaru audioknjiga i most s računalom, daješ mu žicu s Yappy Parlanchínom, u pretplati ili jednoraznoj uplati za cijeli život. Bez računa i bez reklama, u svakom slučaju."
           },
           {
             "q": "U čemu je kvaka? Kako se financira?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "A skenirani PDF-ovi, bez teksta unutra?",
-            "a": "Na računalu prolaze kroz lokalni OCR prije čitanja, pa ni tada ništa ne napušta tvoje računalo. Na iPhoneu to zasad ne postoji: ako je PDF fotografija papira, mobitel ne nalazi tekst za čitanje. Nakošen ili mutan sken dat će onoliko koliko svaki OCR može, ali solidan se sken čita do kraja."
+            "a": "Prolaze kroz lokalni OCR prije čitanja, na računalu, na iPhoneu i na Androidu, i ni tu ništa ne izlazi iz tvog uređaja. Besplatno je svugdje: OCR nije dio pretplate. Zamišljen je za tiskane slova latiničnog pisma; ostala pisma prepoznaju se samo na iPhoneu, iPadu i Macu, s Appleovim sustavom prepoznavanja. Nakrivljeno ili zamućeno skeniranje dat će ono što bilo koji OCR može dati, ali pristojan se pročita do kraja."
           },
           {
             "q": "Može li čitati knjige kupljene u trgovini?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "O čemu se radi",
-        "texto": "Ovo je pravilnik o privatnosti aplikacije Yappy: aplikacije za iPhone, iPad, Mac, Windows i Linux, sa svojim widgetima i proširenjima. Kratak je jer nema mnogo za reći. Yappy nema korisničke račune, ne traži tvoje ime ni tvoju adresu e-pošte, a ono što mu daš da pročita ne izlazi iz tvog uređaja. Ono što mrežu ipak dodiruje četiri su konkretne stvari, i evo sve četiri, jedna po jedna."
+        "texto": "Ovo je politika privatnosti Yappyja: aplikacije za iPhone, iPad, Android, Mac, Windows i Linux, s widgetima i ekstenzijama. Kratka je jer nema puno za reći. Yappy nema račune, ne traži ime ni e-mail, i ono što mu daš za čitanje ne izlazi iz tvog uređaja. Što se tiče mreže, postoje četiri konkretne stvari, i evo ih, jedna po jedna."
       },
       {
         "titulo": "Ni račun, ni ime, ni tekstovi",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Dodir s mrežom (4): kupnja",
-        "texto": "Pretplate i doživotnu kupnju Yappy Parlanchín vodi Apple preko App Storea, i postoje samo na iPhoneu i iPadu. Da zna je li ti pretplata aktivna, aplikacija koristi <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, upravitelj pretplatama: on prima anoniman identifikator instalacije i potvrdu o kupnji od Applea, a ne prima tvoje ime ni tvoju e-poštu. Apple objašnjava svoje podatke u <a href=\"https://www.apple.com/legal/privacy/\">svojim pravilima o privatnosti</a>."
+        "texto": "Pretplate i kupnju doživotne Yappy Parlanchín upravlja Apple putem App Storea i postoje samo na iPhoneu i iPadu. Da bi provjerila je li tvoja pretplata aktivna, aplikacija koristi <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>, sustav za upravljanje pretplatama, koji prima anonimni identifikator instalacije i potvrdu od Applea; ne prima tvoje ime ni e-poštu. Na Androidu se ništa ne prodaje, ali aplikacija također pokreće RevenueCat pri otvaranju, da provjeri nudi li Google Play neku kupnju: RevenueCat tada prima isti anonimni identifikator, a upit prolazi kroz sustav naplate Google Playa. Apple i Google objašnjavaju svoje podatke u vlastitim politikama: <a href=\"https://www.apple.com/legal/privacy/\">Appleova</a> i <a href=\"https://policies.google.com/privacy\">Googleova</a>."
       },
       {
         "titulo": "Most: s tvog iPhonea na računalo i natrag",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Može li čitati PDF-ove s nastave i knjige koje već imam?",
-        "a": "Bilo koji PDF, EPUB, Word ili ODT koji možeš otvoriti. Ako je PDF skenirana slika bez teksta, verzija za računalo provuče ga kroz lokalni OCR prije čitanja; na mobitelu toga još nema. Knjige s DRM-om iz trgovina ne možeš čitati nigdje, pa ni ovdje."
+        "a": "Bilo koji PDF, EPUB, Word ili ODT koji možeš otvoriti. Ako je PDF skenirano bez teksta, Yappy ga propusti kroz lokalni OCR prije čitanja, na računalu i na mobitelu, i bez naplate. Knjige sa DRM-om iz trgovine ne mogu se čitati nigdje, pa ni ovdje."
       },
       {
         "q": "Koliko košta svakodnevna upotreba?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Skenirani PDF-ovi",
-        "extra_texto": "Ako je PDF fotografija papira i nema teksta unutra, verzija za računalo prvo provuče datoteku kroz lokalni OCR pa je pročita. Na iPhoneu to još ne radi.",
+        "extra_texto": "Ako je PDF fotografija papira i nema tekst unutra, Yappy ga propusti kroz lokalni OCR prije čitanja, na računalu, na iPhoneu i na Androidu. Besplatno je: OCR nije dio pretplate.",
         "faq": [
           {
             "q": "Ima li ograničenje broja stranica?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "Što ako je PDF sken bez teksta?",
-            "a": "Verzija za računalo prvo provuče datoteku kroz lokalni OCR pa je pročita, i ni tada ništa ne napušta tvoje računalo. Na iPhoneu to još ne radi: ako je PDF fotografija papira, mobitel ne pronalazi tekst za čitanje."
+            "a": "Yappy ga propusti kroz lokalni OCR prije čitanja, na računalu i na mobitelu, i ni tu ništa ne izlazi iz tvog uređaja. Nakrivljeno ili zamućeno skeniranje dat će ono što bilo koji OCR može dati, ali pristojan se pročita do kraja."
           },
           {
             "q": "Uklanja li zaglavlja i brojeve stranica?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Ako video nema transkripciju",
-        "extra_texto": "Onda nema ništa za čitati: Yappy radi s objavljenim tekstom, ne transkribira zvuk s videa. Na iPhoneu ta funkcija postoji; na Androidu je još nema.",
+        "extra_texto": "Tada nema što čitati: Yappy radi s objavljenim tekstom, ne prepisuje zvuk iz videozapisa.",
         "faq": [
           {
             "q": "Transkribira li se zvuk videa?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Radi li na svim platformama za video?",
-            "a": "Tamo gdje postoji objavljena i dostupna transkripcija. Na iPhoneu funkcija postoji; u verziji za Android je još nema."
+            "a": "Danas, s YouTubeom, na iPhoneu, na Androidu i na računalu. S drugim platformama za video Yappy još ne zna zatražiti transkript."
           },
           {
             "q": "Troši li podatke?",

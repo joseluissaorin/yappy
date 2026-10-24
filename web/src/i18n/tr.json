@@ -37,6 +37,7 @@
     "descargar": "İndir",
     "descargar_gratis": "Ücretsiz indir",
     "en_app_store": "App Store’dan indir",
+    "en_google_play": "Google Play'den indir",
     "escuchar_muestra": "Örnek dinle",
     "probar": "Şimdi dene",
     "leer_mas": "Devamını oku",
@@ -248,7 +249,7 @@
       {
         "id": "android",
         "titulo": "Android'de",
-        "texto": "Aynı hareket: bir bağlantı, bir metin ya da bir belge paylaşırsın; aynı kuyruğa düşer. Makale çıkarma, karaoke ve ses; hepsi telefonun kendi içinde. Android sürümü ailenin en genci; iPhone'da olan üç şey henüz eksik: kilit ekranı kontrolleri, videolar ve .m4b sesli kitap oynatıcısı. Bir de daha önemlisi var: <strong>henüz yayında değil</strong>. Google geliştirici hesabı hâlâ doğrulamada; tarih vermiyoruz, çünkü bilmiyoruz. Çıktığında burada ve depoda duyurulacak. Yalnız şu kesin: Android'de saklanacak bir şey olmayacak. Her şey açık."
+        "texto": "iPhone'daki aynı hareket: bir bağlantı, metin veya belge paylaşıyorsun ve aynı kuyruğa düşüyor; makale çıkarma, karaoke ve ses, hepsi telefonun içinde. Ekran kilitliyken çalmaya devam ediyor, bildirimdeki kontrolleriyle; basımevi arka planda çalışıyor, sen başka şeylerle uğraşırken. <a href=\"https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android\">Google Play</a>'de ve orada <strong>tamamen bedava</strong>: Yappy Parlanchín falan yok, ödeyeceğin bir şey yok, yani tünek sınırsız ve sesli kitap basımevi açık. Tek eksiği Apple'a özgü parçalar: Siri ve Kısayollar uygulaması."
       }
     ],
     "atajo": "Kısayol",
@@ -300,7 +301,7 @@
         "texto": "“vb.”, “s.”, “XIX. yy.”: her dilin kendi tablosu var."
       },
       {
-        "titulo": "Números grandes",
+        "titulo": "Büyük sayılar",
         "texto": "Unicode CLDR’nin RBNF gramerleriyle; cins ve çekim dâhil."
       },
       {
@@ -341,13 +342,13 @@
     ]
   },
   "descargas": {
-    "title": "Yappy'yi indir: iPhone, iPad, Mac, Windows ve Linux",
-    "description": "Yappy ücretsiz ve açık kaynaklı. iPhone ve iPad için App Store'da; masaüstü sürümü koddan derlenir ya da GitHub'dan indirilir. Gereksinimler ve ses modelinin boyutu.",
+    "title": "Yappy'yi indir: iPhone, iPad, Android, Mac, Windows ve Linux",
+    "description": "Yappy bedava ve açık kaynak. iPhone ve iPad için App Store'da, Android için Google Play'de; masaüstü sürümü GitHub'dan indiriliyor ya da koddan derleniyor. Gereksinimler ve ses modelinin boyutu.",
     "h1": "Ücretsiz, açık ve senin.",
     "entradilla": "Kayıt yok, e-posta yok, süresi dolan deneme sürümü yok. İndirirsin, o kadar.",
     "modelo_nota": "İlk seferinde Yappy ses modelini ({peso}) indirir. iPhone'da bu kurulumla birlikte gelir; bilgisayarda uygulamayı ilk açışında iner. Sonrasında bağlantı gerekmez.",
-    "android_titulo": "Android",
-    "android_texto": "Derlendi, çalışıyor; ama henüz yayında değil: Google geliştirici hesabı hâlâ doğrulanıyor. Çıktığında burada ve depoda duyurulur.",
+    "android_titulo": "Android'de kur yok",
+    "android_texto": "Android'de Yappy Parlanchín yok, ödeyeceğin bir şey yok: tünek sınırsız ve sesli kitap basımevi açık, bilgisayardaki gibi. Abonelikler sadece iPhone ve iPad'de var.",
     "escritorio_aviso": "Masaüstü ikili dosyaları GitHub'da yayınlanır. Orada bulduğun sürüm iPhone'dakinden eskiyse, son sürüm henüz yüklenmemiş demektir: kod günceldir ve <code>cargo tauri build</code> ile derlenir.",
     "plataformas": [
       {
@@ -356,6 +357,13 @@
         "requisitos": "iOS veya iPadOS 17 ve üzeri · ses modeli yaklaşık 200 MB yer kaplar",
         "enlace": "https://apps.apple.com/app/id6773110015",
         "cta": "App Store'dan indir"
+      },
+      {
+        "nombre": "Android",
+        "texto": "Google Play'de, bedava ve hesapsız. iPhone'daki aynı hareket: bir bağlantı, metin veya belge paylaşıyorsun ve çalıyor, karaoke, sesli kitap basımevi ve kilitli ekrandaki kontrollerle.",
+        "requisitos": "Android 7.0 veya üstü · yaklaşık 200 MB ses modeli, uygulamayı ilk açtığında indiriliyor",
+        "enlace": "https://play.google.com/store/apps/details?id=com.joseluissaorin.yappy.android",
+        "cta": "Google Play'den indir"
       },
       {
         "nombre": "macOS",
@@ -373,7 +381,7 @@
       },
       {
         "nombre": "Linux",
-        "texto": "x64 için AppImage ve .deb. Genel kısayollar masaüstü ortamınıza bağlıdır; sizinkiler zaten doluysa Tercihler'den başka tuşlara atanır.",
+        "texto": "x64 için AppImage, .deb ve .rpm. Genel kısayollar masaüstü ortamına bağlı; Tercihler'den seninkileri zaten kullanımdaysa başkalarıyla değiştirebilirsin.",
         "requisitos": "x64 · yaklaşık 398 MB ses modeli",
         "enlace": "https://github.com/joseluissaorin/yappy/releases/latest",
         "cta": "GitHub'daki sürümleri gör"
@@ -420,7 +428,7 @@
     ],
     "cuerda_nota": "Ücretsiz deneme yok, bu da bir tercih: üç belgelik askı denemenin <em>ta kendisidir</em>; süresi dolmaz, sonradan ücret çekmez. Fiyatlar İspanya fiyatlarıdır; senin mağazanda kendi para biriminle görünür.",
     "cuerda_donde": "İp, uygulamanın içindeki arka depoda satılır.",
-    "solo_movil": "Paranın ipleri mobilde: iPhone'da, iPad'te ve Android'de. Bilgisayarda her şey açık.",
+    "solo_movil": "Kur sadece iPhone ve iPad'de var. Android'de ve bilgisayarda her şey açık.",
     "comparacion_titulo": "Diğerleri ne alıyor.",
     "comparacion_entradilla": "Buluttaki ses uygulamaları, oynat'a her bastığında sunuculara para öder; bu yüzden saat ya da karakter başına ücret isterler. Yappy sesi senin cihazında üretir: dinleme başına maliyeti sıfırdır, bu yüzden ücret almamayı göze alabilir.",
     "comparacion_nota": "Eylül 2026'da kontrol edilmiş, herkese açık fiyatlar. Sık sık değişirler; karar vermeden önce her web sitesinde yeniden kontrol et.",
@@ -443,7 +451,7 @@
       },
       {
         "q": "Bilgisayarda neden para ödenmiyor?",
-        "a": "Çünkü paranın ipleri mobilin elinde, bilgisayarın değil. Orada matbaa, dipsiz sepet ve köprü açık geliyor. Bu bir lansman indirimi değil: ağır işi masaüstü yapar. Kendi bilgisayarının gece boyu çalışması için para istemenin bir anlamı yoktu."
+        "a": "Çünkü kur sadece iPhone ve iPad'de kurulu, bilgisayarda değil. Orada basımevi, sınırsız tünek ve köprü açık. Bu bir lansma teklifi değil: masaüstü ağır işi yapan makine, ve kendi bilgisayarının gece çalışmasına izin vermek için para istemek mantıklı değildi."
       }
     ],
     "una_a_una": "tek tek, verileriyle birlikte"
@@ -469,7 +477,7 @@
         "lista": [
           {
             "q": "Gerçekten ücretsiz mi?",
-            "a": "Evet. Yappy, MIT lisanslı açık kaynak. Okuduğunu duyabilmek erişilebilirlik meselesidir ve erişilebilirlik araçları kart istememeli. Bilgisayarda ne ücretli sürüm var ne reklam. iPhone'da deneme papağanı tüneğinde aynı anda üç belge taşır, süre sınırı yok; dipsiz tüneği, sesli kitap matbaasını ve bilgisayar köprüsünü istersen, kurma kolunu Yappy Parlanchín'le çevirirsin: abonelikle ya da tek seferlik ömür boyu ödemeyle. Her durumda hesap yok, reklam yok."
+            "a": "Evet. Yappy, MIT lisanslı açık kaynak. Okuduğunu dinleyebilmek bir erişilebilirlik meselesi, ve erişilebilirlik araçları kart istememeli. Bilgisayarda ve Android'de ücretli sürüm yok, reklam yok. iPhone'da deneme papağanı tüneğinde aynı anda üç belge taşıyor, zaman sınırı yok; sınırsız tünek, sesli kitap basımevi ve bilgisayarla köprü istiyorsan, Yappy Parlanchín ile kur veriyorsun, abonelikle ya da ömür boyu tek ödemede. Her durumda hesapsız ve reklamsız."
           },
           {
             "q": "İşin altında ne var? Nasıl finanse ediliyor?",
@@ -539,7 +547,7 @@
           },
           {
             "q": "Peki taranmış, içinde metin olmayan PDF'ler?",
-            "a": "Masaüstünde belgeler okunmadan önce yerel bir OCR'dan geçer; bu sırada da bilgisayarından hiçbir şey dışarı çıkmaz. iPhone'da bu henüz yok: PDF kâğıdın fotoğrafıysa telefon okuyacak metin bulamaz. Eğri ya da bulanık bir tarama, herhangi bir OCR'ın verebileceğini verir; düzgün bir tarama ise baştan sona okunur."
+            "a": "Bilgisayarda, iPhone'da ve Android'de okunmadan önce yerel bir OCR'den geçiyor ve orada da cihazından dışarı hiçbir şey çıkmıyor. Her yerde ücretsiz: OCR aboneliğin parçası değil. Latin alfabesindeki basılı yazı için tasarlandı; diğer yazı sistemleri sadece iPhone, iPad ve Mac'te, Apple'ın tanıma sistemiyle algılanıyor. Eğri veya bulanık bir tarama her OCR'ın verebileceğini verir ama düzgün bir tarama baştan sona okunur."
           },
           {
             "q": "Bir mağazadan satın aldığım kitapları okuyabiliyor mu?",
@@ -583,7 +591,7 @@
     "bloques": [
       {
         "titulo": "Bu işin konusu ne",
-        "texto": "Bu, Yappy'nin gizlilik politikası: iPhone, iPad, Mac, Windows ve Linux uygulaması; widget'ları ve uzantıları dahil. Kısa, çünkü anlatılacak şey az. Yappy'de hesap yok; adını da e-postanı da istemez, okuması için verdiğin metin cihazından çıkmaz. Ağa dokunan dört somut şey var ve dördünü de burada, teker teker sayıyoruz."
+        "texto": "Bu, Yappy'nin gizlilik politikası: iPhone, iPad, Android, Mac, Windows ve Linux uygulaması, widget'ları ve uzantılarıyla. Kısa çünkü anlatacak pek bir şey yok. Yappy'nin hesapları yok, adını ya da e-postanı istemiyor, ve okumak için verdiğin şey cihazından çıkmıyor. Ağa dokunan dört somut şey var, ve işte bu dört şey, birer birer."
       },
       {
         "titulo": "Ne hesap, ne ad, ne metin",
@@ -603,7 +611,7 @@
       },
       {
         "titulo": "Ağ erişimi (4): satın alımlar",
-        "texto": "Abonelikler ile Yappy Parlanchín'in ömür boyu satın almasını Apple, App Store üzerinden yönetir; bunlar yalnızca iPhone ve iPad'de vardır. Aboneliğinizin halen aktif olup olmadığını anlamak için uygulama, bir abonelik yöneticisi olan <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a>'i kullanır; RevenueCat kurulum için anonim bir tanımlayıcı ile Apple makbuzunu alır; adınızı ya da e-postanızı almaz. Apple kendi verilerini <a href=\"https://www.apple.com/legal/privacy/\">politikasında</a> açıklar."
+        "texto": "Yappy Parlanchín aboneliklerini ve tek seferlik satın almasını Apple, App Store üzerinden yönetiyor ve bunlar sadece iPhone ve iPad'de var. Aboneliğinin aktif olup olmadığını anlamak için uygulama <a href=\"https://www.revenuecat.com/privacy\">RevenueCat</a> kullanıyor, bir abonelik yöneticisi; kurulumun anonim bir tanımlayıcısını ve Apple'ın fişini alıyor; adını ya da e-postanı almıyor. Android'de hiçbir şey satılmıyor ama uygulama açılırken yine RevenueCat'i başlatıyor, Google Play'in bir satın alma sunup sunmadığını kontrol etmek için: RevenueCat o zaman aynı anonim tanımlayıcıyı alıyor ve sorgu Google Play'in faturalama sisteminden geçiyor. Apple ve Google kendi verilerini kendi politikalarında açıklıyor: <a href=\"https://www.apple.com/legal/privacy/\">Apple'ınki</a> ve <a href=\"https://policies.google.com/privacy\">Google'ınki</a>."
       },
       {
         "titulo": "Köprü: iPhone'dan bilgisayara ve geri",
@@ -663,7 +671,7 @@
       },
       {
         "q": "Ders PDF’lerini ve elinizdeki kitapları okur mu?",
-        "a": "Açabildiğiniz her PDF, EPUB, Word ve ODT. PDF taranmışsa ve metni yoksa, masaüstü sürümü okumadan önce yerel bir OCR’dan geçirir; mobilde bu henüz yok. Mağazadan alınmış DRM’li kitaplar hiçbir yerde okunamaz; burada da olmaz."
+        "a": "Açabileceğin her PDF, EPUB, Word veya ODT. PDF metin içermeyen bir taramaysa Yappy okumadan önce yerel bir OCR'den geçiriyor, bilgisayarda ve telefonda, ücretsiz. Bir mağazanın DRM korumalı kitapları hiçbir yerde okunamaz, burada da okunamaz."
       },
       {
         "q": "Her gün kullanmanın bedeli ne?",
@@ -717,7 +725,7 @@
           }
         ],
         "extra_titulo": "Taranmış PDF'ler",
-        "extra_texto": "PDF, kâğıdın fotoğrafıysa ve içinde metin yoksa masaüstü sürümü dosyayı okumadan önce yerel bir OCR'dan geçirir. iPhone'da henüz yok.",
+        "extra_texto": "PDF kağıdın fotoğrafıysa ve içinde metin yoksa Yappy okumadan önce yerel bir OCR'den geçiriyor, bilgisayarda, iPhone'da ve Android'de. Ücretsiz: OCR aboneliğin parçası değil.",
         "faq": [
           {
             "q": "Sayfa sınırı var mı?",
@@ -725,7 +733,7 @@
           },
           {
             "q": "Peki ya PDF metinsiz bir taramaysa?",
-            "a": "Masaüstü sürümü okumadan önce dosyayı yerel bir OCR'dan geçirir; orada da hiçbir şey bilgisayarından çıkmaz. iPhone'da henüz yok: PDF, kâğıdın fotoğrafıysa telefon okuyacak metin bulamaz."
+            "a": "Yappy okumadan önce yerel bir OCR'den geçiriyor, bilgisayarda ve telefonda, orada da cihazından dışarı hiçbir şey çıkmıyor. Eğri veya bulanık bir tarama her OCR'ın verebileceğini verir ama düzgün bir tarama baştan sona okunur."
           },
           {
             "q": "Başlıkları ve sayfa numaralarını ayıklıyor mu?",
@@ -881,7 +889,7 @@
           }
         ],
         "extra_titulo": "Videoda transkript yoksa",
-        "extra_texto": "O zaman okuyacak bir şey yok: Yappy yayınlanmış metinle çalışır, videonun sesini yazıya dökmez. Bu özellik iPhone'da var; Android'de henüz yok.",
+        "extra_texto": "O zaman okunacak bir şey yok: Yappy yayınlanmış metinle çalışır, videonun sesini deşifre etmez.",
         "faq": [
           {
             "q": "Videonun sesini yazıya döküyor mu?",
@@ -893,7 +901,7 @@
           },
           {
             "q": "Her video platformunda çalışıyor mu?",
-            "a": "Transkript yayınlanmış ve erişilebilir olduğu her yerde. Bu özellik iPhone'da var; Android sürümünde henüz yok."
+            "a": "Şu an YouTube ile, iPhone'da, Android'de ve bilgisayarda. Diğer video platformlarında Yappy henüz transkript istemeyi bilmiyor."
           },
           {
             "q": "Veri harcar mı?",
