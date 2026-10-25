@@ -619,7 +619,24 @@ async fn preparar_articulo<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> R
     // marcador manda la descarga por la Wayback Machine.
     let ruta_wayback = dir_cola(app)?.join(format!("{}.wayback", item.id));
     let html = if ruta_html.exists() {
-        fs::read_to_string(&ruta_html)?
+        let html = fs::read_to_string(&ruta_html)?;
+        // Un PDF visto en Safari: lo compartido es el VISOR (un <embed> sin
+        // texto), no un artículo. Se va a por el PDF de verdad. Si pide una
+        // sesión que la app no tiene (PRADO, un campus virtual), se dice.
+        if let Some(src) = pdf_del_visor(&html, &item.origen) {
+            let descargado = descargar_crudo(&cliente, &src).await;
+            if let Ok((bytes, ct)) = &descargado {
+                if let Some(ext) = extension_de_documento(bytes, ct, &src) {
+                    let _ = fs::remove_file(&ruta_html);
+                    return terminar_con_archivo(app, item, bytes, ext);
+                }
+            }
+            return Err(anyhow!(
+                "es un PDF que pide iniciar sesión y Yappy no pudo descargarlo; \
+                 guárdalo en Archivos y ábrelo con Yappy"
+            ));
+        }
+        html
     } else {
         let url_efectiva = if ruta_wayback.exists() {
             format!("https://web.archive.org/web/2/{}", item.origen)
@@ -665,6 +682,35 @@ async fn preparar_articulo<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> R
     let _ = fs::remove_file(&ruta_html);
     let _ = fs::remove_file(&ruta_wayback);
     terminar_con_markdown(app, &item.id, titulo, markdown)
+}
+
+/// Si el HTML compartido es el visor de PDF de Safari (un `<embed
+/// type="application/pdf">` y nada más), la URL del PDF.
+fn pdf_del_visor(html: &str, origen: &str) -> Option<String> {
+    let d = dom_query::Document::from(html);
+    let embed = d.select(r#"embed[type="application/pdf"]"#);
+    if embed.is_empty() {
+        return None;
+    }
+    // Un artículo de verdad que incrusta un PDF tiene texto alrededor (el
+    // visor de Safari lleva estilos dentro del body: no cuentan).
+    d.select("style, script").remove();
+    let texto: usize = d
+        .select("body")
+        .text()
+        .chars()
+        .filter(|c| c.is_alphabetic())
+        .count();
+    if texto > 200 {
+        return None;
+    }
+    let src = embed.attr("src").map(|s| s.to_string()).unwrap_or_default();
+    let src = if src.starts_with("http") {
+        src
+    } else {
+        origen.to_string()
+    };
+    src.starts_with("http").then_some(src)
 }
 
 /// Descarga cruda: bytes + content-type (con un reintento suave, que las
@@ -3694,6 +3740,25 @@ y el cuarto que cierra</div><p>Prosa normal aparte para que el artículo pese lo
         assert!(md.contains("faro"), "cuerpo: {md}");
         assert!(md.contains("ciento veinte escalones"));
         assert!(!md.contains("pie de página"), "el footer debe caer: {md}");
+    }
+
+    #[test]
+    fn el_visor_de_pdf_de_safari_se_reconoce() {
+        let visor = r#"<!-- yappy-url: https://pradogrado2627.ugr.es/pluginfile.php/75673/mod_page/content/10/Escandell_comunicacion.pdf -->
+<html class="plugin-fits-content"><head><style>html, body, embed { width: 100%; height: 100%; }</style></head><body><embed name="plugin" src="https://pradogrado2627.ugr.es/pluginfile.php/75673/mod_page/content/10/Escandell_comunicacion.pdf" type="application/pdf"><div id="annotationContainer"><style>#annotationContainer {    overflow: hidden;    position: absolute;    pointer-events: none;    top: 0;    left: 0;    right: 0;    bottom: 0;    display: flex;    flex-direction: column;    justify-content: center;    align-items: center;}.annotation {    position: absolute;    pointer-events: auto;    color-scheme: only light;}textarea.annotation {     resize: none;}input.annotation[type='password'] {    position: static;    width: 238px;    margin-top: 110px;    font-size: 15px;}.password-form {    position: static;    display: block;    text-align: center;    font-family: system-ui;    font-size: 15px;}</style></div></body></html>"#;
+        assert_eq!(
+            pdf_del_visor(visor, "https://pradogrado2627.ugr.es/x").as_deref(),
+            Some("https://pradogrado2627.ugr.es/pluginfile.php/75673/mod_page/content/10/Escandell_comunicacion.pdf")
+        );
+        let articulo = format!(
+            "<html><body><p>{}</p><embed type=\"application/pdf\" src=\"https://a.b/c.pdf\"></body></html>",
+            "Un artículo de verdad con mucho texto alrededor del documento incrustado. ".repeat(6)
+        );
+        assert_eq!(pdf_del_visor(&articulo, "https://a.b/"), None);
+        assert_eq!(
+            pdf_del_visor("<html><body><p>Hola</p></body></html>", "https://a.b/"),
+            None
+        );
     }
 
     #[test]

@@ -99,7 +99,14 @@ class ShareViewController: UIViewController {
                 let html = (results["html"] as? String) ?? ""
                 let titulo = ((results["titulo"] as? String) ?? "")
                     .replacingOccurrences(of: "-->", with: " ")
-                if !html.isEmpty, !url.isEmpty,
+                // Un PDF visto en Safari: el JS lo descargó con la sesión del
+                // usuario. Entra como fichero, igual que desde Archivos.
+                if let b64 = results["pdf"] as? String, !b64.isEmpty,
+                   let datos = Data(base64Encoded: b64),
+                   let pdf = self.guardarPdf(datos, url: url) {
+                    payload = "file:\(pdf.path)"
+                    NSLog("[yappy/share] PDF de Safari capturado (\(datos.count) bytes): \(url.prefix(60))")
+                } else if !html.isEmpty, !url.isEmpty,
                    let container = FileManager.default
                        .containerURL(forSecurityApplicationGroupIdentifier: APP_GROUP) {
                     let dir = container.appendingPathComponent("shared-files", isDirectory: true)
@@ -151,6 +158,22 @@ class ShareViewController: UIViewController {
                 }
             }
         }
+    }
+
+    /// El PDF que el preprocesado de Safari descargó, al App Group con el nombre de su URL.
+    private func guardarPdf(_ datos: Data, url: String) -> URL? {
+        guard datos.starts(with: Array("%PDF-".utf8)),
+              let container = FileManager.default
+                  .containerURL(forSecurityApplicationGroupIdentifier: APP_GROUP) else { return nil }
+        let dir = container.appendingPathComponent("shared-files", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let nombre = URL(string: url)?.deletingPathExtension().lastPathComponent
+            .removingPercentEncoding ?? ""
+        let base = (nombre.isEmpty ? "documento" : nombre)
+            .replacingOccurrences(of: "/", with: "-")
+            .prefix(60)
+        let dest = dir.appendingPathComponent("\(base)-\(UUID().uuidString.prefix(6)).pdf")
+        return (try? datos.write(to: dest)) != nil ? dest : nil
     }
 
     private func copyToSharedFiles(_ url: URL) -> URL? {

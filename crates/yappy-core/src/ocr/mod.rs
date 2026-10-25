@@ -16,6 +16,7 @@
 //! el detector Mínimo y el orden ligero son Apache 2.0. Ver MODEL_CARD.md de Amanuensis.
 
 pub mod detector;
+pub mod doble;
 pub mod lector;
 pub mod numpy;
 pub mod orden;

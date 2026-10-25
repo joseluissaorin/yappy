@@ -28,7 +28,7 @@ static LIGERO_ONNX: &[u8] = include_bytes!("../../../resources/amanuensis/ligero
 static LIGERO_CFG: &str = include_str!("../../../resources/amanuensis/ligero-3.json");
 
 /// Versión de la lectura (entra en la clave de la caché: cambiarla invalida lo guardado).
-const VERSION: &str = "ligero3-detmin1-v1";
+const VERSION: &str = "ligero3-detmin1-doble-v2";
 /// Lado máximo de la página que se lee (las fotos de 48 MP no aportan nada y cuestan memoria).
 const LADO_MAX: usize = 4000;
 /// Resolución a la que se rasterizan los PDF escaneados en el móvil (la de Amanuensis, `--dpi 200`).
@@ -198,7 +198,7 @@ pub fn leer_gris(g: &Gris) -> Result<PaginaLeida> {
 /// Una página (imagen en disco) con la política completa: Ligero y, si no convence, el OCR del sistema.
 pub fn leer_ruta(ruta: &Path) -> Result<PaginaOcr> {
     let (g, legible, tmp) = cargar(ruta)?;
-    let r = leer_con_respaldo(&g, &legible);
+    let r = hoja_a_hoja(&g, &legible, leer_con_respaldo);
     if let Some(t) = tmp {
         let _ = std::fs::remove_file(t);
     }
@@ -208,15 +208,64 @@ pub fn leer_ruta(ruta: &Path) -> Result<PaginaOcr> {
 /// Solo Ligero (el motor «amanuensis» de los ajustes de escritorio).
 #[cfg_attr(any(target_os = "ios", target_os = "android"), allow(dead_code))]
 pub fn leer_ruta_solo_ligero(ruta: &Path) -> Result<PaginaOcr> {
-    let (g, _, tmp) = cargar(ruta)?;
-    let p = leer_gris(&g);
+    let (g, legible, tmp) = cargar(ruta)?;
+    let r = hoja_a_hoja(&g, &legible, |g, _| {
+        Ok(PaginaOcr {
+            parrafos: leer_gris(g)?.parrafos(),
+            lector: Lector::Amanuensis,
+        })
+    });
     if let Some(t) = tmp {
         let _ = std::fs::remove_file(t);
     }
-    Ok(PaginaOcr {
-        parrafos: p?.parrafos(),
+    r
+}
+
+/// Un libro escaneado abierto (dos hojas en una imagen apaisada) se parte por el canal y se lee hoja a hoja
+/// (`ocr::doble`): leído entero, el orden de lectura mezcla los renglones de las dos hojas. Cada hoja pasa por
+/// `leer` como una página suelta; el OCR del sistema, si hace falta, recibe la hoja en un PNG propio.
+fn hoja_a_hoja(
+    g: &Gris,
+    legible: &Path,
+    leer: impl Fn(&Gris, &Path) -> Result<PaginaOcr>,
+) -> Result<PaginaOcr> {
+    let Some((izq, der)) = ocr::doble::partir(g) else {
+        return leer(g, legible);
+    };
+    tracing::info!(
+        "amanuensis: doble página ({}x{}), se lee hoja a hoja",
+        g.ancho,
+        g.alto
+    );
+    let mut out = PaginaOcr {
+        parrafos: Vec::new(),
         lector: Lector::Amanuensis,
-    })
+    };
+    let mut fallo = None;
+    for hoja in [izq, der] {
+        let png = temporal("png");
+        let guardada =
+            image::GrayImage::from_raw(hoja.ancho as u32, hoja.alto as u32, hoja.px.clone())
+                .map(|i| i.save(&png).is_ok())
+                .unwrap_or(false);
+        match leer(&hoja, if guardada { &png } else { legible }) {
+            Ok(p) => {
+                if p.lector == Lector::Sistema {
+                    out.lector = Lector::Sistema;
+                }
+                out.parrafos.extend(p.parrafos);
+            }
+            Err(e) => {
+                tracing::warn!("amanuensis: una hoja de la doble página falló: {e:?}");
+                fallo = Some(e);
+            }
+        }
+        let _ = std::fs::remove_file(&png);
+    }
+    match fallo {
+        Some(e) if out.parrafos.is_empty() => Err(e),
+        _ => Ok(out),
+    }
 }
 
 fn leer_con_respaldo(g: &Gris, legible: &Path) -> Result<PaginaOcr> {
@@ -299,11 +348,18 @@ fn respaldo(_legible: &Path, _ligero_aceptable: bool) -> Option<PaginaLeida> {
 /// Solo Vision (el motor «applevision» de los ajustes de macOS), con los párrafos rehechos por geometría.
 #[cfg(target_os = "macos")]
 pub fn leer_ruta_solo_vision(ruta: &Path) -> Result<PaginaOcr> {
-    let json = crate::capture::ocr::vision_lineas_json(ruta)?;
-    Ok(PaginaOcr {
-        parrafos: pagina_de(lineas_vision(&json)).parrafos(),
-        lector: Lector::Sistema,
-    })
+    let (g, legible, tmp) = cargar(ruta)?;
+    let r = hoja_a_hoja(&g, &legible, |_, legible| {
+        let json = crate::capture::ocr::vision_lineas_json(legible)?;
+        Ok(PaginaOcr {
+            parrafos: pagina_de(lineas_vision(&json)).parrafos(),
+            lector: Lector::Sistema,
+        })
+    });
+    if let Some(t) = tmp {
+        let _ = std::fs::remove_file(t);
+    }
+    r
 }
 
 /// JSON de los renglones de Vision (`[{"t", "c", "x0", "y0", "x1", "y1"}]`, px con origen arriba a la izquierda).

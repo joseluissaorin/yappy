@@ -181,7 +181,7 @@ fn cargar_rico(path: &Path) -> Result<Vec<RichParagraph>> {
 
     // Default: load plain text and split by blank lines.
     let text = load_text_from_file(path)?.replace("\r\n", "\n");
-    let paragraphs = text
+    let paragraphs: Vec<RichParagraph> = text
         .split("\n\n")
         .map(|s| s.trim().to_string())
         .filter(|s| !s.is_empty())
@@ -192,6 +192,12 @@ fn cargar_rico(path: &Path) -> Result<Vec<RichParagraph>> {
             kind: "paragraph".into(),
         })
         .collect();
+    // Un PDF que llega aquí es un escaneado leído por OCR: trae el mismo
+    // mobiliario que uno con texto (cabeceras corrientes, folios, párrafos
+    // partidos entre páginas, guiones de final de línea) y se repara igual.
+    if ext == "pdf" {
+        return Ok(refinar_parrafos_pdf(paragraphs));
+    }
     Ok(paragraphs)
 }
 
@@ -416,9 +422,13 @@ fn pdf_to_text_via_pdfium_ocr(path: &Path) -> Result<String> {
     tracing::info!("pdf_to_text_via_pdfium_ocr: {n_pages} pages");
 
     let tmpdir = tempdir_for_pdf()?;
+    // Como en el móvil (amanuensis::DPI_PDF): 200 ppp, lado mayor de 4000 px como mucho, y la página tal como
+    // es. Nada de girar las apaisadas: Amanuensis endereza solo, y una doble página de libro tiene que llegarle
+    // apaisada para que `ocr::doble` la parta por el canal.
     let render_config = PdfRenderConfig::new()
-        .set_target_width(2200)
-        .rotate_if_landscape(PdfPageRenderRotation::Degrees90, true);
+        .scale_page_by_factor(200.0 / 72.0)
+        .set_maximum_width(4000)
+        .set_maximum_height(4000);
     let mut buf = String::new();
     for (i, page) in document.pages().iter().enumerate() {
         let img_path = tmpdir.join(format!("page-{:04}.png", i + 1));
@@ -1609,7 +1619,10 @@ fn quitar_mobiliario(parrafos: Vec<RichParagraph>) -> Vec<RichParagraph> {
             {
                 return false;
             }
-            !es_folio(&p.text) && !es_letras_esparcidas(&p.text)
+            // Un párrafo de un solo carácter (la viñeta que el OCR leyó como
+            // «a» o «*») nunca es texto que leer.
+            let alfanumericos = p.text.chars().filter(|c| c.is_alphanumeric()).count();
+            alfanumericos > 1 && !es_folio(&p.text) && !es_letras_esparcidas(&p.text)
         })
         .collect()
 }
@@ -1629,13 +1642,22 @@ fn es_letras_esparcidas(t: &str) -> bool {
     if fichas.len() < 2 {
         return false;
     }
+    // Letra a letra («L A C O M U N I C A C I Ó N»): aunque alguna letra
+    // suelta parezca un romano, cuatro fichas o más de una sola letra en su
+    // mayoría son un rótulo espaciado.
+    let sueltas = fichas.iter().filter(|f| f.chars().count() == 1).count();
+    if fichas.len() >= 4 && sueltas * 2 > fichas.len() {
+        return true;
+    }
     // Los romanos cortos son legítimos («CAPÍTULO IV»): no cuentan como ficha rota.
     let es_romano = |f: &str| f.chars().all(|c| "IVXLCDM".contains(c));
     let cortas = fichas
         .iter()
         .filter(|f| f.chars().count() <= 2 && !es_romano(f))
         .count();
-    cortas * 2 >= fichas.len()
+    // Tres de cada cinco fichas rotas: un título de verdad con palabras
+    // cortas («1.1. EN BUSCA DE REGULARIDADES», dos de cuatro) se queda.
+    cortas * 5 >= fichas.len() * 3
 }
 
 /// ¿Tiene pinta de número de página? «12», «01 / 19», «- 7 -», «xiv».
@@ -1783,6 +1805,16 @@ mod tests {
     }
 
     #[test]
+    fn los_titulos_con_palabras_cortas_no_son_letras_esparcidas() {
+        assert!(!es_letras_esparcidas("1.1. EN BUSCA DE REGULARIDADES"));
+        assert!(!es_letras_esparcidas("1.2. EL ESQUEMA CLÁSICO"));
+        assert!(es_letras_esparcidas("F EC HA DE AUTÓGR AFO"));
+        assert!(es_letras_esparcidas("SUB GÉ NE RO"));
+        assert!(es_letras_esparcidas("L A C O M U N I C A C I Ó N"));
+        assert!(es_letras_esparcidas("LA COM U N I CA C I Ó N"));
+    }
+
+    #[test]
     fn no_fusiona_titulos_de_verdad() {
         let v = vec![
             parrafo("La frase anterior termina bien.", "paragraph"),
@@ -1831,6 +1863,24 @@ mod tests {
                 "[{i}] kind={} pausa={} → {:?}",
                 p.kind, p.pause_before, p.text
             );
+        }
+    }
+
+    /// Diagnóstico manual: el camino entero de la app (maqueta → OCR) para un PDF.
+    /// `YAPPY_PDF_PRUEBA=/ruta.pdf cargo test -p yappy-app vuelca_documento -- --ignored --nocapture`
+    #[test]
+    #[ignore]
+    fn vuelca_documento() {
+        let ruta = std::env::var("YAPPY_PDF_PRUEBA").expect("YAPPY_PDF_PRUEBA sin definir");
+        let t0 = std::time::Instant::now();
+        match load_rich_from_file(std::path::Path::new(&ruta)) {
+            Ok(ps) => {
+                println!("{} párrafos en {:?}", ps.len(), t0.elapsed());
+                for (i, p) in ps.iter().enumerate() {
+                    println!("[{i}] {} → {:?}", p.kind, p.text);
+                }
+            }
+            Err(e) => println!("ERROR en {:?}: {e:?}", t0.elapsed()),
         }
     }
 }
