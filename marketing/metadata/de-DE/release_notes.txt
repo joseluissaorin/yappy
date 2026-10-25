@@ -1,6 +1,4 @@
-• Lange Lesungen laufen stabiler.
-• EPUB, Word, PDF und andere Formate werden Absatz für Absatz gelesen, und der Fortschritt wird zuverlässig gespeichert.
-• Eigene Texterkennung (OCR), Amanuensis Ligero: liest Fotos und gescannte PDFs direkt auf dem Gerät.
-• Export als Markdown, HTML und PDF.
-• Der Willkommensrundgang spricht sofort.
-• Im Englischen wird das Pronomen „I“ nicht mehr als „the first“ gelesen.
+• Gescannte Bücher mit zwei Seiten pro Bild werden jetzt Seite für Seite gelesen, ohne dass sich die Zeilen vermischen.
+• Während OCR ein gescanntes PDF liest, zeigt der Sticker, bei welcher Seite es ist; sobald es fertig ist, öffnet es sich sofort.
+• Kopfzeilen und Seitenzahlen in Scans werden nicht mehr vorgelesen.
+• Ein in Safari geöffnetes PDF, auch eines hinter einem Login im Campusportal, wird jetzt als Dokument übernommen.

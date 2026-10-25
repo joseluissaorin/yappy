@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Ένα αρχείο",
   "cinta.a_la_cola": "Στην κασέτα",
   "cinta.preparando": "ετοιμάζεται",
+  "cinta.leyendo": "διαβάζει {n}/{m}",
   "cinta.error": "δεν μπόρεσε · πάτησε για νέα προσπάθεια",
   "cinta.min": "λεπ.",
   "cinta.escuchado": "ακουσμένα",

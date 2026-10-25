@@ -1,6 +1,4 @@
-• Długie czytanie działa stabilniej.
-• EPUB, Word, PDF i inne formaty są czytane akapit po akapicie, a postęp zapisuje się poprawnie.
-• Własny OCR, Amanuensis Ligero: odczytuje zdjęcia i zeskanowane pliki PDF bezpośrednio na urządzeniu.
-• Eksport do Markdown, HTML i PDF.
-• Powitalny przewodnik mówi od razu.
-• W języku angielskim zaimek „I” nie jest już czytany jako „the first”.
+• Zeskanowane książki z dwiema stronami na obrazie są teraz czytane strona po stronie, bez mieszania wierszy.
+• Gdy OCR czyta zeskanowany PDF, naklejka pokazuje, na której jest stronie; kiedy będzie gotowa, otworzy się natychmiast.
+• W skanach nie są już odczytywane nagłówki ani numery stron.
+• PDF otwarty w Safari, także z wirtualnego kampusu za logowaniem, trafia teraz do aplikacji jako dokument.

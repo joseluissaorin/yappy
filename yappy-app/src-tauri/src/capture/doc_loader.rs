@@ -421,6 +421,11 @@ fn pdf_to_text_via_pdfium_ocr(path: &Path) -> Result<String> {
     let n_pages = document.pages().len();
     tracing::info!("pdf_to_text_via_pdfium_ocr: {n_pages} pages");
 
+    // Una lectura por documento, y a la caché: abrirlo después es instantáneo.
+    let _turno = crate::capture::amanuensis::turno_documento();
+    if let Some(t) = crate::capture::amanuensis::cache_leer(path) {
+        return Ok(t);
+    }
     let tmpdir = tempdir_for_pdf()?;
     // Como en el móvil (amanuensis::DPI_PDF): 200 ppp, lado mayor de 4000 px como mucho, y la página tal como
     // es. Nada de girar las apaisadas: Amanuensis endereza solo, y una doble página de libro tiene que llegarle
@@ -431,6 +436,7 @@ fn pdf_to_text_via_pdfium_ocr(path: &Path) -> Result<String> {
         .set_maximum_height(4000);
     let mut buf = String::new();
     for (i, page) in document.pages().iter().enumerate() {
+        crate::capture::amanuensis::informar(path, i, n_pages as usize);
         let img_path = tmpdir.join(format!("page-{:04}.png", i + 1));
         let bitmap = page
             .render_with_config(&render_config)
@@ -457,6 +463,7 @@ fn pdf_to_text_via_pdfium_ocr(path: &Path) -> Result<String> {
              Annotate → Text)."
         ));
     }
+    crate::capture::amanuensis::cache_guardar(path, &buf);
     Ok(buf)
 }
 

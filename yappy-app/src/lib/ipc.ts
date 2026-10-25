@@ -371,6 +371,8 @@ export interface ItemCola {
   chars: number | null;
   favorito: boolean;
   de_la_casa?: boolean;
+  /** Por qué página va el OCR de un escaneado: [hecha, total]. */
+  progreso?: [number, number] | null;
 }
 export const colaListar = (): Promise<ItemCola[]> => invoke("cola_listar_cmd");
 /// Un cuento de la casa (resources/cuentos) entra en la cinta sin ocupar percha.

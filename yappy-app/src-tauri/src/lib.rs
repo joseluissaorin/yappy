@@ -602,6 +602,11 @@ pub fn run() {
                     .ok();
             }
 
+            // Lo que quedó a medias en la cola (la app se cerró a mitad de un
+            // OCR o de una descarga) se retoma solo; si no, la pegatina se
+            // quedaría «preparándose» para siempre.
+            cola::reanudar_pendientes(app.handle().clone());
+
             #[cfg(mobile)]
             {
                 mobile::install_now_playing_handlers(state.playback.clone());

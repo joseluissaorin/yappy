@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "A file",
   "cinta.a_la_cola": "Onto the tape",
   "cinta.preparando": "getting ready",
+  "cinta.leyendo": "reading {n}/{m}",
   "cinta.error": "failed · tap to retry",
   "cinta.min": "min",
   "cinta.escuchado": "listened",

@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Plik",
   "cinta.a_la_cola": "Na taśmę",
   "cinta.preparando": "szykuje się",
+  "cinta.leyendo": "czyta {n}/{m}",
   "cinta.error": "nie wyszło · stuknij, by spróbować znowu",
   "cinta.min": "min",
   "cinta.escuchado": "przesłuchane",

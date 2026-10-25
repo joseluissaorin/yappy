@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "ファイル",
   "cinta.a_la_cola": "テープへ",
   "cinta.preparando": "準備中",
+  "cinta.leyendo": "読み取り中 {n}/{m}",
   "cinta.error": "だめでした · タップでもう一度",
   "cinta.min": "分",
   "cinta.escuchado": "聴きおわり",

@@ -1,6 +1,4 @@
-• Dlhé čítanie je stabilnejšie.
-• EPUB, Word, PDF a ďalšie formáty sa čítajú po odsekoch a postup sa spoľahlivo ukladá.
-• Vlastné OCR, Amanuensis Ligero: číta fotografie a naskenované PDF priamo v zariadení.
-• Export do Markdownu, HTML a PDF.
-• Uvítacia prehliadka hovorí okamžite.
-• V angličtine sa zámeno „I“ už nečíta ako „the first“.
+• Naskenované knihy s dvoma stranami na obrázku sa teraz čítajú stranu po strane, bez miešania riadkov.
+• Kým OCR číta naskenované PDF, nálepka ukazuje, na ktorej strane je; keď je hotové, otvorí sa okamžite.
+• V skenoch sa už nečítajú hlavičky ani čísla strán.
+• PDF otvorené v Safari, aj z virtuálneho kampusu za prihlásením, sa teraz pridá ako dokument.

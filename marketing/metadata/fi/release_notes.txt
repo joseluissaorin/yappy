@@ -1,6 +1,4 @@
-• Pitkät lukuhetket ovat vakaampia.
-• EPUB-, Word-, PDF- ja muut tiedostot luetaan kappale kerrallaan, ja edistyminen tallentuu oikein.
-• Oma tekstintunnistus (OCR), Amanuensis Ligero, lukee valokuvat ja skannatut PDF-tiedostot suoraan laitteella.
-• Vienti Markdown-, HTML- ja PDF-muotoon.
-• Tervetulokierros puhuu heti.
-• Englannissa pronominia ”I” ei enää lueta ”the first”.
+• Skannatut kirjat, joissa on kaksi sivua kuvaa kohti, luetaan nyt sivu kerrallaan ilman, että rivit sekoittuvat.
+• Kun OCR lukee skannattua PDF-tiedostoa, tarra näyttää, millä sivulla se on; kun tiedosto on valmis, se avautuu heti.
+• Skannauksissa ei enää lueta ylätunnisteita eikä sivunumeroita.
+• Safarissa avoinna oleva PDF, myös kirjautumisen takana oleva verkko-oppimisympäristön tiedosto, tuodaan nyt asiakirjana.

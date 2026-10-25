@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Un fichier",
   "cinta.a_la_cola": "Sur la bande",
   "cinta.preparando": "en préparation",
+  "cinta.leyendo": "lecture {n}/{m}",
   "cinta.error": "raté · touche pour réessayer",
   "cinta.min": "min",
   "cinta.escuchado": "écouté",

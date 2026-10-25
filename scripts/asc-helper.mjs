@@ -672,8 +672,45 @@ async function cmd_release() {
   console.log(`✓ ${versionString} enviada a publicación → ${tras.data.attributes.appStoreState}`);
 }
 
+// Envía a revisión de la App Store una versión con su build ya enganchado:
+// reviewSubmissions → reviewSubmissionItems → submitted: true.
+async function cmd_enviarRevision() {
+  const versionString = process.argv[3];
+  if (!versionString) throw new Error("uso: enviar-revision <versión>");
+  const app = await getApp();
+  const vs = await asc("GET", `/apps/${app.id}/appStoreVersions?filter[platform]=IOS&filter[versionString]=${versionString}&limit=5&include=build`);
+  const v = vs.data[0];
+  if (!v) throw new Error(`no existe la versión ${versionString}`);
+  if (!v.relationships?.build?.data) throw new Error(`la versión ${versionString} no tiene build: attach-build primero`);
+  const abiertas = await asc("GET", `/reviewSubmissions?filter[app]=${app.id}&filter[platform]=IOS&filter[state]=READY_FOR_REVIEW&limit=5`);
+  let envio = abiertas.data[0];
+  if (!envio) {
+    const r = await asc("POST", "/reviewSubmissions", {
+      data: { type: "reviewSubmissions", attributes: { platform: "IOS" },
+        relationships: { app: { data: { type: "apps", id: app.id } } } },
+    });
+    envio = r.data;
+  }
+  try {
+    await asc("POST", "/reviewSubmissionItems", {
+      data: { type: "reviewSubmissionItems",
+        relationships: {
+          reviewSubmission: { data: { type: "reviewSubmissions", id: envio.id } },
+          appStoreVersion: { data: { type: "appStoreVersions", id: v.id } } } },
+    });
+  } catch (e) {
+    // Ya estaba dentro de este envío: se sigue.
+    if (!String(e.message).includes("ITEM_PART_OF_ANOTHER_SUBMISSION") && !String(e.message).includes("already")) throw e;
+  }
+  const r = await asc("PATCH", `/reviewSubmissions/${envio.id}`, {
+    data: { type: "reviewSubmissions", id: envio.id, attributes: { submitted: true } },
+  });
+  console.log(`✓ ${versionString} enviada a revisión → ${r.data.attributes.state}`);
+}
+
 const sub = process.argv[2];
 switch (sub) {
+  case "enviar-revision":     await cmd_enviarRevision(); break;
   case "status":              await cmd_status(); break;
   case "wait-for-app":        await cmd_waitForApp(); break;
   case "list-builds":         await cmd_listBuilds(); break;

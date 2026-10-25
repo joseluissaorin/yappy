@@ -20,6 +20,7 @@ export default {
   "cinta.archivo": "Файл",
   "cinta.a_la_cola": "На стрічку",
   "cinta.preparando": "готується",
+  "cinta.leyendo": "читає {n}/{m}",
   "cinta.error": "не вийшло · торкнись, щоб повторити",
   "cinta.min": "хв",
   "cinta.escuchado": "прослухане",

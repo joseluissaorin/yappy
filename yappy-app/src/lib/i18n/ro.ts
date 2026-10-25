@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Un fișier",
   "cinta.a_la_cola": "Pe bandă",
   "cinta.preparando": "se pregătește",
+  "cinta.leyendo": "citește {n}/{m}",
   "cinta.error": "n-a mers · atinge ca să încerci din nou",
   "cinta.min": "min",
   "cinta.escuchado": "ascultat",

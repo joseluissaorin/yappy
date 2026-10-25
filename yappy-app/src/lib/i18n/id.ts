@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Sebuah berkas",
   "cinta.a_la_cola": "Ke pita",
   "cinta.preparando": "sedang bersiap",
+  "cinta.leyendo": "membaca {n}/{m}",
   "cinta.error": "gagal · ketuk untuk coba lagi",
   "cinta.min": "mnt",
   "cinta.escuchado": "sudah didengar",

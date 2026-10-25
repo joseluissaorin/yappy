@@ -38,6 +38,46 @@ const DPI_PDF: i32 = 200;
 /// El motor y el último uso. Se suelta tras `OCIOSO` sin OCR: en el móvil no merece retener sus sesiones
 /// (recargarlo desde los bytes empotrados cuesta unos 0,05 s).
 static MOTOR: Lazy<Mutex<Option<(Ligero, std::time::Instant)>>> = Lazy::new(|| Mutex::new(None));
+
+/// Un documento escaneado se lee UNA vez: quien lo pida mientras otro lo está leyendo espera su turno y se
+/// lleva la lectura de la caché (antes, cada toque en la pegatina lanzaba otro OCR entero en paralelo y
+/// ninguno terminaba).
+static TURNO_DOCUMENTO: Mutex<()> = Mutex::new(());
+
+pub fn turno_documento() -> std::sync::MutexGuard<'static, ()> {
+    TURNO_DOCUMENTO.lock().unwrap_or_else(|e| e.into_inner())
+}
+
+type Avisador = Box<dyn Fn(usize, usize) + Send + Sync>;
+/// Quién quiere saber por qué página va el OCR de cada documento (la cola, para la pastilla «leyendo 3/18»).
+static PROGRESO: Lazy<Mutex<std::collections::HashMap<PathBuf, Avisador>>> =
+    Lazy::new(|| Mutex::new(std::collections::HashMap::new()));
+
+/// Ejecuta `trabajo` avisando a `aviso(página, total)` de cada página que lee el OCR de `ruta`.
+pub fn con_progreso<T>(
+    ruta: &Path,
+    aviso: impl Fn(usize, usize) + Send + Sync + 'static,
+    trabajo: impl FnOnce() -> T,
+) -> T {
+    let clave = ruta.to_path_buf();
+    if let Ok(mut m) = PROGRESO.lock() {
+        m.insert(clave.clone(), Box::new(aviso));
+    }
+    let r = trabajo();
+    if let Ok(mut m) = PROGRESO.lock() {
+        m.remove(&clave);
+    }
+    r
+}
+
+/// Página `hecha` de `total` del documento `ruta` (si alguien escucha).
+pub fn informar(ruta: &Path, hecha: usize, total: usize) {
+    if let Ok(m) = PROGRESO.lock() {
+        if let Some(f) = m.get(ruta) {
+            f(hecha, total);
+        }
+    }
+}
 const OCIOSO: std::time::Duration = std::time::Duration::from_secs(30);
 
 fn con_motor<T>(f: impl FnOnce(&mut Ligero) -> Result<T>) -> Result<T> {
@@ -408,6 +448,7 @@ pub fn texto_de_imagen(ruta: &Path) -> Result<String> {
 /// Amanuensis la lee. Párrafos de todas las páginas separados por línea en blanco (con caché).
 #[cfg(any(target_os = "ios", target_os = "android"))]
 pub fn pdf_escaneado(ruta: &Path) -> Result<String> {
+    let _turno = turno_documento();
     if let Some(t) = cache_leer(ruta) {
         return Ok(t);
     }
@@ -418,6 +459,7 @@ pub fn pdf_escaneado(ruta: &Path) -> Result<String> {
     let t0 = std::time::Instant::now();
     let mut buf = String::new();
     for i in 0..n {
+        informar(ruta, i as usize, n as usize);
         let png = temporal("png");
         if !pagina_pdf_png(ruta, i, &png) {
             tracing::warn!("amanuensis: no se pudo rasterizar la página {}", i + 1);
@@ -492,7 +534,7 @@ fn dir_cache() -> PathBuf {
         .join("yappy-amanuensis")
 }
 
-fn cache_leer(ruta: &Path) -> Option<String> {
+pub(crate) fn cache_leer(ruta: &Path) -> Option<String> {
     let k = clave(ruta)?;
     let t = std::fs::read_to_string(dir_cache().join(format!("{k}.txt"))).ok()?;
     (!t.trim().is_empty()).then(|| {
@@ -501,7 +543,7 @@ fn cache_leer(ruta: &Path) -> Option<String> {
     })
 }
 
-fn cache_guardar(ruta: &Path, texto: &str) {
+pub(crate) fn cache_guardar(ruta: &Path, texto: &str) {
     let Some(k) = clave(ruta) else { return };
     let d = dir_cache();
     if std::fs::create_dir_all(&d).is_ok() {

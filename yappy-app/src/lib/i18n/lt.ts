@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Failas",
   "cinta.a_la_cola": "Ant juostos",
   "cinta.preparando": "ruošiasi",
+  "cinta.leyendo": "skaito {n}/{m}",
   "cinta.error": "nepavyko · bakstelėk, kad pabandytum dar kartą",
   "cinta.min": "min.",
   "cinta.escuchado": "perklausyta",

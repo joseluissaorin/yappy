@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Fails",
   "cinta.a_la_cola": "Uz lentes",
   "cinta.preparando": "gatavojas",
+  "cinta.leyendo": "lasa {n}/{m}",
   "cinta.error": "neizdevās · pieskaries, lai mēģinātu vēlreiz",
   "cinta.min": "min",
   "cinta.escuchado": "noklausīts",

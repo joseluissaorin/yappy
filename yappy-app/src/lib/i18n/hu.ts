@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Egy fájl",
   "cinta.a_la_cola": "A szalagra",
   "cinta.preparando": "készülődik",
+  "cinta.leyendo": "olvassa {n}/{m}",
   "cinta.error": "nem sikerült · koppints, és újra megpróbálom",
   "cinta.min": "perc",
   "cinta.escuchado": "meghallgatva",

@@ -473,6 +473,9 @@
       return;
     }
     if (item.estado !== "listo" || !item.ruta) return;
+    // Un toque basta: mientras se abre, los siguientes no lanzan otra lectura.
+    if (abriendo) return;
+    abriendo = item.id;
     haptic("light");
     try {
       // Abrir una pieza DISTINTA de la que suena MATA la sesión anterior
@@ -505,8 +508,11 @@
       sacudida = item.id;
       brincoDeLoro();
       setTimeout(() => (sacudida = null), 450);
+    } finally {
+      abriendo = null;
     }
   }
+  let abriendo = $state<string | null>(null);
 
   // ── La boca-baldosa: AÑADIR vive DENTRO del mosaico ───────────────────
   let pegando = $state(false);
@@ -1609,6 +1615,13 @@
                     </span>
                   {:else if item.estado === "error"}
                     <span class="pastilla" style="background: #7a1712">{$t("cinta.error")}</span>
+                  {:else if item.progreso}
+                    <!-- El OCR de un escaneado: por qué página va. -->
+                    <span class="pastilla" style="background: #6f6757">
+                      {$t("cinta.leyendo")
+                        .replace("{n}", String(Math.min(item.progreso[0] + 1, item.progreso[1])))
+                        .replace("{m}", String(item.progreso[1]))}
+                    </span>
                   {:else}
                     <span class="pastilla" style="background: #6f6757">{$t("cinta.preparando")}…</span>
                   {/if}

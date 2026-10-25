@@ -1,6 +1,4 @@
-• Long readings are more stable.
-• EPUB, Word, PDF and other formats are read paragraph by paragraph, and your progress is saved properly.
-• Our own OCR, Amanuensis Ligero, reads photos and scanned PDFs right on your device.
-• Export to Markdown, HTML and PDF.
-• The welcome tour speaks instantly.
-• In English, the pronoun “I” is no longer read as “the first”.
+• Scanned books with two pages per image are now read page by page, without mixing lines.
+• While OCR reads a scanned PDF, its sticker shows which page it is on; once it is ready, it opens instantly.
+• Running heads and page numbers in scans are no longer read aloud.
+• A PDF open in Safari, even one behind a login, now comes in as a document.

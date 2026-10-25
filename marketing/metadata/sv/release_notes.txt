@@ -1,6 +1,4 @@
-• Långa uppläsningar är stabilare.
-• EPUB, Word, PDF och andra format läses stycke för stycke, och dina framsteg sparas ordentligt.
-• Egen OCR, Amanuensis Ligero: läser foton och skannade PDF-filer direkt på enheten.
-• Exportera till Markdown, HTML och PDF.
-• Välkomstturen talar direkt.
-• På engelska läses pronomenet ”I” inte längre som ”the first”.
+• Inskannade böcker med två sidor per bild läses nu sida för sida, utan att raderna blandas ihop.
+• Medan OCR läser en inskannad PDF visar klistermärket vilken sida den är på; när den är klar öppnas den direkt.
+• Sidhuvuden och sidnummer i skanningar läses inte längre upp.
+• En PDF som är öppen i Safari, även en bakom inloggning på ett virtuellt campus, kommer nu in som dokument.

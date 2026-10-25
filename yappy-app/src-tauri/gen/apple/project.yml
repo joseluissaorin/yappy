@@ -80,8 +80,8 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        CFBundleShortVersionString: 1.0.1
-        CFBundleVersion: "1.0.1.1"
+        CFBundleShortVersionString: 1.0.2
+        CFBundleVersion: "1.0.2.1"
         # Export compliance: Yappy uses only exempt encryption (HTTPS for model
         # downloads + Apple's standard system crypto; no proprietary algorithms),
         # so it's exempt. Declaring this here skips the "Missing Compliance"
@@ -291,8 +291,8 @@ targets:
       path: YappyWidgets/Info.plist
       properties:
         CFBundleDisplayName: YappyWidgets
-        CFBundleShortVersionString: 1.0.1
-        CFBundleVersion: "1.0.1.1"
+        CFBundleShortVersionString: 1.0.2
+        CFBundleVersion: "1.0.2.1"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     entitlements:
@@ -333,8 +333,8 @@ targets:
       path: YappyRecursos/Info.plist
       properties:
         CFBundleDisplayName: YappyRecursos
-        CFBundleShortVersionString: 1.0.1
-        CFBundleVersion: "1.0.1.1"
+        CFBundleShortVersionString: 1.0.2
+        CFBundleVersion: "1.0.2.1"
         EXAppExtensionAttributes:
           EXExtensionPointIdentifier: com.apple.background-asset-downloader-extension
     entitlements:
@@ -381,8 +381,8 @@ targets:
       path: YappyShareExtension/Info.plist
       properties:
         CFBundleDisplayName: Yappy
-        CFBundleShortVersionString: 1.0.1
-        CFBundleVersion: "1.0.1.1"
+        CFBundleShortVersionString: 1.0.2
+        CFBundleVersion: "1.0.2.1"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController

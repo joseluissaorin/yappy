@@ -20,6 +20,7 @@ export default {
   "cinta.archivo": "ملف",
   "cinta.a_la_cola": "إلى الشريط",
   "cinta.preparando": "قيد التحضير",
+  "cinta.leyendo": "قراءة {n}/{m}",
   "cinta.error": "تعذّر · اضغط لإعادة المحاولة",
   "cinta.min": "د",
   "cinta.escuchado": "المسموع",

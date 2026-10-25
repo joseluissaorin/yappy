@@ -1,6 +1,4 @@
-• Lecturile lungi sunt mai stabile.
-• EPUB, Word, PDF și alte formate se citesc paragraf cu paragraf, iar progresul se salvează corect.
-• OCR propriu, Amanuensis Ligero: citește fotografii și PDF-uri scanate direct pe dispozitiv.
-• Export în Markdown, HTML și PDF.
-• Turul de bun venit vorbește imediat.
-• În engleză, pronumele „I” nu mai este citit „the first”.
+• Cărțile scanate cu două pagini pe imagine se citesc acum pagină cu pagină, fără ca rândurile să se amestece.
+• Cât timp OCR-ul citește un PDF scanat, autocolantul arată la ce pagină a ajuns; când e gata, se deschide instantaneu.
+• La documentele scanate nu se mai citesc antetele și numerele de pagină.
+• Un PDF deschis în Safari, chiar și unul dintr-un campus virtual cu autentificare, intră acum ca document.

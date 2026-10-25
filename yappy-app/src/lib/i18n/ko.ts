@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "파일",
   "cinta.a_la_cola": "테이프로",
   "cinta.preparando": "준비 중",
+  "cinta.leyendo": "읽는 중 {n}/{m}",
   "cinta.error": "실패했어요 · 눌러서 다시 시도",
   "cinta.min": "분",
   "cinta.escuchado": "다 들음",

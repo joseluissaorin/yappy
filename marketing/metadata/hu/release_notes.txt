@@ -1,6 +1,4 @@
-• A hosszú felolvasások stabilabbak.
-• Az EPUB, Word, PDF és más formátumok bekezdésenként szólalnak meg, és a haladás megbízhatóan mentődik.
-• Saját szövegfelismerés (OCR), Amanuensis Ligero: fényképeket és szkennelt PDF-eket olvas közvetlenül az eszközön.
-• Exportálás Markdown, HTML és PDF formátumba.
-• Az üdvözlő bemutató azonnal megszólal.
-• Angolul az „I” névmást már nem „the first”-ként olvassa.
+• A képenként két oldalt tartalmazó beszkennelt könyveket mostantól oldalanként olvassa fel, a sorok összekeverése nélkül.
+• Amíg az OCR egy beszkennelt PDF-et olvas, a matrica mutatja, hányadik oldalnál tart; ha elkészült, azonnal megnyílik.
+• A szkennelt anyagokban már nem olvassa fel az élőfejeket és az oldalszámokat.
+• A Safariban megnyitott PDF, még a bejelentkezés mögötti virtuális campusról is, mostantól dokumentumként kerül be.

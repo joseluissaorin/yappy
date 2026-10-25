@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Fail",
   "cinta.a_la_cola": "Lindile",
   "cinta.preparando": "valmistub",
+  "cinta.leyendo": "loeb {n}/{m}",
   "cinta.error": "ei õnnestunud · puuduta, et uuesti proovida",
   "cinta.min": "min",
   "cinta.escuchado": "kuulatud",

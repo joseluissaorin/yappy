@@ -1,6 +1,4 @@
-• Duga čitanja su stabilnija.
-• EPUB, Word, PDF i drugi formati čitaju se odlomak po odlomak, a napredak se ispravno sprema.
-• Vlastiti OCR, Amanuensis Ligero: čita fotografije i skenirane PDF-ove izravno na uređaju.
-• Izvoz u Markdown, HTML i PDF.
-• Uvodni obilazak govori odmah.
-• U engleskom se zamjenica „I” više ne čita kao „the first”.
+• Skenirane knjige s dvije stranice po slici sada se čitaju stranicu po stranicu, bez miješanja redaka.
+• Dok OCR čita skenirani PDF, naljepnica prikazuje na kojoj je stranici; kad je gotovo, otvara se odmah.
+• U skeniranim dokumentima više se ne čitaju zaglavlja i brojevi stranica.
+• PDF otvoren u Safariju, čak i onaj iz virtualnog kampusa iza prijave, sada se dodaje kao dokument.

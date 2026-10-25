@@ -1,6 +1,4 @@
-• Lang voorlezen is stabieler.
-• EPUB, Word, PDF en andere formaten worden per alinea voorgelezen, en je voortgang wordt goed bewaard.
-• Eigen OCR, Amanuensis Ligero: leest foto’s en gescande pdf’s op je apparaat zelf.
-• Exporteren naar Markdown, HTML en PDF.
-• De welkomstrondleiding spreekt meteen.
-• In het Engels wordt het voornaamwoord ‘I’ niet meer als ‘the first’ gelezen.
+• Gescande boeken met twee pagina's per afbeelding worden nu pagina voor pagina gelezen, zonder dat regels door elkaar lopen.
+• Terwijl OCR een gescande PDF leest, laat de sticker zien op welke pagina hij is; zodra hij klaar is, opent hij meteen.
+• Koppen en paginanummers in scans worden niet meer voorgelezen.
+• Een PDF die in Safari openstaat, ook een achter een login op een virtueel campus, komt nu binnen als document.

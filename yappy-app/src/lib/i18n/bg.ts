@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Файл",
   "cinta.a_la_cola": "На лентата",
   "cinta.preparando": "приготвя се",
+  "cinta.leyendo": "чете {n}/{m}",
   "cinta.error": "не се получи · докосни за нов опит",
   "cinta.min": "мин",
   "cinta.escuchado": "изслушано",

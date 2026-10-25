@@ -20,6 +20,7 @@ export default {
   "cinta.archivo": "Bir dosya",
   "cinta.a_la_cola": "Banda",
   "cinta.preparando": "hazırlanıyor",
+  "cinta.leyendo": "okunuyor {n}/{m}",
   "cinta.error": "olmadı · tekrar denemek için dokun",
   "cinta.min": "dk",
   "cinta.escuchado": "dinlenenler",

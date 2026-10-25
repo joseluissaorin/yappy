@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "एक फ़ाइल",
   "cinta.a_la_cola": "टेप पर",
   "cinta.preparando": "तैयार हो रहा है",
+  "cinta.leyendo": "पढ़ रहा है {n}/{m}",
   "cinta.error": "नहीं हो पाया · छूकर फिर कोशिश करें",
   "cinta.min": "मिनट",
   "cinta.escuchado": "सुना हुआ",

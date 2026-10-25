@@ -1,6 +1,4 @@
-• Les longues lectures sont plus stables.
-• EPUB, Word, PDF et autres formats se lisent paragraphe par paragraphe, et la progression est bien enregistrée.
-• Notre propre OCR, Amanuensis Ligero, lit les photos et les PDF numérisés directement sur l’appareil.
-• Export en Markdown, HTML et PDF.
-• La visite de bienvenue parle instantanément.
-• En anglais, le pronom « I » n’est plus lu « the first ».
+• Les livres numérisés à deux pages par image sont désormais lus page par page, sans mélanger les lignes.
+• Pendant que l’OCR lit un PDF numérisé, le sticker indique à quelle page il en est ; une fois prêt, il s’ouvre instantanément.
+• Dans les numérisations, les en-têtes et les numéros de page ne sont plus lus à voix haute.
+• Un PDF ouvert dans Safari, même celui d’un campus virtuel protégé par une connexion, est désormais importé comme document.

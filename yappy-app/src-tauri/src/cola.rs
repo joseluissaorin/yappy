@@ -58,6 +58,9 @@ pub struct ItemCola {
     /// en la percha del loro de prueba.
     #[serde(default)]
     pub de_la_casa: bool,
+    /// Por qué página va el OCR mientras se prepara un escaneado: [hecha, total].
+    #[serde(default)]
+    pub progreso: Option<[u32; 2]>,
 }
 
 fn ahora_unix() -> u64 {
@@ -228,6 +231,7 @@ pub fn agregar_url<R: Runtime>(app: &AppHandle<R>, url: String) -> Result<ItemCo
         chars: None,
         favorito: false,
         de_la_casa: false,
+        progreso: None,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -291,6 +295,7 @@ pub fn agregar_web<R: Runtime>(app: &AppHandle<R>, ruta_html: String) -> Result<
                 chars: None,
                 favorito: false,
                 de_la_casa: false,
+                progreso: None,
             };
             let clon = nuevo.clone();
             mutar(app, |items| items.insert(0, nuevo))?;
@@ -336,6 +341,7 @@ pub fn agregar_texto<R: Runtime>(
         chars: Some(texto.chars().count()),
         favorito: false,
         de_la_casa: false,
+        progreso: None,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -417,18 +423,26 @@ pub fn agregar_archivo<R: Runtime>(app: &AppHandle<R>, ruta_original: String) ->
         .unwrap_or_else(|| "bin".into());
     let destino = dir_cola(app)?.join(format!("{id}.{ext}"));
     fs::copy(&origen, &destino).with_context(|| format!("copiando {ruta_original}"))?;
+    // Un PDF o una imagen pueden necesitar OCR: se preparan en la cola (con
+    // su progreso en la pegatina) y no al tocarlos.
+    let estado = if necesita_preparacion(&ext) {
+        EstadoItem::Pendiente
+    } else {
+        EstadoItem::Listo
+    };
     let item = ItemCola {
         id,
         tipo: TipoItem::Archivo,
         titulo: titulo_de_nombre(&nombre),
         origen: nombre,
         ruta: Some(destino.to_string_lossy().to_string()),
-        estado: EstadoItem::Listo,
+        estado,
         error: None,
         agregado_unix: ahora_unix(),
         chars: None,
         favorito: false,
         de_la_casa: false,
+        progreso: None,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -461,6 +475,7 @@ pub fn agregar_audio<R: Runtime>(app: &AppHandle<R>, ruta_original: String) -> R
         chars: None,
         favorito: false,
         de_la_casa: false,
+        progreso: None,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -494,6 +509,7 @@ pub fn agregar_cuento(app: &AppHandle, id_cuento: &str) -> Result<ItemCola> {
         chars: Some(cuento.texto.chars().count()),
         favorito: false,
         de_la_casa: true,
+        progreso: None,
     };
     let clon = item.clone();
     mutar(app, |items| items.insert(0, item))?;
@@ -523,6 +539,29 @@ pub fn eliminar<R: Runtime>(app: &AppHandle<R>, id: &str) -> Result<()> {
 
 // ── Preparación (extracción) ─────────────────────────────────────────────
 
+/// Al arrancar: todo lo pendiente o a medio preparar vuelve a la cola.
+pub fn reanudar_pendientes<R: Runtime>(app: AppHandle<R>) {
+    let Ok(items) = listar(&app) else { return };
+    for it in items {
+        // Un PDF o una imagen de antes de la 1.0.2 entraban «listos» sin leer:
+        // también se preparan, para que abrirlos no lance el OCR al tocarlos.
+        let sin_preparar = it.estado == EstadoItem::Listo
+            && it.tipo == TipoItem::Archivo
+            && it.chars.is_none()
+            && it
+                .ruta
+                .as_deref()
+                .and_then(|r| std::path::Path::new(r).extension())
+                .map(|e| necesita_preparacion(&e.to_string_lossy()))
+                .unwrap_or(false);
+        if sin_preparar || matches!(it.estado, EstadoItem::Pendiente | EstadoItem::Preparando) {
+            tracing::info!("cola: se retoma {} ({:?})", it.id, it.estado);
+            let _ = actualizar_item(&app, &it.id, |i| i.estado = EstadoItem::Pendiente);
+            procesar_en_segundo_plano(app.clone(), it.id);
+        }
+    }
+}
+
 pub fn procesar_en_segundo_plano<R: Runtime>(app: AppHandle<R>, id: String) {
     tauri::async_runtime::spawn(async move {
         if let Err(e) = procesar(&app, &id).await {
@@ -530,6 +569,7 @@ pub fn procesar_en_segundo_plano<R: Runtime>(app: AppHandle<R>, id: String) {
             let _ = actualizar_item(&app, &id, |it| {
                 it.estado = EstadoItem::Error;
                 it.error = Some(formatear_error(&e));
+                it.progreso = None;
             });
         }
     });
@@ -562,8 +602,54 @@ async fn procesar<R: Runtime>(app: &AppHandle<R>, id: &str) -> Result<()> {
         TipoItem::Url => preparar_articulo(app, &item).await,
         TipoItem::Youtube => preparar_youtube(app, &item).await,
         TipoItem::Audio => preparar_transcripcion(app, &item).await,
-        TipoItem::Archivo | TipoItem::Texto => Ok(()),
+        TipoItem::Archivo => preparar_documento(app, id).await,
+        TipoItem::Texto => Ok(()),
     }
+}
+
+/// ¿Este fichero puede necesitar OCR (y por tanto prepararse antes de abrirlo)?
+fn necesita_preparacion(ext: &str) -> bool {
+    let ext = ext.to_ascii_lowercase();
+    ext == "pdf" || crate::capture::amanuensis::es_imagen(&ext)
+}
+
+/// Un documento que puede ser un escaneado se lee ENTERO aquí, en la cola:
+/// el OCR deja su lectura en la caché y la pegatina enseña por qué página va.
+/// Cuando pasa a «lista», abrirla es instantáneo. Un PDF con texto tarda
+/// milisegundos.
+async fn preparar_documento<R: Runtime>(app: &AppHandle<R>, id: &str) -> Result<()> {
+    let ruta = listar(app)?
+        .into_iter()
+        .find(|i| i.id == id)
+        .and_then(|i| i.ruta)
+        .ok_or_else(|| anyhow!("el documento ya no está"))?;
+    let ruta = PathBuf::from(ruta);
+    let (app2, id2) = (app.clone(), id.to_string());
+    let ruta2 = ruta.clone();
+    let parrafos = tauri::async_runtime::spawn_blocking(move || {
+        let aviso_app = app2.clone();
+        let aviso_id = id2.clone();
+        crate::capture::amanuensis::con_progreso(
+            &ruta2,
+            move |hecha, total| {
+                let _ = actualizar_item(&aviso_app, &aviso_id, |it| {
+                    it.progreso = Some([hecha as u32, total as u32]);
+                });
+            },
+            || crate::capture::doc_loader::load_rich_from_file(&ruta2),
+        )
+    })
+    .await
+    .map_err(|e| anyhow!("la preparación se interrumpió: {e}"))??;
+    let chars: usize = parrafos.iter().map(|p| p.text.chars().count()).sum();
+    if chars == 0 {
+        return Err(anyhow!("no se encontró texto en el documento"));
+    }
+    actualizar_item(app, id, |it| {
+        it.estado = EstadoItem::Listo;
+        it.progreso = None;
+        it.chars = Some(chars);
+    })
 }
 
 async fn preparar_articulo<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> Result<()> {
@@ -628,7 +714,8 @@ async fn preparar_articulo<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> R
             if let Ok((bytes, ct)) = &descargado {
                 if let Some(ext) = extension_de_documento(bytes, ct, &src) {
                     let _ = fs::remove_file(&ruta_html);
-                    return terminar_con_archivo(app, item, bytes, ext);
+                    terminar_con_archivo(app, item, bytes, ext)?;
+                    return preparar_documento(app, &item.id).await;
                 }
             }
             return Err(anyhow!(
@@ -647,7 +734,8 @@ async fn preparar_articulo<R: Runtime>(app: &AppHandle<R>, item: &ItemCola) -> R
         // Un enlace DIRECTO a un documento (PDF, EPUB, Word…): al
         // contenedor y por el camino de archivos, no hay HTML que raspar.
         if let Some(ext) = extension_de_documento(&bytes, &content_type, &item.origen) {
-            return terminar_con_archivo(app, item, &bytes, ext);
+            terminar_con_archivo(app, item, &bytes, ext)?;
+            return preparar_documento(app, &item.id).await;
         }
         decodificar_html(&bytes, &content_type)
     };
@@ -810,7 +898,6 @@ fn terminar_con_archivo<R: Runtime>(
     };
     actualizar_item(app, &item.id, |it| {
         it.tipo = TipoItem::Archivo;
-        it.estado = EstadoItem::Listo;
         it.ruta = Some(destino.to_string_lossy().to_string());
         it.titulo = titulo;
     })?;
@@ -3171,7 +3258,11 @@ pub fn cola_agregar_texto_cmd(
 
 #[tauri::command]
 pub fn cola_agregar_archivo_cmd(app: AppHandle, ruta: String) -> Result<ItemCola, String> {
-    agregar_archivo(&app, ruta).map_err(|e| e.to_string())
+    let item = agregar_archivo(&app, ruta).map_err(|e| e.to_string())?;
+    if item.estado == EstadoItem::Pendiente {
+        procesar_en_segundo_plano(app, item.id.clone());
+    }
+    Ok(item)
 }
 
 /// «Pegar lo copiado»: lee el portapapeles EL SOLO (nada de pelear con el

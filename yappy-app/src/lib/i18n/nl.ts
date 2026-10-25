@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Een bestand",
   "cinta.a_la_cola": "Op de band",
   "cinta.preparando": "maakt zich klaar",
+  "cinta.leyendo": "leest {n}/{m}",
   "cinta.error": "lukte niet · tik om opnieuw te proberen",
   "cinta.min": "min",
   "cinta.escuchado": "beluisterd",

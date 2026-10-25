@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Soubor",
   "cinta.a_la_cola": "Na pásku",
   "cinta.preparando": "připravuje se",
+  "cinta.leyendo": "čte {n}/{m}",
   "cinta.error": "nepovedlo se · klepni a zkusíme to znovu",
   "cinta.min": "min",
   "cinta.escuchado": "poslechnuté",

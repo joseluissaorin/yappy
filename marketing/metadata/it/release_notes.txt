@@ -1,6 +1,4 @@
-• Le letture lunghe sono più stabili.
-• EPUB, Word, PDF e altri formati si leggono paragrafo per paragrafo, e i progressi vengono salvati correttamente.
-• OCR proprio, Amanuensis Ligero: legge foto e PDF scansionati direttamente sul dispositivo.
-• Esporta in Markdown, HTML e PDF.
-• Il tour di benvenuto parla all’istante.
-• In inglese, il pronome «I» non viene più letto «the first».
+• I libri scansionati con due pagine per immagine ora si leggono pagina per pagina, senza mescolare le righe.
+• Mentre l'OCR legge un PDF scansionato, l'adesivo indica a che pagina è arrivato; quando è pronto, si apre all'istante.
+• Nelle scansioni non vengono più lette le intestazioni e i numeri di pagina.
+• Un PDF aperto in Safari, anche quello di un campus virtuale con accesso, ora entra come documento.

@@ -1,6 +1,4 @@
-• Pembacaan panjang kini lebih stabil.
-• EPUB, Word, PDF, dan format lain dibaca per paragraf, dan kemajuan Anda tersimpan dengan baik.
-• OCR milik sendiri, Amanuensis Ligero, membaca foto dan PDF hasil pindaian langsung di perangkat.
-• Ekspor ke Markdown, HTML, dan PDF.
-• Tur sambutan langsung berbicara.
-• Dalam bahasa Inggris, kata ganti “I” tidak lagi dibaca “the first”.
+• Buku hasil pindaian dengan dua halaman per gambar kini dibaca halaman demi halaman, tanpa baris yang tercampur.
+• Saat OCR membaca PDF hasil pindaian, stiker menunjukkan halaman yang sedang diproses; setelah siap, stiker langsung terbuka.
+• Header dan nomor halaman pada hasil pindaian tidak lagi dibacakan.
+• PDF yang terbuka di Safari, termasuk dari kampus virtual yang perlu login, kini masuk sebagai dokumen.

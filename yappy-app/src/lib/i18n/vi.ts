@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Một tệp",
   "cinta.a_la_cola": "Vào băng",
   "cinta.preparando": "đang chuẩn bị",
+  "cinta.leyendo": "đang đọc {n}/{m}",
   "cinta.error": "chưa được · chạm để thử lại",
   "cinta.min": "phút",
   "cinta.escuchado": "đã nghe",

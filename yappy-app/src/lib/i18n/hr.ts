@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Datoteka",
   "cinta.a_la_cola": "Na traku",
   "cinta.preparando": "priprema se",
+  "cinta.leyendo": "čita {n}/{m}",
   "cinta.error": "nije uspjelo · dodirni za novi pokušaj",
   "cinta.min": "min",
   "cinta.escuchado": "poslušano",

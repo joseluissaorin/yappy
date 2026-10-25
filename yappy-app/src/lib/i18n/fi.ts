@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "Tiedosto",
   "cinta.a_la_cola": "Nauhalle",
   "cinta.preparando": "valmistautuu",
+  "cinta.leyendo": "lukee {n}/{m}",
   "cinta.error": "ei onnistunut · napauta yrittääksesi uudelleen",
   "cinta.min": "min",
   "cinta.escuchado": "kuunneltu",

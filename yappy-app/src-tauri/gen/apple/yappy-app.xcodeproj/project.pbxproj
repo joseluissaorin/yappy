@@ -168,6 +168,7 @@
 		7E4587A34C84528271BA355E /* YappyRecursos.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = YappyRecursos.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E4EE4663B4CAB417323B2BA /* audiobook.rs */ = {isa = PBXFileReference; path = audiobook.rs; sourceTree = "<group>"; };
 		7E502C65C6D812B209E0A8D6 /* YappyWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YappyWidgets.entitlements; sourceTree = "<group>"; };
+		7E8182C9D164ACF3D0B8B821 /* resena.rs */ = {isa = PBXFileReference; path = resena.rs; sourceTree = "<group>"; };
 		7E9BFCC87D0BDC2FA2AADAD1 /* amanuensis.rs */ = {isa = PBXFileReference; path = amanuensis.rs; sourceTree = "<group>"; };
 		84AC793DBBC9E8C9CFD64D2B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		87FF4F4AB17B27812D7D989D /* history.rs */ = {isa = PBXFileReference; path = history.rs; sourceTree = "<group>"; };
@@ -470,6 +471,7 @@
 				1F629CBBFA430394A0D419AE /* paseo_voz.rs */,
 				2D765DEF987A4C99009FBF4F /* playback.rs */,
 				6BE98D63ABAAF4D02AADA34F /* puente.rs */,
+				7E8182C9D164ACF3D0B8B821 /* resena.rs */,
 				B8CE0A30A6D2701B251FEBBF /* settings.rs */,
 				4B810A445B1E97783FB5D77F /* state.rs */,
 				785C5DE7E55F390A2CD4E417 /* transcripts.rs */,

@@ -21,6 +21,7 @@ export default {
   "cinta.archivo": "En fil",
   "cinta.a_la_cola": "På båndet",
   "cinta.preparando": "gør sig klar",
+  "cinta.leyendo": "læser {n}/{m}",
   "cinta.error": "mislykkedes · tryk for at prøve igen",
   "cinta.min": "min.",
   "cinta.escuchado": "lyttet",
